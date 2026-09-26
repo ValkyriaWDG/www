@@ -47,7 +47,11 @@ ENV NODE_ENV=production \
     EDITORIAL_MEDIA_ROOT=/app/storage/editorial \
     MIGRATIONS_DIR=/app/migrations
 WORKDIR /app
-RUN groupadd --system --gid 10001 valkyria \
+# The runtime only executes `node`; drop the base image's package managers (and their
+# bundled dependencies) so they are neither an attack surface nor scan findings.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+      /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+ && groupadd --system --gid 10001 valkyria \
  && useradd --system --uid 10001 --gid valkyria --home-dir /app --shell /usr/sbin/nologin valkyria
 # Application files are owned by root and read-only for the runtime user.
 COPY --from=build /repo/apps/web/.next/standalone ./

@@ -63,8 +63,10 @@ liveness only; `GET /api/health/ready` checks configuration, database reachabili
 timeout) and that the latest bundled migration is applied, returning sanitized check codes
 and 503 when not ready (verified: stopping PostgreSQL gives live 200 / ready 503, recovery
 returns 200 without restart). The Compose cache path `/app/apps/web/.next/cache` matches
-the image. SBOM/provenance and an image vulnerability scan are part of the publication
-workflow and release readiness; record reviewed exceptions there.
+the image. CI scans every built image with a digest-pinned Trivy and fails on fixable
+HIGH/CRITICAL findings; the runtime stage removes npm/corepack. Base-image findings
+without a Debian fix are reviewed exceptions recorded in `docs/STATUS.md`. The publication
+workflow adds SBOM and provenance attestations.
 
 The editorial module also requires persistent private media storage and a bundled
 `scripts/publish-due.mjs` runner for due posts. Configure an operator-owned minute timer

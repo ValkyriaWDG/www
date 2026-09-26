@@ -117,6 +117,11 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3300/)" = 307
           docker logs smoke 2>&1 | tail -20
           docker rm -f smoke
+      - name: Image vulnerability scan (fixable HIGH/CRITICAL findings fail)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
+            image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress valkyria-web:ci
 
   quality:
     name: Quality gate

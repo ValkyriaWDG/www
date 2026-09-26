@@ -1,6 +1,6 @@
 {
   "name": "valkyria-www",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Valkyria community website: Czech-first bilingual Next.js application with Wardogs game-menu presentation",
   "license": "Apache-2.0",
