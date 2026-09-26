@@ -149,8 +149,15 @@ test.describe('public article', () => {
     const related = page.locator('[data-related]');
     await expect(related.getByRole('heading', { name: 'Související novinky' })).toBeVisible();
     expect(await related.getByRole('link').count()).toBeGreaterThan(0);
-    await related.getByRole('link').first().click();
-    await expect(page).toHaveURL(/\/cs\/news\/ukazka-/);
+    // Wait for the exact related article: the feature URL itself also matches `/cs/news/ukazka-`,
+    // and going back before the client navigation commits would leave the page.
+    const relatedLink = related.getByRole('link').first();
+    const relatedHref = await relatedLink.getAttribute('href');
+    expect(relatedHref).toMatch(/^\/cs\/news\/ukazka-[a-z0-9-]+$/);
+    expect(relatedHref).not.toBe(`/cs/news/${NEWS.featureCs}`);
+    await relatedLink.click();
+    await expect(page).toHaveURL(new RegExp(`${relatedHref}$`));
+    await expect(page.getByRole('heading', { level: 1 })).not.toHaveText('[Ukázka] Obrázky, tabulka a odkazy');
     await page.goBack();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('[Ukázka] Obrázky, tabulka a odkazy');
   });
