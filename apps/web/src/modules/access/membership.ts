@@ -13,6 +13,7 @@ export type MembershipSnapshot = {
   receivedAt: Date;
   source: MembershipSource;
   sequence: number;
+  authorizationGeneration: bigint;
   lastRefreshAttemptAt: Date | null;
   lastRefreshError: string | null;
 };
@@ -28,6 +29,8 @@ export type MembershipObservation = {
   source: MembershipSource;
   /** Event ordering within equal observation times (REST refreshes use 0). */
   sequence?: number;
+  /** Captured before REST I/O. A role event during the request invalidates this write. */
+  expectedGeneration?: bigint;
 };
 
 /** Reads the snapshot for exactly the configured guild; other guilds are never consulted. */
@@ -48,15 +51,17 @@ export async function readMembership(db: Executor, guildId: string, discordUserI
     receivedAt: row.receivedAt,
     source: row.source,
     sequence: row.sequence,
+    authorizationGeneration: row.authorizationGeneration,
     lastRefreshAttemptAt: row.lastRefreshAttemptAt,
     lastRefreshError: row.lastRefreshError,
   };
 }
 
 /**
- * Upserts an authoritative observation. Ordering key is `(observedAt, sequence)`: an
- * observation older than the stored one (or equally old with a lower sequence) is
- * ignored, so a delayed snapshot can never resurrect a newer departure/role removal.
+ * Upserts a REST observation or an internal invalidation (role-sync input cannot grant).
+ * REST observations are ordered by time; a captured generation lets a newly started REST
+ * request replace an invalidation independently of the bot clock/sequence. The HTTP
+ * receiver has its own durable producer/member ordering and must use acceptEnvelope.
  * Returns whether the observation was applied.
  */
 export async function recordMembershipObservation(db: Executor, observation: MembershipObservation): Promise<boolean> {
@@ -64,19 +69,24 @@ export async function recordMembershipObservation(db: Executor, observation: Mem
   if (!observation.roleIds.every(isSnowflake)) return false;
   const receivedAt = observation.receivedAt ?? new Date();
   const sequence = observation.sequence ?? 0;
-  const roleIds = observation.state === 'present' ? [...new Set(observation.roleIds)] : [];
+  // An event can invalidate authority, never supply a positive REST observation.
+  const state = observation.source === 'role_sync' && observation.state === 'present' ? 'unknown' : observation.state;
+  const roleIds = state === 'present' ? [...new Set(observation.roleIds)] : [];
+  const generationFence = observation.expectedGeneration === undefined ? sql`true` : sql`${guildMembership.authorizationGeneration} = ${observation.expectedGeneration}`;
+  const replacesInvalidation = observation.expectedGeneration === undefined ? sql`false` : sql`${guildMembership.source} = 'role_sync'`;
   const rows = await db
     .insert(guildMembership)
     .values({
       guildId: observation.guildId,
       discordUserId: observation.discordUserId,
       userId: observation.userId,
-      state: observation.state,
+      state,
       roleIds,
       observedAt: observation.observedAt,
       receivedAt,
       source: observation.source,
       sequence,
+      authorizationGeneration: observation.source === 'role_sync' ? 1n : 0n,
       lastRefreshAttemptAt: observation.source === 'role_sync' ? null : receivedAt,
       lastRefreshError: null,
       updatedAt: receivedAt,
@@ -91,12 +101,13 @@ export async function recordMembershipObservation(db: Executor, observation: Mem
         receivedAt: sql`excluded.received_at`,
         source: sql`excluded.source`,
         sequence: sql`excluded.sequence`,
+        authorizationGeneration: observation.source === 'role_sync' ? sql`${guildMembership.authorizationGeneration} + 1` : guildMembership.authorizationGeneration,
         lastRefreshAttemptAt: sql`coalesce(excluded.last_refresh_attempt_at, ${guildMembership.lastRefreshAttemptAt})`,
         lastRefreshError: sql`null`,
         updatedAt: sql`excluded.updated_at`,
       },
-      setWhere: sql`excluded.observed_at > ${guildMembership.observedAt}
-        or (excluded.observed_at = ${guildMembership.observedAt} and excluded.sequence >= ${guildMembership.sequence})`,
+      setWhere: sql`${generationFence} and (${replacesInvalidation} or excluded.observed_at > ${guildMembership.observedAt}
+        or (excluded.observed_at = ${guildMembership.observedAt} and excluded.sequence >= ${guildMembership.sequence}))`,
     })
     .returning({ id: guildMembership.id });
   return rows.length > 0;
@@ -118,9 +129,9 @@ export async function recordRefreshFailure(
 
 export type RefreshResult =
   | { ok: true; snapshot: MembershipSnapshot }
-  | { ok: false; code: GuildMemberFailureCode; snapshot: MembershipSnapshot | null };
+  | { ok: false; code: GuildMemberFailureCode | 'invalidated'; snapshot: MembershipSnapshot | null };
 
-const inflight = new Map<string, Promise<RefreshResult>>();
+const inflightByDatabase = new WeakMap<Executor, Map<string, Promise<RefreshResult>>>();
 
 /**
  * Fetches the member from Discord REST and stores the observation. Concurrent refreshes
@@ -134,11 +145,20 @@ export function refreshMembership(
   deps: DiscordClientDeps = {},
 ): Promise<RefreshResult> {
   const guildId = config.guildId ?? '';
+  let inflight = inflightByDatabase.get(db);
+  if (!inflight) { inflight = new Map(); inflightByDatabase.set(db, inflight); }
   const key = `${guildId}:${input.discordUserId}`;
   const existing = inflight.get(key);
   if (existing) return existing;
   const task = (async (): Promise<RefreshResult> => {
     const now = deps.now ?? (() => new Date());
+    // Establish a durable generation even for a first login before starting network I/O.
+    if (isSnowflake(guildId) && isSnowflake(input.discordUserId)) {
+      await db.insert(guildMembership).values({ guildId, discordUserId: input.discordUserId, userId: input.userId,
+        state: 'unknown', roleIds: [], observedAt: new Date(0), source: 'rest_refresh' })
+        .onConflictDoNothing({ target: [guildMembership.guildId, guildMembership.discordUserId] });
+    }
+    const before = await readMembership(db, guildId, input.discordUserId);
     const lookup = await fetchGuildMember(config, input.discordUserId, deps);
     if (lookup.kind === 'failure') {
       if (config.guildId && isSnowflake(config.guildId)) {
@@ -147,7 +167,7 @@ export function refreshMembership(
       }
       return { ok: false, code: lookup.code, snapshot: null };
     }
-    await recordMembershipObservation(db, {
+    const applied = await recordMembershipObservation(db, {
       guildId,
       discordUserId: input.discordUserId,
       userId: input.userId,
@@ -157,11 +177,15 @@ export function refreshMembership(
       receivedAt: now(),
       source: input.source,
       sequence: 0,
+      expectedGeneration: before?.authorizationGeneration ?? 0n,
     });
     const snapshot = await readMembership(db, guildId, input.discordUserId);
+    if (!applied || snapshot?.authorizationGeneration !== before?.authorizationGeneration || snapshot?.source === 'role_sync') {
+      return { ok: false, code: 'invalidated', snapshot };
+    }
     if (!snapshot) return { ok: false, code: 'unavailable', snapshot: null };
     return { ok: true, snapshot };
-  })().finally(() => inflight.delete(key));
+  })().finally(() => inflight!.delete(key));
   inflight.set(key, task);
   return task;
 }

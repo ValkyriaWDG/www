@@ -1252,6 +1252,72 @@
       "bytes": 318978,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "discord-role-sync-2026-09-26-authorized-cs",
+      "path": "docs/evidence/discord-role-sync-2026-09-26/authorized-cs.png",
+      "source": "Actual local production-build browser capture; synthetic Discord REST/PostgreSQL fixture. Website base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus hashed source changes in this evidence report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "d66795c92235b53b31a4073f8bf77f2e1afeee89967c4d5624676b4ebefec82a",
+      "bytes": 196013,
+      "width": 1440,
+      "height": 986
+    },
+    {
+      "id": "discord-role-sync-2026-09-26-authorized-en",
+      "path": "docs/evidence/discord-role-sync-2026-09-26/authorized-en.png",
+      "source": "Actual local production-build browser capture; synthetic Discord REST/PostgreSQL fixture. Website base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus hashed source changes in this evidence report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "d12952b320e3ccd378e04387a2e9258e9b878691a40428d25528eb2a2c496961",
+      "bytes": 192448,
+      "width": 1440,
+      "height": 986
+    },
+    {
+      "id": "discord-role-sync-2026-09-26-rest-outage-cs",
+      "path": "docs/evidence/discord-role-sync-2026-09-26/rest-outage-cs.png",
+      "source": "Actual local production-build browser capture; synthetic Discord REST/PostgreSQL fixture. Website base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus hashed source changes in this evidence report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "de4ce8c52dbbb0f4559f8de41349e761ce10ff53c636ce5c1e779b1bcd665be0",
+      "bytes": 185993,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "discord-role-sync-2026-09-26-rest-outage-en",
+      "path": "docs/evidence/discord-role-sync-2026-09-26/rest-outage-en.png",
+      "source": "Actual local production-build browser capture; synthetic Discord REST/PostgreSQL fixture. Website base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus hashed source changes in this evidence report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "44a9d66ee237e4d5929618bba3ff215209871a0787161c34f94067ba65425b25",
+      "bytes": 186486,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "discord-role-sync-2026-09-26-revoked-cs",
+      "path": "docs/evidence/discord-role-sync-2026-09-26/revoked-cs.png",
+      "source": "Actual local production-build browser capture; synthetic Discord REST/PostgreSQL fixture. Website base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus hashed source changes in this evidence report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "afbd0bede87b66d007f4e998ca3de2e0ee38928f12ec2addc4f15f5c66f7d202",
+      "bytes": 243066,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "discord-role-sync-2026-09-26-revoked-en",
+      "path": "docs/evidence/discord-role-sync-2026-09-26/revoked-en.png",
+      "source": "Actual local production-build browser capture; synthetic Discord REST/PostgreSQL fixture. Website base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus hashed source changes in this evidence report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "25497f5889fdf33d4adb369fa4fbbdae4a567c54f29696d0a732cf7d27a11854",
+      "bytes": 241656,
+      "width": 1440,
+      "height": 970
     }
   ]
 }

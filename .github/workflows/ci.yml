@@ -135,9 +135,66 @@ jobs:
           path: sbom/valkyria-web.cdx.json
           retention-days: 90
 
+  role-sync-contract:
+    name: Discord role-sync contract
+    needs: foundation
+    if: needs.foundation.outputs.app_present == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test-only-ephemeral
+          POSTGRES_DB: valkyria_roles_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U test -d valkyria_roles_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://test:test-only-ephemeral@127.0.0.1:5432/valkyria_roles_test
+      BOT_SOURCE_DIR: ${{ github.workspace }}/.local/role-sync-bot
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Checkout the actual paired public bot source
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          repository: ValkyriaWDG/bot
+          ref: 4f3db011ec0aa96eaaa96bfb7b71cd4bffd804ac
+          path: .local/role-sync-bot
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Actual sender, HTTP receiver and isolated PostgreSQL
+        run: pnpm --filter @valkyria/web exec vitest run --project role-sync-contract --reporter=default --reporter=junit --outputFile.junit=.local/role-sync-contract.xml
+      - name: Record paired source revisions
+        if: always()
+        run: |
+          mkdir -p .local/role-sync-proof
+          git rev-parse HEAD > .local/role-sync-proof/website-revision.txt
+          git -C "$BOT_SOURCE_DIR" rev-parse HEAD > .local/role-sync-proof/bot-revision.txt
+      - name: Upload offline contract evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: role-sync-contract-${{ github.sha }}
+          path: |
+            apps/web/.local/role-sync-contract.xml
+            .local/role-sync-proof
+          if-no-files-found: error
+          retention-days: 30
+
   quality:
     name: Quality gate
-    needs: [foundation, application]
+    needs: [foundation, application, role-sync-contract]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -147,10 +204,13 @@ jobs:
           FOUNDATION_RESULT: ${{ needs.foundation.result }}
           APP_PRESENT: ${{ needs.foundation.outputs.app_present }}
           APP_RESULT: ${{ needs.application.result }}
+          ROLE_SYNC_RESULT: ${{ needs.role-sync-contract.result }}
         run: |
           test "$FOUNDATION_RESULT" = success
           if [ "$APP_PRESENT" = true ]; then
             test "$APP_RESULT" = success
+            test "$ROLE_SYNC_RESULT" = success
           else
             test "$APP_RESULT" = skipped
+            test "$ROLE_SYNC_RESULT" = skipped
           fi

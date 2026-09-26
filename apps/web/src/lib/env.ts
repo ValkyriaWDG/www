@@ -60,7 +60,6 @@ const serverEnvSchema = z.object({
   BACKGROUND_POSTER_URL: optionalUrl.default(''),
   /** Comma-separated HTTPS origins permitted for admin-configured background media (also added to the CSP). */
   BACKGROUND_MEDIA_ALLOWED_ORIGINS: z.string().default(''),
-  ROLE_SYNC_SIGNING_SECRET: optionalSecret,
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

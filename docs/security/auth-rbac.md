@@ -80,21 +80,32 @@ Discord server-side; an unknown guild or unconfigured mapping grants no private 
 - Periodic reconciliation corrects missed gateway events; 429 honors Retry-After with
   bounded retries and backoff. Do not interpret timeout/403 as successful zero-role sync.
 
-For v1, a server-only Discord REST adapter can provide authoritative refreshes; the
-optional worker adds event-driven invalidation later. Do not claim an event integration
-is live when only its contract/mock exists. Never trust a posted role list from a user.
+The server-only Discord REST adapter supplies authoritative refreshes. The implemented
+bot receiver adds event-driven invalidation when explicitly enabled; its default is off.
+Do not claim live guild acceptance from offline fixtures. Never trust browser-posted roles.
 
-## Optional bot-to-web contract
+## Bot-to-web role-sync receiver
 
-Reserve `POST /api/integrations/discord/role-sync`. Versioned JSON fields:
+The unprefixed `POST /api/integrations/discord/role-sync` accepts versioned JSON fields:
 `schemaVersion`, `eventId`, `guildId`, `userId`, `roleIds`, `membershipState`,
-`observedAt`, `sequence`. IDs are strings. The production design must choose and test
-a concrete authenticated transport; recommended HMAC-SHA256 over timestamp, nonce and
-raw body, with constant-time comparison, a 5-minute receive window, durable replay
-receipts and key rotation. Secret remains only in operator/worker/server configuration.
+`observedAt`, `sequence`. IDs and sequence are strings. The implemented transport uses
+HMAC-SHA256 over method, exact path, key ID, timestamp, nonce and raw body, with
+constant-time comparison, a 5-minute receive window, durable producer-scoped receipts
+and rotating keys. Secrets remain only in operator/worker/server configuration.
 Reject wrong guild, malformed roles, oversized payload, stale timestamp and replay.
 An older snapshot cannot resurrect a user after a newer departure event. HMAC proves
 sender integrity, not permission to map arbitrary new application capabilities.
+
+Accepted events invalidate the REST snapshot and increment its authorization generation.
+Departure or removal of a previously observed role also revokes associated Discord
+sessions. Local password/MFA recovery sessions are independent. A REST lookup captures
+the generation before network I/O and cannot commit if an event changed it. Request
+resolution rechecks durable session and generation after awaited mapping work. Scheduled
+publication carries the verified generation into its transaction and locks/rechecks that
+membership after content locks, holding the authorization fence through commit. Event role
+lists never grant access; resolving interactive or scheduled authority requires fresh
+server-side REST after invalidation. See the [implemented contract and runbook](../integrations/discord-role-sync.md)
+for acknowledgements, durable ordering, retention, key rotation, tests and live gates.
 
 ## Local admin recovery
 

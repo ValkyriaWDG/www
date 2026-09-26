@@ -30,8 +30,10 @@ Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-le
   community administration (matches, members, settings, audit), migrations, CLIs,
   non-root image with CI scan/SBOM, backup/restore rehearsal.
 Evidence: docs/evidence/app-1.0.0/README.md (captioned captures + measurements.json)
-Migrations: packages/db/drizzle/0000_initial_schema.sql (applied; repeated runs no-op)
-Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
+Migrations: 0000_initial_schema.sql applied; 0001_role_sync.sql prepared and verified
+  offline, not deployed. Repeated runs are no-op.
+Open: operator launch inputs and follow-ups listed below; M4 #7 and #22.
+  #8 receiver implemented with paired offline proof; exact-head CI/review pending.
 Next executable step: configure Discord OAuth/guild roles and finish remaining #23 acceptance.
 ```
 
@@ -99,3 +101,29 @@ Main requires a pull request, the **Quality gate** and linear history. CI runs f
 lint, types, unit, PostgreSQL integration, build, Playwright, container smoke, image scan
 and SBOM. Container publication is a separate, gated manual workflow. Private
 vulnerability reporting, Dependabot alerts, secret scanning and push protection are on.
+
+## Discord role-sync receiver (2026-09-26)
+
+Website [#8](https://github.com/ValkyriaWDG/www/issues/8) now has a default-disabled
+signed receiver, additive `0001_role_sync.sql`, durable replay/order receipts and
+departure tombstones. Events invalidate cached roles and revoke affected Discord
+sessions; only fresh website REST observations grant capabilities. Generation checks
+fence in-flight REST and cached actors. Scheduled publication locks/rechecks the verified
+authority inside the content transaction and checks freshness again after audit writes.
+Local MFA recovery retains its independent grant path.
+
+The [contract/runbook](integrations/discord-role-sync.md) defines enablement and rotation.
+[Offline evidence](evidence/discord-role-sync-2026-09-26/README.md) records both source
+revisions, exact dirty pre-commit file hashes, six inspected CS/EN screenshots and limits.
+Passed: role-sync unit 15; focused PostgreSQL 77; actual pinned bot sender/HTTP receiver
+contract 7; browser journeys 4; foundation tests 19; lint and production build including
+TypeScript/CLI bundles. Independent review reproduced and verified the mapping-lock,
+translation-lock and audit-expiry races. The separately required CI contract job checks
+the actual public bot revision `4f3db011ec0aa96eaaa96bfb7b71cd4bffd804ac`.
+
+Earlier broader Windows runs had platform/fixture failures (unit 380/384, integration
+235/237); the evidence preserves them, and final applicable PR-head Linux CI remains
+required. Receiver/sender enablement and production migrations were not performed.
+Live real-guild/network/rotation/recovery acceptance remains in
+[bot #5](https://github.com/ValkyriaWDG/bot/issues/5) and website #23. Offline website #8
+completion does not close those operational gates.

@@ -1,4 +1,4 @@
-import { auditEvent, guildMembership, roleMappingVersion } from '@valkyria/db';
+import { auditEvent, authSession, guildMembership, roleMappingVersion } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { recordMembershipObservation, readMembership } from '@/modules/access/membership';
@@ -37,6 +37,7 @@ beforeEach(() => {
 async function discordIdentity() {
   const identity = await insertDiscordUser(database.db);
   const session: ActorSession = { id: crypto.randomUUID(), userId: identity.userId, assurance: 'discord', expiresAt: new Date(NOW.getTime() + 3_600_000) };
+  await database.db.insert(authSession).values({ ...session, assurance: 'discord', token: crypto.randomUUID() });
   const user = { id: identity.userId, name: 'Synthetic Member', twoFactorEnabled: false };
   return { ...identity, session, user };
 }
@@ -240,7 +241,7 @@ describe('observation ordering', () => {
     expect(await recordMembershipObservation(database.db, { ...base, state: 'present', roleIds: [ROLE.editor], sequence: 5 })).toBe(true);
     expect(await recordMembershipObservation(database.db, { ...base, state: 'present', roleIds: [ROLE.administrator], sequence: 4 })).toBe(false);
     expect(await recordMembershipObservation(database.db, { ...base, state: 'present', roleIds: [ROLE.matchManager], sequence: 6 })).toBe(true);
-    expect((await readMembership(database.db, GUILD_ID, id.discordUserId))?.roleIds).toEqual([ROLE.matchManager]);
+    expect(await readMembership(database.db, GUILD_ID, id.discordUserId)).toMatchObject({ state: 'unknown', roleIds: [], sequence: 6, authorizationGeneration: 2n });
   });
 
   it('rejects non-snowflake identifiers', async () => {

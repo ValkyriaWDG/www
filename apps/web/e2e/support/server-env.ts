@@ -38,6 +38,10 @@ export function e2eServerEnv(options: {
     DISCORD_BOT_TOKEN: 'e2e-synthetic-bot-token',
     DISCORD_CLIENT_ID: '100000000000000099',
     DISCORD_CLIENT_SECRET: 'e2e-synthetic-client-secret',
+    // Explicitly enabled only in this isolated browser-test environment.
+    ROLE_SYNC_ENABLED: 'true',
+    ROLE_SYNC_PRODUCER_ID: 'e2e-synthetic-bot',
+    ROLE_SYNC_KEYS_JSON: JSON.stringify({ fixture: 'e2e-role-sync-key-not-for-production-0000' }),
     DISCORD_ROLE_MAPPING_JSON: JSON.stringify({
       '200000000000000001': ['member'],
       '200000000000000002': ['editor'],
