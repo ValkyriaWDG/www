@@ -1,16 +1,31 @@
 {
   "name": "valkyria-www",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
-  "description": "Valkyria community website: architecture, design and cloud implementation foundation",
+  "description": "Valkyria community website: Czech-first bilingual Next.js application with Wardogs game-menu presentation",
   "license": "Apache-2.0",
   "type": "module",
   "engines": { "node": ">=24 <25" },
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
+    "dev": "pnpm --filter @valkyria/web dev",
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test:unit": "pnpm -r --if-present run test:unit",
+    "test:integration": "pnpm -r --if-present run test:integration",
+    "build": "pnpm --filter @valkyria/web build",
+    "test:e2e": "pnpm --filter @valkyria/web test:e2e",
+    "db:generate": "pnpm --filter @valkyria/db db:generate",
+    "db:migrate": "pnpm --filter @valkyria/web db:migrate",
+    "db:seed": "pnpm --filter @valkyria/web db:seed",
+    "db:fixtures": "pnpm --filter @valkyria/web db:fixtures",
+    "publish:due": "pnpm --filter @valkyria/web publish:due",
     "check": "node scripts/check-foundation.mjs",
     "check:foundation": "node scripts/check-foundation.mjs",
     "check:commits": "node scripts/check-commit-attribution.mjs",
     "test:foundation": "node --test scripts/tests/*.test.mjs"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
   }
 }

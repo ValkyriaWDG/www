@@ -1,0 +1,26 @@
+{
+  "site": {
+    "name": "Valkyria",
+    "description": "Valkyria — a Czech and Slovak gaming community. From Hell Let Loose to Wardogs, together."
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "nav": {
+    "home": "MAIN MENU",
+    "news": "NEWS",
+    "clan": "CLAN",
+    "members": "MEMBERS",
+    "matches": "MATCHES",
+    "signIn": "SIGN IN",
+    "hllWebsite": "HLL WEBSITE"
+  },
+  "states": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The requested page does not exist or is not publicly available.",
+    "backHome": "Back to the main menu",
+    "errorTitle": "Something went wrong",
+    "errorBody": "The page could not be displayed. Please try again.",
+    "retry": "Try again"
+  }
+}

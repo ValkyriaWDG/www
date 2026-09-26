@@ -52,7 +52,7 @@ jobs:
     needs: foundation
     if: needs.foundation.outputs.app_present == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
     services:
       postgres:
         image: postgres:17
@@ -87,8 +87,36 @@ jobs:
       - run: pnpm build
       - run: pnpm --filter @valkyria/web exec playwright install --with-deps chromium
       - run: pnpm test:e2e
+      - name: Upload browser report and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report-${{ github.sha }}
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Build image without publishing
-        run: docker build --file apps/web/Dockerfile --tag valkyria-web:ci .
+        run: docker build --file apps/web/Dockerfile --build-arg SOURCE_REVISION=${{ github.sha }} --tag valkyria-web:ci .
+      - name: Container startup, migration and health smoke test
+        env:
+          SMOKE_DATABASE_URL: postgresql://test:test-only-ephemeral@localhost:5432/valkyria_container
+        run: |
+          set -euo pipefail
+          PGPASSWORD=test-only-ephemeral psql -h localhost -U test -d valkyria_test -c 'create database valkyria_container'
+          docker run --rm --network host -e DATABASE_URL="$SMOKE_DATABASE_URL" valkyria-web:ci node scripts/migrate.mjs
+          docker run --rm --network host -e DATABASE_URL="$SMOKE_DATABASE_URL" valkyria-web:ci node scripts/migrate.mjs
+          docker run -d --name smoke --network host --read-only --tmpfs /tmp --cap-drop ALL \
+            --security-opt no-new-privileges:true -v smoke-media:/app/storage/editorial \
+            -e PORT=3300 -e APP_URL=http://127.0.0.1:3300 -e DATABASE_URL="$SMOKE_DATABASE_URL" \
+            -e BETTER_AUTH_SECRET=ci-only-ephemeral-secret-not-for-production-0000 valkyria-web:ci
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:3300/api/health/live && break; sleep 1; done
+          curl -fsS http://127.0.0.1:3300/api/health/ready
+          test "$(docker exec smoke id -u)" != 0
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3300/)" = 307
+          docker logs smoke 2>&1 | tail -20
+          docker rm -f smoke
 
   quality:
     name: Quality gate

@@ -1,0 +1,26 @@
+{
+  "site": {
+    "name": "Valkyria",
+    "description": "Valkyria — česko-slovenská herní komunita. Od Hell Let Loose po Wardogs, společně."
+  },
+  "a11y": {
+    "skipToContent": "Přeskočit na obsah"
+  },
+  "nav": {
+    "home": "HLAVNÍ MENU",
+    "news": "NOVINKY",
+    "clan": "KLAN",
+    "members": "ČLENOVÉ",
+    "matches": "ZÁPASY",
+    "signIn": "PŘIHLÁSIT SE",
+    "hllWebsite": "HLL WEB"
+  },
+  "states": {
+    "notFoundTitle": "Stránka nenalezena",
+    "notFoundBody": "Požadovaná stránka neexistuje nebo není veřejně dostupná.",
+    "backHome": "Zpět do hlavního menu",
+    "errorTitle": "Něco se pokazilo",
+    "errorBody": "Stránku se nepodařilo zobrazit. Zkuste to prosím znovu.",
+    "retry": "Zkusit znovu"
+  }
+}
