@@ -21,7 +21,14 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   async headers() {
-    return [{ source: '/:path*', headers: [...STATIC_SECURITY_HEADERS] }];
+    return [
+      { source: '/:path*', headers: [...STATIC_SECURITY_HEADERS] },
+      {
+        // Delivered background derivatives are content-addressed (SHA-256 prefix in the filename).
+        source: '/media/background/:file([a-z0-9-]+-[a-f0-9]{12}\\.(?:mp4|webm|webp))',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+    ];
   },
 };
 

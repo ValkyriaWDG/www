@@ -14,6 +14,7 @@
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
     "test:e2e": "playwright test",
+    "test:e2e:media": "playwright test -c playwright.media.config.ts",
     "db:migrate": "tsx src/cli/migrate.ts",
     "db:seed": "tsx src/cli/seed.ts",
     "db:fixtures": "tsx src/cli/fixtures.ts",

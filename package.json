@@ -15,6 +15,7 @@
     "test:integration": "pnpm -r --if-present run test:integration",
     "build": "pnpm --filter @valkyria/web build",
     "test:e2e": "pnpm --filter @valkyria/web test:e2e",
+    "test:e2e:media": "pnpm --filter @valkyria/web test:e2e:media",
     "db:generate": "pnpm --filter @valkyria/db db:generate",
     "db:migrate": "pnpm --filter @valkyria/web db:migrate",
     "db:seed": "pnpm --filter @valkyria/web db:seed",

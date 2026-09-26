@@ -85,6 +85,7 @@ pnpm dev                              # http://localhost:3000 → /cs
 | `pnpm test:integration` | Vitest against real PostgreSQL (`DATABASE_URL`; creates `<db>_tpl`/`<db>_w*` clones) |
 | `pnpm build` | Next.js standalone build + bundled CLIs (`apps/web/dist/cli`) and migrations |
 | `pnpm test:e2e` | Playwright against the built standalone server and a disposable `<db>_e2e` database |
+| `pnpm test:e2e:media` | Actual delivered background media (not in CI; see [background media](docs/operations/background-media.md)) |
 | `docker build -f apps/web/Dockerfile .` | Non-root production image (see [deployment](docs/operations/deployment.md)) |
 | `pnpm check:foundation` / `pnpm test:foundation` | Repository hygiene, links, asset provenance and skill checks |
 

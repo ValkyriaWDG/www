@@ -20,7 +20,9 @@ Integration tests fail (not skip) without `DATABASE_URL`. The e2e suite migrates
 loads synthetic fixtures into `<db>_e2e` with the bundled CLIs, starts a local Discord REST
 mock and serves the standalone build. When a cloud image ships a different Chromium build,
 set `PLAYWRIGHT_CHROMIUM_EXECUTABLE`; CI installs the pinned browser. Visual evidence
-capture is opt-in (`CAPTURE_EVIDENCE=1`) and writes to ignored `.local/evidence/`.
+capture is opt-in (`CAPTURE_EVIDENCE=1`) and writes to ignored `.local/evidence/`. Real
+background playback is a separate check, `pnpm test:e2e:media`, which needs the verified
+delivered files ([background media](../operations/background-media.md)).
 
 ## Select checks by risk
 

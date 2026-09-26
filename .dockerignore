@@ -36,3 +36,5 @@ assets/private
 **/*.utoc
 **/*.mp4
 **/*.webm
+# Delivered background derivatives (third-party imagery) are served from an approved media origin, never baked into the image
+apps/web/public/media/background
