@@ -1051,6 +1051,64 @@
       "bytes": 271429,
       "width": 390,
       "height": 4007
+    },
+    {
+      "id": "web-presskit-key-art-960",
+      "path": "apps/web/public/presskit/key-art-960.webp",
+      "source": "Derived from assets/presskit/wardogs-january-2026/key-art-1080p.png by apps/web/scripts/build-presskit-derivatives.mjs",
+      "usage": "presskit-illustration: clan page Wardogs key art (object-fit: contain, full composition)",
+      "rights": "Third-party Wardogs presskit media; copyright remains with its owners; excluded from the Apache code license; no general redistribution license asserted",
+      "sha256": "99515e65324b61512d6767da93b7ed3bbe66f13c9dd6ee204245f39b389e311c",
+      "bytes": 36510,
+      "width": 960,
+      "height": 540,
+      "transformations": "Proportional Lanczos resize to 960 px wide, WebP quality 80 via sharp"
+    },
+    {
+      "id": "web-presskit-key-art-1920",
+      "path": "apps/web/public/presskit/key-art-1920.webp",
+      "source": "Derived from assets/presskit/wardogs-january-2026/key-art-1080p.png by apps/web/scripts/build-presskit-derivatives.mjs",
+      "usage": "presskit-illustration: clan page Wardogs key art (object-fit: contain, full composition)",
+      "rights": "Third-party Wardogs presskit media; copyright remains with its owners; excluded from the Apache code license; no general redistribution license asserted",
+      "sha256": "9a41f5ada02ed962c4a81691faaa4d2a541d42c5804b487759554878849348bf",
+      "bytes": 105618,
+      "width": 1920,
+      "height": 1080,
+      "transformations": "Proportional Lanczos resize to 1920 px wide, WebP quality 80 via sharp"
+    },
+    {
+      "id": "web-presskit-flying-800",
+      "path": "apps/web/public/presskit/flying-800.webp",
+      "source": "Derived from assets/presskit/wardogs-january-2026/flying.jpg by apps/web/scripts/build-presskit-derivatives.mjs",
+      "usage": "presskit-illustration: community recruitment illustration (complete 16:9 frame)",
+      "rights": "Third-party Wardogs presskit media; copyright remains with its owners; excluded from the Apache code license; no general redistribution license asserted",
+      "sha256": "e2f86286806dfea13795b9f34ed4cc1b510289cee93511316ab7f1a1578b1f83",
+      "bytes": 17260,
+      "width": 800,
+      "height": 450,
+      "transformations": "Proportional Lanczos resize to 800 px wide, WebP quality 80 via sharp"
+    },
+    {
+      "id": "web-presskit-flying-1600",
+      "path": "apps/web/public/presskit/flying-1600.webp",
+      "source": "Derived from assets/presskit/wardogs-january-2026/flying.jpg by apps/web/scripts/build-presskit-derivatives.mjs",
+      "usage": "presskit-illustration: community recruitment illustration (complete 16:9 frame)",
+      "rights": "Third-party Wardogs presskit media; copyright remains with its owners; excluded from the Apache code license; no general redistribution license asserted",
+      "sha256": "520aced93778ff72079e4b5bf0fbf0b2614deb78e11faa034f372e8118d5f236",
+      "bytes": 57898,
+      "width": 1600,
+      "height": 900,
+      "transformations": "Proportional Lanczos resize to 1600 px wide, WebP quality 80 via sharp"
+    },
+    {
+      "id": "web-presskit-wardogs-fullmark-white",
+      "path": "apps/web/public/presskit/wardogs-fullmark-white.svg",
+      "source": "Derived from assets/presskit/wardogs-january-2026/fullmark-white.svg by apps/web/scripts/build-presskit-derivatives.mjs",
+      "usage": "presskit-illustration: Wardogs game identifier on dark news placeholders",
+      "rights": "Third-party Wardogs presskit media; copyright remains with its owners; excluded from the Apache code license; no general redistribution license asserted",
+      "sha256": "0b76abef3cf3995fb822ba150fb8d875d1c4c44e437f0d5568068979796db3d8",
+      "bytes": 12295,
+      "transformations": "Byte-identical copy of the original"
     }
   ]
 }

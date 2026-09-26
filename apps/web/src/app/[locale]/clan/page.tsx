@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { DiscordPanel, HllPanel } from '@/components/public/community-blocks';
 import { CorePage } from '@/components/public/core-page';
 import { corePageMetadata, loadCorePage } from '@/components/public/core-page-data';
+import { PRESSKIT_KEY_ART } from '@/components/public/presskit';
+import { PresskitFigure } from '@/components/public/presskit-figure';
 import pageStyles from '@/components/public/pages.module.css';
 import publicStyles from '@/components/public/public.module.css';
 import { getShellLinks } from '@/components/shell/shell-config';
@@ -33,6 +35,7 @@ export default async function ClanPage({ params }: PageProps<'/[locale]/clan'>) 
       locale={locale}
       pageKey="clan"
       page={page}
+      before={<PresskitFigure image={PRESSKIT_KEY_ART} locale={locale} caption={t('gameArtCaption')} />}
       after={
         <>
           <div className={publicStyles.linkPanels}>

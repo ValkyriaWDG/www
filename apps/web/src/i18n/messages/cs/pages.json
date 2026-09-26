@@ -12,7 +12,8 @@
       "description": "Kdo je Valkyria: česká a slovenská herní komunita zaměřená na Wardogs s historií v Hell Let Loose."
     },
     "frameTitle": "Příběh a hodnoty",
-    "actionsTitle": "Kam dál"
+    "actionsTitle": "Kam dál",
+    "gameArtCaption": "Hrajeme Wardogs. Klíčový obrázek hry z jejího press kitu; nezachycuje akci klanu Valkyria."
   },
   "community": {
     "navLabel": "Komunita",
@@ -44,7 +45,8 @@
       "facebook": "Facebook",
       "website": "Web",
       "other": "Odkaz"
-    }
+    },
+    "recruitArtCaption": "Ilustrační záběr ze hry Wardogs z jejího press kitu; nezachycuje akci klanu Valkyria."
   },
   "privacy": {
     "navLabel": "Soukromí",

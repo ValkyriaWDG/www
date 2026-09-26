@@ -12,7 +12,8 @@
       "description": "Who Valkyria is: a Czech and Slovak gaming community with a Wardogs focus and Hell Let Loose history."
     },
     "frameTitle": "Story and values",
-    "actionsTitle": "Next steps"
+    "actionsTitle": "Next steps",
+    "gameArtCaption": "We play Wardogs. The game's key art from its press kit; it does not show a Valkyria event."
   },
   "community": {
     "navLabel": "Community",
@@ -44,7 +45,8 @@
       "facebook": "Facebook",
       "website": "Website",
       "other": "Link"
-    }
+    },
+    "recruitArtCaption": "Illustrative Wardogs scene from the game's press kit; it does not show a Valkyria event."
   },
   "privacy": {
     "navLabel": "Privacy",
