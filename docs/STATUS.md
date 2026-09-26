@@ -63,15 +63,17 @@ The [presskit guide](assets/presskit-2026-01.md) maps seven original assets to
 editorial and game-identification uses. The [offline gallery](assets/presskit-preview.html)
 preserves complete compositions and compares logo variants on dark/light surfaces.
 Source mapping, dimensions and hashes belong to the presskit catalog and asset manifest.
-This preparation does not implement website integration or prove clan events/results.
+The application places three of them (1.0.0): the key art on the clan page (contain),
+the Flying scene as the community recruitment illustration and the white wordmark on
+coverless Wardogs news cards, each captioned as game media, never as clan events.
+Web derivatives come from `apps/web/scripts/build-presskit-derivatives.mjs`; see the
+[application evidence](evidence/app-1.0.0/README.md#wardogs-presskit-placements-21).
 Local Chromium 153.0.8010.12 rendered the gallery through the read-only loopback
 preview at 1440 × 1100 and 390 × 844. The [capture evidence](assets/evidence/presskit-2026-01/README.md)
 records source fingerprints, eight image placements, zero external requests,
 page errors and horizontal overflow. Captures are inspected before publication.
 The foundation checker and all 19 tooling tests pass, including 13 presskit integrity
 cases covering tampering, unsafe SVG, path traversal and catalog drift.
-Select placements in the actual application with responsive crop and Czech/English
-evidence; offline gallery verification is not application acceptance.
 
 ## GitHub
 

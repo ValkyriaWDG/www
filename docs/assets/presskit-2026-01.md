@@ -83,3 +83,16 @@ context in the actual application. Capture desktop and narrow layouts with clear
 captions under the [evidence policy](../engineering/evidence.md). Gallery rendering
 proves only that the committed source files can be reviewed offline. See the
 [captured review and reproducible checks](evidence/presskit-2026-01/README.md).
+
+## Application placements (1.0.0)
+
+| Original | Placement | Presentation |
+| --- | --- | --- |
+| `key-art-1080p.png` | Clan page, above the story | 16:9 frame, `contain`, WebP 960/1920 |
+| `flying.jpg` | Community page, after the Discord / how-to-join choices | Complete 16:9 frame, WebP 800/1600 |
+| `fullmark-white.svg` | Placeholder of coverless Wardogs news cards and related posts | Byte-identical copy, decorative (the card names the game) |
+
+`apps/web/scripts/build-presskit-derivatives.mjs` regenerates the registered derivatives
+in `apps/web/public/presskit/`. Captions state that the artwork is the game's press-kit
+media and does not show a Valkyria event. `foundry.jpg`, `tank.jpg` and the other marks
+remain available; editors can upload them through the media library for articles.
