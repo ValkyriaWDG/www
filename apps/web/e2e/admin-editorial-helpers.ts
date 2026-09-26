@@ -117,7 +117,8 @@ export async function expectSaved(page: Page, timeout = 15_000): Promise<void> {
     await expect(state).toHaveAttribute('data-save-state', 'saved', { timeout });
   } catch (error) {
     const details = await page.locator('[data-testid="save-failed-notice"], [data-testid="conflict-notice"], [id$="-error"]').allInnerTexts();
-    throw new Error(`Draft not saved (${await state.getAttribute('data-save-state')}): ${details.join(' | ')}`, { cause: error });
+    const code = await page.locator('[data-testid="save-failed-notice"]').getAttribute('data-error-code', { timeout: 1_000 }).catch(() => null);
+    throw new Error(`Draft not saved (${await state.getAttribute('data-save-state')}, code ${code ?? 'n/a'}): ${details.join(' | ')}`, { cause: error });
   }
 }
 

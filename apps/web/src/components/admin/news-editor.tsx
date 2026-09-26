@@ -673,7 +673,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
       ) : null}
 
       {machine.status === 'failed' && machine.error ? (
-        <div data-testid="save-failed-notice">
+        <div data-testid="save-failed-notice" data-error-code={machine.error.code}>
           <FeedbackNotice
             kind="error"
             title={t('save.failed')}
