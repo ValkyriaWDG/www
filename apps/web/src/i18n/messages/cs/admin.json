@@ -1,1 +1,57 @@
-{}
+{
+  "shell": {
+    "title": "Administrace",
+    "navLabel": "Části administrace",
+    "overview": "Přehled",
+    "account": "Můj účet",
+    "website": "Zpět na web"
+  },
+  "overview": {
+    "metaTitle": "Administrace",
+    "title": "Administrace",
+    "intro": "Přihlášen(a) jako {name}. Zobrazují se jen části, které smíte používat; každá z nich vaše oprávnění ověřuje znovu.",
+    "modulesTitle": "Vaše části administrace",
+    "empty": "Pro vaše role nejsou dostupné žádné části administrace.",
+    "modules": {
+      "news": {
+        "title": "Novinky",
+        "description": "Psaní, úpravy, plánování a zveřejňování novinek."
+      },
+      "media": {
+        "title": "Média",
+        "description": "Nahrávání a správa obrázků v rozsahu vašich oprávnění."
+      },
+      "matches": {
+        "title": "Zápasy",
+        "description": "Zakládání, plánování a zveřejňování zápasů a výsledků."
+      },
+      "members": {
+        "title": "Členové",
+        "description": "Kontrola a zveřejňování profilů členů."
+      },
+      "settings": {
+        "title": "Nastavení",
+        "description": "Správa nastavení veřejného webu."
+      },
+      "audit": {
+        "title": "Auditní záznam",
+        "description": "Přehled privilegovaných změn a odepřených přístupů."
+      }
+    }
+  },
+  "denied": {
+    "metaTitle": "Přístup odepřen",
+    "eyebrow": "Administrace",
+    "title": "Přístup odepřen",
+    "reasons": {
+      "unauthenticated": "Pro práci v administraci se musíte přihlásit.",
+      "forbidden": "K této části administrace nemáte oprávnění.",
+      "stale_authorization": "Vaše oprávnění se teď nepodařilo ověřit. Obnovte členství na stránce svého účtu a zkuste to znovu.",
+      "verification_unavailable": "Ověření členství teď není k dispozici, proto se neuděluje žádný přístup do administrace.",
+      "not_member": "Váš účet není ověřeným členem Discord serveru Valkyria.",
+      "mfa_required": "Tento účet potřebuje pro práci v administraci přihlášení s dvoufázovým ověřením."
+    },
+    "account": "Přejít na můj účet",
+    "home": "Zpět do hlavního menu"
+  }
+}

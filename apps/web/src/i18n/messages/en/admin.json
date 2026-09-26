@@ -1,1 +1,57 @@
-{}
+{
+  "shell": {
+    "title": "Administration",
+    "navLabel": "Administration modules",
+    "overview": "Overview",
+    "account": "My account",
+    "website": "Back to website"
+  },
+  "overview": {
+    "metaTitle": "Administration",
+    "title": "Administration",
+    "intro": "Signed in as {name}. Only the modules you may use are listed; every module checks your permissions again.",
+    "modulesTitle": "Your modules",
+    "empty": "No administration modules are available for your roles.",
+    "modules": {
+      "news": {
+        "title": "News",
+        "description": "Write, edit, schedule and publish news articles."
+      },
+      "media": {
+        "title": "Media",
+        "description": "Upload and manage images within your permitted scope."
+      },
+      "matches": {
+        "title": "Matches",
+        "description": "Create, schedule and publish matches and results."
+      },
+      "members": {
+        "title": "Members",
+        "description": "Review and publish member profiles."
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Manage public website settings."
+      },
+      "audit": {
+        "title": "Audit log",
+        "description": "Review privileged changes and denied access."
+      }
+    }
+  },
+  "denied": {
+    "metaTitle": "Access denied",
+    "eyebrow": "Administration",
+    "title": "Access denied",
+    "reasons": {
+      "unauthenticated": "You need to sign in to use the administration.",
+      "forbidden": "You do not have permission to use this part of the administration.",
+      "stale_authorization": "Your permissions could not be verified right now. Refresh your membership on your account page and try again.",
+      "verification_unavailable": "Membership verification is unavailable at the moment, so no administrative access is granted.",
+      "not_member": "Your account is not a verified member of the Valkyria Discord server.",
+      "mfa_required": "This account needs a sign-in with two-factor authentication to use the administration."
+    },
+    "account": "Go to my account",
+    "home": "Back to the main menu"
+  }
+}
