@@ -896,6 +896,161 @@
       "bytes": 79270,
       "width": 585,
       "height": 4059
+    },
+    {
+      "id": "flying",
+      "path": "assets/presskit/wardogs-january-2026/flying.jpg",
+      "originalPath": "03 - Screenshots/WD_Screenshot_Flying.jpg",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "recruitment-and-status-illustration",
+      "recommendedUse": "Recruitment/banner or decorative server-status illustration; conveys no actual health/map information.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Vrtulník nad zalesněným údolím při západu slunce ve hře Wardogs.",
+        "en": "A helicopter above a forested valley at sunset in Wardogs."
+      },
+      "bytes": 990893,
+      "sha256": "d7fb5f0c7bb2329aa0bb20482fb4ba86ea7b93239a1ea7837529a8f0239e1036",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "id": "foundry",
+      "path": "assets/presskit/wardogs-january-2026/foundry.jpg",
+      "originalPath": "03 - Screenshots/WD_Screenshot_Foundry_1.jpg",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "editorial-infantry",
+      "recommendedUse": "News/training editorial image; not evidence of a Valkyria match or live server map.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Voják v přestřelce uvnitř průmyslové haly ve hře Wardogs.",
+        "en": "A soldier exchanging fire inside an industrial hall in Wardogs."
+      },
+      "bytes": 1339033,
+      "sha256": "3edd32d4c4cfd525facc70a108c95277fc94ad2e895c9c682a7ea20a9d8ec027",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "id": "fullmark-black",
+      "path": "assets/presskit/wardogs-january-2026/fullmark-black.svg",
+      "originalPath": "02 - Logos/SVG/WD_Fullmark_Black.svg",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "game-wordmark",
+      "recommendedUse": "Game identification only; preserve proportions and contrast. Never use as Valkyria or bot identity.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Logo hry Wardogs.",
+        "en": "Wardogs game wordmark."
+      },
+      "bytes": 12258,
+      "sha256": "e567eb1d4e27f11bee5a44cfbc1a1602db91c2a1c7e7910376fbee5b22f809bc",
+      "width": 2467,
+      "height": 489,
+      "format": "SVG"
+    },
+    {
+      "id": "fullmark-full",
+      "path": "assets/presskit/wardogs-january-2026/fullmark-full.svg",
+      "originalPath": "02 - Logos/SVG/WD_Fullmark_Full.svg",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "game-wordmark",
+      "recommendedUse": "Game identification only; preserve proportions and contrast. Never use as Valkyria or bot identity.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Logo hry Wardogs.",
+        "en": "Wardogs game wordmark."
+      },
+      "bytes": 12360,
+      "sha256": "4436d8357863a845eef36678257f4cec6853167e7be0136c3a4cd7abffda5ef6",
+      "width": 2467,
+      "height": 489,
+      "format": "SVG"
+    },
+    {
+      "id": "fullmark-white",
+      "path": "assets/presskit/wardogs-january-2026/fullmark-white.svg",
+      "originalPath": "02 - Logos/SVG/WD_Fullmark_White.svg",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "game-wordmark",
+      "recommendedUse": "Game identification only; preserve proportions and contrast. Never use as Valkyria or bot identity.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Logo hry Wardogs.",
+        "en": "Wardogs game wordmark."
+      },
+      "bytes": 12295,
+      "sha256": "0b76abef3cf3995fb822ba150fb8d875d1c4c44e437f0d5568068979796db3d8",
+      "width": 2467,
+      "height": 489,
+      "format": "SVG"
+    },
+    {
+      "id": "key-art-1080p",
+      "path": "assets/presskit/wardogs-january-2026/key-art-1080p.png",
+      "originalPath": "01 - Key Art/WD_RevealKeyArt_1080p.png",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "announcement-key-art",
+      "recommendedUse": "Announcement/news/game overview; retain the baked-in wordmark and full 16:9 image.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Vojáci a vrtulníky s logem hry Wardogs.",
+        "en": "Soldiers and helicopters with the Wardogs game wordmark."
+      },
+      "bytes": 2215452,
+      "sha256": "78fe9b91d1bca30066c7129c508daee04109ec07409e64d438d8faeb5a12998d",
+      "width": 1920,
+      "height": 1080,
+      "format": "PNG"
+    },
+    {
+      "id": "tank",
+      "path": "assets/presskit/wardogs-january-2026/tank.jpg",
+      "originalPath": "03 - Screenshots/WD_Screenshot_Tank_1.jpg",
+      "source": "Owner-supplied WARDOGS January 2026 General press kit; original bytes unchanged.",
+      "usage": "editorial-teamplay",
+      "recommendedUse": "Teamplay/training/match announcement illustration; never label as an actual clan match photo.",
+      "rights": "Third-party promotional game imagery/marks; excluded from repository code license. No general redistribution license or publisher endorsement asserted.",
+      "transformations": [],
+      "alt": {
+        "cs": "Voják pomáhá zraněnému spoluhráči vedle tanku ve hře Wardogs.",
+        "en": "A soldier helps an injured teammate beside a tank in Wardogs."
+      },
+      "bytes": 2318791,
+      "sha256": "f0eabea82a542c92c63f359c04a1ca5fdf263ba5015fa91833157224915292cf",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "id": "presskit-proof-catalog-1440x1100",
+      "path": "docs/assets/evidence/presskit-2026-01/catalog-1440x1100.jpg",
+      "source": "Actual Chromium capture of the committed offline presskit review gallery. Not website integration.",
+      "usage": "verification-evidence-only",
+      "rights": "Includes third-party presskit game artwork and marks; excluded from the repository code license.",
+      "sha256": "3d71ae5eea9df76f0cf0476d14b74a8eaed05b8247ab889f1e7ab09182080b70",
+      "bytes": 299531,
+      "width": 1440,
+      "height": 2006
+    },
+    {
+      "id": "presskit-proof-catalog-390x844",
+      "path": "docs/assets/evidence/presskit-2026-01/catalog-390x844.jpg",
+      "source": "Actual Chromium capture of the committed offline presskit review gallery. Not website integration.",
+      "usage": "verification-evidence-only",
+      "rights": "Includes third-party presskit game artwork and marks; excluded from the repository code license.",
+      "sha256": "e69f15ab82c774e22e03d5f3448c4c6244784f2c0dcbb9441271316f85a39d3e",
+      "bytes": 271429,
+      "width": 390,
+      "height": 4007
     }
   ]
 }

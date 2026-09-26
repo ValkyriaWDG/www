@@ -21,3 +21,11 @@ Application dependencies are installed from npm under their own licenses (record
 | Next.js, React, next-intl, Better Auth, Drizzle ORM, zod, sharp (libvips) | Application runtime | MIT / Apache-2.0 / LGPL-3.0 (libvips, dynamically linked prebuilt binary) |
 
 Bundled CLI files (`apps/web/dist/cli/*.mjs`) retain third-party license comments.
+
+The selected January 2026 Wardogs presskit images and logo variants retain their
+third-party rights and are excluded from the Apache-2.0 code/documentation license.
+No license file or separate usage grant was found in the supplied source package;
+this repository does not assert a general redistribution license. See the
+[presskit guide](docs/assets/presskit-2026-01.md) and
+[source catalog](assets/presskit/wardogs-january-2026/catalog.json) for provenance
+and intended editorial/game-identification use.

@@ -39,6 +39,8 @@ See [editorial and match requirements](docs/product/editorial-and-matches.md).
 The [reference captures](docs/design/references/README.md) and
 [supplied clan logo](assets/brand/valkyria-logo.png) are committed so cloud agents can
 inspect the actual inputs. Large game/video sources remain outside the repository.
+Selected [January 2026 Wardogs presskit originals](docs/assets/presskit-2026-01.md)
+also have a source catalog and an offline gallery for editorial/game-logo review.
 
 ## Structure
 

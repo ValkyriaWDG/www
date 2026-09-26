@@ -3,12 +3,14 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { validateAgentSkills } from './check-agent-skills.mjs';
+import { validatePresskit } from './check-presskit.mjs';
 
 const root = process.cwd();
 const files = [...new Set(execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean))];
 const errors = [];
 const fail = (message) => errors.push(message);
 errors.push(...validateAgentSkills(root));
+errors.push(...validatePresskit(root).errors);
 const required = ['README.md', 'AGENTS.md', 'CLAUDE.md', 'SECURITY.md', 'CONTRIBUTING.md', 'LICENSE', 'NOTICE.md', '.env.example', '.claude/settings.json', 'docs/STATUS.md', 'docs/product/brief.md', 'docs/architecture/overview.md', 'docs/design/visual-spec.md', 'docs/design/screen-map.md', 'docs/security/auth-rbac.md', 'docs/implementation/plan.md', 'docs/implementation/verification.md', 'docs/handoff/claude-code-cloud.md', 'docs/handoff/start-prompt.md', 'docs/operations/deployment.md', 'assets/manifest.json'];
 for (const file of required) if (!existsSync(file)) fail(`Missing required file: ${file}`);
 if (!existsSync('apps/web/package.json') && (existsSync('apps/web/src') || existsSync('apps/web/Dockerfile'))) fail('Application source/Dockerfile exists without apps/web/package.json; application CI cannot be skipped.');
@@ -54,7 +56,7 @@ if (existsSync('assets/manifest.json')) {
     if (bytes.length !== asset.bytes || createHash('sha256').update(bytes).digest('hex') !== asset.sha256) fail(`Asset digest/size mismatch: ${asset.path}`);
     if (!asset.source || !asset.usage || !asset.rights) fail(`Missing asset provenance: ${asset.path}`);
   }
-  for (const file of files.filter((f) => /\.(png|jpg|jpeg|webp|woff2)$/i.test(f))) {
+  for (const file of files.filter((f) => /\.(png|jpg|jpeg|webp|woff2|svg)$/i.test(f))) {
     if (!seen.has(file)) fail(`Unregistered binary asset: ${file}`);
   }
 }
