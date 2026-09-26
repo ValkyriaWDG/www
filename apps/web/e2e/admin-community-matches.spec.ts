@@ -155,6 +155,9 @@ test('match manager creates, publishes, postpones, reschedules and records a ver
   const editorContext = await browser.newContext();
   const editor = await signInAs(editorContext, { roles: ['editor'], name: `Syntetický editor ${suffix}` });
   const editorPage = await editorContext.newPage();
+  await editorPage.goto('/cs/admin/matches');
+  await expect(editorPage.getByTestId('access-denied')).toBeVisible();
+  await expect(editorPage.locator('[data-admin-matches]')).toHaveCount(0);
   await editorPage.goto(`/cs/admin/matches/${created.id}`);
   await expect(editorPage.getByTestId('access-denied')).toBeVisible();
   await expect(editorPage.getByText(opponent)).toHaveCount(0);
