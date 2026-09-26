@@ -8,8 +8,10 @@ const discordMockPort = Number(process.env.E2E_DISCORD_MOCK_PORT ?? port + 1000)
 // Local cloud images may ship a different Chromium build than the pinned Playwright;
 // CI installs the matching browser with `playwright install --with-deps chromium`.
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined;
-/** Administration specs that write to the shared e2e database (and their visual captures). */
-const MUTATING_SPECS = /(^|\/)(visual-)?admin-[^/]*\.spec\.ts$/;
+/** Administration specs that write to the shared e2e database. */
+const MUTATING_SPECS = /(^|\/)admin-[^/]*\.spec\.ts$/;
+/** Opt-in administration screenshots (`CAPTURE_EVIDENCE=1`): captured once the writers are done. */
+const ADMIN_CAPTURE_SPECS = /(^|\/)visual-admin-[^/]*\.spec\.ts$/;
 /** Actual delivered background media has its own suite (playwright.media.config.ts). */
 const MEDIA_SPECS = 'media/**';
 
@@ -34,8 +36,9 @@ export default defineConfig({
   projects: [
     // Read-only journeys assert exact synthetic fixtures; they finish before any spec that
     // creates, publishes or reconfigures shared data in the same disposable database.
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: [MUTATING_SPECS, MEDIA_SPECS] },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: [MUTATING_SPECS, ADMIN_CAPTURE_SPECS, MEDIA_SPECS] },
     { name: 'chromium-admin', use: { ...devices['Desktop Chrome'] }, testMatch: MUTATING_SPECS, dependencies: ['chromium'] },
+    { name: 'chromium-admin-capture', use: { ...devices['Desktop Chrome'] }, testMatch: ADMIN_CAPTURE_SPECS, dependencies: ['chromium-admin'] },
   ],
   webServer: {
     // Migrates and seeds a dedicated disposable e2e database with the bundled CLIs,
