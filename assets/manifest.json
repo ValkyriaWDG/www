@@ -155,6 +155,54 @@
       "bytes": 139901,
       "width": 733,
       "height": 811
+    },
+    {
+      "id": "valkyria-mark-132",
+      "path": "apps/web/public/brand/valkyria-mark-132.webp",
+      "source": "Derived from assets/brand/valkyria-logo.png",
+      "usage": "clan-brand: header home link mark (displayed ~40x44 CSS px)",
+      "rights": "Valkyria branding supplied for this project; excluded from code license",
+      "sha256": "d23824feffa2a4ea0f9d16f89b1633cfeb9cc68933bd5c939dcb42d2923b9fdb",
+      "bytes": 9626,
+      "width": 132,
+      "height": 146,
+      "transformations": "Lanczos3 resize to 132 px width (aspect preserved), WebP quality 90 / alpha quality 100 via sharp 0.35.4"
+    },
+    {
+      "id": "valkyria-emblem-733",
+      "path": "apps/web/public/brand/valkyria-emblem-733.webp",
+      "source": "Derived from assets/brand/valkyria-logo.png",
+      "usage": "clan-brand: faded decorative central emblem on the home scene (opacity applied at render time)",
+      "rights": "Valkyria branding supplied for this project; excluded from code license",
+      "sha256": "c086a079935a36b1637d17dd5287ab3a4247e5e622e975795fea950f463ec5c7",
+      "bytes": 61228,
+      "width": 733,
+      "height": 811,
+      "transformations": "Original resolution, lossy WebP quality 86 / alpha quality 90 via sharp 0.35.4"
+    },
+    {
+      "id": "valkyria-app-icon",
+      "path": "apps/web/src/app/icon.png",
+      "source": "Derived from assets/brand/valkyria-logo.png",
+      "usage": "clan-brand: browser tab icon (Next.js icon file convention)",
+      "rights": "Valkyria branding supplied for this project; excluded from code license",
+      "sha256": "dd9538cf5865b447d97d8bab85b08ca1e68fba08ccc6b69e32f9d2e6293ae557",
+      "bytes": 13781,
+      "width": 96,
+      "height": 96,
+      "transformations": "Contained in a transparent 96x96 square, Lanczos3 resize, PNG via sharp 0.35.4"
+    },
+    {
+      "id": "valkyria-apple-icon",
+      "path": "apps/web/src/app/apple-icon.png",
+      "source": "Derived from assets/brand/valkyria-logo.png",
+      "usage": "clan-brand: Apple touch icon (Next.js apple-icon file convention)",
+      "rights": "Valkyria branding supplied for this project; excluded from code license",
+      "sha256": "390d28cf97d08d3fb4faf5614e0c99efddfa224af3d330de35e19761573f2a90",
+      "bytes": 25081,
+      "width": 180,
+      "height": 180,
+      "transformations": "Contained in 148x148, centered on an opaque #11110f 180x180 square, PNG via sharp 0.35.4"
     }
   ]
 }

@@ -1,17 +1,32 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { PageMain } from '@/components/shell/page-main';
+import { GameButton } from '@/components/ui/game-button';
+import { FeedbackNotice, PageHeader } from '@/components/ui/panels';
 
-/** Route-level failure: keeps the document and offers a retry without leaking details. */
+/** Route-level failure: keeps the shell/navigation and offers a retry without leaking details. */
 export default function LocaleError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const t = useTranslations('common.states');
   return (
-    <main id="main-content" className="status-panel" role="alert" tabIndex={-1}>
-      <h1>{t('errorTitle')}</h1>
-      <p>{t('errorBody')}</p>
-      <button type="button" className="status-retry" onClick={() => reset()}>
-        {t('retry')}
-      </button>
-    </main>
+    <PageMain width="reading">
+      <PageHeader title={t('errorTitle')} />
+      <FeedbackNotice
+        kind="error"
+        title={t('loadError')}
+        action={
+          <GameButton intent="primary" onClick={() => reset()} data-retry="">
+            {t('retry')}
+          </GameButton>
+        }
+      >
+        <p>{t('errorBody')}</p>
+      </FeedbackNotice>
+      <p style={{ marginTop: 'var(--space-5)' }}>
+        <GameButton href="/" intent="secondary">
+          {t('backHome')}
+        </GameButton>
+      </p>
+    </PageMain>
   );
 }
