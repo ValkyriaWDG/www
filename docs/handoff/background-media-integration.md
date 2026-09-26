@@ -4,6 +4,12 @@ Integrate the supplied Wardogs menu derivatives into the existing application in
 This is media delivery and cloud-preview verification, not production deployment or an
 application release. The original AVI stays on the owner's computer.
 
+Use the [full-length delivery](../assets/background-media-full-2026-09-26.md). The owner
+rejected the earlier 15-second edited loop: every rendition must preserve the entire
+available approximately 192.45-second source timeline, with frame-rate/container
+rounding recorded in its manifest. No trimming, fades, reversal, time limit or shorter
+substitute is permitted. Read the new report's current verification status before use.
+
 ## Receive and verify the bundle
 
 1. Obtain the supplied ZIP and manifest through the delivery channel recorded in the
@@ -15,9 +21,12 @@ application release. The original AVI stays on the owner's computer.
    repository authentication, run:
 
    ```sh
-   gh release download media-background-2026-09-26 --repo ValkyriaWDG/www --pattern valkyria-background-media-2026-09-26.zip --dir .local/media-download
+   gh release download media-background-full-2026-09-26 --repo ValkyriaWDG/www --pattern valkyria-background-media-full-2026-09-26.zip --dir .local/media-download
    ```
-2. Verify the ZIP digest when supplied and every derivative's filename, byte size and
+2. Confirm the delivery record and manifest name the full-length package. Its uploaded
+   draft asset and authenticated download were verified, but the actual Claude Cloud
+   session's access remains untested. Keep that dependency open if download is blocked.
+   Verify the ZIP digest when supplied and every derivative's filename, byte size and
    full SHA-256 against the manifest. Read the source/provenance and usage status.
    Use the exact provided names; placeholders in this guide are not real artifact names.
    After unpacking, the repository provides
@@ -75,12 +84,17 @@ a preview restart because the parsed server environment is cached.
 `/e2e-missing/background-loop.mp4`. `e2e/shell.spec.ts` intercepts that path and some tests
 simulate playback. Preserve those deterministic checks; their pass is not delivered-video
 decoding or visual fidelity evidence. Add a separate controlled test/preview using the
-verified clip and poster without overriding `HTMLMediaElement.play`.
+verified full-length video and poster without overriding `HTMLMediaElement.play`.
+The short candidate's browser evidence cannot satisfy these checks.
 
 - Confirm actual bytes decode, `currentTime` advances and the expected scene is visible.
   Inspect metadata for dimensions, duration, frame rate, pixel format and zero audio tracks.
-- Play at least three complete loops and inspect the seam, bright/dark frame readability
-  and unchanged aspect ratio. Record measurements and any visible discontinuity honestly.
+- For every rendition, verify middle and near-end seeks against the actual full file.
+  Separately play the primary MP4 from the beginning through one uninterrupted natural
+  loop wrap at rate 1. Record elapsed time, decoded/dropped frames and errors; seeking
+  cannot count as this loop. Optional `--loops 3` testing is reported only if executed.
+  Inspect bright/dark frame readability, unchanged aspect ratio and the natural wrap;
+  report any discontinuity without editing it away.
 - Verify poster display, failed/rejected playback, manual pause persistence, hidden-tab
   pause and one player retained across public route navigation. Admin routes stay static.
 - In reduced-motion, save-data and the applicable mobile default state, assert **zero video

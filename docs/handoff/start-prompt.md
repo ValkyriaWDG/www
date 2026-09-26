@@ -48,10 +48,15 @@ Fixed requirements:
   bespoke CSS tokens/modules. Resolve and pin compatible versions during bootstrap.
 - Follow the security, data, accessibility, media and Docker contracts in the handoff.
   Match/roster organization is secondary, after the public website and web admin work.
-- This is a cloud checkout: no access to the owner's PC or production secrets. Actual
-  background derivatives are prepared; read `docs/assets/background-media-2026-09-26.md`
-  and obtain the ZIP through its recorded channel. Preserve the safe fallback and verify
-  the real media separately. Do not invent clan records or integration success.
+- This is a cloud checkout: no access to the owner's PC or production secrets. Read
+  `docs/assets/background-media-full-2026-09-26.md` for current media readiness and
+  obtain the full-length ZIP through its recorded channel when available. Preserve
+  the entire available approximately 192.45-second AVI timeline: no trim, fade,
+  reversal, time limit or shorter substitute. The primary budget is approximately
+  60 MiB; the earlier 15-second edited candidate is superseded. Keep the safe fallback,
+  verify real full-length playback plus middle/near-end seeks for every rendition and
+  one uninterrupted natural primary loop, and do not reuse short-clip proof. Do not
+  invent clan records, complete source-export provenance or integration success.
 
 Execute M1–M3 in `docs/implementation/plan.md` in reviewable increments. Prove the visual
 shell with screenshots early, then finish the real routes, database, auth and admin.

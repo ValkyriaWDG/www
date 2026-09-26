@@ -1,8 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "wardogs-menu-2026-09-26",
+  "id": "wardogs-menu-full-2026-09-26",
   "recordedAt": "2026-09-26",
-  "status": "encoded-and-locally-verified; cloud application integration and production hosting are separate",
+  "supersedes": "wardogs-menu-2026-09-26",
+  "status": "Full available AVI encoded; use the full-delivery proof for validation. Cloud application integration and production hosting are separate.",
   "source": {
     "filename": "UI_frontendvideo_v_4K.avi",
     "bytes": 287362713428,
@@ -17,8 +18,15 @@
     "physicalFrameCount": 11547,
     "physicalDurationSeconds": 192.45,
     "durationMethod": "Read-only traversal of RIFF frame chunk headers, not a complete source decode.",
-    "durationWarning": "AVI duration/index headers are inconsistent. The final AVIX contains 152 complete frames with unfinished length/index fields; selected first 16 seconds decoded successfully. No full-source decode is claimed.",
-    "stableSizeAndMtimeDuringHash": true
+    "durationWarning": "AVI headers are inconsistent and the final AVIX has unfinished length/index fields. Full sequential decoding with ignored indexes recovered all physical frames; see the source-decode proof.",
+    "stableSizeAndMtimeDuringHash": true,
+    "relatedGameFile": {
+      "filename": "UI_frontendvideo_v4_4K.bk2",
+      "structuralFrames": 10810,
+      "structuralDurationSeconds": 180.16666666666666,
+      "sameSourceVerified": false,
+      "note": "Different frame count from the supplied AVI. Deliver the complete available AVI; do not claim exact conversion identity with this Bink file."
+    }
   },
   "provenance": {
     "origin": "Owner-provided RAD Video Tools AVI export of Wardogs menu footage; scene visually matches supplied main-menu reference 09.",
@@ -29,86 +37,102 @@
   "transform": {
     "sourceWindowSeconds": [
       0,
-      16
+      192.45
     ],
-    "outputStartAtSourceSeconds": 1,
-    "outputDurationSeconds": 15,
-    "loop": "Source [1,16) followed by a 1-second overlapping fade from [15,16) to [0,1); wrap returns to source time 1. No reverse motion.",
+    "sourceFrames": 11547,
+    "outputFrames": 5774,
+    "editing": "No trimming, crossfade, time limit, reverse motion or synthetic loop. Preserve the entire available AVI sequence.",
+    "endpointRule": "At 30 fps, 11547 source frames at 60 fps map to 5774 frames. Actual container duration is recorded per rendition; rounding differs by less than one output frame.",
     "processing": [
-      "60 to 30 fps",
-      "Lanczos downscale, aspect ratio 16:9 retained",
-      "SDR BT.709 limited-range YUV420P",
-      "Audio/subtitle/data/chapter and inherited metadata removal"
+      "Read AVI sequentially with -fflags +ignidx",
+      "60 to 30 fps, Lanczos downscale and unchanged 16:9 framing",
+      "Explicit BT.709 matrix/primaries/transfer, limited-range YUV420P",
+      "Remove audio, subtitle, data, chapters and inherited metadata",
+      "All three videos are encoded directly from the original AVI, not transcoded from another lossy rendition"
     ],
+    "poster": "Frame 60 / 2 seconds of the primary MP4",
     "ffmpegVersion": "9.0.2-essentials_build-www.gyan.dev",
     "toolPackageSha256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba"
   },
   "delivery": {
-    "bundle": "valkyria-background-media-2026-09-26.zip",
+    "bundle": "valkyria-background-media-full-2026-09-26.zip",
     "productionOrigin": null,
     "previewDirectory": "apps/web/public/media/background/",
-    "note": "Transfer derivative files and verify digests. Never commit videos or use draft/download URLs as production media URLs."
+    "note": "Supersedes the 15-second package. Keep binaries outside Git. Draft downloads are transfer channels, not runtime URLs."
   },
   "assets": [
     {
       "role": "primary",
-      "filename": "wardogs-menu-1080p-557223e28449.mp4",
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
       "mimeType": "video/mp4",
-      "bytes": 3957214,
-      "sha256": "557223e2844910c73614c0b0772bab5df1e3e9349d9b381c7f9c0b2d20b0153e",
+      "bytes": 51032923,
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b",
       "width": 1920,
       "height": 1080,
       "codec": "h264",
-      "durationSeconds": 15,
-      "frames": 450,
+      "durationSeconds": 192.466016,
+      "frames": 5774,
       "fps": "30/1",
       "pixelFormat": "yuv420p",
       "audioStreams": 0,
+      "colorSpace": "bt709",
+      "colorPrimaries": "bt709",
+      "colorTransfer": "bt709",
+      "colorRange": "tv",
       "h264Level": 40,
       "faststart": true
     },
     {
       "role": "compact",
-      "filename": "wardogs-menu-720p-4976aeadb297.mp4",
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
       "mimeType": "video/mp4",
-      "bytes": 1068473,
-      "sha256": "4976aeadb297853a5353b36c3a7a6acae6ef2df0c97bd684eec19f164c084e9b",
+      "bytes": 13654192,
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e",
       "width": 1280,
       "height": 720,
       "codec": "h264",
-      "durationSeconds": 15,
-      "frames": 450,
+      "durationSeconds": 192.466016,
+      "frames": 5774,
       "fps": "30/1",
       "pixelFormat": "yuv420p",
       "audioStreams": 0,
+      "colorSpace": "bt709",
+      "colorPrimaries": "bt709",
+      "colorTransfer": "bt709",
+      "colorRange": "tv",
       "h264Level": 31,
       "faststart": true
     },
     {
       "role": "alternate",
-      "filename": "wardogs-menu-1080p-865e3f2e8b52.webm",
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
       "mimeType": "video/webm",
-      "bytes": 1708459,
-      "sha256": "865e3f2e8b52dc8845e847b9ea6f1891a5fd4b6e78afda591e2d0a6f090e25ac",
+      "bytes": 19561104,
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309",
       "width": 1920,
       "height": 1080,
       "codec": "vp9",
-      "durationSeconds": 15,
-      "frames": 450,
+      "durationSeconds": 192.466,
+      "frames": 5774,
       "fps": "30/1",
       "pixelFormat": "yuv420p",
-      "audioStreams": 0
+      "audioStreams": 0,
+      "colorSpace": "bt709",
+      "colorPrimaries": "bt709",
+      "colorTransfer": "bt709",
+      "colorRange": "tv"
     },
     {
       "role": "poster",
-      "filename": "wardogs-menu-poster-64b3059d7225.webp",
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
       "mimeType": "image/webp",
-      "bytes": 182728,
-      "sha256": "64b3059d72256dde3b8fe483d1a8b2079c05ce4c98217db96a29952196375366",
+      "bytes": 181198,
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c",
       "width": 1920,
       "height": 1080,
       "codec": "webp",
-      "videoFrame": 0
+      "videoFrame": 60,
+      "videoTimestampSeconds": 2
     }
   ]
 }

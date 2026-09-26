@@ -1,60 +1,96 @@
 # Background video delivery
 
-Status: the owner's AVI has now been encoded and verified locally. Use the
-[2026-09-26 delivery](background-media-2026-09-26.md) and
-[external manifest](../../assets/background-media.json) for the actual 1080p/720p
-MP4, 1080p WebM, poster and source-index findings. This page remains the general
-pipeline. Cloud application integration and production media hosting are separate.
+Status: the full available AVI timeline has been encoded and passed complete decoding
+and native Chromium playback checks. Follow the
+[full-length delivery](background-media-full-2026-09-26.md) for source-index findings,
+measured results and verified draft transfer. The previous 15-second edited candidate
+is superseded; its proof does not validate the full-length files. Claude Cloud session
+access, application integration and production media hosting remain untested.
 
 ## Delivery contract
 
-Deliver one approved cinematic loop as browser media, plus a still poster from the same approved source. Keep the VALKYRIA logo, vignette, menu and subpage blur in the web UI so they remain responsive and accessible.
+Deliver the full available cinematic timeline as browser media, plus a still poster
+from the same source. Preserve its normal-speed chronological sequence without trim,
+time limit, fades, reversal or artificial loop edits. Keep the VALKYRIA logo, vignette,
+menu and subpage blur in the web UI so they remain responsive and accessible.
 
 | Artifact | Proposed baseline | Initial budget |
 | --- | --- | --- |
-| Primary loop | MP4 / H.264, `yuv420p`, no audio, width up to 1920 px, up to 30 fps | 10–20 seconds, preferably under 8 MiB; hard review threshold 12 MiB |
+| Primary video | MP4 / H.264, `yuv420p`, no audio, width up to 1920 px, up to 30 fps | Full available timeline; approximately 60 MiB for this source |
 | Optional alternate | WebM / VP9, same framing and duration, no audio | Prefer smaller than MP4; omit if it adds delivery complexity without a measurable benefit |
 | Poster | WebP with JPEG fallback if required by the final support matrix | Up to 1920 px, target under 250 KiB |
-| Compact rendition | Optional 1280 px derivative, no audio | Under 4 MiB; mobile defaults to poster rather than video |
+| Compact rendition | Optional 1280 px derivative, same full duration, no audio | Prefer smaller than primary; mobile defaults to poster rather than video |
 
-These are project budgets and starting points, not verified measurements or guarantees. Preserve source aspect ratio. Do not upscale small footage or publish a 4K original merely because it is available. If the loop cannot meet the budget at acceptable quality, shorten the segment or reduce its resolution and frame rate.
+Budgets are targets, not verified measurements or duration limits. Preserve source
+aspect ratio and full available duration. Do not upscale small footage or publish a
+4K original merely because it is available. Optimize encoding or resolution when
+needed and report the measured tradeoff; never shorten the footage to meet a budget.
 
 The ambient footage has no informational content: no audio, captions or transcripts are required for this decorative layer. Meaningful video content elsewhere needs its own accessible presentation. Do not reuse game music or sound effects as interface feedback.
 
-## Local preparation after the AVI is complete
+## Local preparation and source integrity
 
-Work outside Git using `incoming/` and `staging/` directories created for the media conversion. The example paths below are illustrative and are not existing repository assets. Keep original files unchanged. Use a trusted FFmpeg build with the required encoders; inspect available encoders before running a recipe.
+Work outside Git using `incoming/` and `staging/` directories created for the media
+conversion. The commands below preserve the actual full-delivery encoder arguments;
+only input/output paths are normalized for portability. They ran with FFmpeg
+`9.0.2-essentials_build-www.gyan.dev`; the tool package digest is in the
+[manifest](../../assets/background-media.json). Keep original files unchanged.
+Use a trusted build with the required encoders and preserve its version in new proof.
 
-1. Confirm the AVI export has completed and its size is stable. Preview it to identify the correct menu scene and a calm, seamless segment without logos, UI, black frames or transitions.
-2. Inspect the completed source. Record the stream metadata and select start/duration deliberately. The sample recipes use the first 15 seconds only as an example; they do not establish a seamless loop.
+1. Record source SHA-256, size and modification time before/after reading. Stable size
+   does not prove a completed export. This AVI has unfinished index fields; preserve
+   the original and document the physical-frame inventory and recovery limitations.
+2. Inspect the available source from beginning to end and record metadata. Do not
+   select a short segment or claim the installed Bink is the exact source without
+   matching evidence. Record source defects and the natural wrap transition honestly.
 
 ```sh
 ffprobe -v error -show_format -show_streams -of json incoming/background.avi
 ```
 
-3. Encode the MP4. Adjust `-ss` and `-t` to the chosen segment. If the source is below 30 fps, keep its frame rate instead of using `fps=30`.
+3. Encode the complete available input. For this source, `-fflags +ignidx` bypasses
+   the unfinished AVI index. There is deliberately no `-ss`, `-t` or trim/fade filter.
+   If a different source is below 30 fps, preserve its frame rate instead of using
+   `fps=30`. The following is the actual primary conversion, with portable paths.
 
 ```sh
-ffmpeg -n -ss 0 -i incoming/background.avi -t 15 -map 0:v:0 -an -sn -dn -map_metadata -1 -map_chapters -1 -vf "fps=30,scale='min(1920,iw)':-2,setsar=1" -c:v libx264 -preset slow -crf 24 -maxrate 4M -bufsize 8M -pix_fmt yuv420p -movflags +faststart staging/wardogs-menu.mp4
+ffmpeg -hide_banner -n -xerror -fflags +ignidx -i incoming/background.avi -map 0:v:0 -an -sn -dn -map_metadata -1 -map_chapters -1 -vf "fps=30,scale=1920:-2:flags=lanczos:out_color_matrix=bt709:out_range=tv,setsar=1,format=yuv420p,setparams=range=limited:color_primaries=bt709:color_trc=bt709:colorspace=bt709" -c:v libx264 -preset slow -crf 23 -maxrate 4M -bufsize 8M -profile:v high -level:v 4.0 -refs 4 -threads 6 -pix_fmt yuv420p -movflags +faststart -brand mp42 staging/full-1080.mp4
 ```
 
 This recipe re-encodes rather than renaming the AVI, explicitly excludes audio and other streams, and strips inherited container metadata. MP4 `faststart` places indexing information near the beginning of the file. See [FFmpeg command options](https://ffmpeg.org/ffmpeg.html), [H.264 encoder options](https://ffmpeg.org/ffmpeg-codecs.html#libx264_002c-libx264rgb) and [MP4 muxer options](https://ffmpeg.org/ffmpeg-formats.html#mov_002c-mp4_002c-ismv).
 
-4. Optionally encode WebM directly from the same original segment, then compare quality, size and playback on the supported browsers.
+4. Encode the compact MP4 and WebM in one second read of the same full original.
+   The shared uncompressed 1080p filter output feeds VP9 and a further 720p scale;
+   neither video is transcoded from a lossy encoded rendition. This is the actual
+   alternate conversion with portable paths, including explicit BT.709 conversion
+   and tags. Compare all outputs' duration, quality, size and supported-browser playback.
 
 ```sh
-ffmpeg -n -ss 0 -i incoming/background.avi -t 15 -map 0:v:0 -an -sn -dn -map_metadata -1 -map_chapters -1 -vf "fps=30,scale='min(1920,iw)':-2,setsar=1" -c:v libvpx-vp9 -crf 33 -b:v 0 -row-mt 1 -pix_fmt yuv420p staging/wardogs-menu.webm
+ffmpeg -hide_banner -loglevel verbose -n -xerror -fflags +ignidx -i incoming/background.avi -filter_complex_threads 4 -filter_complex "[0:v]fps=30,scale=1920:-2:flags=lanczos:out_color_matrix=bt709:out_range=tv,setsar=1,format=yuv420p,setparams=range=limited:color_primaries=bt709:color_trc=bt709:colorspace=bt709,split=2[webm][compact];[compact]scale=1280:720:flags=lanczos[small]" -map "[webm]" -an -sn -dn -map_metadata -1 -map_chapters -1 -c:v libvpx-vp9 -crf 32 -b:v 0 -row-mt 1 -cpu-used 4 -threads 6 -pix_fmt yuv420p staging/full-1080.webm -map "[small]" -an -sn -dn -map_metadata -1 -map_chapters -1 -c:v libx264 -preset slow -crf 24 -maxrate 2M -bufsize 4M -profile:v high -level:v 3.1 -refs 4 -threads 4 -pix_fmt yuv420p -movflags +faststart -brand mp42 staging/full-720.mp4
 ```
 
 Encoder availability and options depend on the installed build; consult [FFmpeg's libvpx documentation](https://ffmpeg.org/ffmpeg-codecs.html#libvpx). A constant-quality setting does not guarantee the size budget.
 
-5. Export a representative poster from the approved final clip. Select the timestamp after reviewing the footage.
+5. Export the poster from the primary at 2.0 seconds (frame 60), using the actual
+   invocation below with portable paths.
 
 ```sh
-ffmpeg -n -ss 2 -i staging/wardogs-menu.mp4 -frames:v 1 -map_metadata -1 -c:v libwebp -quality 78 -update 1 staging/wardogs-menu-poster.webp
+ffmpeg -hide_banner -n -ss 2 -i staging/full-1080.mp4 -frames:v 1 -an -map_metadata -1 -c:v libwebp -quality 80 -update 1 staging/poster-2s.webp
 ```
 
-6. Run `ffprobe` on both delivered videos and verify zero audio streams, dimensions, duration, codec, pixel format and size. Play at least three loops to inspect the seam. Record SHA-256 values, FFmpeg version and exact conversion commands. Do not declare the conversion validated from process exit status alone.
+6. Independently decode every complete output and verify zero audio streams,
+   dimensions, duration, frame count, codec, pixel format, size and fingerprints.
+   Test real playback plus middle/near-end seeks for every rendition. The default
+   browser acceptance includes one uninterrupted natural primary-video loop at rate 1;
+   optional three-loop testing is claimed only if executed. Follow the detailed
+   [full-length acceptance plan](background-media-full-2026-09-26.md). Do not declare
+   validation from an encoder exit status or from the old short-clip evidence.
+
+For each final video, the complete decode check is `ffmpeg -v error -xerror -i FILE
+-f null NUL` on Windows (`/dev/null` instead of `NUL` on Linux). Record exit status
+and errors. Final hash-based filenames are assigned only after encoding and validation;
+use the manifest to map the portable staging names to delivered files. Encoder/build
+differences may change bytes, so never reuse an old digest for a newly encoded file.
 
 ## Cloud handoff and storage
 

@@ -1,0 +1,715 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "native-browser-media-qa",
+  "startedAtUtc": "2026-09-26T14:13:28.889Z",
+  "manifestSha256": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388",
+  "harnessSha256": "f1018ede518e769485811da24a15ab0956b808e4af5ceec1ffe6524369a6b55f",
+  "browser": "Chromium 153.0.8010.12",
+  "platform": "win32",
+  "beforeFiles": [
+    {
+      "role": "primary",
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "bytes": 51032923,
+      "lastWriteTimeUtc": "2026-09-26T14:02:44.670Z",
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b"
+    },
+    {
+      "role": "compact",
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "bytes": 13654192,
+      "lastWriteTimeUtc": "2026-09-26T14:08:15.233Z",
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e"
+    },
+    {
+      "role": "alternate",
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "bytes": 19561104,
+      "lastWriteTimeUtc": "2026-09-26T14:08:15.215Z",
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309"
+    },
+    {
+      "role": "poster",
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "bytes": 181198,
+      "lastWriteTimeUtc": "2026-09-26T14:12:56.919Z",
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+    }
+  ],
+  "afterFiles": [
+    {
+      "role": "primary",
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "bytes": 51032923,
+      "lastWriteTimeUtc": "2026-09-26T14:02:44.670Z",
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b"
+    },
+    {
+      "role": "compact",
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "bytes": 13654192,
+      "lastWriteTimeUtc": "2026-09-26T14:08:15.233Z",
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e"
+    },
+    {
+      "role": "alternate",
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "bytes": 19561104,
+      "lastWriteTimeUtc": "2026-09-26T14:08:15.215Z",
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309"
+    },
+    {
+      "role": "poster",
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "bytes": 181198,
+      "lastWriteTimeUtc": "2026-09-26T14:12:56.919Z",
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+    }
+  ],
+  "stableFiles": true,
+  "blockedOutboundRequests": 0,
+  "pageErrorCount": 0,
+  "renditionChecks": [
+    {
+      "role": "primary",
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 0.004734,
+        "duration": 192.466016,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 4,
+        "droppedFrames": 0
+      },
+      "playing": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 1.502802,
+        "duration": 192.466016,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 51,
+        "droppedFrames": 3
+      },
+      "paused": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 1.503893,
+        "duration": 192.466016,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 51,
+        "droppedFrames": 3
+      },
+      "stable": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 1.503893,
+        "duration": 192.466016,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 51,
+        "droppedFrames": 3
+      },
+      "resumed": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 2.266525,
+        "duration": 192.466016,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 74,
+        "droppedFrames": 3
+      },
+      "seekChecks": [
+        {
+          "position": "middle",
+          "requestedTime": 96.233008,
+          "beforeSeek": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 2.267554,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 74,
+            "droppedFrames": 3
+          },
+          "passed": true,
+          "settled": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 96.233008,
+            "duration": 192.466016,
+            "paused": true,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 214,
+            "droppedFrames": 3
+          },
+          "playing": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 96.989109,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 239,
+            "droppedFrames": 4
+          }
+        },
+        {
+          "position": "near-end",
+          "requestedTime": 190.466016,
+          "beforeSeek": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 96.989806,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 239,
+            "droppedFrames": 4
+          },
+          "passed": true,
+          "settled": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 190.466016,
+            "duration": 192.466016,
+            "paused": true,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 456,
+            "droppedFrames": 4
+          },
+          "playing": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 191.225678,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 481,
+            "droppedFrames": 5
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "role": "compact",
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "before": {
+        "width": 1280,
+        "height": 720,
+        "currentTime": 0.00294,
+        "duration": 192.466016,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 4,
+        "droppedFrames": 0
+      },
+      "playing": {
+        "width": 1280,
+        "height": 720,
+        "currentTime": 1.515383,
+        "duration": 192.466016,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 52,
+        "droppedFrames": 3
+      },
+      "paused": {
+        "width": 1280,
+        "height": 720,
+        "currentTime": 1.516143,
+        "duration": 192.466016,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 52,
+        "droppedFrames": 3
+      },
+      "stable": {
+        "width": 1280,
+        "height": 720,
+        "currentTime": 1.516143,
+        "duration": 192.466016,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 52,
+        "droppedFrames": 3
+      },
+      "resumed": {
+        "width": 1280,
+        "height": 720,
+        "currentTime": 2.271419,
+        "duration": 192.466016,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 74,
+        "droppedFrames": 3
+      },
+      "seekChecks": [
+        {
+          "position": "middle",
+          "requestedTime": 96.233008,
+          "beforeSeek": {
+            "width": 1280,
+            "height": 720,
+            "currentTime": 2.272465,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 74,
+            "droppedFrames": 3
+          },
+          "passed": true,
+          "settled": {
+            "width": 1280,
+            "height": 720,
+            "currentTime": 96.233008,
+            "duration": 192.466016,
+            "paused": true,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 214,
+            "droppedFrames": 3
+          },
+          "playing": {
+            "width": 1280,
+            "height": 720,
+            "currentTime": 96.987691,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 239,
+            "droppedFrames": 4
+          }
+        },
+        {
+          "position": "near-end",
+          "requestedTime": 190.466016,
+          "beforeSeek": {
+            "width": 1280,
+            "height": 720,
+            "currentTime": 96.988583,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 239,
+            "droppedFrames": 4
+          },
+          "passed": true,
+          "settled": {
+            "width": 1280,
+            "height": 720,
+            "currentTime": 190.466016,
+            "duration": 192.466016,
+            "paused": true,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 456,
+            "droppedFrames": 4
+          },
+          "playing": {
+            "width": 1280,
+            "height": 720,
+            "currentTime": 191.229122,
+            "duration": 192.466016,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 481,
+            "droppedFrames": 5
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "role": "alternate",
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 0.002482,
+        "duration": 192.466,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 4,
+        "droppedFrames": 0
+      },
+      "playing": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 1.500024,
+        "duration": 192.466,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 52,
+        "droppedFrames": 3
+      },
+      "paused": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 1.500882,
+        "duration": 192.466,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 52,
+        "droppedFrames": 3
+      },
+      "stable": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 1.500882,
+        "duration": 192.466,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 52,
+        "droppedFrames": 3
+      },
+      "resumed": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 2.254209,
+        "duration": 192.466,
+        "paused": false,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 74,
+        "droppedFrames": 3
+      },
+      "seekChecks": [
+        {
+          "position": "middle",
+          "requestedTime": 96.233,
+          "beforeSeek": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 2.254996,
+            "duration": 192.466,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 74,
+            "droppedFrames": 3
+          },
+          "passed": true,
+          "settled": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 96.233,
+            "duration": 192.466,
+            "paused": true,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 149,
+            "droppedFrames": 3
+          },
+          "playing": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 96.995035,
+            "duration": 192.466,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 173,
+            "droppedFrames": 3
+          }
+        },
+        {
+          "position": "near-end",
+          "requestedTime": 190.466,
+          "beforeSeek": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 96.996257,
+            "duration": 192.466,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 173,
+            "droppedFrames": 3
+          },
+          "passed": true,
+          "settled": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 190.466,
+            "duration": 192.466,
+            "paused": true,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 258,
+            "droppedFrames": 3
+          },
+          "playing": {
+            "width": 1920,
+            "height": 1080,
+            "currentTime": 191.224731,
+            "duration": 192.466,
+            "paused": false,
+            "readyState": 4,
+            "mediaError": null,
+            "decodedFrames": 283,
+            "droppedFrames": 4
+          }
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "requiredLoops": 1,
+  "naturalLoopCheck": {
+    "role": "primary",
+    "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+    "before": {
+      "width": 1920,
+      "height": 1080,
+      "currentTime": 0,
+      "duration": 192.466016,
+      "paused": false,
+      "readyState": 4,
+      "mediaError": null,
+      "decodedFrames": 8,
+      "droppedFrames": 0
+    },
+    "after": {
+      "width": 1920,
+      "height": 1080,
+      "currentTime": 0.082944,
+      "duration": 192.466016,
+      "paused": false,
+      "readyState": 4,
+      "mediaError": null,
+      "decodedFrames": 5786,
+      "droppedFrames": 0
+    },
+    "wraps": [
+      {
+        "elapsedSeconds": 192.5042000000477,
+        "currentTime": 0.000051,
+        "decodedFrames": 5782
+      }
+    ],
+    "playbackRate": 1,
+    "requiredLoops": 1,
+    "timeoutMilliseconds": 222466.016,
+    "passed": true
+  },
+  "screenshots": [
+    {
+      "filename": "media-qa-1920x1080.png",
+      "sha256": "5d72dd0fbd2ebba8fb5ddf00e045526261decddb7d2d5d5bc638d1dcaf96b811",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "role": "primary",
+      "rendition": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "nativeState": {
+        "width": 1920,
+        "height": 1080,
+        "currentTime": 3.004759,
+        "duration": 192.466016,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 97,
+        "droppedFrames": 3
+      },
+      "caption": "Media QA viewer showing actual primary video bytes (wardogs-menu-full-1080p-619b27261fc9.mp4), paused after natural playback; not website integration or mobile website UX."
+    },
+    {
+      "filename": "media-qa-390x844.png",
+      "sha256": "a95471b3a7b6012bfb82bcf85a8c1517627f11a4275acb5b9e808d41816992e3",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "role": "compact",
+      "rendition": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "nativeState": {
+        "width": 1280,
+        "height": 720,
+        "currentTime": 3.010152,
+        "duration": 192.466016,
+        "paused": true,
+        "readyState": 4,
+        "mediaError": null,
+        "decodedFrames": 97,
+        "droppedFrames": 3
+      },
+      "caption": "Media QA viewer showing actual compact video bytes (wardogs-menu-full-720p-040c3de21de3.mp4), paused after natural playback; not website integration or mobile website UX."
+    }
+  ],
+  "httpChecks": [
+    {
+      "check": "Exact source bytes, MIME and Content-Range for 206; invalid range returns 416",
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Local HTTP native video playback only; not website integration.",
+    "Screenshots show a Media QA viewer, not the application or mobile website UX.",
+    "No app reduced-motion, navigation, policy or production-hosting acceptance.",
+    "Loop timing and decoded frames are measured; visual seam quality requires inspection.",
+    "Network checks cover this browser context, with off-origin requests blocked."
+  ],
+  "status": "passed",
+  "httpRequests": [
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "method": "GET",
+      "status": 200,
+      "ranged": false
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "method": "GET",
+      "status": 200,
+      "ranged": false
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "method": "GET",
+      "status": 200,
+      "ranged": false
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "method": "GET",
+      "status": 200,
+      "ranged": false
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "method": "GET",
+      "status": 200,
+      "ranged": false
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "method": "GET",
+      "status": 200,
+      "ranged": false
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "method": "GET",
+      "status": 206,
+      "ranged": true
+    }
+  ],
+  "completedAtUtc": "2026-09-26T14:17:04.647Z"
+}

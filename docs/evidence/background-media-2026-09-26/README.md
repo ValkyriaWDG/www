@@ -1,5 +1,9 @@
 # Background media evidence
 
+> Historical evidence for the rejected 15-second edited candidate, superseded by the
+> [full-length delivery](../../assets/background-media-full-2026-09-26.md). None of the
+> results or screenshots below verifies the full-length files.
+
 This evidence validates prepared video bytes and a standalone native HTML video
 viewer. It is **not** the website, a design mockup or application integration proof.
 The [delivery report](../../assets/background-media-2026-09-26.md) explains the source,
@@ -7,8 +11,15 @@ loop edit, measured budgets and remaining cloud work.
 
 ## Reproduce
 
+Use an isolated checkout of revision `2dc63e58e34a6d103778d1bff5b66ddd12c02d30` for
+historical short-clip reproduction. The current verifier trusts the full-length
+manifest and must reject the old bundle; do not weaken it or replace its trust anchor.
+The archived short [manifest](../../../assets/history/background-media-short-2026-09-26.json)
+and [transfer record](../../../assets/history/background-media-short-delivery-2026-09-26.json)
+identify these historical bytes.
+
 1. Obtain and unzip the package described by
-   [the transfer record](../../../assets/background-media-delivery.json).
+   [the archived transfer record](../../../assets/history/background-media-short-delivery-2026-09-26.json).
 2. Verify against the checked-in manifest:
 
    ```sh

@@ -68,11 +68,19 @@ unrelated parent-workspace instructions, production configuration or private pro
 
 You run in a cloud Git checkout. You do not have the owner's PC, Steam install,
 local credentials, DockerHub secrets, Discord application or production host access.
-All required visual references are committed. The owner's AVI has now been encoded
-into a [verified media bundle](../assets/background-media-2026-09-26.md). Obtain the
-ZIP through the recorded transfer channel and follow the
+All required visual references are committed. The owner requires a
+[full-length media bundle](../assets/background-media-full-2026-09-26.md) preserving
+the entire available AVI timeline, approximately 192.45 seconds before frame-rate
+rounding. The previous 15-second edited loop is superseded. Do not trim, fade, reverse
+or time-limit the footage to meet a budget; the primary target is approximately 60 MiB.
+Read the new report's actual preparation/verification status, obtain its ZIP through
+the recorded transfer channel when available, and follow the
 [media integration handoff](background-media-integration.md). The original AVI and
 Bink files are not shipped; a local path or inaccessible draft asset is not cloud access.
+The AVI has unfinished index fields and its exact Bink source is unconfirmed; preserve
+those provenance limitations. Verify actual full-length playback, middle/near-end
+seeks for all renditions and one uninterrupted natural primary loop; old short-clip
+proof cannot establish acceptance. Additional three-loop runs are optional evidence.
 
 Inspect the checkout and current branch, working tree and status before changes.
 Use the task's provided branch or a scoped implementation branch. Never overwrite

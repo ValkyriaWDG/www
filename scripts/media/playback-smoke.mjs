@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Replay native browser media checks without installing application dependencies.
-// Usage: node playback-smoke.mjs <bundle-dir> <playwright-package.json> <evidence-dir> [--serve]
+// Usage: node playback-smoke.mjs <bundle-dir> <playwright-package.json> <evidence-dir> [--loops 1..3] [--serve]
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
@@ -17,15 +17,39 @@ import { createRequire } from "node:module";
 import { resolve, sep } from "node:path";
 
 const args = process.argv.slice(2);
-const serve = args.at(-1) === "--serve";
-if (serve) args.pop();
-if (args.length !== 3 || args.some((arg) => arg.startsWith("--"))) {
+const positional = [];
+let serve = false;
+let requiredLoops = 1;
+let loopsProvided = false;
+const usage = () => {
   console.error(
-    "Usage: node playback-smoke.mjs <bundle-dir> <playwright-package.json> <evidence-dir> [--serve]",
+    "Usage: node playback-smoke.mjs <bundle-dir> <playwright-package.json> <evidence-dir> [--loops 1..3] [--serve]",
   );
   process.exit(2);
+};
+for (let index = 0; index < args.length; index++) {
+  const arg = args[index];
+  if (arg === "--") {
+    positional.push(...args.slice(index + 1));
+    break;
+  }
+  if (arg === "--serve") {
+    if (serve) usage();
+    serve = true;
+  } else if (arg === "--loops" || arg.startsWith("--loops=")) {
+    if (loopsProvided) usage();
+    const value = arg === "--loops" ? args[++index] : arg.slice(8);
+    if (!/^[1-3]$/.test(value ?? "")) usage();
+    requiredLoops = Number(value);
+    loopsProvided = true;
+  } else if (arg.startsWith("-")) {
+    usage();
+  } else {
+    positional.push(arg);
+  }
 }
-const [bundleArgument, packageArgument, evidenceArgument] = args;
+if (positional.length !== 3) usage();
+const [bundleArgument, packageArgument, evidenceArgument] = positional;
 const bundle = await realpath(resolve(bundleArgument));
 const evidence = resolve(evidenceArgument);
 const packageFile = resolve(packageArgument);
@@ -65,7 +89,8 @@ for (const role of roles) {
     assert.ok(
       Number.isFinite(asset.durationSeconds) &&
         asset.durationSeconds > 4 &&
-        asset.durationSeconds <= 60,
+        asset.durationSeconds <= 600,
+      "Video duration must be greater than 4 and at most 600 seconds.",
     );
   const file = await realpath(resolve(bundle, asset.filename));
   assert.ok(
@@ -212,6 +237,7 @@ const report = {
   blockedOutboundRequests: 0,
   pageErrorCount: 0,
   renditionChecks: [],
+  requiredLoops,
   naturalLoopCheck: null,
   screenshots: [],
   httpChecks: [],
@@ -336,7 +362,7 @@ try {
     assert.ok(resumed.currentTime > stable.currentTime + 0.35);
     assert.ok(resumed.decodedFrames > stable.decodedFrames);
     assert.equal(resumed.mediaError, null);
-    report.renditionChecks.push({
+    const renditionCheck = {
       role,
       filename: asset.filename,
       before,
@@ -344,22 +370,81 @@ try {
       paused,
       stable,
       resumed,
-      passed: true,
-    });
+      seekChecks: [],
+      passed: false,
+    };
+    report.renditionChecks.push(renditionCheck);
+    for (const [position, requestedTime] of [
+      ["middle", playing.duration / 2],
+      ["near-end", playing.duration - 2],
+    ]) {
+      const seekCheck = {
+        position,
+        requestedTime,
+        beforeSeek: await snapshot(),
+        passed: false,
+      };
+      renditionCheck.seekChecks.push(seekCheck);
+      await page.evaluate((time) => {
+        const video = document.querySelector("video");
+        video.pause();
+        video.currentTime = time;
+      }, requestedTime);
+      await page.waitForFunction(
+        (time) => {
+          const video = document.querySelector("video");
+          return (
+            !video.seeking &&
+            video.readyState >= 2 &&
+            Math.abs(video.currentTime - time) < 0.1
+          );
+        },
+        requestedTime,
+        { timeout: 15000 },
+      );
+      seekCheck.settled = await snapshot();
+      assert.equal(seekCheck.settled.mediaError, null);
+      assert.ok(Math.abs(seekCheck.settled.currentTime - requestedTime) < 0.1);
+      await page.evaluate(() => document.querySelector("video").play());
+      await page.waitForTimeout(750);
+      seekCheck.playing = await snapshot();
+      assert.equal(seekCheck.playing.mediaError, null);
+      assert.ok(
+        seekCheck.playing.currentTime > seekCheck.settled.currentTime + 0.35,
+      );
+      assert.ok(
+        seekCheck.playing.decodedFrames > seekCheck.settled.decodedFrames,
+      );
+      seekCheck.passed = true;
+    }
+    renditionCheck.passed = true;
     console.log(JSON.stringify({ event: "rendition_passed", role }));
   }
   await load("primary");
-  await page.evaluate(async () => {
+  // Reset before the measured phase; never assign currentTime during it.
+  await page.evaluate(() => {
     const video = document.querySelector("video");
     video.pause();
     video.currentTime = 0;
+  });
+  await page.waitForFunction(
+    () => {
+      const video = document.querySelector("video");
+      return !video.seeking && video.readyState >= 2 && video.currentTime < 0.05;
+    },
+    null,
+    { timeout: 15000 },
+  );
+  await page.evaluate(async () => {
+    const video = document.querySelector("video");
+    video.playbackRate = 1;
     window.qaLoopSamples = [];
     window.qaLastTime = 0;
     window.qaLoopStarted = performance.now();
     video.addEventListener("timeupdate", () => {
       if (
-        window.qaLastTime > video.duration * 0.7 &&
-        video.currentTime < video.duration * 0.3
+        window.qaLastTime >= video.duration - 1 &&
+        video.currentTime < 1
       )
         window.qaLoopSamples.push({
           elapsedSeconds: (performance.now() - window.qaLoopStarted) / 1000,
@@ -375,13 +460,31 @@ try {
     JSON.stringify({
       event: "natural_loop_check_started",
       durationSeconds: loopBefore.duration,
-      requiredLoops: 3,
+      requiredLoops,
     }),
   );
-  await page.waitForFunction(() => window.qaLoopSamples.length >= 3, null, {
-    timeout: byRole.get("primary").durationSeconds * 3000 + 15000,
-    polling: 100,
-  });
+  const loopWaitStarted = Date.now();
+  const loopTimeoutMilliseconds =
+    byRole.get("primary").durationSeconds * requiredLoops * 1000 + 30000;
+  const progressTimer = setInterval(() => {
+    console.log(
+      JSON.stringify({
+        event: "natural_loop_check_progress",
+        elapsedSeconds: (Date.now() - loopWaitStarted) / 1000,
+        expectedPlaybackSeconds: loopBefore.duration * requiredLoops,
+        requiredLoops,
+      }),
+    );
+  }, 20000);
+  try {
+    await page.waitForFunction(
+      (count) => window.qaLoopSamples.length >= count,
+      requiredLoops,
+      { timeout: loopTimeoutMilliseconds, polling: 100 },
+    );
+  } finally {
+    clearInterval(progressTimer);
+  }
   const loopAfter = await snapshot();
   const wraps = await page.evaluate(() => window.qaLoopSamples);
   const playbackRate = await page.evaluate(
@@ -390,7 +493,10 @@ try {
   assert.equal(playbackRate, 1);
   assert.equal(loopAfter.mediaError, null);
   assert.ok(loopAfter.decodedFrames > loopBefore.decodedFrames);
-  assert.ok(wraps[2].elapsedSeconds >= loopBefore.duration * 2.9);
+  assert.ok(
+    wraps[requiredLoops - 1].elapsedSeconds >=
+      loopBefore.duration * requiredLoops - 0.25,
+  );
   report.naturalLoopCheck = {
     role: "primary",
     filename: byRole.get("primary").filename,
@@ -398,30 +504,34 @@ try {
     after: loopAfter,
     wraps,
     playbackRate,
+    requiredLoops,
+    timeoutMilliseconds: loopTimeoutMilliseconds,
     passed: true,
   };
-  for (const viewport of [
-    { width: 1920, height: 1080 },
-    { width: 390, height: 844 },
+  for (const { viewport, role } of [
+    { viewport: { width: 1920, height: 1080 }, role: "primary" },
+    { viewport: { width: 390, height: 844 }, role: "compact" },
   ]) {
     await page.setViewportSize(viewport);
-    await load("compact");
-    await page.evaluate(
-      () =>
-        new Promise((done) => {
-          const video = document.querySelector("video");
-          video.pause();
-          video.addEventListener(
-            "seeked",
-            () => requestAnimationFrame(() => requestAnimationFrame(done)),
-            { once: true },
-          );
-          video.currentTime = 3;
-        }),
+    await load(role);
+    await page.evaluate(() => document.querySelector("video").play());
+    await page.waitForFunction(
+      () => {
+        const video = document.querySelector("video");
+        return video.currentTime >= 3 && video.readyState >= 3 && !video.seeking;
+      },
+      null,
+      { timeout: 15000 },
     );
+    await page.evaluate(() => document.querySelector("video").pause());
     await page.waitForFunction(() =>
       document.querySelector("#stats").textContent.includes("paused"),
     );
+    await page.waitForTimeout(200);
+    const nativeState = await snapshot();
+    assert.equal(nativeState.mediaError, null);
+    assert.equal(nativeState.paused, true);
+    assert.ok(nativeState.currentTime >= 3);
     const filename = `media-qa-${viewport.width}x${viewport.height}.png`;
     const bytes = await page.screenshot({
       path: resolve(evidence, filename),
@@ -432,10 +542,11 @@ try {
       filename,
       sha256: createHash("sha256").update(bytes).digest("hex"),
       viewport,
-      rendition: byRole.get("compact").filename,
-      nativeState: await snapshot(),
+      role,
+      rendition: byRole.get(role).filename,
+      nativeState,
       caption:
-        "Media QA viewer showing actual compact video bytes; not website integration or mobile website UX.",
+        `Media QA viewer showing actual ${role} video bytes (${byRole.get(role).filename}), paused after natural playback; not website integration or mobile website UX.`,
     });
   }
   assert.equal(report.blockedOutboundRequests, 0);

@@ -1,8 +1,12 @@
 # Wardogs background media delivery — 2026-09-26
 
+> Historical candidate, superseded by the [full-length delivery](background-media-full-2026-09-26.md).
+> The owner rejected this shortened 15-second edit. Measurements below describe only
+> these old files; they are not proof of the full available AVI timeline.
+
 The owner's AVI has been converted into real web media. The source is unchanged;
 the background is the industrial forest/main-menu scene in reference 09, without
-game UI or a baked-in clan logo. The external [manifest](../../assets/background-media.json)
+game UI or a baked-in clan logo. The archived [manifest](../../assets/history/background-media-short-2026-09-26.json)
 records exact filenames, SHA-256, provenance and encoding metadata.
 
 | File | Dimensions | Size | Encoding |
@@ -23,7 +27,7 @@ implied by the file preparation.
 The transfer package is `valkyria-background-media-2026-09-26.zip`. It includes the
 four derivatives, `manifest.json`, `SHA256SUMS`, a local `preview.html`, preview env
 example and a copy-ready Claude prompt. Open the preview and press play to inspect it.
-Read the [delivery record](../../assets/background-media-delivery.json) for its digest
+Read the archived [delivery record](../../assets/history/background-media-short-delivery-2026-09-26.json) for its digest
 and available transfer channel. A draft asset requires repository write access;
 the owner can instead attach the ZIP directly to the cloud task.
 
