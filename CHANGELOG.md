@@ -4,7 +4,7 @@
 
 First release of the Valkyria website application (milestones M1–M3). Not deployed:
 production hosting, DNS, Discord application configuration, media origin and container
-publication are separate operator steps (see [deployment](docs/operations/deployment.md)).
+publication are separate operator steps (see [deployment](https://github.com/ValkyriaWDG/www/blob/main/docs/operations/deployment.md)).
 
 ### Website
 - Czech-first `/cs` and English `/en` routes (`/` → `/cs`), Czech/UK flag language switch

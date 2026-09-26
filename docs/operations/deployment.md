@@ -126,6 +126,11 @@ CSP, trusted-proxy handling and no-store policies for login/admin traffic. The o
   fallback ([background media](background-media.md)). Verify Discord invite and production callback with an authorized test user.
 - Record revision, digest, migration IDs, evidence and rollback decision.
 
+A release is a `vX.Y.Z` tag on main that matches `package.json`: the Release workflow
+re-runs CI (build, container smoke, scan, SBOM) and creates the GitHub release from
+`CHANGELOG.md`. It publishes no image; registry publication stays the gated manual
+**Publish container** workflow for an accepted main SHA.
+
 Watchtower is **off in the example**. Auto-pull may be enabled later only for an explicitly
 promoted compatible production tag after migration orchestration is solved. Never track
 every main build automatically while schema/content contracts are evolving. A digest-pinned
