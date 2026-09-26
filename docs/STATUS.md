@@ -21,6 +21,13 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 ## Checkpoint (resume here)
 
+Issue #26 candidate: [release hardening](operations/release-hardening.md) adds cold
+mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
+disposable previous-image/database rollback rehearsals. [Local evidence](evidence/release-hardening-2026-09-26/README.md)
+proves the browser budgets and 27 tooling tests. Linux image/scan/rollback acceptance
+is pending the exact PR head's CI; this candidate has not been published or deployed.
+The live deployment and its recorded limitations above remain unchanged.
+
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
 Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-length

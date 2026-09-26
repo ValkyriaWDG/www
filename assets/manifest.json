@@ -1252,6 +1252,39 @@
       "bytes": 318978,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "release-hardening-2026-09-26-page-1",
+      "path": "docs/evidence/release-hardening-2026-09-26/page-1.png",
+      "source": "Local production standalone build with synthetic fixtures at base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus the issue 26 patch; real throttled mobile Chromium capture",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and game wordmarks; excluded from Apache code license, no general third-party redistribution license asserted",
+      "sha256": "56a5b142858c04f755ee2810149a11ba4a82a8342ec285d90ed48c8b621e59ad",
+      "bytes": 186914,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "release-hardening-2026-09-26-page-2",
+      "path": "docs/evidence/release-hardening-2026-09-26/page-2.png",
+      "source": "Local production standalone build with synthetic fixtures at base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus the issue 26 patch; real throttled mobile Chromium capture",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and game wordmarks; excluded from Apache code license, no general third-party redistribution license asserted",
+      "sha256": "9fe9fcd327889c8b14bd22ea7fbbec1d54823f77054378a8fc631d3c1b6bb066",
+      "bytes": 638684,
+      "width": 390,
+      "height": 5496
+    },
+    {
+      "id": "release-hardening-2026-09-26-page-3",
+      "path": "docs/evidence/release-hardening-2026-09-26/page-3.png",
+      "source": "Local production standalone build with synthetic fixtures at base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a plus the issue 26 patch; real throttled mobile Chromium capture",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and game wordmarks; excluded from Apache code license, no general third-party redistribution license asserted",
+      "sha256": "0057128d600ac1fff7a1f70fc9eab3abffd966c2ec8bdec66b08b33f8eaf22f9",
+      "bytes": 348999,
+      "width": 390,
+      "height": 2646
     }
   ]
 }
