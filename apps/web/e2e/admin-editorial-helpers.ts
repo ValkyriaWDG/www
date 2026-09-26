@@ -113,10 +113,11 @@ export async function expectPublicNews(
 /** Waits until the editor reports that the server draft matches the local text. */
 export async function expectSaved(page: Page, timeout = 15_000): Promise<void> {
   const state = page.getByTestId('save-state');
-  await expect(state).toHaveAttribute('data-save-state', /saved|failed|invalid|conflict/, { timeout });
-  if ((await state.getAttribute('data-save-state')) !== 'saved') {
+  try {
+    await expect(state).toHaveAttribute('data-save-state', 'saved', { timeout });
+  } catch (error) {
     const details = await page.locator('[data-testid="save-failed-notice"], [data-testid="conflict-notice"], [id$="-error"]').allInnerTexts();
-    throw new Error(`Draft not saved (${await state.getAttribute('data-save-state')}): ${details.join(' | ')}`);
+    throw new Error(`Draft not saved (${await state.getAttribute('data-save-state')}): ${details.join(' | ')}`, { cause: error });
   }
 }
 

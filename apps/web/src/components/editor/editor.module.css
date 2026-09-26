@@ -294,6 +294,23 @@
 }
 
 @media (max-width: 767px) {
+  /* One scrollable toolbar row on phones so the sticky toolbar never covers most of the canvas. */
+  .toolbar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .toolGroup {
+    flex: none;
+  }
+
+  .toolButton,
+  .blockSelect {
+    min-height: 44px;
+  }
+
   .figure {
     grid-template-columns: 1fr;
   }

@@ -743,15 +743,15 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
               <GameButton intent="secondary" onClick={() => void save('save')} disabled={readOnly || busy !== null} pending={machine.inFlight?.kind === 'save'} pendingLabel={t('save.saving')} data-testid="editor-save">
                 {t('actions.save', { locale: contentLocale })}
               </GameButton>
-              <a
-                className={styles.inlineButton}
-                style={{ minHeight: 'var(--control-height)' }}
-                href={previewHref()}
+              <GameButton
+                intent="secondary"
+                href={`${basePath}/${documentId}/preview?lang=${contentLocale}`}
                 target="_blank"
                 rel="noopener"
                 data-testid="editor-preview"
                 onClick={(event) => {
                   if (!dirty) return;
+                  // Preview shows the saved draft: save first, then open the prepared tab.
                   event.preventDefault();
                   const popup = window.open('about:blank', '_blank');
                   void save('save').then((ok) => {
@@ -761,7 +761,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
                 }}
               >
                 {t('actions.preview', { locale: contentLocale })}
-              </a>
+              </GameButton>
               {canPublish ? (
                 <GameButton intent="primary" onClick={() => void publish()} disabled={readOnly || (busy !== null && busy !== 'publish')} pending={busy === 'publish'} pendingLabel={tCommon('working')} data-testid="editor-publish">
                   {publishIntent(translation.state) === 'update' ? t('actions.update', { locale: contentLocale }) : t('actions.publish', { locale: contentLocale })}

@@ -92,7 +92,13 @@ export function MediaDetail({ asset, uiLocale, closeHref }: { asset: AssetDetail
         </h2>
         <div className={`${styles.panelBody} ${styles.stack}`}>
           {/* eslint-disable-next-line @next/next/no-img-element -- authorized private preview via the media route */}
-          <img src={asset.urls.full} alt={asset.defaultAlt[uiLocale] || ''} className={styles.detailImage} />
+          <img
+            src={asset.urls.full}
+            alt={asset.defaultAlt[uiLocale] || ''}
+            width={asset.variants?.full.width ?? asset.width}
+            height={asset.variants?.full.height ?? asset.height}
+            className={styles.detailImage}
+          />
           <dl className={styles.facts}>
             <dt>{t('filename')}</dt>
             <dd data-testid="media-detail-filename">{asset.originalFilename}</dd>

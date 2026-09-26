@@ -130,7 +130,7 @@ export function PostRowActions({
       <GameButton href={`${basePath}/${documentId}?lang=${firstLocale}`} size="sm" intent="secondary" data-testid="row-edit">
         {t('edit')}
       </GameButton>
-      <GameButton size="sm" intent="ghost" onClick={() => setOpen(true)} aria-haspopup="dialog" data-testid="row-actions">
+      <GameButton size="sm" intent="secondary" onClick={() => setOpen(true)} aria-haspopup="dialog" data-testid="row-actions">
         {t('more')}
         <span className="visually-hidden">: {title}</span>
       </GameButton>

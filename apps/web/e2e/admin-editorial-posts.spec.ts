@@ -283,3 +283,104 @@ test('an English translation starts empty and is published independently of Czec
   await expectPublicNews(request, 'cs', czech.liveSlug!, { title: czechTitle });
   await expect(page.getByTestId('content-tab-cs')).toContainText('Publikováno');
 });
+
+test('list row actions publish per language, duplicate, archive and unarchive with confirmation', async ({ context, page, request }) => {
+  await signInAs(context, { roles: ['editor'] });
+  const suffix = uniqueSuffix();
+  const title = `[E2E] Řádkové akce ${suffix}`;
+  const documentId = await createPost(page, title);
+  await fillPublishable(page, 'Text pro akce v seznamu.', 'Perex pro akce v seznamu.');
+
+  await page.goto(`/cs/admin/news?q=${encodeURIComponent(suffix)}`);
+  const row = () => page.getByRole('row', { name: new RegExp(`Řádkové akce ${suffix}`) }).first();
+  await expect(row().getByTestId('state-cs')).toHaveAttribute('data-state', 'draft');
+  await row().getByTestId('row-actions').click();
+  const dialog = page.getByRole('dialog', { name: 'Akce příspěvku' });
+  await dialog.getByTestId('row-publish-cs').click();
+  await expect(page.getByRole('dialog', { name: 'Zveřejnit českou verzi?' })).toContainText('Anglická verze se nemění.');
+  await page.getByTestId('row-confirm').click();
+  await expect(row().getByTestId('state-cs')).toHaveAttribute('data-state', 'published');
+  const slug = (await storedTranslation(documentId, 'cs'))!.liveSlug!;
+  await expectPublicNews(request, 'cs', slug, { title });
+
+  // Archive hides the post in both languages; unarchive restores the published state.
+  await row().getByTestId('row-actions').click();
+  await page.getByTestId('row-archive').click();
+  await page.getByTestId('row-confirm').click();
+  await expect(row().getByTestId('state-cs')).toHaveAttribute('data-state', 'archived');
+  await expectPublicNews(request, 'cs', slug, null);
+  await row().getByTestId('row-actions').click();
+  await page.getByTestId('row-unarchive').click();
+  await page.getByTestId('row-confirm').click();
+  await expect(row().getByTestId('state-cs')).toHaveAttribute('data-state', 'published');
+  await expectPublicNews(request, 'cs', slug, { title });
+
+  // Duplicate creates an unpublished copy and opens it.
+  await row().getByTestId('row-actions').click();
+  await page.getByTestId('row-duplicate').click();
+  await page.getByTestId('row-confirm').click();
+  await expect(page).toHaveURL(/\/cs\/admin\/news\/[0-9a-f-]{36}\?lang=cs$/);
+  expect(page.url()).not.toContain(documentId);
+  await expect(page.getByTestId('editor-title')).toHaveValue(title);
+  await expect(page.getByTestId('editor-slug')).toHaveValue(`${slug}-copy`);
+  await expect(page.getByTestId('translation-state')).toHaveAttribute('data-state', 'draft');
+});
+
+test('the overview lists own drafts and scheduled publications; core pages use the same editor with a fixed slug', async ({ context, page, request }) => {
+  await signInAs(context, { roles: ['editor'] });
+  const suffix = uniqueSuffix();
+  const draftTitle = `[E2E] Můj koncept ${suffix}`;
+  await createPost(page, draftTitle);
+  const scheduledTitle = `[E2E] Naplánovaný ${suffix}`;
+  const scheduledId = await createPost(page, scheduledTitle);
+  await fillPublishable(page, 'Plánovaný text.', 'Plánovaný perex.');
+  await page.getByTestId('schedule-submit').click();
+  await expect(page.getByTestId('schedule-active')).toBeVisible();
+
+  await page.goto('/cs/admin');
+  await expect(page.getByTestId('admin-module-content')).toContainText('Stránky');
+  await expect(page.getByTestId('admin-nav').getByRole('link', { name: 'Stránky' })).toBeVisible();
+  await expect(page.getByTestId('overview-drafts')).toContainText(draftTitle);
+  const scheduled = page.getByTestId('overview-schedules').getByRole('listitem').filter({ hasText: scheduledTitle });
+  await expect(scheduled).toContainText('Naplánováno');
+  await scheduled.getByRole('link', { name: scheduledTitle }).click();
+  await expect(page).toHaveURL(new RegExp(`/cs/admin/news/${scheduledId}\\?lang=cs$`));
+
+  // Core pages: per-language states, fixed slug, no post-only sections.
+  await page.goto('/cs/admin/content');
+  const clan = page.getByRole('row', { name: /Klan/ });
+  await expect(clan.getByTestId('state-cs')).toHaveAttribute('data-state', /published/);
+  await expect(clan.getByTestId('state-en')).toHaveAttribute('data-state', /published/);
+  await clan.getByTestId('row-edit').click();
+  await expect(page).toHaveURL(/\/cs\/admin\/content\/[0-9a-f-]{36}\?lang=cs$/);
+  const pageId = /content\/([0-9a-f-]{36})/.exec(page.url())![1]!;
+  await expect(page.getByRole('heading', { level: 1, name: 'Stránka: Klan' })).toBeVisible();
+  await expect(page.getByTestId('news-editor')).toHaveAttribute('data-mode', 'page');
+  await expect(page.getByTestId('editor-panel')).toContainText('/cs/clan');
+  await expect(page.getByTestId('editor-slug')).toHaveCount(0);
+  await expect(page.getByTestId('taxonomy-section')).toHaveCount(0);
+  await expect(page.getByTestId('schedule-section')).toHaveCount(0);
+  await expect(page.getByTestId('editor-archive')).toHaveCount(0);
+  const live = (await storedTranslation(pageId, 'cs'))!;
+
+  // A draft change is private: preview shows it, the live page revision is untouched.
+  await page.getByTestId('editor-excerpt').fill(`Koncept perexu stránky ${suffix}`);
+  await page.getByTestId('editor-save').click();
+  await expectSaved(page);
+  await expect(page.getByTestId('translation-state')).toHaveAttribute('data-state', 'published_with_changes');
+  const preview = await page.context().newPage();
+  await preview.goto(`/cs/admin/content/${pageId}/preview?lang=cs`);
+  await expect(preview.getByTestId('preview-banner')).toContainText('NEZVEŘEJNĚNÝ NÁHLED');
+  await expect(preview.getByTestId('preview-article')).toContainText(`Koncept perexu stránky ${suffix}`);
+  await preview.close();
+  expect(await storedTranslation(pageId, 'cs')).toMatchObject({ publishedRevisionId: live.publishedRevisionId, liveSlug: 'clan' });
+  const publicClan = await request.get('/cs/clan');
+  if (publicClan.status() === 200) expect(await publicClan.text()).not.toContain(`Koncept perexu stránky ${suffix}`);
+
+  // Restore the published revision into the draft again so shared fixtures stay pristine.
+  await page.getByTestId('revisions-section').locator('summary').click();
+  await page.getByTestId('revision-item').filter({ hasText: 'Zveřejněno' }).getByTestId('revision-restore').click();
+  await page.locator('[data-confirm="confirm"]').click();
+  await expect(page.getByTestId('editor-restored')).toBeVisible();
+  await expect(page.getByTestId('editor-excerpt')).not.toHaveValue(`Koncept perexu stránky ${suffix}`);
+});

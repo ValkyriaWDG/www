@@ -76,11 +76,6 @@ export async function EditorPage({
             </GuardedLink>
           </p>
           <h1 id="editor-heading">{mode === 'news' ? t('editor.heading') : heading}</h1>
-          {mode === 'news' ? (
-            <p className={styles.lead} lang={contentLocale}>
-              {heading}
-            </p>
-          ) : null}
         </div>
       </div>
       {translation ? (

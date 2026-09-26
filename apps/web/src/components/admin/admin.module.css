@@ -434,14 +434,9 @@
 }
 
 .side {
-  position: sticky;
-  top: var(--space-3);
   display: grid;
   gap: var(--space-3);
-  max-height: calc(100svh - var(--space-5));
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
+  min-width: 0;
 }
 
 .section {
@@ -867,6 +862,7 @@
 
 .detailImage {
   width: 100%;
+  height: auto;
   max-height: 320px;
   object-fit: contain;
   border: var(--border-hairline) solid var(--color-border);
@@ -1061,11 +1057,8 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .side,
   .detail {
     position: static;
-    max-height: none;
-    overflow: visible;
   }
 }
 

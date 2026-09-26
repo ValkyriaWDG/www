@@ -17,7 +17,7 @@ export function TranslationStateCell({ translation, uiLocale, contentLocale }: {
     <div className={styles.stateCell} data-testid={`state-${contentLocale}`} data-state={view.key} data-warning={view.warning ?? undefined}>
       <StatusBadge kind={view.kind}>{t(`states.${view.key}`)}</StatusBadge>
       {translation?.schedule ? (
-        <span className={styles.stateNote}>{t('list.scheduledFor', { time: formatDate(translation.schedule.dueAt, uiLocale, 'dateTime') })}</span>
+        <span className={styles.stateNote}>{t('list.scheduledFor', { time: formatDate(translation.schedule.dueAt, uiLocale, 'dateTimeZone') })}</span>
       ) : null}
       {view.warning ? <span className={view.warning === 'overdue' ? styles.warning : styles.danger}>{t(`warnings.${view.warning}`)}</span> : null}
     </div>
