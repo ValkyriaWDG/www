@@ -12,7 +12,7 @@ for Discord snowflakes (never JavaScript numbers). All timestamps use `timestamp
 | LocalAdminGrant | Provisioned auth user + allowed capabilities; separate from Discord mapping, expires/revokes independently |
 | ContentPage / NewsPost | Unique slug, title, excerpt, coverAssetId, category/tags, game context, approved author label, SEO fields, draft/published/archived, draftRevisionId, publishedRevisionId, publishedAt; scheduling is a separate record |
 | ContentRevision | Immutable schema-versioned rich-text JSON + metadata snapshot, document ID, actor, createdAt; restoring creates a new draft revision |
-| PublicationSchedule | Document + immutable revision, dueAt, issuer/grant ID+version, exact resource/capability and delegation assurance metadata, pending/claimed/completed/cancelled/failed, idempotency key and audit reference |
+| PublicationSchedule | Document + immutable revision, dueAt, issuer/grant ID+version, exact resource/capability and delegation assurance metadata, pending/claimed/blocked/completed/cancelled/failed, claim lease/attempt metadata, idempotency key and audit reference |
 | SlugRedirect | Previous published slug -> canonical document, bounded redirect without loops |
 | Game | Stable slug `wardogs` / `hell-let-loose`, display label |
 | Match | Game, opponent name/code/asset, competition/type/season, format/bestOf/teamSize, startsAt, display time zone, scheduled/live/completed/postponed/cancelled, draft/published, public rich-text recap revision, version |
@@ -65,3 +65,11 @@ to the owning domain and publication state. Keep user uploads out of source cont
 Public title/slug/cover/excerpt/SEO and body use the published revision snapshot; mutable
 draft columns are never the public source. A pending/cancelled future update must not
 hide or modify an already published revision or its canonical URL.
+
+Schedule `blocked` means issuer authority is revoked, stale or unknown and requires
+fresh approval by a currently authorized actor. Background retries cannot silently
+reactivate it. Reapproval creates a fresh scoped intent and audit link to the previous
+intent. Distinguish that state from a retryable operational `failed` outcome. Claims
+need bounded leases and safe recovery after a worker crash; state transitions, publishing
+the revision and recording success must be atomic, with retryable cache invalidation.
+Neither a blocked schedule nor an abandoned claim changes the current public revision.

@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: 24
       - run: node scripts/check-foundation.mjs
+      - run: node --test scripts/tests/*.test.mjs
       - name: Check attribution
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}

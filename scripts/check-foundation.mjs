@@ -2,11 +2,13 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { validateAgentSkills } from './check-agent-skills.mjs';
 
 const root = process.cwd();
 const files = [...new Set(execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean))];
 const errors = [];
 const fail = (message) => errors.push(message);
+errors.push(...validateAgentSkills(root));
 const required = ['README.md', 'AGENTS.md', 'CLAUDE.md', 'SECURITY.md', 'CONTRIBUTING.md', 'LICENSE', 'NOTICE.md', '.env.example', '.claude/settings.json', 'docs/STATUS.md', 'docs/product/brief.md', 'docs/architecture/overview.md', 'docs/design/visual-spec.md', 'docs/design/screen-map.md', 'docs/security/auth-rbac.md', 'docs/implementation/plan.md', 'docs/implementation/verification.md', 'docs/handoff/claude-code-cloud.md', 'docs/handoff/start-prompt.md', 'docs/operations/deployment.md', 'assets/manifest.json'];
 for (const file of required) if (!existsSync(file)) fail(`Missing required file: ${file}`);
 if (!existsSync('apps/web/package.json') && (existsSync('apps/web/src') || existsSync('apps/web/Dockerfile'))) fail('Application source/Dockerfile exists without apps/web/package.json; application CI cannot be skipped.');
@@ -66,5 +68,5 @@ if (errors.length) {
   for (const error of errors) console.error(`ERROR: ${error}`);
   process.exit(1);
 }
-console.log(`Foundation checks passed (${files.length} files): required docs, local links, JSON, asset integrity, basic public-file hygiene.`);
+console.log(`Foundation checks passed (${files.length} files): required docs, skill structure, local links, JSON, asset integrity, basic public-file hygiene.`);
 console.log(existsSync('apps/web/package.json') ? 'Application exists: its independent quality checks are also required.' : 'Application is not implemented. No application, auth, container or deployment verification is implied.');

@@ -13,6 +13,9 @@ Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
 - Foundation CI and gated future application/container publication workflows.
 - Explicit [news/blog visual-editor and match-authoring requirements](product/editorial-and-matches.md),
   with media, draft/revision/scheduling workflow and visible HLL website links.
+- Eight committed [agent skills](engineering/skills.md), task continuity and FE/BE/auth,
+  database migration, GitHub, verification and release procedures for cloud development.
+  Foundation CI validates skill structure and runs its positive/negative fixtures.
 
 ## Not implemented
 
@@ -26,6 +29,10 @@ or verified by the inventory.
 | Check | Result |
 |---|---|
 | `node scripts/check-foundation.mjs` | Passed: documentation links, JSON, required files, asset hashes and basic hygiene |
+| `node --test scripts/tests/*.test.mjs` | Passed: six tests covering valid/invalid skills and accepted/mismatched/missing release revisions |
+| Project skill validation | All eight skills passed the skill-creator schema validator; native Claude Cloud discovery has not been run in a cloud session |
+| Independent skill scenarios | Reviewed scheduled publication with revoked authority and stale CI; release with changed main and incompatible migration; foundation-only release readiness |
+| Publisher revision guard | Required expected SHA and execution before registry login/push verified locally; no publication dispatched |
 | `node scripts/check-commit-attribution.mjs` | Passed against current history |
 | `pnpm install --frozen-lockfile --ignore-scripts` | Passed for dependency-free foundation workspace |
 | YAML parse of workflows/templates/Compose/workspace | Passed with PyYAML |

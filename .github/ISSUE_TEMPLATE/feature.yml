@@ -1,23 +1,51 @@
 name: Feature or implementation task
-description: Define a bounded deliverable with acceptance criteria.
+description: Define an observable deliverable, dependencies, evidence and delivery scope.
 labels: ["type:feature"]
 body:
   - type: textarea
     id: outcome
     attributes:
       label: Outcome
-      description: User-visible result and scope.
+      description: The concrete user-visible result and why it is needed.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Included behavior and explicit exclusions; keep one reviewable acceptance unit.
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
       label: Acceptance criteria
-      description: Observable behavior and required verification.
+      description: Observable behavior, meaningful failure cases and required evidence. Separate local or mocked checks from live acceptance.
+      placeholder: |
+        - [ ] Given ..., when ..., then ...
+        - [ ] The relevant failure case is handled ...
+        - [ ] Verification evidence demonstrates ...
     validations:
       required: true
   - type: textarea
     id: references
     attributes:
       label: References and dependencies
-      description: Relevant design, ADR, prerequisite issue or asset.
+      description: Relevant specification, ADR, prerequisite issues, assets and configuration. State which dependencies block which acceptance items; use None when there are none.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification plan
+      description: Applicable commands or user scenarios, expected evidence and environment. Do not assume application scripts exist or report future checks as passed.
+    validations:
+      required: true
+  - type: textarea
+    id: delivery
+    attributes:
+      label: Requested delivery scope
+      description: State the requested local or GitHub deliverable and existing authorization. Repository access alone does not authorize comments, merging, releases, publication or production changes.
+      placeholder: Local patch and evidence; or authorized task-branch push and scoped PR. List any separately requested remote action explicitly.
+    validations:
+      required: true

@@ -16,6 +16,7 @@ game-menu experience and the clan's Hell Let Loose heritage.
 | Implementation agent | [Detailed handoff](docs/handoff/claude-code-cloud.md) and [AGENTS.md](AGENTS.md) |
 | Product/design | [Brief](docs/product/brief.md), [visual specification](docs/design/visual-spec.md), [screen map](docs/design/screen-map.md) |
 | Engineering | [Architecture](docs/architecture/overview.md), [data model](docs/architecture/data-model.md), [auth/RBAC](docs/security/auth-rbac.md) |
+| Agent execution | [Skill catalog](docs/engineering/skills.md), [task workflow](docs/engineering/agent-workflow.md), [verification](docs/engineering/verification-workflow.md) |
 | Delivery | [Implementation plan](docs/implementation/plan.md), [backlog](docs/implementation/github-backlog.md), [deployment](docs/operations/deployment.md) |
 | Current evidence | [Status](docs/STATUS.md) |
 
@@ -48,10 +49,12 @@ docs/security/        Authentication and capability policy
 docs/research/        Dated legacy-site and local-media inventories
 docs/handoff/         Claude Cloud brief and copy-ready starting prompt
 docs/implementation/  Milestones, backlog and verification requirements
+docs/engineering/     Agent, FE/BE, migration, GitHub and release procedures
 docs/operations/      Release and rollback contract
 infra/                Sanitized deployment examples
 scripts/              Executable foundation checks
 .github/              CI, publication gate, ownership and contribution templates
+.claude/skills/       Eight repository-owned skills for Claude Cloud and other agents
 ```
 
 ## Verify the foundation
@@ -60,6 +63,7 @@ With Node 24 and Git available, from the repository root:
 
 ```sh
 node scripts/check-foundation.mjs
+node --test scripts/tests/*.test.mjs
 node scripts/check-commit-attribution.mjs
 ```
 

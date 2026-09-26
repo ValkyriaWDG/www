@@ -13,6 +13,14 @@ First read `AGENTS.md`, `CLAUDE.md`, `docs/STATUS.md`, and the complete
 reference images in `docs/design/references/`, especially `09-main-menu.jpg`,
 `13-server-browser.jpg`, `12-scoreboard.jpg`, and `assets/brand/valkyria-logo.png`.
 
+This project uses fully agentic development. Read `docs/engineering/skills.md` and
+use the committed `.claude/skills/valkyria-delivery/SKILL.md` to orchestrate the work.
+Load the relevant frontend, backend, auth, database, GitHub and verification skills
+for each slice. Use release procedures when preparing release evidence; they do not
+authorize publication or deployment. Coordinate bounded agents when useful, preserve
+shared-file ownership and leave a durable checkpoint. If slash commands are unavailable,
+read the skill files directly. Do not depend on personal plugins or the owner's machine.
+
 Fixed requirements:
 
 - English-only public and admin interface. Canonical domain: https://valkyriawdg.cz.
