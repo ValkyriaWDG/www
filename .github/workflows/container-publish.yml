@@ -57,9 +57,21 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ${{ vars.DOCKERHUB_IMAGE }}:sha-${{ github.sha }}
+          build-args: SOURCE_REVISION=${{ github.sha }}
           provenance: mode=min
           sbom: true
-      - name: Record image digest
+      - name: Verify published digest and accepted source revision
+        shell: bash
         env:
+          IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE }}
           IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
-        run: echo "Published digest $IMAGE_DIGEST; no deployment or mutable production tag was performed." >> "$GITHUB_STEP_SUMMARY"
+          SOURCE_SHA: ${{ github.sha }}
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$SOURCE_SHA" = "$EXPECTED_SHA"
+          docker pull "$IMAGE_NAME@$IMAGE_DIGEST"
+          test "$(docker image inspect "$IMAGE_NAME@$IMAGE_DIGEST" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')" = "$SOURCE_SHA"
+          printf 'Verified published image %s@%s from accepted revision %s. No deployment or mutable production tag was performed.\n' "$IMAGE_NAME" "$IMAGE_DIGEST" "$SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
