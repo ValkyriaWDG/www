@@ -43,10 +43,12 @@ test.describe('menu shell: navigation and language', () => {
     await expect(current).toHaveText(/Čeština – aktuální jazyk/);
     const english = group.getByRole('link', { name: 'Přepnout na angličtinu (English)' });
     await expect(english).toBeVisible();
-    const href = await english.getAttribute('href');
-    expect(href).toMatch(/^\/api\/locale-switch\?to=en&from=%2Fcs%2Fmatches/);
-    const from = new URL(href!, 'http://x').searchParams.get('from');
-    expect(from).toBe('/cs/matches?game=wardogs&status=upcoming');
+    // The server-rendered fallback has no query (useSearchParams suspends); the filters
+    // join the link after hydration, so poll instead of reading the attribute once.
+    await expect(english).toHaveAttribute('href', /^\/api\/locale-switch\?to=en&from=%2Fcs%2Fmatches/);
+    await expect
+      .poll(async () => new URL((await english.getAttribute('href'))!, 'http://x').searchParams.get('from'))
+      .toBe('/cs/matches?game=wardogs&status=upcoming');
     const box = await english.boundingBox();
     expect(box?.height ?? 0).toBeGreaterThanOrEqual(42);
     expect(box?.width ?? 0).toBeGreaterThanOrEqual(44);
