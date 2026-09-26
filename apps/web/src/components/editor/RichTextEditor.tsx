@@ -1,6 +1,7 @@
 'use client';
 
 import type { JSONContent } from '@tiptap/core';
+import { TextSelection } from '@tiptap/pm/state';
 import { EditorContent, ReactNodeViewRenderer, useEditor, useEditorState, type Editor } from '@tiptap/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
@@ -280,7 +281,19 @@ function LinkPanel({ editor, onClose }: { editor: Editor; onClose: () => void })
       setInvalid(true);
       return;
     }
-    editor.chain().focus().extendMarkRange('link').setLink({ href: value }).run();
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .setLink({ href: value })
+      // Continue after the link, not inside it: the next keystroke must neither replace the
+      // still-selected linked text nor extend the (inclusive) link mark.
+      .command(({ tr }) => {
+        tr.setSelection(TextSelection.create(tr.doc, tr.selection.to));
+        return true;
+      })
+      .unsetMark('link')
+      .run();
     onClose();
   };
 

@@ -68,7 +68,10 @@ test('an editor creates a formatted post with cover and inline image, saves, rel
   await page.getByRole('button', { name: 'Odkaz', exact: true }).click();
   await page.getByLabel('Adresa odkazu').fill('https://example.com/vysledky');
   await page.keyboard.press('Enter');
-  await page.keyboard.press('End');
+  // The panel closes and focus returns to the editor on the next frame, caret after the link.
+  await expect(page.getByLabel('Adresa odkazu')).toBeHidden();
+  await expect(body).toBeFocused();
+  await expect(body.locator('a[href="https://example.com/vysledky"]')).toHaveText('Výsledky');
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Odrážkový seznam' }).click();
   await page.keyboard.type('První kolo');
