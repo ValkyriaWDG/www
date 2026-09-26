@@ -68,8 +68,11 @@ unrelated parent-workspace instructions, production configuration or private pro
 
 You run in a cloud Git checkout. You do not have the owner's PC, Steam install,
 local credentials, DockerHub secrets, Discord application or production host access.
-All required visual references are committed. The converted video is **not supplied
-yet**; candidate Bink files were inventoried locally, not extracted or shipped.
+All required visual references are committed. The owner's AVI has now been encoded
+into a [verified media bundle](../assets/background-media-2026-09-26.md). Obtain the
+ZIP through the recorded transfer channel and follow the
+[media integration handoff](background-media-integration.md). The original AVI and
+Bink files are not shipped; a local path or inaccessible draft asset is not cloud access.
 
 Inspect the checkout and current branch, working tree and status before changes.
 Use the task's provided branch or a scoped implementation branch. Never overwrite

@@ -1,6 +1,10 @@
 # Background video delivery
 
-Status: specification only; no AVI export or web video has been received or encoded. The owner is preparing an AVI with RAD Video Tools. See [the local inventory](../research/wardogs-local-assets.md) for candidate source files.
+Status: the owner's AVI has now been encoded and verified locally. Use the
+[2026-09-26 delivery](background-media-2026-09-26.md) and
+[external manifest](../../assets/background-media.json) for the actual 1080p/720p
+MP4, 1080p WebM, poster and source-index findings. This page remains the general
+pipeline. Cloud application integration and production media hosting are separate.
 
 ## Delivery contract
 

@@ -10,6 +10,9 @@ Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
 - Detailed game-menu visual specification, screen map, 13 reference captures and exact logo.
 - Architecture, domain model, Discord/local-admin access contract and release plan.
 - Legacy site research and read-only local Wardogs media inventory.
+- [Actual background media delivery](assets/background-media-2026-09-26.md): 15-second
+  silent 1080p/720p MP4, smaller 1080p WebM and WebP poster, with full SHA-256,
+  native-browser playback proof and a [cloud integration handoff](handoff/background-media-integration.md).
 - Claude Cloud detailed handoff and copy-ready prompt.
 - Foundation CI and gated future application/container publication workflows.
 - Explicit [news/blog visual-editor and match-authoring requirements](product/editorial-and-matches.md),
@@ -23,10 +26,12 @@ Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
 
 ## Not implemented
 
-Website application, real database schema/migrations, login, role sync, admin UI,
-match coordination, Dockerfile/runtime image and live deployment. The final background
-video is still pending owner delivery. Source video identity/animation was not decoded
-or verified by the inventory.
+This foundation branch does not contain the website application, database migrations,
+login, role sync, admin UI, match coordination or runtime image. Application work is
+independently tracked in [PR #19](https://github.com/ValkyriaWDG/www/pull/19).
+The actual background derivatives are prepared; cloud integration and production
+media hosting remain unverified here. The earlier inventory was not a decode;
+the media delivery now records source-frame inspection and complete derivative decoding.
 
 ## Verification
 
@@ -48,6 +53,12 @@ or verified by the inventory.
 
 No application/container/live checks are claimed by this document.
 
+For the media delivery, all three videos passed full FFmpeg decoding and native
+Chromium playback, pause/resume and the primary MP4's three natural loops. Hashes,
+metadata, faststart layout and real viewer screenshots are recorded in the
+[media evidence](evidence/background-media-2026-09-26/README.md). This standalone
+viewer does not establish application reduced-motion, navigation or mobile UX.
+
 ## GitHub preparation
 
 Description, target homepage, topics, four milestones and [eight open implementation
@@ -62,7 +73,8 @@ after checks without approving their own PR. Latest checks remain visible in
 
 ## Next action
 
-Start Claude Code Cloud against main using [the starting prompt](handoff/start-prompt.md).
-Implement [M1–M3](implementation/plan.md), then handle the secondary match-management
-milestone separately. Supply approved web media and Discord/registry configuration
-through private environment channels when live integration is due.
+Continue the existing Claude application task using [the media integration handoff](handoff/background-media-integration.md)
+and the verified ZIP. Preserve its current branch and changes. Finish [M1–M3](implementation/plan.md),
+then handle secondary match management separately. Discord/registry configuration and
+production media hosting remain separate operator inputs. The media documentation PR
+does not merge or deploy the application.

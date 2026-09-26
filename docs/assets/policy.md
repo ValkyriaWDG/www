@@ -35,8 +35,10 @@ Do not promote gameplay statistics as official clan statistics.
 ## Cloud media handover
 
 The cloud agent receives committed reference images but cannot read a Steam folder
-on the owner's PC. Video is still pending at foundation time. Use the
-[video pipeline](video-pipeline.md) and [local inventory](../research/wardogs-local-assets.md).
+on the owner's PC. Web derivatives are prepared in the
+[2026-09-26 delivery](background-media-2026-09-26.md); transfer access must still be
+established for each cloud task. Use the [video pipeline](video-pipeline.md) and
+[local inventory](../research/wardogs-local-assets.md).
 Owner delivery should include the approved MP4/WebM/poster, stable download location
 accessible to the task, SHA-256, file metadata and usage approval/provenance.
 Do not commit expiring signed URLs or access tokens. Do not claim a final background

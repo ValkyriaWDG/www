@@ -23,6 +23,8 @@ test-results/
 .local/
 assets/incoming/
 assets/private/
+# Verified cloud-preview derivatives, including the poster (delivered outside Git)
+apps/web/public/media/background/
 *.avi
 *.bk2
 *.bik

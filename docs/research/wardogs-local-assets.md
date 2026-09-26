@@ -2,6 +2,10 @@
 
 Recorded: 2026-09-26. Scope: read-only file inventory of the owner's installed game, including loose files and archive filenames. Paths below are relative to the game installation, not to this repository.
 
+Follow-up: an AVI supplied later from outside the game installation was decoded and
+converted. See the [verified media delivery](../assets/background-media-2026-09-26.md).
+The inventory below remains a record of the original file-only inspection.
+
 ## Useful candidates
 
 All filenames in this table begin with `Wardogs/Content/Binks/`.

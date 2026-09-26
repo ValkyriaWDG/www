@@ -155,6 +155,39 @@
       "bytes": 139901,
       "width": 733,
       "height": 811
+    },
+    {
+      "id": "media-proof-media-qa-1920x1080",
+      "path": "docs/evidence/background-media-2026-09-26/media-qa-1920x1080.png",
+      "source": "Actual encoded Wardogs media: Chromium QA capture or FFmpeg seam contact sheet, 2026-09-26",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party game imagery; excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "d220d5593cb717087760eea8d974d653a7e5b8d5f97f269ff10b085a478fe306",
+      "bytes": 1160449,
+      "width": 1920,
+      "height": 1139
+    },
+    {
+      "id": "media-proof-media-qa-390x844",
+      "path": "docs/evidence/background-media-2026-09-26/media-qa-390x844.png",
+      "source": "Actual encoded Wardogs media: Chromium QA capture or FFmpeg seam contact sheet, 2026-09-26",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party game imagery; excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "184fd43ff7a2baebfcdf65f805e42dc8c1496015251399fb49072da4c70f60a9",
+      "bytes": 131023,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "media-proof-seam-contact",
+      "path": "docs/evidence/background-media-2026-09-26/seam-contact.jpg",
+      "source": "Actual encoded Wardogs media: Chromium QA capture or FFmpeg seam contact sheet, 2026-09-26",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party game imagery; excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "327df8110b2b8f2fb65805357f0fc58de37e4120481e59abee67a31bec78193e",
+      "bytes": 135157,
+      "width": 1920,
+      "height": 1080
     }
   ]
 }

@@ -1,6 +1,8 @@
 # Paste into Claude Code Cloud
 
 Use the following prompt with repository **ValkyriaWDG/www**, starting from **main**.
+For an already-running implementation, keep its current branch and use the
+[media integration handoff](background-media-integration.md); do not restart work.
 
 ---
 
@@ -46,9 +48,10 @@ Fixed requirements:
   bespoke CSS tokens/modules. Resolve and pin compatible versions during bootstrap.
 - Follow the security, data, accessibility, media and Docker contracts in the handoff.
   Match/roster organization is secondary, after the public website and web admin work.
-- This is a cloud checkout: no access to the owner's PC or production secrets. The final
-  background video is pending; finish the media component with its safe fallback and
-  report final-video verification separately. Do not invent clan records or integration success.
+- This is a cloud checkout: no access to the owner's PC or production secrets. Actual
+  background derivatives are prepared; read `docs/assets/background-media-2026-09-26.md`
+  and obtain the ZIP through its recorded channel. Preserve the safe fallback and verify
+  the real media separately. Do not invent clan records or integration success.
 
 Execute M1–M3 in `docs/implementation/plan.md` in reviewable increments. Prove the visual
 shell with screenshots early, then finish the real routes, database, auth and admin.

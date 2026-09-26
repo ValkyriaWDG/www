@@ -1,0 +1,99 @@
+{
+  "recordedAt": "2026-09-26T13:43:17.529Z",
+  "tool": "FFmpeg/ffprobe 9.0.2",
+  "completeDecode": "All three files decoded by ffmpeg -v error -xerror -i INPUT -f null NUL with exit 0; ffprobe -count_frames counted 450 each.",
+  "results": [
+    {
+      "filename": "wardogs-menu-1080p-557223e28449.mp4",
+      "sha256": "557223e2844910c73614c0b0772bab5df1e3e9349d9b381c7f9c0b2d20b0153e",
+      "bytes": 3957214,
+      "codec": "h264",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 15,
+      "decodedFrames": 450,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 5299
+        },
+        {
+          "type": "free",
+          "offset": 5331,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 5339,
+          "bytes": 3951875
+        }
+      ],
+      "checks": "passed"
+    },
+    {
+      "filename": "wardogs-menu-720p-4976aeadb297.mp4",
+      "sha256": "4976aeadb297853a5353b36c3a7a6acae6ef2df0c97bd684eec19f164c084e9b",
+      "bytes": 1068473,
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "durationSeconds": 15,
+      "decodedFrames": 450,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 5177
+        },
+        {
+          "type": "free",
+          "offset": 5209,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 5217,
+          "bytes": 1063256
+        }
+      ],
+      "checks": "passed"
+    },
+    {
+      "filename": "wardogs-menu-1080p-865e3f2e8b52.webm",
+      "sha256": "865e3f2e8b52dc8845e847b9ea6f1891a5fd4b6e78afda591e2d0a6f090e25ac",
+      "bytes": 1708459,
+      "codec": "vp9",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 15,
+      "decodedFrames": 450,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "checks": "passed"
+    },
+    {
+      "filename": "wardogs-menu-poster-64b3059d7225.webp",
+      "sha256": "64b3059d72256dde3b8fe483d1a8b2079c05ce4c98217db96a29952196375366",
+      "bytes": 182728,
+      "hashAndSize": "passed"
+    }
+  ]
+}
