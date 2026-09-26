@@ -1,6 +1,8 @@
 # Contributing
 
 Read [AGENTS.md](AGENTS.md). Open an issue for a material scope or architecture change.
+Use [the repository skills](docs/engineering/skills.md) and
+[GitHub workflow](docs/engineering/github-workflow.md) for agent-delivered work.
 Use `feat/`, `fix/`, `docs/` or `chore/` branches and conventional commit subjects.
 Keep one reviewable purpose per pull request. Link the issue, state the behavior,
 include relevant screenshots and exact verification results.

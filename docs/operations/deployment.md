@@ -10,7 +10,9 @@ built, registry configured, server changed or domain deployed by this foundation
 2. Merge to protected main: rerun CI against the merged revision.
 3. Explicit publication: `Publish container` workflow on main, gated by
    `CONTAINER_PUBLISH_ENABLED=true`, registry configuration and the `container-publish`
-   environment. It reruns CI, then builds an immutable `sha-<full commit>` image.
+   environment. Supply `expected_sha` as the full accepted main revision. It reruns CI,
+   rejects a different workflow SHA before registry login, then builds an immutable
+   `sha-<full commit>` image.
 4. Operator verifies digest, migrations and rollback, then deploys the exact image.
 5. Prove public routes, requested login/admin behavior, logs and monitoring after deployment.
 
@@ -23,6 +25,7 @@ pretend the scaffold's green foundation check is a container build or live deplo
 | Item | Value / source |
 |---|---|
 | Repository variable `CONTAINER_PUBLISH_ENABLED` | `false` until first release readiness review |
+| Workflow input `expected_sha` | Full accepted main revision; must equal the immutable workflow SHA |
 | Repository/environment variable `DOCKERHUB_IMAGE` | Operator-selected existing private `namespace/repository` |
 | Environment secret `DOCKERHUB_USERNAME` | Registry username; no live value in source |
 | Environment secret `DOCKERHUB_TOKEN` | Least-privilege registry token |

@@ -2,6 +2,11 @@ name: Publish container
 
 on:
   workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Accepted full main commit SHA to publish
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -24,6 +29,13 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - name: Require the accepted revision before registry access
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: node scripts/check-release-revision.mjs
       - name: Require real implementation and registry configuration
         env:
           IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE }}
