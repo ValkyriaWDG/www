@@ -6,6 +6,11 @@ const M = FIXTURE_SLUGS.matches;
 /** A 0:0 score (with or without spaces) that is not part of a time such as 20:00. */
 const ZERO_ZERO = /(^|\D)0\s?:\s?0(\D|$)/;
 const rowOf = (page: Page, slug: string) => page.locator('[data-match-table] tbody tr').filter({ has: page.locator(`a[href*="/matches/${slug}"]`) });
+/** The number in a tab label such as `Výsledky (4)`. Other suites may publish extra matches concurrently. */
+const labelCount = async (page: Page, name: RegExp) => {
+  const text = await page.getByRole('navigation', { name: 'Seznamy zápasů' }).getByRole('link', { name }).textContent();
+  return Number(/\((\d+)\)/.exec(text ?? '')?.[1] ?? Number.NaN);
+};
 
 test.describe('public matches: lists', () => {
   test.use({ viewport: { width: 1920, height: 1080 } });
@@ -14,8 +19,10 @@ test.describe('public matches: lists', () => {
     await page.goto('/cs/matches');
     await expect(page.getByRole('heading', { level: 1, name: 'Zápasy' })).toBeVisible();
     const tabs = page.getByRole('navigation', { name: 'Seznamy zápasů' });
-    await expect(tabs.getByRole('link', { name: 'Nadcházející (2)' })).toHaveAttribute('aria-current', 'page');
-    await expect(page.locator('[data-match-table="upcoming"] tbody tr')).toHaveCount(2);
+    await expect(tabs.getByRole('link', { name: /^Nadcházející \(\d+\)$/ })).toHaveAttribute('aria-current', 'page');
+    const upcomingCount = await labelCount(page, /^Nadcházející \(\d+\)$/);
+    expect(upcomingCount).toBeGreaterThanOrEqual(2);
+    await expect(page.locator('[data-match-table="upcoming"] tbody tr')).toHaveCount(upcomingCount);
     await expect(rowOf(page, M.upcoming)).toHaveCount(1);
     await expect(rowOf(page, M.postponed)).toHaveCount(1);
     for (const slug of [M.completedVerified, M.completedUnknown, M.cancelled, M.hllHistorical, M.draft]) {
@@ -24,9 +31,11 @@ test.describe('public matches: lists', () => {
     // Upcoming fixtures never show a result, let alone 0:0.
     await expect(page.locator('[data-match-table]')).not.toContainText(/\d\s:\s\d/);
 
-    await tabs.getByRole('link', { name: 'Výsledky (4)' }).click();
+    await tabs.getByRole('link', { name: /^Výsledky \(\d+\)$/ }).click();
     await expect(page).toHaveURL(/\/cs\/matches\?view=results$/);
-    await expect(page.locator('[data-match-table="results"] tbody tr')).toHaveCount(4);
+    const resultCount = await labelCount(page, /^Výsledky \(\d+\)$/);
+    expect(resultCount).toBeGreaterThanOrEqual(4);
+    await expect(page.locator('[data-match-table="results"] tbody tr')).toHaveCount(resultCount);
     for (const slug of [M.completedVerified, M.completedUnknown, M.cancelled, M.hllHistorical]) await expect(rowOf(page, slug)).toHaveCount(1);
     await expect(page.locator(`a[href*="/matches/${M.upcoming}"]`)).toHaveCount(0);
     await page.goBack();
@@ -62,9 +71,10 @@ test.describe('public matches: lists', () => {
     await page.goto('/cs/matches?view=results');
     await page.locator('[data-filter="game:hell-let-loose"]').click();
     await expect(page).toHaveURL(/\/cs\/matches\?view=results&game=hell-let-loose$/);
-    await expect(page.locator('[data-match-table] tbody tr')).toHaveCount(1);
     await expect(rowOf(page, M.hllHistorical)).toContainText('3 : 2');
-    await expect(page.getByRole('navigation', { name: 'Seznamy zápasů' }).getByRole('link', { name: 'Výsledky (1)' })).toBeVisible();
+    const hllCount = await labelCount(page, /^Výsledky \(\d+\)$/);
+    await expect(page.locator('[data-match-table] tbody tr')).toHaveCount(hllCount);
+    for (const slug of [M.completedVerified, M.completedUnknown, M.cancelled]) await expect(rowOf(page, slug)).toHaveCount(0);
 
     await page.getByRole('searchbox', { name: 'Hledat soupeře a soutěže' }).fill('neexistujici souper');
     await page.getByRole('button', { name: 'Hledat' }).click();
@@ -74,8 +84,8 @@ test.describe('public matches: lists', () => {
     await expect(page.locator('[data-clear-filters]')).toHaveAttribute('href', '/cs/matches?view=results');
 
     await page.goto('/cs/matches?view=results&q=delta');
-    await expect(page.locator('[data-match-table] tbody tr')).toHaveCount(1);
     await expect(rowOf(page, M.completedVerified)).toHaveCount(1);
+    for (const row of await page.locator('[data-match-table] tbody tr').all()) await expect(row).toContainText(/delta/i);
 
     // Wardogs fixtures exist, so an empty HLL upcoming list is a filter result, not "no fixtures".
     await page.goto('/cs/matches?game=hell-let-loose');
@@ -101,8 +111,10 @@ test.describe('public matches: lists', () => {
       return { style: style.outlineStyle, width: style.outlineWidth, position: style.position };
     });
     expect(ring).toEqual({ style: 'solid', width: '2px', position: 'absolute' });
+    const href = await focused.getAttribute('href');
+    expect(href).toMatch(/^\/cs\/matches\/[a-z0-9-]+$/);
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/cs\/matches\/ukazka-/);
+    await expect(page).toHaveURL(new RegExp(`${href}$`));
   });
 });
 
