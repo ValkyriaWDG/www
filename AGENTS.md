@@ -2,7 +2,7 @@
 
 ## Scope and source of truth
 
-This public repository belongs to Valkyria. Build an English-only clan website for
+This public repository belongs to Valkyria. Build a Czech-first bilingual (Czech/English) clan website for
 `https://valkyriawdg.cz`, with a Wardogs main-menu presentation and an HLL heritage.
 The initial commit series is a **foundation and implementation handoff**, not a working app.
 
@@ -11,6 +11,8 @@ Read, in order:
 1. [README.md](README.md) and [docs/STATUS.md](docs/STATUS.md).
 2. [Product brief](docs/product/brief.md) and [architecture](docs/architecture/overview.md).
    Include the required [editorial and match workflows](docs/product/editorial-and-matches.md).
+   Follow [localization](docs/product/localization.md): Czech defaults, Czech/UK flag
+   switcher, localized UI/CMS; code, docs, GitHub prose and AI prompts stay English.
 3. [Visual specification](docs/design/visual-spec.md), [screen map](docs/design/screen-map.md),
    and the actual reference images under `docs/design/references/`.
 4. [Authentication and authorization](docs/security/auth-rbac.md).

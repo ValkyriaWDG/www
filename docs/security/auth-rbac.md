@@ -14,6 +14,13 @@ role reads. Explicitly configure callback URLs for localhost and
 Validate state, redirect URI and session/cookie protections; use PKCE where supported
 by the provider/library. Untrusted return URLs must not permit open redirects.
 
+UI routes are localized under `/cs` and `/en`; the callback and `/api/*` remain
+unprefixed. Follow [localization](../product/localization.md): validate locale and
+same-origin return paths, retain the intended safe locale through login/MFA, and
+apply identical policy to both route variants. Language never grants capabilities or
+changes session identity. Test direct protected requests in both locales; translate
+safe UI errors without exposing raw provider messages or weakening cache boundaries.
+
 Better Auth may require an email-shaped identifier even when Discord supplies none.
 Implement and test the documented provider profile mapping with a stable provider-ID
 alias such as `discord-<subject>@accounts.invalid`, mark it unverified, and never use

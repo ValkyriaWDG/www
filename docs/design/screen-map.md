@@ -1,14 +1,17 @@
 # Valkyria screen and interaction map
 
-Status: proposed implementation contract for the cloud agent. Public and administration UI copy is English only. Route slugs, documentation and code identifiers use English. The production domain is `valkyriawdg.cz`. Do not add a language switcher or an i18n implementation phase. Labels below are working copy, not invented clan facts.
+Status: proposed implementation contract for the cloud agent. The website is Czech-first and bilingual (`cs` / `en`), including account/admin UI, validation and accessible labels. Code identifiers, system route segments, documentation, AI prompts and GitHub descriptions remain English. The production domain is `valkyriawdg.cz`. Follow the canonical [localization contract](../product/localization.md). English labels below are logical label examples with Czech/English translations, not a requirement to display English on Czech pages.
+
+All public/account/admin UI routes carry `/cs` or `/en`. Except for explicit `/{locale}` or bare-root entries, unprefixed routes below are logical suffixes: `/news` means `/cs/news` and `/en/news`, and `/admin/news/new` means `/cs/admin/news/new` and `/en/admin/news/new`. The URL determines the locale; do not translate English system segments. `/api/auth`, health and static-asset routes stay unprefixed. Bare `/` always returns HTTP 307 to `/cs`, without browser-language detection or a locale cookie. Unprefixed known UI suffixes return HTTP 307 to their Czech counterpart, retaining only safe supported query parameters; unsupported explicit locales return 404.
 
 The site has three zones: public clan presentation, the signed-in member's account, and restricted administration. News/blog is a primary public and administrative requirement. First-release M2 administration includes visual post authoring and creating, scheduling and managing matches. Only private lineup, availability and squad coordination remains later M4 scope. Authentication and authorization are real security boundaries, not just different navigation menus. Follow [Editorial and match management](../product/editorial-and-matches.md) as the canonical feature contract.
 
 ## 1. Primary route map
 
-| Route | English page/menu label | Audience | Purpose and initial priority |
+| Route or logical suffix | English label reference | Audience | Purpose and initial priority |
 | --- | --- | --- | --- |
-| `/` | Main menu | Everyone | Cinematic entry and Discord CTA; first priority |
+| `/` | Root redirect | Everyone | Deterministic HTTP 307 to `/cs`; no browser-language negotiation |
+| `/{locale}` | Main menu | Everyone | `/cs` or `/en`; cinematic entry and Discord CTA; first priority |
 | `/clan` | Clan | Everyone | Verified clan story, Wardogs direction, HLL heritage, values and recruitment summary |
 | `/members` | Members | Everyone | Published member directory; game/role filters where justified by real data |
 | `/members/[slug]` | Member profile | Everyone | Public profile projection; meaningful direct URL |
@@ -41,7 +44,8 @@ Do not create nonfunctional menu entries simply because this map includes a late
 
 ```mermaid
 flowchart LR
-    Home["Main menu /"] --> Clan["Clan /clan"]
+    Root["Bare /"] -->|"HTTP 307"| Default["Czech home /cs"]
+    Home["Localized home /{locale}"] --> Clan["Clan /clan suffix"]
     Home --> Members["Members /members"]
     Home --> Matches["Matches /matches"]
     Home --> Community["Community /community"]
@@ -57,15 +61,18 @@ flowchart LR
     Admin -->|"later phase"| Lineup["Private rosters"]
 ```
 
-- Top navigation uses five public anchors: `MAIN MENU`, `NEWS`, `CLAN`, `MEMBERS`, `MATCHES`. `NEWS` is primary navigation on desktop and in the mobile navigation menu; a utility icon alone is insufficient. An account action is right aligned. Community/Discord remains prominent in the home CTA and utility area.
-- Brand mark always links to `/`. Subpages show a real breadcrumb/back control with an understandable destination; do not rely only on browser history because a visitor may arrive directly.
+- Top navigation uses five localized public anchors: English `MAIN MENU`, `NEWS`, `CLAN`, `MEMBERS`, `MATCHES`; Czech `HLAVNÍ MENU`, `NOVINKY`, `KLAN`, `ČLENOVÉ`, `ZÁPASY`. News is primary navigation on desktop and in the mobile navigation menu; a utility icon alone is insufficient. The account action is `PŘIHLÁSIT SE` / `SIGN IN`. Community/Discord remains prominent in the home CTA and utility area.
+- Brand mark links to the active localized home (`/cs` or `/en`), preserving English visitors' explicit choice. Subpages show a localized breadcrumb/back control with a meaningful destination; do not rely only on browser history because a visitor may arrive directly.
+- Keep a Czech-flag/UK-flag language switcher visible in desktop and mobile navigation with `Čeština` / `English`, `CS` / `EN`, current-language indication, descriptive accessible names and keyboard/focus support. Flags alone are insufficient; see the [visual switcher contract](visual-spec.md#bilingual-navigation-and-language-switcher).
 - `/members?game=wardogs&role=...&q=...` and `/matches?game=wardogs&status=...` may hold non-sensitive shareable filter state. Use a small validated enum set. Do not put secret tokens, internal notes or private role IDs in URLs.
 - Browser back restores route/filter selection and sensible scroll position. Refreshing any detail URL returns the same meaningful page; static mocks must not be the only way to reach it.
 - In desktop list/detail layouts, selecting a row may update the canonical detail URL while retaining list context, or use an explicit accessible detail link. The implementation must choose one consistent pattern. Direct detail visits always render a standalone useful detail page, and mobile selection navigates to that page.
 - Do not model all public pages as dialogs. A modal is for a bounded action such as confirmation or a filter panel, not the clan article, full directory or result history.
 - External Discord navigation uses a validated HTTPS invitation. If opening a new tab, indicate it appropriately and use safe link attributes. Discord joining is independent from website sign-in.
-- A visible `HLL WEBSITE` link points to `https://valkyriahll.cz/` in the desktop and mobile utility/footer area, with contextual links on the clan and community pages. Identify it as an external destination. Use normal same-tab navigation unless a new tab is explicitly indicated; a new-tab link requires safe attributes. Do not silently redirect the old site or imply it has been replaced.
+- A visible `HLL WEB` / `HLL WEBSITE` link points to `https://valkyriahll.cz/` in the desktop and mobile utility/footer area, with contextual links on the clan and community pages. Identify it as an external destination. Use normal same-tab navigation unless a new tab is explicitly indicated; a new-tab link requires safe attributes. Do not silently redirect the old site or imply it has been replaced.
 - A successful sign-in returns to a validated same-origin intended path. An arbitrary `returnTo` query string must not become an open redirect.
+- Language switching preserves a safe logical route/entity and compatible filters. Resolve published localized slugs from entity identity. If a requested article translation is missing/unpublished, switch to the target localized news list with a localized notice and safe link to the source-language published article; never reveal a draft, silently serve the wrong language or auto-translate. A direct missing-translation route follows the canonical localization contract.
+- Guard UI-locale changes and content-locale changes when a form/editor has unsaved work. Saving or discarding must target the correct translation. UI locale does not change identity, grants, event time or content publication state. Date/number formatting is `cs-CZ` / `en-GB`, with `Europe/Prague` display time.
 
 ## 3. Screen: main menu
 
@@ -83,7 +90,7 @@ Reference: [09 Main menu](references/09-main-menu.jpg), adapted according to [vi
 
 **Mobile:** scene/poster remains visible behind compact controls; actions become part of normal flow; hamburger/disclosure replaces overcrowded top navigation; no requirement to swipe or rotate the device.
 
-**Acceptance:** reference-like composition at 2560 × 1440, readable English at 1920 × 1080, no cut-off controls at 390 × 844 or 320 × 568, pause preference persists across public navigation.
+**Acceptance:** reference-like composition at 2560 × 1440, readable Czech and English at 1920 × 1080, no cut-off controls or flag-only switcher at 390 × 844 or 320 × 568, pause preference persists across public navigation. Czech home remains the deterministic bare-root destination even for an English browser.
 
 ## 4. Screen: clan / about
 
@@ -96,6 +103,8 @@ Reference: [09 Main menu](references/09-main-menu.jpg), adapted according to [vi
 **Actions:** Discord join, member directory, match history, relevant news and an explicit `HLL WEBSITE` link to `https://valkyriahll.cz/` in the HLL-history context. Avoid every paragraph becoming a large panel; maintain a readable line length.
 
 **States:** draft content stays private; missing verified subsection is omitted rather than filled with generic assertions; unavailable decorative image does not hide text.
+
+**Translations:** both Czech and English versions of core static pages are required for launch. Language switching opens the approved counterpart; no silent source-language fallback substitutes for a missing launch translation.
 
 **Mobile:** a single column with natural heading anchors and normal page scroll.
 
@@ -125,6 +134,8 @@ Reference: [12 Scoreboard](references/12-scoreboard.jpg) for the directory's dat
 
 **Not found:** removed, private or unknown profiles use a consistent not-found response without confirming private membership.
 
+**Translations:** the member entity, approved name and shared game/role facts remain stable across locale changes. A missing biography translation has an explicit localized absence state under the canonical localization rules; never turn the other language's unpublished biography into fallback content.
+
 ## 6. Screens: matches and match detail
 
 Reference: [13 Server browser](references/13-server-browser.jpg). Preserve its functional filter/list/detail arrangement; replace server-specific semantics with real clan fixtures and results. Use the old website's public match overview as a content and information-order reference, as detailed in [Editorial and match management](../product/editorial-and-matches.md). This does not claim access to its private administration interface.
@@ -151,6 +162,8 @@ Reference: [13 Server browser](references/13-server-browser.jpg). Preserve its f
 
 **Unavailable/private match:** return an appropriate public not-found page, not an internal draft leak.
 
+**Translations:** game/fixture identity, start instant and result stay shared. Localized recaps/description may be absent with an explicit localized message; do not hide the real fixture or fabricate/auto-translate a recap. Preserve filters/entity on a valid locale switch.
+
 ## 7. Screen: community
 
 Reference: [11 Deploy](references/11-deploy.jpg) supports two large, square choices, but the content must be useful rather than imitating `OFFICIAL / COMMUNITY` labels.
@@ -167,9 +180,11 @@ News/blog is a primary public section, reached directly through the `NEWS` tab a
 
 **List:** title, cover/thumbnail, excerpt, publication date, approved author label and category/tags/game context from the canonical post model. Preserve a restrained row or image-panel treatment; avoid an infinite-scroll feed. Provide pagination and useful category/game/search filters. No posts means `No news has been published yet.` rather than generated filler.
 
-**Article:** ordinary deep link, semantic heading, publication/update metadata, readable English rich content, approved cover/inline images with alternative text/captions, and a back link. Supported tables and formatting follow the canonical editor schema. Long-form content scrolls naturally in a dark editorial frame. Show the approved public author label; do not expose internal account records. Related posts are useful only when genuine published content exists.
+**Article:** ordinary localized deep link, semantic heading, publication/update metadata, readable rich content in that published translation, approved cover/inline images with localized alternative text/captions, and a back link. Supported tables and formatting follow the canonical editor schema. Long-form content scrolls naturally in a dark editorial frame. Show the approved public author label; do not expose internal account records. Related posts are useful only when genuine published content exists in the active locale.
 
 **Publishing states:** draft, scheduled, published and archived according to the canonical CMS data model. Drafts, future-scheduled posts and previews must not leak through public URLs, metadata, feeds, API responses or search. Preview is authenticated/authorized and visibly marked. Public content is rendered through the approved rich-content schema and sanitization contract, external links are handled consistently, and missing media does not remove the article text. Failed publication scheduling is an admin-visible recoverable state, not a publicly visible half-published article.
+
+Each post has independently managed Czech/English translations and publication evidence. Public lists and metadata use published active-locale revisions only. The language switcher opens the other translation only when published; otherwise it opens the localized news list, explains that the translation is unavailable and offers an explicit source-language link to the published article. Do not publish another translation as a side effect, use draft titles/slugs as alternate links, or generate automatic translations.
 
 ## 9. Screens: sign-in and account
 
@@ -177,7 +192,7 @@ News/blog is a primary public section, reached directly through the `NEWS` tab a
 
 **Layout:** centered compact charcoal panel over the darkened scene; primary `CONTINUE WITH DISCORD` action; brief explanation of the purpose of authentication and access to privacy information. Keep the flow free of video dependence.
 
-**States:** ready, redirecting, callback processing, cancelled consent, invalid/expired callback, provider unavailable and signed in. Use a specific understandable English message and retry path. Never display raw OAuth parameters or provider error payloads containing sensitive details.
+**States:** ready, redirecting, callback processing, cancelled consent, invalid/expired callback, provider unavailable and signed in. Use a specific understandable message in the active UI locale and a retry path. Never display raw OAuth parameters or provider error payloads containing sensitive details. Preserve the validated localized return route while the auth callback/API path remains unprefixed.
 
 **Flow:** public presentation needs no login. Signing in identifies the user; it does not by itself grant staff privileges or publish their profile. Membership and permissions are validated by the server according to the architecture.
 
@@ -195,6 +210,8 @@ News/blog is a primary public section, reached directly through the `NEWS` tab a
 
 Administration is implemented after the public visual foundation. It uses the same brand but a static dark backdrop and clear forms. Its navigation only lists tools the user can actually use; direct requests remain independently checked.
 
+All administration chrome, editor tools, validation/errors, confirmation dialogs and save/publication status labels support Czech and English. Interface language is separate from the content translation being edited. Prefix every admin UI suffix with the active locale; never localize server capability identifiers or API/auth routes.
+
 ### Overview
 
 Show actionable real information: own permitted modules, relevant unpublished content or upcoming fixtures if available. Do not invent dashboard charts or performance metrics. Loading and lack of data are explicit.
@@ -208,6 +225,8 @@ Use the exact rich-content, autosave, revision and publication rules in [Editori
 Cover selection and inline-image insertion open the media picker. Show the distinction between a cover and body content, and support alternative text and captions without opening source markup. The image picker can upload or select media only when the actor has the corresponding capability. Never treat access to the editor as an implicit grant to manage global media settings.
 
 Show real save state: dirty, autosaving, draft saved, failure, expired session and revision conflict. An autosave cannot publish content accidentally; editing a live post must not silently replace the published version. Support visible revision history and restoring a revision into an editable draft, authenticated preview, immediate publication/update, scheduled publication with explicit timezone, cancellation of a schedule and unpublishing according to the canonical contract. Never silently overwrite another editor's changes. Pending actions prevent duplicate submissions and keep labels understandable.
+
+Provide separate Czech/English content tabs with per-translation draft/published/scheduled state. Title, slug, body, excerpt, metadata, alt text/captions, revisions, preview and publishing follow the selected content translation. Display both the interface locale and edited locale clearly. A Czech interface may edit English content without switching the chrome. Guard tab/interface switches with unsaved changes, never cross-save translations, and keep live revisions and schedules independent.
 
 Desktop uses a wide writing canvas and a narrower document/publication panel. Mobile stacks these regions or exposes an accessible document-panel disclosure without hiding save/preview controls. A sticky toolbar cannot obscure selected text, focused fields or error messages. Preview uses the real public article renderer and a prominent unpublished-preview indication.
 
@@ -276,7 +295,7 @@ This phase does not implicitly include Discord messaging, calendar invitations, 
 
 1. Build the public shell, route skeleton and deterministic preview state; compare the home composition against reference 09 before extending components across every page.
 2. Implement clan/community/news content and member/match list/detail views with verified fixtures or unmistakably labelled development fixtures. Validate all public routes without authentication.
-3. Verify responsive layouts, keyboard behavior, background fallback, reduced motion and real browser screenshots described in [visual-spec.md](visual-spec.md).
+3. Verify both locales' routing, translation boundaries, Czech font glyphs, desktop/mobile switcher, unsaved-draft guard, responsive layouts, keyboard behavior, background fallback and reduced motion with real browser screenshots described in [visual-spec.md](visual-spec.md).
 4. Add persistent content and Discord authentication/RBAC according to the repository architecture. Replace all preview facts with verified publication-ready data or honest empty states.
 5. Complete M2 visual news/page editing, media management, autosave/revisions/preview/publication scheduling and match creation/scheduling/results administration, plus the permitted member/settings/audit screens. Test direct endpoint/route requests as well as UI navigation; editor capabilities do not imply match or global-settings authority.
 6. Implement the secondary private lineup workflow only after the preceding delivery is useful and accepted against its requirements.

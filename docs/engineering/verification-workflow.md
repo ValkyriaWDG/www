@@ -26,7 +26,7 @@ Use an isolated synthetic PostgreSQL database for integration/migration checks.
 |---|---|
 | Prose or skill routing | Foundation links/hygiene and skill structure; scenario review for risky procedures |
 | Foundation validation or release guard | Positive and negative fixtures proving the invariant; foundation test runner |
-| UI/style | Build/typecheck plus affected browser journey, inspected desktop/mobile screenshots and keyboard behavior |
+| UI/style | Build/typecheck plus affected Czech/English browser journey, inspected desktop/mobile screenshots and keyboard behavior |
 | Domain operation | Business rule tests and real PostgreSQL transaction/constraint cases where persistence matters |
 | Permissions/session | Direct server requests for allowed/denied, stale/revoked, wrong owner/scope and outage paths |
 | Editor/media/publication | Private/public boundary, schema validation, malicious content, concurrent save and scheduling retry cases |

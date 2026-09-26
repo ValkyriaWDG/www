@@ -2,7 +2,9 @@
 
 Status: implementation brief for Claude Code Cloud. This document specifies the target; it is not evidence that a website, animation, or accessibility audit already exists.
 
-The site at `valkyriawdg.cz` is English only, including public pages, administration, errors, navigation and accessibility labels. Member names and source material may contain international characters. There is no language-switcher or localization phase in this brief.
+The site at `valkyriawdg.cz` is Czech-first and bilingual (`cs` / `en`), including public pages, administration, validation, errors and accessibility labels. Code, identifiers, repository documentation, AI prompts and GitHub descriptions remain English. Follow the canonical [localization contract](../product/localization.md).
+
+UI URLs carry `/cs` or `/en`. Route literals such as `/news`, `/account` and `/admin/news` below are logical suffixes, resolved as `/cs/news` or `/en/news` and equivalents. Localized home is `/cs` or `/en`; bare `/` always returns HTTP 307 to `/cs`, with no browser-language or locale-cookie detection. The URL is authoritative; no locale preference cookie is needed. Auth API, health and static-asset paths remain unprefixed. English UI examples in this document identify logical labels/states; implement their Czech and English messages, never English-only controls in Czech pages.
 
 ## 1. Design intent
 
@@ -65,12 +67,34 @@ At desktop widths of 1280 CSS px and above:
 - The main visual has no large text block in the center. Position the supplied emblem at approximately 50% viewport width and 46–48% of the available stage height. Its width is `clamp(240px, 22vw, 560px)`; preserve its natural aspect ratio. Start with opacity 0.12–0.18, then verify against both light and dark video frames. It must read as a ghosted clan crest, not a solid hero graphic.
 - Render the central emblem as decorative (`alt=""`, hidden from the accessibility tree) because the header already names the clan. It has no click action, pointer hitbox, independent animation, parallax, or glow. If its source has opaque pixels outside the intended silhouette, obtain a correct transparent asset rather than hiding the problem with an aggressive blend mode.
 - Include one short, restrained identity caption, such as `VALKYRIA // CZ & SK`, near the action cluster. Copy is subject to the factual content inventory. Do not cover the faded emblem with marketing paragraphs.
-- The primary action label is `JOIN DISCORD` with smaller supporting text `VALKYRIA COMMUNITY`. The secondary actions lead to `ABOUT THE CLAN` and `MATCHES`. The Discord destination comes from validated configuration, not screenshot text.
-- Header navigation is `MAIN MENU`, `NEWS`, `CLAN`, `MEMBERS`, `MATCHES`. `NEWS` is a first-class text tab with the same active/focus treatment as the other sections; it must not be discoverable only through a utility icon. Keep longer explanatory text in page content. The account control is right aligned and reads `SIGN IN` before authentication.
-- Utility controls expose background playback, relevant community links and a visible `HLL WEBSITE` link to `https://valkyriahll.cz/`. Keep the HLL link in the desktop utility/footer area and an equally visible mobile utility/footer location, with additional contextual links on clan/community pages. Use an external-link indication; prefer normal same-tab navigation, or explicitly indicate a new tab and set safe link attributes if that behavior is chosen. The existing site remains a separate destination. Group utility actions visibly; label icon-only controls for assistive technology and provide tooltips on focus as well as hover. A decorative gear must not imply settings that do not exist.
+- The primary action uses the localized `Join Discord` label with smaller localized `Valkyria community` text. Secondary actions use `About the clan` and `Matches`, with the exact Czech/English mappings below. The Discord destination comes from validated configuration, not screenshot text.
+- Header navigation uses the localized equivalents of `MAIN MENU`, `NEWS`, `CLAN`, `MEMBERS`, `MATCHES`. News is a first-class text tab with the same active/focus treatment as the other sections; it must not be discoverable only through a utility icon. Keep longer explanatory text in page content. The account control is right aligned with localized `SIGN IN` and the language switcher; reserve enough space for longer Czech labels.
+- Utility controls expose localized background playback, relevant community links and a visible `HLL WEB` / `HLL WEBSITE` link to `https://valkyriahll.cz/`. Keep the HLL link in the desktop utility/footer area and an equally visible mobile utility/footer location, with additional contextual links on clan/community pages. Use an external-link indication; prefer normal same-tab navigation, or explicitly indicate a new tab and set safe link attributes if that behavior is chosen. The existing site remains a separate destination. Group utility actions visibly; label icon-only controls for assistive technology and provide tooltips on focus as well as hover. A decorative gear must not imply settings that do not exist.
 - A bottom-center next-match strip is optional and shown only for a real published upcoming fixture. Show opponent, date/time, game, and link. If no fixture exists, omit the strip; do not display fictional queue position, server health, player count, or countdown.
 
 Subpages use a darkened, optionally blurred version of the same backdrop with a main content panel. The center emblem is hidden on dense list/editor pages to preserve contrast. A direct visit to a subpage must show a useful page immediately and must not depend on entering the home menu first.
+
+### Bilingual navigation and language switcher
+
+| Logical English label | Czech UI (`cs`) | English UI (`en`) |
+| --- | --- | --- |
+| Main menu | HLAVNÍ MENU | MAIN MENU |
+| News | NOVINKY | NEWS |
+| Clan | KLAN | CLAN |
+| Members | ČLENOVÉ | MEMBERS |
+| Matches | ZÁPASY | MATCHES |
+| Sign in | PŘIHLÁSIT SE | SIGN IN |
+| Join Discord | PŘIPOJIT SE NA DISCORD | JOIN DISCORD |
+| About the clan | O KLANU | ABOUT THE CLAN |
+| Valkyria community | KOMUNITA VALKYRIA | VALKYRIA COMMUNITY |
+| Administration | SPRÁVA | ADMINISTRATION |
+| HLL website | HLL WEB | HLL WEBSITE |
+
+Show Czech-flag and UK-flag options labelled `Čeština` / `English`, with `CS` / `EN` indicators and a clear current-language state. Flags supplement text; they are not the only meaning or accessible name. Use original/approved flag graphics with decorative alternative text when adjacent text supplies the name; do not depend on platform flag-emoji rendering. Each option has an explicit accessible name in the interface locale, such as `Přepnout na angličtinu` on Czech pages or `Switch to Czech` on English pages, keyboard activation, visible focus and a minimum 44 px touch target. The active option announces its selected/current state. Keep the control discoverable in desktop chrome and the mobile header/menu without reducing the CTA or navigation to unreadable sizes.
+
+Switching keeps the same logical entity and safe filters when a valid published counterpart exists. Resolve the destination from entity identity and its published locale slug, not by blindly replacing a URL prefix. For an article without a published target translation, navigate to that locale's news list, show a localized availability notice and offer a safe explicit source-language link to the published article. Never reveal an unpublished translation, auto-translate, or silently render one language under the other locale's URL.
+
+The UI language switcher and the editor's content-language selector are distinct. Before switching either away from unsaved work, use the canonical draft/dirty-state guard; let the editor save safely, stay, or explicitly discard. Do not save one translation into the other. A locale change preserves permitted account state but never creates permissions. Core static pages require both approved translations for launch; absent member biographies or match recaps get explicit localized absence states as defined by the localization contract.
 
 ## 4. Proposed design tokens
 
@@ -116,7 +140,7 @@ Suggested primary button fill: a shallow vertical gradient from `rgb(118 87 12 /
 
 ### Typography
 
-Use a licensed condensed sans-serif that covers English UI and international member names. Initial candidate: self-hosted Barlow Condensed for navigation, short headings, and numeric score treatment; Barlow for paragraphs, forms, and dense data. Record the actual font source and license when selected. Do not extract packaged game fonts for the website without cleared usage rights. Fallbacks must preserve readable widths.
+Use a licensed condensed sans-serif with Czech Latin Extended glyphs as well as English and international member names. Initial candidate: self-hosted Barlow Condensed for navigation, short headings, and numeric score treatment; Barlow for paragraphs, forms, and dense data. Record the actual font source and license when selected. Do not extract packaged game fonts for the website without cleared usage rights. Fallbacks must preserve readable widths; font subsetting must not remove Czech glyphs.
 
 | Role | Desktop baseline | Small screens | Treatment |
 | --- | --- | --- | --- |
@@ -128,7 +152,7 @@ Use a licensed condensed sans-serif that covers English UI and international mem
 | Data row | 16–18 px / 1.3, weight 400–500 | 16 px | Tabular numerals for scores/times |
 | Metadata | 13–14 px / 1.35, weight 500 | 13–14 px | Short labels only, restrained uppercase |
 
-Never reproduce the reference's smallest illegible labels literally. Keep meaningful text at least 13 CSS px and body text 16 CSS px. Test `JOIN DISCORD`, `MEMBERS`, `NEXT MATCH`, and long international member names in the actual loaded font. Tracked uppercase is for short controls, not paragraphs.
+Never reproduce the reference's smallest illegible labels literally. Keep meaningful text at least 13 CSS px and body text 16 CSS px. Test `PŘIPOJIT SE NA DISCORD`, `PŘIHLÁSIT SE`, `ČLENOVÉ`, `PŘÍŠTÍ ZÁPAS`, `JOIN DISCORD`, `MEMBERS`, and long international member names in the actual loaded font. Include lowercase/uppercase Czech diacritics in font evidence; do not shrink Czech text merely to preserve English widths. Tracked uppercase is for short controls, not paragraphs.
 
 ## 5. Components and contracts
 
@@ -140,6 +164,7 @@ Names below describe responsibility and may be adapted to repository conventions
 | `BackgroundMedia` | `poster`, `sources`, `playbackPreference`, `onPlaybackStateChange` | Shows poster first; handles loading, playing, paused, blocked, unavailable; contains no mandatory content |
 | `ClanEmblem` | `variant: header / faded / content`, `size` | Supplied asset, preserved proportions; meaningful alternative text only when the mark provides information |
 | `MenuNavigation` | `items`, `currentPath`, `accountState` | Real anchors, current-page semantics, keyboard reachable controls |
+| `LanguageSwitcher` | `locale`, `counterpartHref`, `availability`, `dirtyState` | Czech/UK flags plus Čeština/English and CS/EN; safe entity-aware routing, missing-translation notice and unsaved-draft guard |
 | `GameButton` | `intent: primary / secondary / danger`, `size`, `pending`, `disabled`, `href?`, `onClick?` | Anchor for navigation, button for action; one unambiguous accessible label; pending blocks duplicate mutations |
 | `UtilityButton` | `label`, `icon`, `pressed?`, `onClick` | 44 × 44 px minimum tap target; tooltip is not the only accessible name |
 | `SectionFrame` | `title`, `description?`, `toolbar?`, children | Square dark surface, slim title strip, predictable padding; no mandatory nested scroll areas |
@@ -151,6 +176,7 @@ Names below describe responsibility and may be adapted to repository conventions
 | `NewsSummary` | `title`, `excerpt`, `cover?`, `publishedAt`, `category?`, `href` | Prominent public news collection; real publication metadata and descriptive article link |
 | `RichTextEditor` | `document`, `readOnly`, `validation`, `onChange` | WordPress-like visual editing with accessible toolbar and supported content nodes; canonical data contract comes from the editorial specification |
 | `PublishPanel` | `status`, `saveState`, `publishAt?`, `timeZone`, `permissions`, `onSave`, `onPreview`, `onPublish` | Clear draft/autosave/revision/preview/publish/schedule distinction; no visual-only authorization |
+| `ContentLocaleSelector` | `contentLocale`, `translationStates`, `dirtyState`, `onChange` | Separate from interface language; shows independent translation draft/published/scheduled state and protects unsaved work |
 | `MediaPicker` | `allowedKinds`, `selectedAsset?`, `uploadPermission`, `onSelect` | Search/select/upload approved media; thumbnail, alt text, caption, provenance and clear progress/failure states |
 | `StatusBadge` | `status`, `label` | Text plus icon/border; color is supplemental |
 | `ModalDialog` | `title`, `description?`, `open`, `onClose`, `actions` | Reserved for bounded tasks; focus management and Escape support; route content is not trapped in a modal |
@@ -218,7 +244,7 @@ Breakpoints are layout decisions, not device detection. Test actual content at t
 | ≥1600 px and adequate height | Full composition with large negative space, faded center crest, lower-left action stack; list/detail split around 66%/34% |
 | 1280–1599 px | Smaller chrome and action stack; same visual hierarchy; dense lists keep only useful columns |
 | 768–1279 px | Condensed header, fewer inline utilities; list/detail may split 60%/40% if readable or switch to stacked view; center crest yields to content |
-| <768 px | Poster first, compact header with accessible menu disclosure including `NEWS`; single-column panels; primary actions in document flow, not fixed over content; crest becomes a restrained background accent; visible `HLL WEBSITE` utility/footer link retained |
+| <768 px | Poster first, compact header with accessible localized navigation including News; visible flag-and-text language control; single-column panels; primary actions in document flow, not fixed over content; crest becomes a restrained background accent; localized HLL link retained |
 | Height <720 px | Compact utility rail, action stack moves into normal flow if necessary; allow page scrolling, no clipped CTA or inaccessible footer |
 | Ultrawide | Scene fills width; cap reading/list content around 1800–2048 px with deliberate side space; do not stretch text lines or rows indefinitely |
 
@@ -237,13 +263,13 @@ At small widths, lists become compact row summaries with a detail link. Keep opp
 - Loading: preserve structure with low-motion skeletons or a short textual status. Slow loading includes a retryable state; never an endless spinner with no explanation.
 - Read error: retain navigation and context, show `The data could not be loaded.` and `Try again`. Authentication expiry takes the user to a clear sign-in path; never misrepresent expired permissions as a generic network error.
 - Missing Discord configuration: render a useful unavailable message without an active broken button. Development can show an explicit configuration note outside production UI. Do not silently substitute a different Discord server.
-- Dates are displayed in English (`en-GB`) with an explicit `Europe/Prague` display policy, including timezone where ambiguity matters. Store/transport timestamps independently of display formatting. Preserve correct daylight-saving behavior.
+- Format dates/numbers through the active URL locale: `cs-CZ` for Czech and `en-GB` for English, with `Europe/Prague` as the display timezone and an explicit zone where ambiguity matters. Store/transport timestamps independently of display formatting. Preserve correct daylight-saving behavior; language switching never changes the event instant.
 
 ## 10. Accessibility and interaction requirements
 
 Target WCAG 2.2 AA for the actual website. These requirements intentionally improve on any inaccessible aspect of the game screenshot.
 
-- Provide a skip-to-main link, semantic header/navigation/main/footer regions, one clear page heading, meaningful page titles and an English document language.
+- Provide a localized skip-to-main link, semantic header/navigation/main/footer regions, one clear page heading and meaningful localized page titles. Set document `lang` to the active `cs` or `en` route; mark intentionally quoted source-language passages appropriately rather than mislabelling an untranslated page.
 - Navigation uses anchors and browser history; actions use buttons. Keep back/forward, reload, new-tab opening and copied detail URLs functional. Do not hijack global browser shortcuts.
 - Keyboard order follows visual/semantic reading order: skip link, brand/navigation, account, primary content, utilities. Do not assign positive `tabindex` values to mimic game focus.
 - Arrow-key interaction is only used for genuine widgets following their expected pattern. A visual row selection is not a reason to replace a normal table with a complicated ARIA grid.
@@ -267,9 +293,11 @@ Forms use persistent labels, clear required-field text, inline errors, a stable 
 
 The news authoring workspace must feel familiar to an administrator used to WordPress: post list with `New post`, a title field, large visual writing canvas, a formatting toolbar, a media/cover picker and a clearly separated document/publication panel. This is an interaction requirement, not an instruction to embed WordPress or replace the selected application architecture. Do not substitute a raw Markdown textarea, JSON input or developer-only file editing for the requested visual editor.
 
-Provide readable rich-text authoring for the canonical supported headings, paragraphs, emphasis, lists, quotes, links, image blocks and basic tables, with clear formatting and undo/redo controls. Keep toolbar labels/tooltips in English, expose pressed states, support keyboard formatting and preserve visible focus. Table headers and cell operations must work using a keyboard; wide tables scroll within the public article rather than overflowing the page. Pasting must produce supported sanitized content; do not allow arbitrary HTML/script or require users to clean source markup. Selection-based formatting may have a contextual toolbar, but essential actions remain available without a mouse or hover.
+Provide readable rich-text authoring for the canonical supported headings, paragraphs, emphasis, lists, quotes, links, image blocks and basic tables, with clear formatting and undo/redo controls. Localize toolbar labels/tooltips, validation and status messages to the UI locale, expose pressed states, support keyboard formatting and preserve visible focus. Table headers and cell operations must work using a keyboard; wide tables scroll within the public article rather than overflowing the page. Pasting must produce supported sanitized content; do not allow arbitrary HTML/script or require users to clean source markup. Selection-based formatting may have a contextual toolbar, but essential actions remain available without a mouse or hover.
 
 Desktop editor layout: quiet static dark surface, a wide readable writing column and a narrower document panel for status, excerpt, slug, category, cover and publication time. On small screens, the document panel becomes an accessible disclosure or stacked section; controls must remain reachable without trapping the editor in a tiny viewport. Preview uses the actual public article treatment, including the approved cover and responsive image behavior, and clearly labels unpublished output.
+
+Expose explicit Czech/English content tabs or a language selector with per-translation availability and publication state. The interface can be Czech while editing English content, or the reverse; both active locales are clear. Drafts, revisions, preview, schedules and published snapshots are independent per translation. Publishing Czech cannot publish an English draft. Cover/body captions, alternative text and other localized metadata follow the selected content locale's contract. All status labels remain in the interface locale.
 
 Display `Unsaved changes`, `Saving…`, `Draft saved`, `Save failed`, or a revision-conflict message based on actual server state. Autosave never publishes a draft or overwrites the live version of an already published article without the explicit action defined by the canonical editorial workflow. Revision history identifies saved versions and provides a safe restore-to-draft flow. Publication controls distinguish `Save draft`, `Preview`, `Publish`, `Update`, `Schedule` and `Unpublish` where each action is applicable; the server enforces permissions independently of visible controls.
 
@@ -288,7 +316,7 @@ Required captures:
 1. Home at 2560 × 1440 and 1920 × 1080: top chrome, lower-left action hierarchy, open scenery and faded center emblem are clearly comparable with reference 09.
 2. Members at 1920 × 1080: readable table/list, selected or focused profile, meaningful empty/error variant.
 3. Matches at 1920 × 1080: filters/list/detail composition comparable with reference 13, clear result and upcoming-state differences.
-4. Clan/about page at 1440 × 900: readable English copy and preserved visual shell without oversized marketing sections.
+4. Clan/about page at 1440 × 900 in both Czech and English: readable translated copy and preserved visual shell without oversized marketing sections.
 5. Home and matches at 390 × 844 and 320 × 568: no clipped actions, inaccessible navigation or page-wide horizontal overflow.
 6. Home at 2560 × 1080: ultrawide scene crop and bounded content.
 7. Home with reduced motion and with the video URL unavailable: poster/fallback, operable controls, no blocking loader.
@@ -297,5 +325,7 @@ Required captures:
 10. `NEWS` active in desktop navigation and accessible in the mobile menu; public news list and long article with approved cover/inline media at desktop/mobile sizes.
 11. News editor with formatting toolbar, cover/media picker, autosave success/failure, revision conflict/history, preview and scheduled publication states. Verify the editor is operable using a keyboard and at mobile width.
 12. Match administration list and `New match` form with explicit start-time timezone, validation and published/unpublished states; visible `HLL WEBSITE` link in both desktop/mobile layouts.
+13. Paired `/cs` and `/en` desktop/mobile captures showing the localized primary menu, account/validation labels, Czech/UK flag-and-text switcher and correct font glyphs. Verify visible focus and no Czech-label clipping.
+14. Entity/filter-preserving language switch, missing published article translation with localized list/notice/source-language link, and an unsaved-editor switch guard. Show independent Czech/English draft/publication states; a screenshot alone does not replace the associated routing/publication tests.
 
 Acceptance is a composition and usability review, not arbitrary pixel identity across every browser. The nonnegotiable visual traits are narrow dark chrome, square translucent surfaces, amber selection, condensed short labels, a landscape-led homepage, a visible but faded Valkyria crest, and practical game-menu subpages. Any deliberate departure is explained with evidence, especially for responsiveness, accessibility and unavailable media.

@@ -19,7 +19,7 @@ For each acceptance criterion, record:
   and reproducible steps; expected result and actual observed result.
 - **Context:** tested commit/build, environment and relevant fixture/role. Use only
   synthetic identities and safe data. UI evidence also records route, browser and
-  viewport; incident evidence records observation times with timezone.
+  viewport and active locale; incident evidence records observation times with timezone.
 - **Result and artifact:** passed, failed, blocked or not run, with a specific test
   result, report, sanitized output or accessible screenshot link. Link the exact CI
   run and identify the tested PR head/base when CI uses a merge revision.
@@ -51,10 +51,12 @@ tokens, cookies, secret URLs, private drafts, real member data or sensitive dash
 Prefer safe fixtures so the behavior can be shown without redaction.
 
 Give each image descriptive alt text and a nearby caption identifying **scenario,
-expected/observed result, route, viewport/browser, environment and tested revision**.
+expected/observed result, route/locale, viewport/browser, environment and tested revision**.
 Shared context can be stated once for a clearly grouped set. A filename alone is not
 a caption. State screenshot applicability explicitly; “N/A” cannot excuse a UI change
 whose browser verification was simply not run. That item stays blocked/not run.
+Capture affected Czech and English UI behavior under [localization](../product/localization.md),
+including the relevant desktop/mobile states. Engineering captions and reports stay English.
 
 ## Attach reviewable artifacts
 

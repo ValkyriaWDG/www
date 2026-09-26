@@ -10,9 +10,11 @@ should feel like entering the Wardogs main menu: cinematic moving background,
 sharp dark translucent panels, amber selection states, restrained motion, and the
 supplied Valkyria emblem faded into the open center of the scene.
 
-**The complete public and admin interface is English-only. The new domain is
-`valkyriawdg.cz`.** These are explicit owner decisions. Do not add a language switcher
-or build an internationalization platform. Preserve diacritics in member display names.
+**The public and admin interface supports Czech (primary/default) and English on
+`valkyriawdg.cz`.** Provide a Czech/UK flag language switcher with accessible text labels.
+Code, documentation, GitHub descriptions and AI prompts remain English. The
+[localization contract](localization.md) defines routes, translated CMS publication,
+fallback states, SEO and verification. Preserve diacritics in member display names.
 The old `valkyriahll.cz` site is a research source; its replacement/redirect is not authorized.
 
 ## Priorities

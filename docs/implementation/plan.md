@@ -14,16 +14,22 @@ Each numbered step maps to a GitHub issue; see [backlog](github-backlog.md).
    Configure meaningful browser screenshots/reports and sanitized CI artifact delivery
    with stated retention. Attach selected proof to the PR; artifact generation alone
    does not fulfill the [evidence policy](../engineering/evidence.md).
+   Add pinned compatible next-intl, typed message keys and complete `cs`/`en` dictionaries
+   with `/cs` and `/en` UI routes; infrastructure routes stay unprefixed.
 2. **Wardogs visual system and menu.** Build tokens, tabs, panels, table, CTA, modal and
    persistent media controller. Central faded Valkyria emblem. Compare screenshots at the
    specified viewports, test keyboard, pause, reduced motion and no-video state. Complete
    this visual gate before filling many pages with a weak shell.
+   Include the accessible Czech/UK flag language switcher, Czech default and both
+   language layouts; follow [localization](../product/localization.md).
 3. **Public content and data model.** Implement `/clan`, `/members`, profiles, `/matches`,
    match/results detail, `/news`, articles and `/community`, plus privacy page. Use real
    publication-aware repository adapters. Approved facts only; empty states for missing
    content. Store draft content safely and synthetic fixtures only for development/tests.
    NEWS is a primary menu destination. Include the external HLL WEBSITE link on desktop
    and mobile, plus clan/community context; follow [editorial and match requirements](../product/editorial-and-matches.md).
+   Localize those UI labels. Public queries, canonical/alternate URLs and missing
+   translation states use only the active locale's published variants.
 
 ## M2 — Identity and web administration
 
@@ -35,6 +41,8 @@ Each numbered step maps to a GitHub issue; see [backlog](github-backlog.md).
    scheduled publication. Include profile approval, match creation/fixture scheduling,
    game-specific result entry, validated settings and audit read. Match authorization
    is separate from content-editor rights. Every mutation validates and authorizes server-side.
+   Localize the admin UI and make edited content locale explicit. Publish/revise/schedule
+   Czech and English independently; protect the other translation's live snapshot.
 
 ## M3 — Release readiness
 

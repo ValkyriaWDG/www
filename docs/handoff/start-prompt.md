@@ -23,7 +23,12 @@ read the skill files directly. Do not depend on personal plugins or the owner's 
 
 Fixed requirements:
 
-- English-only public and admin interface. Canonical domain: https://valkyriawdg.cz.
+- Czech-first public and admin interface with Czech (`cs`) and English (`en`) routes.
+  Add a visible Czech/UK flag switcher with CS/EN text and accessible language labels.
+  Keep code, comments, technical docs, GitHub descriptions and AI prompts in English.
+  Canonical domain: https://valkyriawdg.cz. Read `docs/product/localization.md` for
+  `/cs` and `/en` routing, translated CMS revisions/publication, missing-translation
+  behavior, metadata and bilingual evidence. This is part of M1–M3.
 - Recreate the supplied Wardogs main-menu composition and interaction style: persistent
   cinematic backdrop, dark translucent square panels, amber active states, bottom-left
   Discord CTA, and the supplied Valkyria emblem faded into the open center.
@@ -37,7 +42,8 @@ Fixed requirements:
   recaps inspired by the old site's public match pages. Only roster/availability is later.
 - Provide a visible HLL WEBSITE link to https://valkyriahll.cz/ on desktop/mobile and
   clan/community pages, plus an HLL match archive link where useful.
-- Next.js/React/TypeScript, PostgreSQL/Drizzle, Better Auth, pnpm, bespoke CSS tokens/modules.
+- Next.js/React/TypeScript with next-intl, PostgreSQL/Drizzle, Better Auth, pnpm,
+  bespoke CSS tokens/modules. Resolve and pin compatible versions during bootstrap.
 - Follow the security, data, accessibility, media and Docker contracts in the handoff.
   Match/roster organization is secondary, after the public website and web admin work.
 - This is a cloud checkout: no access to the owner's PC or production secrets. The final

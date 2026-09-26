@@ -7,8 +7,10 @@ Use `feat/`, `fix/`, `docs/` or `chore/` branches and conventional commit subjec
 Keep one reviewable purpose per pull request. Link the issue, state the behavior,
 include relevant screenshots and exact verification results.
 
-The site and its interface copy are English-only. Code, documentation and commit
-messages use English. The repository owner may discuss work in Czech.
+The website and administration support Czech (default) and English. Code identifiers,
+comments, technical documentation, GitHub descriptions, commit messages and AI prompts
+use English. User-facing translation dictionaries and content use their target language.
+Follow [localization](docs/product/localization.md). The owner may discuss work in Czech.
 
 Use Node 24 and the package manager pinned in `package.json`. Currently
 `node scripts/check-foundation.mjs` checks the scaffold without installing dependencies.

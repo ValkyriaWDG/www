@@ -19,6 +19,9 @@ in the PR and related issue/incident before closure; local files alone do not fu
 | Scheduled posts | Due/cancel/reschedule/retry, preserve live revision/metadata during scheduled updates, UTC/DST boundaries, scoped local-admin delegation/revocation, stalled runner, no double publication |
 | Match authoring | Create/publish fixture, postpone/cancel, record verified result; unknown score remains null; scope checks |
 | HLL links | NEWS and HLL WEBSITE discoverable without login on desktop/mobile; correct external HLL domain/archive |
+| Language routing | `/` defaults to `/cs` even with English browser preferences; `/en` direct navigation, switching/back/refresh, unsupported locale and unprefixed auth/API/health routes |
+| Localized UI | Czech and English labels/errors/editor controls, dictionary key parity/format validation, Czech glyphs/plurals/dates and accessible flag/text switcher on desktop/mobile |
+| Localized content | Independent draft/live revisions and schedules, per-locale slugs/metadata/media text, concurrent edits, missing translation state, cache/privacy separation and published-only alternates |
 | OAuth/session | State/redirect handling, expiry/logout/revocation, unavailable provider and safe errors |
 | Roles | Unmapped/missing/wrong guild, stale snapshot, 429/outage, role removal, mapping-version change |
 | Server permissions | Direct API calls deny editor-to-match escalation, cross-user edits and cross-match IDOR |
@@ -51,3 +54,7 @@ Keep a concise evidence table in `docs/STATUS.md`: check, command/scenario, revi
 result, artifact path/link and limitations. Mark `not run`, `blocked`, `failed`, `passed`
 explicitly. Never publish real credentials, session cookies or private member records
 inside logs, screenshots, CI artifacts or test fixtures.
+
+For affected UI acceptance, attach captioned Czech and English captures with locale,
+route and viewport identified. Follow [localization](../product/localization.md) for
+the complete bilingual publication/SEO contract; an English-only mock is insufficient.

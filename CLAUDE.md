@@ -7,6 +7,11 @@ coding. It defines the reading order, milestone boundaries, cloud setup, accepta
 criteria and delivery format. The repository is initially a scaffold; there is no
 running website yet. Do not mistake the foundation CI for application verification.
 
+The website is Czech-first with Czech/English switching using Czech/UK flags and
+text labels. Code, technical documentation, GitHub descriptions and AI prompts stay
+English. Follow [the localization contract](docs/product/localization.md), including
+localized admin UI and independent published content translations.
+
 Project skills are committed under `.claude/skills/`. Use `/valkyria-delivery` for
 task execution and resume; route specialist work through
 [the skill catalog](docs/engineering/skills.md). Automatic selection can use each
