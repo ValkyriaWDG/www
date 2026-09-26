@@ -1,24 +1,26 @@
+import type { Metadata } from 'next';
+import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Link } from '@/i18n/navigation';
+import { notFound } from 'next/navigation';
+import { HomeMenu } from '@/components/shell/home/home-menu';
+import type { NextMatch } from '@/components/shell/home/next-match-strip';
+import { getShellLinks } from '@/components/shell/shell-config';
+import { routing } from '@/i18n/routing';
 
-/** Bootstrap home route; replaced by the Wardogs main menu in the visual-shell slice. */
+export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  const t = await getTranslations({ locale, namespace: 'home.meta' });
+  return { title: { absolute: t('title') }, description: t('description') };
+}
+
+/** Localized main menu (`/cs`, `/en`): reference-09 composition over the persistent scene. */
 export default async function HomePage({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
-  setRequestLocale(locale as 'cs' | 'en');
-  const t = await getTranslations('common');
-  return (
-    <main id="main-content" className="status-panel" tabIndex={-1}>
-      <h1>{t('site.name')}</h1>
-      <p>{t('site.description')}</p>
-      <nav aria-label="Language">
-        <Link href="/" locale="cs">
-          Čeština
-        </Link>{' '}
-        ·{' '}
-        <Link href="/" locale="en">
-          English
-        </Link>
-      </nav>
-    </main>
-  );
+  if (!hasLocale(routing.locales, locale)) notFound();
+  setRequestLocale(locale);
+  const { discordUrl } = getShellLinks();
+  // INTEGRATION: next published fixture from modules/matches
+  const nextMatch: NextMatch | null = null;
+  return <HomeMenu discordUrl={discordUrl} nextMatch={nextMatch} />;
 }

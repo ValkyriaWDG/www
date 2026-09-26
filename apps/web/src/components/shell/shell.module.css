@@ -1,0 +1,105 @@
+.shell {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+/* ---- Fixed scene: fallback → poster → video → scrim/vignette → emblem ---- */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: var(--layer-background);
+  overflow: hidden;
+  background: var(--color-scene-base);
+  pointer-events: none;
+  user-select: none;
+}
+
+.scrim,
+.vignette {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--motion-slow) ease-out;
+}
+
+.scrim {
+  z-index: var(--layer-scene-treatment);
+  background: rgb(var(--color-scrim));
+  opacity: 0.62;
+}
+
+/* Edge/bottom darkening keeps the header, action stack and utility rail legible over any frame. */
+.vignette {
+  z-index: var(--layer-scene-treatment);
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.4) 0, rgb(0 0 0 / 0) 16%),
+    linear-gradient(0deg, rgb(8 8 7 / 0.72) 0, rgb(8 8 7 / 0.28) 24%, rgb(8 8 7 / 0) 44%),
+    linear-gradient(90deg, rgb(8 8 7 / 0.5) 0, rgb(8 8 7 / 0) 32%),
+    radial-gradient(ellipse 85% 75% at 50% 45%, rgb(0 0 0 / 0) 55%, rgb(0 0 0 / 0.42) 100%);
+}
+
+[data-route-mode='home'] .scrim {
+  opacity: 0.04;
+}
+
+[data-route-mode='admin'] .scrim {
+  opacity: 0.86;
+}
+
+/* Ghosted clan crest: centered at ~50% x / 47% of the stage below the header; home only. */
+.emblem {
+  position: absolute;
+  z-index: var(--layer-emblem);
+  top: calc(var(--header-height) + (100% - var(--header-height)) * 0.47);
+  left: 50%;
+  display: none;
+  width: clamp(240px, 22vw, 560px);
+  height: auto;
+  opacity: 0.12;
+  transform: translate(-50%, -50%);
+}
+
+[data-route-mode='home'] .emblem {
+  display: block;
+}
+
+/* ---- Content layers ---- */
+.content {
+  position: relative;
+  z-index: var(--layer-content);
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Standard subpage main (PageMain). */
+.page {
+  width: min(100% - 2 * var(--safe-inset), var(--content-max));
+  margin: clamp(24px, 3vw, 48px) auto clamp(32px, 4vw, 64px);
+  flex: 1 0 auto;
+}
+
+.page[data-width='reading'] {
+  width: min(100% - 2 * var(--safe-inset), 60rem);
+}
+
+.page[data-width='full'] {
+  width: min(100% - 2 * var(--safe-inset), 2048px);
+}
+
+@media (max-width: 767px) {
+  .emblem {
+    top: calc(var(--header-height) + (100% - var(--header-height)) * 0.34);
+    width: min(62vw, 280px);
+    opacity: 0.11;
+  }
+}
+
+@media (forced-colors: active) {
+  .scene {
+    display: none;
+  }
+}

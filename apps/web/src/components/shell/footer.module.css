@@ -1,0 +1,81 @@
+.footer {
+  position: relative;
+  z-index: var(--layer-content);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--safe-inset) calc(var(--space-3) + env(safe-area-inset-bottom));
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(8px, 0.6vw, 16px);
+}
+
+/* Home: utility rail under the action stack (reference 09 bottom rows), no strip. */
+[data-route-mode='home'] .footer {
+  padding-top: clamp(16px, 1.8vh, 28px);
+  padding-bottom: calc(clamp(16px, 2.1vh, 30px) + env(safe-area-inset-bottom));
+}
+
+[data-route-mode='home'] .group :global([data-utility]) {
+  width: calc(var(--utility-size) * 1.62);
+}
+
+[data-route-mode='home'] .textLink {
+  min-height: var(--utility-size);
+}
+
+/* Subpages/admin: slim charcoal strip at the end of the document. */
+[data-route-mode='public'] .footer,
+[data-route-mode='admin'] .footer {
+  border-top: var(--border-hairline) solid var(--color-chrome-line);
+  background: rgb(20 21 19 / 0.9);
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.32);
+  background: var(--color-control);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-nav);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color var(--motion-fast) ease-out,
+    border-color var(--motion-fast) ease-out;
+}
+
+.textLink:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-control-hover);
+}
+
+.textLink[aria-current='page'] {
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
+@media (max-width: 479px) {
+  .footer {
+    justify-content: flex-start;
+  }
+}
+
+@media (forced-colors: active) {
+  .textLink {
+    border-color: ButtonText;
+  }
+}

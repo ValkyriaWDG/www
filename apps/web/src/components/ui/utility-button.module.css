@@ -1,0 +1,105 @@
+.utility {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--utility-size);
+  height: var(--utility-size);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.32);
+  border-radius: var(--radius-control);
+  background: var(--color-control);
+  color: var(--color-text);
+  text-decoration: none;
+  transition:
+    background-color var(--motion-fast) ease-out,
+    border-color var(--motion-fast) ease-out;
+}
+
+.icon {
+  display: inline-flex;
+}
+
+.icon svg {
+  width: clamp(20px, 1.1vw, 28px);
+  height: clamp(20px, 1.1vw, 28px);
+}
+
+.utility:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-control-hover);
+}
+
+.utility:active:not(:disabled) {
+  background: var(--color-control-pressed);
+}
+
+.utility[aria-pressed='true'] {
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
+.utility:disabled {
+  border-style: dashed;
+  color: var(--color-text-dim);
+  background: rgb(27 28 25 / 0.7);
+}
+
+/* Tooltip duplicates the accessible name visually; hidden (display:none) so it never causes overflow. */
+.tooltip {
+  position: absolute;
+  z-index: var(--layer-popover);
+  display: none;
+  width: max-content;
+  max-width: min(260px, 70vw);
+  padding: 5px var(--space-2);
+  border: var(--border-hairline) solid var(--color-border);
+  background: var(--color-chrome-strong);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.tooltip[data-side='top'] {
+  bottom: calc(100% + 8px);
+}
+
+.tooltip[data-side='bottom'] {
+  top: calc(100% + 8px);
+}
+
+.tooltip[data-align='center'] {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip[data-align='start'] {
+  left: 0;
+}
+
+.tooltip[data-align='end'] {
+  right: 0;
+}
+
+.utility:hover .tooltip,
+.utility:focus-visible .tooltip {
+  display: block;
+}
+
+/* Escape dismisses tooltips until the pointer or focus moves (WCAG 1.4.13). */
+:global(:root[data-tooltips='dismissed']) .tooltip {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  .utility {
+    border-color: ButtonText;
+  }
+}

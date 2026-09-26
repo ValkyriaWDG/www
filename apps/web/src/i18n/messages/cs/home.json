@@ -1,1 +1,28 @@
-{}
+{
+  "meta": {
+    "title": "Valkyria – hlavní menu",
+    "description": "Valkyria — česko-slovenský herní klan. Wardogs dnes, Hell Let Loose jako naše historie. Připojte se na Discord."
+  },
+  "heading": "Valkyria – hlavní menu",
+  "actionsLabel": "Hlavní akce",
+  "identity": {
+    "name": "VALKYRIA",
+    "region": "CZ & SK"
+  },
+  "cta": {
+    "discord": "PŘIPOJIT SE NA DISCORD",
+    "discordSub": "KOMUNITA VALKYRIA",
+    "discordUnavailable": "DISCORD NENÍ K DISPOZICI",
+    "discordUnavailableBody": "Pozvánka na Discord teď není nastavena. Zkuste to prosím později.",
+    "clan": "O KLANU",
+    "matches": "ZÁPASY"
+  },
+  "nextMatch": {
+    "label": "PŘÍŠTÍ ZÁPAS",
+    "versus": "vs. {opponent}",
+    "game": {
+      "wardogs": "Wardogs",
+      "hell-let-loose": "Hell Let Loose"
+    }
+  }
+}
