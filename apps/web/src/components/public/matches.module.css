@@ -1,0 +1,486 @@
+/*
+ * Matches after reference 13 (server browser): toolbar above a ~2/3 list, ~1/3 detail
+ * pane, compact zebra rows with an amber outline on the selected row. Below 1280 px the
+ * list and the detail are separate pages (the detail URL renders standalone).
+ */
+.browser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'toolbar'
+    'list'
+    'pane';
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.toolbar {
+  grid-area: toolbar;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.toolbar > * {
+  min-width: 0;
+}
+
+.toolbar > nav {
+  margin-bottom: 0;
+}
+
+.toolbar > div {
+  margin-bottom: 0;
+}
+
+.list {
+  grid-area: list;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.pane {
+  grid-area: pane;
+  min-width: 0;
+}
+
+/* List route: the preview pane is a desktop enhancement only. */
+.browser[data-mode='list'] .pane {
+  display: none;
+}
+
+/* Detail route below desktop width: standalone detail without the list. */
+.browser[data-mode='detail'] .toolbar,
+.browser[data-mode='detail'] .list {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .browser {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas:
+      'toolbar .'
+      'list pane';
+    column-gap: clamp(16px, 1.6vw, 32px);
+  }
+
+  .browser[data-mode='list'] .pane,
+  .browser[data-mode='detail'] .pane {
+    display: block;
+  }
+
+  .browser[data-mode='detail'] .toolbar,
+  .browser[data-mode='detail'] .list {
+    display: grid;
+  }
+}
+
+.note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+/* Detail route: the list shows the match's view; mark that tab visually (it is not the current page). */
+.browser[data-mode='detail'][data-view='upcoming'] .toolbar nav li:nth-child(1) a,
+.browser[data-mode='detail'][data-view='results'] .toolbar nav li:nth-child(2) a {
+  background: var(--gradient-nav-active);
+  box-shadow: inset 0 -3px 0 var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
+/* ---- Rows ---- */
+.startCell {
+  display: grid;
+  gap: 2px;
+}
+
+.start {
+  display: grid;
+  gap: 2px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.startDate {
+  font-weight: 500;
+}
+
+.startTime {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.original {
+  color: var(--color-warning);
+  font-size: var(--text-meta);
+  white-space: normal;
+}
+
+.matchName {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.teams {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.4em;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.us {
+  color: var(--color-accent-strong);
+  text-transform: uppercase;
+}
+
+.vs {
+  color: var(--color-text-muted);
+  font-size: 0.875em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.logo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.4);
+  background: rgb(12 12 11 / 0.6);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.competition {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.competitionName {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  overflow-wrap: anywhere;
+}
+
+.result {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.score {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.dash {
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+/* Mobile: compact row summaries (date + status, teams, competition + result). */
+@media (max-width: 767px) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'start status'
+      'match match'
+      'competition result';
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: 2px;
+    padding: var(--space-3);
+  }
+
+  .table tbody th,
+  .table tbody td {
+    display: block;
+    padding: 0 !important;
+  }
+
+  .table tbody tr > :nth-child(1) {
+    grid-area: start;
+  }
+
+  .table tbody tr > :nth-child(2) {
+    grid-area: match;
+  }
+
+  .table tbody tr > :nth-child(3) {
+    grid-area: competition;
+  }
+
+  .table tbody tr > :nth-child(4) {
+    grid-area: status;
+    justify-self: end;
+  }
+
+  .table tbody tr > :nth-child(5) {
+    grid-area: result;
+    justify-self: end;
+    align-self: end;
+  }
+
+  .start {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-2);
+  }
+}
+
+/* ---- Detail pane content ---- */
+/* Let pane content shrink to the viewport; the rounds table scrolls in its own region. */
+.pane [data-match-detail] > section > *,
+.pane [data-match-detail] > section > * > *,
+.block > * {
+  min-width: 0;
+}
+
+/* Two metadata columns keep competition names readable in the one-third pane. */
+.pane dl {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+/* Recap typography scaled to the pane. */
+.block [data-prose] > div {
+  font-size: 1rem;
+}
+
+.block [data-prose] h2 {
+  margin-top: var(--space-4);
+  font-size: 1.25rem;
+}
+
+.block [data-prose] h3 {
+  margin-top: var(--space-3);
+  font-size: 1.125rem;
+}
+
+.banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  aspect-ratio: 16 / 6;
+  padding: var(--space-4);
+  background:
+    radial-gradient(ellipse at 20% 50%, rgb(217 173 50 / 0.18), transparent 60%),
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 0.025) 0 10px, transparent 10px 20px),
+    linear-gradient(160deg, rgb(58 59 54 / 0.95), rgb(22 23 20 / 0.98));
+}
+
+.bannerSide {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  text-align: center;
+}
+
+.bannerSide img {
+  width: clamp(56px, 5vw, 88px);
+  height: auto;
+}
+
+.bannerLogo {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 5vw, 88px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.5);
+  background: rgb(12 12 11 / 0.6);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.bannerLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bannerName {
+  max-width: 100%;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.bannerVs {
+  color: var(--color-accent-strong);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1rem + 1vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.coverFigure {
+  margin: 0;
+}
+
+.coverFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.coverFigure figcaption {
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.block {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-hairline) solid var(--color-border);
+}
+
+.blockTitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.resultLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.bigScore {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.5rem + 1.2vw, 2.75rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.resultText {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.links {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.links li {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.rounds {
+  max-width: 100%;
+  overflow-x: auto;
+  border: var(--border-hairline) solid var(--color-border);
+}
+
+.rounds:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.rounds table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.rounds th,
+.rounds td {
+  padding: var(--space-1) var(--space-2);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.rounds thead th {
+  background: rgb(58 59 54 / 0.72);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+}
+
+.rounds tbody tr:nth-child(odd) {
+  background: var(--color-row);
+}
+
+.rounds tbody tr:nth-child(even) {
+  background: var(--color-row-alt);
+}
+
+.rounds td[data-numeric] {
+  font-variant-numeric: tabular-nums;
+}
+
+.detailAction {
+  width: 100%;
+}
+
+/* Keyboard focus ring drawn inside the row (never clipped by the scroll region), inside the amber selection outline. */
+.table tbody a:focus-visible::after {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -6px;
+}
