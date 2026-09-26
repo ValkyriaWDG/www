@@ -291,7 +291,7 @@ export function SettingsForm({ uiLocale, initial, defaults, allowedOrigins, fall
 
               <h3 className={styles.repeatHeading}>{t('linksTitle')}</h3>
               <p className={styles.groupIntro}>{t('linksIntro', { max: MAX_COMMUNITY_LINKS })}</p>
-              <ol className={styles.repeatList}>
+              <ol className={styles.repeatList} hidden={values.links.length === 0}>
                 {values.links.map((link, index) => (
                   <li key={link.key} className={styles.repeatItem}>
                     <fieldset>

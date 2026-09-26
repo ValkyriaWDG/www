@@ -24,6 +24,8 @@ type Shot = {
   width?: number;
   height?: number;
   fullPage?: boolean;
+  /** Capture only this element (e.g. one form group) instead of the viewport. */
+  element?: string;
   open: (page: Page) => Promise<string>;
   prepare?: (page: Page) => Promise<void>;
 };
@@ -52,7 +54,8 @@ async function capture(browser: Browser, shot: Shot) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   // Full-page captures: end scrolled to the bottom so the sticky save bar sits at its natural place.
   if (shot.fullPage) await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-  await page.screenshot({ path: path.join(outDir, shot.file), fullPage: shot.fullPage ?? false, animations: 'disabled', caret: 'hide' });
+  if (shot.element) await page.locator(shot.element).screenshot({ path: path.join(outDir, shot.file), animations: 'disabled', caret: 'hide' });
+  else await page.screenshot({ path: path.join(outDir, shot.file), fullPage: shot.fullPage ?? false, animations: 'disabled', caret: 'hide' });
   captions.push({ file: shot.file, caption: shot.caption, viewport: `${shot.width ?? 1920}x${shot.height ?? 1080}`, locale: shot.locale, role: shot.role, path: target });
   await context.close();
 }
@@ -99,13 +102,16 @@ test('new match form with explicit time zone and validation errors (cs)', async 
 test('result entry with rounds (en)', async ({ browser }) => {
   await capture(browser, {
     file: 'match-result-rounds-en-1920x1080.png',
-    caption: 'Match manager editing the completed synthetic fixture in English: verified 2 : 1 result, source, provisional/verified choice and three rounds with Up/Down/Remove buttons (no drag-only interaction).',
+    caption: 'Result group of the completed synthetic fixture (en, 1920×1080 page, element capture): verified 2 : 1 result with derived outcome, provisional/verified choice, source, three rounds in compact rows with Up/Down/Remove buttons (no drag-only interaction) and a fourth round being added before “Update result”.',
     locale: 'en',
     role: 'match_manager',
+    element: '[data-group="result"]',
     open: async () => `/en/admin/matches/${(await matchBySlug('ukazka-wardogs-overeny-vysledek'))!.id}`,
     prepare: async (page) => {
-      await page.locator('[data-group="result"]').scrollIntoViewIfNeeded();
-      await page.locator('[data-group="result"] legend').first().evaluate((element) => element.scrollIntoView({ block: 'start' }));
+      await page.locator('[data-round-add]').click();
+      await page.locator('[data-round-index="3"]').getByLabel(/^Map/).fill('Synthetic Map D');
+      // Element capture: keep the sticky save bar from overlapping the captured group.
+      await page.locator('[data-sticky-actions]').evaluate((element) => ((element as HTMLElement).style.position = 'static'));
     },
   });
 });

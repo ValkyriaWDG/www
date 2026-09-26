@@ -66,7 +66,6 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <TextField
                     name={`round-${round.key}-map`}
                     label={t('mapName')}
-                    markOptional
                     value={round.mapName}
                     maxLength={80}
                     disabled={disabled}
@@ -76,7 +75,6 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <TextField
                     name={`round-${round.key}-mode`}
                     label={t('mode')}
-                    markOptional
                     value={round.mode}
                     maxLength={60}
                     disabled={disabled}
@@ -86,7 +84,6 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <TextField
                     name={`round-${round.key}-side`}
                     label={t('side')}
-                    markOptional
                     value={round.side}
                     maxLength={60}
                     disabled={disabled}
@@ -96,7 +93,6 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <TextField
                     name={`round-${round.key}-score-valkyria`}
                     label={t('scoreValkyria')}
-                    markOptional
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={round.scoreValkyria}
@@ -107,7 +103,6 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <TextField
                     name={`round-${round.key}-score-opponent`}
                     label={t('scoreOpponent')}
-                    markOptional
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={round.scoreOpponent}
@@ -118,7 +113,6 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <Select
                     name={`round-${round.key}-outcome`}
                     label={t('outcome')}
-                    markOptional
                     value={round.outcome}
                     disabled={disabled}
                     onChange={(event) => update(index, { outcome: event.target.value as RoundValues['outcome'] })}

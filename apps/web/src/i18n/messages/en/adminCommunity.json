@@ -162,7 +162,7 @@
     "noPublishPermission": "You can save drafts; publishing requires publication rights."
   },
   "rounds": {
-    "intro": "Optional maps or rounds in playing order. Plan them before the match (Save changes) and add their scores together with the result.",
+    "intro": "Optional maps or rounds in playing order; every round field is optional. Plan them before the match (Save changes) and add their scores together with the result.",
     "listLabel": "Rounds",
     "roundTitle": "Round {number}",
     "mapName": "Map",

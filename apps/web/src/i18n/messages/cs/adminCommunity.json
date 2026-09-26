@@ -162,7 +162,7 @@
     "noPublishPermission": "Koncepty můžete ukládat; ke zveřejnění potřebujete oprávnění zveřejňovat."
   },
   "rounds": {
-    "intro": "Volitelné mapy nebo kola v pořadí hraní. Před zápasem je naplánujte (Uložit změny), skóre doplňte spolu s výsledkem.",
+    "intro": "Volitelné mapy nebo kola v pořadí hraní; všechna pole kola jsou nepovinná. Před zápasem je naplánujte (Uložit změny), skóre doplňte spolu s výsledkem.",
     "listLabel": "Kola",
     "roundTitle": "Kolo {number}",
     "mapName": "Mapa",
