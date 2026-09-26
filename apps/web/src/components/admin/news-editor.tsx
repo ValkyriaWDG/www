@@ -490,10 +490,10 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
 
   const onPicked = (asset: MediaPickerSelection) => {
     if (picker === 'inline') {
-      imageResolver.current?.({ assetId: asset.assetId, alt: asset.alt, caption: asset.caption, decorative: asset.decorative, align: 'center' });
+      imageResolver.current?.({ assetId: asset.assetId, alt: asset.alt, caption: asset.caption, decorative: asset.decorative === true, align: 'center' });
       imageResolver.current = null;
     } else {
-      change({ cover: { assetId: asset.assetId, alt: asset.alt, caption: asset.caption, decorative: asset.decorative } });
+      change({ cover: { assetId: asset.assetId, alt: asset.alt, caption: asset.caption, decorative: asset.decorative === true } });
     }
     setPicker(null);
   };

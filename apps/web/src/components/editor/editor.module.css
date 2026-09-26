@@ -297,6 +297,8 @@
   /* One scrollable toolbar row on phones so the sticky toolbar never covers most of the canvas. */
   .toolbar {
     flex-wrap: nowrap;
+    min-width: 0;
+    max-width: 100%;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: thin;

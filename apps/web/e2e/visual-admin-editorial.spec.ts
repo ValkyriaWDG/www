@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { type Browser, type BrowserContext, expect, type Page, test } from '@playwright/test';
+import { type Browser, type BrowserContext, expect, type Locator, type Page, test } from '@playwright/test';
 import { canvas, expectSaved, syntheticPng } from './admin-editorial-helpers';
 import { signInAs } from './support/auth';
 
@@ -32,12 +32,19 @@ async function newContext(browser: Browser, width: number, height: number, local
   return { context, page: await context.newPage() };
 }
 
-async function shot(page: Page, file: string, caption: string, meta: { uiLocale: 'cs' | 'en'; contentLocale?: 'cs' | 'en'; fullPage?: boolean }) {
+async function shot(page: Page, file: string, caption: string, meta: { uiLocale: 'cs' | 'en'; contentLocale?: 'cs' | 'en'; fullPage?: boolean; target?: Locator }) {
   await page.evaluate(() => document.fonts.ready);
-  await page.waitForFunction(() => Array.from(document.images).every((image) => image.complete));
-  await page.screenshot({ path: path.join(outDir, file), animations: 'disabled', caret: 'hide', fullPage: meta.fullPage ?? false });
+  // Visible content images only (the shell's hidden/lazy background media never loads in admin).
+  await page.waitForFunction(() =>
+    Array.from(document.querySelectorAll<HTMLImageElement>('main img'))
+      .filter((image) => image.loading !== 'lazy' || image.getBoundingClientRect().top < window.innerHeight)
+      .every((image) => image.complete),
+  );
+  if (meta.target) await meta.target.screenshot({ path: path.join(outDir, file), animations: 'disabled', caret: 'hide' });
+  else await page.screenshot({ path: path.join(outDir, file), animations: 'disabled', caret: 'hide', fullPage: meta.fullPage ?? false });
   const viewport = page.viewportSize();
-  captures.push({ file, caption, viewport: `${viewport?.width}x${viewport?.height}${meta.fullPage ? ' (full page)' : ''}`, uiLocale: meta.uiLocale, contentLocale: meta.contentLocale });
+  const scope = meta.target ? ' (element)' : meta.fullPage ? ' (full page)' : '';
+  captures.push({ file, caption, viewport: `${viewport?.width}x${viewport?.height}${scope}`, uiLocale: meta.uiLocale, contentLocale: meta.contentLocale });
 }
 
 async function pickUpload(page: Page, name: string, color: string, alt: string, caption = '') {
@@ -167,7 +174,7 @@ test('editor workspace: Czech UI editing English content, save states, conflict,
   await page.getByTestId('revisions-section').locator('summary').click();
   await expect(page.getByTestId('revision-item').first()).toBeVisible();
   await page.getByTestId('revisions-section').scrollIntoViewIfNeeded();
-  await shot(page, '04-revision-history.png', 'Revision history of the English translation: kind (autosave/saved/restored), author and time, current-draft marker, per-revision preview and "Obnovit do konceptu" (restore to draft).', { uiLocale: 'cs', contentLocale: 'en' });
+  await shot(page, '04-revision-history.png', 'Revision history panel of the English translation (1920×1080 layout, element capture): kind (autosave/saved/restored), author and time, current-draft marker, per-revision preview and "Obnovit do konceptu" (restore to draft).', { uiLocale: 'cs', contentLocale: 'en', target: page.getByTestId('revisions-section') });
 
   // Schedule panel on the published Czech translation with an ambiguous DST time.
   await page.getByTestId('content-tab-cs').click();

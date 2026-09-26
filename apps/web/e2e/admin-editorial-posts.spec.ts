@@ -126,12 +126,13 @@ test('an editor creates a formatted post with cover and inline image, saves, rel
   await preview.waitForLoadState('domcontentloaded');
   await expect(preview).toHaveURL(/\/cs\/admin\/news\/[0-9a-f-]{36}\/preview\?lang=cs$/);
   await expect(preview.getByTestId('preview-banner')).toContainText('NEZVEŘEJNĚNÝ NÁHLED');
-  await expect(preview.getByTestId('preview-title')).toHaveText(title);
-  const article = preview.getByTestId('preview-article');
+  // Role-based checks so the shared public ArticleView can render the preview as well.
+  await expect(preview.getByRole('heading', { level: 1, name: title })).toBeVisible();
+  const article = preview.locator('article');
   await expect(article.locator('strong')).toHaveText('velmi dobře');
   await expect(article.locator('table')).toBeVisible();
   await expect(article.getByRole('img', { name: 'Mapa bojiště v ukázce' })).toBeVisible();
-  await expect(preview.getByTestId('preview-cover').getByRole('img', { name: 'Titulní obrázek ukázky' })).toBeVisible();
+  await expect(article.locator('figure').first().getByRole('img', { name: 'Titulní obrázek ukázky' })).toBeVisible();
   await expect(preview.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   // Authorized, private and uncacheable; an anonymous request gets no preview.
   const privateResponse = await preview.request.get(preview.url());
@@ -371,7 +372,7 @@ test('the overview lists own drafts and scheduled publications; core pages use t
   const preview = await page.context().newPage();
   await preview.goto(`/cs/admin/content/${pageId}/preview?lang=cs`);
   await expect(preview.getByTestId('preview-banner')).toContainText('NEZVEŘEJNĚNÝ NÁHLED');
-  await expect(preview.getByTestId('preview-article')).toContainText(`Koncept perexu stránky ${suffix}`);
+  await expect(preview.locator('article')).toContainText(`Koncept perexu stránky ${suffix}`);
   await preview.close();
   expect(await storedTranslation(pageId, 'cs')).toMatchObject({ publishedRevisionId: live.publishedRevisionId, liveSlug: 'clan' });
   const publicClan = await request.get('/cs/clan');

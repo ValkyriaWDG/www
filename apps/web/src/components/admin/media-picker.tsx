@@ -22,8 +22,11 @@ export type MediaPickerSelection = {
   alt: string;
   caption: string;
   filename: string;
-  /** Explicitly decorative image (empty alternative text). */
-  decorative: boolean;
+  /**
+   * Explicitly decorative image (empty alternative text). Always set by this picker;
+   * optional in the type so callers that only store the base fields stay compatible.
+   */
+  decorative?: boolean;
 };
 
 export type MediaPickerProps = {

@@ -388,6 +388,7 @@
 
 .editorMain {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   min-width: 0;
 }
@@ -426,6 +427,7 @@
 
 .canvasBlock {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
 }
 
@@ -1105,6 +1107,31 @@
   .inlineButton,
   .menuItem {
     min-height: 44px;
+  }
+
+  /* Compact sticky action bar: save + preview side by side, the publication action below. */
+  .bottomBar {
+    gap: var(--space-2);
+  }
+
+  .bottomBar p {
+    width: 100%;
+    font-size: var(--text-small);
+  }
+
+  .bottomBar .buttonRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .bottomBar .buttonRow > * {
+    padding-inline: var(--space-2);
+    font-size: var(--text-small);
+  }
+
+  .bottomBar .buttonRow > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 
   .mediaGrid {
