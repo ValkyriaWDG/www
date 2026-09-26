@@ -43,8 +43,8 @@ node apps/web/scripts/restore-rehearsal.mjs --source-db <url> --target-db <url e
 
 It dumps the source and archives its media, drops and recreates the `_restore` target,
 restores both, requires the migration runner to apply nothing, compares every table's row
-count and every media file's SHA-256, checks each `asset` variant exists with its recorded
-size, then serves the restored copy with the standalone build and checks readiness, the
+count and content checksum and every media file's SHA-256, checks each live `asset` variant
+exists with its recorded size, then serves the restored copy with the standalone build and checks readiness, the
 home page and byte-identical published media delivery. It writes `report.json` to the work
 directory. Rehearse before each production schema change and record the result in
 `docs/STATUS.md`; never point it at a non-disposable target.

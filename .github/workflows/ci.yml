@@ -122,6 +122,18 @@ jobs:
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
             mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
             image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress valkyria-web:ci
+      - name: Image SBOM (CycloneDX)
+        run: |
+          mkdir -p sbom
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD/sbom:/out" \
+            mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
+            image --format cyclonedx --output /out/valkyria-web.cdx.json --no-progress valkyria-web:ci
+      - name: Upload image SBOM
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sbom-${{ github.sha }}
+          path: sbom/valkyria-web.cdx.json
+          retention-days: 90
 
   quality:
     name: Quality gate

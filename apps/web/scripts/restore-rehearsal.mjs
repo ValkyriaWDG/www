@@ -59,7 +59,8 @@ function listFiles(root) {
   return files;
 }
 
-async function tableCounts(url) {
+/** Row count and an order-independent content checksum for every table. */
+async function tableFingerprints(url) {
   const client = new pg.Client({ connectionString: url.toString() });
   await client.connect();
   try {
@@ -68,12 +69,14 @@ async function tableCounts(url) {
         where table_type = 'BASE TABLE' and table_schema not in ('pg_catalog', 'information_schema')
         order by table_schema, table_name`,
     );
-    const counts = {};
+    const fingerprints = {};
     for (const { table_schema: schema, table_name: table } of rows) {
-      const result = await client.query(`select count(*)::int as n from "${schema}"."${table}"`);
-      counts[`${schema}.${table}`] = result.rows[0].n;
+      const result = await client.query(
+        `select count(*)::int as n, coalesce(md5(string_agg(t::text, '|' order by t::text)), '') as digest from "${schema}"."${table}" t`,
+      );
+      fingerprints[`${schema}.${table}`] = `${result.rows[0].n}:${result.rows[0].digest}`;
     }
-    return counts;
+    return fingerprints;
   } finally {
     await client.end();
   }
@@ -108,11 +111,12 @@ const applied = /Applied (\d+) migration/.exec(migrateOutput)?.[1];
 step('migrate', { output: migrateOutput.trim().split('\n').at(-1) });
 if (applied !== '0') throw new Error('The restored database needed migrations; the dump was incomplete or from another revision.');
 
-// 4. Row counts and media bytes must match the source exactly.
-const [sourceCounts, targetCounts] = await Promise.all([tableCounts(sourceUrl), tableCounts(targetUrl)]);
-const countMismatches = Object.keys({ ...sourceCounts, ...targetCounts }).filter((key) => sourceCounts[key] !== targetCounts[key]);
-step('rows', { tables: Object.keys(sourceCounts).length, rows: Object.values(sourceCounts).reduce((a, b) => a + b, 0), mismatches: countMismatches });
-if (countMismatches.length) throw new Error(`Row counts differ: ${countMismatches.join(', ')}`);
+// 4. Every table's rows (content, not just counts) and all media bytes must match the source.
+const [sourceTables, targetTables] = await Promise.all([tableFingerprints(sourceUrl), tableFingerprints(targetUrl)]);
+const tableMismatches = Object.keys({ ...sourceTables, ...targetTables }).filter((key) => sourceTables[key] !== targetTables[key]);
+const rowTotal = Object.values(sourceTables).reduce((sum, value) => sum + Number(value.split(':')[0]), 0);
+step('rows', { tables: Object.keys(sourceTables).length, rows: rowTotal, contentMismatches: tableMismatches });
+if (tableMismatches.length) throw new Error(`Table contents differ: ${tableMismatches.join(', ')}`);
 
 const sourceFiles = listFiles(mediaRoot);
 const restoredFiles = listFiles(restoredMedia);
