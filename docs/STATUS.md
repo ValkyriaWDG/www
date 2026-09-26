@@ -1,6 +1,38 @@
 # Current status
 
-Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
+Updated: 2026-09-26. Stage: **M1 bootstrap implemented; M1–M3 slices in progress**.
+
+## Checkpoint (resume here)
+
+```text
+Task / issue: M1–M3 (#1–#6) on branch claude/eager-mayer-0tk36i, base main 6c6fc4a
+Delivered behavior: runnable @valkyria/web (Next.js 16.3.6, React 19.3.0, next-intl 4.14.7)
+  with /cs + /en routing (/ → 307 /cs, unprefixed known routes → 307 /cs/..., unsupported
+  locales 404), nonce CSP + request IDs, /api/health/live and /api/health/ready;
+  @valkyria/db (Drizzle 0.45.3) schema + migration 0000_initial_schema with locale and
+  revision-ownership constraints; serialized migration runner; capability matrix and
+  fail-closed policy; audit recorder; non-root standalone Dockerfile; application CI job.
+Changed contracts / migrations: packages/db/drizzle/0000_initial_schema.sql (unapplied anywhere shared)
+Checks: see "Bootstrap verification" below (local, cloud container)
+Open: GitHub push/PR blocked (HTTP 403 "Resource not accessible by integration");
+  visual shell, auth, content/media/publisher, matches/members/settings slices in progress.
+Next executable step: integrate slices, build public/admin UI, run full verification.
+External actions authorized: task branch push + draft PR (blocked by access); no merge,
+  deploy, DNS, registry publication or live Discord messages.
+```
+
+## Bootstrap verification (local cloud container, Node 24.21.0, PostgreSQL 16.13)
+
+| Check | Command / scenario | Result |
+|---|---|---|
+| Lint | `pnpm lint` | Passed |
+| Typecheck | `pnpm typecheck` (next typegen + tsc strict) | Passed |
+| Unit | `pnpm test:unit` | Passed (23 tests: i18n parity/ICU, redirect rules, CSP, policy, redaction) |
+| PostgreSQL integration | `DATABASE_URL=… pnpm test:integration` | Passed (18 tests: fresh/rerun/concurrent migrations, locale/revision/schedule/score/consent constraints, readiness) |
+| Build | `pnpm build` | Passed (standalone output + bundled CLIs) |
+| Browser | `pnpm test:e2e` (Chromium 1194 via `PLAYWRIGHT_CHROMIUM_EXECUTABLE`) | Passed (6 routing/CSP/health tests) |
+| Container | `docker build` (base via mirror.gcr.io, same digest) + run | Passed: uid 10001, read-only rootfs, cap-drop ALL, migrate CLI idempotent, live 200, ready 200; DB stopped → live 200 / ready 503 sanitized → recovered 200 |
+| Hosted CI | GitHub Actions | Not run: branch push blocked by repository access |
 
 ## Prepared
 
