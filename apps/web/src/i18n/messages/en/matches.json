@@ -1,1 +1,131 @@
-{}
+{
+  "meta": {
+    "title": "Matches",
+    "description": "Upcoming Valkyria fixtures and published results in Wardogs and Hell Let Loose.",
+    "detailTitle": "Valkyria vs {opponent}",
+    "detailDescription": "{game} · {competition} · {date}"
+  },
+  "list": {
+    "eyebrow": "Valkyria // CZ & SK",
+    "title": "Matches",
+    "intro": "Upcoming fixtures and published results. Wardogs is our current focus; Hell Let Loose is our history.",
+    "breadcrumbHome": "Main menu",
+    "viewsLabel": "Match lists",
+    "views": {
+      "upcoming": "Upcoming",
+      "results": "Results"
+    },
+    "viewTab": "{label} ({formatted})",
+    "searchLabel": "Search opponents and competitions",
+    "searchPlaceholder": "Opponent or competition",
+    "gameGroup": "Game",
+    "all": "All",
+    "resultCount": "{count, plural, one {# match} other {# matches}}",
+    "caption": {
+      "upcoming": "Upcoming matches",
+      "results": "Match results"
+    },
+    "columns": {
+      "start": "Date and time",
+      "match": "Match",
+      "competition": "Competition",
+      "status": "Status",
+      "result": "Result"
+    },
+    "timeZoneNote": "All times are shown in the Europe/Prague time zone (CET/CEST).",
+    "emptyUpcomingTitle": "No matches are scheduled yet.",
+    "emptyUpcomingBody": "New fixtures appear here once they are published.",
+    "emptyResultsTitle": "No results have been published yet.",
+    "emptyResultsBody": "Completed matches appear here once their results are published.",
+    "filteredEmptyTitle": "No results match these filters.",
+    "filteredEmptyBody": "Try another game or search term.",
+    "pageEmptyTitle": "This page has no matches.",
+    "firstPage": "Go to the first page",
+    "clearFilters": "Clear filters",
+    "showResults": "Show results",
+    "showUpcoming": "Show upcoming matches",
+    "hllArchive": "HLL match archive",
+    "loadError": "The matches could not be loaded.",
+    "retry": "Try again"
+  },
+  "row": {
+    "valkyria": "Valkyria",
+    "versus": "vs",
+    "originally": "Originally {date}"
+  },
+  "status": {
+    "scheduled": "Scheduled",
+    "live": "Live",
+    "postponed": "Postponed",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "outcome": {
+    "win": "Win",
+    "loss": "Loss",
+    "draw": "Draw",
+    "unknown": "Unknown"
+  },
+  "verification": {
+    "provisional": "Provisional result",
+    "verified": "Verified result"
+  },
+  "competition": {
+    "league": "League",
+    "tournament": "Tournament",
+    "cup": "Cup",
+    "friendly": "Friendly",
+    "scrim": "Scrim",
+    "other": "Other"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  },
+  "gamesShort": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "HLL"
+  },
+  "result": {
+    "unknown": "The result has not been published yet",
+    "cancelled": "Cancelled – no result, not counted as a win or loss",
+    "pending": "Not played yet",
+    "scoreLabel": "Valkyria {valkyria}, opponent {opponent}"
+  },
+  "detail": {
+    "back": "Back to matches",
+    "eyebrow": "Match",
+    "overview": "Match overview",
+    "openDetail": "Match details",
+    "competition": "Competition",
+    "start": "Date and time",
+    "originalStart": "Original date",
+    "status": "Status",
+    "game": "Game",
+    "season": "Season",
+    "format": "Format",
+    "bestOf": "Best of {count} (Bo{count})",
+    "teamSize": "Team size",
+    "result": "Result",
+    "recap": "Recap",
+    "recapMissingTitle": "The recap is not available in English",
+    "recapMissingBody": "It has not been published in English. We do not translate recaps automatically.",
+    "recapNone": "No recap has been published for this match.",
+    "recapOther": {
+      "cs": "Read the Czech recap",
+      "en": "Read the English recap"
+    },
+    "rounds": "Maps and rounds",
+    "roundColumns": {
+      "ordinal": "#",
+      "map": "Map",
+      "mode": "Mode",
+      "side": "Side",
+      "score": "Score",
+      "outcome": "Result"
+    },
+    "links": "Links",
+    "event": "Event page",
+    "versusBanner": "Valkyria versus {opponent}"
+  }
+}

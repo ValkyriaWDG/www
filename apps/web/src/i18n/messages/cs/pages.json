@@ -1,1 +1,71 @@
-{}
+{
+  "shared": {
+    "breadcrumbHome": "Hlavní menu",
+    "eyebrow": "Valkyria // CZ & SK",
+    "unpublishedTitle": "Tato stránka zatím není zveřejněná.",
+    "unpublishedBody": "Její obsah se teprve připravuje. Zkuste to prosím později."
+  },
+  "clan": {
+    "navLabel": "Klan",
+    "meta": {
+      "title": "Klan",
+      "description": "Kdo je Valkyria: česká a slovenská herní komunita zaměřená na Wardogs s historií v Hell Let Loose."
+    },
+    "frameTitle": "Příběh a hodnoty",
+    "actionsTitle": "Kam dál"
+  },
+  "community": {
+    "navLabel": "Komunita",
+    "meta": {
+      "title": "Komunita",
+      "description": "Jak se přidat ke komunitě Valkyria na Discordu a čím se to liší od přihlášení na web."
+    },
+    "frameTitle": "Průvodce komunitou",
+    "choicesLabel": "Jak se zapojit",
+    "discordChoice": {
+      "title": "Discord",
+      "body": "Připoj se na náš Discord server. Tam se domlouváme na hraní a probíhá i nábor.",
+      "unavailableBody": "Pozvánka na Discord teď není nastavena. Zkuste to prosím později."
+    },
+    "joinChoice": {
+      "title": "Jak se přidat",
+      "body": "Postup krok za krokem pro nováčky a nábor do klanu."
+    },
+    "signIn": {
+      "title": "Připojení na Discord není přihlášení na web",
+      "body": "Připojením na Discord se stáváš součástí komunity. Přihlášení na tento web je samostatný krok pro správce obsahu – z nikoho nedělá člena klanu a nevytváří veřejný profil. Všechno tady si přečteš i bez přihlášení.",
+      "action": "Přihlásit se na web"
+    },
+    "linksTitle": "Odkazy komunity",
+    "linkKinds": {
+      "youtube": "YouTube",
+      "steam": "Steam",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "website": "Web",
+      "other": "Odkaz"
+    }
+  },
+  "privacy": {
+    "navLabel": "Soukromí",
+    "meta": {
+      "title": "Ochrana soukromí",
+      "description": "Jaké údaje web klanu Valkyria zpracovává a proč."
+    },
+    "frameTitle": "Zpracování údajů"
+  },
+  "hll": {
+    "title": "Hell Let Loose",
+    "body": "Naše historie z Hell Let Loose, zápasy a archiv zůstávají na našem původním webu.",
+    "website": "Web Hell Let Loose",
+    "archive": "Archiv zápasů HLL"
+  },
+  "discord": {
+    "title": "Discord",
+    "body": "Všechno začíná na našem Discordu: domluva na hraní, nábor i pomoc pro nováčky.",
+    "cta": "Připojit se na Discord",
+    "ctaSub": "Komunita Valkyria",
+    "unavailableTitle": "Discord není k dispozici",
+    "unavailableBody": "Pozvánka na Discord teď není nastavena. Zkuste to prosím později."
+  }
+}

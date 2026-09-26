@@ -1,1 +1,64 @@
-{}
+{
+  "meta": {
+    "title": "Členové",
+    "description": "Veřejné profily členů klanu Valkyria, kteří se zveřejněním souhlasili.",
+    "profileDescription": "Veřejný profil hráče {name} v klanu Valkyria."
+  },
+  "list": {
+    "eyebrow": "Valkyria // CZ & SK",
+    "title": "Členové",
+    "intro": "Členové klanu, kteří souhlasili s veřejným profilem. Role jsou veřejné štítky, nikoli oprávnění na webu.",
+    "breadcrumbHome": "Hlavní menu",
+    "rosterTitle": "Soupiska",
+    "rosterCount": "{count, plural, one {# profil} few {# profily} many {# profilu} other {# profilů}}",
+    "countLabel": "Profily",
+    "caption": "Zveřejněné profily členů",
+    "searchLabel": "Hledat členy",
+    "searchPlaceholder": "Hledat podle jména",
+    "gameGroup": "Hra",
+    "roleGroup": "Role",
+    "all": "Vše",
+    "columns": {
+      "member": "Člen",
+      "roles": "Role",
+      "games": "Hry"
+    },
+    "noRoles": "Bez veřejné role",
+    "noGames": "Bez uvedené hry",
+    "emptyTitle": "Zatím nebyly zveřejněny žádné profily členů.",
+    "emptyBody": "Profil se tu objeví až poté, co člen se zveřejněním souhlasí.",
+    "filteredEmptyTitle": "Těmto filtrům neodpovídají žádné výsledky.",
+    "filteredEmptyBody": "Zkuste jinou hru, roli nebo jméno.",
+    "pageEmptyTitle": "Na této stránce nejsou žádné profily.",
+    "firstPage": "Přejít na první stránku",
+    "clearFilters": "Zrušit filtry",
+    "loadError": "Profily členů se nepodařilo načíst.",
+    "retry": "Zkusit znovu"
+  },
+  "roles": {
+    "leader": "Velitel",
+    "officer": "Důstojník",
+    "member": "Člen",
+    "recruit": "Nováček",
+    "veteran": "Veterán",
+    "content-creator": "Tvůrce obsahu"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  },
+  "profile": {
+    "back": "Zpět na členy",
+    "eyebrow": "Profil člena",
+    "rolesLabel": "Veřejná role",
+    "gamesLabel": "Hry",
+    "biography": "O členovi",
+    "bioMissingTitle": "Medailonek není v češtině k dispozici",
+    "bioMissingBody": "V češtině zatím nebyl zveřejněn. Medailonky automaticky nepřekládáme.",
+    "bioNone": "Tento člen zatím nezveřejnil žádný medailonek.",
+    "bioOther": {
+      "cs": "Přečíst český medailonek",
+      "en": "Přečíst anglický medailonek"
+    }
+  }
+}
