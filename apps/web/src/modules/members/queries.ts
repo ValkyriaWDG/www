@@ -139,3 +139,13 @@ export async function getMemberForAdmin(db: Executor, actor: Actor, id: string):
     createdAt: row.createdAt.toISOString(),
   };
 }
+
+/** Slugs of published, consented member profiles (sitemap; names are shared across locales). */
+export async function listPublicMembersForSitemap(db: Executor): Promise<{ slug: string; updatedAt: Date }[]> {
+  return db
+    .select({ slug: memberProfile.slug, updatedAt: memberProfile.updatedAt })
+    .from(memberProfile)
+    .where(and(eq(memberProfile.state, 'published'), isNotNull(memberProfile.consentConfirmedAt)))
+    .orderBy(asc(memberProfile.slug))
+    .limit(5000);
+}

@@ -351,3 +351,13 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
   };
 }
 
+
+/** Slugs and last-modified times of every published match (sitemap; shared across locales). */
+export async function listPublicMatchesForSitemap(db: Executor): Promise<{ slug: string; updatedAt: Date }[]> {
+  return db
+    .select({ slug: match.slug, updatedAt: match.updatedAt })
+    .from(match)
+    .where(isPublished)
+    .orderBy(desc(match.startsAt))
+    .limit(5000);
+}
