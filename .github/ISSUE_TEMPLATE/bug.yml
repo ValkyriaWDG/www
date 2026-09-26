@@ -1,0 +1,17 @@
+name: Bug report
+description: Report reproducible non-security behavior.
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, revision and environment
+      description: Include browser/viewport and sanitized evidence; no secrets.
+    validations:
+      required: true

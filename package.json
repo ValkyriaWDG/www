@@ -1,0 +1,15 @@
+{
+  "name": "valkyria-www",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Valkyria community website: architecture, design and cloud implementation foundation",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": { "node": ">=24 <25" },
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "check": "node scripts/check-foundation.mjs",
+    "check:foundation": "node scripts/check-foundation.mjs",
+    "check:commits": "node scripts/check-commit-attribution.mjs"
+  }
+}

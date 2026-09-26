@@ -1,0 +1,473 @@
+{
+  "schemaVersion": 1,
+  "purpose": "public_legacy_site_research_not_application_seed",
+  "newWebsite": {
+    "language": "en",
+    "canonicalDomain": "valkyriawdg.cz",
+    "localizationRequired": false,
+    "editorialDirection": "Adapt verified legacy Czech facts into original English copy; do not translate the entire old site wholesale.",
+    "dnsChangesPerformed": false
+  },
+  "observedAt": "2026-09-26T10:40:00Z",
+  "observationTimePrecision": "approximately_one_minute",
+  "doNotAutoPublish": true,
+  "provenance": {
+    "baseUrl": "https://valkyriahll.cz",
+    "method": "Direct HTTPS GET of public HTML and CSS; HEAD for selected referenced assets",
+    "privateSourcesUsed": false,
+    "personalRosterCollected": false
+  },
+  "verifiedFacts": [
+    {
+      "id": "community_identity",
+      "value": "Czech and Slovak gaming community with Hell Let Loose history and a newer Wardogs focus",
+      "sources": [
+        "https://valkyriahll.cz/",
+        "https://valkyriahll.cz/about",
+        "https://valkyriahll.cz/clanky/wardogs-oznameni"
+      ],
+      "publication": "rewrite_with_explicit_game_context"
+    },
+    {
+      "id": "community_since",
+      "value": 2022,
+      "source": "https://valkyriahll.cz/",
+      "publication": "community_history_only_not_wardogs_competitive_history"
+    },
+    {
+      "id": "wardogs_launch_announcement",
+      "value": "2026-09-17",
+      "source": "https://valkyriahll.cz/clanky/wardogs-oznameni",
+      "publication": "dated_historical_event"
+    },
+    {
+      "id": "primary_communication",
+      "value": "Discord",
+      "source": "https://valkyriahll.cz/about",
+      "publication": "candidate_for_current_copy"
+    }
+  ],
+  "links": [
+    {
+      "kind": "discord_invite",
+      "url": "https://discord.gg/vlkhll",
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    },
+    {
+      "kind": "hll_competitive_application",
+      "url": "https://discord.com/channels/963323629242826762/1210328709417013339",
+      "audience": "existing_discord_members",
+      "doNotAutoPublish": true,
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    },
+    {
+      "kind": "youtube",
+      "url": "https://www.youtube.com/@VALKYRIA_HLL",
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    },
+    {
+      "kind": "steam",
+      "url": "https://steamcommunity.com/groups/vlkhll",
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    },
+    {
+      "kind": "instagram",
+      "url": "https://www.instagram.com/valkyriahll/",
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    },
+    {
+      "kind": "facebook",
+      "url": "https://www.facebook.com/groups/1611704832777331",
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    },
+    {
+      "kind": "legacy_support",
+      "url": "https://transparentniucty.moneta.cz/256862392",
+      "doNotAutoPublish": true,
+      "source": "https://valkyriahll.cz/",
+      "verification": "advertised_in_live_html_external_target_not_verified"
+    }
+  ],
+  "wardogsServer": {
+    "game": "wardogs",
+    "publicServerId": "eef9c6d0-8c6e-45b6-a58f-53ac66f4a075",
+    "region": "EUROPE WEST",
+    "locationAtAnnouncement": "Amsterdam",
+    "plannedMoveInArticle": "Prague_if_capacity_available",
+    "sources": [
+      "https://valkyriahll.cz/servery",
+      "https://valkyriahll.cz/clanky/wardogs-oznameni"
+    ],
+    "status": "published_connection_information_only",
+    "reachabilityVerified": false,
+    "doNotAutoPublish": true,
+    "refreshBeforeLaunch": true
+  },
+  "historicalCounters": [
+    {
+      "source": "https://valkyriahll.cz/",
+      "label": "community_members",
+      "displayValue": "3500+",
+      "scope": "community",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "sourceUpdatedAt": null,
+      "liveVerified": false
+    },
+    {
+      "source": "https://valkyriahll.cz/",
+      "label": "competitive_members",
+      "displayValue": "100+",
+      "scope": "hell_let_loose",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "sourceUpdatedAt": null,
+      "liveVerified": false
+    },
+    {
+      "source": "https://valkyriahll.cz/about",
+      "label": "discord_members",
+      "displayValue": "3500+",
+      "scope": "community",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "sourceUpdatedAt": null,
+      "liveVerified": false
+    },
+    {
+      "source": "https://valkyriahll.cz/about",
+      "label": "clan_members",
+      "displayValue": "150+",
+      "scope": "legacy_clan",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "sourceUpdatedAt": null,
+      "liveVerified": false
+    },
+    {
+      "source": "https://valkyriahll.cz/about",
+      "label": "matches_played",
+      "displayValue": "100+",
+      "scope": "legacy_hell_let_loose",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "sourceUpdatedAt": null,
+      "liveVerified": false
+    }
+  ],
+  "historicalMatches": [
+    {
+      "legacyId": 207,
+      "date": "2026-09-20",
+      "opponent": "404",
+      "competition": "ECL #26 S2",
+      "score": {
+        "valkyria": 2,
+        "opponent": 3
+      },
+      "game": "hell_let_loose",
+      "state": "finished",
+      "scoreSemantics": "HLL_sector_score_not_Wardogs",
+      "source": "https://valkyriahll.cz/matches/207",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true
+    },
+    {
+      "legacyId": 210,
+      "date": "2026-09-13",
+      "opponent": "82AD",
+      "competition": "Friendly",
+      "score": {
+        "valkyria": 0,
+        "opponent": 5
+      },
+      "game": "hell_let_loose",
+      "state": "finished",
+      "scoreSemantics": "HLL_sector_score_not_Wardogs",
+      "source": "https://valkyriahll.cz/matches/210",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true
+    },
+    {
+      "legacyId": 205,
+      "date": "2026-08-30",
+      "opponent": "EJIG",
+      "competition": "Friendly",
+      "score": {
+        "valkyria": 3,
+        "opponent": 2
+      },
+      "game": "hell_let_loose",
+      "state": "finished",
+      "scoreSemantics": "HLL_sector_score_not_Wardogs",
+      "source": "https://valkyriahll.cz/matches/205",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true
+    }
+  ],
+  "scheduledAtObservation": [
+    {
+      "legacyId": 211,
+      "date": "2026-09-27",
+      "opponent": "YOKO",
+      "competition": "Friendly",
+      "game": "hell_let_loose",
+      "state": "scheduled",
+      "score": null,
+      "source": "https://valkyriahll.cz/",
+      "detailUrl": "https://valkyriahll.cz/matches/211",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "refreshBeforeLaunch": true
+    },
+    {
+      "legacyId": 208,
+      "date": "2026-10-04",
+      "opponent": "EJIG",
+      "competition": "ECL #26 S2",
+      "game": "hell_let_loose",
+      "state": "scheduled",
+      "score": null,
+      "source": "https://valkyriahll.cz/",
+      "detailUrl": "https://valkyriahll.cz/matches/208",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "refreshBeforeLaunch": true
+    },
+    {
+      "legacyId": 209,
+      "date": "2026-10-11",
+      "opponent": "331",
+      "competition": "Friendly",
+      "game": "hell_let_loose",
+      "state": "scheduled",
+      "score": null,
+      "source": "https://valkyriahll.cz/",
+      "detailUrl": "https://valkyriahll.cz/matches/209",
+      "observedAt": "2026-09-26T10:40:00Z",
+      "doNotAutoPublish": true,
+      "refreshBeforeLaunch": true
+    }
+  ],
+  "inconsistencies": [
+    {
+      "type": "different_counter_scopes",
+      "details": "Home 100+ competitive members; About 150+ clan members. Do not silently merge these."
+    },
+    {
+      "type": "stale_tournament_standings",
+      "source": "https://valkyriahll.cz/turnaje/ecl-2026-fall",
+      "tableAsOf": "2026-08-24",
+      "details": "Zeroed standings coexist with a completed September match listing."
+    },
+    {
+      "type": "unplayed_match_placeholder",
+      "source": "https://valkyriahll.cz/matches/211",
+      "details": "A scheduled game renders 0:0. Preserve null score, not draw/result."
+    }
+  ],
+  "visualEvidence": {
+    "stylesheet": "https://valkyriahll.cz/_next/static/css/1a0676e9f8711c36.css",
+    "font": {
+      "family": "Inter",
+      "weightRange": "100 900",
+      "style": "normal",
+      "display": "swap",
+      "latinFile": "https://valkyriahll.cz/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+      "latinExtFile": "https://valkyriahll.cz/_next/static/media/8e9860b6e62d6359-s.woff2",
+      "wardogsGameFontVerified": false
+    },
+    "colors": {
+      "lightPrimary": "hsl(24.6 95% 53.1%)",
+      "darkPrimary": "hsl(20.5 90.2% 48.2%)",
+      "darkBackground": "hsl(20 14.3% 4.1%)",
+      "darkForeground": "hsl(60 9.1% 97.8%)",
+      "darkSecondaryAndBorder": "hsl(12 6.5% 15.1%)",
+      "darkMutedForeground": "hsl(24 5.4% 63.9%)"
+    },
+    "radius": "0.3rem",
+    "note": "Legacy site tokens only; game screenshot design is a separate source."
+  },
+  "artwork": [
+    {
+      "bytes": 139901,
+      "mime": "image/png",
+      "purpose": "community_mark",
+      "url": "https://valkyriahll.cz/vlk.png",
+      "source": "https://valkyriahll.cz/",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 40540,
+      "mime": "image/webp",
+      "purpose": "open_graph_mark",
+      "url": "https://valkyriahll.cz/vlk_logo_bg.webp",
+      "source": "https://valkyriahll.cz/",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 48690,
+      "mime": "image/png",
+      "purpose": "community_wordmark",
+      "url": "https://valkyriahll.cz/valkyria_header.png",
+      "source": "https://valkyriahll.cz/about",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 139901,
+      "mime": "image/png",
+      "purpose": "community_team_mark",
+      "url": "https://valkyriahll.cz/images/teams/vlk_logo.png",
+      "source": "https://valkyriahll.cz/",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 111134,
+      "mime": "image/webp",
+      "purpose": "wardogs_hero",
+      "url": "https://valkyriahll.cz/wardogs-banner.webp",
+      "source": "https://valkyriahll.cz/",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 221484,
+      "mime": "image/webp",
+      "purpose": "hll_hero",
+      "url": "https://valkyriahll.cz/hll-banner.webp",
+      "source": "https://valkyriahll.cz/",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 1045572,
+      "mime": "image/webp",
+      "purpose": "recruitment_artwork",
+      "url": "https://valkyriahll.cz/join_us.webp",
+      "source": "https://valkyriahll.cz/about",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 215968,
+      "mime": "image/jpeg",
+      "purpose": "wardogs_article_thumbnail",
+      "url": "https://valkyriahll.cz/content/articles/wd-server-thumb.jpg",
+      "source": "https://valkyriahll.cz/clanky/wardogs-oznameni",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 74686,
+      "mime": "image/jpeg",
+      "purpose": "wardogs_server_banner",
+      "url": "https://valkyriahll.cz/content/articles/wd-server-banner.jpg",
+      "source": "https://valkyriahll.cz/clanky/wardogs-oznameni",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 4490,
+      "mime": "image/webp",
+      "purpose": "wardogs_trademark",
+      "url": "https://valkyriahll.cz/images/wardogs/wardogs_logo.webp",
+      "source": "https://valkyriahll.cz/clanky/wardogs-oznameni",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    },
+    {
+      "bytes": 4490,
+      "mime": "image/webp",
+      "purpose": "wardogs_trademark",
+      "url": "https://valkyriahll.cz/images/icons/games/wardogs_logo.webp",
+      "source": "https://valkyriahll.cz/servery",
+      "httpStatus": 200,
+      "verification": "HEAD",
+      "sizeSource": "HTTP_Content_Length",
+      "downloaded": false,
+      "license": "not_established_by_public_availability",
+      "doNotAutoPublish": true
+    }
+  ],
+  "coverage": {
+    "directHtmlGet": [
+      "https://valkyriahll.cz/",
+      "https://valkyriahll.cz/about",
+      "https://valkyriahll.cz/servery",
+      "https://valkyriahll.cz/clanky/wardogs-oznameni",
+      "https://valkyriahll.cz/faq",
+      "https://valkyriahll.cz/turnaje/ecl-2026-fall",
+      "https://valkyriahll.cz/matches/207",
+      "https://valkyriahll.cz/matches/210",
+      "https://valkyriahll.cz/matches/205",
+      "https://valkyriahll.cz/matches/211"
+    ],
+    "linkedOnly": [
+      "https://valkyriahll.cz/guide",
+      "https://valkyriahll.cz/zebricky",
+      "https://valkyriahll.cz/events",
+      "https://valkyriahll.cz/tournaments",
+      "https://valkyriahll.cz/matches"
+    ],
+    "unverified": [
+      "Dynamic HLL server statistics",
+      "Video feed",
+      "Event feed",
+      "FAQ answers",
+      "External social destination validity",
+      "Discord roles and permissions",
+      "Current Wardogs server status"
+    ],
+    "publicationRule": "Research only; review and transform selected facts explicitly. Do not use this file as production seed."
+  }
+}

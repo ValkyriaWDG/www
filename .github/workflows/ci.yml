@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  foundation:
+    name: Foundation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      app_present: ${{ steps.stage.outputs.app_present }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - run: node scripts/check-foundation.mjs
+      - name: Check attribution
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          if [ -n "$BASE_SHA" ]; then
+            node scripts/check-commit-attribution.mjs "$BASE_SHA..$HEAD_SHA"
+          else
+            node scripts/check-commit-attribution.mjs "$HEAD_SHA"
+          fi
+      - name: Detect implementation stage
+        id: stage
+        run: |
+          if [ -f apps/web/package.json ]; then
+            echo 'app_present=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'app_present=false' >> "$GITHUB_OUTPUT"
+            echo 'Foundation only: application, database, browser and container checks are not yet applicable.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  application:
+    name: Application
+    needs: foundation
+    if: needs.foundation.outputs.app_present == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test-only-ephemeral
+          POSTGRES_DB: valkyria_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U test -d valkyria_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://test:test-only-ephemeral@localhost:5432/valkyria_test
+      APP_URL: http://localhost:3000
+      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_SECRET: ci-only-ephemeral-secret-not-for-production-0000
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test:unit
+      - run: pnpm test:integration
+      - run: pnpm build
+      - run: pnpm --filter @valkyria/web exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Build image without publishing
+        run: docker build --file apps/web/Dockerfile --tag valkyria-web:ci .
+
+  quality:
+    name: Quality gate
+    needs: [foundation, application]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require all applicable checks
+        env:
+          FOUNDATION_RESULT: ${{ needs.foundation.result }}
+          APP_PRESENT: ${{ needs.foundation.outputs.app_present }}
+          APP_RESULT: ${{ needs.application.result }}
+        run: |
+          test "$FOUNDATION_RESULT" = success
+          if [ "$APP_PRESENT" = true ]; then
+            test "$APP_RESULT" = success
+          else
+            test "$APP_RESULT" = skipped
+          fi

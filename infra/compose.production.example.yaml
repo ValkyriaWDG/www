@@ -1,0 +1,37 @@
+# Contract example only. Implement and verify the image before use.
+name: valkyria-web
+services:
+  web:
+    image: ${APP_IMAGE:?Set an approved immutable image tag or digest}
+    restart: unless-stopped
+    env_file:
+      - ${APP_ENV_FILE:?Set the path to the protected runtime env file}
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: '3000'
+      APP_URL: https://valkyriawdg.cz
+      BETTER_AUTH_URL: https://valkyriawdg.cz
+    expose: ['3000']
+    networks: [proxy-net, db-net]
+    read_only: true
+    tmpfs: ['/tmp']
+    volumes:
+      - web-cache:/app/apps/web/.next/cache
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/api/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    labels:
+      com.centurylinklabs.watchtower.enable: 'false'
+networks:
+  proxy-net:
+    external: true
+  db-net:
+    external: true
+volumes:
+  web-cache:
