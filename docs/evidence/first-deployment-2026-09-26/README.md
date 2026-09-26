@@ -80,11 +80,13 @@ The two failures are missing canonical metadata on `/cs` and `/en`, tracked in
 localized public metadata, private-route no-store and media delivery passed.
 
 [Browser harness](browser-smoke.cjs) and [results](browser-smoke.json): **10/10 passed**
-in Edge 154.0.4258.37 using fresh anonymous desktop/mobile contexts. Real full-length
-media decoded and advanced in time, Czech/English switching worked, pause survived
+in Edge 154.0.4258.37 using fresh anonymous desktop/mobile contexts. The full-length
+WebM decoded and advanced during the short measured interval, Czech/English switching worked, pause survived
 reload, reduced-motion/mobile loaded the poster without video bytes, public routes
 rendered, Discord login stayed disabled and anonymous administration redirected to login.
 There were no uncaught page errors, failed network requests or write attempts.
+All eight saved captures were also visually inspected: controls/text are readable,
+the disabled-login state is explicit and the reviewed layouts have no clipping/overflow.
 
 The original harness was stopped after an unbounded hidden-image decoding wait; the
 revised harness checks visible image readiness with explicit deadlines. This was a proof
