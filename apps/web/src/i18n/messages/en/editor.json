@@ -1,1 +1,67 @@
-{}
+{
+  "canvas": {
+    "label": "Post text",
+    "placeholder": "Start writing… Formatting tools are in the toolbar above the text.",
+    "contentLanguage": "Content language: {language}"
+  },
+  "toolbar": {
+    "label": "Text formatting",
+    "blockType": "Block type",
+    "paragraph": "Paragraph",
+    "heading2": "Heading 2",
+    "heading3": "Heading 3",
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike": "Strikethrough",
+    "clearFormatting": "Clear formatting",
+    "bulletList": "Bulleted list",
+    "orderedList": "Numbered list",
+    "blockquote": "Quote",
+    "horizontalRule": "Separator",
+    "link": "Link",
+    "unlink": "Remove link",
+    "image": "Insert image",
+    "table": "Insert table",
+    "undo": "Undo",
+    "redo": "Redo",
+    "shortcut": "Keyboard shortcut: {keys}"
+  },
+  "table": {
+    "menuLabel": "Table editing",
+    "addRowBefore": "Row above",
+    "addRowAfter": "Row below",
+    "deleteRow": "Delete row",
+    "addColumnBefore": "Column left",
+    "addColumnAfter": "Column right",
+    "deleteColumn": "Delete column",
+    "toggleHeaderRow": "Header row",
+    "deleteTable": "Delete table"
+  },
+  "link": {
+    "dialogTitle": "Edit link",
+    "urlLabel": "Link address",
+    "urlHint": "https://, http:// and mailto: addresses are allowed.",
+    "apply": "Apply link",
+    "remove": "Remove link",
+    "cancel": "Cancel",
+    "invalid": "Enter a valid address starting with https://, http:// or mailto:."
+  },
+  "image": {
+    "figureLabel": "Media library image",
+    "altLabel": "Alternative text",
+    "altHint": "Describe what matters in the image for readers who cannot see it.",
+    "captionLabel": "Caption",
+    "decorativeLabel": "Decorative image only (no alternative text)",
+    "alignLabel": "Width",
+    "alignCenter": "Text width",
+    "alignWide": "Wide",
+    "remove": "Remove image",
+    "missingAlt": "Alternative text is missing. Add it, or mark the image as decorative.",
+    "unavailable": "Image preview is not available."
+  },
+  "count": {
+    "characters": "{count, plural, one {# character} other {# characters}}",
+    "words": "{count, plural, one {# word} other {# words}}"
+  }
+}

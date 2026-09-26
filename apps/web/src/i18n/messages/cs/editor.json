@@ -1,1 +1,67 @@
-{}
+{
+  "canvas": {
+    "label": "Text příspěvku",
+    "placeholder": "Začněte psát… Formátování najdete v panelu nástrojů nad textem.",
+    "contentLanguage": "Jazyk obsahu: {language}"
+  },
+  "toolbar": {
+    "label": "Formátování textu",
+    "blockType": "Typ odstavce",
+    "paragraph": "Odstavec",
+    "heading2": "Nadpis 2",
+    "heading3": "Nadpis 3",
+    "bold": "Tučně",
+    "italic": "Kurzíva",
+    "underline": "Podtržení",
+    "strike": "Přeškrtnutí",
+    "clearFormatting": "Vymazat formátování",
+    "bulletList": "Odrážkový seznam",
+    "orderedList": "Číslovaný seznam",
+    "blockquote": "Citace",
+    "horizontalRule": "Oddělovač",
+    "link": "Odkaz",
+    "unlink": "Odebrat odkaz",
+    "image": "Vložit obrázek",
+    "table": "Vložit tabulku",
+    "undo": "Zpět",
+    "redo": "Znovu",
+    "shortcut": "Klávesová zkratka: {keys}"
+  },
+  "table": {
+    "menuLabel": "Úpravy tabulky",
+    "addRowBefore": "Řádek nad",
+    "addRowAfter": "Řádek pod",
+    "deleteRow": "Smazat řádek",
+    "addColumnBefore": "Sloupec vlevo",
+    "addColumnAfter": "Sloupec vpravo",
+    "deleteColumn": "Smazat sloupec",
+    "toggleHeaderRow": "Záhlaví tabulky",
+    "deleteTable": "Smazat tabulku"
+  },
+  "link": {
+    "dialogTitle": "Upravit odkaz",
+    "urlLabel": "Adresa odkazu",
+    "urlHint": "Povolené jsou adresy https://, http:// a mailto:.",
+    "apply": "Použít odkaz",
+    "remove": "Odebrat odkaz",
+    "cancel": "Zrušit",
+    "invalid": "Zadejte platnou adresu začínající https://, http:// nebo mailto:."
+  },
+  "image": {
+    "figureLabel": "Obrázek z knihovny médií",
+    "altLabel": "Alternativní text",
+    "altHint": "Popište, co je na obrázku podstatné pro čtenáře, kteří obrázek nevidí.",
+    "captionLabel": "Popisek",
+    "decorativeLabel": "Pouze dekorativní obrázek (bez alternativního textu)",
+    "alignLabel": "Šířka",
+    "alignCenter": "Na šířku textu",
+    "alignWide": "Široký",
+    "remove": "Odebrat obrázek",
+    "missingAlt": "Chybí alternativní text. Doplňte ho, nebo označte obrázek jako dekorativní.",
+    "unavailable": "Náhled obrázku není k dispozici."
+  },
+  "count": {
+    "characters": "{count, plural, one {# znak} few {# znaky} many {# znaku} other {# znaků}}",
+    "words": "{count, plural, one {# slovo} few {# slova} many {# slova} other {# slov}}"
+  }
+}
