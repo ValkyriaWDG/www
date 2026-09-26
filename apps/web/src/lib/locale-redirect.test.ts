@@ -33,4 +33,8 @@ describe('filterSafeQuery', () => {
   it('accepts Czech search text', () => {
     expect(filterSafeQuery(new URLSearchParams({ q: 'Příliš žluťoučký' })).get('q')).toBe('Příliš žluťoučký');
   });
+
+  it('keeps the edited content language across a UI language switch', () => {
+    expect(filterSafeQuery(new URLSearchParams({ lang: 'en', returnTo: 'https://evil.example' })).toString()).toBe('lang=en');
+  });
 });

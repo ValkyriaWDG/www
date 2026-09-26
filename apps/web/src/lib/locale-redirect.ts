@@ -14,7 +14,7 @@ export const UI_ROOT_SEGMENTS = [
 ] as const;
 
 /** Non-sensitive shareable filter/query keys preserved on redirects and language switches. */
-export const SAFE_QUERY_KEYS = ['game', 'status', 'q', 'page', 'category', 'tag', 'role', 'view'] as const;
+export const SAFE_QUERY_KEYS = ['game', 'status', 'q', 'page', 'category', 'tag', 'role', 'view', 'lang'] as const;
 
 const SAFE_QUERY_VALUE = /^[\p{L}\p{N} _.,:-]{0,80}$/u;
 
