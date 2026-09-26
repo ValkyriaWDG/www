@@ -1,0 +1,141 @@
+{
+  "recordedAt": "2026-09-26T14:12:56.923Z",
+  "ffmpegVersion": "9.0.2-essentials_build-www.gyan.dev",
+  "sourceFrames": 11547,
+  "sourceDurationSeconds": 192.45,
+  "endpointFrameSsim": 0.982111,
+  "endpointComparison": "Final decoded primary frame compared with the physically last complete AVI frame after equivalent orientation/downscale; lossy comparison, not identity.",
+  "results": [
+    {
+      "role": "primary",
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "mimeType": "video/mp4",
+      "bytes": 51032923,
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b",
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "durationSeconds": 192.466016,
+      "frames": 5774,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "colorSpace": "bt709",
+      "colorPrimaries": "bt709",
+      "colorTransfer": "bt709",
+      "colorRange": "tv",
+      "h264Level": 40,
+      "faststart": true,
+      "checks": "passed",
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 59646
+        },
+        {
+          "type": "free",
+          "offset": 59678,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 59686,
+          "bytes": 50973237
+        }
+      ]
+    },
+    {
+      "role": "compact",
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "mimeType": "video/mp4",
+      "bytes": 13654192,
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e",
+      "width": 1280,
+      "height": 720,
+      "codec": "h264",
+      "durationSeconds": 192.466016,
+      "frames": 5774,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "colorSpace": "bt709",
+      "colorPrimaries": "bt709",
+      "colorTransfer": "bt709",
+      "colorRange": "tv",
+      "h264Level": 31,
+      "faststart": true,
+      "checks": "passed",
+      "atoms": [
+        {
+          "type": "ftyp",
+          "offset": 0,
+          "bytes": 32
+        },
+        {
+          "type": "moov",
+          "offset": 32,
+          "bytes": 54708
+        },
+        {
+          "type": "free",
+          "offset": 54740,
+          "bytes": 8
+        },
+        {
+          "type": "mdat",
+          "offset": 54748,
+          "bytes": 13599444
+        }
+      ]
+    },
+    {
+      "role": "alternate",
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "mimeType": "video/webm",
+      "bytes": 19561104,
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309",
+      "width": 1920,
+      "height": 1080,
+      "codec": "vp9",
+      "durationSeconds": 192.466,
+      "frames": 5774,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "colorSpace": "bt709",
+      "colorPrimaries": "bt709",
+      "colorTransfer": "bt709",
+      "colorRange": "tv",
+      "checks": "passed"
+    }
+  ],
+  "completeOutputDecode": {
+    "command": "ffmpeg -v error -xerror -i FILE -f null NUL",
+    "results": [
+      {
+        "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+        "exitCode": 0,
+        "errors": 0,
+        "passed": true
+      },
+      {
+        "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+        "exitCode": 0,
+        "errors": 0,
+        "passed": true
+      },
+      {
+        "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+        "exitCode": 0,
+        "errors": 0,
+        "passed": true
+      }
+    ]
+  }
+}

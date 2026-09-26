@@ -1,0 +1,7 @@
+{
+  "method": "Read-only traversal of RIFF frame chunk headers, not a complete source decode.",
+  "frames": 11547,
+  "durationSeconds": 192.45,
+  "warning": "AVI duration/index headers are inconsistent. The final AVIX contains 152 complete frames with unfinished length/index fields; selected first 16 seconds decoded successfully. No full-source decode is claimed.",
+  "sourceSha256": "7778762d9660aa89b3ee85fc0182661dc7e315572c1faf90d98bf3f611fab1f7"
+}

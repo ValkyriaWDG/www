@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "sourceFileName": "UI_frontendvideo_v_4K.avi",
+  "sourceSha256": "7778762d9660aa89b3ee85fc0182661dc7e315572c1faf90d98bf3f611fab1f7",
+  "sourceBytes": 287362713428,
+  "method": "Native FFmpeg AVI demuxer, sequential decoding with -fflags +ignidx; no input/output time limit.",
+  "inputPackets": 11547,
+  "inputPacketBytes": 287326310400,
+  "decodedFrames": 11547,
+  "decodeErrors": 0,
+  "exitCode": 0,
+  "rawLogSha256": "2d4cdfa6024818c15d88199e7be6b4b2122a7463a1391b035bf44996a1834c87",
+  "rawLogRetention": "Local only; public report excludes the machine-specific source path.",
+  "physicalFrameCount": 11547,
+  "sourceFrameRate": "60/1",
+  "sourceDurationSeconds": 192.45,
+  "headerWarnings": [
+    "Reported stream duration is 0.866667 seconds, inconsistent with physical frame chunks.",
+    "Last AVIX has unfinished length/index fields but contains 152 complete raw frames ending at EOF."
+  ],
+  "tail": {
+    "physicalFrameIndex": 11546,
+    "byteOffset": 287337830228,
+    "payloadBytes": 24883200,
+    "endsAtEof": true,
+    "bottomUpDib": true,
+    "outputPrimaryFrameIndex": 5773,
+    "ssim": 0.982111,
+    "comparison": "The physically last AVI frame was read directly, vertically oriented and downscaled, then compared with the last decoded primary MP4 frame. Lossy similarity, not byte identity."
+  },
+  "sourceMetadataAfterEncoding": {
+    "bytes": 287362713428,
+    "lastWriteTimeUtc": "2026-09-26T10:17:51.6661598Z",
+    "unchangedFromHash": true
+  },
+  "binkIdentityVerified": false
+}

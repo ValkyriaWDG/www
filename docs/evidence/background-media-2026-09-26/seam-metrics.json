@@ -1,0 +1,8 @@
+{
+  "method": "Mean absolute grayscale delta, 320x180, values0..255. Supplemental seam comparison, not a visual-quality verdict.",
+  "frames": 450,
+  "adjacentMedian": 0.10416666666666667,
+  "adjacentP99": 0.4354340277777778,
+  "adjacentMax": 0.6151909722222222,
+  "wrapDelta": 0.7528645833333333
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sourceFileName": "UI_frontendvideo_v_4K.avi",
+  "algorithm": "SHA-256",
+  "sha256": "7778762d9660aa89b3ee85fc0182661dc7e315572c1faf90d98bf3f611fab1f7",
+  "startedAtUtc": "2026-09-26T13:33:47.3526360Z",
+  "completedAtUtc": "2026-09-26T13:36:47.5064181Z",
+  "before": {
+    "bytes": 287362713428,
+    "lastWriteTimeUtc": "2026-09-26T10:17:51.6661598Z"
+  },
+  "after": {
+    "bytes": 287362713428,
+    "lastWriteTimeUtc": "2026-09-26T10:17:51.6661598Z"
+  },
+  "stableMetadata": true,
+  "method": "Read-only streaming SHA-256 with file size and last-write metadata checked before and after. Source content was not copied."
+}

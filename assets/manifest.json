@@ -203,6 +203,72 @@
       "width": 180,
       "height": 180,
       "transformations": "Contained in 148x148, centered on an opaque #11110f 180x180 square, PNG via sharp 0.35.4"
+    },
+    {
+      "id": "media-proof-media-qa-1920x1080",
+      "path": "docs/evidence/background-media-2026-09-26/media-qa-1920x1080.png",
+      "source": "Actual encoded Wardogs media: Chromium QA capture or FFmpeg seam contact sheet, 2026-09-26",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party game imagery; excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "d220d5593cb717087760eea8d974d653a7e5b8d5f97f269ff10b085a478fe306",
+      "bytes": 1160449,
+      "width": 1920,
+      "height": 1139
+    },
+    {
+      "id": "media-proof-media-qa-390x844",
+      "path": "docs/evidence/background-media-2026-09-26/media-qa-390x844.png",
+      "source": "Actual encoded Wardogs media: Chromium QA capture or FFmpeg seam contact sheet, 2026-09-26",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party game imagery; excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "184fd43ff7a2baebfcdf65f805e42dc8c1496015251399fb49072da4c70f60a9",
+      "bytes": 131023,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "media-proof-seam-contact",
+      "path": "docs/evidence/background-media-2026-09-26/seam-contact.jpg",
+      "source": "Actual encoded Wardogs media: Chromium QA capture or FFmpeg seam contact sheet, 2026-09-26",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party game imagery; excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "327df8110b2b8f2fb65805357f0fc58de37e4120481e59abee67a31bec78193e",
+      "bytes": 135157,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "full-media-proof-timeline-contact",
+      "path": "docs/evidence/background-media-full-2026-09-26/timeline-contact.jpg",
+      "source": "FFmpeg frame extraction from the full primary video at frames 0, 1440, 2880, 4320, 5700 and 5773.",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party Wardogs footage displayed for review; no product redistribution license asserted.",
+      "sha256": "9efb2b19202ea4ca0289abf17e77028002ddc14770a6c22b1b3803e02262b035",
+      "bytes": 196520,
+      "width": 1920,
+      "height": 720
+    },
+    {
+      "id": "full-media-proof-media-qa-1920x1080",
+      "path": "docs/evidence/background-media-full-2026-09-26/media-qa-1920x1080.png",
+      "source": "Media QA viewer showing actual primary video bytes (wardogs-menu-full-1080p-619b27261fc9.mp4), paused after natural playback; not website integration or mobile website UX.",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party Wardogs footage displayed for review; no product redistribution license asserted.",
+      "sha256": "5d72dd0fbd2ebba8fb5ddf00e045526261decddb7d2d5d5bc638d1dcaf96b811",
+      "bytes": 1331168,
+      "width": 1920,
+      "height": 1139
+    },
+    {
+      "id": "full-media-proof-media-qa-390x844",
+      "path": "docs/evidence/background-media-full-2026-09-26/media-qa-390x844.png",
+      "source": "Media QA viewer showing actual compact video bytes (wardogs-menu-full-720p-040c3de21de3.mp4), paused after natural playback; not website integration or mobile website UX.",
+      "usage": "verification-evidence-only",
+      "rights": "Third-party Wardogs footage displayed for review; no product redistribution license asserted.",
+      "sha256": "a95471b3a7b6012bfb82bcf85a8c1517627f11a4275acb5b9e808d41816992e3",
+      "bytes": 132659,
+      "width": 390,
+      "height": 844
     }
   ]
 }
