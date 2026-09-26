@@ -1,0 +1,162 @@
+/* News list after reference 03/06: square image panels with a translucent caption strip. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 1vw, 20px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1680px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  border: var(--border-hairline) solid var(--color-border);
+  background: var(--color-panel);
+  transition: border-color var(--motion-fast) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: var(--border-hairline) solid var(--color-border);
+  background: var(--color-panel-solid);
+}
+
+.media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.body {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  background: rgb(42 43 39 / 0.62);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-accent-strong);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* The title link covers the whole panel; its focus ring is drawn around the panel. */
+.link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:focus-visible {
+  outline: none;
+}
+
+.link:focus-visible::after {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.excerpt {
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--space-3);
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.metaItem + .metaItem::before {
+  content: '·';
+  margin-right: var(--space-3);
+  color: var(--color-text-dim);
+}
+
+.tags {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-1);
+}
+
+.notice {
+  margin-bottom: var(--space-5);
+}
+
+.noticeLink {
+  /* Inline (not flex) so the space between the label and the quoted title is kept. */
+  display: inline-block;
+  padding-block: 10px;
+  line-height: 1.4;
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  overflow-wrap: anywhere;
+}
+
+.noticeLink:hover {
+  color: var(--color-accent-strong);
+}
+
+.noticeText {
+  margin: 0;
+}
