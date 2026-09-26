@@ -40,6 +40,7 @@ import { groupFieldErrors, type EditorField, type FieldMessageKey } from './fiel
 import { MediaPicker, type MediaPickerSelection } from './media-picker';
 import { RevisionHistory } from './revision-history';
 import { SchedulePanel } from './schedule-panel';
+import { SharingPreview } from './sharing-preview';
 import { isLive, publishIntent, translationStatus } from './state-labels';
 
 type ContentLocale = 'cs' | 'en';
@@ -1048,6 +1049,8 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
               <span className={styles.counter}>{t('fields.counter', { count: fields.seoDescription.length, max: 320 })}</span>
             </div>
           </details>
+
+          {mode === 'news' ? <SharingPreview locale={contentLocale} published={archived ? null : docState.translations[contentLocale]?.published ?? null} /> : null}
 
           <details
             className={styles.section}
