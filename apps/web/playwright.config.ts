@@ -1,7 +1,5 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { defineConfig, devices } from '@playwright/test';
-import { e2eDatabaseUrl } from './e2e/support/database-url';
+import { e2eServerEnv } from './e2e/support/server-env';
 
 const port = Number(process.env.E2E_PORT ?? 3100);
 const baseURL = `http://127.0.0.1:${port}`;
@@ -13,6 +11,8 @@ const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined;
 
 export default defineConfig({
   testDir: 'e2e',
+  // Actual delivered background media has its own suite (playwright.media.config.ts).
+  testIgnore: ['media/**'],
   outputDir: 'test-results',
   timeout: 45_000,
   expect: { timeout: 10_000 },
@@ -39,34 +39,12 @@ export default defineConfig({
     timeout: 180_000,
     stdout: 'pipe',
     stderr: 'pipe',
-    env: {
-      NODE_ENV: 'production',
-      PORT: String(port),
-      HOSTNAME: '127.0.0.1',
-      APP_URL: baseURL,
-      BETTER_AUTH_URL: baseURL,
-      BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET || 'e2e-only-ephemeral-secret-not-for-production-000',
-      DATABASE_URL: e2eDatabaseUrl(),
-      E2E_ADMIN_DATABASE_URL: process.env.DATABASE_URL ?? '',
-      // Absolute: the fixtures CLI (apps/web) and the standalone server (its own cwd) must share it.
-      EDITORIAL_MEDIA_ROOT: path.resolve(process.env.E2E_MEDIA_ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '.local/e2e-media')),
-      NEXT_TELEMETRY_DISABLED: '1',
-      // Synthetic Discord configuration: snowflakes and token are fake and only valid
-      // against the local mock server started by e2e/support/start-server.mjs.
-      E2E_DISCORD_MOCK_PORT: String(discordMockPort),
-      DISCORD_API_BASE_URL: `http://127.0.0.1:${discordMockPort}/api/v10`,
-      DISCORD_GUILD_ID: '100000000000000001',
-      DISCORD_BOT_TOKEN: 'e2e-synthetic-bot-token',
-      DISCORD_CLIENT_ID: '100000000000000099',
-      DISCORD_CLIENT_SECRET: 'e2e-synthetic-client-secret',
-      DISCORD_ROLE_MAPPING_JSON: JSON.stringify({
-        '200000000000000001': ['member'],
-        '200000000000000002': ['editor'],
-        '200000000000000003': ['match_manager'],
-        '200000000000000004': ['administrator'],
-      }),
+    env: e2eServerEnv({
+      port,
+      discordMockPort,
       // Same-origin URL that intentionally does not exist: exercises the missing-video fallback.
-      BACKGROUND_VIDEO_MP4_URL: `${baseURL}/e2e-missing/background-loop.mp4`,
-    },
+      // Actual delivered media is checked separately by playwright.media.config.ts.
+      background: { BACKGROUND_VIDEO_MP4_URL: `${baseURL}/e2e-missing/background-loop.mp4` },
+    }),
   },
 });

@@ -121,7 +121,7 @@ CSP, trusted-proxy handling and no-store policies for login/admin traffic. The o
   published content/metadata and safe localized login returns. Auth callbacks and health
   endpoints remain unprefixed; do not add a locale to the configured application origin.
 - Publish approved media separately and verify MIME, byte ranges, cache policy and
-  fallback. Verify Discord invite and production callback with an authorized test user.
+  fallback ([background media](background-media.md)). Verify Discord invite and production callback with an authorized test user.
 - Record revision, digest, migration IDs, evidence and rollback decision.
 
 Watchtower is **off in the example**. Auto-pull may be enabled later only for an explicitly
