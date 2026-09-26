@@ -1,8 +1,10 @@
 # Build, publication and deployment
 
-Status: the image build is implemented and smoke-tested in CI and in a cloud container;
-publication remains gated and disabled. No registry has been configured, no server changed
-and no domain deployed.
+The image build is implemented and smoke-tested in CI and in a cloud container.
+Publication and deployment remain explicit operator actions; their actual outcomes
+belong in [status](../STATUS.md) and the deployment record. The owner approved a
+**public DockerHub image for this website** on 2026-09-26. Runtime configuration,
+credentials, database contents and uploaded media remain outside the image.
 
 ## Pipeline
 
@@ -13,13 +15,13 @@ and no domain deployed.
    `CONTAINER_PUBLISH_ENABLED=true`, registry configuration and the `container-publish`
    environment. Supply `expected_sha` as the full accepted main revision. It reruns CI,
    rejects a different workflow SHA before registry login, then builds an immutable
-   `sha-<full commit>` image.
+   `sha-<full commit>` image with that SHA as `SOURCE_REVISION`. The publisher pulls
+   the returned digest and requires its OCI revision label to equal the accepted SHA.
 4. Operator verifies digest, migrations and rollback, then deploys the exact image.
 5. Prove public routes, requested login/admin behavior, logs and monitoring after deployment.
 
-Publication is deliberately manual until the application exists and operator configuration
-is complete. The cloud implementation agent must finish the build pipeline; it must not
-pretend the scaffold's green foundation check is a container build or live deployment.
+Publication remains manual and requires complete operator configuration. A green
+foundation check alone is not a container build or live deployment.
 
 ## GitHub configuration contract
 
@@ -27,14 +29,17 @@ pretend the scaffold's green foundation check is a container build or live deplo
 |---|---|
 | Repository variable `CONTAINER_PUBLISH_ENABLED` | `false` until first release readiness review |
 | Workflow input `expected_sha` | Full accepted main revision; must equal the immutable workflow SHA |
-| Repository/environment variable `DOCKERHUB_IMAGE` | Operator-selected existing private `namespace/repository` |
+| Repository/environment variable `DOCKERHUB_IMAGE` | Operator-selected existing `namespace/repository` with explicitly approved public/private visibility |
 | Environment secret `DOCKERHUB_USERNAME` | Registry username; no live value in source |
 | Environment secret `DOCKERHUB_TOKEN` | Least-privilege registry token |
 | Environment `container-publish` | Main-only policy; owner review before publishing |
 | Production image | Immutable tag or digest, recorded in deployment log |
 
-Do not automatically create a public DockerHub repository: visibility must be verified
-before first push. No production SSH credentials are needed in CI. Public pull requests
+Before pushing, verify that the target repository exists and its visibility matches the
+owner's approval; record the identity and visibility in release evidence. The current
+website approval permits public visibility and does not require a private repository.
+Do not infer visibility from the public source repository or silently change a different
+registry target. No production SSH credentials are needed in CI. Public pull requests
 never receive registry or production secrets; use `pull_request`, not privileged
 `pull_request_target` execution of untrusted code. Third-party actions are pinned to
 commit SHAs and maintained by Dependabot.
@@ -54,7 +59,9 @@ loader is bundled separately (`apps/web/dist/dev-cli`) and is not copied into th
 installed at container start and migrations never run on web start. No build argument or
 layer contains a secret; behind a TLS-intercepting egress proxy the build may receive the
 proxy CA only as a BuildKit secret (`--secret id=build_ca,src=…`), which is not persisted.
-`SOURCE_REVISION` sets the OCI revision label. CI builds the image (without publishing),
+`SOURCE_REVISION` sets the OCI revision label; the publisher passes the full workflow
+SHA after the `expected_sha` guard and verifies the label on the pulled registry digest.
+CI builds the image (without publishing),
 runs the migration CLI twice (idempotency) and starts it read-only with `--cap-drop ALL`,
 then checks liveness, readiness, non-root uid and the `/` → `/cs` redirect.
 

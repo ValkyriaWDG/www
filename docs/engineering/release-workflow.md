@@ -2,9 +2,9 @@
 
 Use this guide for a release candidate and its evidence. The canonical host, registry,
 image and migration requirements remain in [deployment](../operations/deployment.md).
-The current foundation has version `0.0.0` in its private workspace manifest; this is
-not a released application. There is no working app, image or live deployment implied
-by these instructions.
+The implemented application's version comes from the root `package.json`. A package
+version or these instructions alone do not prove a published image or live deployment;
+check the current [status](../STATUS.md) and exact revision evidence.
 
 ## Distinguish the requested operation
 
@@ -12,7 +12,7 @@ by these instructions.
 |---|---|
 | Prepare release | Reviewable version/changelog proposal, exact candidate and validation/handover evidence |
 | Publish version | An authorized immutable Git tag and GitHub release tied to the accepted commit |
-| Publish container | An authorized private-registry image whose commit and digest are verified |
+| Publish container | An image in the operator-approved public/private registry whose commit and digest are verified |
 | Deploy | An authorized operator action promoting that image to a specific environment with migration and live checks |
 
 Determine which operations the current task/session already authorizes and complete
@@ -30,10 +30,7 @@ with Git tags of the form `vMAJOR.MINOR.PATCH`; use an explicit prerelease suffi
 the release is intentionally a prerelease. Never move, delete/recreate or force-update
 an issued version tag. A correction is a new version.
 
-Before implementation has a releasable baseline, retain the foundation version and
-describe changes through commits/PRs. Choose the first application version as part of
-the first release proposal, not during a documentation task. Once established, the root
-`package.json` version is the application release source; keep any exposed application
+The root `package.json` version is the application release source; keep any exposed application
 version synchronized. Private internal package versions need not become independent
 release lines. Public behavior, integration/schema compatibility and migration impact
 determine the proposed bump; a UI-only patch must not conceal an incompatible data change.
@@ -54,8 +51,7 @@ version alone.
 ## Qualify the exact candidate
 
 Inspect current scripts and [status](../STATUS.md) before selecting checks. Foundation
-commands are available now; application commands and image checks become meaningful
-only after [the implementation plan](../implementation/plan.md) is implemented.
+commands supplement the implemented application commands and image checks.
 An all-green foundation run with Application skipped does not qualify an app release.
 
 For an implemented candidate, collect:
@@ -82,14 +78,16 @@ The committed [publisher](../../.github/workflows/container-publish.yml) current
 manual dispatch on main with required `expected_sha`, `CONTAINER_PUBLISH_ENABLED=true`, configured DockerHub variables/
 secrets and the `container-publish` environment. It reruns CI and produces only a
 `sha-<full commit>` image tag. A version tag or GitHub release does not trigger it.
-Publication is disabled in the foundation; do not enable the gate merely to make a
-release-preparation task look complete.
+Enable publication only within an authorized publication task; do not enable the gate
+merely to make a release-preparation task look complete.
 
 Before an authorized push, use current authenticated registry metadata to verify the
-operator-selected DockerHub repository exists and is **private**. Record the sanitized
-repository identity and privacy result. Local login success is not privacy evidence.
+operator-selected DockerHub repository exists and its **public/private visibility matches
+the owner's explicit approval**. The website's 2026-09-26 approval permits a public image;
+private visibility is not a prerequisite for this release. Record the sanitized repository
+identity and visibility result. Local login success does not establish visibility.
 If the registry identity/visibility cannot be established, do not push or implicitly
-create a public repository. Prepare the remaining candidate artifacts instead.
+create a different repository. Prepare the remaining candidate artifacts instead.
 
 The current main-only workflow cannot publish an arbitrary historical commit. Pass the
 accepted full SHA as `expected_sha`; the guard must match it to the workflow's immutable
@@ -102,7 +100,9 @@ revision; it does not authorize historical builds or replace the other release g
 For a completed authorized run, verify the run SHA, image source/revision metadata,
 `sha-<commit>` reference and registry digest agree. Record the digest returned by the
 registry and verify the built artifact's checks, rather than deriving a digest from a
-tag name. Never overwrite a revision tag with a different artifact; deployment pins
+tag name. The workflow passes `SOURCE_REVISION` to the Docker build, pulls the resulting
+registry digest and fails if its OCI revision differs from the accepted workflow SHA.
+Never overwrite a revision tag with a different artifact; deployment pins
 the accepted digest. Do not add `latest` or a production alias as an incidental step.
 
 Only after the candidate's required evidence is complete, perform separately authorized
@@ -145,7 +145,7 @@ old HLL site during this operation.
 
 ## Final evidence
 
-Report version/tag status, full accepted SHA, exact-SHA CI results, registry privacy
+Report version/tag status, full accepted SHA, exact-SHA CI results, approved registry visibility
 verification, image digest/publication result, migration/restore status, deployment
 target and observed digest if deployed, and remaining limitations. Use `not run`,
 `blocked`, `failed` and `passed` distinctly. Update repository status with public-safe
