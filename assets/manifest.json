@@ -1164,6 +1164,94 @@
       "bytes": 47504,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "first-deployment-2026-09-26-01-home-cs-desktop",
+      "path": "docs/evidence/first-deployment-2026-09-26/01-home-cs-desktop.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "6cb9d268474e4e9e125629700a0f53b58c578d824ecb9d8b5c75529639a5c997",
+      "bytes": 2076411,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "first-deployment-2026-09-26-02-home-en-desktop",
+      "path": "docs/evidence/first-deployment-2026-09-26/02-home-en-desktop.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "bb7639b5a1363e89866cbddefc2ff34f3a623fd5b95ea7de249b435fc719c2a7",
+      "bytes": 1952238,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "first-deployment-2026-09-26-03-paused-cs-desktop",
+      "path": "docs/evidence/first-deployment-2026-09-26/03-paused-cs-desktop.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "c778b84630a601360ed02e1968e7650534984516e934b5414eeb0fdae89c69e8",
+      "bytes": 2156562,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "first-deployment-2026-09-26-04-reduced-motion-cs-desktop",
+      "path": "docs/evidence/first-deployment-2026-09-26/04-reduced-motion-cs-desktop.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "5d3c09b094a7aa6fc36eb584bf806c84fe6ea493589f648abbd646ae178d459a",
+      "bytes": 2158632,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "first-deployment-2026-09-26-05-login-cs-disabled",
+      "path": "docs/evidence/first-deployment-2026-09-26/05-login-cs-disabled.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "b050cb8e23b4920e094aa29ba2ef3313b0f91a471775c8b9dda93d91ebfa299c",
+      "bytes": 315705,
+      "width": 1920,
+      "height": 1153
+    },
+    {
+      "id": "first-deployment-2026-09-26-05-login-en-disabled",
+      "path": "docs/evidence/first-deployment-2026-09-26/05-login-en-disabled.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "444a475f4e6b7f18ef58534f24e009431319d2612132883b6d86c304b74f28c2",
+      "bytes": 315414,
+      "width": 1920,
+      "height": 1153
+    },
+    {
+      "id": "first-deployment-2026-09-26-06-home-cs-mobile",
+      "path": "docs/evidence/first-deployment-2026-09-26/06-home-cs-mobile.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "f246a46bb89c98af30a7beea3b222c902931fe5177c3adc4fdcd7ed9aab90884",
+      "bytes": 321449,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "first-deployment-2026-09-26-06-home-en-mobile",
+      "path": "docs/evidence/first-deployment-2026-09-26/06-home-en-mobile.png",
+      "source": "Live anonymous Playwright/Edge capture at https://valkyriawdg.cz; deployed revision d0f98b0475e7dfb07add2a679c49acce23259684",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot showing Valkyria branding and third-party Wardogs imagery; excluded from the Apache code license, no general redistribution license asserted",
+      "sha256": "7abf0b5cb0116cb4a5a5f98ce9da28378c9cba4d451f72ffb26fda4632f764c1",
+      "bytes": 318978,
+      "width": 390,
+      "height": 844
     }
   ]
 }

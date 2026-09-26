@@ -1,0 +1,1598 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "real-production-http",
+  "startedAt": "2026-09-26T17:28:52.573Z",
+  "nodeVersion": "v24.21.0",
+  "origin": "https://valkyriawdg.cz",
+  "deploymentRecord": {
+    "revision": "d0f98b0475e7dfb07add2a679c49acce23259684",
+    "imageDigest": "sha256:2ceb72d0b67fd462fa93733c752b60cdc708f36584bcffb5537be31bb5c360d4",
+    "provenance": "Operator-supplied deployment identity; not independently discoverable through these public HTTP checks."
+  },
+  "mediaManifest": {
+    "id": "wardogs-menu-full-2026-09-26",
+    "sha256": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388"
+  },
+  "limits": [
+    "GET and HEAD only; no authentication POST, account creation or configuration changes.",
+    "No full media download/hash, browser decode or natural playback proof in this report.",
+    "Mount permissions and host file SHA-256 require separate operator evidence.",
+    "Redirect/private-route HTTP checks do not establish authenticated authorization behavior."
+  ],
+  "checks": [
+    {
+      "label": "root defaults to Czech",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/",
+      "observedAt": "2026-09-26T17:28:52.575Z",
+      "status": 307,
+      "headers": {
+        "location": "/cs"
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 307",
+          "actual": 307,
+          "passed": true
+        },
+        {
+          "expected": "https://valkyriawdg.cz/cs",
+          "actual": "/cs",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 191
+    },
+    {
+      "label": "www preserves locale, path and query",
+      "method": "GET",
+      "url": "https://www.valkyriawdg.cz/en/clan?source=http-smoke",
+      "observedAt": "2026-09-26T17:28:52.766Z",
+      "status": 308,
+      "headers": {
+        "location": "https://valkyriawdg.cz/en/clan?source=http-smoke",
+        "content-type": "text/html"
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 308",
+          "actual": 308,
+          "passed": true
+        },
+        {
+          "expected": "https://valkyriawdg.cz/en/clan?source=http-smoke",
+          "actual": "https://valkyriawdg.cz/en/clan?source=http-smoke",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 142
+    },
+    {
+      "label": "HTTP redirects to HTTPS with path and query",
+      "method": "GET",
+      "url": "http://valkyriawdg.cz/en/clan?source=http-smoke",
+      "observedAt": "2026-09-26T17:28:52.908Z",
+      "status": 308,
+      "headers": {
+        "location": "https://valkyriawdg.cz/en/clan?source=http-smoke",
+        "content-type": "text/html"
+      },
+      "assertions": [
+        {
+          "expected": "permanent HTTP redirect (301 or 308)",
+          "actual": 308,
+          "passed": true
+        },
+        {
+          "expected": "https://valkyriawdg.cz/en/clan?source=http-smoke",
+          "actual": "https://valkyriawdg.cz/en/clan?source=http-smoke",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 148
+    },
+    {
+      "label": "health live",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/api/health/live",
+      "observedAt": "2026-09-26T17:28:53.056Z",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "health": {
+        "status": "ok"
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "ok",
+          "actual": "ok",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 79
+    },
+    {
+      "label": "health ready",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/api/health/ready",
+      "observedAt": "2026-09-26T17:28:53.135Z",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "health": {
+        "status": "ready",
+        "checks": {
+          "config": "ok",
+          "database": "ok",
+          "schema": "ok",
+          "media": "ok"
+        }
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "ready",
+          "actual": "ready",
+          "passed": true
+        },
+        {
+          "expected": "config=ok",
+          "actual": "ok",
+          "passed": true
+        },
+        {
+          "expected": "database=ok",
+          "actual": "ok",
+          "passed": true
+        },
+        {
+          "expected": "schema=ok",
+          "actual": "ok",
+          "passed": true
+        },
+        {
+          "expected": "media=ok",
+          "actual": "ok",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 137
+    },
+    {
+      "label": "public metadata cs/",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs",
+      "observedAt": "2026-09-26T17:28:53.272Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Valkyria – hlavní menu",
+        "description": "Valkyria — česko-slovenský herní klan. Wardogs dnes, Hell Let Loose jako naše historie. Připojte se na Discord.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": null,
+        "alternates": []
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Valkyria – hlavní menu",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Valkyria — česko-slovenský herní klan. Wardogs dnes, Hell Let Loose jako naše historie. Připojte se na Discord.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs",
+          "actual": null,
+          "passed": false
+        }
+      ],
+      "passed": false,
+      "durationMs": 172
+    },
+    {
+      "label": "public metadata cs/clan",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/clan",
+      "observedAt": "2026-09-26T17:28:53.444Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Klan Valkyria",
+        "description": "Valkyria je česká a slovenská herní komunita. Dnes hlavně Wardogs, od roku 2022 s historií v Hell Let Loose.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": "https://valkyriawdg.cz/cs/clan",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/clan"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/clan"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/clan"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Klan Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Valkyria je česká a slovenská herní komunita. Dnes hlavně Wardogs, od roku 2022 s historií v Hell Let Loose.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs/clan",
+          "actual": "https://valkyriawdg.cz/cs/clan",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 123
+    },
+    {
+      "label": "public metadata cs/community",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/community",
+      "observedAt": "2026-09-26T17:28:53.567Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Komunita Valkyria",
+        "description": "Jak se přidat ke komunitě Valkyria na Discordu a čím se liší členství na Discordu od přihlášení na web.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": "https://valkyriawdg.cz/cs/community",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/community"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/community"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/community"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Komunita Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Jak se přidat ke komunitě Valkyria na Discordu a čím se liší členství na Discordu od přihlášení na web.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs/community",
+          "actual": "https://valkyriawdg.cz/cs/community",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 257
+    },
+    {
+      "label": "public metadata cs/privacy",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/privacy",
+      "observedAt": "2026-09-26T17:28:53.825Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Ochrana soukromí – Valkyria",
+        "description": "Jaké údaje zpracovává web komunity Valkyria: přihlášení přes Discord, relační cookie, provozní záznamy a veřejné profily se souhlasem.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": "https://valkyriawdg.cz/cs/privacy",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/privacy"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/privacy"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/privacy"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Ochrana soukromí – Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Jaké údaje zpracovává web komunity Valkyria: přihlášení přes Discord, relační cookie, provozní záznamy a veřejné profily se souhlasem.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs/privacy",
+          "actual": "https://valkyriawdg.cz/cs/privacy",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 165
+    },
+    {
+      "label": "public metadata cs/news",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/news",
+      "observedAt": "2026-09-26T17:28:53.990Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Novinky · Valkyria",
+        "description": "Oznámení, reportáže ze zápasů a novinky z klanu Valkyria.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": "https://valkyriawdg.cz/cs/news",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/news"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/news"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/news"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Novinky · Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Oznámení, reportáže ze zápasů a novinky z klanu Valkyria.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs/news",
+          "actual": "https://valkyriawdg.cz/cs/news",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 133
+    },
+    {
+      "label": "public metadata cs/members",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/members",
+      "observedAt": "2026-09-26T17:28:54.123Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Členové · Valkyria",
+        "description": "Veřejné profily členů klanu Valkyria, kteří se zveřejněním souhlasili.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": "https://valkyriawdg.cz/cs/members",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/members"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/members"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/members"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Členové · Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Veřejné profily členů klanu Valkyria, kteří se zveřejněním souhlasili.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs/members",
+          "actual": "https://valkyriawdg.cz/cs/members",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 113
+    },
+    {
+      "label": "public metadata cs/matches",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/matches",
+      "observedAt": "2026-09-26T17:28:54.236Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Zápasy · Valkyria",
+        "description": "Nadcházející zápasy a zveřejněné výsledky klanu Valkyria ve Wardogs a Hell Let Loose.",
+        "robots": null,
+        "openGraphLocale": "cs_CZ",
+        "canonical": "https://valkyriawdg.cz/cs/matches",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/matches"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/matches"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/matches"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Zápasy · Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Nadcházející zápasy a zveřejněné výsledky klanu Valkyria ve Wardogs a Hell Let Loose.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "cs_CZ",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/cs/matches",
+          "actual": "https://valkyriawdg.cz/cs/matches",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 119
+    },
+    {
+      "label": "private login cs",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/login",
+      "observedAt": "2026-09-26T17:28:54.355Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-store, max-age=0"
+      },
+      "metadata": {
+        "language": "cs",
+        "title": "Přihlášení · Valkyria",
+        "description": "Valkyria — česko-slovenská herní komunita. Od Hell Let Loose po Wardogs, společně.",
+        "robots": "noindex, nofollow",
+        "openGraphLocale": "cs_CZ",
+        "canonical": null,
+        "alternates": []
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "Cache-Control contains no-store",
+          "actual": "private, no-store, max-age=0",
+          "passed": true
+        },
+        {
+          "expected": "robots noindex",
+          "actual": "noindex, nofollow",
+          "passed": true
+        },
+        {
+          "expected": "html lang=cs",
+          "actual": "cs",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 110
+    },
+    {
+      "label": "anonymous admin cs",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/cs/admin",
+      "observedAt": "2026-09-26T17:28:54.465Z",
+      "status": 307,
+      "headers": {
+        "location": "/cs/login?returnTo=%2Fcs%2Fadmin",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-store, max-age=0"
+      },
+      "assertions": [
+        {
+          "expected": "Cache-Control contains no-store",
+          "actual": "private, no-store, max-age=0",
+          "passed": true
+        },
+        {
+          "expected": "redirect to localized login with admin return path",
+          "actual": "/cs/login?returnTo=%2Fcs%2Fadmin",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 105
+    },
+    {
+      "label": "public metadata en/",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en",
+      "observedAt": "2026-09-26T17:28:54.570Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Valkyria – main menu",
+        "description": "Valkyria — a Czech and Slovak gaming clan. Wardogs today, Hell Let Loose as our history. Join us on Discord.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": null,
+        "alternates": []
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Valkyria – main menu",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Valkyria — a Czech and Slovak gaming clan. Wardogs today, Hell Let Loose as our history. Join us on Discord.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en",
+          "actual": null,
+          "passed": false
+        }
+      ],
+      "passed": false,
+      "durationMs": 106
+    },
+    {
+      "label": "public metadata en/clan",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/clan",
+      "observedAt": "2026-09-26T17:28:54.676Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "The Valkyria clan",
+        "description": "Valkyria is a Czech and Slovak gaming community. Mostly Wardogs today, with a Hell Let Loose history since 2022.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": "https://valkyriawdg.cz/en/clan",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/clan"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/clan"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/clan"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "The Valkyria clan",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Valkyria is a Czech and Slovak gaming community. Mostly Wardogs today, with a Hell Let Loose history since 2022.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en/clan",
+          "actual": "https://valkyriawdg.cz/en/clan",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 120
+    },
+    {
+      "label": "public metadata en/community",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/community",
+      "observedAt": "2026-09-26T17:28:54.796Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Valkyria community",
+        "description": "How to join the Valkyria community on Discord and how Discord membership differs from signing in to the website.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": "https://valkyriawdg.cz/en/community",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/community"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/community"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/community"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Valkyria community",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "How to join the Valkyria community on Discord and how Discord membership differs from signing in to the website.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en/community",
+          "actual": "https://valkyriawdg.cz/en/community",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 119
+    },
+    {
+      "label": "public metadata en/privacy",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/privacy",
+      "observedAt": "2026-09-26T17:28:54.915Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Privacy – Valkyria",
+        "description": "What data the Valkyria community website processes: Discord sign-in, a session cookie, server logs and member profiles published with consent.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": "https://valkyriawdg.cz/en/privacy",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/privacy"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/privacy"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/privacy"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Privacy – Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "What data the Valkyria community website processes: Discord sign-in, a session cookie, server logs and member profiles published with consent.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en/privacy",
+          "actual": "https://valkyriawdg.cz/en/privacy",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 101
+    },
+    {
+      "label": "public metadata en/news",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/news",
+      "observedAt": "2026-09-26T17:28:55.016Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "News · Valkyria",
+        "description": "Announcements, match reports and clan updates from the Valkyria community.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": "https://valkyriawdg.cz/en/news",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/news"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/news"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/news"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "News · Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Announcements, match reports and clan updates from the Valkyria community.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en/news",
+          "actual": "https://valkyriawdg.cz/en/news",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 99
+    },
+    {
+      "label": "public metadata en/members",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/members",
+      "observedAt": "2026-09-26T17:28:55.115Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Members · Valkyria",
+        "description": "Public profiles of Valkyria clan members who agreed to be listed.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": "https://valkyriawdg.cz/en/members",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/members"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/members"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/members"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Members · Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Public profiles of Valkyria clan members who agreed to be listed.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en/members",
+          "actual": "https://valkyriawdg.cz/en/members",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 126
+    },
+    {
+      "label": "public metadata en/matches",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/matches",
+      "observedAt": "2026-09-26T17:28:55.241Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Matches · Valkyria",
+        "description": "Upcoming Valkyria fixtures and published results in Wardogs and Hell Let Loose.",
+        "robots": null,
+        "openGraphLocale": "en_GB",
+        "canonical": "https://valkyriawdg.cz/en/matches",
+        "alternates": [
+          {
+            "language": "cs",
+            "href": "https://valkyriawdg.cz/cs/matches"
+          },
+          {
+            "language": "en",
+            "href": "https://valkyriawdg.cz/en/matches"
+          },
+          {
+            "language": "x-default",
+            "href": "https://valkyriawdg.cz/cs/matches"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        },
+        {
+          "expected": "nonempty localized title",
+          "actual": "Matches · Valkyria",
+          "passed": true
+        },
+        {
+          "expected": "nonempty description",
+          "actual": "Upcoming Valkyria fixtures and published results in Wardogs and Hell Let Loose.",
+          "passed": true
+        },
+        {
+          "expected": "localized Open Graph locale",
+          "actual": "en_GB",
+          "passed": true
+        },
+        {
+          "expected": "canonical=https://valkyriawdg.cz/en/matches",
+          "actual": "https://valkyriawdg.cz/en/matches",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 220
+    },
+    {
+      "label": "private login en",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/login",
+      "observedAt": "2026-09-26T17:28:55.461Z",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-store, max-age=0"
+      },
+      "metadata": {
+        "language": "en",
+        "title": "Sign in · Valkyria",
+        "description": "Valkyria — a Czech and Slovak gaming community. From Hell Let Loose to Wardogs, together.",
+        "robots": "noindex, nofollow",
+        "openGraphLocale": "en_GB",
+        "canonical": null,
+        "alternates": []
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "Cache-Control contains no-store",
+          "actual": "private, no-store, max-age=0",
+          "passed": true
+        },
+        {
+          "expected": "robots noindex",
+          "actual": "noindex, nofollow",
+          "passed": true
+        },
+        {
+          "expected": "html lang=en",
+          "actual": "en",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 109
+    },
+    {
+      "label": "anonymous admin en",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/en/admin",
+      "observedAt": "2026-09-26T17:28:55.571Z",
+      "status": 307,
+      "headers": {
+        "location": "/en/login?returnTo=%2Fen%2Fadmin",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-store, max-age=0"
+      },
+      "assertions": [
+        {
+          "expected": "Cache-Control contains no-store",
+          "actual": "private, no-store, max-age=0",
+          "passed": true
+        },
+        {
+          "expected": "redirect to localized login with admin return path",
+          "actual": "/en/login?returnTo=%2Fen%2Fadmin",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 83
+    },
+    {
+      "label": "media HEAD primary",
+      "method": "HEAD",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "observedAt": "2026-09-26T17:28:55.654Z",
+      "status": 200,
+      "headers": {
+        "content-type": "video/mp4",
+        "content-length": "51032923",
+        "accept-ranges": "bytes",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "asset": {
+        "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+        "role": "primary",
+        "expectedBytes": 51032923
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "video/mp4",
+          "actual": "video/mp4",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "manifest byte length=51032923",
+          "actual": "51032923",
+          "passed": true
+        },
+        {
+          "expected": "Accept-Ranges: bytes",
+          "actual": "bytes",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 100
+    },
+    {
+      "label": "media byte range primary",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "observedAt": "2026-09-26T17:28:55.754Z",
+      "status": 206,
+      "headers": {
+        "content-type": "video/mp4",
+        "content-length": "1024",
+        "content-range": "bytes 0-1023/51032923",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "receivedBytes": 1024,
+      "assertions": [
+        {
+          "expected": "HTTP 206",
+          "actual": 206,
+          "passed": true
+        },
+        {
+          "expected": "video/mp4",
+          "actual": "video/mp4",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "bytes 0-1023/51032923",
+          "actual": "bytes 0-1023/51032923",
+          "passed": true
+        },
+        {
+          "expected": "exactly 1024 received bytes",
+          "actual": 1024,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 17
+    },
+    {
+      "label": "media HEAD compact",
+      "method": "HEAD",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-720p-040c3de21de3.mp4",
+      "observedAt": "2026-09-26T17:28:55.771Z",
+      "status": 200,
+      "headers": {
+        "content-type": "video/mp4",
+        "content-length": "13654192",
+        "accept-ranges": "bytes",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "asset": {
+        "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+        "role": "compact",
+        "expectedBytes": 13654192
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "video/mp4",
+          "actual": "video/mp4",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "manifest byte length=13654192",
+          "actual": "13654192",
+          "passed": true
+        },
+        {
+          "expected": "Accept-Ranges: bytes",
+          "actual": "bytes",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 149
+    },
+    {
+      "label": "media byte range compact",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-720p-040c3de21de3.mp4",
+      "observedAt": "2026-09-26T17:28:55.920Z",
+      "status": 206,
+      "headers": {
+        "content-type": "video/mp4",
+        "content-length": "1024",
+        "content-range": "bytes 0-1023/13654192",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "receivedBytes": 1024,
+      "assertions": [
+        {
+          "expected": "HTTP 206",
+          "actual": 206,
+          "passed": true
+        },
+        {
+          "expected": "video/mp4",
+          "actual": "video/mp4",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "bytes 0-1023/13654192",
+          "actual": "bytes 0-1023/13654192",
+          "passed": true
+        },
+        {
+          "expected": "exactly 1024 received bytes",
+          "actual": 1024,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 13
+    },
+    {
+      "label": "media HEAD alternate",
+      "method": "HEAD",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "observedAt": "2026-09-26T17:28:55.933Z",
+      "status": 200,
+      "headers": {
+        "content-type": "video/webm",
+        "content-length": "19561104",
+        "accept-ranges": "bytes",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "asset": {
+        "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+        "role": "alternate",
+        "expectedBytes": 19561104
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "video/webm",
+          "actual": "video/webm",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "manifest byte length=19561104",
+          "actual": "19561104",
+          "passed": true
+        },
+        {
+          "expected": "Accept-Ranges: bytes",
+          "actual": "bytes",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 46
+    },
+    {
+      "label": "media byte range alternate",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "observedAt": "2026-09-26T17:28:55.979Z",
+      "status": 206,
+      "headers": {
+        "content-type": "video/webm",
+        "content-length": "1024",
+        "content-range": "bytes 0-1023/19561104",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "receivedBytes": 1024,
+      "assertions": [
+        {
+          "expected": "HTTP 206",
+          "actual": 206,
+          "passed": true
+        },
+        {
+          "expected": "video/webm",
+          "actual": "video/webm",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "bytes 0-1023/19561104",
+          "actual": "bytes 0-1023/19561104",
+          "passed": true
+        },
+        {
+          "expected": "exactly 1024 received bytes",
+          "actual": 1024,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 14
+    },
+    {
+      "label": "media HEAD poster",
+      "method": "HEAD",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "observedAt": "2026-09-26T17:28:55.993Z",
+      "status": 200,
+      "headers": {
+        "content-type": "image/webp",
+        "content-length": "181198",
+        "accept-ranges": "bytes",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "asset": {
+        "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+        "role": "poster",
+        "expectedBytes": 181198
+      },
+      "assertions": [
+        {
+          "expected": "HTTP 200",
+          "actual": 200,
+          "passed": true
+        },
+        {
+          "expected": "image/webp",
+          "actual": "image/webp",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "manifest byte length=181198",
+          "actual": "181198",
+          "passed": true
+        },
+        {
+          "expected": "Accept-Ranges: bytes",
+          "actual": "bytes",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 42
+    },
+    {
+      "label": "media byte range poster",
+      "method": "GET",
+      "url": "https://valkyriawdg.cz/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "observedAt": "2026-09-26T17:28:56.035Z",
+      "status": 206,
+      "headers": {
+        "content-type": "image/webp",
+        "content-length": "1024",
+        "content-range": "bytes 0-1023/181198",
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "receivedBytes": 1024,
+      "assertions": [
+        {
+          "expected": "HTTP 206",
+          "actual": 206,
+          "passed": true
+        },
+        {
+          "expected": "image/webp",
+          "actual": "image/webp",
+          "passed": true
+        },
+        {
+          "expected": "public, max-age=31536000, immutable",
+          "actual": "public, max-age=31536000, immutable",
+          "passed": true
+        },
+        {
+          "expected": "bytes 0-1023/181198",
+          "actual": "bytes 0-1023/181198",
+          "passed": true
+        },
+        {
+          "expected": "exactly 1024 received bytes",
+          "actual": 1024,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "durationMs": 13
+    }
+  ],
+  "completedAt": "2026-09-26T17:28:56.048Z",
+  "summary": {
+    "total": 31,
+    "passed": 29,
+    "failed": 2
+  }
+}

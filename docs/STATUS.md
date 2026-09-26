@@ -1,6 +1,23 @@
 # Current status
 
-Updated: 2026-09-26. Stage: **1.0.0 — M1–M3 implemented and verified; not deployed.**
+Updated: 2026-09-26. Stage: **1.0.0 — public website deployed; live authentication deferred.**
+
+## First public deployment
+
+**https://valkyriawdg.cz** serves the Czech-first bilingual website with the complete
+192.47-second background sequence. The public DockerHub image is pinned to source
+`d0f98b0475e7dfb07add2a679c49acce23259684` and digest
+`sha256:2ceb72d0b67fd462fa93733c752b60cdc708f36584bcffb5537be31bb5c360d4`.
+See [deployment evidence](evidence/first-deployment-2026-09-26/README.md) for exact CI,
+runtime readback, host/media acceptance, restore proof and public browser/HTTP results.
+
+Dedicated PostgreSQL 15.17 persistence, explicit idempotent migration/production seed,
+non-root read-only runtime, private runtime secrets, HTTPS routing, full media delivery,
+daily on-host backups and minute publication timer are operating. A disposable restore
+matched all 25 tables; a website-only restart recovered readiness. No synthetic content
+was loaded. Discord/local recovery login remain disabled. Public HTTP checks expose two
+existing homepage canonical-metadata omissions ([#29](https://github.com/ValkyriaWDG/www/issues/29)).
+Issue #23 remains open for authentication and the remaining launch/operational inputs.
 
 ## Checkpoint (resume here)
 
@@ -13,9 +30,9 @@ Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-le
   community administration (matches, members, settings, audit), migrations, CLIs,
   non-root image with CI scan/SBOM, backup/restore rehearsal.
 Evidence: docs/evidence/app-1.0.0/README.md (captioned captures + measurements.json)
-Migrations: packages/db/drizzle/0000_initial_schema.sql (first production apply is an operator step)
+Migrations: packages/db/drizzle/0000_initial_schema.sql (applied; repeated runs no-op)
 Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
-Next executable step: operator launch checklist in docs/operations/deployment.md.
+Next executable step: configure Discord OAuth/guild roles and finish remaining #23 acceptance.
 ```
 
 ## Verification (release head; application source 64809d0)
@@ -44,8 +61,9 @@ Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
 - Live Discord OAuth, guild and role IDs (tests use the local REST mock).
 - MP4/H.264 playback in the application: this Chromium has no H.264 and the Chrome
   download host is blocked; Firefox/Safari not run. WebM playback is verified.
-- Production host, DNS, reverse proxy, TLS, approved background-media origin, registry
-  publication (`Publish container` workflow, gated) and scheduled `publish-due` timer.
+- Live SSO/admin configuration and acceptance remain deferred. Production host, DNS,
+  proxy/TLS, registry publication, media delivery and `publish-due` timer were subsequently
+  verified in the first-deployment evidence linked above.
 - Rollback rehearsal (1.0.0 is the first release) and page-weight/Web Vitals budgets.
 
 ## Media

@@ -1,0 +1,1218 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "live-production-public-browser-smoke",
+  "origin": "https://valkyriawdg.cz",
+  "startedAt": "2026-09-26T17:32:47.769Z",
+  "deployedRevision": "d0f98b0475e7dfb07add2a679c49acce23259684",
+  "deployedRevisionEvidence": "Operator-supplied; server build identity must be independently verified by deployment evidence.",
+  "localHarnessRevision": "d0f98b0475e7dfb07add2a679c49acce23259684",
+  "localTrackedChanges": false,
+  "harnessSha256": "4cc037b469860f9caa568e05816b11a8c172be73e1ff9ab8bc932a939f511f8b",
+  "playwrightVersion": "1.62.1",
+  "checks": [
+    {
+      "id": "desktop-cs-real-playback",
+      "status": "passed",
+      "elapsedMs": 5836,
+      "observed": {
+        "initialState": "playing",
+        "explicitOptIn": false,
+        "before": {
+          "currentTime": 0.10759,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "readyState": 4,
+          "errorCode": null,
+          "decodedFrames": 7,
+          "droppedFrames": 0,
+          "sourcePath": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+        },
+        "after": {
+          "currentTime": 3.62328,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "readyState": 4,
+          "errorCode": null,
+          "decodedFrames": 112,
+          "droppedFrames": 0,
+          "sourcePath": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+        }
+      }
+    },
+    {
+      "id": "locale-switch-cs-to-en-and-back",
+      "status": "passed",
+      "elapsedMs": 1393,
+      "observed": {
+        "routes": [
+          "/cs",
+          "/en",
+          "/cs"
+        ],
+        "englishAndCzechLanguageAttributes": true
+      }
+    },
+    {
+      "id": "pause-persistence-and-resume",
+      "status": "passed",
+      "elapsedMs": 2900,
+      "observed": {
+        "pauseBefore": {
+          "currentTime": 0.118384,
+          "duration": 192.466,
+          "paused": true,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "readyState": 4,
+          "errorCode": null,
+          "decodedFrames": 7,
+          "droppedFrames": 0,
+          "sourcePath": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+        },
+        "pauseAfter": {
+          "currentTime": 0.118384,
+          "duration": 192.466,
+          "paused": true,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "readyState": 4,
+          "errorCode": null,
+          "decodedFrames": 7,
+          "droppedFrames": 0,
+          "sourcePath": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+        },
+        "afterReload": {
+          "currentTime": 0,
+          "duration": null,
+          "paused": true,
+          "width": 0,
+          "height": 0,
+          "muted": true,
+          "loop": true,
+          "readyState": 0,
+          "errorCode": null,
+          "decodedFrames": 0,
+          "droppedFrames": 0,
+          "sourcePath": null
+        },
+        "resumed": {
+          "currentTime": 0.106328,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "readyState": 4,
+          "errorCode": null,
+          "decodedFrames": 7,
+          "droppedFrames": 0,
+          "sourcePath": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+        }
+      }
+    },
+    {
+      "id": "reduced-motion-poster-no-video-download",
+      "status": "passed",
+      "elapsedMs": 2326,
+      "observed": {
+        "state": "paused",
+        "reason": "reduced-motion",
+        "attachedSources": 0,
+        "paused": true,
+        "currentTime": 0,
+        "videoOpacity": "0",
+        "posterLoaded": true,
+        "posterPath": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+        "videoRequestsBeforeOptIn": 0
+      }
+    },
+    {
+      "id": "public-route-status-and-locales",
+      "status": "passed",
+      "elapsedMs": 5747,
+      "observed": [
+        {
+          "route": "/cs",
+          "status": 200,
+          "lang": "cs",
+          "mainVisible": true
+        },
+        {
+          "route": "/cs/news",
+          "status": 200,
+          "lang": "cs",
+          "mainVisible": true
+        },
+        {
+          "route": "/cs/clan",
+          "status": 200,
+          "lang": "cs",
+          "mainVisible": true
+        },
+        {
+          "route": "/cs/members",
+          "status": 200,
+          "lang": "cs",
+          "mainVisible": true
+        },
+        {
+          "route": "/cs/matches",
+          "status": 200,
+          "lang": "cs",
+          "mainVisible": true
+        },
+        {
+          "route": "/cs/privacy",
+          "status": 200,
+          "lang": "cs",
+          "mainVisible": true
+        },
+        {
+          "route": "/en",
+          "status": 200,
+          "lang": "en",
+          "mainVisible": true
+        },
+        {
+          "route": "/en/news",
+          "status": 200,
+          "lang": "en",
+          "mainVisible": true
+        },
+        {
+          "route": "/en/clan",
+          "status": 200,
+          "lang": "en",
+          "mainVisible": true
+        },
+        {
+          "route": "/en/members",
+          "status": 200,
+          "lang": "en",
+          "mainVisible": true
+        },
+        {
+          "route": "/en/matches",
+          "status": 200,
+          "lang": "en",
+          "mainVisible": true
+        },
+        {
+          "route": "/en/privacy",
+          "status": 200,
+          "lang": "en",
+          "mainVisible": true
+        }
+      ]
+    },
+    {
+      "id": "discord-login-disabled-and-local-recovery-unavailable",
+      "status": "passed",
+      "elapsedMs": 1445,
+      "observed": [
+        {
+          "locale": "cs",
+          "discordActionDisabled": true,
+          "recoveryStatus": 404
+        },
+        {
+          "locale": "en",
+          "discordActionDisabled": true,
+          "recoveryStatus": 404
+        }
+      ]
+    },
+    {
+      "id": "anonymous-admin-redirect",
+      "status": "passed",
+      "elapsedMs": 1017,
+      "observed": [
+        {
+          "route": "/cs/admin",
+          "status": 307,
+          "loginRoute": "/cs/login",
+          "returnTo": "/cs/admin",
+          "noStore": true
+        },
+        {
+          "route": "/en/admin",
+          "status": 307,
+          "loginRoute": "/en/login",
+          "returnTo": "/en/admin",
+          "noStore": true
+        }
+      ]
+    },
+    {
+      "id": "mobile-cs-poster-and-layout",
+      "status": "passed",
+      "elapsedMs": 2114,
+      "observed": {
+        "state": "paused",
+        "reason": "narrow-coarse",
+        "attachedSources": 0,
+        "paused": true,
+        "currentTime": 0,
+        "videoOpacity": "0",
+        "posterLoaded": true,
+        "posterPath": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+        "videoRequestsBeforeOptIn": 0
+      }
+    },
+    {
+      "id": "mobile-en-poster-and-layout",
+      "status": "passed",
+      "elapsedMs": 2103,
+      "observed": {
+        "state": "paused",
+        "reason": "narrow-coarse",
+        "attachedSources": 0,
+        "paused": true,
+        "currentTime": 0,
+        "videoOpacity": "0",
+        "posterLoaded": true,
+        "posterPath": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+        "videoRequestsBeforeOptIn": 0
+      }
+    },
+    {
+      "id": "browser-no-uncaught-errors-or-write-attempts",
+      "status": "passed",
+      "elapsedMs": 1,
+      "observed": {
+        "uncaughtPageErrors": 0,
+        "writeAttempts": 0,
+        "blockedExternalRequests": 0
+      }
+    }
+  ],
+  "captures": [
+    {
+      "file": "01-home-cs-desktop.png",
+      "sha256": "6cb9d268474e4e9e125629700a0f53b58c578d824ecb9d8b5c75529639a5c997",
+      "bytes": 2076411,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "route": "/cs",
+      "locale": "cs",
+      "caption": "Live production Czech main menu during measured full-length background playback; no login or content mutation.",
+      "layout": {
+        "width": 1920,
+        "documentWidth": 1920
+      },
+      "readiness": {
+        "renderedImages": 3,
+        "decodedImages": 3,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "02-home-en-desktop.png",
+      "sha256": "bb7639b5a1363e89866cbddefc2ff34f3a623fd5b95ea7de249b435fc719c2a7",
+      "bytes": 1952238,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "route": "/en",
+      "locale": "en",
+      "caption": "Live production English main menu reached through the actual language switcher.",
+      "layout": {
+        "width": 1920,
+        "documentWidth": 1920
+      },
+      "readiness": {
+        "renderedImages": 3,
+        "decodedImages": 3,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "03-paused-cs-desktop.png",
+      "sha256": "c778b84630a601360ed02e1968e7650534984516e934b5414eeb0fdae89c69e8",
+      "bytes": 2156562,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "route": "/cs",
+      "locale": "cs",
+      "caption": "Live production manual pause persisted across reload; poster replaces the video.",
+      "layout": {
+        "width": 1920,
+        "documentWidth": 1920
+      },
+      "readiness": {
+        "renderedImages": 3,
+        "decodedImages": 3,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "04-reduced-motion-cs-desktop.png",
+      "sha256": "5d3c09b094a7aa6fc36eb584bf806c84fe6ea493589f648abbd646ae178d459a",
+      "bytes": 2158632,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "route": "/cs",
+      "locale": "cs",
+      "caption": "Live production Czech menu with reduced-motion preference; real poster loaded and zero video requests before opt-in.",
+      "layout": {
+        "width": 1920,
+        "documentWidth": 1920
+      },
+      "readiness": {
+        "renderedImages": 3,
+        "decodedImages": 3,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "05-login-cs-disabled.png",
+      "sha256": "b050cb8e23b4920e094aa29ba2ef3313b0f91a471775c8b9dda93d91ebfa299c",
+      "bytes": 315705,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "route": "/cs/login",
+      "locale": "cs",
+      "caption": "Live production CS login displays provider-unavailable notice and disabled Discord action; no sign-in submitted.",
+      "layout": {
+        "width": 1920,
+        "documentWidth": 1920
+      },
+      "readiness": {
+        "renderedImages": 2,
+        "decodedImages": 2,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "05-login-en-disabled.png",
+      "sha256": "444a475f4e6b7f18ef58534f24e009431319d2612132883b6d86c304b74f28c2",
+      "bytes": 315414,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "route": "/en/login",
+      "locale": "en",
+      "caption": "Live production EN login displays provider-unavailable notice and disabled Discord action; no sign-in submitted.",
+      "layout": {
+        "width": 1920,
+        "documentWidth": 1920
+      },
+      "readiness": {
+        "renderedImages": 2,
+        "decodedImages": 2,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "06-home-cs-mobile.png",
+      "sha256": "f246a46bb89c98af30a7beea3b222c902931fe5177c3adc4fdcd7ed9aab90884",
+      "bytes": 321449,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/cs",
+      "locale": "cs",
+      "caption": "Live production CS mobile menu at 390×844; real poster and zero video downloads before opt-in.",
+      "layout": {
+        "width": 390,
+        "documentWidth": 390
+      },
+      "readiness": {
+        "renderedImages": 3,
+        "decodedImages": 3,
+        "readinessTimeoutMs": 8000
+      }
+    },
+    {
+      "file": "06-home-en-mobile.png",
+      "sha256": "7abf0b5cb0116cb4a5a5f98ce9da28378c9cba4d451f72ffb26fda4632f764c1",
+      "bytes": 318978,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/en",
+      "locale": "en",
+      "caption": "Live production EN mobile menu at 390×844; real poster and zero video downloads before opt-in.",
+      "layout": {
+        "width": 390,
+        "documentWidth": 390
+      },
+      "readiness": {
+        "renderedImages": 3,
+        "decodedImages": 3,
+        "readinessTimeoutMs": 8000
+      }
+    }
+  ],
+  "browserErrors": [],
+  "failedRequests": [
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "kind": "cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "kind": "cancelled"
+    }
+  ],
+  "blockedRequests": [],
+  "limits": [
+    "Public anonymous routes only; no authenticated SSO, private RBAC or admin mutations tested.",
+    "Short real playback interval only; no full 192-second natural loop, all-codec or all-device claim.",
+    "Reduced motion uses browser preference emulation; playback APIs and network media responses are not mocked.",
+    "Fresh isolated browser contexts have no owner cookies; safety routing permits same-origin GET/HEAD only.",
+    "Screenshot visual inspection is required separately; capture and layout checks alone do not establish design acceptance."
+  ],
+  "status": "passed",
+  "checkTimeoutMs": 90000,
+  "updatedAt": "2026-09-26T17:33:13.497Z",
+  "browserChannel": "msedge",
+  "browser": "154.0.4258.37",
+  "unavailableBrowserChannels": [],
+  "activeCheck": null,
+  "finishedAt": "2026-09-26T17:33:13.819Z",
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "fatal": false
+  },
+  "visualReview": "not-run-by-script"
+}

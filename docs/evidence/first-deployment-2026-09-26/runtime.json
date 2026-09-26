@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-09-26T17:28:28.869942+00:00",
+  "origin": "https://valkyriawdg.cz",
+  "image": "majorluk/valkyria-www@sha256:2ceb72d0b67fd462fa93733c752b60cdc708f36584bcffb5537be31bb5c360d4",
+  "sourceRevision": "d0f98b0475e7dfb07add2a679c49acce23259684",
+  "containerStatus": "running",
+  "health": "healthy",
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "capabilitiesDropped": [
+    "ALL"
+  ],
+  "securityOptions": [
+    "no-new-privileges:true"
+  ],
+  "publishedPorts": [],
+  "mounts": [
+    {
+      "destination": "/app/storage/editorial",
+      "writable": true,
+      "type": "bind"
+    },
+    {
+      "destination": "/app/apps/web/public/media/background",
+      "writable": false,
+      "type": "bind"
+    },
+    {
+      "destination": "/app/apps/web/.next/cache",
+      "writable": true,
+      "type": "bind"
+    }
+  ],
+  "watchtowerEnabled": "false",
+  "backupLastResult": "success",
+  "publisherLastResult": "success",
+  "backupTimerEnabled": "enabled",
+  "publisherTimerEnabled": "enabled",
+  "postgresVersion": "15.17"
+}
