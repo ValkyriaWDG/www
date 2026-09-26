@@ -27,6 +27,16 @@ if (!cli('migrate.mjs')) throw new Error('dist/cli/migrate.mjs missing; run "pnp
 cli('seed.mjs');
 cli('fixtures.mjs', ['--allow-fixtures']);
 
-const child = spawn(process.execPath, [path.join(appDir, 'scripts', 'serve-standalone.mjs')], { stdio: 'inherit', env: process.env });
-for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => child.kill(signal));
-child.on('exit', (code) => process.exit(code ?? 0));
+const children = [];
+const discordMock = path.join(appDir, 'e2e', 'support', 'discord-mock.mjs');
+if (existsSync(discordMock)) {
+  children.push(spawn(process.execPath, [discordMock], { stdio: 'inherit', env: process.env }));
+}
+const server = spawn(process.execPath, [path.join(appDir, 'scripts', 'serve-standalone.mjs')], { stdio: 'inherit', env: process.env });
+children.push(server);
+const stop = (signal) => children.forEach((child) => child.kill(signal));
+for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => stop(signal));
+server.on('exit', (code) => {
+  stop('SIGTERM');
+  process.exit(code ?? 0);
+});
