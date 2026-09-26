@@ -1285,6 +1285,17 @@
       "bytes": 348999,
       "width": 390,
       "height": 2646
+    },
+    {
+      "id": "release-hardening-2026-09-26-news-font-fix",
+      "path": "docs/evidence/release-hardening-2026-09-26/news-font-fix.png",
+      "source": "Local production standalone build at 1c034dd2347e1e4d7836c39320b0b8ed8bf302be plus mobile filter correction; synthetic data, real throttled mobile Chromium",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and game wordmarks; excluded from Apache code license, no general third-party redistribution license asserted",
+      "sha256": "177cd67d66deb54b9464b4e79ef89ecadad1ad2f2a97f644f26407d131939aef",
+      "bytes": 642474,
+      "width": 390,
+      "height": 5550
     }
   ]
 }

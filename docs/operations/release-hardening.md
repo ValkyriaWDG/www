@@ -61,6 +61,10 @@ be evaluated later against the same measurements rather than assuming it is fast
 CI uploads `page-budgets-<workflow SHA>` with raw samples and three synthetic full-page
 captures. Local outputs stay in `.local/release-hardening/pages`. Review all raw runs;
 the median gate does not assert that every individual LCP met 2.5 seconds.
+Each sample includes layout-shift element identifiers and before/after rectangles.
+The separate `news-font-stability.spec.ts` browser regression delays actual font loads
+and substitutes a generic fallback to exercise mobile filter wrapping on hosts without
+a condensed system font. It does not replace the unmodified-page performance gate.
 
 ## Compare runtime images and advisories
 
@@ -131,6 +135,9 @@ that image/schema pair. Re-run it for each release, update the previous accepted
 deliberately, and use expand/migrate/contract for real schema changes. An old image
 failing compatibility blocks image-only rollback. A reviewed restore or roll-forward
 plan must account for writes since the backup; never blindly restore over live data.
+Failed steps retain up to 4096 characters of sanitized stderr or assertion detail in
+the report and CI log. Command arguments are not logged; generated passwords, known
+fixture secrets and database connection URLs are redacted before truncation.
 
 The [initial local evidence](../evidence/release-hardening-2026-09-26/README.md) identifies
 which checks actually ran and which still require Linux CI.

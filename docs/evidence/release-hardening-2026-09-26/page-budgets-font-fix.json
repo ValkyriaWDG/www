@@ -1,0 +1,2715 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "startedAt": "2026-09-26T19:05:46.359Z",
+  "sourceRevision": "1c034dd2347e1e4d7836c39320b0b8ed8bf302be",
+  "sourceDirty": true,
+  "environment": {
+    "platform": "win32",
+    "node": "v24.21.0",
+    "build": "Next.js standalone production",
+    "data": "Dedicated loopback PostgreSQL synthetic fixtures; never production",
+    "background": "CSS fallback; delivered game binaries are excluded from CI. No video is fetched.",
+    "profile": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "cpuSlowdown": 4,
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 200000,
+      "uploadBytesPerSecond": 93750,
+      "observationMs": 10000,
+      "reducedMotion": "reduce",
+      "cache": "disabled",
+      "serviceWorkers": "blocked"
+    },
+    "browser": "154.0.4258.37"
+  },
+  "policy": {
+    "schemaVersion": 1,
+    "runs": 3,
+    "routes": [
+      "/cs",
+      "/cs/news",
+      "/cs/news/ukazka-obrazky-tabulka-a-odkazy"
+    ],
+    "profile": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "cpuSlowdown": 4,
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 200000,
+      "uploadBytesPerSecond": 93750,
+      "observationMs": 10000,
+      "reducedMotion": "reduce",
+      "cache": "disabled",
+      "serviceWorkers": "blocked"
+    },
+    "limits": {
+      "javascriptBytes": 358400,
+      "cssBytes": 61440,
+      "fontBytes": 184320,
+      "totalBytes": 1048576,
+      "lcpMs": 2500,
+      "cls": 0.1
+    }
+  },
+  "samples": [
+    {
+      "route": "/cs",
+      "run": 1,
+      "status": 200,
+      "javascriptBytes": 177377,
+      "cssBytes": 21159,
+      "fontBytes": 143631,
+      "totalBytes": 519774,
+      "lcpMs": 2132,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": true,
+        "imagePath": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp"
+      },
+      "cls": 0.03222299920793285,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10025,
+      "layoutShifts": [
+        {
+          "startTime": 1887.4000000953674,
+          "value": 0.02592581026477565,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "SECTION",
+              "id": null,
+              "className": "home-module__8fyj5a__actions",
+              "previous": {
+                "x": 12,
+                "y": 363.125,
+                "width": 362,
+                "height": 241.890625,
+                "top": 363.125,
+                "right": 374,
+                "bottom": 605.015625,
+                "left": 12
+              },
+              "current": {
+                "x": 13,
+                "y": 371.21875,
+                "width": 361,
+                "height": 233.796875,
+                "top": 371.21875,
+                "right": 374,
+                "bottom": 605.015625,
+                "left": 13
+              }
+            },
+            {
+              "tag": "SPAN",
+              "id": null,
+              "className": "home-module__8fyj5a__nextBody",
+              "previous": {
+                "x": 138.625,
+                "y": 622.015625,
+                "width": 234.375,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 138.625
+              },
+              "current": {
+                "x": 129.03125,
+                "y": 622.015625,
+                "width": 243.96875,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 129.03125
+              }
+            },
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "A",
+              "id": null,
+              "className": "footer-module__Y0L5oG__textLink",
+              "previous": {
+                "x": 133.890625,
+                "y": 782.28125,
+                "width": 100.34375,
+                "height": 44,
+                "top": 782.28125,
+                "right": 234.234375,
+                "bottom": 826.28125,
+                "left": 133.890625
+              },
+              "current": {
+                "x": 124.78125,
+                "y": 782.28125,
+                "width": 86.859375,
+                "height": 44,
+                "top": 782.28125,
+                "right": 211.640625,
+                "bottom": 826.28125,
+                "left": 124.78125
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2180.600000023842,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2569.600000023842,
+          "value": 0.005901062058224899,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 140.03125,
+                "y": 680.59375,
+                "width": 220.96875,
+                "height": 17,
+                "top": 680.59375,
+                "right": 361,
+                "bottom": 697.59375,
+                "left": 140.03125
+              },
+              "current": {
+                "x": 141.03125,
+                "y": 659.90625,
+                "width": 219.96875,
+                "height": 17,
+                "top": 659.90625,
+                "right": 361,
+                "bottom": 676.90625,
+                "left": 141.03125
+              }
+            },
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 140.03125,
+                "y": 680.59375,
+                "width": 220.96875,
+                "height": 17,
+                "top": 680.59375,
+                "right": 361,
+                "bottom": 697.59375,
+                "left": 140.03125
+              },
+              "current": {
+                "x": 141.03125,
+                "y": 681.59375,
+                "width": 219.96875,
+                "height": 17,
+                "top": 681.59375,
+                "right": 361,
+                "bottom": 698.59375,
+                "left": 141.03125
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2664,
+          "value": 0.0002453481397823499,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "SPAN",
+              "id": null,
+              "className": "home-module__8fyj5a__nextBody",
+              "previous": {
+                "x": 129.03125,
+                "y": 622.015625,
+                "width": 243.96875,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 129.03125
+              },
+              "current": {
+                "x": 125.859375,
+                "y": 622.015625,
+                "width": 247.140625,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 125.859375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs",
+      "run": 2,
+      "status": 200,
+      "javascriptBytes": 177377,
+      "cssBytes": 21159,
+      "fontBytes": 143631,
+      "totalBytes": 519777,
+      "lcpMs": 1980,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": true,
+        "imagePath": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp"
+      },
+      "cls": 0.03222299920793285,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10035,
+      "layoutShifts": [
+        {
+          "startTime": 1700.4000000953674,
+          "value": 0.02592581026477565,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "SECTION",
+              "id": null,
+              "className": "home-module__8fyj5a__actions",
+              "previous": {
+                "x": 12,
+                "y": 363.125,
+                "width": 362,
+                "height": 241.890625,
+                "top": 363.125,
+                "right": 374,
+                "bottom": 605.015625,
+                "left": 12
+              },
+              "current": {
+                "x": 13,
+                "y": 371.21875,
+                "width": 361,
+                "height": 233.796875,
+                "top": 371.21875,
+                "right": 374,
+                "bottom": 605.015625,
+                "left": 13
+              }
+            },
+            {
+              "tag": "SPAN",
+              "id": null,
+              "className": "home-module__8fyj5a__nextBody",
+              "previous": {
+                "x": 138.625,
+                "y": 622.015625,
+                "width": 234.375,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 138.625
+              },
+              "current": {
+                "x": 129.03125,
+                "y": 622.015625,
+                "width": 243.96875,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 129.03125
+              }
+            },
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "A",
+              "id": null,
+              "className": "footer-module__Y0L5oG__textLink",
+              "previous": {
+                "x": 133.890625,
+                "y": 782.28125,
+                "width": 100.34375,
+                "height": 44,
+                "top": 782.28125,
+                "right": 234.234375,
+                "bottom": 826.28125,
+                "left": 133.890625
+              },
+              "current": {
+                "x": 124.78125,
+                "y": 782.28125,
+                "width": 86.859375,
+                "height": 44,
+                "top": 782.28125,
+                "right": 211.640625,
+                "bottom": 826.28125,
+                "left": 124.78125
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1993.8000000715256,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2314.3000000715256,
+          "value": 0.005901062058224899,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 140.03125,
+                "y": 680.59375,
+                "width": 220.96875,
+                "height": 17,
+                "top": 680.59375,
+                "right": 361,
+                "bottom": 697.59375,
+                "left": 140.03125
+              },
+              "current": {
+                "x": 141.03125,
+                "y": 659.90625,
+                "width": 219.96875,
+                "height": 17,
+                "top": 659.90625,
+                "right": 361,
+                "bottom": 676.90625,
+                "left": 141.03125
+              }
+            },
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 140.03125,
+                "y": 680.59375,
+                "width": 220.96875,
+                "height": 17,
+                "top": 680.59375,
+                "right": 361,
+                "bottom": 697.59375,
+                "left": 140.03125
+              },
+              "current": {
+                "x": 141.03125,
+                "y": 681.59375,
+                "width": 219.96875,
+                "height": 17,
+                "top": 681.59375,
+                "right": 361,
+                "bottom": 698.59375,
+                "left": 141.03125
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2495.7000000476837,
+          "value": 0.0002453481397823499,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "SPAN",
+              "id": null,
+              "className": "home-module__8fyj5a__nextBody",
+              "previous": {
+                "x": 129.03125,
+                "y": 622.015625,
+                "width": 243.96875,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 129.03125
+              },
+              "current": {
+                "x": 125.859375,
+                "y": 622.015625,
+                "width": 247.140625,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 125.859375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs",
+      "run": 3,
+      "status": 200,
+      "javascriptBytes": 177377,
+      "cssBytes": 21159,
+      "fontBytes": 143631,
+      "totalBytes": 524173,
+      "lcpMs": 1952,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": true,
+        "imagePath": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp"
+      },
+      "cls": 0.03222299920793285,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10023,
+      "layoutShifts": [
+        {
+          "startTime": 1725.9000000953674,
+          "value": 0.02592581026477565,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "SECTION",
+              "id": null,
+              "className": "home-module__8fyj5a__actions",
+              "previous": {
+                "x": 12,
+                "y": 363.125,
+                "width": 362,
+                "height": 241.890625,
+                "top": 363.125,
+                "right": 374,
+                "bottom": 605.015625,
+                "left": 12
+              },
+              "current": {
+                "x": 13,
+                "y": 371.21875,
+                "width": 361,
+                "height": 233.796875,
+                "top": 371.21875,
+                "right": 374,
+                "bottom": 605.015625,
+                "left": 13
+              }
+            },
+            {
+              "tag": "SPAN",
+              "id": null,
+              "className": "home-module__8fyj5a__nextBody",
+              "previous": {
+                "x": 138.625,
+                "y": 622.015625,
+                "width": 234.375,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 138.625
+              },
+              "current": {
+                "x": 129.03125,
+                "y": 622.015625,
+                "width": 243.96875,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 129.03125
+              }
+            },
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "A",
+              "id": null,
+              "className": "footer-module__Y0L5oG__textLink",
+              "previous": {
+                "x": 133.890625,
+                "y": 782.28125,
+                "width": 100.34375,
+                "height": 44,
+                "top": 782.28125,
+                "right": 234.234375,
+                "bottom": 826.28125,
+                "left": 133.890625
+              },
+              "current": {
+                "x": 124.78125,
+                "y": 782.28125,
+                "width": 86.859375,
+                "height": 44,
+                "top": 782.28125,
+                "right": 211.640625,
+                "bottom": 826.28125,
+                "left": 124.78125
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1999.3000000715256,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2369.2000000476837,
+          "value": 0.005901062058224899,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 140.03125,
+                "y": 680.59375,
+                "width": 220.96875,
+                "height": 17,
+                "top": 680.59375,
+                "right": 361,
+                "bottom": 697.59375,
+                "left": 140.03125
+              },
+              "current": {
+                "x": 141.03125,
+                "y": 659.90625,
+                "width": 219.96875,
+                "height": 17,
+                "top": 659.90625,
+                "right": 361,
+                "bottom": 676.90625,
+                "left": 141.03125
+              }
+            },
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 140.03125,
+                "y": 680.59375,
+                "width": 220.96875,
+                "height": 17,
+                "top": 680.59375,
+                "right": 361,
+                "bottom": 697.59375,
+                "left": 140.03125
+              },
+              "current": {
+                "x": 141.03125,
+                "y": 681.59375,
+                "width": 219.96875,
+                "height": 17,
+                "top": 681.59375,
+                "right": 361,
+                "bottom": 698.59375,
+                "left": 141.03125
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2482.9000000953674,
+          "value": 0.0002453481397823499,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "SPAN",
+              "id": null,
+              "className": "home-module__8fyj5a__nextBody",
+              "previous": {
+                "x": 129.03125,
+                "y": 622.015625,
+                "width": 243.96875,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 129.03125
+              },
+              "current": {
+                "x": 125.859375,
+                "y": 622.015625,
+                "width": 247.140625,
+                "height": 87.265625,
+                "top": 622.015625,
+                "right": 373,
+                "bottom": 709.28125,
+                "left": 125.859375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs/news",
+      "run": 1,
+      "status": 200,
+      "javascriptBytes": 178740,
+      "cssBytes": 21159,
+      "fontBytes": 120330,
+      "totalBytes": 507179,
+      "lcpMs": 1024,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/thumb"
+      },
+      "cls": 0.0007573367134725819,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10023,
+      "layoutShifts": [
+        {
+          "startTime": 1676,
+          "value": 0.00004535456906248219,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "LI",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 100.546875,
+                "y": 81,
+                "width": 66.46875,
+                "height": 21.6875,
+                "top": 81,
+                "right": 167.015625,
+                "bottom": 102.6875,
+                "left": 100.546875
+              },
+              "current": {
+                "x": 97.40625,
+                "y": 81,
+                "width": 62.609375,
+                "height": 21.6875,
+                "top": 81,
+                "right": 160.015625,
+                "bottom": 102.6875,
+                "left": 97.40625
+              }
+            },
+            {
+              "tag": "P",
+              "id": null,
+              "className": "data-module__0dS80a__resultSummary",
+              "previous": {
+                "x": 315.28125,
+                "y": 508.5625,
+                "width": 59,
+                "height": 21.6875,
+                "top": 508.5625,
+                "right": 374.28125,
+                "bottom": 530.25,
+                "left": 315.28125
+              },
+              "current": {
+                "x": 319.78125,
+                "y": 508.5625,
+                "width": 55,
+                "height": 21.6875,
+                "top": 508.5625,
+                "right": 374.78125,
+                "bottom": 530.25,
+                "left": 319.78125
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1826,
+          "value": 0.000496268074875642,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "data-module__0dS80a__filterButton",
+              "previous": {
+                "x": 285.890625,
+                "y": 280.5625,
+                "width": 88.109375,
+                "height": 44,
+                "top": 280.5625,
+                "right": 374,
+                "bottom": 324.5625,
+                "left": 285.890625
+              },
+              "current": {
+                "x": 294.796875,
+                "y": 280.5625,
+                "width": 79.203125,
+                "height": 44,
+                "top": 280.5625,
+                "right": 374,
+                "bottom": 324.5625,
+                "left": 294.796875
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2182.5999999046326,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2357.5999999046326,
+          "value": 0.0000649353243845169,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 15,
+                "y": 114.6875,
+                "width": 359,
+                "height": 16,
+                "top": 114.6875,
+                "right": 374,
+                "bottom": 130.6875,
+                "left": 15
+              },
+              "current": {
+                "x": 16,
+                "y": 114.6875,
+                "width": 358,
+                "height": 16,
+                "top": 114.6875,
+                "right": 374,
+                "bottom": 130.6875,
+                "left": 16
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs/news",
+      "run": 2,
+      "status": 200,
+      "javascriptBytes": 178740,
+      "cssBytes": 21159,
+      "fontBytes": 120330,
+      "totalBytes": 506764,
+      "lcpMs": 976,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/thumb"
+      },
+      "cls": 0.0007573367134725819,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10025,
+      "layoutShifts": [
+        {
+          "startTime": 1664.1000000238419,
+          "value": 0.00004535456906248219,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "LI",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 100.546875,
+                "y": 81,
+                "width": 66.46875,
+                "height": 21.6875,
+                "top": 81,
+                "right": 167.015625,
+                "bottom": 102.6875,
+                "left": 100.546875
+              },
+              "current": {
+                "x": 97.40625,
+                "y": 81,
+                "width": 62.609375,
+                "height": 21.6875,
+                "top": 81,
+                "right": 160.015625,
+                "bottom": 102.6875,
+                "left": 97.40625
+              }
+            },
+            {
+              "tag": "P",
+              "id": null,
+              "className": "data-module__0dS80a__resultSummary",
+              "previous": {
+                "x": 315.28125,
+                "y": 508.5625,
+                "width": 59,
+                "height": 21.6875,
+                "top": 508.5625,
+                "right": 374.28125,
+                "bottom": 530.25,
+                "left": 315.28125
+              },
+              "current": {
+                "x": 319.78125,
+                "y": 508.5625,
+                "width": 55,
+                "height": 21.6875,
+                "top": 508.5625,
+                "right": 374.78125,
+                "bottom": 530.25,
+                "left": 319.78125
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1923.6000000238419,
+          "value": 0.000496268074875642,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "data-module__0dS80a__filterButton",
+              "previous": {
+                "x": 285.890625,
+                "y": 280.5625,
+                "width": 88.109375,
+                "height": 44,
+                "top": 280.5625,
+                "right": 374,
+                "bottom": 324.5625,
+                "left": 285.890625
+              },
+              "current": {
+                "x": 294.796875,
+                "y": 280.5625,
+                "width": 79.203125,
+                "height": 44,
+                "top": 280.5625,
+                "right": 374,
+                "bottom": 324.5625,
+                "left": 294.796875
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2110,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2286.2999999523163,
+          "value": 0.0000649353243845169,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 15,
+                "y": 114.6875,
+                "width": 359,
+                "height": 16,
+                "top": 114.6875,
+                "right": 374,
+                "bottom": 130.6875,
+                "left": 15
+              },
+              "current": {
+                "x": 16,
+                "y": 114.6875,
+                "width": 358,
+                "height": 16,
+                "top": 114.6875,
+                "right": 374,
+                "bottom": 130.6875,
+                "left": 16
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs/news",
+      "run": 3,
+      "status": 200,
+      "javascriptBytes": 178740,
+      "cssBytes": 21159,
+      "fontBytes": 120330,
+      "totalBytes": 509079,
+      "lcpMs": 964,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/thumb"
+      },
+      "cls": 0.0007573367134725819,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10035,
+      "layoutShifts": [
+        {
+          "startTime": 1865.6999999284744,
+          "value": 0.00004535456906248219,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "LI",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 100.546875,
+                "y": 81,
+                "width": 66.46875,
+                "height": 21.6875,
+                "top": 81,
+                "right": 167.015625,
+                "bottom": 102.6875,
+                "left": 100.546875
+              },
+              "current": {
+                "x": 97.40625,
+                "y": 81,
+                "width": 62.609375,
+                "height": 21.6875,
+                "top": 81,
+                "right": 160.015625,
+                "bottom": 102.6875,
+                "left": 97.40625
+              }
+            },
+            {
+              "tag": "P",
+              "id": null,
+              "className": "data-module__0dS80a__resultSummary",
+              "previous": {
+                "x": 315.28125,
+                "y": 508.5625,
+                "width": 59,
+                "height": 21.6875,
+                "top": 508.5625,
+                "right": 374.28125,
+                "bottom": 530.25,
+                "left": 315.28125
+              },
+              "current": {
+                "x": 319.78125,
+                "y": 508.5625,
+                "width": 55,
+                "height": 21.6875,
+                "top": 508.5625,
+                "right": 374.78125,
+                "bottom": 530.25,
+                "left": 319.78125
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2024.1000000238419,
+          "value": 0.000496268074875642,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "data-module__0dS80a__filterButton",
+              "previous": {
+                "x": 285.890625,
+                "y": 280.5625,
+                "width": 88.109375,
+                "height": 44,
+                "top": 280.5625,
+                "right": 374,
+                "bottom": 324.5625,
+                "left": 285.890625
+              },
+              "current": {
+                "x": 294.796875,
+                "y": 280.5625,
+                "width": 79.203125,
+                "height": 44,
+                "top": 280.5625,
+                "right": 374,
+                "bottom": 324.5625,
+                "left": 294.796875
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2126.7999999523163,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2478.600000023842,
+          "value": 0.0000649353243845169,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 15,
+                "y": 114.6875,
+                "width": 359,
+                "height": 16,
+                "top": 114.6875,
+                "right": 374,
+                "bottom": 130.6875,
+                "left": 15
+              },
+              "current": {
+                "x": 16,
+                "y": 114.6875,
+                "width": 358,
+                "height": 16,
+                "top": 114.6875,
+                "right": 374,
+                "bottom": 130.6875,
+                "left": 16
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "run": 1,
+      "status": 200,
+      "javascriptBytes": 177377,
+      "cssBytes": 21159,
+      "fontBytes": 184141,
+      "totalBytes": 600047,
+      "lcpMs": 1136,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full"
+      },
+      "cls": 0.0026934182043305407,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10025,
+      "layoutShifts": [
+        {
+          "startTime": 1752.8000000715256,
+          "value": 0.0007841096325761568,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 802.234375,
+                "width": 324,
+                "height": 41.765625,
+                "top": 802.234375,
+                "right": 357,
+                "bottom": 844,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 804.234375,
+                "width": 324,
+                "height": 39.765625,
+                "top": 804.234375,
+                "right": 357,
+                "bottom": 844,
+                "left": 33
+              }
+            },
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 758.484375,
+                "width": 324,
+                "height": 19,
+                "top": 758.484375,
+                "right": 357,
+                "bottom": 777.484375,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 760.484375,
+                "width": 324,
+                "height": 19,
+                "top": 760.484375,
+                "right": 357,
+                "bottom": 779.484375,
+                "left": 33
+              }
+            },
+            {
+              "tag": "::after",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 297.4375,
+                "y": 804.234375,
+                "width": 9.578125,
+                "height": 22.203125,
+                "top": 804.234375,
+                "right": 307.015625,
+                "bottom": 826.4375,
+                "left": 297.4375
+              },
+              "current": {
+                "x": 286.765625,
+                "y": 804.234375,
+                "width": 9.578125,
+                "height": 22.203125,
+                "top": 804.234375,
+                "right": 296.34375,
+                "bottom": 826.4375,
+                "left": 286.765625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1857,
+          "value": 0.0015754978185892109,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            },
+            {
+              "tag": "LI",
+              "id": null,
+              "className": "public-module__YOQgOW__tag",
+              "previous": {
+                "x": 152.390625,
+                "y": 296.265625,
+                "width": 129.8125,
+                "height": 22,
+                "top": 296.265625,
+                "right": 282.203125,
+                "bottom": 318.265625,
+                "left": 152.390625
+              },
+              "current": {
+                "x": 130.8125,
+                "y": 296.265625,
+                "width": 108.8125,
+                "height": 22,
+                "top": 296.265625,
+                "right": 239.625,
+                "bottom": 318.265625,
+                "left": 130.8125
+              }
+            },
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 72.109375,
+                "y": 259.46875,
+                "width": 114,
+                "height": 24.796875,
+                "top": 259.46875,
+                "right": 186.109375,
+                "bottom": 284.265625,
+                "left": 72.109375
+              },
+              "current": {
+                "x": 64.171875,
+                "y": 259.46875,
+                "width": 114,
+                "height": 24.796875,
+                "top": 259.46875,
+                "right": 178.171875,
+                "bottom": 284.265625,
+                "left": 64.171875
+              }
+            },
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 117.0625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 202.75,
+                "bottom": 251.46875,
+                "left": 117.0625
+              },
+              "current": {
+                "x": 107.390625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 193.078125,
+                "bottom": 251.46875,
+                "left": 107.390625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1935.9000000953674,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2029.9000000953674,
+          "value": 0.0000649353243845169,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 15,
+                "y": 137,
+                "width": 359,
+                "height": 16,
+                "top": 137,
+                "right": 374,
+                "bottom": 153,
+                "left": 15
+              },
+              "current": {
+                "x": 16,
+                "y": 137,
+                "width": 358,
+                "height": 16,
+                "top": 137,
+                "right": 374,
+                "bottom": 153,
+                "left": 16
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2366.100000023842,
+          "value": 0.00009382928950555745,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 732.734375,
+                "width": 324,
+                "height": 19,
+                "top": 732.734375,
+                "right": 357,
+                "bottom": 751.734375,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 732.734375,
+                "width": 324,
+                "height": 19,
+                "top": 732.734375,
+                "right": 357,
+                "bottom": 751.734375,
+                "left": 33
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2472,
+          "value": 0.000024267394125157877,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 107.390625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 193.078125,
+                "bottom": 251.46875,
+                "left": 107.390625
+              },
+              "current": {
+                "x": 104.234375,
+                "y": 226.671875,
+                "width": 85.9375,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 190.171875,
+                "bottom": 251.46875,
+                "left": 104.234375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "run": 2,
+      "status": 200,
+      "javascriptBytes": 177377,
+      "cssBytes": 21159,
+      "fontBytes": 184141,
+      "totalBytes": 604387,
+      "lcpMs": 1148,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full"
+      },
+      "cls": 0.0026934182043305407,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10031,
+      "layoutShifts": [
+        {
+          "startTime": 1748.5,
+          "value": 0.0007841096325761568,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 802.234375,
+                "width": 324,
+                "height": 41.765625,
+                "top": 802.234375,
+                "right": 357,
+                "bottom": 844,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 804.234375,
+                "width": 324,
+                "height": 39.765625,
+                "top": 804.234375,
+                "right": 357,
+                "bottom": 844,
+                "left": 33
+              }
+            },
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 758.484375,
+                "width": 324,
+                "height": 19,
+                "top": 758.484375,
+                "right": 357,
+                "bottom": 777.484375,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 760.484375,
+                "width": 324,
+                "height": 19,
+                "top": 760.484375,
+                "right": 357,
+                "bottom": 779.484375,
+                "left": 33
+              }
+            },
+            {
+              "tag": "::after",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 297.4375,
+                "y": 804.234375,
+                "width": 9.578125,
+                "height": 22.203125,
+                "top": 804.234375,
+                "right": 307.015625,
+                "bottom": 826.4375,
+                "left": 297.4375
+              },
+              "current": {
+                "x": 286.765625,
+                "y": 804.234375,
+                "width": 9.578125,
+                "height": 22.203125,
+                "top": 804.234375,
+                "right": 296.34375,
+                "bottom": 826.4375,
+                "left": 286.765625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1818.2000000476837,
+          "value": 0.0015754978185892109,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            },
+            {
+              "tag": "LI",
+              "id": null,
+              "className": "public-module__YOQgOW__tag",
+              "previous": {
+                "x": 152.390625,
+                "y": 296.265625,
+                "width": 129.8125,
+                "height": 22,
+                "top": 296.265625,
+                "right": 282.203125,
+                "bottom": 318.265625,
+                "left": 152.390625
+              },
+              "current": {
+                "x": 130.8125,
+                "y": 296.265625,
+                "width": 108.8125,
+                "height": 22,
+                "top": 296.265625,
+                "right": 239.625,
+                "bottom": 318.265625,
+                "left": 130.8125
+              }
+            },
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 72.109375,
+                "y": 259.46875,
+                "width": 114,
+                "height": 24.796875,
+                "top": 259.46875,
+                "right": 186.109375,
+                "bottom": 284.265625,
+                "left": 72.109375
+              },
+              "current": {
+                "x": 64.171875,
+                "y": 259.46875,
+                "width": 114,
+                "height": 24.796875,
+                "top": 259.46875,
+                "right": 178.171875,
+                "bottom": 284.265625,
+                "left": 64.171875
+              }
+            },
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 117.0625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 202.75,
+                "bottom": 251.46875,
+                "left": 117.0625
+              },
+              "current": {
+                "x": 107.390625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 193.078125,
+                "bottom": 251.46875,
+                "left": 107.390625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1929.6000000238419,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2074.899999976158,
+          "value": 0.0000649353243845169,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 15,
+                "y": 137,
+                "width": 359,
+                "height": 16,
+                "top": 137,
+                "right": 374,
+                "bottom": 153,
+                "left": 15
+              },
+              "current": {
+                "x": 16,
+                "y": 137,
+                "width": 358,
+                "height": 16,
+                "top": 137,
+                "right": 374,
+                "bottom": 153,
+                "left": 16
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2336.399999976158,
+          "value": 0.00009382928950555745,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 732.734375,
+                "width": 324,
+                "height": 19,
+                "top": 732.734375,
+                "right": 357,
+                "bottom": 751.734375,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 732.734375,
+                "width": 324,
+                "height": 19,
+                "top": 732.734375,
+                "right": 357,
+                "bottom": 751.734375,
+                "left": 33
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2502.899999976158,
+          "value": 0.000024267394125157877,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 107.390625,
+                "y": 226.671875,
+                "width": 85.9375,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 193.328125,
+                "bottom": 251.46875,
+                "left": 107.390625
+              },
+              "current": {
+                "x": 104.234375,
+                "y": 226.671875,
+                "width": 85.9375,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 190.171875,
+                "bottom": 251.46875,
+                "left": 104.234375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "run": 3,
+      "status": 200,
+      "javascriptBytes": 177377,
+      "cssBytes": 21159,
+      "fontBytes": 184141,
+      "totalBytes": 600043,
+      "lcpMs": 1096,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full"
+      },
+      "cls": 0.0026934182043305407,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10017,
+      "layoutShifts": [
+        {
+          "startTime": 1721.8999999761581,
+          "value": 0.0007841096325761568,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 802.234375,
+                "width": 324,
+                "height": 41.765625,
+                "top": 802.234375,
+                "right": 357,
+                "bottom": 844,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 804.234375,
+                "width": 324,
+                "height": 39.765625,
+                "top": 804.234375,
+                "right": 357,
+                "bottom": 844,
+                "left": 33
+              }
+            },
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 758.484375,
+                "width": 324,
+                "height": 19,
+                "top": 758.484375,
+                "right": 357,
+                "bottom": 777.484375,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 760.484375,
+                "width": 324,
+                "height": 19,
+                "top": 760.484375,
+                "right": 357,
+                "bottom": 779.484375,
+                "left": 33
+              }
+            },
+            {
+              "tag": "::after",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 297.4375,
+                "y": 804.234375,
+                "width": 9.578125,
+                "height": 22.203125,
+                "top": 804.234375,
+                "right": 307.015625,
+                "bottom": 826.4375,
+                "left": 297.4375
+              },
+              "current": {
+                "x": 286.765625,
+                "y": 804.234375,
+                "width": 9.578125,
+                "height": 22.203125,
+                "top": 804.234375,
+                "right": 296.34375,
+                "bottom": 826.4375,
+                "left": 286.765625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1835.6000000238419,
+          "value": 0.0015754978185892109,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 146.40625,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 273.78125,
+                "bottom": 56,
+                "left": 146.40625
+              },
+              "current": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "id": null,
+              "className": "header-module__4zRZiq__menuButton",
+              "previous": {
+                "x": 281.78125,
+                "y": 6,
+                "width": 92.21875,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 281.78125
+              },
+              "current": {
+                "x": 288.625,
+                "y": 6,
+                "width": 85.375,
+                "height": 44,
+                "top": 6,
+                "right": 374,
+                "bottom": 50,
+                "left": 288.625
+              }
+            },
+            {
+              "tag": "LI",
+              "id": null,
+              "className": "public-module__YOQgOW__tag",
+              "previous": {
+                "x": 152.390625,
+                "y": 296.265625,
+                "width": 129.8125,
+                "height": 22,
+                "top": 296.265625,
+                "right": 282.203125,
+                "bottom": 318.265625,
+                "left": 152.390625
+              },
+              "current": {
+                "x": 130.8125,
+                "y": 296.265625,
+                "width": 108.8125,
+                "height": 22,
+                "top": 296.265625,
+                "right": 239.625,
+                "bottom": 318.265625,
+                "left": 130.8125
+              }
+            },
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 72.109375,
+                "y": 259.46875,
+                "width": 114,
+                "height": 24.796875,
+                "top": 259.46875,
+                "right": 186.109375,
+                "bottom": 284.265625,
+                "left": 72.109375
+              },
+              "current": {
+                "x": 64.171875,
+                "y": 259.46875,
+                "width": 114,
+                "height": 24.796875,
+                "top": 259.46875,
+                "right": 178.171875,
+                "bottom": 284.265625,
+                "left": 64.171875
+              }
+            },
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 117.0625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 202.75,
+                "bottom": 251.46875,
+                "left": 117.0625
+              },
+              "current": {
+                "x": 107.390625,
+                "y": 226.671875,
+                "width": 85.6875,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 193.078125,
+                "bottom": 251.46875,
+                "left": 107.390625
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 1920.2999999523163,
+          "value": 0.00015077874514994079,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DIV",
+              "id": null,
+              "className": "header-module__4zRZiq__tools",
+              "previous": {
+                "x": 153.25,
+                "y": 0,
+                "width": 127.375,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 153.25
+              },
+              "current": {
+                "x": 159.09375,
+                "y": 0,
+                "width": 121.53125,
+                "height": 56,
+                "top": 0,
+                "right": 280.625,
+                "bottom": 56,
+                "left": 159.09375
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2052.6999999284744,
+          "value": 0.0000649353243845169,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 15,
+                "y": 137,
+                "width": 359,
+                "height": 16,
+                "top": 137,
+                "right": 374,
+                "bottom": 153,
+                "left": 15
+              },
+              "current": {
+                "x": 16,
+                "y": 137,
+                "width": 358,
+                "height": 16,
+                "top": 137,
+                "right": 374,
+                "bottom": 153,
+                "left": 16
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2347.2999999523163,
+          "value": 0.00009382928950555745,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "#text",
+              "id": null,
+              "className": null,
+              "previous": {
+                "x": 33,
+                "y": 732.734375,
+                "width": 324,
+                "height": 19,
+                "top": 732.734375,
+                "right": 357,
+                "bottom": 751.734375,
+                "left": 33
+              },
+              "current": {
+                "x": 33,
+                "y": 732.734375,
+                "width": 324,
+                "height": 19,
+                "top": 732.734375,
+                "right": 357,
+                "bottom": 751.734375,
+                "left": 33
+              }
+            }
+          ]
+        },
+        {
+          "startTime": 2486.100000023842,
+          "value": 0.000024267394125157877,
+          "hadRecentInput": false,
+          "sources": [
+            {
+              "tag": "DD",
+              "id": null,
+              "className": "",
+              "previous": {
+                "x": 107.390625,
+                "y": 226.671875,
+                "width": 85.9375,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 193.328125,
+                "bottom": 251.46875,
+                "left": 107.390625
+              },
+              "current": {
+                "x": 104.234375,
+                "y": 226.671875,
+                "width": 85.9375,
+                "height": 24.796875,
+                "top": 226.671875,
+                "right": 190.171875,
+                "bottom": 251.46875,
+                "left": 104.234375
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "file": "page-1.png",
+      "route": "/cs",
+      "sha256": "56a5b142858c04f755ee2810149a11ba4a82a8342ec285d90ed48c8b621e59ad",
+      "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website."
+    },
+    {
+      "file": "page-2.png",
+      "route": "/cs/news",
+      "sha256": "177cd67d66deb54b9464b4e79ef89ecadad1ad2f2a97f644f26407d131939aef",
+      "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website."
+    },
+    {
+      "file": "page-3.png",
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "sha256": "0057128d600ac1fff7a1f70fc9eab3abffd966c2ec8bdec66b08b33f8eaf22f9",
+      "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website."
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Lab cold-navigation measurements, not field Core Web Vitals or INP.",
+    "Optional delivered background poster/video is not bundled; its real playback is a separate media gate.",
+    "LCP median of three runs; every transfer/CLS sample must meet limits; observer window is bounded."
+  ],
+  "assessment": {
+    "errors": [],
+    "routes": [
+      {
+        "route": "/cs",
+        "medianLcpMs": 1980,
+        "maximumCls": 0.03222299920793285,
+        "maximumTransferBytes": 524173
+      },
+      {
+        "route": "/cs/news",
+        "medianLcpMs": 976,
+        "maximumCls": 0.0007573367134725819,
+        "maximumTransferBytes": 509079
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "medianLcpMs": 1136,
+        "maximumCls": 0.0026934182043305407,
+        "maximumTransferBytes": 604387
+      }
+    ]
+  },
+  "finishedAt": "2026-09-26T19:07:24.676Z"
+}

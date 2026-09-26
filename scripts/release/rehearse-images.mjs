@@ -6,6 +6,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { rehearsalDiagnostic } from './rehearsal-diagnostics.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(readFileSync(new URL('./runtime-policy.json', import.meta.url), 'utf8'));
@@ -74,6 +75,10 @@ async function step(id, fn) {
     console.log(`PASS ${id}`);
     return observed;
   } catch (error) {
+    const diagnostic = rehearsalDiagnostic(error, [
+      password,
+      'disposable-rehearsal-not-production-00000000',
+    ]);
     report.steps.push({
       id,
       status: 'failed',
@@ -81,7 +86,9 @@ async function step(id, fn) {
       errorType: error.name,
       exitStatus: error.status ?? null,
       signal: error.signal ?? null,
+      diagnostic,
     });
+    console.error(`FAIL ${id}: ${diagnostic}`);
     throw new Error(id);
   } finally {
     report.activeStep = null;

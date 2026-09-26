@@ -72,7 +72,15 @@ try {
         window.__pageBudget.lcpMs = entry.startTime;
         window.__pageBudget.lcpElement = { tag: entry.element?.tagName || null, id: entry.element?.id || null, emblem: entry.element?.hasAttribute('data-emblem') || false, imagePath: entry.url ? new URL(entry.url, location.href).pathname : null };
       } }).observe({ type: 'largest-contentful-paint', buffered: true });
-      new PerformanceObserver(list => { for (const entry of list.getEntries()) window.__pageBudget.shifts.push({ startTime: entry.startTime, value: entry.value, hadRecentInput: entry.hadRecentInput }); }).observe({ type: 'layout-shift', buffered: true });
+      new PerformanceObserver(list => { for (const entry of list.getEntries()) window.__pageBudget.shifts.push({
+        startTime: entry.startTime, value: entry.value, hadRecentInput: entry.hadRecentInput,
+        sources: (entry.sources || []).map(source => ({
+          tag: source.node?.nodeName || null,
+          id: source.node?.id || null,
+          className: typeof source.node?.className === 'string' ? source.node.className : null,
+          previous: source.previousRect?.toJSON(), current: source.currentRect?.toJSON(),
+        })),
+      }); }).observe({ type: 'layout-shift', buffered: true });
     });
     const cdp = await context.newCDPSession(page);
     await cdp.send('Network.enable');
@@ -96,7 +104,7 @@ try {
       assert(!network.some(row => row.cached), 'Cold run unexpectedly used a cache');
       const transfer = type => network.filter(row => row.type === type).reduce((sum, row) => sum + row.bytes, 0);
       const sample = { route, run, status: response.status(), javascriptBytes: transfer('Script'), cssBytes: transfer('Stylesheet'), fontBytes: transfer('Font'), totalBytes: network.reduce((sum, row) => sum + row.bytes, 0), lcpMs: vitals.lcpMs, lcpElement: vitals.lcpElement, cls: maximumLayoutShiftSession(vitals.shifts), videoRequests: network.filter(row => /\.(?:webm|mp4)(?:\?|$)/i.test(row.url)).length, pageErrors, failedResources: network.filter(row => row.failed || (!row.completed && !row.cancelled) || row.status >= 400).length, observationMs: Date.now() - started };
-      report.samples.push(sample);
+      report.samples.push({ ...sample, layoutShifts: vitals.shifts });
       console.log(JSON.stringify(sample));
       if (run === 1) {
         const file = `page-${policy.routes.indexOf(route) + 1}.png`;

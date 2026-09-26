@@ -1,5 +1,45 @@
 # Release hardening local evidence — 2026-09-26
 
+## Follow-up: mobile font-swap regression
+
+The first [Linux CI run](https://github.com/ValkyriaWDG/www/actions/runs/36263964911)
+failed the unchanged 0.1 CLS limit for `/cs/news`: all three samples were 0.11814349.
+[Original CI samples](page-budgets-ci-before-font-fix.json) are retained. The final
+screenshot alone did not expose this transient layout defect.
+
+Delaying the actual font responses and selecting a generic Arial fallback reproduced
+the wider-fallback behavior on Windows: the game filters lost one row (48 px) when
+Barlow Condensed loaded, then the result summary moved onto the previous row.
+[Observed source rectangles](font-fallback-diagnosis.json) record the resulting
+0.11953 accumulated shift. Native Windows condensed fallback did not expose the same
+wrap, explaining why the initial local run passed.
+
+Mobile filter groups now use three equal columns with room for two-line labels; the
+result summary has its own row. The CS/EN delayed-font browser regressions failed
+before the correction with a 48 px height change and passed afterwards, including
+unchanged group height, CLS ≤ 0.1 and unclipped labels. The regular budget runner now
+records layout-shift source rectangles to diagnose future failures.
+
+The [new nine-run report](page-budgets-font-fix.json) passed on the same Windows,
+Edge 154.0.4258.37 and PostgreSQL 18.4 setup. Source was `1c034dd2347e1e4d7836c39320b0b8ed8bf302be`
+plus the uncommitted correction; [source and capture hashes](font-fix-provenance.json)
+identify those inputs. This local evidence does not replace a new Linux CI run.
+
+| Route | Median LCP | Maximum CLS | Maximum transfer |
+|---|---:|---:|---:|
+| `/cs` | 1980 ms | 0.032223 | 524173 bytes |
+| `/cs/news` | 976 ms | 0.000758 | 509079 bytes |
+| Synthetic published article | 1136 ms | 0.002694 | 604387 bytes |
+
+Production build, lint, typecheck and 30 foundation tests passed. Three new diagnostic
+tests prove that rollback failures retain bounded stderr/assertion reasons while
+removing generated credentials, database URLs and command arguments. Docker image
+build/scan/rollback remain blocked locally and require the candidate's Linux CI.
+
+![Synthetic mobile news after stable filter-row correction](news-font-fix.png)
+
+## Initial local run (historical)
+
 These results use a local production standalone build with synthetic PostgreSQL data,
 not the live website. The base commit is `507e704d288cd93d7baa0d1ab22ba8347fd67b0a` with
 the uncommitted issue #26 patch. The raw reports explicitly record `sourceDirty: true`;
