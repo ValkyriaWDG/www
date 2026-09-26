@@ -10,12 +10,16 @@ for Discord snowflakes (never JavaScript numbers). All timestamps use `timestamp
 | GuildMembership | Guild ID + Discord user ID unique; present/left/unknown, authoritative role IDs, observedAt, receivedAt, source/version |
 | RoleMapping | Guild role ID -> explicit app role; versioned and audited, no automatic name matching |
 | LocalAdminGrant | Provisioned auth user + allowed capabilities; separate from Discord mapping, expires/revokes independently |
-| ContentPage / NewsPost | Slug, title, constrained body, draft/published/archived, author, publishedAt, revision |
+| ContentPage / NewsPost | Unique slug, title, excerpt, coverAssetId, category/tags, game context, approved author label, SEO fields, draft/published/archived, draftRevisionId, publishedRevisionId, publishedAt; scheduling is a separate record |
+| ContentRevision | Immutable schema-versioned rich-text JSON + metadata snapshot, document ID, actor, createdAt; restoring creates a new draft revision |
+| PublicationSchedule | Document + immutable revision, dueAt, issuer/grant ID+version, exact resource/capability and delegation assurance metadata, pending/claimed/completed/cancelled/failed, idempotency key and audit reference |
+| SlugRedirect | Previous published slug -> canonical document, bounded redirect without loops |
 | Game | Stable slug `wardogs` / `hell-let-loose`, display label |
-| Match | Game, opponent name, format, startsAt, display time zone, scheduled/live/completed/postponed/cancelled, draft/published, version |
+| Match | Game, opponent name/code/asset, competition/type/season, format/bestOf/teamSize, startsAt, display time zone, scheduled/live/completed/postponed/cancelled, draft/published, public rich-text recap revision, version |
 | MatchResult | Match ID unique; structured score/outcome and verification/source; distinguish unknown score from zero |
 | MatchRound | Optional ordered rounds/maps, scores and outcome; no hardcoded Wardogs score model without evidence |
-| Asset | Approved URL/path, MIME, dimensions/duration, digest, provenance, usage rights state |
+| Asset | Private storage key + approved delivery reference, media scope/owner, MIME, dimensions/duration, digest, provenance, alt/caption, rights and visibility state |
+| AssetUsage | Asset -> document/revision/match reference with publication state; prevents unsafe deletion or anonymous draft delivery |
 | SiteSetting | Allowlisted keys and schema-validated values; no arbitrary settings interpreter |
 | AuditEvent | Actor, capability, entity, action, result, redacted change summary, request ID, timestamp |
 | RoleSyncReceipt | Unique event ID/nonce, signature key ID, receive time and replay expiry |
@@ -51,3 +55,13 @@ test/demo fixtures live separately and cannot become production by default.
 Development fixtures cover no members, long display names, cancelled matches,
 unknown results, empty news, revoked roles and stale sync. Do not use screenshot
 player names as sample identities.
+
+Editorial content uses the [visual editing contract](../product/editorial-and-matches.md).
+Validate editor JSON schema/version, supported nodes/marks/attributes and resource limits
+on the server. Draft and published revision pointers are separate; preview/autosave/revision
+restore cannot modify the live projection. Publication schedules target an immutable
+approved revision, not whatever draft happens to exist later. Scope asset lookup/delivery
+to the owning domain and publication state. Keep user uploads out of source control.
+Public title/slug/cover/excerpt/SEO and body use the published revision snapshot; mutable
+draft columns are never the public source. A pending/cancelled future update must not
+hide or modify an already published revision or its canonical URL.

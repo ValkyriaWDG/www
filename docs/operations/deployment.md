@@ -44,6 +44,12 @@ Include only needed runtime files, approved assets and a bundled migration CLI
 Use `/app` as runtime working directory. No build argument or layer may contain a
 Discord client secret, database password, auth secret or registry credential.
 
+The editorial module also requires persistent private media storage and a bundled
+`scripts/publish-due.mjs` runner for due posts. Configure an operator-owned minute timer
+with overlap protection; the CLI must still be transactionally idempotent. Monitor last
+successful run/overdue schedules, preserve publication intent authorization and audit
+execution. This timer is separate from the optional Discord gateway worker.
+
 Contract: `HOSTNAME=0.0.0.0`, `PORT=3000`; `GET /api/health/live` checks process liveness,
 `GET /api/health/ready` checks required dependencies with bounded timeouts and sanitized
 output. Database unavailable must fail readiness without leaking connection strings.
@@ -54,6 +60,13 @@ the built image for actionable vulnerabilities and record reviewed exceptions.
 The [Compose example](../../infra/compose.production.example.yaml) assumes the standalone
 server's cache path is `/app/apps/web/.next/cache`. Verify that against the actual final
 image and update the mount if different. It is not a deployable production config yet.
+
+The `editorial-media` volume is writable only for the non-root app identity and is not
+a raw public static directory. The image must create `/app/storage/editorial` with the
+correct ownership; verify write permissions and publication-aware delivery in the actual
+container. Back up media together with DB Asset/AssetUsage metadata and test restoration.
+Local development uses an ignored `.local/editorial-media` directory; no uploaded bytes
+belong in a Git commit, CI artifact or Docker build context.
 
 ## Host integration
 

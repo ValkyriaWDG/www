@@ -2,7 +2,7 @@
 
 Status: proposed implementation contract for the cloud agent. Public and administration UI copy is English only. Route slugs, documentation and code identifiers use English. The production domain is `valkyriawdg.cz`. Do not add a language switcher or an i18n implementation phase. Labels below are working copy, not invented clan facts.
 
-The site has three zones: public clan presentation, the signed-in member's account, and restricted administration. Public presentation is the first delivery priority. Admin content management follows; internal match/lineup organization is a later, secondary scope. Authentication and authorization are real security boundaries, not just different navigation menus.
+The site has three zones: public clan presentation, the signed-in member's account, and restricted administration. News/blog is a primary public and administrative requirement. First-release M2 administration includes visual post authoring and creating, scheduling and managing matches. Only private lineup, availability and squad coordination remains later M4 scope. Authentication and authorization are real security boundaries, not just different navigation menus. Follow [Editorial and match management](../product/editorial-and-matches.md) as the canonical feature contract.
 
 ## 1. Primary route map
 
@@ -15,15 +15,20 @@ The site has three zones: public clan presentation, the signed-in member's accou
 | `/matches` | Matches | Everyone | Upcoming fixtures and published results, clearly separated by game and status |
 | `/matches/[slug]` | Match details | Everyone | Public fixture/result detail and public recap |
 | `/community` | Community | Everyone | Discord, verified community links, recruitment guidance and rules entry points |
-| `/news` | News | Everyone | Published clan announcements and updates; linked from the home utility icon and clan page |
-| `/news/[slug]` | News article | Everyone | Individual published post with title, date, game/category and readable body |
+| `/news` | News | Everyone | Primary navigation destination for all published news/blog posts; one collection, no separate `/blog` route |
+| `/news/[slug]` | News article | Everyone | Individual published post with title, date, game/category, cover and readable rich-text body |
 | `/login` | Sign in | Signed-out users | Discord sign-in; clear failure and return path |
 | `/account` | My account | Authenticated user | Own profile/account information, membership/authorization state, sign-out |
 | `/privacy` | Privacy | Everyone | Privacy information corresponding to actual processing before production launch |
 | `/admin` | Administration | Authorized staff | Small functional overview and authorized content tools |
-| `/admin/content` | Website content | Content-authorized staff | Draft/edit/publish clan/community content and news posts |
+| `/admin/content` | Website pages | Content-authorized staff | M2: edit and publish static clan/community pages; posts use the dedicated news workspace |
+| `/admin/news` | Posts | Editorial-authorized staff | M2: search/filter/manage posts and create new news/blog entries |
+| `/admin/news/new` | New post | Editorial-authorized staff | M2: visual rich-text authoring, media, draft/autosave, preview and publication |
+| `/admin/news/[id]` | Edit post | Editorial-authorized staff | M2: edit, revisions, preview, publish/update/unpublish and scheduling |
+| `/admin/media` | Media library | Staff with media capabilities | M2: validated editorial image upload, metadata and approved asset selection; permissions follow the security matrix |
 | `/admin/members` | Members | Member-content-authorized staff | Manage public profile publication and approved profile fields |
-| `/admin/matches` | Matches | Match-authorized staff | Create/edit fixtures, publish scores and recaps |
+| `/admin/matches` | Matches | Match-authorized staff | M2: overview, creation, scheduling and management of fixtures/results |
+| `/admin/matches/new` | New match | Match-authorized staff | M2: create a fixture, set start time/timezone, preview and publish |
 | `/admin/matches/[id]` | Edit match | Match-authorized staff | A single match editor, audit-aware save/publication behavior |
 | `/admin/matches/[id]/roster` | Roster | Organizer-authorized staff | Later phase: private lineup, slots, attendance and substitutes |
 | `/admin/settings` | Site settings | Administrator or owner | M2: validated public links and approved background media, with preview before saving |
@@ -43,21 +48,23 @@ flowchart LR
     Home --> News["News /news"]
     News --> Article["Article /news/slug"]
     Home --> Discord["Verified Discord invitation"]
+    Home --> HLL["HLL WEBSITE: valkyriahll.cz"]
     Members --> Member["Profile /members/slug"]
     Matches --> Match["Detail /matches/slug"]
     Login["Sign in /login"] --> Account["My account /account"]
     Account -->|"permissions verified by the server"| Admin["Administration /admin"]
-    Admin --> Content["Content / Members / Matches"]
+    Admin --> Content["Posts / Pages / Media / Members / Matches"]
     Admin -->|"later phase"| Lineup["Private rosters"]
 ```
 
-- Top navigation uses four public anchors: `MAIN MENU`, `CLAN`, `MEMBERS`, `MATCHES`. An account action is right aligned. Community/Discord remains prominent in the home CTA and utility area.
+- Top navigation uses five public anchors: `MAIN MENU`, `NEWS`, `CLAN`, `MEMBERS`, `MATCHES`. `NEWS` is primary navigation on desktop and in the mobile navigation menu; a utility icon alone is insufficient. An account action is right aligned. Community/Discord remains prominent in the home CTA and utility area.
 - Brand mark always links to `/`. Subpages show a real breadcrumb/back control with an understandable destination; do not rely only on browser history because a visitor may arrive directly.
 - `/members?game=wardogs&role=...&q=...` and `/matches?game=wardogs&status=...` may hold non-sensitive shareable filter state. Use a small validated enum set. Do not put secret tokens, internal notes or private role IDs in URLs.
 - Browser back restores route/filter selection and sensible scroll position. Refreshing any detail URL returns the same meaningful page; static mocks must not be the only way to reach it.
 - In desktop list/detail layouts, selecting a row may update the canonical detail URL while retaining list context, or use an explicit accessible detail link. The implementation must choose one consistent pattern. Direct detail visits always render a standalone useful detail page, and mobile selection navigates to that page.
 - Do not model all public pages as dialogs. A modal is for a bounded action such as confirmation or a filter panel, not the clan article, full directory or result history.
 - External Discord navigation uses a validated HTTPS invitation. If opening a new tab, indicate it appropriately and use safe link attributes. Discord joining is independent from website sign-in.
+- A visible `HLL WEBSITE` link points to `https://valkyriahll.cz/` in the desktop and mobile utility/footer area, with contextual links on the clan and community pages. Identify it as an external destination. Use normal same-tab navigation unless a new tab is explicitly indicated; a new-tab link requires safe attributes. Do not silently redirect the old site or imply it has been replaced.
 - A successful sign-in returns to a validated same-origin intended path. An arbitrary `returnTo` query string must not become an open redirect.
 
 ## 3. Screen: main menu
@@ -70,7 +77,7 @@ Reference: [09 Main menu](references/09-main-menu.jpg), adapted according to [vi
 
 **Entry state:** useful text/navigation appears before video playback. Poster transitions into muted video only when permitted. Central emblem is decorative and never blocks controls.
 
-**Actions:** join Discord, navigate to clan/matches, open public navigation, sign in, pause/resume background. The only actionable icons are controls that have an implementation.
+**Actions:** join Discord, navigate to news/clan/matches, open `HLL WEBSITE`, sign in, pause/resume background. The only actionable icons are controls that have an implementation.
 
 **Alternate states:** static poster due to reduced motion/data saving; rejected autoplay; media missing; Discord invite unavailable; authenticated account menu. All preserve the public menu.
 
@@ -86,7 +93,7 @@ Reference: [09 Main menu](references/09-main-menu.jpg), adapted according to [vi
 
 **Content modules:** introduction, history/timeline only when factual milestones exist, games, recruitment requirements only if supplied, original/approved clan media with captions. No invented win rate, membership total, competitive title or founding date.
 
-**Actions:** Discord join, member directory, match history. Avoid every paragraph becoming a large panel; maintain a readable line length.
+**Actions:** Discord join, member directory, match history, relevant news and an explicit `HLL WEBSITE` link to `https://valkyriahll.cz/` in the HLL-history context. Avoid every paragraph becoming a large panel; maintain a readable line length.
 
 **States:** draft content stays private; missing verified subsection is omitted rather than filled with generic assertions; unavailable decorative image does not hide text.
 
@@ -120,7 +127,7 @@ Reference: [12 Scoreboard](references/12-scoreboard.jpg) for the directory's dat
 
 ## 6. Screens: matches and match detail
 
-Reference: [13 Server browser](references/13-server-browser.jpg). Preserve its functional filter/list/detail arrangement; replace server-specific semantics with real clan fixtures and results.
+Reference: [13 Server browser](references/13-server-browser.jpg). Preserve its functional filter/list/detail arrangement; replace server-specific semantics with real clan fixtures and results. Use the old website's public match overview as a content and information-order reference, as detailed in [Editorial and match management](../product/editorial-and-matches.md). This does not claim access to its private administration interface.
 
 ### Match browser
 
@@ -150,19 +157,19 @@ Reference: [11 Deploy](references/11-deploy.jpg) supports two large, square choi
 
 **Suggested choices:** `DISCORD` with a brief join explanation; `HOW TO JOIN` with verified recruitment guidance. Additional legacy links can appear below as a compact list when current and approved. Do not present another community's server as Valkyria's official server.
 
-**Actions:** actual Discord invitation; anchors to joining/rules content; verified public links. The site must explain the difference between joining Discord and signing into the website when both controls are present.
+**Actions:** actual Discord invitation; anchors to joining/rules content; verified public links; a visible `HLL WEBSITE` link to `https://valkyriahll.cz/` identifying the clan's existing HLL destination. The site must explain the difference between joining Discord and signing into the website when both controls are present.
 
 **States:** missing/invalid invitation becomes a clear unavailable message; a third-party link failure does not cause an app crash. Do not fetch and disclose unapproved live member counts simply for decorative activity.
 
 ## 8. Screens: news and article
 
-News is a compact public CMS surface, not a reason to transform the main menu into a long marketing page. Link `/news` from the document/news utility icon and relevant clan content. Real announcements may be surfaced discreetly on the home menu only when they do not displace the visual hierarchy.
+News/blog is a primary public section, reached directly through the `NEWS` tab and mobile navigation. `/news` is the single collection for announcements, updates and blog-style articles; do not build a duplicate `/blog` collection or routing hierarchy. The cinematic main menu remains intact, with a restrained latest-post teaser when real published content exists. Follow [Editorial and match management](../product/editorial-and-matches.md) for the canonical authoring and publication contract.
 
-**List:** title, publication date, game/category when useful, optional short excerpt, and approved thumbnail. Preserve a restrained row or image-panel treatment; avoid an infinite-scroll feed. Provide pagination when needed. No posts means `No news has been published yet.` rather than generated filler.
+**List:** title, cover/thumbnail, excerpt, publication date, approved author label and category/tags/game context from the canonical post model. Preserve a restrained row or image-panel treatment; avoid an infinite-scroll feed. Provide pagination and useful category/game/search filters. No posts means `No news has been published yet.` rather than generated filler.
 
-**Article:** ordinary deep link, semantic heading, publication/update metadata, readable English body, approved images with alternative text/captions, and a back link. Long-form content scrolls naturally in a dark editorial frame. An author name is shown only when publication is intended; do not expose internal account records.
+**Article:** ordinary deep link, semantic heading, publication/update metadata, readable English rich content, approved cover/inline images with alternative text/captions, and a back link. Supported tables and formatting follow the canonical editor schema. Long-form content scrolls naturally in a dark editorial frame. Show the approved public author label; do not expose internal account records. Related posts are useful only when genuine published content exists.
 
-**Publishing states:** draft, published, archived according to the CMS data model. Drafts and previews must not leak through public URLs, metadata, feeds, API responses or search. Preview is authenticated/authorized and visibly marked. Public content is sanitized, external links are handled consistently, and missing media does not remove the article text.
+**Publishing states:** draft, scheduled, published and archived according to the canonical CMS data model. Drafts, future-scheduled posts and previews must not leak through public URLs, metadata, feeds, API responses or search. Preview is authenticated/authorized and visibly marked. Public content is rendered through the approved rich-content schema and sanitization contract, external links are handled consistently, and missing media does not remove the article text. Failed publication scheduling is an admin-visible recoverable state, not a publicly visible half-published article.
 
 ## 9. Screens: sign-in and account
 
@@ -192,17 +199,39 @@ Administration is implemented after the public visual foundation. It uses the sa
 
 Show actionable real information: own permitted modules, relevant unpublished content or upcoming fixtures if available. Do not invent dashboard charts or performance metrics. Loading and lack of data are explicit.
 
-### Content editor
+### Posts workspace and visual editor — M2
 
-List known content records and publication state, including news posts. Editing includes persistent field labels, preview, validation, save status and a clear publish/unpublish action. News fields include stable slug, title, excerpt, body, game/category, approved media and publication metadata. Preview is visibly distinct from public output. Sanitize content and restrict links/media through the application's defined contract; raw HTML is not an implied requirement.
+Routes: `/admin/news`, `/admin/news/new`, `/admin/news/[id]`. The first route is a real post-management list with `New post`, search, publication-state filters, last-saved/publication metadata and clear edit/preview actions. The editor resembles WordPress in workflow: title, visual rich-text canvas, formatting toolbar, document metadata and a publication panel. This does not require WordPress itself. A raw Markdown textarea, JSON editor or file-based workflow does not satisfy the requirement.
+
+Use the exact rich-content, autosave, revision and publication rules in [Editorial and match management](../product/editorial-and-matches.md). The visual toolbar exposes supported headings, emphasis, lists, quotes, links, images, tables and undo/redo; keyboard users can reach and use its controls, with visible selected-format states. Paste handling is safe and predictable. Title, slug, excerpt, category/tags/game, approved author label, cover, optional SEO metadata and article body have persistent labels and useful inline validation.
+
+Cover selection and inline-image insertion open the media picker. Show the distinction between a cover and body content, and support alternative text and captions without opening source markup. The image picker can upload or select media only when the actor has the corresponding capability. Never treat access to the editor as an implicit grant to manage global media settings.
+
+Show real save state: dirty, autosaving, draft saved, failure, expired session and revision conflict. An autosave cannot publish content accidentally; editing a live post must not silently replace the published version. Support visible revision history and restoring a revision into an editable draft, authenticated preview, immediate publication/update, scheduled publication with explicit timezone, cancellation of a schedule and unpublishing according to the canonical contract. Never silently overwrite another editor's changes. Pending actions prevent duplicate submissions and keep labels understandable.
+
+Desktop uses a wide writing canvas and a narrower document/publication panel. Mobile stacks these regions or exposes an accessible document-panel disclosure without hiding save/preview controls. A sticky toolbar cannot obscure selected text, focused fields or error messages. Preview uses the real public article renderer and a prominent unpublished-preview indication.
+
+### Editable pages — M2
+
+Route: `/admin/content`. Keep static clan/community pages distinct from the posts collection. Provide visual content editing, validation, draft/preview and explicit publish/unpublish behavior appropriate to pages, reusing the canonical editor primitives. Post-specific scheduling, categories and list management remain in the dedicated news workspace unless the canonical page contract explicitly supports them. Do not expose arbitrary raw HTML or script execution.
+
+### Media library — M2
+
+Route: `/admin/media`. Provide a searchable/paginated grid or list with thumbnails, filenames, type/dimensions and in-use status, plus an `Upload image` action for actors with upload permission. The detail panel edits permitted alt text/caption/provenance metadata and lets an editor select an approved asset for a cover or inline image. Validation, upload progress, processing, ready, failed, unavailable and referenced-asset removal states are explicit; failed uploads preserve the article draft.
+
+Apply the canonical asset allowlist, upload limits and publication/rights policy. Public rendering must not reveal private or unapproved media merely because it exists in the library. Global cinematic video/poster configuration stays in `/admin/settings`, with its separate administrator/owner requirement. Media upload/selection authority follows the capability matrix and is not automatically granted by a content or match route being visible.
 
 ### Member publication editor
 
 Edit the public projection, not raw Discord authorization data. Fields may include display name, bio, avatar/approved media, public game/role labels and publication state. Show what will become public. Private source identity, permission mappings and operational notes are separate concerns.
 
-### Match editor
+### Match overview, creation and management — M2
 
-Separate schedule/opponent/game data, internal organizational notes and public description/results. Validations prevent a meaningless completed result or score fields invalid for the selected game. Save and publish are explicit, audited according to architecture, and report concurrent edit conflicts rather than silently overwriting changes.
+Routes: `/admin/matches`, `/admin/matches/new`, `/admin/matches/[id]`. Creating, scheduling and managing fixtures/results is a first-release requirement; it must not be deferred with roster coordination. The overview provides `New match`, game/status/date filters, clear start times and opponents, publication/result status and edit/preview actions. Use the old public website's match information as research input, without assuming its private admin UI exists in the evidence.
+
+The create/edit form collects the canonical match fields, including game, opponent/event, start date/time with explicit timezone, supported match format/map context, approved cover/opponent logo and public preview/recap using the same visual rich-text editor. Keep internal notes separate and never include them in a public preview. A draft can be saved, reviewed and published; changing a match's scheduled start time is distinct from scheduling a blog article's publication. Match status and publication status must remain understandable independently.
+
+Result entry supports verified game-specific scores/outcomes, unknown scores, cancellation/postponement and approved recaps according to [Editorial and match management](../product/editorial-and-matches.md). Validations prevent a meaningless completed result or fields invalid for the selected game. Save and publish are explicit, capability-checked and audited, and concurrent edit conflicts preserve entered data rather than silently overwriting changes. Basic creation/publication requires no squad, attendance or roster setup; those tools remain M4.
 
 ### Site settings — M2
 
@@ -249,7 +278,7 @@ This phase does not implicitly include Discord messaging, calendar invitations, 
 2. Implement clan/community/news content and member/match list/detail views with verified fixtures or unmistakably labelled development fixtures. Validate all public routes without authentication.
 3. Verify responsive layouts, keyboard behavior, background fallback, reduced motion and real browser screenshots described in [visual-spec.md](visual-spec.md).
 4. Add persistent content and Discord authentication/RBAC according to the repository architecture. Replace all preview facts with verified publication-ready data or honest empty states.
-5. Add permitted content/member/match administration and meaningful access-control tests. Test direct endpoint/route requests as well as UI navigation.
+5. Complete M2 visual news/page editing, media management, autosave/revisions/preview/publication scheduling and match creation/scheduling/results administration, plus the permitted member/settings/audit screens. Test direct endpoint/route requests as well as UI navigation; editor capabilities do not imply match or global-settings authority.
 6. Implement the secondary private lineup workflow only after the preceding delivery is useful and accepted against its requirements.
 
 Track implementation evidence per stage. Do not claim the product is complete because the menu looks finished, and do not delay the public presentation until optional roster tools are complete. The handoff defines both the immediate visual target and the later management scope.

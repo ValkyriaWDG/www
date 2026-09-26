@@ -38,6 +38,7 @@ application grants. All permissions are denied unless a rule grants them.
 | Read published pages | Yes | Yes | Yes | Yes | Yes | Yes |
 | Edit own profile draft | No / own unpublished request only | Own | Own | Own | Own | Own |
 | Publish pages/news/member profiles | No | No | Yes | No | Yes | Yes |
+| Upload/manage editorial media | No | No | Editorial scope | Match scope only | Yes | Yes |
 | Create/edit/publish matches/results | No | No | No | Yes | Yes | Yes |
 | Submit availability (phase 2) | No | Own | If member | If member | Yes | Yes |
 | Manage roster (phase 2) | No | No | No | Assigned scope | Yes | Yes |
@@ -112,10 +113,34 @@ Never silently link a Discord account to a local admin via matching email.
 
 ## Other required controls
 
+Rich-text JSON is untrusted input: validate allowed nodes/marks/attributes and safe URL
+schemes on the server, and render/sanitize public output independently of editor UI.
+Image uploads need decoded-type/pixel/byte validation, safe re-encoding, generated names,
+private draft storage, publication-aware delivery and per-domain access checks.
+Reject raw HTML/script/SVG and arbitrary remote URL ingestion. Media upload is not a
+grant to edit global background settings or another domain's assets. Autosave and
+revision restore write drafts only; previews require authorization and no-store.
+
+Scheduling creates a durable publication intent under the current authenticated actor
+and capability. The publisher runner uses a narrowly scoped service identity and verifies
+the saved intent plus the issuer's current active publishing authority before execution.
+Never store/replay the user's session or MFA token. Revoked/unknown authority leaves the
+schedule blocked for reapproval; retries cannot double-publish or skip audit records.
+
+For a local recovery administrator, create a narrowly scoped durable delegation only
+during a credential-login + MFA-assured session. Record issuer/grant ID and version,
+immutable revision, resource/capability, due time and assurance-at-creation as audit
+metadata, never the credential or MFA secret. At execution, the runner verifies that
+the recorded grant is still active/unchanged and sufficient for this exact publication,
+without requiring or replaying the old interactive session. This delegation authorizes
+only that saved publication intent; it cannot authorize arbitrary admin actions or
+relax the MFA requirement for interactive use of LocalAdminGrant. Test both a valid
+delayed local-admin schedule and revocation between scheduling and execution.
+
 Input schemas, bounded pagination/payload sizes, sanitization, parameterized queries,
 audit records for privileged actions and denied access, no credentials/raw session IDs
 in logs. Use a tested CSP and explicit image/media origins; avoid arbitrary URL fetching
-or SSRF through editable media. Use a vetted upload pipeline if uploads are introduced.
+or SSRF through editable media. The first-release editorial upload pipeline is required.
 Do not expose preview/draft content through metadata, search, caching or error messages.
 
 Tests must cover revoked/stale roles, changed role mapping, wrong guild, identity

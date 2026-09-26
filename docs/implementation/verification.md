@@ -12,6 +12,11 @@ does not prove application behavior. All requirements below are for the implemen
 | Motion/video | Allowed autoplay, rejected playback, missing source, pause preference, hidden tab, reduced-motion and save-data |
 | Mobile/accessibility | 360 and 390 px wide, 200% zoom, keyboard, focus visibility, semantic headings, contrast and no horizontal page overflow |
 | Content | Only published data accessible; draft/preview cannot leak through endpoints, cache or SEO |
+| Rich-text CMS | Create formatted post + cover/inline image, autosave/reload, preview, publish; restore to draft without changing live content |
+| Editorial media | Reject hostile/oversized uploads and pasted markup; scoped access, draft assets private, safe referenced-asset deletion |
+| Scheduled posts | Due/cancel/reschedule/retry, preserve live revision/metadata during scheduled updates, UTC/DST boundaries, scoped local-admin delegation/revocation, stalled runner, no double publication |
+| Match authoring | Create/publish fixture, postpone/cancel, record verified result; unknown score remains null; scope checks |
+| HLL links | NEWS and HLL WEBSITE discoverable without login on desktop/mobile; correct external HLL domain/archive |
 | OAuth/session | State/redirect handling, expiry/logout/revocation, unavailable provider and safe errors |
 | Roles | Unmapped/missing/wrong guild, stale snapshot, 429/outage, role removal, mapping-version change |
 | Server permissions | Direct API calls deny editor-to-match escalation, cross-user edits and cross-match IDOR |

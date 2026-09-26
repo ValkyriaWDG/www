@@ -19,14 +19,18 @@ Each numbered step maps to a GitHub issue; see [backlog](github-backlog.md).
    match/results detail, `/news`, articles and `/community`, plus privacy page. Use real
    publication-aware repository adapters. Approved facts only; empty states for missing
    content. Store draft content safely and synthetic fixtures only for development/tests.
+   NEWS is a primary menu destination. Include the external HLL WEBSITE link on desktop
+   and mobile, plus clan/community context; follow [editorial and match requirements](../product/editorial-and-matches.md).
 
 ## M2 — Identity and web administration
 
 4. **Authentication and access policy.** Discord identity, verified guild role mapping,
    freshness/revocation, provisioned MFA admin recovery and audit trail. Prove the negative
    cases in the security contract. No default administrator or browser-side role trust.
-5. **Editorial administration.** Authorized CRUD, preview/publish/unpublish, profile approval,
-   match/result publication, validated settings and audit read. Match authorization
+5. **Editorial administration.** WordPress-like rich-text news/blog editor, image media
+   library, autosave, revision restore to draft, preview/publish/unpublish and durable
+   scheduled publication. Include profile approval, match creation/fixture scheduling,
+   game-specific result entry, validated settings and audit read. Match authorization
    is separate from content-editor rights. Every mutation validates and authorizes server-side.
 
 ## M3 — Release readiness
@@ -35,6 +39,8 @@ Each numbered step maps to a GitHub issue; see [backlog](github-backlog.md).
    provenance, video receipt, performance budgets, migration+restore rehearsal, image scan,
    publication configuration and operations documentation. Record exact revision/digest.
    Production deploy, Discord bot sending and DNS changes require an operator task.
+   Prove media persistence/backup and the idempotent scheduled-publication runner before
+   claiming the editorial workflow is ready for production.
 
 ## M4 — Secondary match coordination
 

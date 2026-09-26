@@ -18,10 +18,11 @@ The old `valkyriahll.cz` site is a research source; its replacement/redirect is 
 ## Priorities
 
 1. Distinctive, faithful menu shell; readable, responsive and fast without video.
-2. Clan story, games, public member profiles, news, matches/results and Discord entry.
+2. Prominent news/blog, clan story, games, public member profiles, matches/results and Discord entry.
 3. Discord sign-in and secure web administration of published content.
 4. Explicit mapping of Discord guild roles to application capabilities.
-5. Secondary milestone: match scheduling, availability, squads and roster management.
+5. Secondary milestone: player availability, squads and roster management. Creating,
+   scheduling and publishing matches belongs to the first release.
 
 Public content must work without login. Logging in does not require a public member
 profile and does not automatically make a visitor a clan member. Joining Discord and
@@ -35,7 +36,13 @@ signing in are separate actions with separate explanations.
 - Admin CRUD for content, profiles, matches and results, with authorization and audit trail.
 - Discord OAuth, durable sessions, role sync and optional provisioned local admin login.
 - Settings for public links and approved background media, with preview and validation.
+- WordPress-like rich-text news/blog administration, media library, autosave, revisions,
+  preview, publish/unpublish and scheduled publication; a plain textarea is insufficient.
+- Explicit first-release match creation, fixture scheduling and result entry for admins.
+- Discoverable external `HLL WEBSITE` link to `https://valkyriahll.cz/` on desktop/mobile.
 - Working Docker image and migration procedure; first live deployment remains an operator task.
+
+The detailed mandatory workflows are in [editorial and match requirements](editorial-and-matches.md).
 
 Do not invent wins, ranks, current roster sizes, testimonials, server occupancy,
 official Wardogs APIs or partnerships. Seed only reviewed facts from the

@@ -10,6 +10,7 @@ Read, in order:
 
 1. [README.md](README.md) and [docs/STATUS.md](docs/STATUS.md).
 2. [Product brief](docs/product/brief.md) and [architecture](docs/architecture/overview.md).
+   Include the required [editorial and match workflows](docs/product/editorial-and-matches.md).
 3. [Visual specification](docs/design/visual-spec.md), [screen map](docs/design/screen-map.md),
    and the actual reference images under `docs/design/references/`.
 4. [Authentication and authorization](docs/security/auth-rbac.md).

@@ -12,12 +12,14 @@ services:
       PORT: '3000'
       APP_URL: https://valkyriawdg.cz
       BETTER_AUTH_URL: https://valkyriawdg.cz
+      EDITORIAL_MEDIA_ROOT: /app/storage/editorial
     expose: ['3000']
     networks: [proxy-net, db-net]
     read_only: true
     tmpfs: ['/tmp']
     volumes:
       - web-cache:/app/apps/web/.next/cache
+      - editorial-media:/app/storage/editorial
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
     healthcheck:
@@ -35,3 +37,4 @@ networks:
     external: true
 volumes:
   web-cache:
+  editorial-media:
