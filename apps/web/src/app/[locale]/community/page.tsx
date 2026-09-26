@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { CommunityChoices, CommunityLinks, HllPanel, SignInExplainer } from '@/components/public/community-blocks';
 import { CorePage } from '@/components/public/core-page';
 import { corePageMetadata, loadCorePage } from '@/components/public/core-page-data';
+import { PRESSKIT_FLYING } from '@/components/public/presskit';
+import { PresskitFigure } from '@/components/public/presskit-figure';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { routing } from '@/i18n/routing';
 import { getSiteConfig } from '@/lib/site-config';
@@ -23,7 +25,12 @@ export default async function CommunityPage({ params }: PageProps<'/[locale]/com
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const [page, links, config] = await Promise.all([loadCorePage(locale, 'community'), getShellLinks(), getSiteConfig()]);
+  const [page, links, config, t] = await Promise.all([
+    loadCorePage(locale, 'community'),
+    getShellLinks(),
+    getSiteConfig(),
+    getTranslations({ locale, namespace: 'pages.community' }),
+  ]);
   return (
     <CorePage
       locale={locale}
@@ -32,6 +39,7 @@ export default async function CommunityPage({ params }: PageProps<'/[locale]/com
       before={
         <>
           <CommunityChoices locale={locale} discordUrl={links.discordUrl} guideAnchor={page ? 'community-content' : 'community-title'} />
+          <PresskitFigure image={PRESSKIT_FLYING} locale={locale} caption={t('recruitArtCaption')} />
           <SignInExplainer locale={locale} />
         </>
       }

@@ -16,6 +16,9 @@ publication are separate operator steps (see [deployment](https://github.com/Val
 - Public pages: home with the next match, news list and articles, clan, community and
   Discord, member roster and profiles, match browser with upcoming/results and details,
   privacy; visible HLL WEBSITE links and the HLL match archive link.
+- Wardogs presskit placements: key art on the clan page, a recruitment illustration on
+  the community page and the game wordmark on coverless Wardogs news, captioned as game
+  media with localized alt text and responsive derivatives.
 
 ### Administration
 - Discord sign-in with guild role-to-capability mapping that fails closed on stale or

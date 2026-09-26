@@ -287,6 +287,32 @@ Editor opening /cs/admin/matches: server-enforced localized access denial (edito
 
 Existing upcoming synthetic match at 390×844 (cs): status panel first, stacked single-column groups, no horizontal scrolling; full-page capture.
 
+## Wardogs presskit placements (#21)
+
+Presskit integration at `9c19a0f` (same default e2e server; derivatives from `apps/web/scripts/build-presskit-derivatives.mjs`,
+registered in `assets/manifest.json`). Browser checks: localized catalog alt text, lazy loading, 16:9 frames, key art
+`contain`, an uncropped wordmark in coverless Wardogs cards, no horizontal overflow at 390 px.
+
+![clan-key-art-cs-1440x900](presskit/clan-key-art-cs-1440x900.webp)
+
+/cs/clan at 1440×900: Wardogs key art above the clan story, complete composition with its wordmark (object-fit: contain in a 16:9 frame), captioned as the game’s press-kit art that does not show a Valkyria event.
+
+![clan-key-art-en-390x844](presskit/clan-key-art-en-390x844.webp)
+
+/en/clan on a 390×844 phone: the same key art at full width with the complete wordmark and the English caption; no horizontal overflow.
+
+![community-flying-en-1440x900](presskit/community-flying-en-1440x900.webp)
+
+/en/community at 1440×900: the Flying scene (helicopter over the valley) below the DISCORD / HOW TO JOIN choices, full 16:9 frame, captioned as illustrative game media.
+
+![community-flying-cs-390x844](presskit/community-flying-cs-390x844.webp)
+
+/cs/community on a 390×844 phone: the complete Flying frame with the Czech caption.
+
+![news-wardogs-mark-cs-1440x900](presskit/news-wardogs-mark-cs-1440x900.webp)
+
+/cs/news at 1440×900: synthetic Wardogs posts without a cover show the unchanged white Wardogs wordmark in the neutral placeholder (decorative; the card eyebrow names the game).
+
 ## Limitations
 
 - MP4/H.264 playback inside the application is unverified here (no codec, and the Chrome download host is blocked);

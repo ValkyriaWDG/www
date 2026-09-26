@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "kind": "offline-presskit-catalog-capture",
+  "status": "passed",
+  "startedAt": "2026-09-26T14:43:56.673Z",
+  "platform": "win32",
+  "node": "v24.21.0",
+  "catalogSha256": "53ef1441bdc1d103f9fc7ef526141ada9145e6b65bdf68ba7be47f96022871d8",
+  "previewSha256": "c3ec21103f9a4bd8329dc06a77428c27691aa5edc3d1309000520dc912aab633",
+  "harnessSha256": "4617f5ce1c98107e11bd1bd81be36f6045febd4ddd1f91bfcb3da4632ff8ab76",
+  "sourceFiles": [
+    {
+      "path": "assets/presskit/wardogs-january-2026/flying.jpg",
+      "sha256": "d7fb5f0c7bb2329aa0bb20482fb4ba86ea7b93239a1ea7837529a8f0239e1036",
+      "bytes": 990893
+    },
+    {
+      "path": "assets/presskit/wardogs-january-2026/foundry.jpg",
+      "sha256": "3edd32d4c4cfd525facc70a108c95277fc94ad2e895c9c682a7ea20a9d8ec027",
+      "bytes": 1339033
+    },
+    {
+      "path": "assets/presskit/wardogs-january-2026/fullmark-black.svg",
+      "sha256": "e567eb1d4e27f11bee5a44cfbc1a1602db91c2a1c7e7910376fbee5b22f809bc",
+      "bytes": 12258
+    },
+    {
+      "path": "assets/presskit/wardogs-january-2026/fullmark-full.svg",
+      "sha256": "4436d8357863a845eef36678257f4cec6853167e7be0136c3a4cd7abffda5ef6",
+      "bytes": 12360
+    },
+    {
+      "path": "assets/presskit/wardogs-january-2026/fullmark-white.svg",
+      "sha256": "0b76abef3cf3995fb822ba150fb8d875d1c4c44e437f0d5568068979796db3d8",
+      "bytes": 12295
+    },
+    {
+      "path": "assets/presskit/wardogs-january-2026/key-art-1080p.png",
+      "sha256": "78fe9b91d1bca30066c7129c508daee04109ec07409e64d438d8faeb5a12998d",
+      "bytes": 2215452
+    },
+    {
+      "path": "assets/presskit/wardogs-january-2026/tank.jpg",
+      "sha256": "f0eabea82a542c92c63f359c04a1ca5fdf263ba5015fa91833157224915292cf",
+      "bytes": 2318791
+    }
+  ],
+  "servedFiles": {
+    "docs/assets/presskit-preview.html": {
+      "sha256": "c3ec21103f9a4bd8329dc06a77428c27691aa5edc3d1309000520dc912aab633",
+      "bytes": 11327
+    },
+    "assets/presskit/wardogs-january-2026/key-art-1080p.png": {
+      "sha256": "78fe9b91d1bca30066c7129c508daee04109ec07409e64d438d8faeb5a12998d",
+      "bytes": 2215452
+    },
+    "assets/presskit/wardogs-january-2026/flying.jpg": {
+      "sha256": "d7fb5f0c7bb2329aa0bb20482fb4ba86ea7b93239a1ea7837529a8f0239e1036",
+      "bytes": 990893
+    },
+    "assets/presskit/wardogs-january-2026/fullmark-white.svg": {
+      "sha256": "0b76abef3cf3995fb822ba150fb8d875d1c4c44e437f0d5568068979796db3d8",
+      "bytes": 12295
+    },
+    "assets/presskit/wardogs-january-2026/foundry.jpg": {
+      "sha256": "3edd32d4c4cfd525facc70a108c95277fc94ad2e895c9c682a7ea20a9d8ec027",
+      "bytes": 1339033
+    },
+    "assets/presskit/wardogs-january-2026/fullmark-black.svg": {
+      "sha256": "e567eb1d4e27f11bee5a44cfbc1a1602db91c2a1c7e7910376fbee5b22f809bc",
+      "bytes": 12258
+    },
+    "assets/presskit/wardogs-january-2026/fullmark-full.svg": {
+      "sha256": "4436d8357863a845eef36678257f4cec6853167e7be0136c3a4cd7abffda5ef6",
+      "bytes": 12360
+    },
+    "assets/presskit/wardogs-january-2026/tank.jpg": {
+      "sha256": "f0eabea82a542c92c63f359c04a1ca5fdf263ba5015fa91833157224915292cf",
+      "bytes": 2318791
+    }
+  },
+  "captures": [
+    {
+      "filename": "catalog-1440x1100.jpg",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "sha256": "3d71ae5eea9df76f0cf0476d14b74a8eaed05b8247ab889f1e7ab09182080b70",
+      "bytes": 299531,
+      "images": [
+        {
+          "path": "assets/presskit/wardogs-january-2026/key-art-1080p.png",
+          "width": 1920,
+          "height": 1080,
+          "alt": "Soldiers and helicopters with the Wardogs game wordmark"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/flying.jpg",
+          "width": 3840,
+          "height": 2160,
+          "alt": "A helicopter above a forested valley at sunset in Wardogs"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/foundry.jpg",
+          "width": 3840,
+          "height": 2160,
+          "alt": "A soldier exchanging fire inside an industrial hall in Wardogs"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/tank.jpg",
+          "width": 3840,
+          "height": 2160,
+          "alt": "A soldier helps an injured teammate beside a tank in Wardogs"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-white.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "Wardogs white fullmark on a dark surface"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-black.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "Wardogs black fullmark on a light surface"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-full.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "Wardogs full mark on a dark surface"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-full.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "The same Wardogs full mark on a light surface"
+        }
+      ],
+      "horizontalOverflow": false,
+      "caption": "Actual local asset-catalog screenshot. This is not the website or a live Discord client.",
+      "imageWidth": 1440,
+      "imageHeight": 2006
+    },
+    {
+      "filename": "catalog-390x844.jpg",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "e69f15ab82c774e22e03d5f3448c4c6244784f2c0dcbb9441271316f85a39d3e",
+      "bytes": 271429,
+      "images": [
+        {
+          "path": "assets/presskit/wardogs-january-2026/key-art-1080p.png",
+          "width": 1920,
+          "height": 1080,
+          "alt": "Soldiers and helicopters with the Wardogs game wordmark"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/flying.jpg",
+          "width": 3840,
+          "height": 2160,
+          "alt": "A helicopter above a forested valley at sunset in Wardogs"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/foundry.jpg",
+          "width": 3840,
+          "height": 2160,
+          "alt": "A soldier exchanging fire inside an industrial hall in Wardogs"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/tank.jpg",
+          "width": 3840,
+          "height": 2160,
+          "alt": "A soldier helps an injured teammate beside a tank in Wardogs"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-white.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "Wardogs white fullmark on a dark surface"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-black.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "Wardogs black fullmark on a light surface"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-full.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "Wardogs full mark on a dark surface"
+        },
+        {
+          "path": "assets/presskit/wardogs-january-2026/fullmark-full.svg",
+          "width": 300,
+          "height": 59,
+          "alt": "The same Wardogs full mark on a light surface"
+        }
+      ],
+      "horizontalOverflow": false,
+      "caption": "Actual local asset-catalog screenshot. This is not the website or a live Discord client.",
+      "imageWidth": 390,
+      "imageHeight": 4007
+    }
+  ],
+  "fixtureChecks": [],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "browser": "Chromium 153.0.8010.12",
+  "completedAt": "2026-09-26T14:43:59.918Z"
+}

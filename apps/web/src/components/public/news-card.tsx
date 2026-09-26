@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
 import type { NewsSummary } from '@/modules/content/types';
+import { WARDOGS_MARK } from './presskit';
 import { TagList } from './tags';
 import styles from './news.module.css';
 import publicStyles from './public.module.css';
@@ -32,8 +33,15 @@ export function NewsCard({ item, locale, labels, priority = false }: { item: New
             decoding="async"
           />
         ) : (
-          <div className={publicStyles.placeholder} aria-hidden="true">
-            {item.game ? labels.games[item.game] : labels.placeholder}
+          <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={item.game ?? undefined}>
+            {item.game === 'wardogs' ? (
+              // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; the eyebrow names the game
+              <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
+            ) : item.game ? (
+              labels.games[item.game]
+            ) : (
+              labels.placeholder
+            )}
           </div>
         )}
       </div>

@@ -98,6 +98,16 @@
   text-transform: uppercase;
 }
 
+/* Unchanged white Wardogs wordmark identifying the game on a coverless post. The
+   selector outranks card rules such as `.media img` (full-bleed cover images). */
+.placeholder > .placeholderMark {
+  width: min(62%, 240px);
+  height: auto;
+  max-height: 60%;
+  object-fit: contain;
+  opacity: 0.55;
+}
+
 /* ---- Localized prose absence ---- */
 .proseLink {
   display: inline-flex;

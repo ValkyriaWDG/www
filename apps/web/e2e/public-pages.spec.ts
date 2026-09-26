@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 import { FIXTURE_SLUGS } from '../src/fixtures/data';
 import { expectNoHorizontalOverflow } from './support/shell-helpers';
 
@@ -71,6 +71,69 @@ const PUBLIC_PATHS = (locale: 'cs' | 'en') => [
   `/${locale}/community`,
   `/${locale}/privacy`,
 ];
+
+test.describe('presskit illustrations', () => {
+  const frameOf = (page: Page, id: string) => page.locator(`[data-presskit="${id}"]`);
+  const imageFacts = (page: Page, id: string) =>
+    frameOf(page, id)
+      .locator('img')
+      .evaluate(async (img: HTMLImageElement) => {
+        img.scrollIntoView();
+        await img.decode();
+        const frame = img.parentElement!.getBoundingClientRect();
+        return {
+          alt: img.alt,
+          loading: img.loading,
+          fit: getComputedStyle(img).objectFit,
+          current: new URL(img.currentSrc).pathname,
+          naturalRatio: img.naturalWidth / img.naturalHeight,
+          frameRatio: frame.width / frame.height,
+        };
+      });
+
+  for (const width of [1440, 390]) {
+    test(`clan key art stays complete and is captioned as game media (${width}px)`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/cs/clan');
+      const facts = await imageFacts(page, 'key-art-1080p');
+      expect(facts).toMatchObject({ alt: 'Vojáci a vrtulníky s logem hry Wardogs.', loading: 'lazy', fit: 'contain' });
+      expect(facts.current).toMatch(/^\/presskit\/key-art-(960|1920)\.webp$/);
+      expect(facts.frameRatio).toBeCloseTo(16 / 9, 1);
+      expect(facts.naturalRatio).toBeCloseTo(16 / 9, 2);
+      await expect(frameOf(page, 'key-art-1080p').locator('figcaption')).toHaveText(/Wardogs.*nezachycuje akci klanu Valkyria/);
+      await expectNoHorizontalOverflow(page);
+    });
+  }
+
+  test('community recruitment illustration keeps its full 16:9 frame in English', async ({ page }) => {
+    await page.goto('/en/community');
+    const facts = await imageFacts(page, 'flying');
+    expect(facts).toMatchObject({ alt: 'A helicopter above a forested valley at sunset in Wardogs.', loading: 'lazy', fit: 'cover' });
+    expect(facts.frameRatio).toBeCloseTo(facts.naturalRatio, 1);
+    await expect(frameOf(page, 'flying').locator('figcaption')).toHaveText(/does not show a Valkyria event/);
+  });
+
+  test('coverless Wardogs posts show the unchanged game wordmark; other games keep text', async ({ page }) => {
+    await page.goto('/cs/news');
+    const wardogs = page.locator('[data-placeholder-game="wardogs"]').first();
+    await expect(wardogs.locator('img')).toHaveAttribute('src', '/presskit/wardogs-fullmark-white.svg');
+    await expect(wardogs.locator('img')).toHaveAttribute('alt', '');
+    await expect.poll(() => wardogs.locator('img').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+    // The whole wordmark is visible: contained, and smaller than its placeholder (never cover-cropped).
+    const mark = await wardogs.locator('img').evaluate((img: HTMLImageElement) => {
+      const box = img.getBoundingClientRect();
+      const frame = img.parentElement!.getBoundingClientRect();
+      return { fit: getComputedStyle(img).objectFit, widthShare: box.width / frame.width, heightShare: box.height / frame.height, ratio: box.width / box.height };
+    });
+    expect(mark.fit).toBe('contain');
+    expect(mark.widthShare).toBeLessThanOrEqual(0.63);
+    expect(mark.heightShare).toBeLessThan(1);
+    expect(mark.ratio).toBeCloseTo(2467 / 489, 0);
+    await page.goto('/cs/news?game=hell-let-loose');
+    const hll = page.locator('[data-placeholder-game="hell-let-loose"]');
+    if ((await hll.count()) > 0) await expect(hll.first().locator('img')).toHaveCount(0);
+  });
+});
 
 test.describe('public pages: structure and small screens', () => {
   test('every public page has one h1, a main landmark and a localized title', async ({ page }) => {

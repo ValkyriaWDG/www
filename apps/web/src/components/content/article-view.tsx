@@ -1,6 +1,7 @@
 import type { Game, Locale } from '@valkyria/db/schema';
 import { getTranslations } from 'next-intl/server';
 import { TagList } from '@/components/public/tags';
+import { WARDOGS_MARK } from '@/components/public/presskit';
 import publicStyles from '@/components/public/public.module.css';
 import { PageHeader, StatusBadge } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
@@ -168,8 +169,15 @@ export function ArticleView({ article, labels, preview = false, related = [], ba
                     // eslint-disable-next-line @next/next/no-img-element -- publication-aware media route
                     <img src={mediaUrl(item.cover.assetId, 'thumb')} alt="" width={item.cover.width} height={item.cover.height} loading="lazy" decoding="async" />
                   ) : (
-                    <div className={publicStyles.placeholder} aria-hidden="true">
-                      {item.game ? labels.games[item.game] : 'Valkyria'}
+                    <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={item.game ?? undefined}>
+                      {item.game === 'wardogs' ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; decorative
+                        <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
+                      ) : item.game ? (
+                        labels.games[item.game]
+                      ) : (
+                        'Valkyria'
+                      )}
                     </div>
                   )}
                 </div>

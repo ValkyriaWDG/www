@@ -7,6 +7,7 @@ without turning it into a game asset mirror.
 |---|---|
 | Supplied clan logo | `assets/brand/valkyria-logo.png`; exact original, 733 × 811 RGBA |
 | Supplied Wardogs captures | `docs/design/references/`; reference-only, never copy into app public output |
+| Selected Wardogs presskit originals | `assets/presskit/wardogs-january-2026/`; editorial/game-identification candidates with separate provenance, never the clan identity |
 | Legacy site graphics | URL inventory in research; review individual use and provenance before copying |
 | Raw game archives/Bink/AVI | Local-only, excluded from Git and build context |
 | Approved web video/poster | Versioned external delivery or read-only deployment media; record digest and rights |
@@ -19,9 +20,14 @@ the Wardogs wolf emblem. Use opacity/filter at render time for the faded center.
 
 Every shipped asset needs a manifest entry recording source, usage, size, digest,
 rights status and transformations. The existing [manifest](../../assets/manifest.json)
-records the 13 captures and logo. It is an integrity inventory, not a claim of third-party
+records the captures, clan logo and selected presskit originals. It is an integrity inventory, not a claim of third-party
 ownership or a general redistribution license. The source screenshots retain their
 original third-party game imagery and are excluded from the Apache code license.
+
+Use the [January 2026 presskit guide](presskit-2026-01.md) and its source catalog for
+editorial placement and logo variants. Keep the originals unchanged; review runtime
+crops, localized descriptions and any derivative provenance separately. Presskit
+artwork illustrates the game and does not establish clan activity or match results.
 
 Runtime CMS uploads use equivalent database Asset/AssetUsage records and persistent
 private media storage; they are not committed to Git or added to the source manifest

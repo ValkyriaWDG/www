@@ -264,9 +264,12 @@ test('client and server validation: DST gap, required fields and localized messa
   await signInAs(context, { roles: ['match_manager'] });
   const page = await context.newPage();
   await page.goto('/en/admin/matches/new');
-  await page.getByLabel(/^Start date/).fill('2027-03-28');
-  await page.getByLabel(/^Start time/).fill('02:30');
-  await expect(page.locator('[data-resolved-start]')).toContainText('This time does not exist in the chosen time zone');
+  // Values typed before the controlled form hydrates are reset by React; retry until it reflects them.
+  await expect(async () => {
+    await page.getByLabel(/^Start date/).fill('2027-03-28');
+    await page.getByLabel(/^Start time/).fill('02:30');
+    await expect(page.locator('[data-resolved-start]')).toContainText('This time does not exist in the chosen time zone', { timeout: 2_000 });
+  }).toPass({ timeout: 15_000 });
   await page.locator('[data-action="save"]').click();
   await expect(page.getByRole('alert').filter({ hasText: 'Please check the highlighted fields.' })).toBeVisible();
   await expect(page.getByLabel(/^Opponent name/)).toHaveAttribute('aria-invalid', 'true');

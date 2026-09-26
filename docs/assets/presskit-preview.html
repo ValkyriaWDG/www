@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Wardogs January 2026 — Presskit asset review</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #141613;
+        color: #f0f0e9;
+        font:
+          16px/1.55 system-ui,
+          sans-serif;
+      }
+      a {
+        color: #edbd64;
+        text-underline-offset: 0.2em;
+      }
+      a:focus-visible {
+        outline: 3px solid #edbd64;
+        outline-offset: 5px;
+      }
+      header,
+      main,
+      footer {
+        width: min(1280px, 100%);
+        margin-inline: auto;
+        padding: 28px;
+      }
+      header {
+        padding-block: 42px 24px;
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        color: #edbd64;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        line-height: 1.15;
+      }
+      header p {
+        max-width: 78ch;
+        margin-block: 12px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        margin-top: 20px;
+      }
+      main {
+        padding-block: 12px 28px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+        gap: 24px;
+      }
+      figure {
+        min-width: 0;
+        margin: 0;
+        border: 1px solid #4e5348;
+        background: #1b1e19;
+      }
+      .art {
+        aspect-ratio: 16 / 9;
+        background: #0c0d0b;
+        display: grid;
+        place-items: center;
+      }
+      .art img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .mark {
+        min-height: 190px;
+        padding: 30px;
+        display: grid;
+        place-items: center;
+      }
+      .mark img {
+        display: block;
+        width: 100%;
+        max-width: 360px;
+        height: 125px;
+        object-fit: contain;
+      }
+      .dark {
+        background: #121512;
+      }
+      .light {
+        background: #f4f2e9;
+        color: #181b17;
+      }
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .comparison .mark {
+        min-height: 160px;
+        padding: 18px;
+      }
+      .comparison .mark img {
+        height: 95px;
+      }
+      figcaption {
+        padding: 20px;
+        border-top: 1px solid #4e5348;
+      }
+      h2 {
+        margin: 0 0 8px;
+        font-size: 1.15rem;
+      }
+      figcaption p {
+        margin: 8px 0;
+        color: #d1d5ca;
+      }
+      .filename {
+        display: block;
+        margin: 14px 0 8px;
+        font:
+          0.8rem/1.5 ui-monospace,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+      .section-title {
+        margin: 40px 0 16px;
+        font-size: 1.5rem;
+      }
+      .notice {
+        padding: 18px 20px;
+        border-left: 3px solid #edbd64;
+        background: #25291f;
+      }
+      footer {
+        border-top: 1px solid #4e5348;
+        color: #c6ccbd;
+      }
+      @media (max-width: 600px) {
+        header,
+        main,
+        footer {
+          padding-inline: 18px;
+        }
+        header {
+          padding-top: 28px;
+        }
+        .grid {
+          gap: 18px;
+        }
+        figcaption {
+          padding: 16px;
+        }
+        .comparison {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p class="eyebrow">Wardogs / January 2026</p>
+      <h1>Presskit asset review — not the website</h1>
+      <p>
+        Seven selected original files for editorial and game-identification
+        review. Images below retain their complete composition. This gallery
+        uses local assets and system fonts, without scripts or external
+        requests.
+      </p>
+      <nav aria-label="Related documentation">
+        <a href="presskit-2026-01.md">Usage guide</a>
+        <a href="../../assets/presskit/wardogs-january-2026/catalog.json"
+          >Source catalog</a
+        >
+        <a href="../../assets/manifest.json">Integrity manifest</a>
+        <a href="../../NOTICE.md">Asset notices</a>
+      </nav>
+    </header>
+    <main>
+      <p class="notice">
+        Wardogs artwork identifies the game. The Valkyria crest remains the clan
+        identity. These images are not evidence of clan members, matches or
+        results.
+      </p>
+      <h2 class="section-title">Editorial imagery</h2>
+      <div class="grid">
+        <figure>
+          <div class="art">
+            <img
+              src="../../assets/presskit/wardogs-january-2026/key-art-1080p.png"
+              alt="Soldiers and helicopters with the Wardogs game wordmark"
+              width="1920"
+              height="1080"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <h2>Key art</h2>
+            <p>
+              News announcements and game introductions. Keep the complete
+              artwork and baked-in wordmark visible.
+            </p>
+            <span class="filename">key-art-1080p.png</span>
+            <a
+              href="../../assets/presskit/wardogs-january-2026/key-art-1080p.png"
+              >Open key-art original</a
+            >
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="art">
+            <img
+              src="../../assets/presskit/wardogs-january-2026/flying.jpg"
+              alt="A helicopter above a forested valley at sunset in Wardogs"
+              width="3840"
+              height="2160"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <h2>Flying</h2>
+            <p>
+              Recruitment illustrations and community banners. Review the
+              subject before applying a responsive cover crop.
+            </p>
+            <span class="filename">flying.jpg</span>
+            <a href="../../assets/presskit/wardogs-january-2026/flying.jpg"
+              >Open flying original</a
+            >
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="art">
+            <img
+              src="../../assets/presskit/wardogs-january-2026/foundry.jpg"
+              alt="A soldier exchanging fire inside an industrial hall in Wardogs"
+              width="3840"
+              height="2160"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <h2>Foundry</h2>
+            <p>
+              Editorial illustration for news and game overviews. The filename
+              does not establish an official map name.
+            </p>
+            <span class="filename">foundry.jpg</span>
+            <a href="../../assets/presskit/wardogs-january-2026/foundry.jpg"
+              >Open foundry original</a
+            >
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="art">
+            <img
+              src="../../assets/presskit/wardogs-january-2026/tank.jpg"
+              alt="A soldier helps an injured teammate beside a tank in Wardogs"
+              width="3840"
+              height="2160"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <h2>Tank</h2>
+            <p>
+              Illustrative match announcements or training articles. This is not
+              a photograph or record of a Valkyria match.
+            </p>
+            <span class="filename">tank.jpg</span>
+            <a href="../../assets/presskit/wardogs-january-2026/tank.jpg"
+              >Open tank original</a
+            >
+          </figcaption>
+        </figure>
+      </div>
+      <h2 class="section-title">Game marks and background contrast</h2>
+      <div class="grid">
+        <figure>
+          <div class="mark dark">
+            <img
+              src="../../assets/presskit/wardogs-january-2026/fullmark-white.svg"
+              alt="Wardogs white fullmark on a dark surface"
+              width="2467"
+              height="489"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <h2>White fullmark</h2>
+            <p>
+              Use on a dark surface; preserve the mark's ratio and surrounding
+              clear space.
+            </p>
+            <span class="filename">fullmark-white.svg</span>
+            <a
+              href="../../assets/presskit/wardogs-january-2026/fullmark-white.svg"
+              >Open white mark original</a
+            >
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="mark light">
+            <img
+              src="../../assets/presskit/wardogs-january-2026/fullmark-black.svg"
+              alt="Wardogs black fullmark on a light surface"
+              width="2467"
+              height="489"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <h2>Black fullmark</h2>
+            <p>
+              Use the provided black variant on a light surface rather than
+              applying a recolor filter.
+            </p>
+            <span class="filename">fullmark-black.svg</span>
+            <a
+              href="../../assets/presskit/wardogs-january-2026/fullmark-black.svg"
+              >Open black mark original</a
+            >
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="comparison">
+            <div class="mark dark">
+              <img
+                src="../../assets/presskit/wardogs-january-2026/fullmark-full.svg"
+                alt="Wardogs full mark on a dark surface"
+                width="2467"
+                height="489"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="mark light">
+              <img
+                src="../../assets/presskit/wardogs-january-2026/fullmark-full.svg"
+                alt="The same Wardogs full mark on a light surface"
+                width="2467"
+                height="489"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+          <figcaption>
+            <h2>Full-color mark</h2>
+            <p>
+              The same original appears on both surfaces for contrast review.
+              Select the appropriate supplied variant for the final placement.
+            </p>
+            <span class="filename">fullmark-full.svg</span>
+            <a
+              href="../../assets/presskit/wardogs-january-2026/fullmark-full.svg"
+              >Open full-color mark original</a
+            >
+          </figcaption>
+        </figure>
+      </div>
+    </main>
+    <footer>
+      <p>
+        Presskit asset review — not the website. Third-party game artwork and
+        marks are excluded from the repository's Apache-2.0 code license. This
+        gallery does not assert publisher endorsement or a general
+        redistribution license.
+      </p>
+    </footer>
+  </body>
+</html>

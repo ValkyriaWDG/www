@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "source": "Owner-supplied WD_PressKit_January2026_General",
+  "recordedAt": "2026-09-26",
+  "files": [
+    {
+      "originalPath": "01 - Key Art/WD_RevealKeyArt_1080p.png",
+      "bytes": 2215452,
+      "sha256": "78fe9b91d1bca30066c7129c508daee04109ec07409e64d438d8faeb5a12998d",
+      "width": 1920,
+      "height": 1080,
+      "format": "PNG"
+    },
+    {
+      "originalPath": "01 - Key Art/WD_RevealKeyArt_1440p.png",
+      "bytes": 3603322,
+      "sha256": "f7f88c4676587bfa9c1587116f8305e995059b4e7cdea9d3b8ff4443b13f628d",
+      "width": 2560,
+      "height": 1440,
+      "format": "PNG"
+    },
+    {
+      "originalPath": "01 - Key Art/WD_RevealKeyArt_4K.png",
+      "bytes": 6684693,
+      "sha256": "7442240539cde562b6ac12d01160cd9067601d1d15a63510af81742dc20a8626",
+      "width": 3840,
+      "height": 2160,
+      "format": "PNG"
+    },
+    {
+      "originalPath": "02 - Logos/PDF/WD_Fullmark_Black.pdf",
+      "bytes": 49240,
+      "sha256": "983c8645083392f9649fa00f696921360656f87ed02e82a003a4c1099d9849a5"
+    },
+    {
+      "originalPath": "02 - Logos/PDF/WD_Fullmark_Full.pdf",
+      "bytes": 49787,
+      "sha256": "a2960d067023b28d4eab653e4251cbea49c7acb889b75e557c90752b97a67555"
+    },
+    {
+      "originalPath": "02 - Logos/PDF/WD_Fullmark_White.pdf",
+      "bytes": 49274,
+      "sha256": "e8d8307c3c2da7c20fe6d3b3144c8239203a19f0e47ab4f7411fce1a40d248f5"
+    },
+    {
+      "originalPath": "02 - Logos/PNG/WD_Fullmark_Black.png",
+      "bytes": 28024,
+      "sha256": "8ebf0e8a2a3ad6c661ae6c04c2555a8ff3b5d2774f7b68efae6f5682726c4441",
+      "width": 2468,
+      "height": 490,
+      "format": "PNG"
+    },
+    {
+      "originalPath": "02 - Logos/PNG/WD_Fullmark_Full.png",
+      "bytes": 27795,
+      "sha256": "702d44976e81e8959c951e1dfcc9d274e258a1f5b5493088dd6eed5a91fd46a0",
+      "width": 2468,
+      "height": 490,
+      "format": "PNG"
+    },
+    {
+      "originalPath": "02 - Logos/PNG/WD_Fullmark_White.png",
+      "bytes": 27809,
+      "sha256": "5f961d6e61af76de2fabdfe45df54e7727664a03bd5761a8ada4791cd1365b16",
+      "width": 2468,
+      "height": 490,
+      "format": "PNG"
+    },
+    {
+      "originalPath": "02 - Logos/SVG/WD_Fullmark_Black.svg",
+      "bytes": 12258,
+      "sha256": "e567eb1d4e27f11bee5a44cfbc1a1602db91c2a1c7e7910376fbee5b22f809bc",
+      "width": 2467,
+      "height": 489,
+      "format": "SVG"
+    },
+    {
+      "originalPath": "02 - Logos/SVG/WD_Fullmark_Full.svg",
+      "bytes": 12360,
+      "sha256": "4436d8357863a845eef36678257f4cec6853167e7be0136c3a4cd7abffda5ef6",
+      "width": 2467,
+      "height": 489,
+      "format": "SVG"
+    },
+    {
+      "originalPath": "02 - Logos/SVG/WD_Fullmark_White.svg",
+      "bytes": 12295,
+      "sha256": "0b76abef3cf3995fb822ba150fb8d875d1c4c44e437f0d5568068979796db3d8",
+      "width": 2467,
+      "height": 489,
+      "format": "SVG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot 2.jpg",
+      "bytes": 2590600,
+      "sha256": "32d70bf7b05b0c9d56d4dcc1505fb073b4c38a9fd79cf5eefb80afa1584c55a5",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Destruction_1.jpg",
+      "bytes": 2689671,
+      "sha256": "0daf14773bd958be1a9b3f515cc4af8cbc5b66f27e0935fab343578cf8ca35fb",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Flying.jpg",
+      "bytes": 990893,
+      "sha256": "d7fb5f0c7bb2329aa0bb20482fb4ba86ea7b93239a1ea7837529a8f0239e1036",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Foundry_1.jpg",
+      "bytes": 1339033,
+      "sha256": "3edd32d4c4cfd525facc70a108c95277fc94ad2e895c9c682a7ea20a9d8ec027",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Ghellie Suit.jpg",
+      "bytes": 2137687,
+      "sha256": "19340d84b221c04b5fc41a97c24f21254aaa4e73c5e6e1906ae66e9129a2307c",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Helicopter_1.jpg",
+      "bytes": 2039533,
+      "sha256": "e7019491f5b8ff58deb7c20df030ba890b34b95796a39fcee29db0885bfe735d",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_house interior.jpg",
+      "bytes": 1394906,
+      "sha256": "ba43d44e80a8616bb4c5c7882ad95789bb59dc2385172c1876b720427f8e39fd",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Littlebird_1.jpg",
+      "bytes": 1345986,
+      "sha256": "d408792ef182d184c80b3f272ab476831f755cc3391904da025464bb4a20cbe4",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Littlebird_2.jpg",
+      "bytes": 2256959,
+      "sha256": "8c67f7c03334084c4d5ee876a6be829b8757f8b0965ac23de719921fab0856ff",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_ResidentialStreet_1.jpg",
+      "bytes": 2806189,
+      "sha256": "5fa8e9d97ae5cd14762c48c9838bd385904b0db6fd28b10c33a3d5ca6c154ae3",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_River_2.jpg",
+      "bytes": 2877144,
+      "sha256": "3974f9f76afed185fb2701e5838781f91e502d1f5d9eb2f87947a20a744092fa",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "03 - Screenshots/WD_Screenshot_Tank_1.jpg",
+      "bytes": 2318791,
+      "sha256": "f0eabea82a542c92c63f359c04a1ca5fdf263ba5015fa91833157224915292cf",
+      "width": 3840,
+      "height": 2160,
+      "format": "JPEG"
+    },
+    {
+      "originalPath": "04 - Trailer/WD_AnnouncementTrailer_4K.mp4",
+      "bytes": 946995459,
+      "sha256": "1c53f81392cb9ac8ee4d771a3bac8b8104e75cd68d3a345ca149841678241e39"
+    },
+    {
+      "originalPath": "WARDOGS_One-Page_Explainer.png",
+      "bytes": 24730980,
+      "sha256": "c04ceb54ae4f0f194f13cd5355a15fd144b65d3f1c60fd813941f71aad711588",
+      "width": 3508,
+      "height": 4961,
+      "format": "PNG"
+    }
+  ]
+}
