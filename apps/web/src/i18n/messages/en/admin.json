@@ -8,6 +8,7 @@
   },
   "overview": {
     "metaTitle": "Administration",
+    "eyebrow": "Administration",
     "title": "Administration",
     "intro": "Signed in as {name}. Only the modules you may use are listed; every module checks your permissions again.",
     "modulesTitle": "Your modules",
@@ -16,6 +17,10 @@
       "news": {
         "title": "News",
         "description": "Write, edit, schedule and publish news articles."
+      },
+      "content": {
+        "title": "Pages",
+        "description": "Editing and publishing the clan, community and privacy pages in both languages."
       },
       "media": {
         "title": "Media",
@@ -37,6 +42,14 @@
         "title": "Audit log",
         "description": "Review privileged changes and denied access."
       }
+    },
+    "items": {
+      "loadFailed": "Editorial items could not be loaded. Try reloading the page.",
+      "draftsTitle": "My unpublished drafts",
+      "draftsEmpty": "You have no unpublished drafts.",
+      "schedulesTitle": "Scheduled publications",
+      "schedulesEmpty": "Nothing is scheduled.",
+      "needsReapproval": "Needs re-approval"
     }
   },
   "denied": {

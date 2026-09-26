@@ -118,6 +118,9 @@ export function RichTextEditor({ initialContent, onChange, contentLocale, onRequ
         return false;
       },
     },
+    // `useEditorState` only recomputes on transactions; an empty, history-free transaction
+    // after creation makes the toolbar/word count reflect the initial content immediately.
+    onCreate: ({ editor: created }) => created.view.dispatch(created.state.tr.setMeta('addToHistory', false)),
     onUpdate: ({ editor: current }) => onChangeRef.current(current.getJSON()),
   });
 
@@ -157,6 +160,8 @@ type ToolbarProps = {
 function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: ToolbarProps) {
   const t = useTranslations('editor.toolbar');
   const ref = useRef<HTMLDivElement>(null);
+  // Per-instance id: several editors (e.g. Czech and English) can share one page.
+  const blockTypeId = useId();
   const run = (command: (chain: ReturnType<Editor['chain']>) => ReturnType<Editor['chain']>) => {
     if (!editor) return;
     command(editor.chain().focus()).run();
@@ -200,11 +205,11 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
         {button('redo', t('redo'), undefined, () => run((c) => c.redo()), 'Ctrl+Y', !state.canRedo)}
       </div>
       <div className={styles.toolGroup}>
-        <label className="visually-hidden" htmlFor="rte-block-type">
+        <label className="visually-hidden" htmlFor={blockTypeId}>
           {t('blockType')}
         </label>
         <select
-          id="rte-block-type"
+          id={blockTypeId}
           data-toolbar-item=""
           tabIndex={-1}
           className={styles.blockSelect}

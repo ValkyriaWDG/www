@@ -1,1 +1,367 @@
-{}
+{
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "back": "Back",
+    "working": "Working…",
+    "uiLanguage": "Interface language",
+    "contentLanguage": "Editing content in",
+    "languages": {
+      "cs": "Czech",
+      "en": "English"
+    }
+  },
+  "states": {
+    "missing": "Missing",
+    "draft": "Draft",
+    "published": "Published",
+    "published_with_changes": "Published + unpublished changes",
+    "scheduled": "Scheduled",
+    "published_update_scheduled": "Published · update scheduled",
+    "archived": "Archived"
+  },
+  "warnings": {
+    "overdue": "Schedule overdue – publisher has not run",
+    "blocked": "Schedule blocked – needs re-approval",
+    "failed": "Scheduled publication failed"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  },
+  "publisher": {
+    "stalledTitle": "Scheduled publishing is stalled",
+    "stalledBody": "{count, plural, one {# scheduled publication is} other {# scheduled publications are}} overdue because the publisher runner has not completed recently. Nothing is published until it runs; ask the operator to check the timer.",
+    "attentionTitle": "Schedules need attention",
+    "attentionBody": "{count, plural, one {# scheduled publication is} other {# scheduled publications are}} blocked or failed and will not run until someone with publishing rights re-approves them in the editor."
+  },
+  "list": {
+    "metaTitle": "News administration",
+    "eyebrow": "Administration",
+    "title": "News",
+    "lead": "Posts, announcements and match reports. Czech and English are published independently.",
+    "newPost": "NEW POST",
+    "filterState": "Filter by state",
+    "all": "All",
+    "filterLocale": "Filter by language",
+    "allLanguages": "Both languages",
+    "untitled": "(untitled)",
+    "columns": {
+      "title": "Title",
+      "author": "Author",
+      "category": "Category",
+      "modified": "Modified",
+      "cs": "Czech",
+      "en": "English",
+      "actions": "Actions"
+    },
+    "searchLabel": "Search posts",
+    "searchPlaceholder": "Title or address…",
+    "summary": "{count, plural, one {# post} other {# posts}}",
+    "emptyFilteredTitle": "No posts match these filters",
+    "emptyFilteredBody": "Change the search or clear the filters to see all posts.",
+    "emptyTitle": "No posts yet",
+    "emptyBody": "Create the first post; it stays a private draft until you publish it.",
+    "clearFilters": "Clear filters",
+    "caption": "Posts with separate Czech and English publication states",
+    "scheduledFor": "Due {time}"
+  },
+  "rowActions": {
+    "edit": "Edit",
+    "more": "Actions",
+    "dialogTitle": "Post actions",
+    "editLocale": "{locale, select, cs {Edit Czech} en {Edit English} other {Edit version}}",
+    "preview": "{locale, select, cs {Preview Czech} en {Preview English} other {Preview version}}",
+    "publish": "{locale, select, cs {Publish Czech} en {Publish English} other {Publish version}}",
+    "update": "{locale, select, cs {Update Czech} en {Update English} other {Update version}}",
+    "unpublish": "{locale, select, cs {Unpublish Czech} en {Unpublish English} other {Unpublish version}}",
+    "duplicate": "Duplicate",
+    "archive": "Archive",
+    "unarchive": "Restore from archive",
+    "confirmPublishTitle": "{locale, select, cs {Publish the Czech version?} en {Publish the English version?} other {Publish?}}",
+    "confirmUpdateTitle": "{locale, select, cs {Update the live Czech version?} en {Update the live English version?} other {Update?}}",
+    "confirmPublishBody": "{locale, select, cs {The current saved Czech draft becomes public. The English version is not changed.} en {The current saved English draft becomes public. The Czech version is not changed.} other {The current saved draft becomes public.}}",
+    "confirmUnpublishTitle": "{locale, select, cs {Unpublish the Czech version?} en {Unpublish the English version?} other {Unpublish?}}",
+    "confirmUnpublishBody": "{locale, select, cs {The Czech article disappears from the public site. Its drafts and revisions are kept; the English version is not changed.} en {The English article disappears from the public site. Its drafts and revisions are kept; the Czech version is not changed.} other {The article disappears from the public site.}}",
+    "confirmArchiveTitle": "Archive this post?",
+    "confirmArchiveBody": "The post disappears from the public site in both languages and active schedules are cancelled. You can restore it from the archive later.",
+    "confirmUnarchiveTitle": "Restore this post from the archive?",
+    "confirmUnarchiveBody": "Published language versions become public again.",
+    "confirmDuplicateTitle": "Duplicate this post?",
+    "confirmDuplicateBody": "A new unpublished post is created from the current drafts of both languages."
+  },
+  "new": {
+    "metaTitle": "New post",
+    "title": "New post",
+    "lead": "Choose the language you are writing in and a working title. The post is saved as a private draft.",
+    "failed": "The post could not be created",
+    "languageLabel": "Content language",
+    "languageHint": "This is the language of the post itself. The interface stays in {ui}.",
+    "czechHint": "Primary language of the website.",
+    "englishHint": "An English post can be published without a Czech version.",
+    "titleLabel": "Title ({language})",
+    "titleHint": "You can change it later; the address (slug) is suggested from it.",
+    "titleRequired": "Enter a title.",
+    "creating": "Creating draft…",
+    "cancel": "Cancel",
+    "submit": "{locale, select, cs {Create Czech draft} en {Create English draft} other {Create draft}}"
+  },
+  "missing": {
+    "failed": "The translation could not be added",
+    "title": "{locale, select, cs {There is no Czech version yet} en {There is no English version yet} other {This translation does not exist yet}}",
+    "body": "{locale, select, cs {Adding it creates an empty Czech draft. Nothing is copied or translated automatically, and nothing is published.} en {Adding it creates an empty English draft. Nothing is copied or translated automatically, and nothing is published.} other {Adding it creates an empty draft.}}",
+    "add": "{locale, select, cs {Add Czech translation} en {Add English translation} other {Add translation}}",
+    "adding": "Adding…",
+    "back": "{locale, select, cs {Back to the Czech version} en {Back to the English version} other {Go back}}"
+  },
+  "editor": {
+    "metaTitle": "Edit post",
+    "heading": "Edit post",
+    "untitled": "Untitled post",
+    "tabs": {
+      "label": "Content languages",
+      "add": "{locale, select, cs {Add Czech translation} en {Add English translation} other {Add translation}}",
+      "addHint": "A new translation starts as an empty draft; nothing is copied or machine-translated."
+    },
+    "archived": {
+      "title": "This post is archived",
+      "body": "It is hidden from the public site in both languages and cannot be edited. Restore it from the archive to continue."
+    },
+    "conflict": {
+      "title": "{locale, select, cs {Someone else saved the Czech version in the meantime} en {Someone else saved the English version in the meantime} other {Someone else saved this version in the meantime}}",
+      "body": "Your changes were NOT saved and are still in the editor. Autosave is paused. Review the newer version, then either load it (your unsaved changes are discarded) or overwrite it with your version.",
+      "server": "Newer version: “{title}”, saved by {author}, {time}.",
+      "reload": "Load latest version (discard mine)",
+      "review": "Preview newer version",
+      "overwrite": "Overwrite with my version"
+    },
+    "save": {
+      "dirty": "Unsaved changes",
+      "saving": "Saving…",
+      "saved": "Draft saved {time}",
+      "failed": "Save failed",
+      "conflict": "Version conflict – not saved",
+      "invalid": "Draft cannot be saved – fix the highlighted fields",
+      "clean": "Last saved draft: {time}",
+      "cleanNew": "No changes yet",
+      "retry": "Try again",
+      "keptInMemory": "Your text is kept in this editor; nothing was published. Try again, or copy important text before leaving."
+    },
+    "notices": {
+      "reloadFailed": "The latest version could not be loaded. Your text is unchanged.",
+      "overwritten": "{locale, select, cs {Your Czech version was saved over the newer draft.} en {Your English version was saved over the newer draft.} other {Your version was saved.}}",
+      "actionFailed": "The action failed",
+      "published": "{locale, select, cs {Czech version published} en {English version published} other {Version published}}",
+      "openLive": "Open live article {path}",
+      "publishFailed": "{locale, select, cs {The Czech version was not published} en {The English version was not published} other {Not published}}",
+      "unpublished": "{locale, select, cs {The Czech version is no longer public} en {The English version is no longer public} other {Version unpublished}}",
+      "scheduled": "{locale, select, cs {Czech publication scheduled} en {English publication scheduled} other {Publication scheduled}}",
+      "scheduleFailed": "{locale, select, cs {The Czech publication was not scheduled} en {The English publication was not scheduled} other {Not scheduled}}",
+      "scheduleCancelled": "{locale, select, cs {Scheduled Czech publication cancelled; the live version is unchanged} en {Scheduled English publication cancelled; the live version is unchanged} other {Schedule cancelled}}",
+      "reapproved": "{locale, select, cs {Czech schedule re-approved} en {English schedule re-approved} other {Schedule re-approved}}",
+      "restored": "{locale, select, cs {Revision restored into the Czech draft. The live version is unchanged until you publish.} en {Revision restored into the English draft. The live version is unchanged until you publish.} other {Revision restored into the draft.}}",
+      "archived": "Post archived",
+      "unarchived": "Post restored from the archive"
+    },
+    "confirm": {
+      "unpublishTitle": "{locale, select, cs {Unpublish the Czech version?} en {Unpublish the English version?} other {Unpublish?}}",
+      "unpublishBody": "{locale, select, cs {The Czech article disappears from the public site. Drafts and revisions stay; the English version is not changed.} en {The English article disappears from the public site. Drafts and revisions stay; the Czech version is not changed.} other {The article disappears from the public site.}}",
+      "cancelScheduleTitle": "{locale, select, cs {Cancel the scheduled Czech publication?} en {Cancel the scheduled English publication?} other {Cancel the schedule?}}",
+      "cancelScheduleBody": "{locale, select, cs {Nothing is published at the scheduled time. The current live Czech version (if any) stays exactly as it is.} en {Nothing is published at the scheduled time. The current live English version (if any) stays exactly as it is.} other {Nothing is published at the scheduled time.}}",
+      "cancelScheduleConfirm": "Cancel schedule",
+      "restoreTitle": "{locale, select, cs {Restore this revision into the Czech draft?} en {Restore this revision into the English draft?} other {Restore this revision?}}",
+      "restoreBody": "The revision saved by {author} ({time}) becomes a new draft. The live version changes only when you publish.",
+      "restoreConfirm": "Restore to draft",
+      "restoreDiscards": "Your unsaved changes in the editor will be replaced.",
+      "archiveTitle": "Archive this post?",
+      "archiveBody": "The post disappears from the public site in both languages and active schedules are cancelled. It can be restored later.",
+      "overwriteTitle": "{locale, select, cs {Overwrite the newer Czech draft?} en {Overwrite the newer English draft?} other {Overwrite the newer draft?}}",
+      "overwriteBody": "Your version replaces the newer draft saved by someone else. Their revision stays in the history and can be restored."
+    },
+    "actions": {
+      "save": "{locale, select, cs {Save Czech draft} en {Save English draft} other {Save draft}}",
+      "preview": "{locale, select, cs {Preview Czech} en {Preview English} other {Preview version}}",
+      "publish": "{locale, select, cs {Publish Czech} en {Publish English} other {Publish version}}",
+      "update": "{locale, select, cs {Update Czech} en {Update English} other {Update version}}",
+      "unpublish": "{locale, select, cs {Unpublish Czech} en {Unpublish English} other {Unpublish version}}",
+      "archive": "Archive post",
+      "unarchive": "Restore from archive"
+    },
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "Post title",
+      "body": "{locale, select, cs {Text (Czech)} en {Text (English)} other {Text}}",
+      "slug": "Address (slug)",
+      "slugHint": "Public address: {path}. Lowercase letters without diacritics, digits and hyphens.",
+      "slugFromTitle": "Generate from title",
+      "slugRedirect": "After publication the old address /{old} redirects to the new one.",
+      "slugFixed": "fixed for core pages",
+      "excerpt": "Excerpt",
+      "excerptHint": "Short summary for the news list and search results. Required for publication.",
+      "excerptHintPage": "Optional short summary used for search results.",
+      "author": "Author label",
+      "authorHint": "Shown publicly. Use an approved name, never an e-mail address or account ID.",
+      "seoTitle": "SEO title",
+      "seoTitleHint": "Leave empty to use the post title.",
+      "seoDescription": "SEO description",
+      "counter": "{count} / {max}"
+    },
+    "panel": {
+      "label": "Document and publication",
+      "publication": "Publication",
+      "live": "Live version",
+      "notLive": "Not public",
+      "publishedAt": "Last published",
+      "changes": "Draft",
+      "hasChanges": "Contains unpublished changes",
+      "noChanges": "Same as the live version",
+      "neverPublished": "Never published",
+      "autosaveNote": "Drafts are saved automatically a few seconds after you stop typing. Autosave never publishes.",
+      "schedule": "Schedule",
+      "document": "Document",
+      "cover": "Cover image",
+      "taxonomy": "Category, tags and game",
+      "seo": "Search engines (SEO)",
+      "revisions": "Revision history",
+      "danger": "Archive"
+    },
+    "cover": {
+      "hint": "The cover appears in the news list and above the article. Insert images inside the text with the image button in the toolbar.",
+      "none": "No cover image",
+      "change": "Change cover",
+      "choose": "Choose cover",
+      "remove": "Remove cover",
+      "alt": "{locale, select, cs {Cover alternative text (Czech)} en {Cover alternative text (English)} other {Cover alternative text}}",
+      "decorative": "Decorative image (no alternative text)",
+      "caption": "{locale, select, cs {Cover caption (Czech)} en {Cover caption (English)} other {Cover caption}}",
+      "pickerTitle": "Choose cover image"
+    },
+    "images": {
+      "pickerTitle": "Insert image into the text"
+    },
+    "taxonomy": {
+      "shared": "Category, tags and game apply to the whole post (both languages). Their labels are shown in each language.",
+      "category": "Category",
+      "noCategory": "No category",
+      "tags": "Tags",
+      "noTags": "No tags are defined yet.",
+      "game": "Game",
+      "noGame": "No specific game"
+    },
+    "archive": {
+      "hint": "Archiving hides the post in both languages and cancels schedules. It can be restored."
+    }
+  },
+  "schedule": {
+    "states": {
+      "pending": "Scheduled",
+      "claimed": "Publishing now",
+      "blocked": "Blocked",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "failed": "Failed"
+    },
+    "overdue": "Overdue",
+    "dueAt": "Publishes at",
+    "zone": "Time zone",
+    "issuer": "Scheduled by",
+    "liveStays": "{locale, select, cs {The current live Czech version stays public until then.} en {The current live English version stays public until then.} other {The live version stays public until then.}}",
+    "privateUntilDue": "{locale, select, cs {The Czech version stays private until then.} en {The English version stays private until then.} other {The version stays private until then.}}",
+    "blockedTitle": "Re-approval required",
+    "blockedBody": "The scheduling person's publishing rights could not be confirmed, or publication failed. It will not run until someone with publishing rights re-approves it.",
+    "stalledTitle": "Publisher runner is not running",
+    "stalledBody": "Due publications are waiting because the scheduled publisher has not completed recently. Nothing is published until the operator fixes it.",
+    "reapprove": "{locale, select, cs {Re-approve Czech schedule} en {Re-approve English schedule} other {Re-approve}}",
+    "cancel": "{locale, select, cs {Cancel Czech schedule} en {Cancel English schedule} other {Cancel schedule}}",
+    "working": "Working…",
+    "intro": "{locale, select, cs {Schedule publication of the last saved Czech draft.} en {Schedule publication of the last saved English draft.} other {Schedule publication of the last saved draft.}}",
+    "introUpdate": "{locale, select, cs {Schedule an update of the live Czech article with the last saved draft. The current live version stays visible until then.} en {Schedule an update of the live English article with the last saved draft. The current live version stays visible until then.} other {Schedule an update with the last saved draft.}}",
+    "date": "Date",
+    "time": "Time",
+    "zoneLabel": "Time zone",
+    "ambiguousLabel": "This time occurs twice (end of daylight saving time)",
+    "ambiguousHint": "Choose which occurrence you mean.",
+    "occurrenceEarlier": "First occurrence ({offset}, summer time)",
+    "occurrenceLater": "Second occurrence ({offset}, winter time)",
+    "resolved": "{locale, select, cs {The Czech version will be published on {when} ({offset}), which is {utc} UTC.} en {The English version will be published on {when} ({offset}), which is {utc} UTC.} other {Publishes on {when} ({offset}), {utc} UTC.}}",
+    "submit": "{locale, select, cs {Schedule Czech publication} en {Schedule English publication} other {Schedule publication}}",
+    "submitUpdate": "{locale, select, cs {Schedule Czech update} en {Schedule English update} other {Schedule update}}",
+    "errors": {
+      "required": "Enter a date and time.",
+      "invalid": "Enter a valid date and time.",
+      "invalid_time_zone": "Choose a valid time zone.",
+      "nonexistent": "This time does not exist in the selected time zone (clocks move forward). Choose another time.",
+      "past": "The publication time must be in the future."
+    }
+  },
+  "revisions": {
+    "empty": "No saved revisions yet.",
+    "listLabel": "{locale, select, cs {Czech revisions} en {English revisions} other {Revision history}}",
+    "kinds": {
+      "autosave": "Autosave",
+      "save": "Saved",
+      "restore": "Restored",
+      "seed": "Initial content"
+    },
+    "currentDraft": "Current draft",
+    "live": "Live",
+    "scheduled": "Scheduled",
+    "byline": "{author} · {time}",
+    "unknownAuthor": "Unknown author",
+    "untitled": "(untitled)",
+    "preview": "Preview",
+    "restore": "Restore to draft"
+  },
+  "preview": {
+    "metaTitle": "Unpublished preview",
+    "noCategory": "News",
+    "untitled": "(untitled)",
+    "firstPublished": "Published {date}",
+    "notPublished": "Not published yet",
+    "tags": "Tags",
+    "bannerLabel": "Preview notice",
+    "banner": "UNPUBLISHED PREVIEW",
+    "bannerBody": "{locale, select, cs {Private preview of the Czech version, visible only to authorized editors.} en {Private preview of the English version, visible only to authorized editors.} other {Private preview, visible only to authorized editors.}}",
+    "draftRevision": "Showing the current saved draft.",
+    "olderRevision": "Showing an older saved revision.",
+    "backToEditor": "Back to editor",
+    "openLive": "Open live version"
+  },
+  "pages": {
+    "metaTitle": "Pages",
+    "editMetaTitle": "Edit page",
+    "eyebrow": "Administration",
+    "title": "Pages",
+    "lead": "Core website pages. Both Czech and English versions are required for launch and are published independently.",
+    "editTitle": "Page: {page}",
+    "caption": "Core pages with Czech and English publication states",
+    "missingTitle": "Some core pages are missing",
+    "missingBody": "Not found: {pages}. Run the production seed to create them.",
+    "columns": {
+      "page": "Page"
+    },
+    "keys": {
+      "clan": "Clan",
+      "community": "Community",
+      "privacy": "Privacy"
+    }
+  },
+  "fieldErrors": {
+    "titleRequired": "Enter a title before publishing.",
+    "slugInvalid": "Use lowercase letters without diacritics, digits and single hyphens (for example tournament-results).",
+    "slugTaken": "This address is already used by another post in this language.",
+    "excerptRequired": "Write an excerpt before publishing.",
+    "bodyRequired": "Write the article text before publishing.",
+    "bodyInvalid": "The text contains unsupported content. Remove it and try again.",
+    "bodyImageAlt": "An image in the text has no alternative text. Add it or mark the image as decorative.",
+    "bodyImagesMissing": "An image in the text is no longer available in the media library. Replace or remove it.",
+    "coverAltRequired": "Add alternative text for the cover, or mark it as decorative.",
+    "coverAltDecorative": "A decorative cover must have empty alternative text.",
+    "coverMissing": "The cover image is no longer available. Choose another cover.",
+    "taxonomyUnknown": "The selected category or tag no longer exists.",
+    "scheduleNotInFuture": "The publication time must be in the future.",
+    "scheduleNonexistent": "This time does not exist in the selected time zone.",
+    "tooLong": "The text is too long.",
+    "invalid": "Check this field."
+  }
+}

@@ -6,10 +6,11 @@ import { routing } from '@/i18n/routing';
 import { denialCode } from '@/modules/access/policy';
 import { getActor } from '@/modules/access/server';
 import { recordAdminDenial } from '@/modules/auth/admin-guard';
+import { AdminNav } from '@/components/admin/admin-nav';
+import styles from '@/components/admin/admin.module.css';
 import { permittedAdminModules } from '@/modules/auth/admin-modules';
 import { AccessDeniedPanel } from '@/modules/auth/ui/access-denied';
 import { AdminSignInRedirect } from '@/modules/auth/ui/admin-sign-in-redirect';
-import styles from '@/modules/auth/ui/auth.module.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,36 +44,33 @@ export default async function AdminLayout({ children, params }: LayoutProps<'/[l
   const t = await getTranslations({ locale, namespace: 'admin.shell' });
   const tModules = await getTranslations({ locale, namespace: 'admin.overview.modules' });
   const modules = permittedAdminModules(actor);
+  // Quiet static admin chrome: module navigation (permitted modules only) + account links.
   return (
-    <div className={styles.adminShell}>
-      <header className={styles.adminBar}>
-        <a className={styles.adminBrand} href={`/${locale}/admin`}>
+    <div className={styles.shell} data-admin-shell="">
+      <header className={styles.bar}>
+        <a className={styles.brand} href={`/${locale}/admin`}>
+          <span aria-hidden="true">{'//'}</span>
           {t('title')}
         </a>
-        <nav aria-label={t('navLabel')} className={styles.adminNav} data-testid="admin-nav">
-          <ul>
-            <li>
-              <a href={`/${locale}/admin`}>{t('overview')}</a>
-            </li>
-            {modules.map((module) => (
-              <li key={module.key}>
-                <a href={`/${locale}${module.path}`}>{tModules(`${module.key}.title`)}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <nav aria-label={t('account')} className={styles.adminNav}>
-          <ul>
-            <li>
-              <a href={`/${locale}/account`}>{t('account')}</a>
-            </li>
-            <li>
-              <a href={`/${locale}`}>{t('website')}</a>
-            </li>
-          </ul>
-        </nav>
+        <AdminNav
+          label={t('navLabel')}
+          testId="admin-nav"
+          items={[
+            { key: 'overview', href: '/admin', label: t('overview') },
+            ...modules.map((module) => ({ key: module.key, href: module.path, label: tModules(`${module.key}.title`) })),
+          ]}
+        />
+        <div className={styles.barEnd}>
+          <AdminNav
+            label={t('account')}
+            items={[
+              { key: 'account', href: '/account', label: t('account') },
+              { key: 'website', href: '/', label: t('website') },
+            ]}
+          />
+        </div>
       </header>
-      <main id="main-content" tabIndex={-1} className={styles.adminMain}>
+      <main id="main-content" tabIndex={-1} className={styles.main}>
         {children}
       </main>
     </div>
