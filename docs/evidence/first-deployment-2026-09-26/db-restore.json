@@ -1,0 +1,127 @@
+[
+  {
+    "table": "drizzle.__drizzle_migrations",
+    "rows": 1,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.asset",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.audit_event",
+    "rows": 6,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.auth_account",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.auth_rate_limit",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.auth_session",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.auth_two_factor",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.auth_user",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.auth_verification",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.content_document",
+    "rows": 3,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.content_revision",
+    "rows": 6,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.content_translation",
+    "rows": 6,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.guild_membership",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.local_admin_grant",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.match",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.match_result",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.match_round",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.member_profile",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.prose_revision",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.prose_translation",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.publication_schedule",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.role_mapping_version",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.site_setting",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.slug_redirect",
+    "rows": 0,
+    "checksumEqual": true
+  },
+  {
+    "table": "public.taxonomy_term",
+    "rows": 4,
+    "checksumEqual": true
+  }
+]
