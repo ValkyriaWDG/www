@@ -1,0 +1,66 @@
+name: Service incident
+description: Record a non-security service disruption and track evidenced restoration.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for a non-security incident. Report what is known now; restoration proof is completed by the responder later, not required from the reporter.
+        Security-sensitive incidents, credentials, exploit details and private member data belong in the private process in SECURITY.md, never this public issue.
+        The responder follows docs/engineering/evidence.md and adds proof to this incident and any remediation PR before closure.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Affected behavior and impact
+      description: Affected public feature or environment, observed symptoms and scope of impact. Do not identify private users or publish infrastructure secrets; mark unknown details explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Detection and incident timeline
+      description: Record known start/detection times with timezone, affected revision if known, and the source of each observation. Unknown is acceptable; do not invent precise timestamps.
+      placeholder: |
+        Detected at (UTC or explicit timezone):
+        Estimated start, if known:
+        Affected revision/environment:
+        Observations so far:
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Available incident evidence
+      description: Optional at intake. Sanitized reproduction, health/readiness checks, errors, or real UI captures with captions and accessible links. State expected versus observed behavior.
+    validations:
+      required: false
+  - type: textarea
+    id: response
+    attributes:
+      label: Response already attempted
+      description: Known mitigation attempts, timestamps and outcomes, or None. Reporting an incident does not authorize deployment, rollback or unrelated production actions.
+    validations:
+      required: false
+  - type: textarea
+    id: restoration_evidence
+    attributes:
+      label: Restoration and closure evidence - responder completes later
+      description: Leave pending at intake. Before closure, add actual evidence here or in a resolution comment on this incident, and on every remediation PR. The owner authorizes these task-scoped evidence updates/comments, not unrelated notifications or operational actions.
+      value: |
+        Pending response; restoration proof is not required from the reporter.
+
+        - Root cause or current findings; distinguish confirmed facts from unknowns:
+        - Remediation/mitigation performed and timestamps with timezone:
+        - Tested/deployed commit SHA or immutable image digest, plus environment; UI context includes route, browser/version and viewport:
+        - Restoration timestamp and how it was established:
+        - Verification window, reproduction/check steps, expected behavior and observed results:
+        - Reviewable restoration evidence links with captions explaining what each proves:
+        - Real desktop/mobile application captures for relevant UI symptoms; or Screenshots: N/A with a reason and meaningful alternate proof:
+        - Related remediation PR(s), their current-revision CI evidence and the revision actually restored; or PR: N/A with a reason for operational-only remediation:
+        - Remaining limitations, recurrence risk, and linked follow-ups with owners:
+
+        - [ ] Restoration is demonstrated by real checks, not inferred from a merge or restart.
+        - [ ] Captioned proof is available on this incident and related remediation PR(s).
+        - [ ] Outstanding prevention work has explicit follow-ups; unresolved restoration remains open.
+        - [ ] Public evidence contains no sensitive security details, credentials or private data.
+    validations:
+      required: false

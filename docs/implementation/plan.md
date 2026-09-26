@@ -11,6 +11,9 @@ Each numbered step maps to a GitHub issue; see [backlog](github-backlog.md).
    build and no-secrets development defaults. Establish `@valkyria/web` workspace name.
    Acceptance: install/build from clean Linux checkout, app and image start, liveness and
    readiness contract, CI application job actually runs. No fake tests/no-op scripts.
+   Configure meaningful browser screenshots/reports and sanitized CI artifact delivery
+   with stated retention. Attach selected proof to the PR; artifact generation alone
+   does not fulfill the [evidence policy](../engineering/evidence.md).
 2. **Wardogs visual system and menu.** Build tokens, tabs, panels, table, CTA, modal and
    persistent media controller. Central faded Valkyria emblem. Compare screenshots at the
    specified viewports, test keyboard, pause, reduced motion and no-video state. Complete
@@ -73,6 +76,8 @@ to land an incomplete scaffold. Add image startup/readiness and scan evidence in
 ## Working method
 
 Use task branches and focused PRs. Prefer a vertical slice with meaningful tests, then
-extend; document acceptance evidence in the PR and `docs/STATUS.md`. If context ends,
+extend; document acceptance evidence in the PR, related issue/incident and `docs/STATUS.md`.
+Include captioned real screenshots when applicable and verify accessible proof before
+any completion or automatic closure. If context ends,
 leave a precise checkpoint and next command. Do not mark a milestone finished because
 only its mock/UI layer exists. Missing external credentials do not block unrelated work.

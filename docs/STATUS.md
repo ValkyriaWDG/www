@@ -16,6 +16,9 @@ Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
 - Eight committed [agent skills](engineering/skills.md), task continuity and FE/BE/auth,
   database migration, GitHub, verification and release procedures for cloud development.
   Foundation CI validates skill structure and runs its positive/negative fixtures.
+- [Evidence and closure policy](engineering/evidence.md): feature/fix proof, captioned
+  real screenshots when applicable, issue/incident acceptance summaries and accessible
+  artifacts before completion; corresponding PR and issue templates.
 
 ## Not implemented
 
@@ -32,6 +35,7 @@ or verified by the inventory.
 | `node --test scripts/tests/*.test.mjs` | Passed: six tests covering valid/invalid skills and accepted/mismatched/missing release revisions |
 | Project skill validation | All eight skills passed the skill-creator schema validator; native Claude Cloud discovery has not been run in a cloud session |
 | Independent skill scenarios | Reviewed scheduled publication with revoked authority and stale CI; release with changed main and incompatible migration; foundation-only release readiness |
+| Evidence/closure scenario review | Reviewed missing UI upload and stale CI, backend-only screenshot N/A, and incident with unverified production recovery; no application or incident was executed/closed |
 | Publisher revision guard | Required expected SHA and execution before registry login/push verified locally; no publication dispatched |
 | `node scripts/check-commit-attribution.mjs` | Passed against current history |
 | `pnpm install --frozen-lockfile --ignore-scripts` | Passed for dependency-free foundation workspace |

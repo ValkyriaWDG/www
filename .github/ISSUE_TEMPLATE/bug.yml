@@ -2,16 +2,52 @@ name: Bug report
 description: Report reproducible non-security behavior.
 labels: ["type:bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Report the problem as observed; post-fix proof is not required to open a bug.
+        Before closing it, the resolving agent must document the fix with current evidence on this issue and its PR, following docs/engineering/evidence.md.
+        Use SECURITY.md and GitHub private vulnerability reporting for security-sensitive incidents, credentials or exploit details. Do not place them in this public form.
   - type: textarea
     id: behavior
     attributes:
       label: Expected and actual behavior
+      description: Describe the affected behavior and impact. Keep private identities and credentials out of the report.
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
       label: Steps, revision and environment
-      description: Include browser/viewport and sanitized evidence; no secrets.
+      description: Include reproducible steps, affected revision if known, environment, and browser/version/viewport for UI. Unknown details may be marked unknown; do not guess.
     validations:
       required: true
+  - type: textarea
+    id: observed_evidence
+    attributes:
+      label: Evidence of the reported problem
+      description: Optional at intake. Attach sanitized logs or real screenshots with captions stating what they demonstrate. Include relevant desktop/mobile views if available; no private data or credentials.
+    validations:
+      required: false
+  - type: textarea
+    id: resolution_evidence
+    attributes:
+      label: Fix evidence - resolver completes before closure
+      description: Leave pending at report time. The resolving agent fills this section or adds a resolution-evidence comment to this issue and the related PR. The owner authorizes these task-scoped evidence updates, not unrelated notifications or operational changes.
+      value: |
+        Pending fix; the reporter is not required to provide post-fix proof.
+
+        - Root cause and resulting corrected behavior:
+        - Tested commit SHA and environment; UI context includes route, browser/version and viewport:
+        - Original reproduction and post-fix steps or commands:
+        - Expected result and actual observed result:
+        - Reviewable evidence links with captions explaining the demonstrated fix:
+        - Real application screenshots of relevant desktop/mobile corrected states, with before/after when available; or Screenshots: N/A with a reason and meaningful alternate proof:
+        - Regression coverage, related PR and matching CI run:
+        - Remaining limitations and follow-up issues:
+
+        - [ ] The original reproduction no longer fails, backed by current evidence.
+        - [ ] Proof is available on this issue and the related PR before closure.
+        - [ ] Unresolved scope remains open; artifacts contain no sensitive information.
+    validations:
+      required: false

@@ -13,6 +13,10 @@ task execution and resume; route specialist work through
 skill description. If this cloud client does not expose skill commands, open the
 corresponding `SKILL.md` directly and follow it. No global installation is required.
 
+Delivery includes [feature/fix proof and captioned screenshots when applicable](docs/engineering/evidence.md)
+in the PR and in related issues/incidents before closure. A local image path or an
+unexplained passing check is not reviewable proof; incomplete evidence leaves acceptance open.
+
 Use `.claude/settings.json` attribution settings. Do not append AI co-author,
 generated-by or session-link footers. Do not relax permissions or install global
 hooks to bypass the environment. Build from committed inputs and explicit task access.

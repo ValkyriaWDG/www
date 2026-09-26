@@ -65,6 +65,16 @@ also run the actual lint, typecheck, unit/integration, browser and image checks 
 in [verification](docs/implementation/verification.md). Never replace them with no-op
 scripts or label skipped checks as passing.
 
+Every PR needs feature/fix proof with reproducible steps, expected/observed results,
+tested revision/environment and reviewable artifacts. Attach real, captioned
+screenshots when the change is visual; otherwise explain screenshot N/A and provide
+appropriate alternative proof. Follow [the evidence policy](docs/engineering/evidence.md).
+Before resolving an issue/incident or using an automatic closing keyword, add its
+acceptance/recovery summary and applicable screenshots/links there as well. Missing
+or inaccessible proof keeps acceptance open. The owner's standing request authorizes
+these task-scoped evidence updates/comments; it does not authorize unrelated messaging
+or expand merge, release or production scope.
+
 Record exact commands, results, remaining limitations and the next task in
 `docs/STATUS.md`. Keep documentation short and operational; no transcripts, praise,
 invented results or duplicated policy. Finish the assigned milestone and hand over

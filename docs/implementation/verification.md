@@ -2,6 +2,8 @@
 
 Foundation check proves file hygiene, JSON parsing, local links and asset digests. It
 does not prove application behavior. All requirements below are for the implementation.
+Deliver the resulting [proof and applicable captioned screenshots](../engineering/evidence.md)
+in the PR and related issue/incident before closure; local files alone do not fulfill delivery.
 
 | Area | Required evidence |
 |---|---|

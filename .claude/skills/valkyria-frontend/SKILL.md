@@ -26,3 +26,8 @@ Apply the [working agreement](../../../AGENTS.md) and inspect [current status](.
 Use actual available checks from the [verification matrix](../../../docs/implementation/verification.md), not invented passing scripts. Capture deterministic desktop/mobile screenshots for a visual change, including the relevant keyboard or failure state. For video changes, inspect network requests under reduced motion/data saving; paused playback alone does not prove no download.
 
 Report changed behavior, routes, screenshot paths, commands/results and concrete limitations. Update the scoped status/checkpoint. Missing final video or live OAuth is recorded separately from tested fallback/adapter behavior; do not wait for those inputs to finish independent UI work.
+
+Attach selected real screenshots with descriptive captions and tested browser/viewport,
+environment/revision to the PR and related issue/incident acceptance summary. Follow
+[the evidence policy](../../../docs/engineering/evidence.md); local paths alone do
+not count as delivered screenshots, and unavailable capture/upload blocks visual acceptance.

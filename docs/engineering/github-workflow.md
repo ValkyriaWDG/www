@@ -19,7 +19,8 @@ permission to execute every available operation.
 | Create local commits | Follow the requested delivery and configured identity |
 | Push a task branch, create/update its PR | When scoped GitHub delivery is authorized; otherwise prepare a local draft |
 | Create/edit/close issues or change labels/milestones | Only when issue management is in scope |
-| Post comments, request reviews, notify people | Requires communication authorization |
+| Update assigned PR/issue/incident with acceptance proof | Owner-requested task-scoped evidence updates/comments; follow the evidence policy |
+| Post unrelated comments, request reviews, notify people | Requires separate communication authorization |
 | Merge implementation PR, enable auto-merge, publish tag/release/image, deploy | Separate explicit scope; ordinary implementation delivery stops at a reviewable PR |
 | Change protection, repository settings or credentials | Requires that administration task; never a workaround for failed delivery |
 
@@ -68,7 +69,8 @@ tracked source, then use
 For a requested new issue, first search duplicates with
 `gh issue list --repo "$REPO" --state all --search "$ISSUE_TITLE"`, then use
 `gh issue create --repo "$REPO" --title "$ISSUE_TITLE" --body-file "$ISSUE_BODY_FILE"`.
-Do not automatically assign people or post a comment alongside the edit.
+Do not automatically assign people or post a redundant comment alongside the edit.
+Use the owner's standing evidence instruction for scoped acceptance updates/comments.
 
 ## Branches, delegation and checkpoints
 
@@ -171,7 +173,7 @@ Explicit `--head` prevents the CLI from interactively pushing or forking. For an
 existing PR, use
 `gh pr edit "$PR_NUMBER" --repo "$REPO" --title "$PR_TITLE" --body-file "$PR_BODY_FILE"`
 only within authorized PR delivery. If the cloud integration already created the
-PR, inspect that one. Do not request reviews/comments as an unrequested side effect.
+PR, inspect that one. Do not request reviews or unrelated comments as a side effect.
 Mark a draft ready only when its acceptance is met and that transition is in scope;
 otherwise explain remaining items.
 
@@ -180,6 +182,14 @@ issue and its evidence: GitHub closes it after merge into the default branch.
 Code written, PR opened or foundation CI passing does not complete an issue. Keep
 live acceptance open when only mocks ran. A code-only subtask can close independently
 only if that was its stated scope.
+
+Follow [the evidence policy](evidence.md): attach feature/fix proof with captions and
+real screenshots when applicable to the PR and the related issue/incident before
+completion. Verify the uploaded artifacts are accessible, and record a justified N/A
+with alternate proof for nonvisual work. Add the issue's acceptance/recovery summary
+before a closing keyword can take effect. Missing or expired proof is incomplete
+acceptance, even when CI is green. This is a delivery requirement; foundation CI does
+not automatically validate the contents of remote screenshots or closure comments.
 
 ## CI evidence for the current revision
 

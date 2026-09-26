@@ -59,6 +59,12 @@ results do not replace keyboard/focus checks or imply certification.
 
 ## Review and report
 
+Use [the evidence policy](evidence.md) for PR proof, screenshot applicability/captions,
+artifact delivery and issue/incident acceptance before closure. A local capture must
+be attached or linked in a reviewable form; include explicit alternative proof for
+nonvisual changes. Record incident recovery in the affected environment, not only a
+successful local regression test.
+
 Review the whole diff including configuration and generated migrations. Record
 findings with file/line, triggering input, consequence and a suggested correction.
 Check public-file hygiene and asset provenance. Keep critical auth, data-loss and
