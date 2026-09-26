@@ -71,6 +71,19 @@ function valuesEqual(a: MemberValues, b: MemberValues) {
   );
 }
 
+/** Three-way merge: fields still equal to the old base take the fresh server value. */
+function mergeValues(user: MemberValues, oldBase: MemberValues, fresh: MemberValues): MemberValues {
+  const media = (value: MediaRef | null) => value?.assetId.toLowerCase() ?? null;
+  return {
+    displayName: user.displayName !== oldBase.displayName ? user.displayName : fresh.displayName,
+    slug: user.slug !== oldBase.slug ? user.slug : fresh.slug,
+    sortOrder: user.sortOrder !== oldBase.sortOrder ? user.sortOrder : fresh.sortOrder,
+    games: sameList(user.games, oldBase.games) ? fresh.games : user.games,
+    roles: sameList(user.roles, oldBase.roles) ? fresh.roles : user.roles,
+    avatar: media(user.avatar) !== media(oldBase.avatar) ? user.avatar : fresh.avatar,
+  };
+}
+
 function ordered<T extends string>(all: readonly T[], selected: T[]): T[] {
   return all.filter((item) => selected.includes(item));
 }
@@ -117,10 +130,10 @@ export function MemberEditor({ uiLocale, initial, canPublish, created }: { uiLoc
 
   const apply = (next: AdminMemberView, resetForm: boolean) => {
     setServer(next);
-    if (resetForm || !dirty) {
-      const fresh = valuesFrom(next);
-      setValues({ ...fresh, avatar: fresh.avatar && values.avatar && fresh.avatar.assetId === values.avatar.assetId ? values.avatar : fresh.avatar });
-    }
+    const fresh = valuesFrom(next);
+    const freshWithMedia = { ...fresh, avatar: fresh.avatar && values.avatar && fresh.avatar.assetId === values.avatar.assetId ? values.avatar : fresh.avatar };
+    // Untouched fields follow the newer server version; edited fields keep the user's value.
+    setValues(resetForm ? freshWithMedia : mergeValues(values, baseline, freshWithMedia));
     setErrors({});
   };
 

@@ -222,7 +222,16 @@ export function SettingsForm({ uiLocale, initial, defaults, allowedOrigins, fall
     const result = await loadSettingsAction();
     setPending(null);
     if (!result.ok) return fail(result);
-    // Newer stored versions become the base; the entered values stay for review.
+    // Newer stored versions become the base; settings the user edited keep the entered values,
+    // untouched ones follow the newly saved values (so another administrator's change is not reverted).
+    const fresh = valuesFrom(result.data);
+    const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+    const linkData = (links: LinkValues[]) => links.map(({ kind, label, url }) => [kind, label, url]);
+    setValues((current) => ({
+      discordInviteUrl: current.discordInviteUrl === baseline.discordInviteUrl ? fresh.discordInviteUrl : current.discordInviteUrl,
+      links: same(linkData(current.links), linkData(baseline.links)) ? fresh.links : current.links,
+      background: same(current.background, baseline.background) ? fresh.background : current.background,
+    }));
     setStored(result.data);
     setNotice({ kind: 'info', text: t('reloadedNotice') });
   };

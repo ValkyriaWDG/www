@@ -43,6 +43,8 @@ import {
   factsFrom,
   type FactsValues,
   MAX_VOD_ROWS,
+  mergeFacts,
+  mergeFlat,
   newVodKey,
   outcomeForScores,
   parseCount,
@@ -150,18 +152,17 @@ export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEdi
 
   /** Applies a fresh server snapshot: saved groups and untouched groups follow the server; dirty groups keep their values. */
   const applySnapshot = (next: AdminMatch, saved: Group[]) => {
-    const keep = { facts: factsDirty && !saved.includes('facts'), schedule: scheduleDirty && !saved.includes('schedule'), result: resultDirty && !saved.includes('result') };
     setServer(next);
-    if (!keep.facts) {
-      const fresh = factsFrom(next);
-      setFacts({ ...fresh, opponentLogo: keepMedia(fresh.opponentLogo, facts.opponentLogo), cover: keepMedia(fresh.cover, facts.cover) });
-      setRounds(roundsFrom(next));
-    }
-    if (!keep.schedule) setSchedule(scheduleFrom(next));
-    if (!keep.result) {
-      setResult(resultFrom(next));
-      if (saved.includes('result')) setRounds(roundsFrom(next));
-    }
+    const freshFacts = factsFrom(next);
+    const fresh = { ...freshFacts, opponentLogo: keepMedia(freshFacts.opponentLogo, facts.opponentLogo), cover: keepMedia(freshFacts.cover, facts.cover) };
+    // Saved groups follow the server; elsewhere untouched fields follow it and edited fields are kept.
+    setFacts(saved.includes('facts') ? fresh : mergeFacts(facts, factsBase, fresh));
+    const roundsSaved = saved.includes('facts') || saved.includes('result');
+    setRounds(roundsSaved || roundsEqual(rounds, roundsBase) ? roundsFrom(next) : rounds);
+    const freshSchedule = scheduleFrom(next);
+    setSchedule(saved.includes('schedule') ? freshSchedule : mergeFlat(schedule, scheduleBase, freshSchedule));
+    const freshResult = resultFrom(next);
+    setResult(saved.includes('result') ? freshResult : mergeFlat(result, resultBase, freshResult));
     setErrors({});
   };
 

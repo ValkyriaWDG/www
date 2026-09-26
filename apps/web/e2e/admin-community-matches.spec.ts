@@ -222,6 +222,40 @@ test('an unknown result stays “—” and never becomes 0:0', async ({ browser
   } else note(`${path} is not part of this build; the admin list shows “—” for the unknown result.`);
 });
 
+test('a stale save shows a conflict, keeps the entered values and never reverts the other change', async ({ browser }) => {
+  const suffix = uniqueSuffix();
+  const context = await browser.newContext();
+  await signInAs(context, { roles: ['match_manager'] });
+  const draft = (await matchBySlug('ukazka-wardogs-koncept'))!;
+  const first = await context.newPage();
+  const second = await context.newPage();
+  await first.goto(`/en/admin/matches/${draft.id}`);
+  await second.goto(`/en/admin/matches/${draft.id}`);
+  const season = (page: Page) => page.getByRole('textbox', { name: /^Season/ });
+  const competition = (page: Page) => page.getByRole('textbox', { name: /^Competition name/ });
+
+  await season(first).fill(`Season A ${suffix}`);
+  await first.locator('[data-action="save"]').click();
+  await expect(first.getByText('Changes saved.')).toBeVisible();
+
+  await competition(second).fill(`Cup B ${suffix}`);
+  await second.locator('[data-action="save"]').click();
+  await expect(second.getByText('Changed by someone else')).toBeVisible();
+  await expect(competition(second)).toHaveValue(`Cup B ${suffix}`);
+  const afterConflict = await e2eDb().query<{ season: string | null; competition_name: string | null }>('select season, competition_name from match where id = $1', [draft.id]);
+  expect(afterConflict.rows[0]).toMatchObject({ season: `Season A ${suffix}` });
+  expect(afterConflict.rows[0]!.competition_name).not.toBe(`Cup B ${suffix}`);
+
+  await second.getByRole('button', { name: 'Load latest version (keep my values)' }).click();
+  await expect(season(second)).toHaveValue(`Season A ${suffix}`);
+  await expect(competition(second)).toHaveValue(`Cup B ${suffix}`);
+  await second.locator('[data-action="save"]').click();
+  await expect(second.getByText('Changes saved.')).toBeVisible();
+  const merged = await e2eDb().query('select season, competition_name from match where id = $1', [draft.id]);
+  expect(merged.rows[0]).toEqual({ season: `Season A ${suffix}`, competition_name: `Cup B ${suffix}` });
+  await context.close();
+});
+
 test('client and server validation: DST gap, required fields and localized messages', async ({ browser }) => {
   const context = await browser.newContext();
   await signInAs(context, { roles: ['match_manager'] });

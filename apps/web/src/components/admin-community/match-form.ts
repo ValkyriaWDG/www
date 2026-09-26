@@ -181,6 +181,32 @@ export function factsEqual(a: FactsValues, b: FactsValues): boolean {
   );
 }
 
+function factValue(values: FactsValues, key: keyof FactsValues): unknown {
+  const value = values[key];
+  if (key === 'vodLinks') return (value as VodLinkValues[]).map((link) => [link.label, link.url]);
+  if (key === 'opponentLogo' || key === 'cover') return (value as MediaRef | null)?.assetId.toLowerCase() ?? null;
+  return value;
+}
+
+/**
+ * Three-way merge after loading a newer server version: fields the user did not touch
+ * (still equal to the old base) take the newer server value; edited fields keep the
+ * user's value. Nobody else's change is silently reverted by a later save.
+ */
+export function mergeFacts(user: FactsValues, oldBase: FactsValues, fresh: FactsValues): FactsValues {
+  const merged = { ...fresh };
+  for (const key of Object.keys(fresh) as (keyof FactsValues)[]) {
+    if (JSON.stringify(factValue(user, key)) !== JSON.stringify(factValue(oldBase, key))) (merged as Record<string, unknown>)[key] = user[key];
+  }
+  return merged;
+}
+
+export function mergeFlat<T extends Record<string, unknown>>(user: T, oldBase: T, fresh: T): T {
+  const merged = { ...fresh };
+  for (const key of Object.keys(fresh) as (keyof T)[]) if (user[key] !== oldBase[key]) merged[key] = user[key];
+  return merged;
+}
+
 export function roundsEqual(a: RoundValues[], b: RoundValues[]): boolean {
   const fields = ['mapName', 'mode', 'side', 'scoreValkyria', 'scoreOpponent', 'outcome'] as const;
   return a.length === b.length && a.every((round, index) => fields.every((field) => round[field] === b[index]![field]));

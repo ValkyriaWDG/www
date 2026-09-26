@@ -9,6 +9,8 @@ import {
   emptyFacts,
   factsEqual,
   factsFrom,
+  mergeFacts,
+  mergeFlat,
   parseCount,
   resolveSchedule,
   roundsInput,
@@ -71,6 +73,16 @@ describe('match form values', () => {
     const edited = { ...baseline, opponentName: 'Synthetic Wolves II', bestOf: '' };
     expect(buildUpdatePatch(edited, baseline)).toEqual({ opponentName: 'Synthetic Wolves II', bestOf: null });
     expect(buildUpdatePatch(baseline, baseline)).toEqual({});
+  });
+
+  it('merges a newer server version without reverting fields the user did not touch', () => {
+    const oldBase = factsFrom(baseMatch);
+    const user = { ...oldBase, competitionName: 'Mine' };
+    const fresh = { ...factsFrom(baseMatch), season: 'Theirs', competitionName: 'Theirs too' };
+    const merged = mergeFacts(user, oldBase, fresh);
+    expect(merged.season).toBe('Theirs');
+    expect(merged.competitionName).toBe('Mine');
+    expect(mergeFlat({ a: '1', b: 'x' }, { a: '1', b: '2' }, { a: '9', b: '3' })).toEqual({ a: '9', b: 'x' });
   });
 
   it('builds a create payload with an explicit zone and drops blank VOD rows', () => {
