@@ -1,4 +1,5 @@
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import styles from './home.module.css';
 
@@ -19,7 +20,7 @@ export async function NextMatchStrip({ match }: { match: NextMatch | null }) {
   const start = new Date(match.startsAt);
   if (Number.isNaN(start.getTime())) return null;
   const t = await getTranslations('home.nextMatch');
-  const format = await getFormatter();
+  const locale = await getLocale();
   return (
     <Link href={match.href} className={styles.nextMatch} data-next-match="">
       <span className={styles.nextLabel}>{t('label')}</span>
@@ -29,7 +30,7 @@ export async function NextMatchStrip({ match }: { match: NextMatch | null }) {
           {t(`game.${match.game}`)}
           {match.competition ? ` · ${match.competition}` : ''}
           {' · '}
-          <time dateTime={start.toISOString()}>{format.dateTime(start, 'weekdayDateTime')}</time>
+          <time dateTime={start.toISOString()}>{formatDate(start, locale, 'weekdayDateTime')}</time>
         </span>
       </span>
     </Link>
