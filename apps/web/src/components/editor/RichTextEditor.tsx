@@ -193,6 +193,9 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
       aria-label={label}
       title={shortcut ? `${label} (${shortcut})` : label}
       disabled={disabled || isDisabled}
+      // A mouse press keeps focus and selection in the text, so typing right after a click
+      // lands in the editor; keyboard activation still moves focus back via `focus()`.
+      onMouseDown={keepEditorFocus}
       onClick={onClick}
     >
       <ToolIcon name={name} />
@@ -260,6 +263,11 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
       </div>
     </div>
   );
+}
+
+/** Mouse presses on editor controls must not move focus out of the text. */
+function keepEditorFocus(event: { preventDefault: () => void }) {
+  event.preventDefault();
 }
 
 function LinkPanel({ editor, onClose }: { editor: Editor; onClose: () => void }) {
@@ -365,7 +373,7 @@ function LinkPanel({ editor, onClose }: { editor: Editor; onClose: () => void })
 function TableToolbar({ editor }: { editor: Editor }) {
   const t = useTranslations('editor.table');
   const action = (label: string, command: () => boolean) => (
-    <button type="button" className={styles.tableButton} onClick={() => command()}>
+    <button type="button" className={styles.tableButton} onMouseDown={keepEditorFocus} onClick={() => command()}>
       {label}
     </button>
   );
