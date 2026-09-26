@@ -85,30 +85,6 @@ jobs:
       - run: pnpm test:unit
       - run: pnpm test:integration
       - run: pnpm build
-      - run: pnpm --filter @valkyria/web exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
-      - name: Cold mobile page-weight and Web Vitals budgets
-        run: node scripts/release/measure-pages.mjs
-      - name: Upload page budget samples and synthetic screenshots
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: page-budgets-${{ github.sha }}
-          path: |
-            .local/release-hardening/pages/report.json
-            .local/release-hardening/pages/page-*.png
-          if-no-files-found: warn
-          retention-days: 90
-      - name: Upload browser report and screenshots
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: playwright-report-${{ github.sha }}
-          path: |
-            apps/web/playwright-report
-            apps/web/test-results
-          if-no-files-found: ignore
-          retention-days: 14
       - name: Build image without publishing
         run: docker build --file apps/web/Dockerfile --build-arg SOURCE_REVISION=${{ github.sha }} --tag valkyria-web:ci .
       - name: Build comparison runtime from identical application inputs
@@ -174,6 +150,30 @@ jobs:
           name: sbom-${{ github.sha }}
           path: sbom/valkyria-web.cdx.json
           retention-days: 90
+      - run: pnpm --filter @valkyria/web exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Cold mobile page-weight and Web Vitals budgets
+        run: node scripts/release/measure-pages.mjs
+      - name: Upload page budget samples and synthetic screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: page-budgets-${{ github.sha }}
+          path: |
+            .local/release-hardening/pages/report.json
+            .local/release-hardening/pages/page-*.png
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Upload browser report and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report-${{ github.sha }}
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+          if-no-files-found: ignore
+          retention-days: 14
 
   quality:
     name: Quality gate

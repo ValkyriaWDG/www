@@ -8,6 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rehearsalDiagnostic } from './rehearsal-diagnostics.mjs';
 import { waitForFixtureDatabase } from './fixture-readiness.mjs';
+import { containerHttp } from './container-http.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(readFileSync(new URL('./runtime-policy.json', import.meta.url), 'utf8'));
@@ -165,8 +166,6 @@ async function start(image, name, database = dbName) {
     container,
     '--network',
     network,
-    '--publish',
-    '127.0.0.1::3000',
     '--read-only',
     '--tmpfs',
     '/tmp',
@@ -181,15 +180,10 @@ async function start(image, name, database = dbName) {
     ...runtimeEnv(database),
     image,
   ]);
-  const binding = docker(['port', container, '3000/tcp']);
-  assert.match(binding, /^127\.0\.0\.1:\d+$/);
-  const url = `http://${binding}`;
   let ready;
   for (let attempt = 0; attempt < 60; attempt++) {
     try {
-      const response = await fetch(`${url}/api/health/ready`, {
-        signal: AbortSignal.timeout(4000),
-      });
+      const response = await containerHttp(docker, container, '/api/health/ready', { timeoutMs: 4000 });
       if (response.ok) {
         ready = await response.json();
         break;
@@ -199,7 +193,7 @@ async function start(image, name, database = dbName) {
   }
   assert.equal(ready?.status, 'ready');
   assert(Object.values(ready.checks).every((value) => value === 'ok'));
-  return { container, url, readiness: ready };
+  return { container, readiness: ready };
 }
 function stop(app) {
   docker(['rm', '-f', app.container]);
@@ -208,15 +202,15 @@ function stop(app) {
 async function serveProof(app) {
   const pages = [];
   for (const route of ['/cs', '/en', '/cs/news', '/cs/news/ukazka-obrazky-tabulka-a-odkazy']) {
-    const response = await fetch(app.url + route, { signal: AbortSignal.timeout(15000) });
+    const response = await containerHttp(docker, app.container, route, { timeoutMs: 15000 });
     assert.equal(response.status, 200);
     const text = await response.text();
     assert(text.includes('<main'));
     if (route.endsWith('ukazka-obrazky-tabulka-a-odkazy')) assert(text.includes('Ukázka'));
     pages.push({ route, status: response.status });
   }
-  const media = await fetch(app.url + '/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full', {
-    signal: AbortSignal.timeout(15000),
+  const media = await containerHttp(docker, app.container, '/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full', {
+    timeoutMs: 15000,
   });
   assert.equal(media.status, 200);
   assert.match(media.headers.get('content-type'), /^image\/webp/);
@@ -402,11 +396,11 @@ try {
         if (name === 'trixie') {
           docker(['network', 'disconnect', network, postgres]);
           try {
-            const live = await fetch(app.url + '/api/health/live', {
-              signal: AbortSignal.timeout(5000),
+            const live = await containerHttp(docker, app.container, '/api/health/live', {
+              timeoutMs: 5000,
             });
-            const ready = await fetch(app.url + '/api/health/ready', {
-              signal: AbortSignal.timeout(8000),
+            const ready = await containerHttp(docker, app.container, '/api/health/ready', {
+              timeoutMs: 8000,
             });
             assert.equal(live.status, 200);
             assert.equal(ready.status, 503);
@@ -416,7 +410,7 @@ try {
           let recovered = false;
           for (let i = 0; i < 30; i++) {
             if (
-              (await fetch(app.url + '/api/health/ready', { signal: AbortSignal.timeout(8000) })).ok
+              (await containerHttp(docker, app.container, '/api/health/ready', { timeoutMs: 8000 })).ok
             ) {
               recovered = true;
               break;

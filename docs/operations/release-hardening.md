@@ -103,7 +103,8 @@ accepting the runtime change. A scanner's unavailable database is a failed check
 The rehearsal accepts only local `valkyria-web:*` build tags and a local Docker endpoint.
 It creates uniquely named containers, an internal network, PostgreSQL 17 on tmpfs with
 no published database port, and two disposable volumes. It never accepts an operator's
-database URL or mounts persistent host data. Application ports bind to loopback only.
+database URL or mounts persistent host data. HTTP probes run inside the application
+containers through their own Node runtime; no application ports are published.
 It removes its own resources in `finally`; cleanup failure fails the check.
 
 The runner:
