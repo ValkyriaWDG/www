@@ -4,17 +4,22 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
- * The verified 2026-09-26 Wardogs menu delivery (manifest `assets/background-media.json`,
- * owner PR #20). Binaries are third-party imagery delivered outside Git into the ignored
+ * The verified full-length 2026-09-26 Wardogs menu delivery (manifest
+ * `assets/background-media.json` at ValkyriaWDG/www#20 ff4adbd). Every rendition keeps the
+ * whole available source sequence (5,774 frames at 30 fps, ~192.47 s, no audio). Binaries
+ * are third-party imagery delivered outside Git into the ignored
  * `apps/web/public/media/background/` directory; they are never committed. Each filename
  * carries the first 12 hex digits of its SHA-256, which the checks below enforce.
  */
 export const BACKGROUND_DELIVERY = {
-  mp4: 'wardogs-menu-1080p-557223e28449.mp4',
-  compactMp4: 'wardogs-menu-720p-4976aeadb297.mp4',
-  webm: 'wardogs-menu-1080p-865e3f2e8b52.webm',
-  poster: 'wardogs-menu-poster-64b3059d7225.webp',
+  mp4: 'wardogs-menu-full-1080p-619b27261fc9.mp4',
+  compactMp4: 'wardogs-menu-full-720p-040c3de21de3.mp4',
+  webm: 'wardogs-menu-full-1080p-b7aa9380dd06.webm',
+  poster: 'wardogs-menu-full-poster-f31f6824f259.webp',
 } as const;
+
+/** Container duration recorded in the manifest for every rendition. */
+export const DELIVERY_DURATION_SECONDS = 192.466;
 
 export const MEDIA_PATH_PREFIX = '/media/background/';
 export const MEDIA_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../public/media/background');

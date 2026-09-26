@@ -19,9 +19,11 @@ pointers start poster-only and attach no video source until the visitor presses 
 
 Delivered binaries are third-party game imagery. They are never committed:
 `apps/web/public/media/background/` is ignored by Git and excluded from the Docker build
-context. The 2026-09-26 delivery (manifest `assets/background-media.json`, delivery record
-`assets/background-media-delivery.json`, both added by ValkyriaWDG/www#20) contains a
-1080p WebM, 1080p and 720p MP4 files and a WebP poster, each named with its SHA-256 prefix.
+context. The full-length 2026-09-26 delivery (manifest `assets/background-media.json`,
+delivery record `assets/background-media-delivery.json`, both from ValkyriaWDG/www#20)
+keeps the whole available sequence (5,774 frames at 30 fps, ~192.47 s, no audio) in a
+1080p WebM, 1080p and 720p MP4 files, plus a WebP poster (frame at 2 s). Each file is
+named with its SHA-256 prefix. It supersedes the earlier 15-second candidate.
 
 For a local or cloud preview:
 
@@ -39,16 +41,20 @@ For a local or cloud preview:
 `pnpm build && DATABASE_URL=<disposable postgres> pnpm test:e2e:media` runs
 `apps/web/playwright.media.config.ts` against the standalone build and the delivered files.
 It fails when a file is missing or its digest differs from its filename. It checks served
-bytes, MIME types, byte ranges and caching; decoding, time advancement and three loops;
-the poster; one player across public navigation and static admin routes; manual pause,
+bytes, MIME types, byte ranges and caching; middle and near-end seeks of every rendition
+the browser can decode; one uninterrupted pass from the start through the natural wrap at
+rate 1 (about 3.2 minutes) with the video layer kept visible through rebuffering; overlay
+order; the poster; one player across public navigation and static admin routes; manual pause,
 reload and resume; hidden-tab pause; rejected media; and zero video requests before an
 explicit opt-in under reduced motion, Save-Data and mobile defaults. Measurements and
 Czech/English screenshots go to ignored `.local/evidence/background-media/`.
 
 The default `pnpm test:e2e` suite deliberately keeps a missing video URL to prove the
 fallbacks; it is not evidence of real playback. CI has no media binaries and does not run
-the media suite. Playwright's Chromium has no H.264 decoder, so it plays the WebM; check
-MP4 playback separately in a browser with H.264 support (Chrome, Safari or Edge).
+the media suite. Playwright's Chromium has no H.264 decoder, so it plays the WebM and the
+MP4 renditions report `MEDIA_ERR_SRC_NOT_SUPPORTED`; check MP4 playback separately in a
+browser with H.264 support (Chrome, Safari or Edge). Software decoding in small containers
+drops frames and stalls; those measurements describe the test host, not visitor devices.
 
 ## Production delivery
 
