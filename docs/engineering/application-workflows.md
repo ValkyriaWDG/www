@@ -35,9 +35,10 @@ this guide grants no additional external access. Follow the assigned scope and
 
 Read the target route in the [screen map](../design/screen-map.md), the applicable
 [visual spec](../design/visual-spec.md), and its real reference image. Inspect current
-layouts/components before introducing primitives. Public navigation is English-only
-and includes primary `NEWS`; preserve `HLL WEBSITE` on desktop/mobile. Keep the
-Wardogs composition, supplied faded emblem and accessible web semantics together.
+layouts/components before introducing primitives. Follow the [localization contract](../product/localization.md):
+Czech-first `cs` / `en` public/account/admin UI, with localized primary News and HLL
+links on desktop/mobile. Code, documentation, AI prompts and GitHub descriptions stay
+English. Keep the Wardogs composition, supplied faded emblem and accessible web semantics together.
 
 Use App Router's persistent public layout for the backdrop. Keep content/navigation
 usable before media arrives. Server components own data rendering; client components
@@ -47,11 +48,17 @@ database/auth internals or the rich editor bundle into public page components.
 ### Work sequence
 
 1. Implement route metadata, heading and a meaningful initial/empty state with the
-   shared shell. Preserve direct URLs, reload and browser back/forward.
+   shared shell in both locales. Prefix UI routes with `/cs` / `/en`, preserve English
+   system segments, and keep auth API/health/static paths unprefixed. Bare `/` always
+   returns HTTP 307 to `/cs`; use the URL locale, with no browser-language or cookie
+   detection. Unsupported explicit locales return 404. Preserve direct URLs, reload
+   and browser back/forward; use the canonical next-intl configuration at bootstrap.
 2. Add the needed interaction and relevant pending/error states without hiding the
    only action behind hover. Make focus, names/labels and keyboard order deliberate.
 3. Build the responsive composition at desktop and narrow widths. Avoid fixed-height
-   clipping, nested scroll traps and content-wide overflow; test long names/articles.
+   clipping, nested scroll traps and content-wide overflow; test long names/articles
+   and Czech diacritics. Provide Czech/UK flags with Čeština/English, CS/EN, current state
+   and accessible keyboard/focus controls; flags alone cannot express the choice.
 4. For forms, connect validation, mutation and returned state. UI permissions are a
    convenience; the server must separately protect every private operation.
 5. Inspect actual browser output before accepting or propagating a component pattern.
@@ -62,21 +69,32 @@ draft autosave, revision history, private preview and explicit publication. Test
 nontechnical author's complete task, not merely whether the editor mounts. Publishing
 and media permissions follow their domain; a content editor is not a match manager.
 
+Keep interface language distinct from the selected Czech/English content translation.
+Drafts, revisions, previews and publication are independent per translation. Guard
+both kinds of locale switch when unsaved work exists; never cross-save or auto-translate.
+Resolve published counterpart slugs by entity identity and preserve safe filters.
+Missing article translations switch to the target-language list with a localized
+notice and safe source-language link; core static pages need both translations at
+launch, while absent biographies/recaps have explicit localized absence states.
+Set HTML language/metadata from the route and format dates with `cs-CZ` / `en-GB`
+in `Europe/Prague`, preserving the underlying instant.
+
 ### Required evidence for affected behavior
 
 | Change | Meaningful verification |
 |---|---|
-| Menu/layout | Deterministic desktop/mobile captures compared to the relevant reference; no central marketing block or cropped controls |
+| Menu/layout | Deterministic Czech/English desktop/mobile captures compared to the relevant reference; no central marketing block, clipped Czech glyphs or cropped controls |
 | Navigation/list/detail | Direct URL, refresh, back/filter state, focused link, empty/error and long-name states |
+| Locale routing/switcher | Root always 307 to `/cs`, no browser/cookie negotiation, unsupported locale 404, API/static exemption, flag+text keyboard switch, entity/filter continuity and missing-translation behavior |
 | Media controller | Missing video, rejected autoplay, pause persistence, hidden tab; verify no video request under reduced-motion/save-data |
-| Rich editor | Format + image/cover → save/reload → preview → publish; autosave/revision restore leaves live output unchanged |
+| Rich editor | Format + image/cover → save/reload → preview → publish in each content locale; autosave/revision restore leaves live output and the other locale unchanged; dirty switch guard |
 | Schedule controls | Explicit timezone, cancellation, overdue/blocked state and real server outcome rather than a cosmetic datetime input |
 | Forms | Validation, pending, success, failure, stale edit and permission/session loss; no false saved confirmation |
 | Accessibility | Keyboard sequence/focus, names and headings, measured contrast, reduced motion, zoom and mobile overflow |
 
 Use the [specified capture sizes](../design/visual-spec.md#12-visual-acceptance-evidence)
 and deterministic approved/synthetic media. Record browser, viewport, revision and
-media state. Browser automation or a screenshot path must refer to a real launched
+media state and both UI/content locale when relevant. Browser automation or a screenshot path must refer to a real launched
 application. Automated accessibility output complements manual interaction; it is
 not a certification. Missing final video limits fidelity evidence, not completion of
 the independent fallback and layout work.
@@ -111,6 +129,11 @@ with private fields removed ad hoc in the browser.
 - News/blog is one collection. Draft autosave/restore creates draft state only; live
   body and metadata come from the published revision. Scheduled updates target one
   immutable saved revision and leave the existing public revision visible until applied.
+- Publication, revisions, slug redirects, SEO and schedules are scoped to the content
+  locale as defined by [localization](../product/localization.md). A locale switch cannot
+  reveal another translation's draft. Only published counterparts produce alternate
+  links; language is never an authorization grant. Cache/query keys must preserve this
+  separation without duplicating the shared member/match identity or event instant.
 - Validate supported rich-text nodes, marks, attributes and URLs server-side. A safe
   toolbar alone does not make a posted JSON document safe to render.
 - Editorial image uploads require actual decoded-type/size/pixel checks, safe derivatives,
@@ -138,6 +161,10 @@ scheduling, prove due/cancel/reschedule/retry, timezone/DST and revoked issuer b
 including the separate local-admin delegation case. Use synthetic data and mock external
 services at their adapters. A unit test that mocks away the publication query cannot
 prove publication filtering in PostgreSQL.
+
+Include independent Czech/English publication, missing published counterpart and
+locale-scoped cache/metadata cases when those boundaries change. Switching interface
+locale must not alter authorizations or publish the other content translation.
 
 ## Authentication
 

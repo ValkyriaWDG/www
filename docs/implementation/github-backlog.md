@@ -1,6 +1,8 @@
 # GitHub backlog
 
 Application implementation has not started. Follow the ordered [implementation plan](plan.md).
+All UI work follows [Czech-first bilingual localization](../product/localization.md)
+and [evidence before closure](../engineering/evidence.md). Issue/PR prose stays English.
 
 | Order | Issue | Milestone |
 |---|---|---|

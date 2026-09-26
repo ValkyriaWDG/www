@@ -95,6 +95,9 @@ CSP, trusted-proxy handling and no-store policies for login/admin traffic. The o
   expansion so image rollback is possible; roll forward or restore deliberately if not.
 - Start only this site's service using the reviewed Compose/config. Check liveness,
   readiness, migrations, logs, public rendering and authentication/authorization.
+- Verify default Czech and explicit English routes, the language switcher, per-locale
+  published content/metadata and safe localized login returns. Auth callbacks and health
+  endpoints remain unprefixed; do not add a locale to the configured application origin.
 - Publish approved media separately and verify MIME, byte ranges, cache policy and
   fallback. Verify Discord invite and production callback with an authorized test user.
 - Record revision, digest, migration IDs, evidence and rollback decision.

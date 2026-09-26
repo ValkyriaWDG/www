@@ -8,6 +8,10 @@ workspaces for the web app, database package and integration contracts. A Discor
 worker is a later independent runtime only if gateway role events are needed.
 See [ADR 0001](decisions/0001-modular-web.md).
 
+The product is Czech-first with English support (`cs` and `en`); engineering prose,
+code identifiers, agent prompts and GitHub material stay English. The canonical
+[localization contract](../product/localization.md) owns routing and translation behavior.
+
 Version policy: Node 24 LTS; resolve a supported stable Next.js/React/Better Auth/
 Drizzle combination when implementation begins, consult official documentation and
 pin exact dependencies and lockfile. Do not use prerelease auth packages or assume
@@ -35,6 +39,7 @@ flowchart LR
 | `apps/web/src/modules/matches` | Match/result use cases and later roster coordination |
 | `apps/web/src/modules/auth` | Better Auth integration and session handling |
 | `apps/web/src/modules/access` | Central policy engine and Discord-role adapter |
+| `apps/web/src/i18n` | Validated locale routing, Czech/English UI dictionaries and locale formatting |
 | `packages/db` | Schema, reviewed migrations and server-side repositories |
 | `packages/contracts` | Runtime-validated integration messages and public DTO schemas |
 | `apps/discord-worker` | Reserved role-event adapter; no bot functionality in this scaffold |
@@ -47,13 +52,33 @@ consumer actually needs it; do not add a generic abstraction framework.
 
 ## Rendering and data
 
+Public and admin UI live under explicit `/cs` and `/en` prefixes with English logical
+path suffixes: for example `/cs/news`, `/en/news` and `/cs/admin/news`. `/` redirects
+deterministically with HTTP 307 to `/cs`. The URL is the locale source; do not add a
+language cookie or automatic browser-language negotiation. `/api/*`, including auth
+callbacks and health endpoints, plus robots/sitemap/static assets stay outside locale
+routing. In the proposed pinned `next-intl` bootstrap configuration, disable
+`localeDetection`, `localeCookie` and automatic `alternateLinks`; emit CMS counterpart
+links only after published-translation lookup. Verify the selected version's API when
+implementing this contract. The foundation does not yet install an i18n dependency.
+
 Public pages use server rendering with explicit publication filters; cache only
-public projections and invalidate after publish/unpublish. Authenticated and admin
+public projections and invalidate after publish/unpublish. Content identity, requested
+locale and published revision belong in public data/cache keys; list/search/taxonomy
+caches also need locale. Cross-language shared facts remain one record. Authenticated and admin
 responses are private/no-store. Never cache a permission decision across identities.
 The persistent shell preserves the video element across normal route navigation,
 while the URL, title, accessible heading, focus and history remain real web navigation.
 Prefer server components; use client components for interactive menu, filters, forms
 and video preferences. Do not fetch all members or private rosters into the browser.
+
+Resolve language-switch links by entity identity and available published translation,
+not string replacement of paths. A missing English article switches to `/en/news`
+with a localized notice/source-language link; direct absent/unpublished translations
+return 404. Canonical/hreflang/OG and any sitemap/feed include only eligible published
+locale variants. Optional member biographies/match recaps may show an explicit absence
+label and a link to published source-language prose; shared facts stay readable when
+the owning entity's global publication/consent gate permits it.
 
 Use PostgreSQL in development and integration tests; SQLite is not a substitute for
 authorization/migration testing. A Docker Compose development database is disposable
@@ -70,11 +95,17 @@ to the old site. Store media references and metadata, not video bytes, in Postgr
 Use a WordPress-like visual editor based on Tiptap/ProseMirror with schema-versioned
 JSON as canonical content. Validate the node/mark/attribute allowlist server-side and
 render safe public HTML without loading the editor bundle. No arbitrary MDX/JavaScript
-or raw HTML execution. Separate draft/published revisions; autosave never changes live content.
+or raw HTML execution. Use one news/page entity with independent Czech/English
+`ContentTranslation` draft/live revisions and slugs. Autosave never changes either
+language's live content; translation and publication are explicit, never automatic.
+Snapshot title/body/SEO, effective taxonomy labels and image alt/caption in the exact
+locale's immutable revision so mutable global metadata cannot leak into live output.
 Provide a scoped image media library with validated uploads and private draft delivery;
 store runtime bytes in persistent media storage, not Git or the app image. Implement
 a durable idempotent scheduled-publication CLI backed by PostgreSQL and an operator
-minute timer. See [editorial and match requirements](../product/editorial-and-matches.md).
+minute timer. Each scheduled intent, authorization check, audit event and cache
+invalidation targets the exact translation/locale/revision. See
+[editorial and match requirements](../product/editorial-and-matches.md).
 
 ## Integration and delivery
 
@@ -98,4 +129,6 @@ the app has no public host port and no Docker socket. See the
 - No initial video fetch with reduced-motion/save-data policy; background media failure harmless.
 - Liveness separate from database readiness; structured redacted logs and request IDs.
 - UTC storage for all dates; display match time with an explicit time zone.
+- Czech-default and English UI, including CMS states; both translations for core static
+  pages at launch and no cross-locale draft, metadata or media leakage.
 - Backups + restore verification before first production schema migration.

@@ -5,7 +5,8 @@ Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
 ## Prepared
 
 - Public repository structure, contribution/security/ownership files and agent instructions.
-- English-only product brief for `valkyriawdg.cz`.
+- Czech-first bilingual product brief for `valkyriawdg.cz`, with Czech/English flag
+  switching and localized UI/CMS contracts; code, docs and AI prompts remain English.
 - Detailed game-menu visual specification, screen map, 13 reference captures and exact logo.
 - Architecture, domain model, Discord/local-admin access contract and release plan.
 - Legacy site research and read-only local Wardogs media inventory.
@@ -36,6 +37,7 @@ or verified by the inventory.
 | Project skill validation | All eight skills passed the skill-creator schema validator; native Claude Cloud discovery has not been run in a cloud session |
 | Independent skill scenarios | Reviewed scheduled publication with revoked authority and stale CI; release with changed main and incompatible migration; foundation-only release readiness |
 | Evidence/closure scenario review | Reviewed missing UI upload and stale CI, backend-only screenshot N/A, and incident with unverified production recovery; no application or incident was executed/closed |
+| Bilingual contract scenario review | Reviewed deterministic Czech entry with an English browser, English admin return after login, independent translated drafts/schedules/media and missing UI keys versus optional prose; clarified cross-locale metadata invalidation. Documentation review only; no bilingual app was run |
 | Publisher revision guard | Required expected SHA and execution before registry login/push verified locally; no publication dispatched |
 | `node scripts/check-commit-attribution.mjs` | Passed against current history |
 | `pnpm install --frozen-lockfile --ignore-scripts` | Passed for dependency-free foundation workspace |

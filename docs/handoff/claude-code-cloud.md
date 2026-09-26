@@ -7,8 +7,11 @@ reviewable application. Do not spend the task merely producing another plan.
 
 ## 1. Fixed decisions
 
-- **Language:** English only, including public pages, administration, validation,
-  errors and accessible labels. Preserve member display-name spelling. No locale switcher.
+- **Website language:** Czech (`cs`) is primary/default; English (`en`) is available
+  through a Czech/UK flag switcher with CS/EN text and accessible language names.
+  Public/admin UI, validation, errors and labels are localized. Preserve member names.
+- **Engineering language:** English for code, comments, docs, GitHub descriptions and
+  AI prompts; translation dictionaries and published content use their target language.
 - **Canonical production domain:** `https://valkyriawdg.cz`. Keep dev/preview origins configurable.
 - **Identity:** Valkyria, a Czech/Slovak clan with HLL history and an increasing Wardogs focus.
 - **Visual direction:** closely recreate the Wardogs main-menu composition shown in
@@ -27,7 +30,7 @@ reviewable application. Do not spend the task merely producing another plan.
 - **Login:** Discord primary; optionally enabled, provisioned local admin recovery with MFA.
   Website access rights derive from explicit Discord role mapping and server-side policy,
   never from a successful login alone.
-- **Stack:** modular Next.js/React/TypeScript application, PostgreSQL, Drizzle, Better Auth,
+- **Stack:** modular Next.js/React/TypeScript application with next-intl, PostgreSQL, Drizzle, Better Auth,
   pnpm workspaces, CSS variables/modules, Vitest and Playwright. Container deployment.
 - **Source/license:** public GitHub repository, existing Apache-2.0 code license retained;
   branding/reference imagery has separate provenance and is not relicensed as code.
@@ -38,6 +41,8 @@ Read `AGENTS.md`, `README.md`, `docs/STATUS.md`, then:
 
 1. [Product brief](../product/brief.md).
    Read the mandatory [editorial and match workflows](../product/editorial-and-matches.md).
+   Read [localization](../product/localization.md) for default Czech, routes/switcher,
+   independent language publication, missing-translation behavior and bilingual SEO.
 2. [Architecture](../architecture/overview.md), [ADR](../architecture/decisions/0001-modular-web.md)
    and [data model](../architecture/data-model.md).
 3. [Visual spec](../design/visual-spec.md) and [screen map](../design/screen-map.md).
@@ -96,6 +101,9 @@ schema/migration foundation and server-only module boundaries. Add real route/er
 states, liveness/readiness and the production Docker build contract. Keep the active
 foundation checks and enable real application CI by adding `apps/web/package.json`.
 Every required check must execute meaningful work; no placeholder passing scripts.
+Establish typed English message keys, complete `cs`/`en` dictionaries and explicit
+locale-aware routing during bootstrap. Keep auth callbacks, APIs and health routes
+unprefixed. Bare `/` redirects to `/cs`; browser language cannot override the URL.
 Keep project skills and engineering guides current as real scripts replace planned
 contracts. Run the foundation skill checks and their tests alongside application CI.
 
@@ -123,6 +131,11 @@ Implement `/`, `/clan`, `/members`, `/members/[slug]`, `/matches`, `/matches/[sl
 screen map. All pages have correct metadata, headings, direct links, back behavior,
 loading/empty/error states and meaningful mobile layouts.
 
+Those UI paths are logical suffixes under `/cs` and `/en`, including account and
+administration. Use the locale-aware navigation helpers and safe content-identity
+mapping for translated slugs. Render localized metadata and published-only alternates;
+complete both core static-page translations before release.
+
 Member/match screens should use the references' compact list/detail treatment.
 Keep historical HLL results distinct from Wardogs; unknown results are not `0:0`.
 Only approved facts may be published. The verified Discord invite is advertised by
@@ -149,7 +162,7 @@ Local admin login is provisioned and disabled by default. No public password sig
 no first-user-admin rule and no OAuth linking that bypasses MFA. Do not equate hiding
 an admin button with protecting its endpoint. Add audit records with redaction.
 
-Build efficient English admin screens for pages/news, public member profiles,
+Build efficient Czech/English admin screens for pages/news, public member profiles,
 matches/results, settings and permitted audit inspection. Include preview/publish and
 unpublish flows, input validation and useful error handling. Theme administration with
 the same visual system while prioritizing readable forms and reliable workflows.
@@ -161,6 +174,9 @@ draft autosave, revision restore, private preview and durable scheduled publishi
 Implement validated scoped uploads with persistent storage. Creating/publishing fixtures,
 entering results and rich-text match recaps are required now; only lineups/availability
 remain in M4. Verify the full author-create-preview-publish and fixture-to-result journeys.
+Separate interface locale from edited content locale. Draft/live revisions, schedules,
+slugs and media text belong to an explicit translation; publishing Czech never implicitly
+publishes English. Prove missing translations cannot leak drafts or cached private data.
 
 ### E. Complete delivery evidence
 
@@ -181,6 +197,8 @@ part of the assigned run, leave them explicitly scheduled, not half-implemented 
 
 - A clean cloud/Linux checkout can install, run, test and build the app from documented commands.
 - Main menu visibly follows the supplied reference and uses the supplied clan logo.
+- Czech defaults, English switching, localized UI/errors/editor and published content
+  work at direct URLs and mobile widths, with captioned evidence in both languages.
 - Every in-scope public/admin route works with realistic empty, error and long-content states.
 - No private content or mutation is accessible without the correct server-side capability.
 - Media absence and Discord outage produce deliberate, accessible states.

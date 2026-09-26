@@ -1,6 +1,6 @@
 # Valkyria
 
-English-language community website for **Valkyria**, built around a Wardogs-inspired
+Czech-first bilingual community website for **Valkyria**, built around a Wardogs-inspired
 game-menu experience and the clan's Hell Let Loose heritage.
 
 **Target domain:** `valkyriawdg.cz` · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
@@ -25,7 +25,10 @@ game-menu experience and the clan's Hell Let Loose heritage.
 A cinematic backdrop with a faded Valkyria crest, compact top navigation, amber
 selection states and sharp translucent panels. Public pages cover the clan, members,
 news, matches/results and Discord. Authorized administrators manage content; match
-availability and rosters are a later milestone. The entire interface is English-only.
+availability and rosters are a later milestone. Public and admin UI support Czech
+(default) and English with a visible Czech/UK flag language switcher. Code, technical
+documentation, GitHub descriptions and AI prompts stay English. See
+[the localization contract](docs/product/localization.md).
 
 News/blog includes WordPress-like rich-text editing, image management, drafts/revisions,
 preview and publishing. Admin match creation, scheduling and result entry belong to the
