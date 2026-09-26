@@ -131,7 +131,8 @@ service is updated by the operator; a mutable promoted tag needs a separate rele
 
 ## Operations
 
-Back up the project DB and approved persistent media with a restore drill. Monitor HTTPS,
+Back up the project DB and approved persistent media with a restore drill
+([backup and restore](backup-restore.md)). Monitor HTTPS,
 readiness, error rates and role-sync freshness. Logs must omit tokens, cookies and private
 profile content. Define audit retention and privacy handling before launch. Document any
 environment-limited check as not run; a responding homepage alone is not auth verification.
