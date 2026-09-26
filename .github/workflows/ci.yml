@@ -135,9 +135,55 @@ jobs:
           path: sbom/valkyria-web.cdx.json
           retention-days: 90
 
+  bot-management-contract:
+    name: Bot management contract
+    needs: foundation
+    if: needs.foundation.outputs.app_present == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test-only-ephemeral
+          POSTGRES_DB: valkyria_bot_contract_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U test -d valkyria_bot_contract_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://test:test-only-ephemeral@localhost:5432/valkyria_bot_contract_test
+      BOT_SOURCE_DIR: ${{ github.workspace }}/.local/contract-bot
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Check out the actual pinned bot implementation
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          repository: ValkyriaWDG/bot
+          ref: 4f3db011ec0aa96eaaa96bfb7b71cd4bffd804ac
+          path: .local/contract-bot
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Verify real bot HTTP, persistence and web authorization contract
+        run: pnpm --filter @valkyria/web exec vitest run --config vitest.bot-contract.config.ts
+      - name: Record tested source identities
+        if: always()
+        run: |
+          printf 'Website checkout: `%s`\n\n' "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          printf 'Actual bot checkout: `%s`\n' "$(git -C "$BOT_SOURCE_DIR" rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+
   quality:
     name: Quality gate
-    needs: [foundation, application]
+    needs: [foundation, application, bot-management-contract]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -147,10 +193,13 @@ jobs:
           FOUNDATION_RESULT: ${{ needs.foundation.result }}
           APP_PRESENT: ${{ needs.foundation.outputs.app_present }}
           APP_RESULT: ${{ needs.application.result }}
+          BOT_MANAGEMENT_RESULT: ${{ needs.bot-management-contract.result }}
         run: |
           test "$FOUNDATION_RESULT" = success
           if [ "$APP_PRESENT" = true ]; then
             test "$APP_RESULT" = success
+            test "$BOT_MANAGEMENT_RESULT" = success
           else
             test "$APP_RESULT" = skipped
+            test "$BOT_MANAGEMENT_RESULT" = skipped
           fi

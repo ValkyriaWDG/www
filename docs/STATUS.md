@@ -21,6 +21,14 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 ## Checkpoint (resume here)
 
+Issue #22 candidate: [private bot administration](operations/bot-administration.md)
+adds observed runtime/role-delivery status and revision-controlled language/server
+labels, independently authorized and audited by both services. The adapter remains
+disabled by default. [Local evidence](evidence/bot-admin-2026-09-26/README.md) includes
+nine actual bot/web/PostgreSQL contract scenarios and CS/EN browser captures.
+Require exact-head Application and Bot management contract CI, then separate live
+private-transport, key-rotation and Discord-role acceptance before enabling it.
+
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
 Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-length

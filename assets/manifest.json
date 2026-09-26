@@ -1252,6 +1252,127 @@
       "bytes": 318978,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "bot-admin-2026-09-26-cs-desktop-healthy",
+      "path": "docs/evidence/bot-admin-2026-09-26/cs-desktop-healthy.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "e320e1fe97ecc7b1cc1547c3a301bbad6bad038864ccbf6f7adc2a3dc40b0034",
+      "bytes": 195462,
+      "width": 1440,
+      "height": 1875
+    },
+    {
+      "id": "bot-admin-2026-09-26-cs-narrow-healthy",
+      "path": "docs/evidence/bot-admin-2026-09-26/cs-narrow-healthy.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "0de5d08193434ea65e5c9918c3de9d0fd4d2b1857c943932aee9de7ae12f2b23",
+      "bytes": 159492,
+      "width": 390,
+      "height": 2691
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-desktop-healthy",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-desktop-healthy.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "4b676cad3d4eba6e61e6ac9c2e808e7a377adc9ec0d1db0c0e8e52de3af72eb5",
+      "bytes": 190483,
+      "width": 1440,
+      "height": 1875
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-narrow-healthy",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-narrow-healthy.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "d2bef9ec17965de78d298373cd33a81016b5f68db5a97c46a860d2405044c729",
+      "bytes": 155132,
+      "width": 390,
+      "height": 2669
+    },
+    {
+      "id": "bot-admin-2026-09-26-cs-disabled",
+      "path": "docs/evidence/bot-admin-2026-09-26/cs-disabled.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "839e73adcae6ca72ae8fd2c4f5b18c7ec7be915fd4b3deb053aa354caa84bb77",
+      "bytes": 72103,
+      "width": 1280,
+      "height": 790
+    },
+    {
+      "id": "bot-admin-2026-09-26-cs-conflict",
+      "path": "docs/evidence/bot-admin-2026-09-26/cs-conflict.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "bfe74939c9ae1797fc3c2bcb0dea82364b2a0d255d8c77f7a6b09699752ef775",
+      "bytes": 191664,
+      "width": 1280,
+      "height": 2070
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-saving",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-saving.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "4a6662aea90a0ef3c98949a7eed370be1caf57cff7bf88f303f81d6cb3784baa",
+      "bytes": 192959,
+      "width": 1280,
+      "height": 1925
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-unknown-outcome",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-unknown-outcome.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "2816f74b65eb0f6f60c502b6fd31a19bbc493bc7259c977bb86fcfe781064248",
+      "bytes": 185996,
+      "width": 1280,
+      "height": 2070
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-stale",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-stale.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "13985ff404b8c488d4f5a015f19ef41176e16c6f8814ba4644fadfaf031ffcae",
+      "bytes": 176161,
+      "width": 1280,
+      "height": 1925
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-apply-error",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-apply-error.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "6999bde3c9bb60c3b6628b07ccd2ec44538872e3ec62f1c18c2afc3048e8ed49",
+      "bytes": 177804,
+      "width": 1280,
+      "height": 1925
+    },
+    {
+      "id": "bot-admin-2026-09-26-en-unavailable",
+      "path": "docs/evidence/bot-admin-2026-09-26/en-unavailable.png",
+      "source": "Local production website capture, synthetic session and simulated bot DTOs except actual disabled backend; base 507e704d288cd93d7baa0d1ab22ba8347fd67b0a, modified source identified in evidence/source-files.json",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding; excluded from the Apache code license; no general asset redistribution license asserted",
+      "sha256": "656a51f0acb18df0ca5ba2e0b6ae29a06691c79f1419e86951f9b6551ac44836",
+      "bytes": 183181,
+      "width": 1280,
+      "height": 2005
     }
   ]
 }

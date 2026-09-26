@@ -1,4 +1,5 @@
 import csAdmin from './cs/admin.json';
+import csAdminBot from './cs/adminBot.json';
 import csAdminCommunity from './cs/adminCommunity.json';
 import csAdminEditorial from './cs/adminEditorial.json';
 import csAuth from './cs/auth.json';
@@ -12,6 +13,7 @@ import csMembers from './cs/members.json';
 import csNews from './cs/news.json';
 import csPages from './cs/pages.json';
 import enAdmin from './en/admin.json';
+import enAdminBot from './en/adminBot.json';
 import enAdminCommunity from './en/adminCommunity.json';
 import enAdminEditorial from './en/adminEditorial.json';
 import enAuth from './en/auth.json';
@@ -39,6 +41,7 @@ export const enMessages = {
   matches: enMatches,
   auth: enAuth,
   admin: enAdmin,
+  adminBot: enAdminBot,
   adminEditorial: enAdminEditorial,
   adminCommunity: enAdminCommunity,
   editor: enEditor,
@@ -57,6 +60,7 @@ export const csMessages: Messages = {
   matches: csMatches,
   auth: csAuth,
   admin: csAdmin,
+  adminBot: csAdminBot,
   adminEditorial: csAdminEditorial,
   adminCommunity: csAdminCommunity,
   editor: csEditor,

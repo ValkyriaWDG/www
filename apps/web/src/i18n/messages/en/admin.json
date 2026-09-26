@@ -14,6 +14,7 @@
     "modulesTitle": "Your modules",
     "empty": "No administration modules are available for your roles.",
     "modules": {
+      "bot": { "title": "Bot", "description": "Observed Discord bot state and approved presentation settings." },
       "news": {
         "title": "News",
         "description": "Write, edit, schedule and publish news articles."

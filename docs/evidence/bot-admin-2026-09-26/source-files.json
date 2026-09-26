@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "websiteBaseRevision": "507e704d288cd93d7baa0d1ab22ba8347fd67b0a",
+  "sourceDirty": true,
+  "botRevision": "4f3db011ec0aa96eaaa96bfb7b71cd4bffd804ac",
+  "scope": "Changed application, test, CI and environment-example files at local acceptance; unchanged files are identified by the base revision. Documentation/capture metadata are excluded to avoid self-reference.",
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "61ea0cbc57ed21c09f8c6ece4afe8a42788808d98e31221152520006d7ad3c83",
+      "bytes": 2158
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "a68bf027b6285605e3391c3282174269182206fc9f2224769ddc8062b8541c57",
+      "bytes": 8641
+    },
+    {
+      "path": "apps/web/e2e/admin-bot.spec.ts",
+      "sha256": "e7106dc7ae369ae1d3b4967a2970ec026ee65f0010faac519c13d0faaa40f35c",
+      "bytes": 11435
+    },
+    {
+      "path": "apps/web/src/app/[locale]/admin/bot/page.tsx",
+      "sha256": "bc8dfcea44abce61e1e01ad4b63dac0c30211f6e8a6f9fc12159640698876340",
+      "bytes": 1146
+    },
+    {
+      "path": "apps/web/src/app/api/admin/bot/route.ts",
+      "sha256": "7aba541e0571d9229dba956158b0ef2e9a612eb2d85947b633d2d2800394ac6a",
+      "bytes": 479
+    },
+    {
+      "path": "apps/web/src/components/admin-bot/dashboard.module.css",
+      "sha256": "336edd00ffa0bffe75c793b91885f7421d5c34c33b5352dd7296f8277255eae1",
+      "bytes": 1763
+    },
+    {
+      "path": "apps/web/src/components/admin-bot/dashboard.tsx",
+      "sha256": "b15d496e3030ba7cb30827b5481adf8fa48c28cba6db9699792e19f6ac142037",
+      "bytes": 11128
+    },
+    {
+      "path": "apps/web/src/i18n/messages/cs/admin.json",
+      "sha256": "cec4f3a99178bf17dea17837f2fde53706d258465f81508c671c52e5583d9c1f",
+      "bytes": 2975
+    },
+    {
+      "path": "apps/web/src/i18n/messages/cs/adminBot.json",
+      "sha256": "4f29eb1e61c564e14a7fd82b146e68cdbe08a5dab667e77f79b163c19a267667",
+      "bytes": 3650
+    },
+    {
+      "path": "apps/web/src/i18n/messages/en/admin.json",
+      "sha256": "13e909bbf5fa686d9786af580056d7297dae93ff1bb89971a87e0e12be414c15",
+      "bytes": 2777
+    },
+    {
+      "path": "apps/web/src/i18n/messages/en/adminBot.json",
+      "sha256": "32bdaa4b8e0ce094a964058ffc54d1e283328453abbb0b9ea222bd24d9c9a21d",
+      "bytes": 3374
+    },
+    {
+      "path": "apps/web/src/i18n/messages/index.ts",
+      "sha256": "79e9fb143622044d63b7e7472331314e66cbaa17afc9189b60232ff127f723af",
+      "bytes": 2165
+    },
+    {
+      "path": "apps/web/src/modules/access/capabilities.ts",
+      "sha256": "54c853e2dd7266b82a15c37142a5eb70bcfd6bd1537b2749009b3406d7539382",
+      "bytes": 1799
+    },
+    {
+      "path": "apps/web/src/modules/auth/admin-modules.ts",
+      "sha256": "95b46619c170e5706824906534e4ac9055c64c719214603baf036bb185d43b1f",
+      "bytes": 1691
+    },
+    {
+      "path": "apps/web/src/modules/bot-management/client.test.ts",
+      "sha256": "bfbe21573c86e6fbb7368e218332a4b5ac04c20a89a8488b31a52bd3738e9548",
+      "bytes": 4448
+    },
+    {
+      "path": "apps/web/src/modules/bot-management/client.ts",
+      "sha256": "ecb5b9a08f540316c670643270b3a3d97a08c67941d6e63014b60a3dcb92af9d",
+      "bytes": 6171
+    },
+    {
+      "path": "apps/web/src/modules/bot-management/contracts.ts",
+      "sha256": "ad812dddadfea9694a9b4e6a2463a480912c9f10ccf5e8bc2a5dd3a4a47d4f18",
+      "bytes": 3295
+    },
+    {
+      "path": "apps/web/src/modules/bot-management/handler.test.ts",
+      "sha256": "69f84f19a9d75cb3be3ccdc611ee537c12356d89c1a0c85ecbad18715e6c4c66",
+      "bytes": 4683
+    },
+    {
+      "path": "apps/web/src/modules/bot-management/handler.ts",
+      "sha256": "74c7d26794a8c0ba0c82abd80ec1743cffc714088704ac4c6ca3f104a173861b",
+      "bytes": 5989
+    },
+    {
+      "path": "apps/web/src/modules/bot-management/server.ts",
+      "sha256": "92dde5a765db932348a8244b1eb4bbe8cecc4347edfec0ab940d0eeb607513d5",
+      "bytes": 1511
+    },
+    {
+      "path": "apps/web/tests/contract/bot-management.test.ts",
+      "sha256": "26f6377d062be6ae54f500ca9b28037af74e5d8b0530769e4b58a2795bcdee5b",
+      "bytes": 10424
+    },
+    {
+      "path": "apps/web/tests/support/bot-source.ts",
+      "sha256": "9585d46db589fa519e7dcc32318f74a4b3f9bddc98724be7c98ccc8e7e55b04b",
+      "bytes": 1991
+    },
+    {
+      "path": "apps/web/vitest.bot-contract.config.ts",
+      "sha256": "9e1e07bc2360f49bc1617441bd1431185a2e622c691122f525636483c4f3c1ae",
+      "bytes": 900
+    }
+  ]
+}

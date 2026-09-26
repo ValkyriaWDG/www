@@ -17,6 +17,8 @@ export const CAPABILITIES = [
   'matches.edit',
   'matches.publish',
   'settings.manage',
+  'bot.read',
+  'bot.configure',
   'audit.read',
   'access.manage',
 ] as const;
@@ -34,7 +36,7 @@ const EDITOR: Capability[] = [
 
 const MATCH_MANAGER: Capability[] = ['admin.access', 'matches.edit', 'matches.publish', 'media.match.manage'];
 
-const ADMINISTRATOR: Capability[] = [...new Set([...EDITOR, ...MATCH_MANAGER, 'settings.manage', 'audit.read'] as Capability[])];
+const ADMINISTRATOR: Capability[] = [...new Set([...EDITOR, ...MATCH_MANAGER, 'settings.manage', 'audit.read', 'bot.read', 'bot.configure'] as Capability[])];
 
 /** Capability matrix. `member` grants no administrative capability in v1. */
 export const ROLE_CAPABILITIES: Record<AppRole, readonly Capability[]> = {

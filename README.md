@@ -19,6 +19,7 @@ game-menu experience and the clan's Hell Let Loose heritage.
 | Engineering | [Architecture](docs/architecture/overview.md), [data model](docs/architecture/data-model.md), [auth/RBAC](docs/security/auth-rbac.md) |
 | Agent execution | [Skill catalog](docs/engineering/skills.md), [task workflow](docs/engineering/agent-workflow.md), [verification](docs/engineering/verification-workflow.md) |
 | Delivery | [Implementation plan](docs/implementation/plan.md), [backlog](docs/implementation/github-backlog.md), [deployment](docs/operations/deployment.md) |
+| Bot administration | [Private management contract and activation](docs/operations/bot-administration.md), [local evidence](docs/evidence/bot-admin-2026-09-26/README.md) |
 | Current evidence | [Status](docs/STATUS.md) |
 
 ## Product direction

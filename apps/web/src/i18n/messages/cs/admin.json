@@ -14,6 +14,7 @@
     "modulesTitle": "Vaše části administrace",
     "empty": "Pro vaše role nejsou dostupné žádné části administrace.",
     "modules": {
+      "bot": { "title": "Bot", "description": "Pozorovaný stav Discord bota a povolená nastavení zobrazení." },
       "news": {
         "title": "Novinky",
         "description": "Psaní, úpravy, plánování a zveřejňování novinek."

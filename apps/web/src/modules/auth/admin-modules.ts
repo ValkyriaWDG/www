@@ -2,7 +2,7 @@ import { can } from '@/modules/access/policy';
 import type { Capability } from '@/modules/access/capabilities';
 import type { Actor } from '@/modules/access/types';
 
-export type AdminModuleKey = 'news' | 'content' | 'media' | 'matches' | 'members' | 'settings' | 'audit';
+export type AdminModuleKey = 'news' | 'content' | 'media' | 'matches' | 'members' | 'settings' | 'audit' | 'bot';
 
 export type AdminModule = {
   key: AdminModuleKey;
@@ -24,6 +24,7 @@ export const ADMIN_MODULES: readonly AdminModule[] = [
   { key: 'matches', path: '/admin/matches', anyOf: ['matches.edit'] },
   { key: 'members', path: '/admin/members', anyOf: ['members.edit'] },
   { key: 'settings', path: '/admin/settings', anyOf: ['settings.manage'] },
+  { key: 'bot', path: '/admin/bot', anyOf: ['bot.read'] },
   { key: 'audit', path: '/admin/audit', anyOf: ['audit.read'] },
 ];
 
