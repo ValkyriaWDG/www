@@ -42,6 +42,8 @@ export type CoverSnapshot = { assetId: string; alt: string; caption: string; dec
 export type TaxonomySnapshot = {
   category: { key: string; label: string } | null;
   tags: { key: string; label: string }[];
+  /** Game context at save time; public listings filter on the published snapshot. */
+  game?: Game | null;
 };
 
 /** One news post or core page; translated presentation lives in content_translation. */

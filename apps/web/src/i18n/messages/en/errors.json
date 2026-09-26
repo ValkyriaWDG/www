@@ -1,0 +1,19 @@
+{
+  "validation": "Please check the highlighted fields.",
+  "not_found": "The requested record does not exist or you cannot access it.",
+  "conflict": "Someone else changed this record in the meantime. Your edits are kept; load the current version and compare them.",
+  "slug_taken": "This address (slug) is already used in this language.",
+  "invalid_state": "This action is not possible in the current state.",
+  "rate_limited": "Too many attempts. Please try again shortly.",
+  "payload_too_large": "The file or content is too large.",
+  "unsupported_media": "This file type is not supported. Use JPEG, PNG or WebP.",
+  "in_use": "This item is still in use and cannot be removed.",
+  "unavailable": "The service is temporarily unavailable. Please try again.",
+  "unauthenticated": "You need to sign in for this action.",
+  "forbidden": "You do not have permission for this action.",
+  "stale_authorization": "Your permissions could not be verified. Reload the page and try again.",
+  "verification_unavailable": "Discord membership verification is temporarily unavailable. Changes cannot be saved right now.",
+  "not_member": "Your account is not a verified member of the Valkyria Discord server.",
+  "mfa_required": "This action requires signing in with two-factor authentication.",
+  "unexpected": "An unexpected error occurred. Please try again."
+}

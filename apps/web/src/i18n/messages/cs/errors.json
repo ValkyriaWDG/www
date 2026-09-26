@@ -1,0 +1,19 @@
+{
+  "validation": "Zkontrolujte zvýrazněná pole.",
+  "not_found": "Požadovaný záznam neexistuje nebo k němu nemáte přístup.",
+  "conflict": "Záznam mezitím změnil někdo jiný. Vaše úpravy zůstaly zachovány; načtěte aktuální verzi a porovnejte je.",
+  "slug_taken": "Tato adresa (slug) je v tomto jazyce již obsazena.",
+  "invalid_state": "Tuto akci nelze v aktuálním stavu provést.",
+  "rate_limited": "Příliš mnoho pokusů. Zkuste to prosím za chvíli.",
+  "payload_too_large": "Soubor nebo obsah je příliš velký.",
+  "unsupported_media": "Tento typ souboru není podporován. Použijte JPEG, PNG nebo WebP.",
+  "in_use": "Položka se stále používá a nelze ji odstranit.",
+  "unavailable": "Služba je dočasně nedostupná. Zkuste to prosím znovu.",
+  "unauthenticated": "Pro tuto akci se musíte přihlásit.",
+  "forbidden": "K této akci nemáte oprávnění.",
+  "stale_authorization": "Vaše oprávnění se nepodařilo ověřit. Obnovte stránku a zkuste to znovu.",
+  "verification_unavailable": "Ověření členství na Discordu je dočasně nedostupné. Změny nyní nelze uložit.",
+  "not_member": "Váš účet není ověřeným členem serveru Valkyria na Discordu.",
+  "mfa_required": "Tato akce vyžaduje přihlášení s dvoufázovým ověřením.",
+  "unexpected": "Došlo k neočekávané chybě. Zkuste to prosím znovu."
+}
