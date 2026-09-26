@@ -1,0 +1,139 @@
+/*
+ * Valkyria design tokens (docs/design/visual-spec.md §4). Values are implementation
+ * targets tuned against the Wardogs references, not extracted game values.
+ */
+:root {
+  --color-scene-base: #11110f;
+  --color-chrome: #1b1c19;
+  --color-chrome-strong: #141512;
+  --color-panel: rgb(20 21 19 / 0.88);
+  --color-panel-solid: #161714;
+  --color-panel-soft: rgb(42 43 39 / 0.76);
+  --color-row: rgb(50 51 47 / 0.86);
+  --color-row-alt: rgb(27 28 25 / 0.9);
+  --color-border: #55564e;
+  --color-border-strong: #a8a89a;
+  --color-text: #f2f1e8;
+  --color-text-muted: #b8b9ad;
+  --color-text-dim: #8c8e83;
+  --color-accent: #d9ad32;
+  --color-accent-strong: #f0c24a;
+  --color-accent-surface: #6f5417;
+  --color-accent-wash: rgb(188 140 22 / 0.3);
+  --color-brand-orange: #f49b00;
+  --color-brand-red: #f04424;
+  --color-success: #8bcc8a;
+  --color-warning: #efcc72;
+  --color-danger: #ffaaa1;
+  --color-danger-surface: #5a211b;
+  --color-focus: #fff0ab;
+
+  /* Shell chrome and scene treatment */
+  --color-chrome-line: rgb(168 168 154 / 0.26);
+  --color-nav-item: rgb(255 255 255 / 0.035);
+  --color-nav-item-hover: rgb(255 255 255 / 0.08);
+  --color-nav-edge: rgb(168 168 154 / 0.46);
+  --color-control: rgb(34 35 32 / 0.82);
+  --color-control-hover: rgb(58 59 54 / 0.9);
+  --color-control-pressed: rgb(24 25 22 / 0.94);
+  --color-scrim: 10 10 9;
+  --color-info: #a9c8e8;
+  --color-selected-wash: rgb(217 173 50 / 0.16);
+
+  --gradient-primary: linear-gradient(180deg, rgb(118 87 12 / 0.78), rgb(155 117 24 / 0.92));
+  --gradient-nav-active: linear-gradient(0deg, rgb(217 173 50 / 0.34), rgb(217 173 50 / 0));
+  /* Home CTA: lighter top, darker bottom so the small subtitle keeps ≥4.5:1 contrast. */
+  --gradient-cta: linear-gradient(180deg, rgb(166 126 29 / 0.95), rgb(124 92 16 / 0.95));
+  --gradient-cta-hover: linear-gradient(180deg, rgb(184 140 34 / 0.96), rgb(136 101 18 / 0.96));
+
+  --radius-panel: 0px;
+  --radius-control: 0px;
+  --border-hairline: 1px;
+  --border-selected: 2px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --layer-background: 0;
+  --layer-scene-treatment: 1;
+  --layer-emblem: 2;
+  --layer-content: 10;
+  --layer-header: 20;
+  --layer-popover: 40;
+  --layer-dialog: 60;
+  --layer-notice: 70;
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --font-body: 'Barlow', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Type scale (meaningful text never below 13 px; body 16 px). */
+  --text-meta: 0.8125rem;
+  --text-small: 0.875rem;
+  --text-body: 1rem;
+  --text-nav: clamp(0.9375rem, 0.25vw + 0.8rem, 1.125rem);
+  --text-control: clamp(1rem, 0.3vw + 0.85rem, 1.25rem);
+  --text-cta: clamp(1.375rem, 0.7vw + 1rem, 2rem);
+  --text-panel-heading: clamp(1.25rem, 0.4vw + 1.05rem, 1.5rem);
+  --text-page-heading: clamp(1.75rem, 1.2vw + 1.2rem, 2.75rem);
+  --tracking-nav: 0.1em;
+  --tracking-control: 0.12em;
+  --tracking-cta: 0.14em;
+  --tracking-meta: 0.16em;
+  --shadow-text: 0 1px 2px rgb(0 0 0 / 0.65);
+
+  --header-height: 64px;
+  --safe-inset: clamp(16px, 2.5vw, 64px);
+  /* Reference brand sits further in than the action stack (x≈135 at 2560). */
+  --brand-inset: clamp(var(--safe-inset), calc(5.3vw - 8px), 136px);
+  --content-max: 1800px;
+  --reading-max: 72ch;
+  --control-height: 44px;
+  --nav-item-min: clamp(112px, 7.6vw, 196px);
+  --action-stack-width: clamp(280px, 18.4vw, 470px);
+  --cta-height: clamp(88px, 11.1vh, 160px);
+  --secondary-action-height: clamp(44px, 4.3vh, 64px);
+  --utility-size: clamp(44px, 2.45vw, 62px);
+  --action-gap: clamp(10px, 0.55vw, 14px);
+
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-slow: 220ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+}
+
+@media (min-width: 2200px) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-height: 56px;
+    --cta-height: 88px;
+    --secondary-action-height: 48px;
+    --utility-size: 44px;
+  }
+}
+
+@media (max-height: 719px) and (min-width: 768px) {
+  :root {
+    --cta-height: 88px;
+    --secondary-action-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
+}

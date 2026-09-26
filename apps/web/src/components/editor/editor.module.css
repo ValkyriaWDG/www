@@ -1,0 +1,323 @@
+/* Visual editor: quiet charcoal workspace, square controls, amber pressed state. */
+.editor {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-hairline) solid var(--color-border);
+  background: var(--color-panel-solid);
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--color-chrome);
+  border-bottom: var(--border-hairline) solid var(--color-border);
+}
+
+.toolGroup {
+  display: flex;
+  gap: 2px;
+  padding-right: var(--space-2);
+  border-right: var(--border-hairline) solid var(--color-border);
+}
+
+.toolGroup:last-child {
+  border-right: 0;
+}
+
+.toolButton,
+.blockSelect {
+  min-width: 40px;
+  min-height: 40px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 var(--space-2);
+  border: var(--border-hairline) solid transparent;
+  background: transparent;
+  color: var(--color-text);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) ease-out, border-color var(--motion-fast) ease-out;
+}
+
+.blockSelect {
+  min-width: 132px;
+  border-color: var(--color-border);
+  background: var(--color-panel-soft);
+  font-family: var(--font-body);
+}
+
+.toolButton:hover:not(:disabled) {
+  background: var(--color-panel-soft);
+  border-color: var(--color-border-strong);
+}
+
+.toolButton[aria-pressed='true'] {
+  background: var(--color-accent-wash);
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
+.toolButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tableToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--color-row-alt);
+  border-bottom: var(--border-hairline) solid var(--color-border);
+}
+
+.tableButton,
+.primaryButton,
+.secondaryButton,
+.dangerButton {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-border-strong);
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: var(--gradient-primary);
+  border-color: var(--color-accent);
+}
+
+.dangerButton {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.tableButton:hover,
+.secondaryButton:hover {
+  border-color: var(--color-accent);
+}
+
+.linkPanel {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 36rem;
+  padding: var(--space-4);
+  background: var(--color-chrome-strong);
+  border-bottom: var(--border-hairline) solid var(--color-accent);
+}
+
+.linkTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.linkPanel input,
+.figureFields input,
+.figureFields select {
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-border-strong);
+  background: var(--color-scene-base);
+  color: var(--color-text);
+}
+
+.linkActions,
+.figureRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.fieldError {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.875rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.canvasWrapper {
+  min-height: 420px;
+}
+
+.canvas {
+  min-height: 420px;
+  padding: var(--space-6) clamp(var(--space-4), 4vw, var(--space-8));
+  outline: none;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  max-width: calc(var(--reading-max) + 2 * var(--space-8));
+  margin: 0 auto;
+  width: 100%;
+}
+
+.canvas:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--color-focus);
+}
+
+.canvas h2,
+.canvas h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+.canvas h2 {
+  font-size: 1.75rem;
+}
+
+.canvas h3 {
+  font-size: 1.375rem;
+}
+
+.canvas a {
+  color: var(--color-accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.canvas blockquote {
+  margin: var(--space-4) 0;
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-muted);
+}
+
+.canvas hr {
+  border: 0;
+  border-top: var(--border-hairline) solid var(--color-border-strong);
+  margin: var(--space-6) 0;
+}
+
+.canvas table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: var(--space-4) 0;
+  table-layout: fixed;
+}
+
+.canvas th,
+.canvas td {
+  border: var(--border-hairline) solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  vertical-align: top;
+  min-width: 4rem;
+}
+
+.canvas th {
+  background: var(--color-row);
+  text-align: left;
+}
+
+.canvas :global(.selectedCell) {
+  background: var(--color-accent-wash);
+}
+
+.canvas p:global(.is-editor-empty):first-child::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-dim);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.figure {
+  margin: var(--space-5) 0;
+  padding: var(--space-3);
+  border: var(--border-hairline) dashed var(--color-border);
+  display: grid;
+  grid-template-columns: minmax(120px, 240px) 1fr;
+  gap: var(--space-4);
+}
+
+.figureWide {
+  border-style: solid;
+}
+
+.figureSelected {
+  border-color: var(--color-accent);
+  outline: var(--border-selected) solid var(--color-accent);
+}
+
+.figureMedia img {
+  width: 100%;
+  height: auto;
+  background: var(--color-row-alt);
+}
+
+.figureUnavailable {
+  margin: 0;
+  padding: var(--space-4);
+  color: var(--color-text-muted);
+  background: var(--color-row-alt);
+}
+
+.figureFields {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  font-size: 0.9375rem;
+}
+
+.counts {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-top: var(--border-hairline) solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 767px) {
+  /* One scrollable toolbar row on phones so the sticky toolbar never covers most of the canvas. */
+  .toolbar {
+    flex-wrap: nowrap;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .toolGroup {
+    flex: none;
+  }
+
+  .toolButton,
+  .blockSelect {
+    min-height: 44px;
+  }
+
+  .figure {
+    grid-template-columns: 1fr;
+  }
+
+  .canvas {
+    padding: var(--space-4);
+  }
+}

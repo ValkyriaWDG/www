@@ -1,0 +1,302 @@
+/* ---- SelectionTable (references 12/13) ---- */
+.scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: var(--border-hairline) solid var(--color-border);
+  background: rgb(20 21 19 / 0.8);
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.scroll:focus-visible {
+  outline-offset: 2px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 2px;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.caption {
+  padding: var(--space-3) var(--space-4) var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-panel-heading);
+  font-weight: 600;
+  text-align: start;
+  text-transform: uppercase;
+}
+
+.table thead th {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--border-hairline) solid var(--color-border);
+  background: rgb(58 59 54 / 0.72);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-nav);
+  text-align: start;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table th[data-align='end'],
+.table td[data-align='end'] {
+  text-align: end;
+}
+
+.table th[data-align='center'],
+.table td[data-align='center'] {
+  text-align: center;
+}
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.sortButton:hover {
+  color: var(--color-text);
+}
+
+.table th[aria-sort='ascending'] .sortButton,
+.table th[aria-sort='descending'] .sortButton {
+  color: var(--color-accent-strong);
+}
+
+.table tbody tr {
+  position: relative;
+  background: var(--color-row-alt);
+}
+
+.table tbody tr:nth-child(odd) {
+  background: var(--color-row);
+}
+
+.table tbody th,
+.table tbody td {
+  padding: var(--space-2) var(--space-3);
+  font-weight: 400;
+  text-align: start;
+  vertical-align: middle;
+}
+
+.table td[data-numeric] {
+  font-variant-numeric: tabular-nums;
+}
+
+.table tbody tr:hover {
+  background: rgb(78 79 72 / 0.9);
+}
+
+/* Selected row: amber 2 px outline + subdued amber fill (reference 13). */
+.table tbody tr[data-selected] {
+  background: linear-gradient(90deg, rgb(217 173 50 / 0.3), rgb(217 173 50 / 0.14));
+  outline: var(--border-selected) solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.rowLink {
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.rowLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.rowLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Focus ring sits outside the amber selection outline so both remain visible. */
+.rowLink:focus-visible {
+  outline: none;
+}
+
+.rowLink:focus-visible::after {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ---- FilterBar ---- */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.search {
+  position: relative;
+  display: flex;
+  flex: 1 1 18rem;
+  align-items: stretch;
+  min-width: min(100%, 16rem);
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  color: var(--color-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 var(--space-3) 0 40px;
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.38);
+  border-right: 0;
+  border-radius: 0;
+  background: rgb(12 12 11 / 0.72);
+}
+
+.searchInput:focus-visible {
+  outline-offset: -2px;
+}
+
+.segment {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filterButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.38);
+  background: var(--color-control);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-nav);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.filterButton:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-control-hover);
+}
+
+.filterButton[aria-current='true'] {
+  border-color: var(--color-accent);
+  background: rgb(111 84 23 / 0.55);
+  color: var(--color-accent-strong);
+}
+
+.filterReset {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  color: var(--color-text);
+  font-size: var(--text-small);
+  text-underline-offset: 3px;
+}
+
+.resultSummary {
+  margin: 0 0 0 auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.paginationStatus {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.paginationList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pageLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.34);
+  background: var(--color-control);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+a.pageLink:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-control-hover);
+}
+
+.pageLink[aria-current='page'] {
+  border-color: var(--color-accent);
+  background: rgb(111 84 23 / 0.55);
+  color: var(--color-accent-strong);
+}
+
+.pageLink[aria-disabled='true'] {
+  border-style: dashed;
+  color: var(--color-text-dim);
+}
+
+.pageGap {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-1);
+  color: var(--color-text-muted);
+}
+
+@media (forced-colors: active) {
+  .table tbody tr[data-selected] {
+    outline-color: Highlight;
+  }
+
+  .filterButton,
+  .pageLink {
+    border-color: ButtonText;
+  }
+}

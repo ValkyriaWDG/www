@@ -1,0 +1,71 @@
+{
+  "shared": {
+    "breadcrumbHome": "Main menu",
+    "eyebrow": "Valkyria // CZ & SK",
+    "unpublishedTitle": "This page has not been published yet.",
+    "unpublishedBody": "Its content is still being prepared. Please come back later."
+  },
+  "clan": {
+    "navLabel": "Clan",
+    "meta": {
+      "title": "Clan",
+      "description": "Who Valkyria is: a Czech and Slovak gaming community with a Wardogs focus and Hell Let Loose history."
+    },
+    "frameTitle": "Story and values",
+    "actionsTitle": "Next steps"
+  },
+  "community": {
+    "navLabel": "Community",
+    "meta": {
+      "title": "Community",
+      "description": "How to join the Valkyria community on Discord and how that differs from signing in to the website."
+    },
+    "frameTitle": "Community guide",
+    "choicesLabel": "Ways to join",
+    "discordChoice": {
+      "title": "Discord",
+      "body": "Join our Discord server. That is where we arrange games and where recruitment happens.",
+      "unavailableBody": "The Discord invitation is not configured right now. Please try again later."
+    },
+    "joinChoice": {
+      "title": "How to join",
+      "body": "Step-by-step guidance for newcomers and clan recruitment."
+    },
+    "signIn": {
+      "title": "Joining Discord is not signing in",
+      "body": "Joining Discord makes you part of the community. Signing in to this website is a separate step for content administrators; it does not make anyone a clan member and does not create a public profile. You can read everything here without signing in.",
+      "action": "Sign in to the website"
+    },
+    "linksTitle": "Community links",
+    "linkKinds": {
+      "youtube": "YouTube",
+      "steam": "Steam",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "website": "Website",
+      "other": "Link"
+    }
+  },
+  "privacy": {
+    "navLabel": "Privacy",
+    "meta": {
+      "title": "Privacy",
+      "description": "What data the Valkyria website processes and why."
+    },
+    "frameTitle": "Data processing"
+  },
+  "hll": {
+    "title": "Hell Let Loose",
+    "body": "Our Hell Let Loose history, matches and archive stay on our original website.",
+    "website": "Hell Let Loose website",
+    "archive": "HLL match archive"
+  },
+  "discord": {
+    "title": "Discord",
+    "body": "Everything starts on our Discord: arranging games, recruitment and help for newcomers.",
+    "cta": "Join Discord",
+    "ctaSub": "Valkyria community",
+    "unavailableTitle": "Discord is unavailable",
+    "unavailableBody": "The Discord invitation is not configured right now. Please try again later."
+  }
+}

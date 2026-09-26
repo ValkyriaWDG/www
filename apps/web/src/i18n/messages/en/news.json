@@ -1,0 +1,63 @@
+{
+  "richText": {
+    "tableRegion": "Table (scroll horizontally on smaller screens)",
+    "externalLink": "external link"
+  },
+  "meta": {
+    "title": "News",
+    "description": "Announcements, match reports and clan updates from the Valkyria community."
+  },
+  "list": {
+    "eyebrow": "Valkyria // CZ & SK",
+    "title": "News",
+    "intro": "Announcements, match reports and clan updates in one place.",
+    "breadcrumbHome": "Main menu",
+    "listLabel": "Published news",
+    "searchLabel": "Search news",
+    "searchPlaceholder": "Search titles and excerpts",
+    "categoryGroup": "Category",
+    "gameGroup": "Game",
+    "all": "All",
+    "resultCount": "{count, plural, one {# article} other {# articles}}",
+    "emptyTitle": "No news has been published yet.",
+    "emptyBody": "New announcements and reports will appear here as soon as they are published.",
+    "filteredEmptyTitle": "No news matches these filters.",
+    "filteredEmptyBody": "Try another category, game or search term.",
+    "pageEmptyTitle": "This page has no news.",
+    "pageEmptyBody": "The list is shorter than the requested page.",
+    "firstPage": "Go to the first page",
+    "clearFilters": "Clear filters",
+    "loadError": "The news could not be loaded.",
+    "retry": "Try again",
+    "placeholderLabel": "Valkyria"
+  },
+  "missing": {
+    "title": "This article is not available in English",
+    "body": {
+      "cs": "It has only been published in Czech. We do not translate articles automatically.",
+      "en": "It has only been published in English. We do not translate articles automatically."
+    },
+    "link": {
+      "cs": "Read the Czech version: <source>{title}</source>",
+      "en": "Read the English version: <source>{title}</source>"
+    }
+  },
+  "article": {
+    "back": "Back to news",
+    "metaLabel": "Article details",
+    "published": "Published",
+    "updated": "Updated",
+    "author": "Author",
+    "category": "Category",
+    "tags": "Tags",
+    "game": "Game",
+    "related": "Related news",
+    "previewBadge": "Preview – not published",
+    "previewNotice": "This is an unpublished preview. The public cannot see it.",
+    "notPublished": "Not published yet"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  }
+}

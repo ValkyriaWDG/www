@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "Members",
+    "description": "Public profiles of Valkyria clan members who agreed to be listed.",
+    "profileDescription": "Public profile of {name} in the Valkyria clan."
+  },
+  "list": {
+    "eyebrow": "Valkyria // CZ & SK",
+    "title": "Members",
+    "intro": "Clan members who agreed to a public profile. Roles are public labels, not website permissions.",
+    "breadcrumbHome": "Main menu",
+    "rosterTitle": "Roster",
+    "rosterCount": "{count, plural, one {# profile} other {# profiles}}",
+    "countLabel": "Profiles",
+    "caption": "Published member profiles",
+    "searchLabel": "Search members",
+    "searchPlaceholder": "Search by name",
+    "gameGroup": "Game",
+    "roleGroup": "Role",
+    "all": "All",
+    "columns": {
+      "member": "Member",
+      "roles": "Role",
+      "games": "Games"
+    },
+    "noRoles": "No public role",
+    "noGames": "No game listed",
+    "emptyTitle": "No member profiles have been published yet.",
+    "emptyBody": "Profiles appear here only after a member agrees to publication.",
+    "filteredEmptyTitle": "No results match these filters.",
+    "filteredEmptyBody": "Try another game, role or name.",
+    "pageEmptyTitle": "This page has no profiles.",
+    "firstPage": "Go to the first page",
+    "clearFilters": "Clear filters",
+    "loadError": "The member profiles could not be loaded.",
+    "retry": "Try again"
+  },
+  "roles": {
+    "leader": "Leader",
+    "officer": "Officer",
+    "member": "Member",
+    "recruit": "Recruit",
+    "veteran": "Veteran",
+    "content-creator": "Content creator"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  },
+  "profile": {
+    "back": "Back to members",
+    "eyebrow": "Member profile",
+    "rolesLabel": "Public role",
+    "gamesLabel": "Games",
+    "biography": "About the member",
+    "bioMissingTitle": "The biography is not available in English",
+    "bioMissingBody": "It has not been published in English. We do not translate biographies automatically.",
+    "bioNone": "This member has not published a biography yet.",
+    "bioOther": {
+      "cs": "Read the Czech biography",
+      "en": "Read the English biography"
+    }
+  }
+}

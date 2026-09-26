@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "Valkyria – main menu",
+    "description": "Valkyria — a Czech and Slovak gaming clan. Wardogs today, Hell Let Loose as our history. Join us on Discord."
+  },
+  "heading": "Valkyria – main menu",
+  "actionsLabel": "Main actions",
+  "identity": {
+    "name": "VALKYRIA",
+    "region": "CZ & SK"
+  },
+  "cta": {
+    "discord": "JOIN DISCORD",
+    "discordSub": "VALKYRIA COMMUNITY",
+    "discordUnavailable": "DISCORD UNAVAILABLE",
+    "discordUnavailableBody": "The Discord invitation is not configured right now. Please try again later.",
+    "clan": "ABOUT THE CLAN",
+    "matches": "MATCHES"
+  },
+  "nextMatch": {
+    "label": "NEXT MATCH",
+    "versus": "vs {opponent}",
+    "game": {
+      "wardogs": "Wardogs",
+      "hell-let-loose": "Hell Let Loose"
+    }
+  }
+}

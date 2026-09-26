@@ -1,0 +1,119 @@
+{
+  "site": {
+    "name": "Valkyria",
+    "description": "Valkyria — a Czech and Slovak gaming community. From Hell Let Loose to Wardogs, together."
+  },
+  "brand": {
+    "homeLabel": "Valkyria – main menu"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "mainNavigation": "Main navigation",
+    "breadcrumb": "Breadcrumb",
+    "scrollRegion": "{label} – scrollable area",
+    "required": "required"
+  },
+  "nav": {
+    "home": "MAIN MENU",
+    "news": "NEWS",
+    "clan": "CLAN",
+    "members": "MEMBERS",
+    "matches": "MATCHES",
+    "signIn": "SIGN IN",
+    "hllWebsite": "HLL WEBSITE",
+    "account": "MY ACCOUNT",
+    "admin": "ADMINISTRATION",
+    "accountMenu": "Account",
+    "menu": "MENU"
+  },
+  "language": {
+    "groupLabel": "Website language",
+    "cs": {
+      "code": "CS",
+      "name": "Čeština",
+      "current": "Czech – current language",
+      "switchTo": "Switch to Czech (Čeština)"
+    },
+    "en": {
+      "code": "EN",
+      "name": "English",
+      "current": "English – current language",
+      "switchTo": "Switch to English"
+    }
+  },
+  "footer": {
+    "communityLabel": "Community",
+    "discord": "Discord",
+    "news": "News",
+    "privacy": "Privacy"
+  },
+  "external": {
+    "suffix": "(external link)"
+  },
+  "background": {
+    "pause": "Pause background",
+    "play": "Play background",
+    "unavailable": "Background video unavailable"
+  },
+  "unsaved": {
+    "title": "Unsaved changes",
+    "body": "You have unsaved changes on this page. If you leave without saving, they will be lost.",
+    "stay": "Stay",
+    "saveAndContinue": "Save and continue",
+    "saving": "Saving…",
+    "discard": "Discard and leave",
+    "saveFailed": "Saving failed. Your changes are still on this page."
+  },
+  "actions": {
+    "back": "Back",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "search": "Search",
+    "resetFilters": "Clear filters",
+    "showDetail": "Show details"
+  },
+  "states": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The requested page does not exist or is not publicly available.",
+    "backHome": "Back to the main menu",
+    "errorTitle": "Something went wrong",
+    "errorBody": "The page could not be displayed. Please try again.",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "loadError": "The data could not be loaded.",
+    "empty": "Nothing here yet.",
+    "filteredEmpty": "No results match these filters.",
+    "saved": "Saved",
+    "unsaved": "Unsaved changes"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "status": "Page {page} of {total}",
+    "goTo": "Page {page}"
+  },
+  "table": {
+    "sortBy": "Sort by: {column}",
+    "sortedAscending": "sorted ascending",
+    "sortedDescending": "sorted descending",
+    "selected": "selected"
+  },
+  "forms": {
+    "required": "(required)",
+    "optional": "(optional)",
+    "timeZone": "Times are in the {zone} time zone.",
+    "errorPrefix": "Error:",
+    "search": "Search",
+    "filters": "Filters"
+  },
+  "status": {
+    "neutral": "Information",
+    "info": "Information",
+    "success": "Success",
+    "warning": "Warning",
+    "danger": "Error",
+    "accent": "Highlighted"
+  }
+}

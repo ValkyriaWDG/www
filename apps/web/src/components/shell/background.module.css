@@ -1,0 +1,40 @@
+.fallback,
+.media,
+.poster,
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fallback {
+  max-width: none;
+}
+
+.media {
+  z-index: 0;
+}
+
+.poster,
+.video {
+  object-fit: cover;
+  max-width: none;
+}
+
+/* The video stays invisible until it actually plays, so poster/fallback never flash to black. */
+.video {
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+  pointer-events: none;
+}
+
+.media[data-video-visible] .video {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    transition: none;
+  }
+}

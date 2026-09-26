@@ -5,20 +5,24 @@ scenarios. This document describes selecting evidence and interpreting failures.
 
 ## Establish what can run
 
-The current foundation has Node 24 scripts and no application. These commands are
-available from the repository root without app services:
+Inspect `package.json`, workspace manifests and `.github/workflows/ci.yml` before choosing
+commands. The implemented checks (see [README](../../README.md#develop-and-verify)) are:
 
 ```sh
-node scripts/check-foundation.mjs
-node --test scripts/tests/*.test.mjs
-node scripts/check-commit-attribution.mjs
+node scripts/check-foundation.mjs && node --test scripts/tests/*.test.mjs
+pnpm lint && pnpm typecheck && pnpm test:unit
+DATABASE_URL=<disposable postgres> pnpm test:integration
+pnpm build && DATABASE_URL=<disposable postgres> pnpm test:e2e
+docker build --file apps/web/Dockerfile .
 ```
 
-After bootstrap, inspect `package.json`, workspace manifests and CI before invoking
-the planned `pnpm lint`, `typecheck`, `test:unit`, `test:integration`, `build` and
-`test:e2e` commands. Their existence and meaningful execution are part of bootstrap
-acceptance. A missing required script is a gap to implement, not a skipped success.
-Use an isolated synthetic PostgreSQL database for integration/migration checks.
+Integration tests fail (not skip) without `DATABASE_URL`. The e2e suite migrates, seeds and
+loads synthetic fixtures into `<db>_e2e` with the bundled CLIs, starts a local Discord REST
+mock and serves the standalone build. When a cloud image ships a different Chromium build,
+set `PLAYWRIGHT_CHROMIUM_EXECUTABLE`; CI installs the pinned browser. Visual evidence
+capture is opt-in (`CAPTURE_EVIDENCE=1`) and writes to ignored `.local/evidence/`. Real
+background playback is a separate check, `pnpm test:e2e:media`, which needs the verified
+delivered files ([background media](../operations/background-media.md)).
 
 ## Select checks by risk
 

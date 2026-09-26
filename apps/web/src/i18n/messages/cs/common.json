@@ -1,0 +1,119 @@
+{
+  "site": {
+    "name": "Valkyria",
+    "description": "Valkyria — česko-slovenská herní komunita. Od Hell Let Loose po Wardogs, společně."
+  },
+  "brand": {
+    "homeLabel": "Valkyria – hlavní menu"
+  },
+  "a11y": {
+    "skipToContent": "Přeskočit na obsah",
+    "mainNavigation": "Hlavní navigace",
+    "breadcrumb": "Drobečková navigace",
+    "scrollRegion": "{label} – posuvná oblast",
+    "required": "povinné"
+  },
+  "nav": {
+    "home": "HLAVNÍ MENU",
+    "news": "NOVINKY",
+    "clan": "KLAN",
+    "members": "ČLENOVÉ",
+    "matches": "ZÁPASY",
+    "signIn": "PŘIHLÁSIT SE",
+    "hllWebsite": "HLL WEB",
+    "account": "MŮJ ÚČET",
+    "admin": "SPRÁVA",
+    "accountMenu": "Účet",
+    "menu": "MENU"
+  },
+  "language": {
+    "groupLabel": "Jazyk webu",
+    "cs": {
+      "code": "CS",
+      "name": "Čeština",
+      "current": "Čeština – aktuální jazyk",
+      "switchTo": "Přepnout na češtinu (Čeština)"
+    },
+    "en": {
+      "code": "EN",
+      "name": "English",
+      "current": "English – aktuální jazyk",
+      "switchTo": "Přepnout na angličtinu (English)"
+    }
+  },
+  "footer": {
+    "communityLabel": "Komunita",
+    "discord": "Discord",
+    "news": "Novinky",
+    "privacy": "Soukromí"
+  },
+  "external": {
+    "suffix": "(externí odkaz)"
+  },
+  "background": {
+    "pause": "Pozastavit pozadí",
+    "play": "Přehrát pozadí",
+    "unavailable": "Video na pozadí není dostupné"
+  },
+  "unsaved": {
+    "title": "Neuložené změny",
+    "body": "Na této stránce máte neuložené změny. Pokud odejdete bez uložení, přijdete o ně.",
+    "stay": "Zůstat",
+    "saveAndContinue": "Uložit a pokračovat",
+    "saving": "Ukládání…",
+    "discard": "Zahodit a odejít",
+    "saveFailed": "Uložení se nezdařilo. Vaše změny zůstaly zachovány na této stránce."
+  },
+  "actions": {
+    "back": "Zpět",
+    "close": "Zavřít",
+    "cancel": "Zrušit",
+    "save": "Uložit",
+    "search": "Hledat",
+    "resetFilters": "Zrušit filtry",
+    "showDetail": "Zobrazit detail"
+  },
+  "states": {
+    "notFoundTitle": "Stránka nenalezena",
+    "notFoundBody": "Požadovaná stránka neexistuje nebo není veřejně dostupná.",
+    "backHome": "Zpět do hlavního menu",
+    "errorTitle": "Něco se pokazilo",
+    "errorBody": "Stránku se nepodařilo zobrazit. Zkuste to prosím znovu.",
+    "retry": "Zkusit znovu",
+    "loading": "Načítání…",
+    "loadError": "Data se nepodařilo načíst.",
+    "empty": "Zatím tu nic není.",
+    "filteredEmpty": "Těmto filtrům neodpovídají žádné výsledky.",
+    "saved": "Uloženo",
+    "unsaved": "Neuložené změny"
+  },
+  "pagination": {
+    "label": "Stránkování",
+    "previous": "Předchozí",
+    "next": "Další",
+    "status": "Stránka {page} z {total}",
+    "goTo": "Stránka {page}"
+  },
+  "table": {
+    "sortBy": "Seřadit podle: {column}",
+    "sortedAscending": "seřazeno vzestupně",
+    "sortedDescending": "seřazeno sestupně",
+    "selected": "vybráno"
+  },
+  "forms": {
+    "required": "(povinné)",
+    "optional": "(nepovinné)",
+    "timeZone": "Čas je v pásmu {zone}.",
+    "errorPrefix": "Chyba:",
+    "search": "Hledat",
+    "filters": "Filtry"
+  },
+  "status": {
+    "neutral": "Informace",
+    "info": "Informace",
+    "success": "Úspěch",
+    "warning": "Upozornění",
+    "danger": "Chyba",
+    "accent": "Zvýrazněno"
+  }
+}

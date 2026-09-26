@@ -1,0 +1,674 @@
+import type { Game, Locale, PublicRoleKey } from '@valkyria/db';
+import type { FixtureImageSpec } from './images';
+import { bold, doc, h2, h3, hr, image, italic, link, ol, p, quote, strike, table, ul, underline } from '../seed/rich-text';
+
+/*
+ * Synthetic development/test fixtures. Every name, opponent and title is obviously
+ * invented ("Syntetický hráč …", "Synthetic Opponent …", "[Ukázka]" / "[Sample]"); nothing
+ * is taken from screenshots, the legacy site or real people/teams. Stable slugs and IDs
+ * are exported for tests and browser checks.
+ */
+
+export const FIXTURE_ASSET_IDS = {
+  newsCover: 'f1c7a0e0-0000-4000-8000-00000000a001',
+  newsInline: 'f1c7a0e0-0000-4000-8000-00000000a002',
+  memberAvatar: 'f1c7a0e0-0000-4000-8000-00000000a003',
+  opponentLogo: 'f1c7a0e0-0000-4000-8000-00000000a004',
+  matchCover: 'f1c7a0e0-0000-4000-8000-00000000a005',
+} as const;
+
+export const FIXTURE_IMAGES: FixtureImageSpec[] = [
+  {
+    id: FIXTURE_ASSET_IDS.newsCover,
+    name: 'news-cover',
+    label: 'NEWS COVER',
+    width: 1600,
+    height: 900,
+    scope: 'editorial',
+    colors: ['#0d0f14', '#3a2412', '#f0a02a'],
+    altCs: 'Syntetický ilustrační obrázek s nápisem SYNTHETIC FIXTURE',
+    altEn: 'Synthetic illustration reading SYNTHETIC FIXTURE',
+  },
+  {
+    id: FIXTURE_ASSET_IDS.newsInline,
+    name: 'inline-image',
+    label: 'INLINE IMAGE',
+    width: 1200,
+    height: 800,
+    scope: 'editorial',
+    colors: ['#10121a', '#23304a', '#8fb3ff'],
+    altCs: 'Syntetický obrázek v textu článku',
+    altEn: 'Synthetic inline article image',
+  },
+  {
+    id: FIXTURE_ASSET_IDS.memberAvatar,
+    name: 'avatar',
+    label: 'AVATAR',
+    width: 512,
+    height: 512,
+    scope: 'editorial',
+    colors: ['#0b1216', '#1d3a44', '#5fd0c8'],
+    altCs: 'Syntetický avatar',
+    altEn: 'Synthetic avatar',
+  },
+  {
+    id: FIXTURE_ASSET_IDS.opponentLogo,
+    name: 'opponent-logo',
+    label: 'OPPONENT LOGO',
+    width: 512,
+    height: 512,
+    scope: 'match',
+    colors: ['#140d12', '#43182c', '#ff6f91'],
+    altCs: 'Syntetické logo soupeře',
+    altEn: 'Synthetic opponent logo',
+  },
+  {
+    id: FIXTURE_ASSET_IDS.matchCover,
+    name: 'match-cover',
+    label: 'MATCH COVER',
+    width: 1600,
+    height: 900,
+    scope: 'match',
+    colors: ['#0e1110', '#26351f', '#b6e36b'],
+    altCs: 'Syntetický obrázek zápasu',
+    altEn: 'Synthetic match image',
+  },
+];
+
+/** Synthetic tags, removed again by `--reset` (keys start with `fixture-`). */
+export const FIXTURE_TAGS = [
+  { key: 'fixture-wardogs', labelCs: 'Ukázka Wardogs', labelEn: 'Sample Wardogs' },
+  { key: 'fixture-hll', labelCs: 'Ukázka HLL', labelEn: 'Sample HLL' },
+  { key: 'fixture-guide', labelCs: 'Ukázkový návod', labelEn: 'Sample guide' },
+] as const;
+
+export const FIXTURE_SLUGS = {
+  members: {
+    publishedBilingual: 'synteticky-hrac-alfa',
+    publishedCsOnlyBio: 'synteticka-hracka-bravo',
+    draft: 'synteticky-hrac-charlie',
+    hidden: 'synteticky-hrac-delta',
+    longName: 'synteticky-hrac-echo-s-neobycejne-dlouhym-jmenem',
+    emoji: 'synteticky-hrac-foxtrot',
+  },
+  matches: {
+    upcoming: 'ukazka-wardogs-nadchazejici',
+    postponed: 'ukazka-wardogs-odlozeny',
+    cancelled: 'ukazka-wardogs-zruseny',
+    completedVerified: 'ukazka-wardogs-overeny-vysledek',
+    completedUnknown: 'ukazka-wardogs-neznamy-vysledek',
+    hllHistorical: 'ukazka-hll-historicky',
+    draft: 'ukazka-wardogs-koncept',
+  },
+  news: {
+    featureCs: 'ukazka-obrazky-tabulka-a-odkazy',
+    featureEn: 'sample-images-table-and-links',
+    csOnly: 'ukazka-pouze-cesky',
+    withEnDraftCs: 'ukazka-s-anglickym-konceptem',
+    withEnDraftEn: 'sample-private-english-draft',
+    scheduledCs: 'ukazka-naplanovany-clanek',
+    longFormCs: 'ukazka-dlouhy-clanek',
+    longFormEn: 'sample-long-form-article',
+    archivedCs: 'ukazka-archivovany-clanek',
+    listingCs: Array.from({ length: 12 }, (_, i) => `ukazka-seznam-${String(i + 1).padStart(2, '0')}`),
+    listingEn: Array.from({ length: 12 }, (_, i) => (i % 3 === 0 ? `sample-listing-${String(i + 1).padStart(2, '0')}` : null)),
+  },
+} as const;
+
+/* ------------------------------------------------------------------ members */
+
+export type FixtureBio = { published: boolean };
+export type FixtureMember = {
+  slug: string;
+  displayName: string;
+  state: 'draft' | 'published' | 'hidden';
+  consent: boolean;
+  avatar: boolean;
+  games: Game[];
+  publicRoleKeys: PublicRoleKey[];
+  sortOrder: number;
+  bio: Partial<Record<Locale, FixtureBio>>;
+};
+
+export const FIXTURE_MEMBERS: FixtureMember[] = [
+  {
+    slug: FIXTURE_SLUGS.members.publishedBilingual,
+    displayName: 'Syntetický hráč Alfa',
+    state: 'published',
+    consent: true,
+    avatar: true,
+    games: ['wardogs'],
+    publicRoleKeys: ['member'],
+    sortOrder: 10,
+    bio: { cs: { published: true }, en: { published: true } },
+  },
+  {
+    slug: FIXTURE_SLUGS.members.publishedCsOnlyBio,
+    displayName: 'Syntetická hráčka Bravo',
+    state: 'published',
+    consent: true,
+    avatar: false,
+    games: ['wardogs', 'hell-let-loose'],
+    publicRoleKeys: ['officer', 'veteran'],
+    sortOrder: 20,
+    // English exists only as a private draft; the public profile reports it missing.
+    bio: { cs: { published: true }, en: { published: false } },
+  },
+  {
+    slug: FIXTURE_SLUGS.members.draft,
+    displayName: 'Syntetický hráč Charlie',
+    state: 'draft',
+    consent: false,
+    avatar: false,
+    games: ['wardogs'],
+    publicRoleKeys: ['recruit'],
+    sortOrder: 30,
+    bio: { cs: { published: false } },
+  },
+  {
+    slug: FIXTURE_SLUGS.members.hidden,
+    displayName: 'Syntetický hráč Delta',
+    state: 'hidden',
+    consent: true,
+    avatar: true,
+    games: ['hell-let-loose'],
+    publicRoleKeys: ['member'],
+    sortOrder: 40,
+    bio: { cs: { published: true } },
+  },
+  {
+    slug: FIXTURE_SLUGS.members.longName,
+    displayName: 'Syntetický hráč Echo s neobyčejně dlouhým jménem Žluťoučký kůň úpěl ďábelské ódy',
+    state: 'published',
+    consent: true,
+    avatar: false,
+    games: ['hell-let-loose'],
+    publicRoleKeys: ['recruit'],
+    sortOrder: 50,
+    bio: {},
+  },
+  {
+    slug: FIXTURE_SLUGS.members.emoji,
+    displayName: 'Syntetický hráč Foxtrot 🦊🎮',
+    state: 'published',
+    consent: true,
+    avatar: true,
+    games: ['wardogs'],
+    publicRoleKeys: ['content-creator'],
+    sortOrder: 60,
+    bio: { en: { published: true } },
+  },
+];
+
+export function memberBio(member: FixtureMember, locale: Locale) {
+  return locale === 'cs'
+    ? doc(
+        p(bold('[Ukázka] '), `${member.displayName} je syntetický profil pro vývoj a testy. Nejde o skutečného hráče.`),
+        p('Text obsahuje ', italic('kurzívu'), ', ', underline('podtržení'), ' a ', link('bezpečný odkaz', 'https://example.org/synthetic-fixture/profile'), '.'),
+      )
+    : doc(
+        p(bold('[Sample] '), `${member.displayName} is a synthetic profile for development and tests. Not a real player.`),
+        p('The text includes ', italic('italics'), ', ', underline('underline'), ' and a ', link('safe link', 'https://example.org/synthetic-fixture/profile'), '.'),
+      );
+}
+
+/* ------------------------------------------------------------------ matches */
+
+export type FixtureRound = {
+  mapName: string | null;
+  mode: string | null;
+  side: string | null;
+  scoreValkyria: number | null;
+  scoreOpponent: number | null;
+  outcome: 'win' | 'loss' | 'draw' | 'unknown' | null;
+};
+
+export type FixtureMatch = {
+  slug: string;
+  game: Game;
+  opponentName: string;
+  opponentShortCode: string;
+  logo: boolean;
+  cover: boolean;
+  competitionType: 'league' | 'tournament' | 'cup' | 'friendly' | 'scrim' | 'other';
+  competitionName: string | null;
+  season: string | null;
+  bestOf: number | null;
+  /** Start relative to "now" in days at a Prague wall-clock time, or a fixed instant. */
+  start: { days: number; time: string } | { instant: string };
+  originalStart?: { days: number; time: string };
+  status: 'scheduled' | 'live' | 'completed' | 'postponed' | 'cancelled';
+  published: boolean;
+  eventUrl: string | null;
+  vodLinks: { url: string; label: string }[];
+  internalNotes: string;
+  result?: {
+    scoreValkyria: number | null;
+    scoreOpponent: number | null;
+    outcome: 'win' | 'loss' | 'draw' | 'unknown';
+    verification: 'provisional' | 'verified';
+    source: string;
+  };
+  rounds?: FixtureRound[];
+  recap: Partial<Record<Locale, { published: boolean }>>;
+};
+
+export const FIXTURE_MATCHES: FixtureMatch[] = [
+  {
+    slug: FIXTURE_SLUGS.matches.upcoming,
+    game: 'wardogs',
+    opponentName: 'Synthetic Opponent Alpha',
+    opponentShortCode: 'SOA',
+    logo: true,
+    cover: false,
+    competitionType: 'friendly',
+    competitionName: 'Synthetic Friendly Series',
+    season: null,
+    bestOf: null,
+    start: { days: 7, time: '19:00' },
+    status: 'scheduled',
+    published: true,
+    eventUrl: 'https://example.org/synthetic-fixture/event-alpha',
+    vodLinks: [],
+    internalNotes: 'Synthetic internal note (upcoming): must never appear publicly.',
+    recap: {},
+  },
+  {
+    slug: FIXTURE_SLUGS.matches.postponed,
+    game: 'wardogs',
+    opponentName: 'Synthetic Opponent Bravo',
+    opponentShortCode: 'SOB',
+    logo: false,
+    cover: false,
+    competitionType: 'league',
+    competitionName: 'Synthetic Sample League',
+    season: 'Fixture season',
+    bestOf: 3,
+    start: { days: 14, time: '20:00' },
+    originalStart: { days: 2, time: '20:00' },
+    status: 'postponed',
+    published: true,
+    eventUrl: null,
+    vodLinks: [],
+    internalNotes: '',
+    recap: {},
+  },
+  {
+    slug: FIXTURE_SLUGS.matches.cancelled,
+    game: 'wardogs',
+    opponentName: 'Synthetic Opponent Charlie',
+    opponentShortCode: 'SOC',
+    logo: false,
+    cover: false,
+    competitionType: 'cup',
+    competitionName: 'Synthetic Sample Cup',
+    season: null,
+    bestOf: null,
+    start: { days: -3, time: '19:00' },
+    status: 'cancelled',
+    published: true,
+    eventUrl: null,
+    vodLinks: [],
+    internalNotes: '',
+    recap: {},
+  },
+  {
+    slug: FIXTURE_SLUGS.matches.completedVerified,
+    game: 'wardogs',
+    opponentName: 'Synthetic Opponent Delta',
+    opponentShortCode: 'SOD',
+    logo: true,
+    cover: true,
+    competitionType: 'league',
+    competitionName: 'Synthetic Sample League',
+    season: 'Fixture season',
+    bestOf: 3,
+    start: { days: -7, time: '19:00' },
+    status: 'completed',
+    published: true,
+    eventUrl: 'https://example.org/synthetic-fixture/event-delta',
+    vodLinks: [{ url: 'https://example.org/synthetic-fixture/vod-delta', label: 'Synthetic VOD' }],
+    internalNotes: 'Synthetic internal note (completed): private.',
+    result: { scoreValkyria: 2, scoreOpponent: 1, outcome: 'win', verification: 'verified', source: 'Synthetic fixture source (not a real result)' },
+    rounds: [
+      { mapName: 'Synthetic Map A', mode: 'Synthetic mode', side: null, scoreValkyria: 1, scoreOpponent: 0, outcome: 'win' },
+      { mapName: 'Synthetic Map B', mode: 'Synthetic mode', side: null, scoreValkyria: 0, scoreOpponent: 1, outcome: 'loss' },
+      { mapName: 'Synthetic Map C', mode: 'Synthetic mode', side: null, scoreValkyria: 1, scoreOpponent: 0, outcome: 'win' },
+    ],
+    recap: { cs: { published: true }, en: { published: true } },
+  },
+  {
+    slug: FIXTURE_SLUGS.matches.completedUnknown,
+    game: 'wardogs',
+    opponentName: 'Synthetic Opponent Echo',
+    opponentShortCode: 'SOE',
+    logo: false,
+    cover: false,
+    competitionType: 'scrim',
+    competitionName: null,
+    season: null,
+    bestOf: null,
+    start: { days: -10, time: '18:30' },
+    status: 'completed',
+    published: true,
+    eventUrl: null,
+    vodLinks: [],
+    internalNotes: '',
+    // Unknown scores stay null; never rendered as 0:0.
+    result: { scoreValkyria: null, scoreOpponent: null, outcome: 'unknown', verification: 'provisional', source: '' },
+    // Czech recap is live; English exists only as a private draft.
+    recap: { cs: { published: true }, en: { published: false } },
+  },
+  {
+    slug: FIXTURE_SLUGS.matches.hllHistorical,
+    game: 'hell-let-loose',
+    opponentName: 'Synthetic HLL Opponent Foxtrot',
+    opponentShortCode: 'SHF',
+    logo: false,
+    cover: false,
+    competitionType: 'tournament',
+    competitionName: 'Synthetic Historical Cup (sample)',
+    season: 'Synthetic 2024',
+    bestOf: null,
+    start: { instant: '2024-05-12T18:00:00Z' },
+    status: 'completed',
+    published: true,
+    eventUrl: null,
+    vodLinks: [],
+    internalNotes: '',
+    result: { scoreValkyria: 3, scoreOpponent: 2, outcome: 'win', verification: 'provisional', source: 'Synthetic historical fixture (not a real result)' },
+    rounds: [{ mapName: 'Synthetic Map D', mode: null, side: 'Synthetic side A', scoreValkyria: 3, scoreOpponent: 2, outcome: 'win' }],
+    recap: {},
+  },
+  {
+    slug: FIXTURE_SLUGS.matches.draft,
+    game: 'wardogs',
+    opponentName: 'Synthetic Opponent Golf',
+    opponentShortCode: 'SOG',
+    logo: true,
+    cover: false,
+    competitionType: 'other',
+    competitionName: null,
+    season: null,
+    bestOf: null,
+    start: { days: 21, time: '19:00' },
+    status: 'scheduled',
+    published: false,
+    eventUrl: null,
+    vodLinks: [],
+    internalNotes: 'Synthetic internal note (draft): must never appear publicly.',
+    recap: { cs: { published: false } },
+  },
+];
+
+export function matchRecap(fixture: FixtureMatch, locale: Locale) {
+  const withImage = fixture.cover;
+  return locale === 'cs'
+    ? doc(
+        p(bold('[Ukázka] '), `Syntetická reportáž k zápasu proti týmu ${fixture.opponentName}. Nejde o skutečný zápas.`),
+        h2('Průběh'),
+        ul('Syntetický bod jedna', 'Syntetický bod dva'),
+        ...(withImage ? [image(FIXTURE_ASSET_IDS.matchCover, 'Syntetický obrázek zápasu', 'Syntetický popisek')] : []),
+      )
+    : doc(
+        p(bold('[Sample] '), `Synthetic recap of the match against ${fixture.opponentName}. Not a real match.`),
+        h2('Summary'),
+        ul('Synthetic point one', 'Synthetic point two'),
+        ...(withImage ? [image(FIXTURE_ASSET_IDS.matchCover, 'Synthetic match image', 'Synthetic caption')] : []),
+      );
+}
+
+/* --------------------------------------------------------------------- news */
+
+export type FixtureNewsTranslation = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: ReturnType<typeof doc>;
+  /** `published`: live; `draft`: private draft only; `scheduled`: draft + pending schedule. */
+  state: 'published' | 'draft' | 'scheduled';
+  cover: boolean;
+};
+
+export type FixtureNews = {
+  key: string;
+  category: 'announcement' | 'match-report' | 'community' | 'update';
+  tags: (typeof FIXTURE_TAGS)[number]['key'][];
+  game: Game | null;
+  /** Days before "now" of the publication time (schedule: days after). */
+  days: number;
+  archived: boolean;
+  translations: Partial<Record<Locale, FixtureNewsTranslation>>;
+};
+
+const featureBodyCs = doc(
+  p(bold('[Ukázka] '), 'Tento syntetický článek ukazuje ', bold('tučné'), ', ', italic('kurzívu'), ', ', underline('podtržení'), ' a ', strike('přeškrtnutí'), '.'),
+  p('Odkaz na ', link('bezpečnou externí stránku', 'https://example.org/synthetic-fixture/article'), ' se otevře jako běžný odkaz.'),
+  image(FIXTURE_ASSET_IDS.newsInline, 'Syntetický obrázek v textu článku', 'Syntetický popisek obrázku', 'wide'),
+  h2('Ukázková tabulka'),
+  table(
+    ['Položka', 'Hodnota', 'Poznámka'],
+    [
+      ['Alfa', '1', 'Syntetická data'],
+      ['Bravo', '2', 'Syntetická data'],
+      ['Charlie', '3', 'Syntetická data'],
+    ],
+  ),
+  h3('Seznamy'),
+  ol('První syntetický krok', 'Druhý syntetický krok'),
+  quote(['Syntetická citace pro test typografie.']),
+);
+
+const featureBodyEn = doc(
+  p(bold('[Sample] '), 'This synthetic article shows ', bold('bold'), ', ', italic('italic'), ', ', underline('underline'), ' and ', strike('strikethrough'), '.'),
+  p('A link to a ', link('safe external page', 'https://example.org/synthetic-fixture/article'), ' renders as a normal link.'),
+  image(FIXTURE_ASSET_IDS.newsInline, 'Synthetic inline article image', 'Synthetic image caption', 'wide'),
+  h2('Sample table'),
+  table(
+    ['Item', 'Value', 'Note'],
+    [
+      ['Alpha', '1', 'Synthetic data'],
+      ['Bravo', '2', 'Synthetic data'],
+      ['Charlie', '3', 'Synthetic data'],
+    ],
+  ),
+  h3('Lists'),
+  ol('First synthetic step', 'Second synthetic step'),
+  quote(['A synthetic quote for typography testing.']),
+);
+
+function longBody(locale: Locale) {
+  const sections = Array.from({ length: 8 }, (_, i) => i + 1);
+  const cs = locale === 'cs';
+  return doc(
+    p(bold(cs ? '[Ukázka] ' : '[Sample] '), cs ? 'Dlouhý syntetický článek pro test čitelnosti a rozvržení.' : 'A long synthetic article for readability and layout testing.'),
+    ...sections.flatMap((n) => [
+      h2(cs ? `Syntetická kapitola ${n}` : `Synthetic chapter ${n}`),
+      p(
+        cs
+          ? 'Příliš žluťoučký kůň úpěl ďábelské ódy. Tento odstavec je syntetický text, který ověřuje české znaky, zalamování dlouhých řádků a rytmus odstavců v delším článku.'
+          : 'The quick brown fox jumps over the lazy dog. This paragraph is synthetic text that checks line wrapping and paragraph rhythm in a longer article.',
+      ),
+      ...(n % 3 === 0 ? [ul(cs ? 'Syntetická odrážka A' : 'Synthetic bullet A', cs ? 'Syntetická odrážka B' : 'Synthetic bullet B')] : []),
+      ...(n % 4 === 0 ? [quote([cs ? 'Syntetická citace uprostřed článku.' : 'A synthetic quote in the middle of the article.']), hr()] : []),
+    ]),
+  );
+}
+
+function simpleBody(locale: Locale, title: string) {
+  return locale === 'cs'
+    ? doc(p(bold('[Ukázka] '), `${title}: syntetický obsah pro vývoj a testy.`), p('Nejde o skutečnou zprávu komunity.'))
+    : doc(p(bold('[Sample] '), `${title}: synthetic content for development and tests.`), p('This is not a real community announcement.'));
+}
+
+const CATEGORIES = ['announcement', 'match-report', 'community', 'update'] as const;
+const GAME_CYCLE: (Game | null)[] = ['wardogs', 'hell-let-loose', null];
+
+export const FIXTURE_NEWS: FixtureNews[] = [
+  {
+    key: 'feature',
+    category: 'announcement',
+    tags: ['fixture-wardogs', 'fixture-guide'],
+    game: 'wardogs',
+    days: 1,
+    archived: false,
+    translations: {
+      cs: {
+        slug: FIXTURE_SLUGS.news.featureCs,
+        title: '[Ukázka] Obrázky, tabulka a odkazy',
+        excerpt: 'Syntetický článek s titulním obrázkem, obrázkem v textu, tabulkou a odkazem.',
+        body: featureBodyCs,
+        state: 'published',
+        cover: true,
+      },
+      en: {
+        slug: FIXTURE_SLUGS.news.featureEn,
+        title: '[Sample] Images, table and links',
+        excerpt: 'A synthetic article with a cover, an inline image, a table and a link.',
+        body: featureBodyEn,
+        state: 'published',
+        cover: true,
+      },
+    },
+  },
+  {
+    key: 'cs-only',
+    category: 'community',
+    tags: [],
+    game: null,
+    days: 2,
+    archived: false,
+    translations: {
+      cs: {
+        slug: FIXTURE_SLUGS.news.csOnly,
+        title: '[Ukázka] Článek pouze v češtině',
+        excerpt: 'Syntetický článek bez anglického překladu.',
+        body: simpleBody('cs', 'Článek pouze v češtině'),
+        state: 'published',
+        cover: false,
+      },
+    },
+  },
+  {
+    key: 'en-draft',
+    category: 'update',
+    tags: [],
+    game: null,
+    days: 3,
+    archived: false,
+    translations: {
+      cs: {
+        slug: FIXTURE_SLUGS.news.withEnDraftCs,
+        title: '[Ukázka] Článek s anglickým konceptem',
+        excerpt: 'Česká verze je zveřejněná, anglická je jen soukromý koncept.',
+        body: simpleBody('cs', 'Článek s anglickým konceptem'),
+        state: 'published',
+        cover: false,
+      },
+      en: {
+        slug: FIXTURE_SLUGS.news.withEnDraftEn,
+        title: '[Sample] Private English draft',
+        excerpt: 'Unpublished English draft that must never appear publicly.',
+        body: simpleBody('en', 'Private English draft'),
+        state: 'draft',
+        cover: false,
+      },
+    },
+  },
+  {
+    key: 'scheduled',
+    category: 'announcement',
+    tags: ['fixture-wardogs'],
+    game: 'wardogs',
+    days: -3,
+    archived: false,
+    translations: {
+      cs: {
+        slug: FIXTURE_SLUGS.news.scheduledCs,
+        title: '[Ukázka] Naplánovaný článek',
+        excerpt: 'Syntetický článek čekající na naplánované zveřejnění.',
+        body: simpleBody('cs', 'Naplánovaný článek'),
+        state: 'scheduled',
+        cover: false,
+      },
+    },
+  },
+  {
+    key: 'long-form',
+    category: 'community',
+    tags: ['fixture-guide'],
+    game: null,
+    days: 4,
+    archived: false,
+    translations: {
+      cs: {
+        slug: FIXTURE_SLUGS.news.longFormCs,
+        title: '[Ukázka] Dlouhý článek pro test čitelnosti',
+        excerpt: 'Syntetický dlouhý text s mnoha kapitolami.',
+        body: longBody('cs'),
+        state: 'published',
+        cover: true,
+      },
+      en: {
+        slug: FIXTURE_SLUGS.news.longFormEn,
+        title: '[Sample] Long-form readability article',
+        excerpt: 'Synthetic long text with many chapters.',
+        body: longBody('en'),
+        state: 'published',
+        cover: true,
+      },
+    },
+  },
+  {
+    key: 'archived',
+    category: 'update',
+    tags: [],
+    game: null,
+    days: 40,
+    archived: true,
+    translations: {
+      cs: {
+        slug: FIXTURE_SLUGS.news.archivedCs,
+        title: '[Ukázka] Archivovaný článek',
+        excerpt: 'Syntetický archivovaný článek, který není veřejný.',
+        body: simpleBody('cs', 'Archivovaný článek'),
+        state: 'published',
+        cover: false,
+      },
+    },
+  },
+  ...FIXTURE_SLUGS.news.listingCs.map((slug, i): FixtureNews => {
+    const n = String(i + 1).padStart(2, '0');
+    const enSlug = FIXTURE_SLUGS.news.listingEn[i];
+    return {
+      key: `listing-${n}`,
+      category: CATEGORIES[i % CATEGORIES.length]!,
+      tags: i % 2 === 0 ? ['fixture-hll'] : [],
+      game: GAME_CYCLE[i % GAME_CYCLE.length]!,
+      days: 5 + i,
+      archived: false,
+      translations: {
+        cs: {
+          slug,
+          title: `[Ukázka] Syntetická novinka ${n}`,
+          excerpt: `Syntetická novinka číslo ${n} pro stránkování a filtry.`,
+          body: simpleBody('cs', `Syntetická novinka ${n}`),
+          state: 'published',
+          cover: false,
+        },
+        ...(enSlug
+          ? {
+              en: {
+                slug: enSlug,
+                title: `[Sample] Synthetic news ${n}`,
+                excerpt: `Synthetic news item ${n} for pagination and filters.`,
+                body: simpleBody('en', `Synthetic news ${n}`),
+                state: 'published' as const,
+                cover: false,
+              },
+            }
+          : {}),
+      },
+    };
+  }),
+];

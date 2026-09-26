@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "title": "Zápasy",
+    "description": "Nadcházející zápasy a zveřejněné výsledky klanu Valkyria ve Wardogs a Hell Let Loose.",
+    "detailTitle": "Valkyria vs. {opponent}",
+    "detailDescription": "{game} · {competition} · {date}"
+  },
+  "list": {
+    "eyebrow": "Valkyria // CZ & SK",
+    "title": "Zápasy",
+    "intro": "Nadcházející zápasy a zveřejněné výsledky. Dnes hrajeme hlavně Wardogs, Hell Let Loose je naše historie.",
+    "breadcrumbHome": "Hlavní menu",
+    "viewsLabel": "Seznamy zápasů",
+    "views": {
+      "upcoming": "Nadcházející",
+      "results": "Výsledky"
+    },
+    "viewTab": "{label} ({formatted})",
+    "searchLabel": "Hledat soupeře a soutěže",
+    "searchPlaceholder": "Soupeř nebo soutěž",
+    "gameGroup": "Hra",
+    "all": "Vše",
+    "resultCount": "{count, plural, one {# zápas} few {# zápasy} many {# zápasu} other {# zápasů}}",
+    "caption": {
+      "upcoming": "Nadcházející zápasy",
+      "results": "Výsledky zápasů"
+    },
+    "columns": {
+      "start": "Datum a čas",
+      "match": "Zápas",
+      "competition": "Soutěž",
+      "status": "Stav",
+      "result": "Výsledek"
+    },
+    "timeZoneNote": "Všechny časy jsou uvedeny v časovém pásmu Europe/Prague (SEČ/SELČ).",
+    "emptyUpcomingTitle": "Zatím nejsou naplánované žádné zápasy.",
+    "emptyUpcomingBody": "Nové zápasy se tu objeví, jakmile je zveřejníme.",
+    "emptyResultsTitle": "Zatím nebyly zveřejněny žádné výsledky.",
+    "emptyResultsBody": "Odehrané zápasy se tu objeví po zveřejnění výsledku.",
+    "filteredEmptyTitle": "Těmto filtrům neodpovídají žádné výsledky.",
+    "filteredEmptyBody": "Zkuste jinou hru nebo hledaný výraz.",
+    "pageEmptyTitle": "Na této stránce nejsou žádné zápasy.",
+    "firstPage": "Přejít na první stránku",
+    "clearFilters": "Zrušit filtry",
+    "showResults": "Zobrazit výsledky",
+    "showUpcoming": "Zobrazit nadcházející zápasy",
+    "hllArchive": "Archiv zápasů HLL",
+    "loadError": "Zápasy se nepodařilo načíst.",
+    "retry": "Zkusit znovu"
+  },
+  "row": {
+    "valkyria": "Valkyria",
+    "versus": "vs.",
+    "originally": "Původně {date}"
+  },
+  "status": {
+    "scheduled": "Naplánováno",
+    "live": "Právě se hraje",
+    "postponed": "Odloženo",
+    "completed": "Odehráno",
+    "cancelled": "Zrušeno"
+  },
+  "outcome": {
+    "win": "Výhra",
+    "loss": "Prohra",
+    "draw": "Remíza",
+    "unknown": "Neznámý"
+  },
+  "verification": {
+    "provisional": "Předběžný výsledek",
+    "verified": "Ověřený výsledek"
+  },
+  "competition": {
+    "league": "Liga",
+    "tournament": "Turnaj",
+    "cup": "Pohár",
+    "friendly": "Přátelský zápas",
+    "scrim": "Tréninkový zápas",
+    "other": "Jiné"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  },
+  "gamesShort": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "HLL"
+  },
+  "result": {
+    "unknown": "Výsledek zatím nebyl zveřejněn",
+    "cancelled": "Zrušeno – bez výsledku, nepočítá se jako výhra ani prohra",
+    "pending": "Zatím neodehráno",
+    "scoreLabel": "Valkyria {valkyria}, soupeř {opponent}"
+  },
+  "detail": {
+    "back": "Zpět na zápasy",
+    "eyebrow": "Zápas",
+    "overview": "Přehled zápasu",
+    "openDetail": "Detail zápasu",
+    "competition": "Soutěž",
+    "start": "Datum a čas",
+    "originalStart": "Původní termín",
+    "status": "Stav",
+    "game": "Hra",
+    "season": "Sezóna",
+    "format": "Formát",
+    "bestOf": "Best of {count} (Bo{count})",
+    "teamSize": "Velikost týmu",
+    "result": "Výsledek",
+    "recap": "Reportáž",
+    "recapMissingTitle": "Reportáž není v češtině k dispozici",
+    "recapMissingBody": "V češtině zatím nebyla zveřejněna. Reportáže automaticky nepřekládáme.",
+    "recapNone": "K tomuto zápasu zatím nebyla zveřejněna žádná reportáž.",
+    "recapOther": {
+      "cs": "Přečíst českou reportáž",
+      "en": "Přečíst anglickou reportáž"
+    },
+    "rounds": "Mapy a kola",
+    "roundColumns": {
+      "ordinal": "#",
+      "map": "Mapa",
+      "mode": "Režim",
+      "side": "Strana",
+      "score": "Skóre",
+      "outcome": "Výsledek"
+    },
+    "links": "Odkazy",
+    "event": "Stránka akce",
+    "versusBanner": "Valkyria proti týmu {opponent}"
+  }
+}
