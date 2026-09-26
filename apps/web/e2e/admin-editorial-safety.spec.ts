@@ -77,7 +77,8 @@ test('match managers and members cannot use the editorial workspace, its server 
   // Capture a genuine save server-action request from an editor.
   await signInAs(context, { roles: ['editor'] });
   const documentId = await createPost(page, `[E2E] Oprávnění ${uniqueSuffix()}`);
-  await page.getByTestId('editor-title').fill('[E2E] Pokus o zápis');
+  // Unique title: the draft slug follows it and must not collide with parallel runs.
+  await page.getByTestId('editor-title').fill(`[E2E] Pokus o zápis ${uniqueSuffix()}`);
   const [actionRequest] = await Promise.all([
     page.waitForRequest((request) => request.method() === 'POST' && Boolean(request.headers()['next-action'])),
     page.getByTestId('editor-save').click(),
