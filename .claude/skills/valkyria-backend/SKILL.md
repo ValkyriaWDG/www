@@ -5,7 +5,7 @@ description: Implement or review Valkyria server use cases, queries, publication
 
 # Valkyria backend
 
-Apply the [working agreement](../../../AGENTS.md), inspect [current status](../../../docs/STATUS.md) and the actual package/scripts before choosing commands. The foundation does not yet imply a working API, schema, scheduler or integration.
+Apply the [working agreement](../../../AGENTS.md), inspect [current status](../../../docs/STATUS.md) and the actual package/scripts before choosing commands. Confirm in [status](../../../docs/STATUS.md) which APIs, schema, scheduler and integrations are implemented and verified; a documented contract is not proof of behavior.
 
 ## Intake
 

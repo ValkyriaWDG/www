@@ -9,10 +9,12 @@ records: Czech-default/English presentation does not duplicate shared domain ent
 ## Establish the target and tools
 
 Inspect the assigned change, current schema, generated migration metadata, SQL history,
-lockfile and package scripts. The planned owner is `packages/db`; the future explicit
-runner is `pnpm db:migrate`, bundled in the image as `scripts/migrate.mjs`. These names
-are requirements from [the implementation plan](../implementation/plan.md), not commands
-available in the current scaffold. Discover the actual implementation before running them.
+lockfile and package scripts. `packages/db` owns the Drizzle schema (`src/schema/`) and
+reviewed SQL (`drizzle/`); `pnpm db:generate` runs `drizzle-kit generate` (schema read
+only) and `pnpm db:migrate` runs the explicit runner (`packages/db/src/migrate.ts`, bundled
+in the image as `/app/scripts/migrate.mjs` with SQL in `/app/migrations`). The runner holds
+a PostgreSQL advisory lock, sets bounded `lock_timeout`/`statement_timeout`, applies each
+pending file once in a transaction and returns sanitized errors.
 
 Use the pinned Drizzle version and its matching migration tooling. Generate SQL from
 the intended schema change, then inspect it; generation does not establish correctness.

@@ -5,8 +5,9 @@ game-menu experience and the clan's Hell Let Loose heritage.
 
 **Target domain:** `valkyriawdg.cz` · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
 
-> Current stage: repository foundation and cloud implementation handoff.
-> The application, login, database migrations and deployable image are not implemented yet.
+> Current stage: application implementation (M1–M3) in progress on a task branch.
+> See [status](docs/STATUS.md) for what is implemented and verified; live Discord OAuth,
+> the final background video and production deployment remain operator inputs.
 
 ## Start here
 
@@ -42,8 +43,10 @@ inspect the actual inputs. Large game/video sources remain outside the repositor
 ## Structure
 
 ```text
-apps/                 Web application and optional Discord-worker boundaries
-packages/             Database and shared integration contracts
+apps/web/             Next.js application (routes, components, domain modules, CLIs, tests)
+apps/discord-worker/  Reserved optional Discord role-event worker (M4)
+packages/db/          Drizzle schema, reviewed SQL migrations and migration runner
+packages/contracts/   Reserved for integration contracts with real multiple consumers
 assets/               Clan logo and provenance manifest
 docs/product/         Scope and editorial requirements
 docs/design/          Visual specification, route map and reference captures
@@ -60,20 +63,33 @@ scripts/              Executable foundation checks
 .claude/skills/       Eight repository-owned skills for Claude Cloud and other agents
 ```
 
-## Verify the foundation
+## Develop and verify
 
-With Node 24 and Git available, from the repository root:
+Requirements: Node 24 (see `.nvmrc`), pnpm via Corepack (`packageManager` pins the
+version) and a disposable PostgreSQL (e.g. `docker compose -f infra/compose.dev.yaml up -d`).
+Copy `.env.example` to `apps/web/.env.local` and set at least `DATABASE_URL` and
+`BETTER_AUTH_SECRET` (≥32 random characters). Never use production credentials locally.
 
 ```sh
-node scripts/check-foundation.mjs
-node --test scripts/tests/*.test.mjs
-node scripts/check-commit-attribution.mjs
+pnpm install --frozen-lockfile
+pnpm db:migrate                       # explicit migration runner (never on app start)
+pnpm db:seed                          # idempotent production-safe seed (core pages, taxonomy)
+pnpm db:fixtures -- --allow-fixtures  # synthetic dev/test fixtures only
+pnpm dev                              # http://localhost:3000 → /cs
 ```
 
-There is no application dev server yet. Planned application commands are listed in
-[the implementation plan](docs/implementation/plan.md). CI checks the foundation now
-and activates real application checks when the web package is introduced. Container
-publication is explicitly disabled until application and operator setup are complete.
+| Command | Responsibility |
+|---|---|
+| `pnpm lint` / `pnpm typecheck` | ESLint (Next.js rules) and strict TypeScript incl. `packages/db` |
+| `pnpm test:unit` | Vitest: policy, i18n parity/ICU, routing rules, rich-text/editor schema, media/background logic |
+| `pnpm test:integration` | Vitest against real PostgreSQL (`DATABASE_URL`; creates `<db>_tpl`/`<db>_w*` clones) |
+| `pnpm build` | Next.js standalone build + bundled CLIs (`apps/web/dist/cli`) and migrations |
+| `pnpm test:e2e` | Playwright against the built standalone server and a disposable `<db>_e2e` database |
+| `docker build -f apps/web/Dockerfile .` | Non-root production image (see [deployment](docs/operations/deployment.md)) |
+| `pnpm check:foundation` / `pnpm test:foundation` | Repository hygiene, links, asset provenance and skill checks |
+
+CI runs all of the above plus a container startup/migration/health smoke test. Container
+publication stays disabled until the release gate in [deployment](docs/operations/deployment.md).
 
 ## Sources and license
 

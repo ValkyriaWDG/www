@@ -1,7 +1,8 @@
 # Build, publication and deployment
 
-Status: contract and inactive publication scaffold. No application image has been
-built, registry configured, server changed or domain deployed by this foundation.
+Status: the image build is implemented and smoke-tested in CI and in a cloud container;
+publication remains gated and disabled. No registry has been configured, no server changed
+and no domain deployed.
 
 ## Pipeline
 
@@ -38,14 +39,31 @@ never receive registry or production secrets; use `pull_request`, not privileged
 `pull_request_target` execution of untrusted code. Third-party actions are pinned to
 commit SHAs and maintained by Dependabot.
 
-## Required Docker implementation
+## Docker image (implemented)
 
-Claude must create `apps/web/Dockerfile` with a reproducible multi-stage build using
-the committed lockfile, Node 24 and Next.js standalone output. Run as a non-root user.
-Include only needed runtime files, approved assets and a bundled migration CLI
-`scripts/migrate.mjs` plus reviewed SQL. Do not install dependencies at container startup.
-Use `/app` as runtime working directory. No build argument or layer may contain a
-Discord client secret, database password, auth secret or registry credential.
+`apps/web/Dockerfile` is a multi-stage build from the repository root using the committed
+lockfile (`pnpm install --frozen-lockfile`), Node 24 (`node:24-bookworm-slim` pinned by
+digest; a registry mirror serving the same digest may be selected with
+`--build-arg NODE_IMAGE=…`) and Next.js standalone output. The runtime stage runs as
+`valkyria` (uid/gid 10001) in `/app`; application files are root-owned and read-only; only
+`/app/storage/editorial` (media volume) and `/app/apps/web/.next/cache` are writable.
+It contains the standalone server (`apps/web/server.js`), static assets, bundled CLIs in
+`/app/scripts/*.mjs` (`migrate.mjs`, `seed.mjs`, `publish-due.mjs`,
+`provision-local-admin.mjs`) and reviewed SQL in `/app/migrations`. Dependencies are never
+installed at container start and migrations never run on web start. No build argument or
+layer contains a secret; behind a TLS-intercepting egress proxy the build may receive the
+proxy CA only as a BuildKit secret (`--secret id=build_ca,src=…`), which is not persisted.
+`SOURCE_REVISION` sets the OCI revision label. CI builds the image (without publishing),
+runs the migration CLI twice (idempotency) and starts it read-only with `--cap-drop ALL`,
+then checks liveness, readiness, non-root uid and the `/` → `/cs` redirect.
+
+Runtime contract: `HOSTNAME=0.0.0.0`, `PORT=3000`; `GET /api/health/live` checks process
+liveness only; `GET /api/health/ready` checks configuration, database reachability (2 s
+timeout) and that the latest bundled migration is applied, returning sanitized check codes
+and 503 when not ready (verified: stopping PostgreSQL gives live 200 / ready 503, recovery
+returns 200 without restart). The Compose cache path `/app/apps/web/.next/cache` matches
+the image. SBOM/provenance and an image vulnerability scan are part of the publication
+workflow and release readiness; record reviewed exceptions there.
 
 The editorial module also requires persistent private media storage and a bundled
 `scripts/publish-due.mjs` runner for due posts. Configure an operator-owned minute timer
