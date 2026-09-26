@@ -63,6 +63,10 @@ COPY --from=build /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build /repo/apps/web/public ./apps/web/public
 COPY --from=build /repo/apps/web/dist/cli ./scripts
 COPY --from=build /repo/apps/web/dist/migrations ./migrations
+# External CLIs use a bare sharp import; expose the exact package already traced
+# by Next instead of copying host dependencies or installing anything at runtime.
+COPY --from=build /repo/apps/web/scripts/link-standalone-sharp.mjs /tmp/link-standalone-sharp.mjs
+RUN node /tmp/link-standalone-sharp.mjs /app && rm /tmp/link-standalone-sharp.mjs
 # Only the media volume and Next.js cache are writable by the non-root user.
 RUN mkdir -p /app/storage/editorial /app/apps/web/.next/cache \
  && chown -R valkyria:valkyria /app/storage /app/apps/web/.next/cache \

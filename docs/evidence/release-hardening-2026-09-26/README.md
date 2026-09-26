@@ -1,4 +1,29 @@
-# Release hardening local evidence — 2026-09-26
+# Release hardening evidence — 2026-09-26
+
+## Linux follow-up: budgets passed, runtime correction pending
+
+[CI run 36265109815](https://github.com/ValkyriaWDG/www/actions/runs/36265109815)
+tested PR head `6d48258926aed74b5e1b27bac93b1143f47520b3` through merge checkout
+`5603528d928640211e088443e6aaba858842ecff`. The
+[compact evidence record](linux-attempt-36265109815.json) identifies the exact artifacts,
+raw-report hashes and three inspected capture hashes. All nine Linux navigations passed:
+
+| Route | Median LCP | Maximum CLS | Maximum transfer |
+|---|---:|---:|---:|
+| `/cs` | 1976 ms | 0.049400 | 503139 bytes |
+| `/cs/news` | 860 ms | 0.002521 | 492609 bytes |
+| Synthetic published article | 992 ms | 0.005101 | 585727 bytes |
+
+Both same-source Docker variants built. The disposable rehearsal failed while loading
+synthetic fixtures: the standalone pnpm graph contained `sharp`, but external operational
+CLIs could not resolve its bare package import. Cleanup passed. Native runtime acceptance,
+image rollback/restore, scan comparison and SBOM were not reached; this run is not green.
+
+The correction links only the exact pinned, already-traced package during the image
+build, rejecting absent, ambiguous or mismatched packages. Two regression tests and an
+actual Windows standalone 8 × 8 WebP encode passed; 32 foundation tests passed locally.
+The corrected Linux images still require a new exact-source CI run. This evidence does
+not assert results for that later commit. No registry publication or deployment occurred.
 
 ## Follow-up: mobile font-swap regression
 

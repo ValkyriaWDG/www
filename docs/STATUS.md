@@ -23,9 +23,13 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 Issue #26 candidate: [release hardening](operations/release-hardening.md) adds cold
 mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
-disposable previous-image/database rollback rehearsals. [Local evidence](evidence/release-hardening-2026-09-26/README.md)
-proves the browser budgets and 27 tooling tests. Linux image/scan/rollback acceptance
-is pending the exact PR head's CI; this candidate has not been published or deployed.
+disposable previous-image/database rollback rehearsals. [Evidence](evidence/release-hardening-2026-09-26/README.md)
+records nine passing Linux budget samples and both successful image builds in run
+36265109815 (merge checkout `5603528d928640211e088443e6aaba858842ecff`). Its rehearsal
+failed because an external fixture CLI could not resolve the already-traced `sharp`
+package; cleanup passed. The bounded package-link correction and 32 tooling tests pass
+locally. Corrected Linux native runtime, scan, rollback and restore acceptance remain
+pending a new exact-source CI run. This candidate has not been published or deployed.
 The live deployment and its recorded limitations above remain unchanged.
 
 ```text
@@ -71,7 +75,9 @@ Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
 - Live SSO/admin configuration and acceptance remain deferred. Production host, DNS,
   proxy/TLS, registry publication, media delivery and `publish-due` timer were subsequently
   verified in the first-deployment evidence linked above.
-- Rollback rehearsal (1.0.0 is the first release) and page-weight/Web Vitals budgets.
+- The initial 1.0.0 validation did not include rollback rehearsal or page-weight/Web
+  Vitals budgets. Issue #26's subsequent Linux budget proof and pending runtime acceptance
+  are recorded in the checkpoint above.
 
 ## Media
 

@@ -37,6 +37,9 @@ const password = randomBytes(20).toString('hex');
 const databaseUrl = (name) => `postgresql://test:${password}@database:5432/${name}`;
 const fixtureCli = path.join(root, 'apps/web/dist/dev-cli/fixtures.mjs');
 assert(existsSync(fixtureCli), 'Build the application and its dev-only fixture CLI first');
+const socialRoutePresent = existsSync(
+  path.join(root, 'apps/web/src/app/api/social/[locale]/[kind]/[[...slug]]/route.ts'),
+);
 const expectedRevision =
   process.env.GITHUB_SHA ||
   execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
@@ -50,7 +53,7 @@ const report = {
   cleanup: {},
   limits: [
     'Disposable synthetic data only; no production DB, media, registry publication or deployment.',
-    'Current release has no new production migration. Synthetic nullable-column expansion is a separate test probe, never bundled as application schema.',
+    'Applied production migration count is recorded in the candidate migration step. Synthetic nullable-column expansion is a separate test probe, never bundled as application schema.',
     'Image rollback compatibility must be rerun for every release; passing this candidate does not qualify future destructive migrations.',
   ],
 };
@@ -239,8 +242,18 @@ function nativeRuntimeProof(app) {
     for(const file of ['/usr/local/bin/npm','/usr/local/bin/npx','/usr/local/bin/corepack','/usr/local/bin/yarn','/usr/local/bin/yarnpkg'])if(fs.existsSync(file))throw Error('package manager');
     requireApp('sharp')({create:{width:8,height:8,channels:3,background:'#ff8000'}}).webp().toBuffer().then(async buffer=>{
       const metadata=await requireApp('sharp')(buffer).metadata();if(metadata.width!==8||metadata.height!==8)throw Error('sharp');
-      console.log(JSON.stringify({uid:process.getuid(),node:process.version,protectedRoot,writableMediaAndCache:true,packageManagersAbsent:true,sharp:{format:metadata.format,width:metadata.width,height:metadata.height}}))
-    }).catch(()=>process.exit(1));
+      const socialImages=${socialRoutePresent} ? {status:'passed',renders:[]} : {status:'not-applicable',reason:'Social image source route is absent from this revision'};
+      if(${socialRoutePresent})for(const locale of ['cs','en']){
+        const response=await fetch('http://127.0.0.1:3000/api/social/'+locale+'/site',{signal:AbortSignal.timeout(15000)});
+        if(response.status!==200||!/^image\\/png(?:;|$)/i.test(response.headers.get('content-type')||''))throw Error('social '+locale+' response');
+        const png=Buffer.from(await response.arrayBuffer());if(png.length>5*1024*1024)throw Error('social '+locale+' size');
+        const image=await requireApp('sharp')(png).metadata();
+        if(image.format!=='png'||image.width!==1200||image.height!==630)throw Error('social '+locale+' dimensions');
+        const decoded=await requireApp('sharp')(png).raw().toBuffer();if(!decoded.length)throw Error('social '+locale+' decode');
+        socialImages.renders.push({locale,status:200,format:image.format,width:image.width,height:image.height,bytes:png.length,sha256:require('node:crypto').createHash('sha256').update(png).digest('hex'),decoded:true});
+      }
+      console.log(JSON.stringify({uid:process.getuid(),node:process.version,protectedRoot,writableMediaAndCache:true,packageManagersAbsent:true,sharp:{format:metadata.format,width:metadata.width,height:metadata.height},socialImages}))
+    }).catch(error=>{console.error(String(error.message||'native runtime probe failed').slice(0,1000));process.exit(1)});
   `,
     ]),
   );

@@ -117,12 +117,18 @@ The runner:
    plus the delivered published media hash.
 4. Applies candidate migrations explicitly, verifies a repeated run applies zero,
    and adds a separate nullable-column compatibility probe. That probe is test-only and
-   is not a production migration. This issue introduces no production schema change.
+   is not a production migration. The report records the actual number of production
+   migrations applied; integrating another feature may make this count nonzero.
 5. Starts both runtime variants with read-only roots, dropped capabilities and no new
    privileges. It checks Node 24, UID 10001, denied root writes, writable media/cache,
-   absent package managers, real sharp WebP encoding, configured health command,
+absent package managers, real sharp WebP encoding, configured health command,
    public routes and byte-identical published media. Candidate DB disconnection must
    produce readiness 503 while liveness stays 200, then recover after reconnection.
+   When the candidate source includes the social image route, both candidate variants
+   must also serve and fully decode the Czech and English site PNGs at 1200 × 630,
+   proving traced font/image availability inside each container. Source absence is an
+   explicit `not-applicable` result; the immutable older image is not required to have
+   the newer route.
 6. Starts the previous image against the candidate-migrated database and verifies the
    public routes/media and unchanged post-migration table fingerprints.
 7. Restores the pre-upgrade dump to a separate fresh database, verifies all table
