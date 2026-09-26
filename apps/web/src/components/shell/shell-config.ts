@@ -1,18 +1,19 @@
 import 'server-only';
-import { getServerEnv } from '@/lib/env';
+import { getSiteConfig } from '@/lib/site-config';
 import { parseDiscordInvite, parseExternalHttpsUrl } from './external-links';
 
-export type ShellLinks = { discordUrl: string | null; hllUrl: string | null };
+export type ShellLinks = { discordUrl: string | null; hllUrl: string | null; hllArchiveUrl: string | null };
 
 /**
- * Validated external destinations for shell/home links. A missing or invalid value
- * becomes `null` (explicit unavailable state), never a substitute community link.
+ * Validated external destinations for shell/home links (environment defaults plus admin
+ * settings overrides). A missing or invalid value becomes `null` (explicit unavailable
+ * state), never a substitute community link.
  */
-export function getShellLinks(): ShellLinks {
-  try {
-    const env = getServerEnv();
-    return { discordUrl: parseDiscordInvite(env.DISCORD_INVITE_URL), hllUrl: parseExternalHttpsUrl(env.HLL_WEBSITE_URL) };
-  } catch {
-    return { discordUrl: null, hllUrl: null };
-  }
+export async function getShellLinks(): Promise<ShellLinks> {
+  const config = await getSiteConfig();
+  return {
+    discordUrl: parseDiscordInvite(config?.discordInviteUrl),
+    hllUrl: parseExternalHttpsUrl(config?.hllWebsiteUrl),
+    hllArchiveUrl: parseExternalHttpsUrl(config?.hllMatchArchiveUrl),
+  };
 }

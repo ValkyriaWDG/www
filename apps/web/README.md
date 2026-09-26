@@ -15,5 +15,6 @@ the authorized administration. Commands and environment: see the [root README](.
 | `src/cli/*` | Operational CLIs bundled to `dist/cli` (migrate, seed, fixtures, publish-due, provision-local-admin) |
 | `tests/`, `e2e/` | PostgreSQL integration harness and Playwright journeys |
 
-Route files stay thin; UI never queries tables directly; database/auth modules import
+Next.js 16 APIs differ from older releases: consult the version-matched guides in
+`node_modules/next/dist/docs/` before using a framework API. Route files stay thin; UI never queries tables directly; database/auth modules import
 `server-only`. The documentation reference captures are never bundled as runtime assets.

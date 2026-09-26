@@ -6,6 +6,9 @@ import { HomeMenu } from '@/components/shell/home/home-menu';
 import type { NextMatch } from '@/components/shell/home/next-match-strip';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { routing } from '@/i18n/routing';
+import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
+import { getNextPublicMatch } from '@/modules/matches/queries';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
   const { locale } = await params;
@@ -19,8 +22,24 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const { discordUrl } = getShellLinks();
-  // INTEGRATION: next published fixture from modules/matches
-  const nextMatch: NextMatch | null = null;
+  const [{ discordUrl }, nextMatch] = await Promise.all([getShellLinks(), loadNextMatch()]);
   return <HomeMenu discordUrl={discordUrl} nextMatch={nextMatch} />;
+}
+
+/** Earliest published upcoming fixture, or null (no strip) when none exists or data is unavailable. */
+async function loadNextMatch(): Promise<NextMatch | null> {
+  try {
+    if (!getServerEnv().DATABASE_URL) return null;
+    const next = await getNextPublicMatch(getDb());
+    if (!next) return null;
+    return {
+      href: `/matches/${next.slug}`,
+      opponent: next.opponentName,
+      game: next.game,
+      startsAt: next.startsAt,
+      competition: next.competitionName,
+    };
+  } catch {
+    return null;
+  }
 }

@@ -99,6 +99,9 @@ the source contains only [variable names](../../.env.example). Use a dedicated P
 database/user and constrained schema privileges. No Docker socket or host filesystem access.
 
 Serve `https://valkyriawdg.cz`; decide `www` redirect/canonical behavior before DNS setup.
+The reverse proxy must overwrite (not append to) `X-Forwarded-For` with the single client
+IP: authentication rate limits key on it, so a forwarded chain would merge clients into
+one bucket and a client-supplied value could evade limits.
 Register the precise Discord callback origin. Apply production cookie/origin checks,
 CSP, trusted-proxy handling and no-store policies for login/admin traffic. The old
 `valkyriahll.cz` domain must not be changed as a side effect.

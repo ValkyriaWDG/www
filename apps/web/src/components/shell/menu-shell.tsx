@@ -20,8 +20,7 @@ import styles from './shell.module.css';
  */
 export async function MenuShell({ account, children }: { account: ShellAccount; children: ReactNode }) {
   const t = await getTranslations('common.a11y');
-  const media = getBackgroundMedia();
-  const links = getShellLinks();
+  const [media, links] = await Promise.all([getBackgroundMedia(), getShellLinks()]);
   return (
     <ShellFrame>
       <a className="skip-link" href="#main-content">

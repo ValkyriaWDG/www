@@ -57,14 +57,19 @@ function sources(media: { mp4Url: string | null; webmUrl: string | null }): Back
  * site still renders with the environment defaults. A `background.media` override
  * replaces the whole background configuration.
  */
-export async function getPublicSiteConfig(db: Executor, defaults: SiteConfigDefaults = siteConfigDefaultsFromEnv()): Promise<PublicSiteConfig> {
-  const config: PublicSiteConfig = {
+/** Public configuration from environment defaults only (no database available). */
+export function siteConfigFromDefaults(defaults: SiteConfigDefaults): PublicSiteConfig {
+  return {
     discordInviteUrl: defaults.discordInviteUrl,
     communityLinks: [],
     hllWebsiteUrl: defaults.hllWebsiteUrl,
     hllMatchArchiveUrl: defaults.hllMatchArchiveUrl,
     background: { posterUrl: defaults.background.posterUrl, sources: sources(defaults.background), focalPoint: { x: 50, y: 50 } },
   };
+}
+
+export async function getPublicSiteConfig(db: Executor, defaults: SiteConfigDefaults = siteConfigDefaultsFromEnv()): Promise<PublicSiteConfig> {
+  const config: PublicSiteConfig = siteConfigFromDefaults(defaults);
   let rows: { key: string; value: unknown }[] = [];
   try {
     rows = await db

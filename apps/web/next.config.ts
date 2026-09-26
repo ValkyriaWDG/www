@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   // Separate build directories let parallel local checks avoid clobbering each other.
   distDir: process.env.NEXT_DIST_DIR || '.next',
   poweredByHeader: false,
+  // The repository's AGENTS.md/CLAUDE.md govern agents; do not generate app-level copies.
+  agentRules: false,
   reactStrictMode: true,
   // Workspace package with TypeScript sources.
   transpilePackages: ['@valkyria/db'],
