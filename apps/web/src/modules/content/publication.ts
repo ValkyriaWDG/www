@@ -1,5 +1,5 @@
 import 'server-only';
-import { asset, contentTranslation, slugRedirect, type Executor, type Locale } from '@valkyria/db';
+import { asset, contentTranslation, publicationSchedule, slugRedirect, type Executor, type Locale } from '@valkyria/db';
 import { and, eq, inArray, isNotNull, ne } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
 import type { Actor } from '@/modules/access/types';
@@ -10,6 +10,7 @@ import { parseInput, translationVersionSchema, type TranslationVersionInput } fr
 import { isRichTextEmpty, parseRichTextDocument } from './rich-text/schema';
 import { isValidSlug } from './slug';
 import {
+  ACTIVE_SCHEDULE_STATES,
   assertNotArchived,
   assertVersion,
   coverAssetIds,
@@ -159,18 +160,28 @@ function mapLiveSlugRace<T>(promise: Promise<T>): Promise<T> {
   });
 }
 
-/** Publishes the CURRENT draft revision of exactly this translation. */
+/**
+ * Publishes the CURRENT draft revision of exactly this translation. An active schedule
+ * of the same translation is superseded (cancelled, audited) in the same transaction so
+ * an older scheduled revision can never overwrite this newer manual publication later.
+ */
 export async function publishTranslation(
   db: Executor,
   actor: Actor,
   rawInput: TranslationVersionInput,
   deps: PublicationDeps = {},
-): Promise<PublishResult> {
+): Promise<PublishResult & { supersededScheduleId: string | null }> {
   await authorize(db, actor, 'content.publish', 'write', { action: 'content.publish', entityType: 'content_translation' });
   const input = parseInput(translationVersionSchema, rawInput);
   const now = deps.now?.() ?? new Date();
   return mapLiveSlugRace(
     inTransaction(db, async (tx) => {
+      // Lock order shared with the publisher: schedule → translation → document.
+      const [schedule] = await tx
+        .select()
+        .from(publicationSchedule)
+        .where(and(eq(publicationSchedule.translationId, input.translationId), inArray(publicationSchedule.state, ACTIVE_SCHEDULE_STATES)))
+        .for('update');
       const translation = await lockTranslation(tx, input.translationId);
       assertVersion(translation.version, input.expectedVersion);
       const document = await readDocument(tx, translation.documentId, 'share');
@@ -179,6 +190,30 @@ export async function publishTranslation(
       const revision = await readRevision(tx, translation.id, translation.draftRevisionId);
       await assertPublishable(tx, document, revision);
       const result = await applyPublication(tx, { translation, revision, now });
+      if (schedule) {
+        await tx
+          .update(publicationSchedule)
+          .set({
+            state: 'cancelled',
+            cancelledAt: now,
+            cancelledBy: actor.kind === 'principal' ? actor.userId : null,
+            lastError: 'superseded_by_manual_publish',
+            claimExpiresAt: null,
+            updatedAt: now,
+          })
+          .where(eq(publicationSchedule.id, schedule.id));
+        await recordAudit(tx, {
+          actor,
+          action: 'content.schedule.cancel',
+          outcome: 'success',
+          capability: 'content.publish',
+          entityType: 'content_document',
+          entityId: document.id,
+          translationId: translation.id,
+          locale: translation.locale,
+          summary: { scheduleId: schedule.id, revisionId: schedule.revisionId, previousState: schedule.state, reason: 'superseded_by_manual_publish' },
+        });
+      }
       await recordAudit(tx, {
         actor,
         action: 'content.publish',
@@ -188,9 +223,10 @@ export async function publishTranslation(
         entityId: document.id,
         translationId: translation.id,
         locale: translation.locale,
-        summary: { revisionId: revision.id, slug: result.slug, previousSlug: result.previousSlug, mode: 'manual' },
+        summary: { revisionId: revision.id, slug: result.slug, previousSlug: result.previousSlug, mode: 'manual', supersededScheduleId: schedule?.id ?? null },
       });
       return {
+        supersededScheduleId: schedule?.id ?? null,
         documentId: document.id,
         translationId: translation.id,
         locale: translation.locale,

@@ -37,7 +37,7 @@ import {
   type RestoreRevisionInput,
   type SaveDraftInput,
 } from './inputs';
-import { emptyDocument } from './rich-text/schema';
+import { emptyDocument, parseRichTextDocument } from './rich-text/schema';
 import { SLUG_MAX_LENGTH, slugify } from './slug';
 import {
   ACTIVE_SCHEDULE_STATES,
@@ -100,6 +100,12 @@ function mapSlugRace<T>(promise: Promise<T>): Promise<T> {
 
 function emptyFields(slug: string, title = ''): RevisionFields {
   return { title, slug, excerpt: '', body: emptyDocument(), cover: null, authorLabel: '', seoTitle: '', seoDescription: '' };
+}
+
+/** Image asset IDs referenced by a stored body (falls back to the stored list if unparsable). */
+function bodyAssetIds(body: unknown, fallback: readonly string[]): string[] {
+  const parsed = parseRichTextDocument(body);
+  return parsed.ok ? parsed.assetIds : [...fallback];
 }
 
 function normalizeCover(cover: { assetId: string; alt: string; caption: string; decorative: boolean } | null | undefined): CoverSnapshot | null {
@@ -320,7 +326,7 @@ export async function saveDraft(db: Executor, actor: Actor, rawInput: SaveDraftI
         document = updated!;
       }
 
-      const bodyAssets = parsedBody ? parsedBody.assetIds : (current?.assetIds ?? []).filter((id) => id !== current?.cover?.assetId);
+      const bodyAssets = parsedBody ? parsedBody.assetIds : bodyAssetIds(base.body, current?.assetIds ?? []);
       await assertDraftAssets(tx, [...bodyAssets, ...coverAssetIds(fields.cover)]);
       const taxonomy = await snapshotTaxonomy(tx, translation.locale, document);
 

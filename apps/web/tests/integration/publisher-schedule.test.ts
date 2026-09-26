@@ -175,6 +175,21 @@ describe('scheduled update of a live article', () => {
   });
 });
 
+describe('manual publication with a pending schedule', () => {
+  it('supersedes the older scheduled revision instead of letting it overwrite later', async () => {
+    const post = await livePost();
+    const scheduledDraft = await saveDraft(t.db, editor, { translationId: post.translationId, expectedVersion: post.version, fields: { title: 'Naplánovaná verze' } });
+    const schedule = await scheduleTranslation(t.db, editor, { translationId: post.translationId, dueAt: at(60).toISOString() }, { now: () => NOW });
+    const fix = await saveDraft(t.db, editor, { translationId: post.translationId, expectedVersion: scheduledDraft.version, fields: { title: 'Okamžitá oprava' } });
+    const published = await publishTranslation(t.db, editor, { translationId: post.translationId, expectedVersion: fix.version }, { now: () => at(1) });
+    expect(published.supersededScheduleId).toBe(schedule.id);
+    expect(await scheduleRow(schedule.id)).toMatchObject({ state: 'cancelled', lastError: 'superseded_by_manual_publish' });
+    expect((await runPublisher(t.db, { now: () => at(61), verifyIssuer: authorized })).claimed).toBe(0);
+    const detail = await getPublishedNewsBySlug('cs', post.slug, t.db);
+    expect(detail?.kind === 'article' && detail.article.title).toBe('Okamžitá oprava');
+  });
+});
+
 describe('publisher runner', () => {
   it('publishes a due schedule exactly once under three concurrent runners', async () => {
     const post = await livePost();
