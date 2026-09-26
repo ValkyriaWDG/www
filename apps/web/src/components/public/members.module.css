@@ -210,3 +210,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Keyboard focus ring drawn inside the row (never clipped by the scroll region), inside the amber selection outline. */
+.table tbody a:focus-visible::after {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -6px;
+}
