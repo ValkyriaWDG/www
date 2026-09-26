@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-26",
+  "manifest": "background-media.json",
+  "bundle": {
+    "filename": "valkyria-background-media-2026-09-26.zip",
+    "bytes": 6917607,
+    "sha256": "b45c3cb6a7c2b5284e991f65ebf02ed3920d1cfb2d73b8208c6f06a6093ea8aa"
+  },
+  "channel": {
+    "type": "github-draft-release-asset",
+    "repository": "ValkyriaWDG/www",
+    "draftTagName": "media-background-2026-09-26",
+    "reviewUrl": "https://github.com/ValkyriaWDG/www/releases",
+    "assetApiUrl": "https://api.github.com/repos/ValkyriaWDG/www/releases/assets/590749257",
+    "access": "Authenticated repository users with sufficient write access; not anonymous/public delivery. Find the named draft in Releases or use gh release download with draftTagName. GitHub changes temporary untagged URLs when a draft is edited.",
+    "verified": "Saved as draft, uploaded state and GitHub digest checked; authenticated download and local SHA-256 verified. No public Git tag was created.",
+    "cloudSessionAccess": "Not tested; the owner may instead attach the identical ZIP directly to Claude Cloud."
+  },
+  "runtime": {
+    "origin": null,
+    "deployed": false,
+    "note": "Download/attachment transport only. Configure verified files on the actual preview or separately approved production media origin."
+  }
+}

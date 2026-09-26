@@ -35,12 +35,23 @@ Do not promote gameplay statistics as official clan statistics.
 ## Cloud media handover
 
 The cloud agent receives committed reference images but cannot read a Steam folder
-on the owner's PC. Video is still pending at foundation time. Use the
-[video pipeline](video-pipeline.md) and [local inventory](../research/wardogs-local-assets.md).
+on the owner's PC. The current requirement is the
+[full-length 2026-09-26 delivery](background-media-full-2026-09-26.md); its report
+tracks preparation and verification separately. The earlier shortened candidate is
+superseded. Transfer access must still be established for each cloud task. Use the
+[video pipeline](video-pipeline.md) and
+[local inventory](../research/wardogs-local-assets.md).
 Owner delivery should include the approved MP4/WebM/poster, stable download location
 accessible to the task, SHA-256, file metadata and usage approval/provenance.
 Do not commit expiring signed URLs or access tokens. Do not claim a final background
 is complete when only a CSS fallback or an unrelated placeholder is present.
+
+Preserve the entire available AVI timeline in every runtime video rendition. The
+owner rejected the 15-second edited loop. Encoding, resolution/frame-rate reduction,
+audio removal and metadata stripping are permitted; shortening, fades, reversal and
+artificial loop edits are not. Optimize size without removing time. Record unfinished
+source-index limitations and the unconfirmed AVI-to-Bink identity honestly. Technical
+conversion does not change the third-party provenance or usage status.
 
 If source assets remain unavailable, build the complete media component against a
 neutral original CSS fallback and synthetic test clip. Finish every independent part

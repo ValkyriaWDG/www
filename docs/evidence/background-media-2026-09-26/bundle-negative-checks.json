@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-09-26T13:53:06.218Z",
+  "checks": [
+    {
+      "case": "One changed media byte, unchanged length",
+      "result": "Rejected: SHA-256 mismatch"
+    },
+    {
+      "case": "Changed manifest identity",
+      "result": "Rejected: manifest differs from checked-in delivery"
+    }
+  ]
+}

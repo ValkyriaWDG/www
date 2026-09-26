@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-09-26T14:16:28.227Z",
+  "manifestSha256": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388",
+  "verifierSha256": "c7fdd95c75375d7872319e058eb47e97aedce2e4e4408fbc32d58239243f6d7b",
+  "results": [
+    {
+      "case": "Changed byte in same-size derivative",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "case": "Bundle manifest changed without changing repository trust anchor",
+      "exitCode": 1,
+      "rejected": true
+    }
+  ]
+}

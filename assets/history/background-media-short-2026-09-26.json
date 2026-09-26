@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "wardogs-menu-2026-09-26",
+  "recordedAt": "2026-09-26",
+  "status": "encoded-and-locally-verified; cloud application integration and production hosting are separate",
+  "source": {
+    "filename": "UI_frontendvideo_v_4K.avi",
+    "bytes": 287362713428,
+    "sha256": "7778762d9660aa89b3ee85fc0182661dc7e315572c1faf90d98bf3f611fab1f7",
+    "width": 3840,
+    "height": 2160,
+    "fps": "60/1",
+    "codec": "rawvideo",
+    "pixelFormat": "bgr24",
+    "audioCodec": "pcm_s16le",
+    "reportedHeaderDurationSeconds": 0.866667,
+    "physicalFrameCount": 11547,
+    "physicalDurationSeconds": 192.45,
+    "durationMethod": "Read-only traversal of RIFF frame chunk headers, not a complete source decode.",
+    "durationWarning": "AVI duration/index headers are inconsistent. The final AVIX contains 152 complete frames with unfinished length/index fields; selected first 16 seconds decoded successfully. No full-source decode is claimed.",
+    "stableSizeAndMtimeDuringHash": true
+  },
+  "provenance": {
+    "origin": "Owner-provided RAD Video Tools AVI export of Wardogs menu footage; scene visually matches supplied main-menu reference 09.",
+    "use": "Prepared at the owner request for Valkyria website background and cloud preview.",
+    "rights": "Third-party Wardogs game imagery; copyright remains with its owners. Excluded from the Apache code license; no general redistribution license asserted.",
+    "originalUnmodified": true
+  },
+  "transform": {
+    "sourceWindowSeconds": [
+      0,
+      16
+    ],
+    "outputStartAtSourceSeconds": 1,
+    "outputDurationSeconds": 15,
+    "loop": "Source [1,16) followed by a 1-second overlapping fade from [15,16) to [0,1); wrap returns to source time 1. No reverse motion.",
+    "processing": [
+      "60 to 30 fps",
+      "Lanczos downscale, aspect ratio 16:9 retained",
+      "SDR BT.709 limited-range YUV420P",
+      "Audio/subtitle/data/chapter and inherited metadata removal"
+    ],
+    "ffmpegVersion": "9.0.2-essentials_build-www.gyan.dev",
+    "toolPackageSha256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba"
+  },
+  "delivery": {
+    "bundle": "valkyria-background-media-2026-09-26.zip",
+    "productionOrigin": null,
+    "previewDirectory": "apps/web/public/media/background/",
+    "note": "Transfer derivative files and verify digests. Never commit videos or use draft/download URLs as production media URLs."
+  },
+  "assets": [
+    {
+      "role": "primary",
+      "filename": "wardogs-menu-1080p-557223e28449.mp4",
+      "mimeType": "video/mp4",
+      "bytes": 3957214,
+      "sha256": "557223e2844910c73614c0b0772bab5df1e3e9349d9b381c7f9c0b2d20b0153e",
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "durationSeconds": 15,
+      "frames": 450,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "h264Level": 40,
+      "faststart": true
+    },
+    {
+      "role": "compact",
+      "filename": "wardogs-menu-720p-4976aeadb297.mp4",
+      "mimeType": "video/mp4",
+      "bytes": 1068473,
+      "sha256": "4976aeadb297853a5353b36c3a7a6acae6ef2df0c97bd684eec19f164c084e9b",
+      "width": 1280,
+      "height": 720,
+      "codec": "h264",
+      "durationSeconds": 15,
+      "frames": 450,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "h264Level": 31,
+      "faststart": true
+    },
+    {
+      "role": "alternate",
+      "filename": "wardogs-menu-1080p-865e3f2e8b52.webm",
+      "mimeType": "video/webm",
+      "bytes": 1708459,
+      "sha256": "865e3f2e8b52dc8845e847b9ea6f1891a5fd4b6e78afda591e2d0a6f090e25ac",
+      "width": 1920,
+      "height": 1080,
+      "codec": "vp9",
+      "durationSeconds": 15,
+      "frames": 450,
+      "fps": "30/1",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0
+    },
+    {
+      "role": "poster",
+      "filename": "wardogs-menu-poster-64b3059d7225.webp",
+      "mimeType": "image/webp",
+      "bytes": 182728,
+      "sha256": "64b3059d72256dde3b8fe483d1a8b2079c05ce4c98217db96a29952196375366",
+      "width": 1920,
+      "height": 1080,
+      "codec": "webp",
+      "videoFrame": 0
+    }
+  ]
+}

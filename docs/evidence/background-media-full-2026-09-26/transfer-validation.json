@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-09-26T14:19:45.280Z",
+  "zip": {
+    "filename": "valkyria-background-media-full-2026-09-26.zip",
+    "bytes": 84333534,
+    "sha256": "bea4f8426482da1a284ea8d34df9e0aba4c7b211135b9de156d6c9e848c34f17"
+  },
+  "localExtraction": "All four derivative files verified against the repository manifest after ZIP extraction.",
+  "draft": {
+    "id": 397261072,
+    "tagName": "media-background-full-2026-09-26",
+    "isDraft": true,
+    "assetState": "uploaded",
+    "githubDigest": "sha256:bea4f8426482da1a284ea8d34df9e0aba4c7b211135b9de156d6c9e848c34f17",
+    "assetApiUrl": "https://api.github.com/repos/ValkyriaWDG/www/releases/assets/590796329"
+  },
+  "authenticatedDownloadSha256": "bea4f8426482da1a284ea8d34df9e0aba4c7b211135b9de156d6c9e848c34f17",
+  "publicTagExists": false,
+  "desktopCopyVerifiedSha256": "bea4f8426482da1a284ea8d34df9e0aba4c7b211135b9de156d6c9e848c34f17",
+  "cloudSessionAccessTested": false,
+  "productionDeployed": false
+}
