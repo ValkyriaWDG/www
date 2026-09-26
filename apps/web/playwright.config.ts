@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, devices } from '@playwright/test';
 import { e2eDatabaseUrl } from './e2e/support/database-url';
 
@@ -46,7 +48,8 @@ export default defineConfig({
       BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET || 'e2e-only-ephemeral-secret-not-for-production-000',
       DATABASE_URL: e2eDatabaseUrl(),
       E2E_ADMIN_DATABASE_URL: process.env.DATABASE_URL ?? '',
-      EDITORIAL_MEDIA_ROOT: process.env.E2E_MEDIA_ROOT || '.local/e2e-media',
+      // Absolute: the fixtures CLI (apps/web) and the standalone server (its own cwd) must share it.
+      EDITORIAL_MEDIA_ROOT: path.resolve(process.env.E2E_MEDIA_ROOT || path.join(path.dirname(fileURLToPath(import.meta.url)), '.local/e2e-media')),
       NEXT_TELEMETRY_DISABLED: '1',
       // Synthetic Discord configuration: snowflakes and token are fake and only valid
       // against the local mock server started by e2e/support/start-server.mjs.
