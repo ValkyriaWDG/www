@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
-import { type BackgroundSource, type FocalPoint, focalPointToObjectPosition } from './background-policy';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { type BackgroundSource, type FocalPoint, focalPointToObjectPosition, isVideoLayerVisible } from './background-policy';
 import { getMediaStatus, registerBackgroundController, setMediaStatus, useBackgroundPlayback } from './background-store';
 import styles from './background.module.css';
 
@@ -21,6 +21,8 @@ export function BackgroundMedia({ posterUrl, sources, focalPoint }: BackgroundMe
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasSources = sources.length > 0;
   const { decision, state } = useBackgroundPlayback(hasSources);
+  // Set once the element has presented a frame; keeps it visible through later rebuffering.
+  const [hasPresentedFrame, setHasPresentedFrame] = useState(false);
   const objectPosition = focalPointToObjectPosition(focalPoint);
 
   const attachSources = useCallback(
@@ -82,7 +84,12 @@ export function BackgroundMedia({ posterUrl, sources, focalPoint }: BackgroundMe
   }, [decision.play, hasSources, play]);
 
   return (
-    <div className={styles.media} data-background-state={state} data-background-reason={decision.reason}>
+    <div
+      className={styles.media}
+      data-background-state={state}
+      data-background-reason={decision.reason}
+      data-video-visible={isVideoLayerVisible(state, hasPresentedFrame) ? '' : undefined}
+    >
       {posterUrl ? (
         // Arbitrary approved poster origin; decorative, sized by CSS (object-fit: cover).
         // eslint-disable-next-line @next/next/no-img-element
@@ -101,7 +108,10 @@ export function BackgroundMedia({ posterUrl, sources, focalPoint }: BackgroundMe
           disablePictureInPicture
           disableRemotePlayback
           style={{ objectPosition }}
-          onPlaying={() => setMediaStatus('playing')}
+          onPlaying={() => {
+            setHasPresentedFrame(true);
+            setMediaStatus('playing');
+          }}
           onWaiting={() => {
             if (getMediaStatus() === 'playing') setMediaStatus('loading');
           }}

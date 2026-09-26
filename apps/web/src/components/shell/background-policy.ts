@@ -82,6 +82,15 @@ export function deriveBackgroundState(decision: PlaybackDecision, media: MediaSt
   return 'loading';
 }
 
+/**
+ * Whether the video layer covers the poster. It shows while playing and keeps its current
+ * frame through a transient rebuffer (`loading`) once a frame has been presented, so a
+ * stall never flashes back to the poster. Paused, blocked and unavailable show the poster.
+ */
+export function isVideoLayerVisible(state: BackgroundState, hasPresentedFrame: boolean): boolean {
+  return state === 'playing' || (state === 'loading' && hasPresentedFrame);
+}
+
 /** Preference written when the visitor presses the background control; `null` = no-op. */
 export function nextPreferenceOnToggle(state: BackgroundState): Exclude<BackgroundPreference, 'auto'> | null {
   if (state === 'playing' || state === 'loading') return 'paused';

@@ -29,7 +29,7 @@
   pointer-events: none;
 }
 
-.media[data-background-state='playing'] .video {
+.media[data-video-visible] .video {
   opacity: 1;
 }
 

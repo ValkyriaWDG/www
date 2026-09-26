@@ -4,6 +4,7 @@ import {
   deriveBackgroundState,
   focalPointToObjectPosition,
   isSlowEffectiveType,
+  isVideoLayerVisible,
   type MotionEnvironment,
   nextPreferenceOnToggle,
   parseBackgroundPreference,
@@ -108,5 +109,21 @@ describe('helpers', () => {
     expect(isSlowEffectiveType('slow-2g')).toBe(true);
     expect(isSlowEffectiveType('4g')).toBe(false);
     expect(isSlowEffectiveType(undefined)).toBe(false);
+  });
+});
+
+describe('isVideoLayerVisible', () => {
+  it('shows the video while playing and keeps its frame through a rebuffer after the first frame', () => {
+    expect(isVideoLayerVisible('playing', false)).toBe(true);
+    expect(isVideoLayerVisible('playing', true)).toBe(true);
+    expect(isVideoLayerVisible('loading', true)).toBe(true);
+  });
+
+  it('keeps the poster before the first frame and whenever motion is not running', () => {
+    expect(isVideoLayerVisible('loading', false)).toBe(false);
+    for (const state of ['paused', 'blocked', 'unavailable'] as const) {
+      expect(isVideoLayerVisible(state, true)).toBe(false);
+      expect(isVideoLayerVisible(state, false)).toBe(false);
+    }
   });
 });
