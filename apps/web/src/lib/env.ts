@@ -58,6 +58,8 @@ const serverEnvSchema = z.object({
   BACKGROUND_VIDEO_MP4_URL: optionalUrl.default(''),
   BACKGROUND_VIDEO_WEBM_URL: optionalUrl.default(''),
   BACKGROUND_POSTER_URL: optionalUrl.default(''),
+  /** Comma-separated HTTPS origins permitted for admin-configured background media (also added to the CSP). */
+  BACKGROUND_MEDIA_ALLOWED_ORIGINS: z.string().default(''),
   ROLE_SYNC_SIGNING_SECRET: optionalSecret,
 });
 

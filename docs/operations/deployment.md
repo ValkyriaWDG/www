@@ -49,7 +49,8 @@ digest; a registry mirror serving the same digest may be selected with
 `/app/storage/editorial` (media volume) and `/app/apps/web/.next/cache` are writable.
 It contains the standalone server (`apps/web/server.js`), static assets, bundled CLIs in
 `/app/scripts/*.mjs` (`migrate.mjs`, `seed.mjs`, `publish-due.mjs`,
-`provision-local-admin.mjs`) and reviewed SQL in `/app/migrations`. Dependencies are never
+`provision-local-admin.mjs`) and reviewed SQL in `/app/migrations`. The synthetic fixture
+loader is bundled separately (`apps/web/dist/dev-cli`) and is not copied into the image. Dependencies are never
 installed at container start and migrations never run on web start. No build argument or
 layer contains a secret; behind a TLS-intercepting egress proxy the build may receive the
 proxy CA only as a BuildKit secret (`--secret id=build_ca,src=…`), which is not persisted.

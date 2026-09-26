@@ -17,15 +17,15 @@ await admin.query(`drop database if exists "${name}" with (force)`);
 await admin.query(`create database "${name}"`);
 await admin.end();
 
-const cli = (file, args = []) => {
-  const script = path.join(appDir, 'dist', 'cli', file);
+const cli = (file, args = [], dir = 'cli') => {
+  const script = path.join(appDir, 'dist', dir, file);
   if (!existsSync(script)) return false;
   execFileSync(process.execPath, [script, ...args], { stdio: 'inherit', env: process.env, cwd: appDir });
   return true;
 };
 if (!cli('migrate.mjs')) throw new Error('dist/cli/migrate.mjs missing; run "pnpm build" first.');
 cli('seed.mjs');
-cli('fixtures.mjs', ['--allow-fixtures']);
+cli('fixtures.mjs', ['--allow-fixtures'], 'dev-cli');
 
 const children = [];
 const discordMock = path.join(appDir, 'e2e', 'support', 'discord-mock.mjs');

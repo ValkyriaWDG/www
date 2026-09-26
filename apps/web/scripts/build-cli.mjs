@@ -11,29 +11,43 @@ const outdir = path.join(root, 'dist', 'cli');
 rmSync(path.join(root, 'dist'), { recursive: true, force: true });
 mkdirSync(outdir, { recursive: true });
 
-const entries = readdirSync(path.join(root, 'src', 'cli'))
-  .filter((file) => file.endsWith('.ts') && !file.endsWith('.test.ts') && file !== 'paths.ts')
-  .map((file) => path.join(root, 'src', 'cli', file));
+// Development/test-only CLIs are bundled separately so the production image never ships them.
+const DEV_ONLY = new Set(['fixtures.ts']);
+const sources = readdirSync(path.join(root, 'src', 'cli')).filter(
+  (file) => file.endsWith('.ts') && !file.endsWith('.test.ts') && file !== 'paths.ts',
+);
+const entries = sources.filter((file) => !DEV_ONLY.has(file)).map((file) => path.join(root, 'src', 'cli', file));
+const devEntries = sources.filter((file) => DEV_ONLY.has(file)).map((file) => path.join(root, 'src', 'cli', file));
 
-await build({
-  entryPoints: entries,
-  outdir,
-  outExtension: { '.js': '.mjs' },
-  bundle: true,
-  platform: 'node',
-  target: 'node24',
-  format: 'esm',
-  sourcemap: false,
-  legalComments: 'eof',
-  tsconfig: path.join(root, 'tsconfig.json'),
-  // CommonJS dependencies bundled into ESM need a require shim.
-  banner: { js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);" },
-  alias: { 'server-only': path.join(root, 'tests', 'support', 'empty-module.ts') },
-  external: ['sharp', 'pg-native'],
-  logLevel: 'info',
-});
+for (const [group, outputDir] of [
+  [entries, outdir],
+  [devEntries, path.join(root, 'dist', 'dev-cli')],
+]) {
+  if (group.length === 0) continue;
+  await bundle(group, outputDir);
+}
+
+async function bundle(entryPoints, outputDir) {
+  await build({
+    entryPoints,
+    outdir: outputDir,
+    outExtension: { '.js': '.mjs' },
+    bundle: true,
+    platform: 'node',
+    target: 'node24',
+    format: 'esm',
+    sourcemap: false,
+    legalComments: 'eof',
+    tsconfig: path.join(root, 'tsconfig.json'),
+    // CommonJS dependencies bundled into ESM need a require shim.
+    banner: { js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);" },
+    alias: { 'server-only': path.join(root, 'tests', 'support', 'empty-module.ts') },
+    external: ['sharp', 'pg-native'],
+    logLevel: 'info',
+  });
+}
 
 const migrations = path.resolve(root, '../../packages/db/drizzle');
 if (!existsSync(path.join(migrations, 'meta', '_journal.json'))) throw new Error('Missing migrations to bundle.');
 cpSync(migrations, path.join(root, 'dist', 'migrations'), { recursive: true });
-console.log(`Bundled ${entries.length} CLI(s) and migrations into dist/.`);
+console.log(`Bundled ${entries.length} CLI(s), ${devEntries.length} dev-only CLI(s) and migrations into dist/.`);

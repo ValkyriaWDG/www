@@ -21,4 +21,14 @@ describe('buildContentSecurityPolicy', () => {
     expect(csp).not.toContain('insecure.example.org');
     expect(csp).not.toContain('upgrade-insecure-requests');
   });
+
+  it('adds allowlisted background media origins to media-src and img-src', () => {
+    const csp = buildContentSecurityPolicy('n', {
+      NODE_ENV: 'production',
+      BACKGROUND_MEDIA_ALLOWED_ORIGINS: 'https://cdn.example.org, http://plain.example.org,not a url',
+    });
+    expect(csp).toContain("media-src 'self' https://cdn.example.org");
+    expect(csp).toContain("img-src 'self' data: blob: https://cdn.example.org");
+    expect(csp).not.toContain('plain.example.org');
+  });
 });

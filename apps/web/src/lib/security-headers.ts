@@ -4,8 +4,10 @@
  */
 export function buildContentSecurityPolicy(nonce: string, env: NodeJS.ProcessEnv = process.env): string {
   const isDev = env.NODE_ENV === 'development';
-  const mediaOrigins = originsOf([env.BACKGROUND_VIDEO_MP4_URL, env.BACKGROUND_VIDEO_WEBM_URL]);
-  const imageOrigins = originsOf([env.BACKGROUND_POSTER_URL]);
+  // Background media may come from env or from admin settings restricted to allowlisted origins.
+  const allowlisted = (env.BACKGROUND_MEDIA_ALLOWED_ORIGINS ?? '').split(',').map((value) => value.trim());
+  const mediaOrigins = originsOf([env.BACKGROUND_VIDEO_MP4_URL, env.BACKGROUND_VIDEO_WEBM_URL, ...allowlisted]);
+  const imageOrigins = originsOf([env.BACKGROUND_POSTER_URL, ...allowlisted]);
   const httpsSite = (env.APP_URL ?? '').startsWith('https://');
   const directives = [
     "default-src 'self'",
