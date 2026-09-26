@@ -1,25 +1,42 @@
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
- * The verified full-length 2026-09-26 Wardogs menu delivery (manifest
- * `assets/background-media.json` at ValkyriaWDG/www#20 ff4adbd). Every rendition keeps the
- * whole available source sequence (5,774 frames at 30 fps, ~192.47 s, no audio). Binaries
- * are third-party imagery delivered outside Git into the ignored
- * `apps/web/public/media/background/` directory; they are never committed. Each filename
- * carries the first 12 hex digits of its SHA-256, which the checks below enforce.
+ * The verified full-length 2026-09-26 Wardogs menu delivery. The checked-in manifest
+ * (`assets/background-media.json`) is the trust anchor: every rendition keeps the whole
+ * available source sequence (5,774 frames at 30 fps, ~192.47 s, no audio). Binaries are
+ * third-party imagery delivered outside Git into the ignored
+ * `apps/web/public/media/background/` directory; they are never committed.
  */
-export const BACKGROUND_DELIVERY = {
-  mp4: 'wardogs-menu-full-1080p-619b27261fc9.mp4',
-  compactMp4: 'wardogs-menu-full-720p-040c3de21de3.mp4',
-  webm: 'wardogs-menu-full-1080p-b7aa9380dd06.webm',
-  poster: 'wardogs-menu-full-poster-f31f6824f259.webp',
-} as const;
+type ManifestAsset = {
+  role: 'primary' | 'compact' | 'alternate' | 'poster';
+  filename: string;
+  bytes: number;
+  sha256: string;
+  durationSeconds?: number;
+};
 
-/** Container duration recorded in the manifest for every rendition. */
-export const DELIVERY_DURATION_SECONDS = 192.466;
+const MANIFEST_PATH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../assets/background-media.json');
+const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8')) as { assets: ManifestAsset[] };
+
+function byRole(role: ManifestAsset['role']): ManifestAsset {
+  const asset = manifest.assets.find((entry) => entry.role === role);
+  if (!asset) throw new Error(`assets/background-media.json has no ${role} rendition.`);
+  return asset;
+}
+
+export const BACKGROUND_DELIVERY: Readonly<Record<'mp4' | 'compactMp4' | 'webm' | 'poster', string>> = {
+  mp4: byRole('primary').filename,
+  compactMp4: byRole('compact').filename,
+  webm: byRole('alternate').filename,
+  poster: byRole('poster').filename,
+};
+
+/** Container duration recorded in the manifest for the primary rendition. */
+export const DELIVERY_DURATION_SECONDS = byRole('primary').durationSeconds ?? Number.NaN;
 
 export const MEDIA_PATH_PREFIX = '/media/background/';
 export const MEDIA_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../public/media/background');
@@ -41,7 +58,7 @@ export function sha256(bytes: Uint8Array): string {
 
 export type DeliveredFile = { filename: string; bytes: number; sha256: string };
 
-/** Reads every delivered file and checks its digest against its filename; throws with guidance otherwise. */
+/** Reads every delivered file and checks its size and SHA-256 against the manifest; throws with guidance otherwise. */
 export async function readDelivery(): Promise<DeliveredFile[]> {
   const files: DeliveredFile[] = [];
   for (const filename of Object.values(BACKGROUND_DELIVERY)) {
@@ -55,7 +72,9 @@ export async function readDelivery(): Promise<DeliveredFile[]> {
       );
     }
     const digest = sha256(bytes);
+    const expected = manifest.assets.find((entry) => entry.filename === filename)!;
     if (!digest.startsWith(filenameDigestPrefix(filename))) throw new Error(`SHA-256 of ${filename} does not match its filename.`);
+    if (digest !== expected.sha256 || bytes.length !== expected.bytes) throw new Error(`${filename} differs from assets/background-media.json.`);
     files.push({ filename, bytes: bytes.length, sha256: digest });
   }
   return files;

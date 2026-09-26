@@ -19,8 +19,8 @@ pointers start poster-only and attach no video source until the visitor presses 
 
 Delivered binaries are third-party game imagery. They are never committed:
 `apps/web/public/media/background/` is ignored by Git and excluded from the Docker build
-context. The full-length 2026-09-26 delivery (manifest `assets/background-media.json`,
-delivery record `assets/background-media-delivery.json`, both from ValkyriaWDG/www#20)
+context. The [full-length 2026-09-26 delivery](../assets/background-media-full-2026-09-26.md)
+([manifest](../../assets/background-media.json), [transfer record](../../assets/background-media-delivery.json))
 keeps the whole available sequence (5,774 frames at 30 fps, ~192.47 s, no audio) in a
 1080p WebM, 1080p and 720p MP4 files, plus a WebP poster (frame at 2 s). Each file is
 named with its SHA-256 prefix. It supersedes the earlier 15-second candidate.
@@ -29,8 +29,7 @@ For a local or cloud preview:
 
 1. Obtain the ZIP through the recorded transfer channel and compare its SHA-256.
 2. Inspect entries (flat names only), extract into `.local/`, and run
-   `node scripts/media/verify-bundle.mjs <extracted-dir>` (also from ValkyriaWDG/www#20) against the
-   checked-in manifest.
+   `node scripts/media/verify-bundle.mjs <extracted-dir>` against the checked-in manifest.
 3. Copy the four derivatives into `apps/web/public/media/background/` unchanged.
 4. Configure the preview's own origin, for example
    `BACKGROUND_VIDEO_WEBM_URL=http://localhost:3000/media/background/<webm-file>`, plus the
