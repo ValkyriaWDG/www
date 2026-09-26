@@ -8,6 +8,7 @@
   },
   "overview": {
     "metaTitle": "Administrace",
+    "eyebrow": "Správa webu",
     "title": "Administrace",
     "intro": "Přihlášen(a) jako {name}. Zobrazují se jen části, které smíte používat; každá z nich vaše oprávnění ověřuje znovu.",
     "modulesTitle": "Vaše části administrace",
@@ -16,6 +17,10 @@
       "news": {
         "title": "Novinky",
         "description": "Psaní, úpravy, plánování a zveřejňování novinek."
+      },
+      "content": {
+        "title": "Stránky",
+        "description": "Úpravy a zveřejňování stránek o klanu, komunitě a ochraně soukromí v obou jazycích."
       },
       "media": {
         "title": "Média",
@@ -37,6 +42,14 @@
         "title": "Auditní záznam",
         "description": "Přehled privilegovaných změn a odepřených přístupů."
       }
+    },
+    "items": {
+      "loadFailed": "Redakční položky se nepodařilo načíst. Zkuste stránku obnovit.",
+      "draftsTitle": "Moje nezveřejněné koncepty",
+      "draftsEmpty": "Nemáte žádné nezveřejněné koncepty.",
+      "schedulesTitle": "Naplánované publikace",
+      "schedulesEmpty": "Nic není naplánováno.",
+      "needsReapproval": "Vyžaduje nové schválení"
     }
   },
   "denied": {

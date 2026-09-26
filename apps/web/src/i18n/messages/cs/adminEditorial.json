@@ -1,1 +1,367 @@
-{}
+{
+  "common": {
+    "cancel": "Zrušit",
+    "close": "Zavřít",
+    "back": "Zpět",
+    "working": "Probíhá…",
+    "uiLanguage": "Jazyk rozhraní",
+    "contentLanguage": "Upravovaný jazyk obsahu",
+    "languages": {
+      "cs": "Čeština",
+      "en": "Angličtina"
+    }
+  },
+  "states": {
+    "missing": "Chybí",
+    "draft": "Koncept",
+    "published": "Publikováno",
+    "published_with_changes": "Publikováno + nezveřejněné změny",
+    "scheduled": "Naplánováno",
+    "published_update_scheduled": "Publikováno · naplánovaná aktualizace",
+    "archived": "Archivováno"
+  },
+  "warnings": {
+    "overdue": "Plán je po termínu – publikační úloha neproběhla",
+    "blocked": "Plán je zablokovaný – vyžaduje nové schválení",
+    "failed": "Naplánovaná publikace selhala"
+  },
+  "games": {
+    "wardogs": "Wardogs",
+    "hell-let-loose": "Hell Let Loose"
+  },
+  "publisher": {
+    "stalledTitle": "Plánované zveřejňování stojí",
+    "stalledBody": "{count, plural, one {# naplánovaná publikace je} few {# naplánované publikace jsou} other {# naplánovaných publikací je}} po termínu, protože publikační úloha v poslední době neproběhla. Dokud neproběhne, nic se nezveřejní; požádejte správce serveru o kontrolu časovače.",
+    "attentionTitle": "Plány vyžadují pozornost",
+    "attentionBody": "{count, plural, one {# naplánovaná publikace je zablokovaná nebo selhala} few {# naplánované publikace jsou zablokované nebo selhaly} other {# naplánovaných publikací je zablokovaných nebo selhalo}}. Neproběhnou, dokud je v editoru znovu neschválí někdo s oprávněním zveřejňovat."
+  },
+  "list": {
+    "metaTitle": "Správa novinek",
+    "eyebrow": "Administrace",
+    "title": "Novinky",
+    "lead": "Příspěvky, oznámení a reporty ze zápasů. Česká a anglická verze se zveřejňují nezávisle.",
+    "newPost": "NOVÝ PŘÍSPĚVEK",
+    "filterState": "Filtrovat podle stavu",
+    "all": "Vše",
+    "filterLocale": "Filtrovat podle jazyka",
+    "allLanguages": "Oba jazyky",
+    "untitled": "(bez názvu)",
+    "columns": {
+      "title": "Název",
+      "author": "Autor",
+      "category": "Kategorie",
+      "modified": "Upraveno",
+      "cs": "Čeština",
+      "en": "Angličtina",
+      "actions": "Akce"
+    },
+    "searchLabel": "Hledat příspěvky",
+    "searchPlaceholder": "Název nebo adresa…",
+    "summary": "{count, plural, one {# příspěvek} few {# příspěvky} other {# příspěvků}}",
+    "emptyFilteredTitle": "Filtrům neodpovídá žádný příspěvek",
+    "emptyFilteredBody": "Změňte hledání nebo zrušte filtry a zobrazte všechny příspěvky.",
+    "emptyTitle": "Zatím žádné příspěvky",
+    "emptyBody": "Vytvořte první příspěvek; zůstane soukromým konceptem, dokud ho nezveřejníte.",
+    "clearFilters": "Zrušit filtry",
+    "caption": "Příspěvky s odděleným stavem české a anglické verze",
+    "scheduledFor": "Termín {time}"
+  },
+  "rowActions": {
+    "edit": "Upravit",
+    "more": "Akce",
+    "dialogTitle": "Akce příspěvku",
+    "editLocale": "{locale, select, cs {Upravit češtinu} en {Upravit angličtinu} other {Upravit verzi}}",
+    "preview": "{locale, select, cs {Náhled češtiny} en {Náhled angličtiny} other {Náhled verze}}",
+    "publish": "{locale, select, cs {Publikovat češtinu} en {Publikovat angličtinu} other {Publikovat verzi}}",
+    "update": "{locale, select, cs {Aktualizovat češtinu} en {Aktualizovat angličtinu} other {Aktualizovat verzi}}",
+    "unpublish": "{locale, select, cs {Zrušit zveřejnění češtiny} en {Zrušit zveřejnění angličtiny} other {Zrušit zveřejnění}}",
+    "duplicate": "Duplikovat",
+    "archive": "Archivovat",
+    "unarchive": "Obnovit z archivu",
+    "confirmPublishTitle": "{locale, select, cs {Zveřejnit českou verzi?} en {Zveřejnit anglickou verzi?} other {Zveřejnit?}}",
+    "confirmUpdateTitle": "{locale, select, cs {Aktualizovat zveřejněnou českou verzi?} en {Aktualizovat zveřejněnou anglickou verzi?} other {Aktualizovat?}}",
+    "confirmPublishBody": "{locale, select, cs {Aktuální uložený český koncept se stane veřejným. Anglická verze se nemění.} en {Aktuální uložený anglický koncept se stane veřejným. Česká verze se nemění.} other {Aktuální uložený koncept se stane veřejným.}}",
+    "confirmUnpublishTitle": "{locale, select, cs {Zrušit zveřejnění české verze?} en {Zrušit zveřejnění anglické verze?} other {Zrušit zveřejnění?}}",
+    "confirmUnpublishBody": "{locale, select, cs {Český článek zmizí z veřejného webu. Koncepty a revize zůstanou; anglická verze se nemění.} en {Anglický článek zmizí z veřejného webu. Koncepty a revize zůstanou; česká verze se nemění.} other {Článek zmizí z veřejného webu.}}",
+    "confirmArchiveTitle": "Archivovat příspěvek?",
+    "confirmArchiveBody": "Příspěvek zmizí z veřejného webu v obou jazycích a aktivní plány se zruší. Později ho můžete obnovit z archivu.",
+    "confirmUnarchiveTitle": "Obnovit příspěvek z archivu?",
+    "confirmUnarchiveBody": "Zveřejněné jazykové verze budou znovu veřejné.",
+    "confirmDuplicateTitle": "Duplikovat příspěvek?",
+    "confirmDuplicateBody": "Z aktuálních konceptů obou jazyků vznikne nový nezveřejněný příspěvek."
+  },
+  "new": {
+    "metaTitle": "Nový příspěvek",
+    "title": "Nový příspěvek",
+    "lead": "Zvolte jazyk, ve kterém píšete, a pracovní název. Příspěvek se uloží jako soukromý koncept.",
+    "failed": "Příspěvek se nepodařilo vytvořit",
+    "languageLabel": "Jazyk obsahu",
+    "languageHint": "Jde o jazyk samotného příspěvku. Rozhraní zůstane v jazyce: {ui}.",
+    "czechHint": "Hlavní jazyk webu.",
+    "englishHint": "Anglický příspěvek lze zveřejnit i bez české verze.",
+    "titleLabel": "Název ({language})",
+    "titleHint": "Později ho můžete změnit; podle něj se navrhne adresa (slug).",
+    "titleRequired": "Zadejte název.",
+    "creating": "Vytváření konceptu…",
+    "cancel": "Zrušit",
+    "submit": "{locale, select, cs {Vytvořit český koncept} en {Vytvořit anglický koncept} other {Vytvořit koncept}}"
+  },
+  "missing": {
+    "failed": "Překlad se nepodařilo přidat",
+    "title": "{locale, select, cs {Česká verze zatím neexistuje} en {Anglická verze zatím neexistuje} other {Tento překlad zatím neexistuje}}",
+    "body": "{locale, select, cs {Přidáním vznikne prázdný český koncept. Nic se automaticky nekopíruje ani nepřekládá a nic se nezveřejní.} en {Přidáním vznikne prázdný anglický koncept. Nic se automaticky nekopíruje ani nepřekládá a nic se nezveřejní.} other {Přidáním vznikne prázdný koncept.}}",
+    "add": "{locale, select, cs {Přidat český překlad} en {Přidat anglický překlad} other {Přidat překlad}}",
+    "adding": "Přidávání…",
+    "back": "{locale, select, cs {Zpět na českou verzi} en {Zpět na anglickou verzi} other {Přejít zpět}}"
+  },
+  "editor": {
+    "metaTitle": "Úprava příspěvku",
+    "heading": "Úprava příspěvku",
+    "untitled": "Příspěvek bez názvu",
+    "tabs": {
+      "label": "Jazyky obsahu",
+      "add": "{locale, select, cs {Přidat český překlad} en {Přidat anglický překlad} other {Přidat překlad}}",
+      "addHint": "Nový překlad začíná jako prázdný koncept; nic se nekopíruje ani strojově nepřekládá."
+    },
+    "archived": {
+      "title": "Příspěvek je archivován",
+      "body": "Na veřejném webu je skrytý v obou jazycích a nelze ho upravovat. Pro pokračování ho obnovte z archivu."
+    },
+    "conflict": {
+      "title": "{locale, select, cs {Českou verzi mezitím uložil někdo jiný} en {Anglickou verzi mezitím uložil někdo jiný} other {Tuto verzi mezitím uložil někdo jiný}}",
+      "body": "Vaše změny se NEULOŽILY a zůstávají v editoru. Automatické ukládání je pozastaveno. Prohlédněte si novější verzi a pak ji buď načtěte (vaše neuložené změny se zahodí), nebo ji přepište svou verzí.",
+      "server": "Novější verze: „{title}“, uložil(a) {author}, {time}.",
+      "reload": "Načíst nejnovější verzi (zahodit mé změny)",
+      "review": "Náhled novější verze",
+      "overwrite": "Přepsat mou verzí"
+    },
+    "save": {
+      "dirty": "Neuložené změny",
+      "saving": "Ukládání…",
+      "saved": "Koncept uložen {time}",
+      "failed": "Uložení se nezdařilo",
+      "conflict": "Konflikt verzí – neuloženo",
+      "invalid": "Koncept nelze uložit – opravte zvýrazněná pole",
+      "clean": "Poslední uložený koncept: {time}",
+      "cleanNew": "Zatím bez změn",
+      "retry": "Zkusit znovu",
+      "keptInMemory": "Váš text zůstává v tomto editoru; nic se nezveřejnilo. Zkuste to znovu, případně si důležitý text před odchodem zkopírujte."
+    },
+    "notices": {
+      "reloadFailed": "Nejnovější verzi se nepodařilo načíst. Váš text se nezměnil.",
+      "overwritten": "{locale, select, cs {Vaše česká verze byla uložena přes novější koncept.} en {Vaše anglická verze byla uložena přes novější koncept.} other {Vaše verze byla uložena.}}",
+      "actionFailed": "Akce se nezdařila",
+      "published": "{locale, select, cs {Česká verze je zveřejněna} en {Anglická verze je zveřejněna} other {Verze zveřejněna}}",
+      "openLive": "Otevřít zveřejněný článek {path}",
+      "publishFailed": "{locale, select, cs {Česká verze nebyla zveřejněna} en {Anglická verze nebyla zveřejněna} other {Nezveřejněno}}",
+      "unpublished": "{locale, select, cs {Česká verze už není veřejná} en {Anglická verze už není veřejná} other {Zveřejnění zrušeno}}",
+      "scheduled": "{locale, select, cs {Publikace české verze je naplánována} en {Publikace anglické verze je naplánována} other {Publikace je naplánována}}",
+      "scheduleFailed": "{locale, select, cs {Publikaci české verze se nepodařilo naplánovat} en {Publikaci anglické verze se nepodařilo naplánovat} other {Nenaplánováno}}",
+      "scheduleCancelled": "{locale, select, cs {Plánovaná publikace české verze je zrušena; zveřejněná verze se nemění} en {Plánovaná publikace anglické verze je zrušena; zveřejněná verze se nemění} other {Plán zrušen}}",
+      "reapproved": "{locale, select, cs {Plán české verze je znovu schválen} en {Plán anglické verze je znovu schválen} other {Plán znovu schválen}}",
+      "restored": "{locale, select, cs {Revize byla obnovena do českého konceptu. Zveřejněná verze se nezmění, dokud nezveřejníte.} en {Revize byla obnovena do anglického konceptu. Zveřejněná verze se nezmění, dokud nezveřejníte.} other {Revize byla obnovena do konceptu.}}",
+      "archived": "Příspěvek je archivován",
+      "unarchived": "Příspěvek je obnoven z archivu"
+    },
+    "confirm": {
+      "unpublishTitle": "{locale, select, cs {Zrušit zveřejnění české verze?} en {Zrušit zveřejnění anglické verze?} other {Zrušit zveřejnění?}}",
+      "unpublishBody": "{locale, select, cs {Český článek zmizí z veřejného webu. Koncepty a revize zůstanou; anglická verze se nemění.} en {Anglický článek zmizí z veřejného webu. Koncepty a revize zůstanou; česká verze se nemění.} other {Článek zmizí z veřejného webu.}}",
+      "cancelScheduleTitle": "{locale, select, cs {Zrušit plánovanou publikaci české verze?} en {Zrušit plánovanou publikaci anglické verze?} other {Zrušit plán?}}",
+      "cancelScheduleBody": "{locale, select, cs {V naplánovaném čase se nic nezveřejní. Aktuální zveřejněná česká verze (pokud existuje) zůstane přesně taková, jaká je.} en {V naplánovaném čase se nic nezveřejní. Aktuální zveřejněná anglická verze (pokud existuje) zůstane přesně taková, jaká je.} other {V naplánovaném čase se nic nezveřejní.}}",
+      "cancelScheduleConfirm": "Zrušit plán",
+      "restoreTitle": "{locale, select, cs {Obnovit tuto revizi do českého konceptu?} en {Obnovit tuto revizi do anglického konceptu?} other {Obnovit tuto revizi?}}",
+      "restoreBody": "Revize, kterou uložil(a) {author} ({time}), se stane novým konceptem. Zveřejněná verze se změní až po zveřejnění.",
+      "restoreConfirm": "Obnovit do konceptu",
+      "restoreDiscards": "Vaše neuložené změny v editoru budou nahrazeny.",
+      "archiveTitle": "Archivovat příspěvek?",
+      "archiveBody": "Příspěvek zmizí z veřejného webu v obou jazycích a aktivní plány se zruší. Později ho lze obnovit.",
+      "overwriteTitle": "{locale, select, cs {Přepsat novější český koncept?} en {Přepsat novější anglický koncept?} other {Přepsat novější koncept?}}",
+      "overwriteBody": "Vaše verze nahradí novější koncept, který uložil někdo jiný. Jeho revize zůstane v historii a lze ji obnovit."
+    },
+    "actions": {
+      "save": "{locale, select, cs {Uložit český koncept} en {Uložit anglický koncept} other {Uložit koncept}}",
+      "preview": "{locale, select, cs {Náhled češtiny} en {Náhled angličtiny} other {Náhled verze}}",
+      "publish": "{locale, select, cs {Publikovat češtinu} en {Publikovat angličtinu} other {Publikovat verzi}}",
+      "update": "{locale, select, cs {Aktualizovat češtinu} en {Aktualizovat angličtinu} other {Aktualizovat verzi}}",
+      "unpublish": "{locale, select, cs {Zrušit zveřejnění češtiny} en {Zrušit zveřejnění angličtiny} other {Zrušit zveřejnění}}",
+      "archive": "Archivovat příspěvek",
+      "unarchive": "Obnovit z archivu"
+    },
+    "fields": {
+      "title": "Název",
+      "titlePlaceholder": "Název příspěvku",
+      "body": "{locale, select, cs {Text (čeština)} en {Text (angličtina)} other {Text}}",
+      "slug": "Adresa (slug)",
+      "slugHint": "Veřejná adresa: {path}. Malá písmena bez diakritiky, číslice a pomlčky.",
+      "slugFromTitle": "Vytvořit z názvu",
+      "slugRedirect": "Po zveřejnění se stará adresa /{old} přesměruje na novou.",
+      "slugFixed": "u hlavních stránek pevná",
+      "excerpt": "Perex",
+      "excerptHint": "Krátké shrnutí pro seznam novinek a výsledky vyhledávání. Povinné pro zveřejnění.",
+      "excerptHintPage": "Nepovinné krátké shrnutí pro výsledky vyhledávání.",
+      "author": "Podpis autora",
+      "authorHint": "Zobrazuje se veřejně. Použijte schválené jméno, nikdy e-mail ani ID účtu.",
+      "seoTitle": "SEO titulek",
+      "seoTitleHint": "Když zůstane prázdný, použije se název příspěvku.",
+      "seoDescription": "SEO popis",
+      "counter": "{count} / {max}"
+    },
+    "panel": {
+      "label": "Dokument a publikace",
+      "publication": "Publikace",
+      "live": "Zveřejněná verze",
+      "notLive": "Není veřejné",
+      "publishedAt": "Naposledy zveřejněno",
+      "changes": "Koncept",
+      "hasChanges": "Obsahuje nezveřejněné změny",
+      "noChanges": "Shodný se zveřejněnou verzí",
+      "neverPublished": "Dosud nezveřejněno",
+      "autosaveNote": "Koncept se ukládá automaticky pár sekund poté, co přestanete psát. Automatické ukládání nikdy nezveřejňuje.",
+      "schedule": "Plánování",
+      "document": "Dokument",
+      "cover": "Titulní obrázek",
+      "taxonomy": "Kategorie, štítky a hra",
+      "seo": "Vyhledávače (SEO)",
+      "revisions": "Historie revizí",
+      "danger": "Archivace"
+    },
+    "cover": {
+      "hint": "Titulní obrázek se zobrazuje v seznamu novinek a nad článkem. Obrázky do textu vkládejte tlačítkem obrázku v panelu nástrojů.",
+      "none": "Bez titulního obrázku",
+      "change": "Změnit obrázek",
+      "choose": "Vybrat obrázek",
+      "remove": "Odebrat obrázek",
+      "alt": "{locale, select, cs {Alternativní text obrázku (čeština)} en {Alternativní text obrázku (angličtina)} other {Alternativní text obrázku}}",
+      "decorative": "Dekorativní obrázek (bez alternativního textu)",
+      "caption": "{locale, select, cs {Popisek obrázku (čeština)} en {Popisek obrázku (angličtina)} other {Popisek obrázku}}",
+      "pickerTitle": "Vybrat titulní obrázek"
+    },
+    "images": {
+      "pickerTitle": "Vložit obrázek do textu"
+    },
+    "taxonomy": {
+      "shared": "Kategorie, štítky a hra platí pro celý příspěvek (oba jazyky). Jejich popisky se zobrazují v jazyce každé verze.",
+      "category": "Kategorie",
+      "noCategory": "Bez kategorie",
+      "tags": "Štítky",
+      "noTags": "Zatím nejsou definované žádné štítky.",
+      "game": "Hra",
+      "noGame": "Bez konkrétní hry"
+    },
+    "archive": {
+      "hint": "Archivace skryje příspěvek v obou jazycích a zruší plány. Lze ho později obnovit."
+    }
+  },
+  "schedule": {
+    "states": {
+      "pending": "Naplánováno",
+      "claimed": "Právě se zveřejňuje",
+      "blocked": "Zablokováno",
+      "completed": "Dokončeno",
+      "cancelled": "Zrušeno",
+      "failed": "Selhalo"
+    },
+    "overdue": "Po termínu",
+    "dueAt": "Zveřejní se",
+    "zone": "Časové pásmo",
+    "issuer": "Naplánoval(a)",
+    "liveStays": "{locale, select, cs {Aktuální zveřejněná česká verze zůstane do té doby veřejná.} en {Aktuální zveřejněná anglická verze zůstane do té doby veřejná.} other {Zveřejněná verze zůstane do té doby veřejná.}}",
+    "privateUntilDue": "{locale, select, cs {Česká verze zůstane do té doby soukromá.} en {Anglická verze zůstane do té doby soukromá.} other {Verze zůstane do té doby soukromá.}}",
+    "blockedTitle": "Vyžaduje nové schválení",
+    "blockedBody": "Oprávnění osoby, která publikaci naplánovala, nebylo možné potvrdit, nebo publikace selhala. Neproběhne, dokud ji znovu neschválí někdo s oprávněním zveřejňovat.",
+    "stalledTitle": "Publikační úloha neběží",
+    "stalledBody": "Publikace po termínu čekají, protože plánovaná publikační úloha v poslední době neproběhla. Dokud to správce serveru neopraví, nic se nezveřejní.",
+    "reapprove": "{locale, select, cs {Znovu schválit plán češtiny} en {Znovu schválit plán angličtiny} other {Znovu schválit}}",
+    "cancel": "{locale, select, cs {Zrušit plán češtiny} en {Zrušit plán angličtiny} other {Zrušit plán}}",
+    "working": "Probíhá…",
+    "intro": "{locale, select, cs {Naplánujte zveřejnění posledního uloženého českého konceptu.} en {Naplánujte zveřejnění posledního uloženého anglického konceptu.} other {Naplánujte zveřejnění posledního uloženého konceptu.}}",
+    "introUpdate": "{locale, select, cs {Naplánujte aktualizaci zveřejněného českého článku posledním uloženým konceptem. Do té doby zůstane viditelná současná verze.} en {Naplánujte aktualizaci zveřejněného anglického článku posledním uloženým konceptem. Do té doby zůstane viditelná současná verze.} other {Naplánujte aktualizaci posledním uloženým konceptem.}}",
+    "date": "Datum",
+    "time": "Čas",
+    "zoneLabel": "Časové pásmo",
+    "ambiguousLabel": "Tento čas nastane dvakrát (konec letního času)",
+    "ambiguousHint": "Zvolte, který výskyt myslíte.",
+    "occurrenceEarlier": "První výskyt ({offset}, letní čas)",
+    "occurrenceLater": "Druhý výskyt ({offset}, zimní čas)",
+    "resolved": "{locale, select, cs {Česká verze se zveřejní {when} ({offset}), tj. {utc} UTC.} en {Anglická verze se zveřejní {when} ({offset}), tj. {utc} UTC.} other {Zveřejní se {when} ({offset}), tj. {utc} UTC.}}",
+    "submit": "{locale, select, cs {Naplánovat publikaci češtiny} en {Naplánovat publikaci angličtiny} other {Naplánovat publikaci}}",
+    "submitUpdate": "{locale, select, cs {Naplánovat aktualizaci češtiny} en {Naplánovat aktualizaci angličtiny} other {Naplánovat aktualizaci}}",
+    "errors": {
+      "required": "Zadejte datum a čas.",
+      "invalid": "Zadejte platné datum a čas.",
+      "invalid_time_zone": "Zvolte platné časové pásmo.",
+      "nonexistent": "Tento čas ve zvoleném pásmu neexistuje (posun hodin dopředu). Zvolte jiný čas.",
+      "past": "Čas zveřejnění musí být v budoucnosti."
+    }
+  },
+  "revisions": {
+    "empty": "Zatím žádné uložené revize.",
+    "listLabel": "{locale, select, cs {Revize české verze} en {Revize anglické verze} other {Historie revizí}}",
+    "kinds": {
+      "autosave": "Automatické uložení",
+      "save": "Uloženo",
+      "restore": "Obnoveno",
+      "seed": "Výchozí obsah"
+    },
+    "currentDraft": "Aktuální koncept",
+    "live": "Zveřejněno",
+    "scheduled": "Naplánováno",
+    "byline": "{author} · {time}",
+    "unknownAuthor": "Neznámý autor",
+    "untitled": "(bez názvu)",
+    "preview": "Náhled",
+    "restore": "Obnovit do konceptu"
+  },
+  "preview": {
+    "metaTitle": "Nezveřejněný náhled",
+    "noCategory": "Novinky",
+    "untitled": "(bez názvu)",
+    "firstPublished": "Zveřejněno {date}",
+    "notPublished": "Zatím nezveřejněno",
+    "tags": "Štítky",
+    "bannerLabel": "Upozornění na náhled",
+    "banner": "NEZVEŘEJNĚNÝ NÁHLED",
+    "bannerBody": "{locale, select, cs {Soukromý náhled české verze, viditelný jen oprávněným redaktorům.} en {Soukromý náhled anglické verze, viditelný jen oprávněným redaktorům.} other {Soukromý náhled, viditelný jen oprávněným redaktorům.}}",
+    "draftRevision": "Zobrazuje se aktuální uložený koncept.",
+    "olderRevision": "Zobrazuje se starší uložená revize.",
+    "backToEditor": "Zpět do editoru",
+    "openLive": "Otevřít zveřejněnou verzi"
+  },
+  "pages": {
+    "metaTitle": "Stránky",
+    "editMetaTitle": "Úprava stránky",
+    "eyebrow": "Administrace",
+    "title": "Stránky",
+    "lead": "Hlavní stránky webu. Pro spuštění jsou potřeba česká i anglická verze; zveřejňují se nezávisle.",
+    "editTitle": "Stránka: {page}",
+    "caption": "Hlavní stránky se stavem české a anglické verze",
+    "missingTitle": "Některé hlavní stránky chybí",
+    "missingBody": "Nenalezeno: {pages}. Vytvoříte je spuštěním produkčního seedu.",
+    "columns": {
+      "page": "Stránka"
+    },
+    "keys": {
+      "clan": "Klan",
+      "community": "Komunita",
+      "privacy": "Ochrana soukromí"
+    }
+  },
+  "fieldErrors": {
+    "titleRequired": "Před zveřejněním zadejte název.",
+    "slugInvalid": "Použijte malá písmena bez diakritiky, číslice a jednoduché pomlčky (například vysledky-turnaje).",
+    "slugTaken": "Tuto adresu už v tomto jazyce používá jiný příspěvek.",
+    "excerptRequired": "Před zveřejněním napište perex.",
+    "bodyRequired": "Před zveřejněním napište text článku.",
+    "bodyInvalid": "Text obsahuje nepodporovaný obsah. Odstraňte ho a zkuste to znovu.",
+    "bodyImageAlt": "Obrázek v textu nemá alternativní text. Doplňte ho nebo obrázek označte jako dekorativní.",
+    "bodyImagesMissing": "Obrázek v textu už v knihovně médií není. Nahraďte ho nebo ho odeberte.",
+    "coverAltRequired": "Doplňte alternativní text titulního obrázku, nebo ho označte jako dekorativní.",
+    "coverAltDecorative": "Dekorativní titulní obrázek musí mít prázdný alternativní text.",
+    "coverMissing": "Titulní obrázek už není k dispozici. Vyberte jiný.",
+    "taxonomyUnknown": "Zvolená kategorie nebo štítek už neexistuje.",
+    "scheduleNotInFuture": "Čas zveřejnění musí být v budoucnosti.",
+    "scheduleNonexistent": "Tento čas ve zvoleném časovém pásmu neexistuje.",
+    "tooLong": "Text je příliš dlouhý.",
+    "invalid": "Zkontrolujte toto pole."
+  }
+}
