@@ -48,6 +48,10 @@ Execute M1–M3 in `docs/implementation/plan.md` in reviewable increments. Prove
 shell with screenshots early, then finish the real routes, database, auth and admin.
 Run meaningful checks, keep `docs/STATUS.md` current, and open a PR from your task branch
 when ready if GitHub access permits. Record any environment-blocked verification exactly.
+Attach criterion-specific proof and real, captioned screenshots when applicable to
+the PR. Before resolving related issues/incidents or adding closing keywords, record
+their acceptance/recovery evidence there too. Follow `docs/engineering/evidence.md`;
+missing screenshots, inaccessible artifacts or unrun checks keep acceptance open.
 Do not deploy, change DNS, publish an image or send live Discord messages. Do not add AI
 co-author trailers, generated-by footers or session links to commits/PRs.
 

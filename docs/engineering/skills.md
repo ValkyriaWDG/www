@@ -25,6 +25,8 @@ discovery in another client is not assumed. Relative links start at the skill fi
 Use delivery for orchestration, then load only the skills needed for the actual
 change. A UI-only adjustment does not require a full DB/release procedure. A feature
 crossing boundaries needs the corresponding contracts before parallel execution.
+All delivery follows [the evidence policy](evidence.md): proof in PRs and related
+issues/incidents before closure, including captioned screenshots when applicable.
 
 ## Maintaining these skills
 

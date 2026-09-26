@@ -202,6 +202,13 @@ screenshots, issue links, verification results and remaining operational inputs.
 not merge your own implementation PR as part of this handoff unless separately asked.
 If remote writing is unavailable, leave committed local work and state that limitation.
 
+Apply [the evidence policy](../engineering/evidence.md): every PR carries feature/fix
+proof with steps, expected/observed results, revision/environment and accessible artifacts.
+Attach real captioned screenshots when applicable. Before closing related issues or
+incidents, add their acceptance/recovery summary and relevant proof there too; do this
+before automatic closing keywords take effect. Screenshot N/A needs a concrete reason
+and alternate proof. Missing evidence keeps acceptance pending rather than “done.”
+
 Update `docs/STATUS.md` with implemented milestones, exact checks and next work.
 Use the [durable checkpoint format](../engineering/agent-workflow.md) when resuming
 across cloud sessions. One integrator owns shared files and final GitHub delivery.

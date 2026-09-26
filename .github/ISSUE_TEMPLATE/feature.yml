@@ -2,6 +2,12 @@ name: Feature or implementation task
 description: Define an observable deliverable, dependencies, evidence and delivery scope.
 labels: ["type:feature"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the desired feature and planned verification below. You do not need post-implementation proof to open this issue.
+        The resolving agent completes the resolution-evidence section before closure, following docs/engineering/evidence.md.
+        Do not include credentials, private member data or security-sensitive details; security reports follow SECURITY.md.
   - type: textarea
     id: outcome
     attributes:
@@ -38,14 +44,35 @@ body:
     id: verification
     attributes:
       label: Verification plan
-      description: Applicable commands or user scenarios, expected evidence and environment. Do not assume application scripts exist or report future checks as passed.
+      description: Plan reproducible steps, expected results and evidence for each criterion. Identify relevant desktop/mobile UI captures or explain why screenshots will not apply and what alternate proof is needed. This is a plan, not a requirement for completed proof at issue creation.
     validations:
       required: true
   - type: textarea
     id: delivery
     attributes:
       label: Requested delivery scope
-      description: State the requested local or GitHub deliverable and existing authorization. Repository access alone does not authorize comments, merging, releases, publication or production changes.
+      description: State the requested local or GitHub deliverable. The owner authorizes task-scoped evidence updates/comments on assigned PRs and issues; this does not authorize unrelated notifications, merging, releases, publication or production changes.
       placeholder: Local patch and evidence; or authorized task-branch push and scoped PR. List any separately requested remote action explicitly.
     validations:
       required: true
+  - type: textarea
+    id: resolution_evidence
+    attributes:
+      label: Resolution evidence - resolver completes before closure
+      description: Leave pending when opening the issue. The resolving agent must provide actual proof here or in a linked resolution comment on this issue, as well as on the PR. Follow docs/engineering/evidence.md.
+      value: |
+        Pending implementation; the reporter is not required to provide completion proof.
+
+        - Implemented behavior and acceptance criteria covered:
+        - Tested commit SHA and environment; UI context includes route, browser/version and viewport:
+        - Reproduction steps or commands:
+        - Expected result and actual observed result:
+        - Reviewable evidence links, each with a caption explaining what it proves:
+        - Real application screenshots for relevant desktop/mobile states; or Screenshots: N/A with a reason and meaningful alternate proof:
+        - Related PR and current-revision CI evidence:
+        - Remaining limitations, unmet criteria and follow-up issues:
+
+        - [ ] Actual evidence is available on both this issue and the related PR.
+        - [ ] All in-scope acceptance criteria are demonstrated; incomplete work remains open.
+    validations:
+      required: false

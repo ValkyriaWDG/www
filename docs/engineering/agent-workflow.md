@@ -24,6 +24,10 @@ milestone scope. [The skill catalog](skills.md) routes specialist work.
    resolve findings and carry out authorized [GitHub delivery](github-workflow.md).
    Record actual evidence and hand off the next executable action.
 
+Delivery requires [reviewable acceptance proof](evidence.md) in the PR and related
+issues/incidents, with captioned screenshots when applicable. Record it before
+completion or automatic closure; a private local artifact does not satisfy the handoff.
+
 Routine reversible edits, test runs and fixes within the task proceed autonomously.
 The default cloud handoff authorizes implementation and a PR when access permits;
 it does not include merging that implementation PR or production operations.

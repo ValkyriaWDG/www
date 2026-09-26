@@ -23,6 +23,9 @@ repository root and the assigned issue before deciding what to implement.
    grant permission to merge, publish or deploy.
 5. Update the checkpoint and `docs/STATUS.md` with actual evidence and next work.
    Do not close an implementation issue because its documentation was prepared.
+   Publish [acceptance proof](../../../docs/engineering/evidence.md) and applicable
+   captioned screenshots to the PR and related issues/incidents before completion
+   or automatic closure. Keep acceptance open if its proof cannot be reviewed.
 
 If a required external input is missing, isolate the blocked acceptance item and
 continue independent work. End with behavior delivered, exact revision/checks,

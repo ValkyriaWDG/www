@@ -44,6 +44,10 @@ An explicitly authorized merge uses its verified-head merge procedure without by
    entire issue and its required evidence; a mock or an unrun acceptance check is not
    completion. Implementation PR merge, releases and production actions need their
    own task authorization and applicable runbook.
+   Before any completion or automatic closing keyword, add the issue/incident's
+   [acceptance proof](../../../docs/engineering/evidence.md) with captioned screenshots
+   when applicable and accessible artifact links. Mirror the relevant proof in the
+   PR, verify saved links, and keep incomplete evidence open.
 8. Hand over the exact commit/PR/run, acceptance coverage and pending work in
    `docs/STATUS.md` and the final response. Keep status truthful if a credential or
    environment blocks an integration while continuing independent authorized work.
@@ -54,6 +58,7 @@ After a timeout or lost response to push, issue edit or PR creation, read remote
 before retrying. Match branch/head/base or the intended issue fields; never create a
 second PR because the first response was missing. Inspect failures before rerunning CI.
 
-Issue/PR comments, review requests and notifications are external communications.
-Do not post them unless the task authorizes them. Repository delivery can be reported
-in the current task without sending a separate remote message.
+The owner's standing instruction authorizes evidence updates/comments for the assigned
+PR and its related issues/incidents before closure. Use this scope for acceptance
+proof, not unrelated comments, review requests or notifications. Those still require
+their own authorization. Read existing comments before retrying an uncertain write.

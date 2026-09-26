@@ -28,3 +28,11 @@ missing app, live-provider, image or production evidence.
 Report each check as passed, failed, blocked or not run, with revision and artifact.
 If source changed after verification, rerun the affected checks and wait for CI on
 the new PR head. Never describe Foundation-only CI as application acceptance.
+
+Apply [the evidence policy](../../../docs/engineering/evidence.md) to the PR and each
+related issue/incident before closure. Map criteria to expected/observed results,
+tested revision/context and accessible proof. Attach inspected real screenshots with
+captions for visual behavior; document a specific N/A reason and alternative proof
+for nonvisual work. Missing capture/upload or stale CI leaves acceptance incomplete.
+For incidents, verify recovery in the affected environment and record its observation
+window; a local fix alone cannot establish service restoration.
