@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rehearsalDiagnostic } from './rehearsal-diagnostics.mjs';
+import { waitForFixtureDatabase } from './fixture-readiness.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(readFileSync(new URL('./runtime-policy.json', import.meta.url), 'utf8'));
@@ -324,17 +325,7 @@ try {
       `POSTGRES_DB=${dbName}`,
       policy.postgresImage,
     ]);
-    let ready = false;
-    for (let attempt = 0; attempt < 60; attempt++) {
-      try {
-        docker(['exec', postgres, 'pg_isready', '-U', 'test', '-d', dbName]);
-        ready = true;
-        break;
-      } catch {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      }
-    }
-    assert(ready);
+    await waitForFixtureDatabase(docker, postgres, dbName);
     return {
       database: 'tmpfs PostgreSQL with no published port',
       network: 'internal',
