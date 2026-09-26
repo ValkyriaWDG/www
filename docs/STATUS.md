@@ -1,130 +1,65 @@
 # Current status
 
-Updated: 2026-09-26. Stage: **M1 bootstrap implemented; M1–M3 slices in progress**.
+Updated: 2026-09-26. Stage: **1.0.0 — M1–M3 implemented and verified; not deployed.**
 
 ## Checkpoint (resume here)
 
 ```text
-Task / issue: M1–M3 (#1–#6) on branch claude/eager-mayer-0tk36i, base main 6c6fc4a
-Delivered behavior: runnable @valkyria/web (Next.js 16.3.6, React 19.3.0, next-intl 4.14.7)
-  with /cs + /en routing (/ → 307 /cs, unprefixed known routes → 307 /cs/..., unsupported
-  locales 404), nonce CSP + request IDs, /api/health/live and /api/health/ready;
-  @valkyria/db (Drizzle 0.45.3) schema + migration 0000_initial_schema with locale and
-  revision-ownership constraints; serialized migration runner; capability matrix and
-  fail-closed policy; audit recorder; non-root standalone Dockerfile; application CI job.
-Changed contracts / migrations: packages/db/drizzle/0000_initial_schema.sql (unapplied anywhere shared)
-Checks: see "Bootstrap verification" below (local, cloud container)
-Open: GitHub push/PR blocked (HTTP 403 "Resource not accessible by integration");
-  visual shell, auth, content/media/publisher, matches/members/settings slices in progress.
-Next executable step: integrate slices, build public/admin UI, run full verification.
-External actions authorized: task branch push + draft PR (blocked by access); no merge,
-  deploy, DNS, registry publication or live Discord messages.
+Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
+Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-length
+  background media, public news/clan/community/members/matches/privacy pages, Discord
+  sign-in with fail-closed role mapping and MFA local-admin recovery, editorial
+  administration (visual editor, media library, revisions, preview, scheduling),
+  community administration (matches, members, settings, audit), migrations, CLIs,
+  non-root image with CI scan/SBOM, backup/restore rehearsal.
+Evidence: docs/evidence/app-1.0.0/README.md (captioned captures + measurements.json)
+Migrations: packages/db/drizzle/0000_initial_schema.sql (first production apply is an operator step)
+Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
+Next executable step: operator launch checklist in docs/operations/deployment.md.
 ```
 
-## Bootstrap verification (local cloud container, Node 24.21.0, PostgreSQL 16.13)
+## Verification (release head; application source 64809d0)
 
-| Check | Command / scenario | Result |
+Environment: Claude Code cloud container (Ubuntu 24.04), Node 24.21.0, pnpm 10.34.5,
+PostgreSQL 16.13, Chromium 141.0.7390.37 via `PLAYWRIGHT_CHROMIUM_EXECUTABLE`, Docker
+29.3.1. Hosted CI repeats the application checks on PostgreSQL 17 with the pinned browser.
+
+| Check | Command | Result |
 |---|---|---|
-| Lint | `pnpm lint` | Passed |
-| Typecheck | `pnpm typecheck` (next typegen + tsc strict) | Passed |
-| Unit | `pnpm test:unit` | Passed (23 tests: i18n parity/ICU, redirect rules, CSP, policy, redaction) |
-| PostgreSQL integration | `DATABASE_URL=… pnpm test:integration` | Passed (18 tests: fresh/rerun/concurrent migrations, locale/revision/schedule/score/consent constraints, readiness) |
-| Build | `pnpm build` | Passed (standalone output + bundled CLIs) |
-| Browser | `pnpm test:e2e` (Chromium 1194 via `PLAYWRIGHT_CHROMIUM_EXECUTABLE`) | Passed (6 routing/CSP/health tests) |
-| Container | `docker build` (base via mirror.gcr.io, same digest) + run | Passed: uid 10001, read-only rootfs, cap-drop ALL, migrate CLI idempotent, live 200, ready 200; DB stopped → live 200 / ready 503 sanitized → recovered 200 |
-| Hosted CI | GitHub Actions | Not run: branch push blocked by repository access |
+| Foundation | `node scripts/check-foundation.mjs && node --test scripts/tests/*.test.mjs` | Passed |
+| Lint / types | `pnpm lint && pnpm typecheck` | Passed |
+| Unit | `pnpm test:unit` | 365 passed (37 files) |
+| Integration | `DATABASE_URL=… pnpm test:integration` | 227 passed (21 files) |
+| Browser | `pnpm build && DATABASE_URL=… pnpm test:e2e` | See [evidence](evidence/app-1.0.0/README.md#checks) |
+| Actual media | `pnpm test:e2e:media` (delivered files in `apps/web/public/media/background/`) | 11 passed |
+| Container | build, migrate ×2, read-only run, health | Passed; non-root, idempotent migrations |
+| Image scan / SBOM | Trivy 0.67.2 (`--ignore-unfixed`, HIGH/CRITICAL) / CycloneDX | Passed after removing npm; SBOM per CI build |
+| Backup/restore | `apps/web/scripts/restore-rehearsal.mjs` | Passed: content-identical tables and media |
 
-## Prepared
+Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
+(`affected`, `fix_deferred`, `will_not_fix`) remain; the CI gate fails on fixable ones.
 
-- Public repository structure, contribution/security/ownership files and agent instructions.
-- Czech-first bilingual product brief for `valkyriawdg.cz`, with Czech/English flag
-  switching and localized UI/CMS contracts; code, docs and AI prompts remain English.
-- Detailed game-menu visual specification, screen map, 13 reference captures and exact logo.
-- Architecture, domain model, Discord/local-admin access contract and release plan.
-- Legacy site research and read-only local Wardogs media inventory.
-- [Full-length background media delivery](assets/background-media-full-2026-09-26.md):
-  the owner requires the entire available approximately 192.45-second AVI timeline.
-  Full 1080p/720p MP4, 1080p WebM and poster are encoded, with final file fingerprints
-  and frame counts recorded; complete decoding passed for all three videos.
-  Native Chromium playback, pause/resume and seeking passed for all variants, plus one
-  uninterrupted primary loop. The ZIP is uploaded to a draft release and its authenticated
-  download hash matches. The 15-second edited candidate is superseded.
-  The [cloud integration handoff](handoff/background-media-integration.md) now follows
-  the full-length contract and approximately 60 MiB primary budget.
-- Claude Cloud detailed handoff and copy-ready prompt.
-- Foundation CI and gated future application/container publication workflows.
-- Explicit [news/blog visual-editor and match-authoring requirements](product/editorial-and-matches.md),
-  with media, draft/revision/scheduling workflow and visible HLL website links.
-- Eight committed [agent skills](engineering/skills.md), task continuity and FE/BE/auth,
-  database migration, GitHub, verification and release procedures for cloud development.
-  Foundation CI validates skill structure and runs its positive/negative fixtures.
-- [Evidence and closure policy](engineering/evidence.md): feature/fix proof, captioned
-  real screenshots when applicable, issue/incident acceptance summaries and accessible
-  artifacts before completion; corresponding PR and issue templates.
+## Not verified here (operator or environment inputs)
 
-## Not implemented
+- Live Discord OAuth, guild and role IDs (tests use the local REST mock).
+- MP4/H.264 playback in the application: this Chromium has no H.264 and the Chrome
+  download host is blocked; Firefox/Safari not run. WebM playback is verified.
+- Production host, DNS, reverse proxy, TLS, approved background-media origin, registry
+  publication (`Publish container` workflow, gated) and scheduled `publish-due` timer.
+- Rollback rehearsal (1.0.0 is the first release) and page-weight/Web Vitals budgets.
 
-This foundation branch does not contain the website application, database migrations,
-login, role sync, admin UI, match coordination or runtime image. Application work is
-independently tracked in [PR #19](https://github.com/ValkyriaWDG/www/pull/19).
-Full-length background files are prepared; cloud integration and production media
-hosting remain unverified here. Sequential decoding recovered all 11,547 available
-source frames with zero decode errors, and all output videos contain 5,774 frames.
-Complete error-sensitive decoding passed for all three output videos.
-Native Chromium playback passed, and the ZIP's authenticated GitHub draft download was
-verified. Access from the actual Claude Cloud session remains untested.
-The AVI's unfinished headers and unconfirmed Bink source remain explicit limitations.
+## Media
 
-## Verification
+The [full-length delivery](assets/background-media-full-2026-09-26.md) (5,774 frames,
+~192.47 s, no audio) supersedes the 15-second candidate. Binaries stay outside Git;
+previews place them under the ignored `apps/web/public/media/background/`
+([operations](operations/background-media.md)). File-level QA is in
+[the delivery evidence](evidence/background-media-full-2026-09-26/README.md); application
+playback evidence is in [the 1.0.0 evidence](evidence/app-1.0.0/README.md).
 
-| Check | Result |
-|---|---|
-| `node scripts/check-foundation.mjs` | Passed: documentation links, JSON, required files, asset hashes and basic hygiene |
-| `node --test scripts/tests/*.test.mjs` | Passed: six tests covering valid/invalid skills and accepted/mismatched/missing release revisions |
-| Project skill validation | All eight skills passed the skill-creator schema validator; native Claude Cloud discovery has not been run in a cloud session |
-| Independent skill scenarios | Reviewed scheduled publication with revoked authority and stale CI; release with changed main and incompatible migration; foundation-only release readiness |
-| Evidence/closure scenario review | Reviewed missing UI upload and stale CI, backend-only screenshot N/A, and incident with unverified production recovery; no application or incident was executed/closed |
-| Bilingual contract scenario review | Reviewed deterministic Czech entry with an English browser, English admin return after login, independent translated drafts/schedules/media and missing UI keys versus optional prose; clarified cross-locale metadata invalidation. Documentation review only; no bilingual app was run |
-| Publisher revision guard | Required expected SHA and execution before registry login/push verified locally; no publication dispatched |
-| `node scripts/check-commit-attribution.mjs` | Passed against current history |
-| `pnpm install --frozen-lockfile --ignore-scripts` | Passed for dependency-free foundation workspace |
-| YAML parse of workflows/templates/Compose/workspace | Passed with PyYAML |
-| Independent design/auth/CI consistency review | Completed; identified handoff inconsistencies corrected |
-| Isolated negative fixtures | Passed: tracked env, altered asset, missing app manifest, AI co-author and cloud-session footer were rejected |
-| Hosted GitHub Actions | [Initial foundation CI passed](https://github.com/ValkyriaWDG/www/actions/runs/36237469190) for `0550ec0`; Application correctly skipped |
+## GitHub
 
-No application/container/live checks are claimed by this document.
-
-The [historical short-clip evidence](evidence/background-media-2026-09-26/README.md)
-records decoding and native playback for the superseded 15-second files only. It does
-not verify the new full-length media. The [new report](assets/background-media-full-2026-09-26.md)
-and [raw browser evidence](evidence/background-media-full-2026-09-26/media-qa.json)
-record complete output decoding, native playback/pause/resume and middle/near-end
-seeks for every rendition. In Chromium 153.0.8010.12, the primary completed one natural
-rate-1 wrap in 192.5042 seconds with zero dropped frames during that loop and no media
-or page errors. No three-loop run is claimed. ZIP size is 84,333,534 bytes; GitHub's
-asset digest and the authenticated download matched its recorded SHA-256.
-Standalone media QA does not establish application reduced-motion, navigation or mobile UX.
-
-## GitHub preparation
-
-Description, target homepage, topics, four milestones and [eight open implementation
-issues](implementation/github-backlog.md) are configured. Private vulnerability reporting,
-Dependabot vulnerability alerts, secret scanning and secret push protection are enabled.
-Container publication has an owner-reviewed environment and is disabled by repository
-variable. Main requires a pull request, current **Quality gate**, resolved conversations
-and linear history; force pushes/deletion are disabled, including for administrators.
-No mandatory external reviewer is configured because the owner must be able to merge
-after checks without approving their own PR. Latest checks remain visible in
-[GitHub Actions](https://github.com/ValkyriaWDG/www/actions/workflows/ci.yml).
-
-## Next action
-
-Continue the existing Claude application task using [the media integration handoff](handoff/background-media-integration.md)
-and the verified full-length ZIP from the draft transfer channel. Confirm access in
-the actual cloud session and retain the current branch and changes. Continue independent
-app work if that session cannot obtain the bundle.
-Finish [M1–M3](implementation/plan.md),
-then handle secondary match management separately. Discord/registry configuration and
-production media hosting remain separate operator inputs. The media documentation PR
-does not merge or deploy the application.
+Main requires a pull request, the **Quality gate** and linear history. CI runs foundation,
+lint, types, unit, PostgreSQL integration, build, Playwright, container smoke, image scan
+and SBOM. Container publication is a separate, gated manual workflow. Private
+vulnerability reporting, Dependabot alerts, secret scanning and push protection are on.
