@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-26",
+  "assets": [
+    {
+      "id": "01-gold-exchange",
+      "path": "docs/design/references/01-gold-exchange.jpg",
+      "source": "Owner-provided Wardogs screenshot 1",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "690f71d4530849fb9863cb90f4e9d46d8a0490af153ac70a4d3d2fdfa2addecd",
+      "bytes": 168868,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "02-inventory",
+      "path": "docs/design/references/02-inventory.jpg",
+      "source": "Owner-provided Wardogs screenshot 2",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "5577b1d298d32c14f0bb0098fa22d3278913a65a983a0742c1a96f408e9a116f",
+      "bytes": 242024,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "03-black-market",
+      "path": "docs/design/references/03-black-market.jpg",
+      "source": "Owner-provided Wardogs screenshot 3",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "de2a81bd5bb8ebce32bfe93c3b19618c9d53dfdd3834029d74e3839e57d19463",
+      "bytes": 319929,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "04-gold-market",
+      "path": "docs/design/references/04-gold-market.jpg",
+      "source": "Owner-provided Wardogs screenshot 4",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "47a9514533139e7469c95a34a679d79ea6522367d7abf85903b96f8e42fa1ffc",
+      "bytes": 400225,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "05-collection",
+      "path": "docs/design/references/05-collection.jpg",
+      "source": "Owner-provided Wardogs screenshot 5",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "ce921bdbf91ce21476c8c096c654ef1023d6fc857dd2f97d40ed6089acb50140",
+      "bytes": 224617,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "06-customize",
+      "path": "docs/design/references/06-customize.jpg",
+      "source": "Owner-provided Wardogs screenshot 6",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "d6cbb7f0b319ead3559a628db76e0b75782f897e6bff8eb5de1569daf915829c",
+      "bytes": 259876,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "07-class-progression",
+      "path": "docs/design/references/07-class-progression.jpg",
+      "source": "Owner-provided Wardogs screenshot 7",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "bbd740d4403c92c3fa1bcbe674d40b09871b3fdc719beee14d2db487155d34ef",
+      "bytes": 327689,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "08-rank-progression",
+      "path": "docs/design/references/08-rank-progression.jpg",
+      "source": "Owner-provided Wardogs screenshot 8",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "2b9e54d3c077f79ec787206af0727ad143b178e94008c29fe1d1d66988392831",
+      "bytes": 306749,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "09-main-menu",
+      "path": "docs/design/references/09-main-menu.jpg",
+      "source": "Owner-provided Wardogs screenshot 9",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "bf046579bc708d023c9b008c81beab6b3218485f911d6832f4b02ccaa80ae5ea",
+      "bytes": 654241,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "10-collection-duplicate",
+      "path": "docs/design/references/10-collection-duplicate.jpg",
+      "source": "Owner-provided Wardogs screenshot 10",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "ce921bdbf91ce21476c8c096c654ef1023d6fc857dd2f97d40ed6089acb50140",
+      "bytes": 224617,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "11-deploy",
+      "path": "docs/design/references/11-deploy.jpg",
+      "source": "Owner-provided Wardogs screenshot 11",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "5d1c6338d3c52b7cfa56d9fd3bd3e0f97e587b3fea394bdabffdfda53605d691",
+      "bytes": 213420,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "12-scoreboard",
+      "path": "docs/design/references/12-scoreboard.jpg",
+      "source": "Owner-provided Wardogs screenshot 12",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "da961532c2fb4c45a1173e532f19db9ff243e2241745f28595b59c26d5cf7586",
+      "bytes": 364136,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "13-server-browser",
+      "path": "docs/design/references/13-server-browser.jpg",
+      "source": "Owner-provided Wardogs screenshot 13",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery; no redistribution license for product use asserted",
+      "sha256": "c88d6e6d00549814c8fcd402a3484fa9e3a0f84d2f02c7b2464b5f1893375b0c",
+      "bytes": 571284,
+      "width": 2560,
+      "height": 1440
+    },
+    {
+      "id": "valkyria-logo",
+      "path": "assets/brand/valkyria-logo.png",
+      "source": "Owner-provided Valkyria logo",
+      "usage": "clan-brand",
+      "rights": "Valkyria branding supplied for this project; excluded from code license",
+      "sha256": "2b0fbb12cc2a9bfda9c14cf52984af722368e5afccb0d8188214e3aa1a43aaad",
+      "bytes": 139901,
+      "width": 733,
+      "height": 811
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+name: Feature or implementation task
+description: Define a bounded deliverable with acceptance criteria.
+labels: ["type:feature"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: User-visible result and scope.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Observable behavior and required verification.
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: References and dependencies
+      description: Relevant design, ADR, prerequisite issue or asset.
