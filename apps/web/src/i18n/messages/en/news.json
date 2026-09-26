@@ -1,1 +1,6 @@
-{}
+{
+  "richText": {
+    "tableRegion": "Table (scroll horizontally on smaller screens)",
+    "externalLink": "external link"
+  }
+}
