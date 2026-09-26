@@ -102,6 +102,13 @@ describe('media library', () => {
     await expect(getAsset(t.db, actors.matchManager, { assetId: editorial.id })).rejects.toBeInstanceOf(AccessDeniedError);
     await expect(updateAssetMetadata(t.db, actors.editorCs, { assetId: matchAsset.id, rights: 'x' })).rejects.toBeInstanceOf(AccessDeniedError);
     await expect(deleteAsset(t.db, actors.editorCs, { assetId: matchAsset.id }, { mediaRoot: root })).rejects.toBeInstanceOf(AccessDeniedError);
+    const denied = await t.db
+      .select()
+      .from(auditEvent)
+      .where(and(eq(auditEvent.action, 'media.delete'), eq(auditEvent.outcome, 'denied'), eq(auditEvent.entityId, matchAsset.id)));
+    expect(denied).toHaveLength(1);
+    expect(denied[0]).toMatchObject({ actorUserId: actors.editorCs.userId, capability: 'media.match.manage' });
+    await expect(stat(path.join(root, matchAsset.id, 'full.webp'))).resolves.toBeTruthy();
     const admin = await listAssets(t.db, actors.administrator, { pageSize: 48 });
     expect(new Set(admin.items.map((item) => item.scope))).toEqual(new Set(['editorial', 'match']));
   });

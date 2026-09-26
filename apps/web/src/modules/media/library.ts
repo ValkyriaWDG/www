@@ -300,10 +300,11 @@ export async function updateAssetMetadata(db: Executor, actor: Actor, rawInput: 
   await authorizeAnyScope(db, actor, 'media.update');
   const input = parseInput(updateAssetMetadataSchema, rawInput);
   const now = deps.now?.() ?? new Date();
+  // Scope is immutable: authorize (and audit a denial) outside the transaction.
+  const capability = scopeCapability((await loadAsset(db, input.assetId)).scope);
+  await authorize(db, actor, capability, 'write', { action: 'media.update', entityType: 'asset', entityId: input.assetId });
   return inTransaction(db, async (tx) => {
     const row = await loadAsset(tx, input.assetId, true);
-    const capability = scopeCapability(row.scope);
-    await authorize(tx, actor, capability, 'write', { action: 'media.update', entityType: 'asset', entityId: row.id });
     const { assetId: _assetId, ...changes } = input;
     const [updated] = await tx
       .update(asset)
@@ -341,10 +342,10 @@ export async function deleteAsset(db: Executor, actor: Actor, rawInput: { assetI
   const { assetId } = parseInput(z.object({ assetId: uuidSchema }), rawInput);
   const now = deps.now?.() ?? new Date();
   const root = deps.mediaRoot ?? resolveMediaRoot();
+  const capability = scopeCapability((await loadAsset(db, assetId)).scope);
+  await authorize(db, actor, capability, 'write', { action: 'media.delete', entityType: 'asset', entityId: assetId });
   await inTransaction(db, async (tx) => {
     const row = await loadAsset(tx, assetId, true);
-    const capability = scopeCapability(row.scope);
-    await authorize(tx, actor, capability, 'write', { action: 'media.delete', entityType: 'asset', entityId: row.id });
     const result = await tx.execute<{ usage: number }>(sql`select ${usageCountSql(sql`${row.id}::uuid`)} as usage`);
     if (Number(result.rows[0]?.usage ?? 0) > 0) throw new DomainError('in_use', 'The asset is still referenced.');
     await tx.update(asset).set({ deletedAt: now, updatedAt: now }).where(eq(asset.id, row.id));
