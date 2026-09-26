@@ -21,6 +21,14 @@ Fixed requirements:
   Discord CTA, and the supplied Valkyria emblem faded into the open center.
 - Build the clan presentation, members, matches/results, news and community links,
   then Discord login, server-enforced role mapping and content administration.
+- NEWS/blog is a primary menu section. Admins need a WordPress-like rich-text editor,
+  image/media library, draft autosave, revisions, preview, publish/unpublish and scheduled
+  posts. A textarea or Markdown-only editing workflow is insufficient. Read
+  `docs/product/editorial-and-matches.md` for the mandatory workflows.
+- Include first-release match creation, fixture scheduling, result entry and rich-text
+  recaps inspired by the old site's public match pages. Only roster/availability is later.
+- Provide a visible HLL WEBSITE link to https://valkyriahll.cz/ on desktop/mobile and
+  clan/community pages, plus an HLL match archive link where useful.
 - Next.js/React/TypeScript, PostgreSQL/Drizzle, Better Auth, pnpm, bespoke CSS tokens/modules.
 - Follow the security, data, accessibility, media and Docker contracts in the handoff.
   Match/roster organization is secondary, after the public website and web admin work.

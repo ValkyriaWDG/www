@@ -16,6 +16,12 @@ reviewable application. Do not spend the task merely producing another plan.
   controls, amber active states, restrained blur and motion, faded Valkyria crest in the
   open center. This must not turn into a conventional marketing landing page.
 - **Public purpose:** present the clan, members, games, news, matches/results and Discord.
+- **Editorial priority:** NEWS is a primary menu tab. Build a WordPress-like rich-text
+  blog/news editor with media library, autosave, revisions, preview and scheduled publication.
+  A plain textarea or Markdown-only editor does not meet the requirement.
+- **Matches and HLL:** first-release admin creates/schedules/publishes fixtures and enters
+  results, inspired by the old public match pages. Keep a discoverable HLL WEBSITE link
+  to `https://valkyriahll.cz/` across desktop/mobile and clan/community pages.
 - **Admin purpose:** secure management of site content and public records. Match organization
   and rosters are a secondary milestone, not the prerequisite for launching the public site.
 - **Login:** Discord primary; optionally enabled, provisioned local admin recovery with MFA.
@@ -31,6 +37,7 @@ reviewable application. Do not spend the task merely producing another plan.
 Read `AGENTS.md`, `README.md`, `docs/STATUS.md`, then:
 
 1. [Product brief](../product/brief.md).
+   Read the mandatory [editorial and match workflows](../product/editorial-and-matches.md).
 2. [Architecture](../architecture/overview.md), [ADR](../architecture/decisions/0001-modular-web.md)
    and [data model](../architecture/data-model.md).
 3. [Visual spec](../design/visual-spec.md) and [screen map](../design/screen-map.md).
@@ -120,6 +127,11 @@ Use real database-backed publication states, not hardcoded demo records as produ
 content. Provide synthetic fixtures for review and tests in an explicit isolated mode.
 Do not invent a roster, match history or game telemetry API.
 
+News/blog is one rich editorial collection at `/news`, prominently linked in the main
+menu. Include readable long articles, covers, categories/tags, pagination and published
+metadata. Expose HLL WEBSITE → `https://valkyriahll.cz/` without login; `/matches` can
+also link to the old HLL match archive. Preserve the old site and domain.
+
 ### D. Implement identity, permissions and administration
 
 Implement Discord OAuth, absent-email mapping, durable sessions and explicit guild role
@@ -135,6 +147,14 @@ Build efficient English admin screens for pages/news, public member profiles,
 matches/results, settings and permitted audit inspection. Include preview/publish and
 unpublish flows, input validation and useful error handling. Theme administration with
 the same visual system while prioritizing readable forms and reliable workflows.
+
+Implement dedicated `/admin/news`, `/admin/news/new`, `/admin/news/[id]`, `/admin/media`
+and `/admin/matches/new` screens. Follow the visual editing contract: Tiptap/ProseMirror
+JSON, accessible toolbar, formatted text/tables/images, separate saved/live revisions,
+draft autosave, revision restore, private preview and durable scheduled publishing.
+Implement validated scoped uploads with persistent storage. Creating/publishing fixtures,
+entering results and rich-text match recaps are required now; only lineups/availability
+remain in M4. Verify the full author-create-preview-publish and fixture-to-result journeys.
 
 ### E. Complete delivery evidence
 

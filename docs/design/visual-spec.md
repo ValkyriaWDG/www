@@ -6,7 +6,9 @@ The site at `valkyriawdg.cz` is English only, including public pages, administra
 
 ## 1. Design intent
 
-Build a clan website that feels like entering the Wardogs main menu. Preserve the reference composition: a full-screen environment, a narrow charcoal navigation strip, amber selection, square translucent controls, compact technical typography, and abundant visible scenery. The supplied Valkyria emblem belongs in the otherwise open center of the main menu, faded into the scene. The primary action is joining the clan's Discord. Public clan, member, and match information opens as game-menu subpages over the same visual shell.
+Build a clan website that feels like entering the Wardogs main menu. Preserve the reference composition: a full-screen environment, a narrow charcoal navigation strip, amber selection, square translucent controls, compact technical typography, and abundant visible scenery. The supplied Valkyria emblem belongs in the otherwise open center of the main menu, faded into the scene. The primary action is joining the clan's Discord. Public news, clan, member, and match information opens as game-menu subpages over the same visual shell.
+
+News/blog publishing is a primary website requirement, with a prominent `NEWS` navigation item and a WordPress-like visual editorial workspace. News and blog posts are one collection at `/news`, not parallel products. The canonical content, scheduling, editor and match-management requirements are in [Editorial and match management](../product/editorial-and-matches.md). Creating and scheduling matches is part of first-release administration; private lineup and availability coordination remains the later scope.
 
 Valkyria remains the identity. Wardogs is the current focus; Hell Let Loose is its history and an explicitly separate game category in content and results. Do not replace the clan mark with the Wardogs wolf, copy in-game currencies/ranks as website counters, or invent clan statistics to fill the interface.
 
@@ -64,8 +66,8 @@ At desktop widths of 1280 CSS px and above:
 - Render the central emblem as decorative (`alt=""`, hidden from the accessibility tree) because the header already names the clan. It has no click action, pointer hitbox, independent animation, parallax, or glow. If its source has opaque pixels outside the intended silhouette, obtain a correct transparent asset rather than hiding the problem with an aggressive blend mode.
 - Include one short, restrained identity caption, such as `VALKYRIA // CZ & SK`, near the action cluster. Copy is subject to the factual content inventory. Do not cover the faded emblem with marketing paragraphs.
 - The primary action label is `JOIN DISCORD` with smaller supporting text `VALKYRIA COMMUNITY`. The secondary actions lead to `ABOUT THE CLAN` and `MATCHES`. The Discord destination comes from validated configuration, not screenshot text.
-- Header navigation is `MAIN MENU`, `CLAN`, `MEMBERS`, `MATCHES`. Keep longer explanatory text in page content. The account control is right aligned and reads `SIGN IN` before authentication.
-- Utility controls expose `NEWS`, background playback and relevant community links. The news control leads to `/news`; clan pages can also link relevant posts. Group utility actions visibly; label icon-only controls for assistive technology and provide tooltips on focus as well as hover. A decorative gear must not imply settings that do not exist.
+- Header navigation is `MAIN MENU`, `NEWS`, `CLAN`, `MEMBERS`, `MATCHES`. `NEWS` is a first-class text tab with the same active/focus treatment as the other sections; it must not be discoverable only through a utility icon. Keep longer explanatory text in page content. The account control is right aligned and reads `SIGN IN` before authentication.
+- Utility controls expose background playback, relevant community links and a visible `HLL WEBSITE` link to `https://valkyriahll.cz/`. Keep the HLL link in the desktop utility/footer area and an equally visible mobile utility/footer location, with additional contextual links on clan/community pages. Use an external-link indication; prefer normal same-tab navigation, or explicitly indicate a new tab and set safe link attributes if that behavior is chosen. The existing site remains a separate destination. Group utility actions visibly; label icon-only controls for assistive technology and provide tooltips on focus as well as hover. A decorative gear must not imply settings that do not exist.
 - A bottom-center next-match strip is optional and shown only for a real published upcoming fixture. Show opponent, date/time, game, and link. If no fixture exists, omit the strip; do not display fictional queue position, server health, player count, or countdown.
 
 Subpages use a darkened, optionally blurred version of the same backdrop with a main content panel. The center emblem is hidden on dense list/editor pages to preserve contrast. A direct visit to a subpage must show a useful page immediately and must not depend on entering the home menu first.
@@ -136,9 +138,9 @@ Names below describe responsibility and may be adapted to repository conventions
 | --- | --- | --- |
 | `MenuShell` | `section`, `backgroundMode`, children | Persistent scene + header; supports home, public detail/list, account and admin variants |
 | `BackgroundMedia` | `poster`, `sources`, `playbackPreference`, `onPlaybackStateChange` | Shows poster first; handles loading, playing, paused, blocked, unavailable; contains no mandatory content |
-| `ClanEmblem` | `variant: header | faded | content`, `size` | Supplied asset, preserved proportions; meaningful alternative text only when the mark provides information |
+| `ClanEmblem` | `variant: header / faded / content`, `size` | Supplied asset, preserved proportions; meaningful alternative text only when the mark provides information |
 | `MenuNavigation` | `items`, `currentPath`, `accountState` | Real anchors, current-page semantics, keyboard reachable controls |
-| `GameButton` | `intent: primary | secondary | danger`, `size`, `pending`, `disabled`, `href?`, `onClick?` | Anchor for navigation, button for action; one unambiguous accessible label; pending blocks duplicate mutations |
+| `GameButton` | `intent: primary / secondary / danger`, `size`, `pending`, `disabled`, `href?`, `onClick?` | Anchor for navigation, button for action; one unambiguous accessible label; pending blocks duplicate mutations |
 | `UtilityButton` | `label`, `icon`, `pressed?`, `onClick` | 44 × 44 px minimum tap target; tooltip is not the only accessible name |
 | `SectionFrame` | `title`, `description?`, `toolbar?`, children | Square dark surface, slim title strip, predictable padding; no mandatory nested scroll areas |
 | `FilterToolbar` | `filters`, `query`, `onChange`, `resultCount` | Search, game/status filters, reset; reflects filter state in URL where shareable |
@@ -146,6 +148,10 @@ Names below describe responsibility and may be adapted to repository conventions
 | `DetailPane` | `title`, `metadata`, `body`, `actions` | Desktop contextual detail alongside list; direct detail route exists independently |
 | `MemberSummary` | `displayName`, `avatar`, `publicRoles`, `gameTags`, `profileHref` | Public projection only; avatar fallback; no private Discord IDs or permission details |
 | `MatchSummary` | `game`, `opponent`, `startAt`, `status`, `publishedScore?` | Clear timezone and status; cancelled/unknown/unpublished score handled explicitly |
+| `NewsSummary` | `title`, `excerpt`, `cover?`, `publishedAt`, `category?`, `href` | Prominent public news collection; real publication metadata and descriptive article link |
+| `RichTextEditor` | `document`, `readOnly`, `validation`, `onChange` | WordPress-like visual editing with accessible toolbar and supported content nodes; canonical data contract comes from the editorial specification |
+| `PublishPanel` | `status`, `saveState`, `publishAt?`, `timeZone`, `permissions`, `onSave`, `onPreview`, `onPublish` | Clear draft/autosave/revision/preview/publish/schedule distinction; no visual-only authorization |
+| `MediaPicker` | `allowedKinds`, `selectedAsset?`, `uploadPermission`, `onSelect` | Search/select/upload approved media; thumbnail, alt text, caption, provenance and clear progress/failure states |
 | `StatusBadge` | `status`, `label` | Text plus icon/border; color is supplemental |
 | `ModalDialog` | `title`, `description?`, `open`, `onClose`, `actions` | Reserved for bounded tasks; focus management and Escape support; route content is not trapped in a modal |
 | `FeedbackNotice` | `kind`, `message`, `retry?` | Inline stable feedback; error details useful to the user without credentials or stack traces |
@@ -212,7 +218,7 @@ Breakpoints are layout decisions, not device detection. Test actual content at t
 | ≥1600 px and adequate height | Full composition with large negative space, faded center crest, lower-left action stack; list/detail split around 66%/34% |
 | 1280–1599 px | Smaller chrome and action stack; same visual hierarchy; dense lists keep only useful columns |
 | 768–1279 px | Condensed header, fewer inline utilities; list/detail may split 60%/40% if readable or switch to stacked view; center crest yields to content |
-| <768 px | Poster first, compact header with accessible menu disclosure; single-column panels; primary actions in document flow, not fixed over content; crest becomes a restrained background accent |
+| <768 px | Poster first, compact header with accessible menu disclosure including `NEWS`; single-column panels; primary actions in document flow, not fixed over content; crest becomes a restrained background accent; visible `HLL WEBSITE` utility/footer link retained |
 | Height <720 px | Compact utility rail, action stack moves into normal flow if necessary; allow page scrolling, no clipped CTA or inaccessible footer |
 | Ultrawide | Scene fills width; cap reading/list content around 1800–2048 px with deliberate side space; do not stretch text lines or rows indefinitely |
 
@@ -255,7 +261,23 @@ Administration is a distinct route group with the same palette, type and rectang
 
 Account controls may link an authorized user to `ADMINISTRATION`; visual hiding is only a convenience, never authorization. A user who directly opens a restricted URL gets a proper server-enforced access result. A role-refresh failure is visible in account/admin context with a useful retry path; do not falsely label a member as an administrator because old UI state persists.
 
-Forms use persistent labels, clear required-field text, inline errors, a stable primary save action and a visible saved/unsaved state. Long forms scroll normally. Reuse the game-style dialog only for short confirmations. The secondary match/lineup tools use an actual readable list or board; drag and drop, if later added, always has a keyboard/button alternative.
+Forms use persistent labels, clear required-field text, inline errors, a stable primary save action and a visible saved/unsaved state. Long forms scroll normally. Reuse the game-style dialog only for short confirmations. The later lineup tools use an actual readable list or board; drag and drop, if added, always has a keyboard/button alternative.
+
+### Visual editorial workspace — first release
+
+The news authoring workspace must feel familiar to an administrator used to WordPress: post list with `New post`, a title field, large visual writing canvas, a formatting toolbar, a media/cover picker and a clearly separated document/publication panel. This is an interaction requirement, not an instruction to embed WordPress or replace the selected application architecture. Do not substitute a raw Markdown textarea, JSON input or developer-only file editing for the requested visual editor.
+
+Provide readable rich-text authoring for the canonical supported headings, paragraphs, emphasis, lists, quotes, links, image blocks and basic tables, with clear formatting and undo/redo controls. Keep toolbar labels/tooltips in English, expose pressed states, support keyboard formatting and preserve visible focus. Table headers and cell operations must work using a keyboard; wide tables scroll within the public article rather than overflowing the page. Pasting must produce supported sanitized content; do not allow arbitrary HTML/script or require users to clean source markup. Selection-based formatting may have a contextual toolbar, but essential actions remain available without a mouse or hover.
+
+Desktop editor layout: quiet static dark surface, a wide readable writing column and a narrower document panel for status, excerpt, slug, category, cover and publication time. On small screens, the document panel becomes an accessible disclosure or stacked section; controls must remain reachable without trapping the editor in a tiny viewport. Preview uses the actual public article treatment, including the approved cover and responsive image behavior, and clearly labels unpublished output.
+
+Display `Unsaved changes`, `Saving…`, `Draft saved`, `Save failed`, or a revision-conflict message based on actual server state. Autosave never publishes a draft or overwrites the live version of an already published article without the explicit action defined by the canonical editorial workflow. Revision history identifies saved versions and provides a safe restore-to-draft flow. Publication controls distinguish `Save draft`, `Preview`, `Publish`, `Update`, `Schedule` and `Unpublish` where each action is applicable; the server enforces permissions independently of visible controls.
+
+The schedule control shows an explicit date, time and timezone plus an understandable confirmation of when the post becomes public. Preserve the canonical document's scheduling semantics and failure states; do not implement a decorative datetime field without real publication behavior. Unsaved changes, expired sessions, concurrent editing and failed autosave retain recoverable work safely and offer clear recovery paths without pretending success.
+
+The media manager/picker supports upload progress, validation failure, processing, ready, selection and referenced/in-use states. Show thumbnail, filename, dimensions, alt text, caption and provenance where applicable; distinguish a post's cover from inline images. A meaningful image requires appropriate alternative text, while an explicitly decorative image can have empty alt text. Prevent destructive removal of a referenced asset without an explicit safe workflow. Ordinary editorial image management does not grant permission to change the global background/video settings.
+
+The match administration list offers an unmistakable `New match` action and a complete first-release create/edit/schedule/publish workflow. Use the old site's public match overview as a content reference and the Wardogs browser as the visual reference; do not assume unseen legacy admin behavior. An event's start time and an article's publication schedule are different concepts. Internal rosters, attendance, squads and availability belong to M4 and must not become prerequisites for creating a public fixture.
 
 ## 12. Visual acceptance evidence
 
@@ -272,5 +294,8 @@ Required captures:
 7. Home with reduced motion and with the video URL unavailable: poster/fallback, operable controls, no blocking loader.
 8. Keyboard focus on navigation, primary CTA and a list action; sign-in error; restricted administration route result.
 9. Admin editor with validation errors and pending/save-success states after that phase is implemented.
+10. `NEWS` active in desktop navigation and accessible in the mobile menu; public news list and long article with approved cover/inline media at desktop/mobile sizes.
+11. News editor with formatting toolbar, cover/media picker, autosave success/failure, revision conflict/history, preview and scheduled publication states. Verify the editor is operable using a keyboard and at mobile width.
+12. Match administration list and `New match` form with explicit start-time timezone, validation and published/unpublished states; visible `HLL WEBSITE` link in both desktop/mobile layouts.
 
 Acceptance is a composition and usability review, not arbitrary pixel identity across every browser. The nonnegotiable visual traits are narrow dark chrome, square translucent surfaces, amber selection, condensed short labels, a landscape-led homepage, a visible but faded Valkyria crest, and practical game-menu subpages. Any deliberate departure is explained with evidence, especially for responsiveness, accessibility and unavailable media.

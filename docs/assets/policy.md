@@ -23,6 +23,11 @@ records the 13 captures and logo. It is an integrity inventory, not a claim of t
 ownership or a general redistribution license. The source screenshots retain their
 original third-party game imagery and are excluded from the Apache code license.
 
+Runtime CMS uploads use equivalent database Asset/AssetUsage records and persistent
+private media storage; they are not committed to Git or added to the source manifest
+by an editor. The [editorial media contract](../product/editorial-and-matches.md) defines
+safe uploads, image metadata, draft visibility and publication-aware delivery.
+
 Screenshots contain incidental player names, currency and server listings. Do not
 transcribe these into production profiles, analytics, copy, SEO or fictional data.
 Do not promote gameplay statistics as official clan statistics.

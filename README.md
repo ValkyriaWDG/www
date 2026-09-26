@@ -26,6 +26,11 @@ selection states and sharp translucent panels. Public pages cover the clan, memb
 news, matches/results and Discord. Authorized administrators manage content; match
 availability and rosters are a later milestone. The entire interface is English-only.
 
+News/blog includes WordPress-like rich-text editing, image management, drafts/revisions,
+preview and publishing. Admin match creation, scheduling and result entry belong to the
+first release. A visible HLL WEBSITE link keeps the existing HLL community accessible.
+See [editorial and match requirements](docs/product/editorial-and-matches.md).
+
 The [reference captures](docs/design/references/README.md) and
 [supplied clan logo](assets/brand/valkyria-logo.png) are committed so cloud agents can
 inspect the actual inputs. Large game/video sources remain outside the repository.

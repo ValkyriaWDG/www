@@ -11,6 +11,8 @@ Updated: 2026-09-26. Stage: **foundation / implementation handoff**.
 - Legacy site research and read-only local Wardogs media inventory.
 - Claude Cloud detailed handoff and copy-ready prompt.
 - Foundation CI and gated future application/container publication workflows.
+- Explicit [news/blog visual-editor and match-authoring requirements](product/editorial-and-matches.md),
+  with media, draft/revision/scheduling workflow and visible HLL website links.
 
 ## Not implemented
 

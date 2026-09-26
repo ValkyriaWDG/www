@@ -67,8 +67,14 @@ Small reviewed brand assets are committed. Large background media is delivered t
 an approved media origin or read-only deployment mount, with content hashes and provenance.
 Never require a video download before displaying navigation. No production hotlinking
 to the old site. Store media references and metadata, not video bytes, in PostgreSQL.
-Use constrained Markdown for editorial content and sanitize rendered HTML; no arbitrary
-MDX/JavaScript or raw HTML execution in CMS input. Defer general file uploads unless needed.
+Use a WordPress-like visual editor based on Tiptap/ProseMirror with schema-versioned
+JSON as canonical content. Validate the node/mark/attribute allowlist server-side and
+render safe public HTML without loading the editor bundle. No arbitrary MDX/JavaScript
+or raw HTML execution. Separate draft/published revisions; autosave never changes live content.
+Provide a scoped image media library with validated uploads and private draft delivery;
+store runtime bytes in persistent media storage, not Git or the app image. Implement
+a durable idempotent scheduled-publication CLI backed by PostgreSQL and an operator
+minute timer. See [editorial and match requirements](../product/editorial-and-matches.md).
 
 ## Integration and delivery
 
