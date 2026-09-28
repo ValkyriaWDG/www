@@ -22,7 +22,7 @@ const OPTIONS: readonly { locale: AppLocale; Flag: typeof CzechFlag }[] = [
  */
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   return (
-    <Suspense fallback={<LanguageSwitcherView search="" compact={compact} />}>
+    <Suspense fallback={<LanguageSwitcherView search={null} compact={compact} />}>
       <LanguageSwitcherWithQuery compact={compact} />
     </Suspense>
   );
@@ -33,7 +33,7 @@ function LanguageSwitcherWithQuery({ compact }: { compact: boolean }) {
   return <LanguageSwitcherView search={searchParams.toString()} compact={compact} />;
 }
 
-function LanguageSwitcherView({ search, compact }: { search: string; compact: boolean }) {
+function LanguageSwitcherView({ search, compact }: { search: string | null; compact: boolean }) {
   const t = useTranslations('common.language');
   const current = useLocale();
   const pathname = usePathname() ?? `/${current}`;
@@ -57,7 +57,7 @@ function LanguageSwitcherView({ search, compact }: { search: string; compact: bo
   };
 
   return (
-    <div className={styles.language} role="group" aria-label={t('groupLabel')} data-compact={compact || undefined}>
+    <div className={styles.language} role="group" aria-label={t('groupLabel')} aria-busy={search === null || undefined} data-compact={compact || undefined}>
       {OPTIONS.map(({ locale, Flag }) => {
         const content = (
           <>
@@ -75,6 +75,20 @@ function LanguageSwitcherView({ search, compact }: { search: string; compact: bo
             <span key={locale} className={styles.languageOption} aria-current="true" data-locale={locale}>
               {content}
               <span className="visually-hidden">{t(`${locale}.current`)}</span>
+            </span>
+          );
+        }
+        if (search === null) {
+          return (
+            <span
+              key={locale}
+              className={styles.languageOption}
+              role="link"
+              aria-disabled="true"
+              aria-label={t(`${locale}.switchTo`)}
+              data-locale={locale}
+            >
+              {content}
             </span>
           );
         }

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "status": "local-regression-accepted",
+  "issue": 49,
+  "recordedAt": "2026-09-28T19:30:43.765Z",
+  "scope": "Local production-build regression using disposable PostgreSQL and synthetic fixtures; not production deployment or full release acceptance.",
+  "baseSource": "40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9",
+  "environment": {
+    "os": "Windows",
+    "node": "v24.21.0",
+    "pnpm": "10.34.5",
+    "postgresql": "18.4",
+    "next": "16.3.6",
+    "playwright": "1.63.0",
+    "browserProject": "chromium",
+    "workers": 1,
+    "retries": 0,
+    "appOrigin": "http://127.0.0.1:3137",
+    "discordMockOrigin": "http://127.0.0.1:4137",
+    "database": "New dedicated loopback-only disposable E2E database; credentials loaded privately."
+  },
+  "builds": {
+    "command": "pnpm build",
+    "baseline": {
+      "source": "40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9",
+      "buildId": "RoOeH6d_ZoO2Uk875hGZh",
+      "passed": true,
+      "logSha256": "4e046c1f4ab74ef4f17cde6ad9fe2593ea7d0d119b1b4c8458ef9edaaac209a9"
+    },
+    "candidate": {
+      "baseSource": "40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9",
+      "buildId": "o4m6fchZGAru-asNHOIl9",
+      "passed": true,
+      "logSha256": "d4fd6945048ad6f7e30a50e99f4bdef65c24e600999b66e92b80a491f2c37441",
+      "sourceFiles": [
+        {
+          "path": "apps/web/src/components/shell/game-switch.tsx",
+          "sha256": "7721b2a86c1f0a5f60cf93551bd8d71def4d8705fdf76324b8eb10180c83daca",
+          "sha256Lf": "7721b2a86c1f0a5f60cf93551bd8d71def4d8705fdf76324b8eb10180c83daca"
+        },
+        {
+          "path": "apps/web/src/components/shell/language-switcher.tsx",
+          "sha256": "4c901623b7776264bbc3fe711a5b4a0a2943c92cb6c82f7450a7693467888f31",
+          "sha256Lf": "4c901623b7776264bbc3fe711a5b4a0a2943c92cb6c82f7450a7693467888f31"
+        },
+        {
+          "path": "apps/web/e2e/switch-query-hydration.spec.ts",
+          "sha256": "447ae459f0b2f605094b9f30b1e11c506b675af67669e97db3bb9930df317327",
+          "sha256Lf": "447ae459f0b2f605094b9f30b1e11c506b675af67669e97db3bb9930df317327"
+        }
+      ]
+    }
+  },
+  "regression": {
+    "command": "pnpm --filter @valkyria/web exec playwright test e2e/switch-query-hydration.spec.ts --project chromium --workers 1 '--reporter=list,json'",
+    "specSha256": "447ae459f0b2f605094b9f30b1e11c506b675af67669e97db3bb9930df317327",
+    "red": {
+      "startedAt": "2026-09-28T19:25:24.595Z",
+      "durationMs": 28687.813000000002,
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "flaky": 0,
+      "report": {
+        "file": "red-final.json",
+        "sha256": "322e1fff0f71450ab09dda7093d0b570b541cd7bb069d3746033f1fd62d9f672"
+      }
+    },
+    "green": {
+      "startedAt": "2026-09-28T19:27:13.137Z",
+      "durationMs": 13908.940999999999,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "report": {
+        "file": "green.json",
+        "sha256": "071cf8037a9d0a59d2a8e29e59c99d97a9f88a8e7822dce28c017e9e5c357c67"
+      }
+    },
+    "observed": [
+      "Baseline JavaScript-disabled SSR exposes actionable game and locale anchors without view=results; both tests fail the aria-disabled assertion.",
+      "Candidate pending choices have no href, aria-disabled=true, native tabIndex=-1 and an aria-busy group; current choices remain marked.",
+      "Normal-browser game and locale navigation both retain view=results and assert the active Results filter after arrival."
+    ]
+  },
+  "neighbors": {
+    "command": "pnpm --filter @valkyria/web exec playwright test e2e/platform.spec.ts e2e/shell.spec.ts --project chromium --workers 1 --grep 'game switch keeps|language switch keeps|language switcher links|article provenance and language' '--reporter=list,json'",
+    "startedAt": "2026-09-28T19:27:41.300Z",
+    "durationMs": 11356.932,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "report": {
+      "file": "neighbors.json",
+      "sha256": "2663747e61dbfdf746bfea5264c172b15e6c34ea8c2e9a96467bc7d42ba7a28f"
+    }
+  },
+  "dirtyFormGuard": {
+    "command": "pnpm --filter @valkyria/web exec playwright test e2e/admin-editorial-safety.spec.ts --project chromium-admin --no-deps --workers 1 --grep 'unsaved changes are guarded' '--reporter=list,json'",
+    "startedAt": "2026-09-28T19:28:53.554Z",
+    "durationMs": 11620.983,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "report": {
+      "file": "dirty-guard.json",
+      "sha256": "672ade49d9887f56e7bbf2ea1574630fac51873c52d2bb74467464009d2ebb53"
+    }
+  },
+  "captures": [
+    {
+      "file": "game-switch-results-retained.png",
+      "sha256": "866808f33e4547b685cad8da06aa02ae32227573e53251618942e9ecbb35b86a",
+      "bytes": 243931,
+      "width": 1280,
+      "height": 720,
+      "test": "game choice cannot discard a results filter while its destination is loading",
+      "sourceUrl": "http://127.0.0.1:3137/cs/hll/matches?view=results",
+      "fixtureOnly": true,
+      "visuallyInspected": true,
+      "caption": "Game switch from Czech Wardogs results retains the selected Results filter in Czech HLL; synthetic match fixture."
+    },
+    {
+      "file": "language-switch-results-retained.png",
+      "sha256": "78a740381ec820201f2841ea7ed01406e1ef99847f0715f26e154d4143d88bbc",
+      "bytes": 244380,
+      "width": 1280,
+      "height": 720,
+      "test": "language choice cannot discard a results filter while its destination is loading",
+      "sourceUrl": "http://127.0.0.1:3137/cs/hll/matches?view=results",
+      "fixtureOnly": true,
+      "visuallyInspected": true,
+      "caption": "Language switch from English HLL results retains the selected Results filter in Czech HLL; synthetic match fixture."
+    }
+  ],
+  "limitations": [
+    "These bounded local tests are not the complete required CI, protected publication or live acceptance.",
+    "Both builds used environment-default settings fallback while building; runtime used a freshly reset, owned synthetic E2E database.",
+    "Initial unquoted PowerShell reporter argument failed before any tests; retained privately as invocation-error.log.",
+    "The earlier external-script gate attempt was investigative: inline streamed reveal can proceed without external scripts. Its separate red report is retained; final acceptance uses the identical JavaScript-disabled-context spec on both builds.",
+    "Neighbor server output includes three destination-stream-closed-early messages. Those tests have no comprehensive network gate; this result does not resolve issue46 or waive network failures.",
+    "Raw local reports contain machine paths and remain private; this compact record preserves their byte fingerprints."
+  ]
+}
