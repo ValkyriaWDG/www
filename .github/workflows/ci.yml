@@ -18,7 +18,7 @@ jobs:
     outputs:
       app_present: ${{ steps.stage.outputs.app_present }}
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -72,7 +72,7 @@ jobs:
       BETTER_AUTH_SECRET: ci-only-ephemeral-secret-not-for-production-0000
       CI: 'true'
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
@@ -108,7 +108,7 @@ jobs:
         run: node scripts/release/rehearse-images.mjs
       - name: Upload image and rollback rehearsal
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-rehearsal-${{ github.sha }}
           path: .local/release-hardening/images/report.json
@@ -145,7 +145,7 @@ jobs:
           node scripts/release/runtime-scan.mjs .local/release-hardening/scans/bookworm.json .local/release-hardening/scans/ci.json .local/release-hardening/scans/comparison.json
       - name: Upload complete runtime advisory comparison
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: runtime-scans-${{ github.sha }}
           path: .local/release-hardening/scans/*.json
@@ -158,7 +158,7 @@ jobs:
             mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
             image --format cyclonedx --output /out/valkyria-web.cdx.json --no-progress valkyria-web:ci
       - name: Upload image SBOM
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: sbom-${{ github.sha }}
           path: sbom/valkyria-web.cdx.json
@@ -169,7 +169,7 @@ jobs:
         run: node scripts/release/measure-pages.mjs
       - name: Upload page budget samples and synthetic screenshots
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: page-budgets-${{ github.sha }}
           path: |
@@ -179,7 +179,7 @@ jobs:
           retention-days: 90
       - name: Upload browser report and screenshots
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: playwright-report-${{ github.sha }}
           path: |
