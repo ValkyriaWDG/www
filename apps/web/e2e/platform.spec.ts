@@ -54,6 +54,47 @@ test.describe('platform routing', () => {
     }
   });
 
+  test('logo, game switch, language and account sit in the same places in both games', async ({ page }) => {
+    type Box = { x: number; y: number; width: number; height: number };
+    const top = async () => {
+      const header = page.locator('[data-shell-header], [data-hll-masthead]').first();
+      const box = async (selector: string) => (await header.locator(selector).first().boundingBox()) as Box;
+      return {
+        brand: await box('[data-brand], [data-hll-identity]'),
+        game: await box('[data-game-switch]'),
+        language: await box('[role="group"]:has([data-locale])'),
+        account: await box('[data-account]'),
+      };
+    };
+    for (const width of [1920, 1366]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const path of ['/cs/wardogs/news', '/cs/hll/news', '/cs']) {
+        await page.goto(path);
+        await expect(page.locator('[data-platform-bar]')).toHaveCount(0);
+        const { brand, game, language, account } = await top();
+        // Logo top left; game switch, language and account in that order on one row at the top right.
+        expect(brand.x, `${path} @${width}`).toBeLessThan(width * 0.1);
+        expect(game.x + game.width, `${path} @${width}`).toBeLessThanOrEqual(language.x);
+        expect(language.x - (game.x + game.width), `${path} @${width}`).toBeLessThan(24);
+        expect(language.x + language.width, `${path} @${width}`).toBeLessThanOrEqual(account.x);
+        expect(Math.abs(game.y + game.height / 2 - (language.y + language.height / 2)), `${path} @${width}`).toBeLessThan(4);
+        expect(account.x + account.width, `${path} @${width}`).toBeGreaterThan(width * 0.9);
+        expect(game.y, `${path} @${width}`).toBeLessThan(140);
+      }
+    }
+    // Phones: the full-width game switch row sits directly under the header in both games.
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const path of ['/cs/wardogs/news', '/cs/hll/news']) {
+      await page.goto(path);
+      const row = page.locator('[data-game-switch][data-variant="stack"]').first();
+      await expect(row).toBeVisible();
+      const box = (await row.boundingBox())!;
+      expect(box.width, path).toBeGreaterThan(340);
+      expect(box.y, path).toBeLessThan(200);
+      await expectNoHorizontalOverflow(page);
+    }
+  });
+
   test('the FAQ is an HLL menu destination that stays honestly unpublished until editors publish it', async ({ page }) => {
     await page.goto('/cs/hll/faq');
     await expect(page.getByRole('heading', { level: 1, name: 'Časté dotazy' })).toBeVisible();

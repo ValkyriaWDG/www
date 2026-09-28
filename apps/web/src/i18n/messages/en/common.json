@@ -128,7 +128,6 @@
     }
   },
   "platform": {
-    "name": "Valkyria",
-    "community": "Community"
+    "hubLink": "Valkyria community"
   }
 }
