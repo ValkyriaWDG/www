@@ -5,6 +5,7 @@ import { DetailPane } from '@/components/ui/panels';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
+import { isHllSide } from '@/modules/games/hll-catalog';
 import { canonicalMatchPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
@@ -148,7 +149,7 @@ export async function MatchDetailPane({
                             <td data-numeric="">{round.ordinal}</td>
                             {showRoundColumn.map ? <td>{round.mapName ?? '—'}</td> : null}
                             {showRoundColumn.mode ? <td>{round.mode ?? '—'}</td> : null}
-                            {showRoundColumn.side ? <td>{round.side ?? '—'}</td> : null}
+                            {showRoundColumn.side ? <td>{isHllSide(round.side) ? t(`detail.sides.${round.side}`) : (round.side ?? '—')}</td> : null}
                             <td data-numeric="">
                               {score ?? (
                                 <>

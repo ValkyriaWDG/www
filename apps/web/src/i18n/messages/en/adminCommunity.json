@@ -117,7 +117,9 @@
     "unknown_setting": "This setting cannot be changed here.",
     "conflict": "Someone else changed this setting in the meantime.",
     "invalid_content": "The text contains content that cannot be saved. Remove unusual formatting and try again.",
-    "invalid": "Check this value."
+    "invalid": "Check this value.",
+    "hll_side": "Choose Allies or Axis (or leave it empty).",
+    "hll_sector_score": "In HLL a round score is the number of sectors held: 0 to 5."
   },
   "media": {
     "none": "No image",
@@ -179,7 +181,14 @@
     "remove": "Remove round {number}",
     "removeShort": "Remove",
     "add": "Add round",
-    "count": "{count, plural, =0 {No rounds} one {# round} other {# rounds}}"
+    "count": "{count, plural, =0 {No rounds} one {# round} other {# rounds}}",
+    "hllIntro": "Hell Let Loose: one round is one map. The score is sectors held (0–5); the side is Allies or Axis.",
+    "mapSuggestions": "Official HLL maps",
+    "sideNone": "Not set",
+    "sideAllies": "Allies",
+    "sideAxis": "Axis",
+    "modeNone": "Not set",
+    "sectorHint": "0–5 sectors"
   },
   "matches": {
     "list": {

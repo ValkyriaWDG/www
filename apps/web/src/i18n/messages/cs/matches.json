@@ -126,6 +126,10 @@
     },
     "links": "Odkazy",
     "event": "Stránka akce",
-    "versusBanner": "Valkyria proti týmu {opponent}"
+    "versusBanner": "Valkyria proti týmu {opponent}",
+    "sides": {
+      "allies": "Spojenci",
+      "axis": "Osa"
+    }
   }
 }

@@ -117,7 +117,9 @@
     "unknown_setting": "Toto nastavení zde nelze měnit.",
     "conflict": "Nastavení mezitím změnil někdo jiný.",
     "invalid_content": "Text obsahuje obsah, který nelze uložit. Odstraňte neobvyklé formátování a zkuste to znovu.",
-    "invalid": "Zkontrolujte tuto hodnotu."
+    "invalid": "Zkontrolujte tuto hodnotu.",
+    "hll_side": "Zvolte stranu Spojenci, nebo Osa (případně nechte prázdné).",
+    "hll_sector_score": "V HLL je skóre kola počet držených sektorů: 0 až 5."
   },
   "media": {
     "none": "Bez obrázku",
@@ -179,7 +181,14 @@
     "remove": "Odebrat kolo {number}",
     "removeShort": "Odebrat",
     "add": "Přidat kolo",
-    "count": "{count, plural, =0 {Žádné kolo} one {# kolo} few {# kola} many {# kola} other {# kol}}"
+    "count": "{count, plural, =0 {Žádné kolo} one {# kolo} few {# kola} many {# kola} other {# kol}}",
+    "hllIntro": "Hell Let Loose: jedno kolo = jedna mapa. Skóre je počet držených sektorů (0–5), strana je Spojenci nebo Osa.",
+    "mapSuggestions": "Oficiální mapy HLL",
+    "sideNone": "Nezadáno",
+    "sideAllies": "Spojenci",
+    "sideAxis": "Osa",
+    "modeNone": "Nezadáno",
+    "sectorHint": "0–5 sektorů"
   },
   "matches": {
     "list": {

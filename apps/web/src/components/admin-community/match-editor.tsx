@@ -189,7 +189,7 @@ export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEdi
 
   // ---- Save (create draft / update facts + rounds) ----
   const save = async () => {
-    const clientErrors: FieldErrors = { ...validateFacts(facts), ...(isCreate ? {} : validateRounds(rounds)) };
+    const clientErrors: FieldErrors = { ...validateFacts(facts), ...(isCreate ? {} : validateRounds(rounds, facts.game)) };
     if (isCreate && !resolved.ok) clientErrors.startsAt = resolved.code;
     if (Object.keys(clientErrors).length > 0) {
       setErrors(clientErrors);
@@ -216,7 +216,7 @@ export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEdi
 
   const recordResult = async () => {
     if (!server) return;
-    const clientErrors = { ...validateResult(result), ...validateRounds(rounds) };
+    const clientErrors = { ...validateResult(result), ...validateRounds(rounds, server.game) };
     if (Object.keys(clientErrors).length > 0) {
       setErrors(clientErrors);
       setNotice({ kind: 'error', text: actionError('validation') });
@@ -645,7 +645,7 @@ export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEdi
                 />
                 <TextField name="source" label={t('fields.source')} markOptional hint={t('hints.source')} value={result.source} maxLength={300} disabled={!allowed?.result} onChange={(event) => setResult({ ...result, source: event.target.value })} error={err('source')} />
                 <h3 className={styles.repeatHeading}>{t('roundsTitle')}</h3>
-                <RoundsEditor rounds={rounds} onChange={setRounds} errors={errors} />
+                <RoundsEditor rounds={rounds} onChange={setRounds} errors={errors} game={facts.game} />
                 {errors.startsAt && !scheduleDirty ? <p className={styles.errorText}>{fieldError(errors.startsAt)}</p> : null}
                 {errors.status ? <p className={styles.errorText}>{fieldError(errors.status)}</p> : null}
                 <div className={styles.inlineActions}>

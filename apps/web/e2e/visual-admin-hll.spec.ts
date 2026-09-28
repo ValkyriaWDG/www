@@ -98,3 +98,15 @@ test('field manual editor with source metadata', async ({ browser }) => {
   await expect(page.getByTestId('manual-meta-save')).toBeVisible();
   await shot(page, 'admin-manual-editor-cs-1440x900.png', 'Field manual article editor (full page): the shared rich-text editor, HLL category, publication controls and the source/ordering form (original URL, date, language, credits, review).', 'editor (platform-wide)', true);
 });
+
+test('HLL match editor with map, mode, side and sector score', async ({ browser }) => {
+  const client = new pg.Client({ connectionString: e2eDatabaseUrl() });
+  await client.connect();
+  const id = (await client.query<{ id: string }>(`select id from match where game = 'hell-let-loose' and is_fixture and status = 'completed' order by starts_at limit 1`)).rows[0]?.id;
+  await client.end();
+  if (!id) throw new Error('No completed HLL match fixture');
+  const page = await open(browser, 'match_manager', `/cs/admin/matches/${id}`);
+  await expect(page.locator('[data-hll-rounds]')).toBeVisible();
+  await page.locator('[data-rounds-editor]').scrollIntoViewIfNeeded();
+  await shot(page, 'admin-hll-match-editor-cs-1440x900.png', 'Match editor for a completed synthetic HLL match (full page): the result, then the HLL round with a map field backed by the official HLL map list, Warfare/Offensive/Skirmish mode, Allies/Axis side and 0–5 sector scores.', 'match_manager', true);
+});

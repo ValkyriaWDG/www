@@ -126,6 +126,10 @@
     },
     "links": "Links",
     "event": "Event page",
-    "versusBanner": "Valkyria versus {opponent}"
+    "versusBanner": "Valkyria versus {opponent}",
+    "sides": {
+      "allies": "Allies",
+      "axis": "Axis"
+    }
   }
 }

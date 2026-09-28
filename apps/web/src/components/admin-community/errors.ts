@@ -29,6 +29,8 @@ export const FIELD_ERROR_CODES = [
   'scores_both_or_neither',
   'verified_requires_result',
   'scores_require_completed',
+  'hll_side',
+  'hll_sector_score',
   'cancelled',
   'asset_unavailable',
   'alt_required',
