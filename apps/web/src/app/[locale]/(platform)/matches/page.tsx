@@ -4,7 +4,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { ExternalLink } from '@/components/public/external-link';
 import { MatchesScreen } from '@/components/public/matches-screen';
-import { bilingualAlternates } from '@/components/public/metadata';
+import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
+import { sharingMetadata } from '@/modules/social/metadata';
 import { hasMatchFilters, parseMatchFilters } from '@/components/public/query';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { PageMain } from '@/components/shell/page-main';
@@ -16,10 +17,13 @@ export async function generateMetadata({ params, searchParams }: PageProps<'/[lo
   if (!hasLocale(routing.locales, locale)) return {};
   const filters = parseMatchFilters(await searchParams);
   const t = await getTranslations({ locale, namespace: 'matches.meta' });
+  const sharing = sharingMetadata(locale, 'matches', undefined, undefined, t('title'), t('description'));
   return {
     title: t('title'),
     description: t('description'),
     alternates: bilingualAlternates(locale, '/matches'),
+    openGraph: { type: 'website', title: t('title'), description: t('description'), url: `/${locale}/matches`, locale: OG_LOCALE[locale], images: sharing.images },
+    twitter: sharing.twitter,
     ...(hasMatchFilters(filters) ? { robots: { index: false, follow: true } } : {}),
   };
 }

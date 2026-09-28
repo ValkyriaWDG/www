@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
 import { ExternalLink } from '@/components/public/external-link';
 import { MatchesScreen } from '@/components/public/matches-screen';
-import { bilingualAlternates } from '@/components/public/metadata';
+import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
 import { hasMatchFilters, parseMatchFilters } from '@/components/public/query';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { PageMain } from '@/components/shell/page-main';
@@ -13,16 +13,21 @@ import { PageHeader } from '@/components/ui/panels';
 import { routing } from '@/i18n/routing';
 import { gameHasSection, isGameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
+import { sharingMetadata } from '@/modules/social/metadata';
 
 export async function generateMetadata({ params, searchParams }: PageProps<'/[locale]/[game]/matches'>): Promise<Metadata> {
   const { locale, game } = await params;
   if (!hasLocale(routing.locales, locale) || !isGameRoute(game)) return {};
   const filters = parseMatchFilters(await searchParams);
   const [t, games] = await Promise.all([getTranslations({ locale, namespace: 'matches.meta' }), getTranslations({ locale, namespace: 'games' })]);
+  const title = games('sectionTitle', { section: t('title'), game: games(`names.${game}`) });
+  const sharing = sharingMetadata(locale, 'matches', undefined, undefined, title, t('description'));
   return {
-    title: games('sectionTitle', { section: t('title'), game: games(`names.${game}`) }),
+    title,
     description: t('description'),
     alternates: bilingualAlternates(locale, `${sectionBase(game)}/matches`),
+    openGraph: { type: 'website', title, description: t('description'), url: `/${locale}${sectionBase(game)}/matches`, locale: OG_LOCALE[locale], images: sharing.images },
+    twitter: sharing.twitter,
     ...(hasMatchFilters(filters) ? { robots: { index: false, follow: true } } : {}),
   };
 }

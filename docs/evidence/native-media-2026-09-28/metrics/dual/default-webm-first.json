@@ -1,0 +1,90 @@
+{
+  "scenario": "default-webm-first",
+  "recordedAt": "2026-09-28T14:25:38.571Z",
+  "revision": {
+    "sha": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+    "dirty": false
+  },
+  "browser": "154.0.4258.37",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/cs",
+  "sourceConfiguration": "Original WebM-first plus MP4 configuration",
+  "control": "None",
+  "initial": {
+    "currentSrc": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+    "currentTime": 0.038792,
+    "duration": 192.466,
+    "width": 1920,
+    "height": 1080,
+    "paused": false,
+    "muted": true,
+    "rate": 1,
+    "error": null,
+    "quality": {
+      "totalVideoFrames": 4,
+      "droppedVideoFrames": 0,
+      "creationTime": 1476.2999999523163
+    },
+    "sourceElements": [
+      {
+        "src": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+        "type": "video/webm"
+      },
+      {
+        "src": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+        "type": "video/mp4"
+      }
+    ]
+  },
+  "after": {
+    "currentSrc": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+    "currentTime": 4.005459,
+    "duration": 192.466,
+    "width": 1920,
+    "height": 1080,
+    "paused": false,
+    "muted": true,
+    "rate": 1,
+    "error": null,
+    "quality": {
+      "totalVideoFrames": 123,
+      "droppedVideoFrames": 0,
+      "creationTime": 5442.900000095367
+    },
+    "sourceElements": [
+      {
+        "src": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+        "type": "video/webm"
+      },
+      {
+        "src": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+        "type": "video/mp4"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "range": "bytes=0-"
+    }
+  ],
+  "failed": [],
+  "log": {
+    "events": [
+      {
+        "event": "waiting",
+        "time": 0,
+        "src": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+      },
+      {
+        "event": "playing",
+        "time": 0.003943,
+        "src": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm"
+      }
+    ]
+  },
+  "caption": "Actual local standalone application in Microsoft Edge at 1440x900. Default WebM-first configuration; native application player selected the VP9 WebM. Synthetic local content; no production or real Discord access."
+}

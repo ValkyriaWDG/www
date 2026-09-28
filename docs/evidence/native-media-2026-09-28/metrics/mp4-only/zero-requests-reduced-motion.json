@@ -1,0 +1,67 @@
+{
+  "sourceConfiguration": "MP4-only environment; unmodified application player and native media APIs",
+  "check": "zero-requests-reduced-motion",
+  "recordedAt": "2026-09-28T14:24:41.349Z",
+  "revision": {
+    "sha": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+    "dirty": false
+  },
+  "browser": "154.0.4258.37",
+  "locales": [
+    {
+      "locale": "cs",
+      "state": {
+        "state": "paused",
+        "reason": "reduced-motion"
+      },
+      "requestsBeforeOptIn": 0,
+      "poster": {
+        "src": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+        "complete": true,
+        "naturalWidth": 1920,
+        "naturalHeight": 1080,
+        "visible": true
+      }
+    },
+    {
+      "locale": "en",
+      "state": {
+        "state": "paused",
+        "reason": "reduced-motion"
+      },
+      "requestsBeforeOptIn": 0,
+      "poster": {
+        "src": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+        "complete": true,
+        "naturalWidth": 1920,
+        "naturalHeight": 1080,
+        "visible": true
+      }
+    }
+  ],
+  "afterOptIn": {
+    "requests": [
+      {
+        "url": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+        "range": "bytes=0-"
+      }
+    ],
+    "facts": {
+      "paused": false,
+      "currentTime": 0.943183,
+      "currentSrc": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "readyState": 4,
+      "videoWidth": 1920,
+      "videoHeight": 1080,
+      "duration": 192.466016,
+      "loop": true,
+      "muted": true,
+      "objectFit": "cover",
+      "videoDecodedBytes": 769727,
+      "audioDecodedBytes": 0,
+      "totalVideoFrames": 32,
+      "droppedVideoFrames": 0,
+      "videoElements": 1
+    }
+  }
+}

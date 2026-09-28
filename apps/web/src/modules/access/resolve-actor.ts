@@ -1,4 +1,5 @@
-import type { AppRole, Executor } from '@valkyria/db';
+import { authSession, guildMembership, type AppRole, type Executor } from '@valkyria/db';
+import { and, eq, gt } from 'drizzle-orm';
 import { scopesForGrants, type Capability, type GameScope } from './capabilities';
 import {
   discordClientConfig,
@@ -10,7 +11,7 @@ import {
 } from './config';
 import type { DiscordClientDeps } from './discord-client';
 import { findLocalGrant, isGrantActive, summarizeAccounts } from './local-grant';
-import { readMembership, refreshMembership, snapshotAgeMs, type MembershipSnapshot } from './membership';
+import { membershipRowVersion, readMembership, refreshMembership, snapshotAgeMs, type MembershipSnapshot } from './membership';
 import { ensureRoleMappingVersion, grantsForRoleIds, loadRoleMapping, rolesForRoleIds } from './role-mapping';
 import { isSnowflake } from './snowflake';
 import type { AccessIntent, Actor, AuthorizationStatus, Principal, SessionAssurance } from './types';
@@ -121,7 +122,7 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
   const recentlyAttempted =
     snapshot?.lastRefreshAttemptAt != null && now.getTime() - snapshot.lastRefreshAttemptAt.getTime() < MANUAL_REFRESH_MIN_INTERVAL_MS;
   const forced = input.forceRefresh === true && !recentlyAttempted;
-  const fresh = snapshot !== null && snapshotAgeMs(snapshot, now) <= maxAge;
+  const fresh = snapshot !== null && snapshot.source !== 'role_sync' && snapshotAgeMs(snapshot, now) <= maxAge;
 
   if (forced || !fresh) {
     const result = await refreshMembership(
@@ -134,14 +135,29 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
     snapshot = result.snapshot;
     if (snapshotAgeMs(snapshot, now) > maxAge) return deny('stale');
   }
-  if (!snapshot || snapshot.state !== 'present') return deny('not_member');
+  if (!snapshot || snapshot.source === 'role_sync' || snapshot.state !== 'present') return deny('not_member');
 
   const mapping = loadRoleMapping(input.env.DISCORD_ROLE_MAPPING_JSON);
   await ensureRoleMappingVersion(db, mapping, guildId).catch((error: unknown) => {
     console.error(`[access] could not record role mapping version: ${error instanceof Error ? error.name : 'unknown'}`);
   });
-  const roles: AppRole[] = rolesForRoleIds(mapping.mapping, snapshot.roleIds);
-  const scoped = scopesForGrants(grantsForRoleIds(mapping.mapping, snapshot.roleIds));
+  // Mapping persistence can await a database lock. Re-read the durable session and
+  // membership together after that work so a changed row cannot return the
+  // capabilities from the earlier cached observation. This is a final read
+  // fence, not a session cache; subsequent requests always resolve again.
+  const finalNow = input.now ?? new Date();
+  const [current] = await db
+    .select({ membership: guildMembership, rowVersion: membershipRowVersion, sessionExpiresAt: authSession.expiresAt })
+    .from(guildMembership)
+    .innerJoin(authSession, and(eq(authSession.id, session.id), eq(authSession.userId, user.id), eq(authSession.assurance, 'discord'), gt(authSession.expiresAt, finalNow)))
+    .where(and(eq(guildMembership.guildId, guildId), eq(guildMembership.discordUserId, discordUserId)))
+    .limit(1);
+  if (!current || current.rowVersion !== snapshot.rowVersion) return deny('stale');
+  if (current.membership.source === 'role_sync' || current.membership.state !== 'present') return deny('not_member');
+  const resolvedAt = input.now ?? new Date();
+  if (current.sessionExpiresAt <= resolvedAt || snapshotAgeMs(current.membership, resolvedAt) > maxAge) return deny('stale');
+  const roles: AppRole[] = rolesForRoleIds(mapping.mapping, current.membership.roleIds);
+  const scoped = scopesForGrants(grantsForRoleIds(mapping.mapping, current.membership.roleIds));
   return {
     ...base,
     source: 'discord',
@@ -151,6 +167,6 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
     capabilities: scoped.capabilities,
     gameScopes: scoped.gameScopes,
     localGrant: null,
-    verifiedAt: snapshot.observedAt,
+    verifiedAt: current.membership.observedAt,
   };
 }

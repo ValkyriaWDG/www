@@ -225,6 +225,34 @@
   font-size: var(--text-small);
 }
 
+/* Stable mobile rows while the condensed web font replaces a wider fallback.
+   Keep the summary on its own row and reserve room for two-line filter labels. */
+@media (max-width: 639px) {
+  .filterBar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .search {
+    min-width: 0;
+  }
+
+  .segment {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .segment .filterButton {
+    justify-content: center;
+    min-height: 52px;
+    padding: 8px;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
 /* ---- Pagination ---- */
 .pagination {
   display: flex;

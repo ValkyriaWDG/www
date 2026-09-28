@@ -13,6 +13,7 @@ const catalog = JSON.parse(readFileSync(path.join(repo, 'assets/presskit/wardogs
 const manifest = JSON.parse(readFileSync(path.join(repo, 'assets/manifest.json'), 'utf8')) as { assets: { path: string; sha256: string }[] };
 const original = (id: string) => catalog.assets.find((asset) => asset.id === id)!;
 const sha256 = (file: string) => createHash('sha256').update(readFileSync(file)).digest('hex');
+const manifestPath = (file: string) => path.relative(repo, file).split(path.sep).join('/');
 
 describe('presskit placements', () => {
   for (const image of [PRESSKIT_KEY_ART, PRESSKIT_FLYING]) {
@@ -27,7 +28,7 @@ describe('presskit placements', () => {
         expect(meta.format).toBe('webp');
         expect(meta.width).toBe(entry.width);
         expect((meta.width ?? 0) / (meta.height ?? 1)).toBeCloseTo(source.width / source.height, 2);
-        const registered = manifest.assets.find((asset) => asset.path === path.relative(repo, file));
+        const registered = manifest.assets.find((asset) => asset.path === manifestPath(file));
         expect(registered?.sha256).toBe(sha256(file));
       }
     });
@@ -38,7 +39,7 @@ describe('presskit placements', () => {
     const copy = path.join(publicDir, WARDOGS_MARK.src);
     expect(sha256(copy)).toBe(sha256(path.join(repo, source.path)));
     expect({ width: WARDOGS_MARK.width, height: WARDOGS_MARK.height }).toEqual({ width: source.width, height: source.height });
-    expect(manifest.assets.some((asset) => asset.path === path.relative(repo, copy))).toBe(true);
+    expect(manifest.assets.some((asset) => asset.path === manifestPath(copy))).toBe(true);
   });
 
   it('keeps the key art complete and labels no photo as a clan event', () => {

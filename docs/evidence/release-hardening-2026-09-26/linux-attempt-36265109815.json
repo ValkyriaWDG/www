@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "status": "incomplete-runtime-rehearsal-failed",
+  "run": {
+    "id": "36265109815",
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36265109815",
+    "pullRequestHead": "6d48258926aed74b5e1b27bac93b1143f47520b3",
+    "testedMergeRevision": "5603528d928640211e088443e6aaba858842ecff",
+    "sourceDirty": false
+  },
+  "pageBudgets": {
+    "status": "passed",
+    "environment": {
+      "platform": "linux",
+      "node": "v24.21.0",
+      "build": "Next.js standalone production",
+      "data": "Dedicated loopback PostgreSQL synthetic fixtures; never production",
+      "background": "CSS fallback; delivered game binaries are excluded from CI. No video is fetched.",
+      "profile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "deviceScaleFactor": 1,
+        "cpuSlowdown": 4,
+        "latencyMs": 150,
+        "downloadBytesPerSecond": 200000,
+        "uploadBytesPerSecond": 93750,
+        "observationMs": 10000,
+        "reducedMotion": "reduce",
+        "cache": "disabled",
+        "serviceWorkers": "blocked"
+      },
+      "browser": "153.0.8010.12"
+    },
+    "assessment": {
+      "errors": [],
+      "routes": [
+        {
+          "route": "/cs",
+          "medianLcpMs": 1976,
+          "maximumCls": 0.04939995730776214,
+          "maximumTransferBytes": 503139
+        },
+        {
+          "route": "/cs/news",
+          "medianLcpMs": 860,
+          "maximumCls": 0.00252080976065602,
+          "maximumTransferBytes": 492609
+        },
+        {
+          "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+          "medianLcpMs": 992,
+          "maximumCls": 0.005100045925100745,
+          "maximumTransferBytes": 585727
+        }
+      ]
+    },
+    "samples": 9,
+    "captures": [
+      {
+        "file": "page-1.png",
+        "route": "/cs",
+        "sha256": "38589b3ccc156bfb609e479ba23e0f684ef5e9918163106f41d0084c25f8d070",
+        "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website.",
+        "hashVerified": true,
+        "visuallyReviewed": true
+      },
+      {
+        "file": "page-2.png",
+        "route": "/cs/news",
+        "sha256": "3b2710cad86b7b56139736ec5b788ea6a32d8309619a301d2d9fddd71938bd75",
+        "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website.",
+        "hashVerified": true,
+        "visuallyReviewed": true
+      },
+      {
+        "file": "page-3.png",
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "sha256": "1d1db97870a61b725f202a4f8b2a4a838c942c560551c9165807a044f88447ba",
+        "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website.",
+        "hashVerified": true,
+        "visuallyReviewed": true
+      }
+    ],
+    "artifact": "page-budgets-5603528d928640211e088443e6aaba858842ecff",
+    "rawReportSha256": "74f885ec4c7d5b70dcedcf2e0546f648a158e5fd0b6870dc833b02e6253590a9"
+  },
+  "containers": {
+    "candidateBuild": "passed",
+    "sameSourceBookwormBuild": "passed",
+    "rehearsalStatus": "failed",
+    "steps": [
+      {
+        "id": "local-docker-only",
+        "status": "passed",
+        "observed": {
+          "serverVersion": "28.0.4",
+          "endpoint": "local-only"
+        }
+      },
+      {
+        "id": "immutable-previous-image",
+        "status": "passed",
+        "observed": {
+          "imageId": "sha256:bc9b386a14a934751a8d3ca0aa5aa13fc3006534ceeba1f09787d2ecc6adcf72",
+          "sourceRevision": "d0f98b0475e7dfb07add2a679c49acce23259684"
+        }
+      },
+      {
+        "id": "matching-candidate-source-revisions",
+        "status": "passed",
+        "observed": {
+          "sourceRevision": "5603528d928640211e088443e6aaba858842ecff",
+          "bothRuntimeVariantsMatch": true
+        }
+      },
+      {
+        "id": "create-disposable-internal-fixture",
+        "status": "passed",
+        "observed": {
+          "database": "tmpfs PostgreSQL with no published port",
+          "network": "internal",
+          "uniqueDisposableVolumes": 2
+        }
+      },
+      {
+        "id": "previous-schema-and-synthetic-fixtures",
+        "status": "failed",
+        "reason": "Docker operation or verification assertion failed.",
+        "errorType": "Error",
+        "exitStatus": 1,
+        "signal": null,
+        "diagnostic": "node:internal/modules/package_json_reader:331\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'sharp' imported from /app/apps/web/rehearsal-fixtures.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:331:9)\n    at packageResolve (node:internal/modules/esm/resolve:784:25)\n    at moduleResolve (node:internal/modules/esm/resolve:873:18)\n    at defaultResolve (node:internal/modules/esm/resolve:1006:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)\n    at #resolve (node:internal/modules/esm/loader:687:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:276:33) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v24.21.0"
+      }
+    ],
+    "cleanup": {
+      "status": "passed"
+    },
+    "artifact": "release-rehearsal-5603528d928640211e088443e6aaba858842ecff",
+    "rawReportSha256": "a71a9afe74e54fc92ba95b8a220b8da7dd1b7602640cd74363be4f130de523b6",
+    "nativeRuntime": "not-reached",
+    "rollback": "not-reached",
+    "restore": "not-reached",
+    "scanComparison": "not-run",
+    "sbom": "not-run"
+  },
+  "followUp": {
+    "cause": "The standalone pnpm graph contains sharp but lacks an apps/web/node_modules/sharp alias for external operational CLIs.",
+    "correction": "Expose only the exact pinned already-traced package during the Docker build; fail on missing, ambiguous or mismatched graph.",
+    "localVerification": "Two regression tests passed and actual Windows standalone sharp encoded an 8x8 WebP. This is not Linux image proof.",
+    "acceptance": "Pending a new exact-source Linux CI run."
+  },
+  "limits": [
+    "Synthetic disposable data only; no registry publication or production deployment.",
+    "This report preserves the failed run before the sharp alias correction and does not prove a later commit.",
+    "Throttled lab budgets use CSS fallback without delivered background video/poster; they are not production field metrics."
+  ]
+}

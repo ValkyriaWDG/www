@@ -12,6 +12,7 @@ import csMedia from './cs/media.json';
 import csMembers from './cs/members.json';
 import csNews from './cs/news.json';
 import csPages from './cs/pages.json';
+import csSocial from './cs/social.json';
 import enAdmin from './en/admin.json';
 import enAdminCommunity from './en/adminCommunity.json';
 import enAdminEditorial from './en/adminEditorial.json';
@@ -26,6 +27,7 @@ import enMedia from './en/media.json';
 import enMembers from './en/members.json';
 import enNews from './en/news.json';
 import enPages from './en/pages.json';
+import enSocial from './en/social.json';
 
 /**
  * UI dictionaries, one JSON file per namespace and locale. English keys define the typed
@@ -46,6 +48,7 @@ export const enMessages = {
   adminCommunity: enAdminCommunity,
   editor: enEditor,
   media: enMedia,
+  social: enSocial,
 };
 
 export type Messages = typeof enMessages;
@@ -65,6 +68,7 @@ export const csMessages: Messages = {
   adminCommunity: csAdminCommunity,
   editor: csEditor,
   media: csMedia,
+  social: csSocial,
 };
 
 export const messages = { cs: csMessages, en: enMessages } as const;

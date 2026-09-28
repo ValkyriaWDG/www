@@ -2,7 +2,8 @@ import { GAMES, type Executor, type Locale } from '@valkyria/db';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
-import { bilingualAlternates } from '@/components/public/metadata';
+import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
+import { sharingMetadata } from '@/modules/social/metadata';
 import { NewsCard, type NewsCardLabels } from '@/components/public/news-card';
 import newsStyles from '@/components/public/news.module.css';
 import { ListLoadError } from '@/components/public/list-load-error';
@@ -27,10 +28,14 @@ export async function newsListMetadata(locale: AppLocale, query: RawSearchParams
   const filters = parseNewsFilters(query);
   const t = await getTranslations({ locale, namespace: 'news.meta' });
   const games = await getTranslations({ locale, namespace: 'games' });
+  const title = game ? games('sectionTitle', { section: t('title'), game: games(`names.${game}`) }) : t('title');
+  const sharing = sharingMetadata(locale, 'news', undefined, undefined, title, t('description'));
   return {
-    title: game ? games('sectionTitle', { section: t('title'), game: games(`names.${game}`) }) : t('title'),
+    title,
     description: t('description'),
     alternates: bilingualAlternates(locale, `${sectionBase(game)}/news`),
+    openGraph: { type: 'website', title, description: t('description'), url: `/${locale}${sectionBase(game)}/news`, locale: OG_LOCALE[locale], images: sharing.images },
+    twitter: sharing.twitter,
     // Filtered/search views are useful to share but are not separate documents.
     ...(hasNewsFilters(filters) ? { robots: { index: false, follow: true } } : {}),
   };

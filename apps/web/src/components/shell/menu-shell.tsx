@@ -42,7 +42,7 @@ export async function MenuShell({ account, children, presentation }: { account: 
         <BackgroundMedia posterUrl={media.posterUrl} sources={media.sources} focalPoint={media.focalPoint} />
         <div className={styles.scrim} />
         <div className={styles.vignette} />
-        <Image src={emblem} alt="" className={styles.emblem} sizes="(max-width: 767px) 60vw, 22vw" loading="lazy" data-emblem="" />
+        <Image src={emblem} alt="" className={styles.emblem} sizes="(max-width: 767px) 60vw, 22vw" loading="eager" fetchPriority="high" data-emblem="" />
       </div>
       <SiteHeader account={account} hllUrl={links.hllUrl} presentation={presentation} />
       <div className={styles.content}>{children}</div>

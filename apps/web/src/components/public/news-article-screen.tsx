@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { cache } from 'react';
+import { headers } from 'next/headers';
 import { ArticleView, getArticleViewLabels } from '@/components/content/article-view';
 import { OG_LOCALE, publishedAlternates, seoTitle } from '@/components/public/metadata';
 import { isSlug } from '@/components/public/query';
@@ -10,10 +11,11 @@ import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getSiteOrigin } from '@/lib/site';
 import { getPublishedNewsBySlug, getRelatedNews } from '@/modules/content/public';
-import { mediaUrl } from '@/modules/content/rich-text/render';
 import type { ArticleDTO } from '@/modules/content/types';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { canonicalNewsPath, sectionBase } from '@/modules/games/routes';
+import { sharingMetadata } from '@/modules/social/metadata';
+import { articleStructuredData, serializeStructuredData } from '@/modules/social/structured-data';
 
 /** One published lookup per request, shared by metadata and page (never a draft). */
 const loadArticle = cache(async (locale: string, slug: string) => (isSlug(slug) ? getPublishedNewsBySlug(locale, slug, getDb()) : null));
@@ -32,10 +34,12 @@ export async function newsArticleMetadata(locale: AppLocale, slug: string, game:
   const description = article.seoDescription || article.excerpt;
   const alternates = publishedAlternates(locale, article.slug, article.counterparts, `${sectionBase(game)}/news`);
   const site = await getTranslations({ locale, namespace: 'common.site' });
+  const sharing = sharingMetadata(locale, 'news', article.slug, article.revisionId, title, description);
   return {
     title: seoTitle(title, site('name')),
     description,
     alternates,
+    twitter: sharing.twitter,
     openGraph: {
       type: 'article',
       title,
@@ -46,9 +50,7 @@ export async function newsArticleMetadata(locale: AppLocale, slug: string, game:
       ...(article.publishedAt ? { publishedTime: article.publishedAt.toISOString() } : {}),
       ...(article.updatedAt ? { modifiedTime: article.updatedAt.toISOString() } : {}),
       ...(article.authorLabel ? { authors: [article.authorLabel] } : {}),
-      ...(article.cover
-        ? { images: [{ url: mediaUrl(article.cover.assetId, 'full'), width: article.cover.width, height: article.cover.height, alt: article.cover.alt }] }
-        : {}),
+      images: sharing.images,
     },
   };
 }
@@ -71,12 +73,15 @@ export async function NewsArticleScreen({ locale, slug, game }: { locale: AppLoc
   const { article } = lookup;
   const canonical = canonicalNewsPath(article.game, article.slug);
   if (canonical !== `${sectionBase(game)}/news/${slug}`) permanentRedirect(`/${locale}${canonical}`);
+  const structuredData = articleStructuredData(article, getSiteOrigin());
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
   const [labels, related] = await Promise.all([
     getArticleViewLabels(locale),
     getRelatedNews({ locale, documentId: article.documentId, limit: 3, gameScope: game ? GAME_REGISTRY[game].db : undefined }, getDb()).catch(() => []),
   ]);
   return (
     <PageMain width="reading" labelledBy="article-title">
+      {structuredData ? <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: serializeStructuredData(structuredData) }} /> : null}
       <ArticleView
         article={article}
         labels={labels}

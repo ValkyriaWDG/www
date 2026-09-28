@@ -1,0 +1,16 @@
+{
+  "sourceConfiguration": "MP4-only environment; unmodified application player and native media APIs",
+  "check": "hidden-tab",
+  "recordedAt": "2026-09-28T14:24:33.263Z",
+  "revision": {
+    "sha": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+    "dirty": false
+  },
+  "browser": "154.0.4258.37",
+  "hiddenAt": 0.927324,
+  "resumed": {
+    "from": 0.939263,
+    "to": 1.832063
+  },
+  "visibility": "simulated visibilitychange"
+}

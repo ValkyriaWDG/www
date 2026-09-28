@@ -15,6 +15,7 @@ import { getDb } from '@/lib/db';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
 import { getPublicMember } from '@/modules/members/queries';
+import { sharingMetadata } from '@/modules/social/metadata';
 
 /** Published + consented profile only; draft, hidden and unknown are indistinguishable (null). */
 const loadMember = cache(async (slug: string, locale: AppLocale) => (isSlug(slug, 80) ? getPublicMember(getDb(), slug, locale) : null));
@@ -37,11 +38,13 @@ export async function memberProfileMetadata(locale: AppLocale, slug: string, gam
   const t = await getTranslations({ locale, namespace: 'members.meta' });
   const description = t('profileDescription', { name: member.displayName });
   const alternates = bilingualAlternates(locale, `/members/${member.slug}`);
+  const sharing = sharingMetadata(locale, 'site', undefined, undefined, member.displayName, description);
   return {
     title: member.displayName,
     description,
     alternates,
-    openGraph: { type: 'profile', title: member.displayName, description, url: alternates.canonical as string, locale: OG_LOCALE[locale] },
+    openGraph: { type: 'profile', title: member.displayName, description, url: alternates.canonical as string, locale: OG_LOCALE[locale], images: sharing.images },
+    twitter: sharing.twitter,
   };
 }
 
