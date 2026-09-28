@@ -1,0 +1,163 @@
+{
+  "result": "passed",
+  "context": {
+    "scope": "Synthetic loopback PostgreSQL and standalone HTTP only",
+    "node": "v24.21.0",
+    "postgresql": "18.4",
+    "pg_dump": "pg_dump (PostgreSQL) 18.4",
+    "pg_restore": "pg_restore (PostgreSQL) 18.4"
+  },
+  "sourceFiles": {
+    "apps/web/scripts/restore-rehearsal.mjs": {
+      "sha256Lf": "453881665f2eeaea503aa98d21ee70329103353581ef291853aaa47aa061bef0"
+    },
+    "scripts/tests/restore-rehearsal.test.mjs": {
+      "sha256Lf": "899a009ba3a1f562843d09a16a687b6d89c560efd9a539ed59896114335e31cc"
+    },
+    "scripts/tests/restore-rehearsal.integration.mjs": {
+      "sha256Lf": "d42a82b24480050d7c78b8ae495e017667672bf3d3ab07d328ba349987eeef1f"
+    }
+  },
+  "existing": {
+    "schemaVersion": 1,
+    "startedAt": "2026-09-28T17:37:52.387Z",
+    "status": "failed",
+    "steps": {},
+    "ownership": {
+      "workDirectory": "not-created",
+      "database": "not-created",
+      "appProcess": "not-started"
+    },
+    "code": "target_database_exists",
+    "finishedAt": "2026-09-28T17:37:52.530Z",
+    "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+  },
+  "race": {
+    "schemaVersion": 1,
+    "startedAt": "2026-09-28T17:37:52.588Z",
+    "status": "failed",
+    "steps": {},
+    "ownership": {
+      "workDirectory": "created-retained",
+      "database": "not-created",
+      "appProcess": "not-started"
+    },
+    "code": "target_database_collision",
+    "finishedAt": "2026-09-28T17:37:53.109Z",
+    "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+  },
+  "denied": {
+    "schemaVersion": 1,
+    "startedAt": "2026-09-28T17:37:53.306Z",
+    "status": "failed",
+    "steps": {},
+    "ownership": {
+      "workDirectory": "created-retained",
+      "database": "not-created",
+      "appProcess": "not-started"
+    },
+    "code": "target_database_creation_failed",
+    "finishedAt": "2026-09-28T17:37:53.450Z",
+    "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+  },
+  "empty": {
+    "schemaVersion": 1,
+    "startedAt": "2026-09-28T17:37:53.592Z",
+    "status": "passed",
+    "steps": {
+      "backup": {
+        "database": {
+          "bytes": 73384,
+          "sha256": "d711ccdbe43be9391c012fcbd6b70e36b3c6b7c44adcd1384c079c9e1dacf709"
+        },
+        "media": {
+          "bytes": 84,
+          "sha256": "48acc68d7148aeb94e6ba5c5e7dad086e8a84648829a9a7a53d15064b84e5f66"
+        }
+      },
+      "migrate": {
+        "applied": 0
+      },
+      "rows": {
+        "tables": 25,
+        "contentMatches": true
+      },
+      "media": {
+        "files": 0,
+        "assets": 0,
+        "variants": 0,
+        "byteHashesMatch": true
+      },
+      "serve": {
+        "ready": 200,
+        "home": 200,
+        "mediaDelivery": "not-applicable-empty",
+        "delivered": 0,
+        "privateDenied": 0
+      }
+    },
+    "ownership": {
+      "workDirectory": "created-retained",
+      "database": "created-retained",
+      "appProcess": "stopped"
+    },
+    "finishedAt": "2026-09-28T17:37:56.731Z",
+    "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+  },
+  "media": {
+    "schemaVersion": 1,
+    "startedAt": "2026-09-28T17:38:00.287Z",
+    "status": "passed",
+    "steps": {
+      "backup": {
+        "database": {
+          "bytes": 92213,
+          "sha256": "35ce99779fc49385c227eeac25c59da237c4c7ed007db8e68b02923aef4c28e3"
+        },
+        "media": {
+          "bytes": 133461,
+          "sha256": "b43bd4e7567e50c98fd2ee7ac3fc5cadb4b7a831ba2a597ee5f0fe3a79e3c77f"
+        }
+      },
+      "migrate": {
+        "applied": 0
+      },
+      "rows": {
+        "tables": 25,
+        "contentMatches": true
+      },
+      "media": {
+        "files": 12,
+        "assets": 6,
+        "variants": 12,
+        "byteHashesMatch": true
+      },
+      "serve": {
+        "ready": 200,
+        "home": 200,
+        "mediaDelivery": "verified",
+        "delivered": 5,
+        "privateDenied": 1
+      }
+    },
+    "ownership": {
+      "workDirectory": "created-retained",
+      "database": "created-retained",
+      "appProcess": "stopped"
+    },
+    "finishedAt": "2026-09-28T17:38:04.342Z",
+    "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+  },
+  "acceptedCases": [
+    "existing",
+    "race",
+    "denied",
+    "empty",
+    "media"
+  ],
+  "cleanup": {
+    "databases": 5,
+    "roles": 1,
+    "method": "Only successful test-owned CREATE names; DROP without FORCE; no backend termination"
+  }
+}

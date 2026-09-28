@@ -110,6 +110,44 @@ jobs:
       - run: pnpm test:unit
       - run: pnpm test:integration
       - run: pnpm build
+      - name: Select PostgreSQL 17 clients for restore verification
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          client_dir=/usr/lib/postgresql/17/bin
+          if [ ! -x "$client_dir/pg_dump" ] || [ ! -x "$client_dir/pg_restore" ]; then
+            sudo apt-get update
+            if ! apt-cache show postgresql-client-17 >/dev/null 2>&1; then
+              sudo apt-get install --yes --no-install-recommends postgresql-common ca-certificates
+              sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            fi
+            sudo apt-get install --yes --no-install-recommends postgresql-client-17
+          fi
+          "$client_dir/pg_dump" --version | grep -E '^pg_dump \(PostgreSQL\) 17\.'
+          "$client_dir/pg_restore" --version | grep -E '^pg_restore \(PostgreSQL\) 17\.'
+          printf '%s\n' "$client_dir" >> "$GITHUB_PATH"
+      - name: Verify fresh restore ownership and real PostgreSQL/media recovery
+        timeout-minutes: 5
+        shell: bash
+        env:
+          REHEARSAL_TEST_DATABASE_URL: postgresql://test:test-only-ephemeral@127.0.0.1:5432/valkyria_test?sslmode=disable
+          REHEARSAL_TEST_PORT: '3349'
+          REHEARSAL_PROOF_REPORT_PATH: .local/restore-rehearsal/report-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}.json
+        run: |
+          set -euo pipefail
+          install -d -m 700 .local/restore-rehearsal
+          test ! -e "$REHEARSAL_PROOF_REPORT_PATH"
+          node --test scripts/tests/restore-rehearsal.integration.mjs
+      - name: Upload real restore boundary evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: restore-boundaries-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .local/restore-rehearsal/report-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Build image without publishing
