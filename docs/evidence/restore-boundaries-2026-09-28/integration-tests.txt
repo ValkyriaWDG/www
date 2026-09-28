@@ -1,0 +1,15 @@
+▶ real same-cluster rehearsal ownership and restore contract
+  ✔ existing target CLI preserves its sentinel and never creates work directory (728.922ms)
+  ✔ real CREATE collision preserves the competitor database and never captures (572.7679ms)
+  ✔ permission-denied CREATE leaves no target and records no database ownership (346.3263ms)
+  ✔ empty editorial source round trip succeeds without inventing public media (5235.1193ms)
+  ✔ published and private media round trip preserves table/variant hashes and HTTP policy (6144.139ms)
+✔ real same-cluster rehearsal ownership and restore contract (18212.0224ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18371.1345

@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "anonymous-public-production-browser",
+  "origin": "https://valkyriawdg.cz",
+  "startedAt": "2026-09-28T17:33:37.896Z",
+  "deploymentIdentity": {
+    "revision": "9a872918ad4d89935eb26118d853d40776af7d66",
+    "imageDigest": "sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93",
+    "identityReference": "deployment-record.json",
+    "provenance": "Operator-supplied observed identity; browser checks do not establish container digest or source labels."
+  },
+  "localHarnessRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+  "harnessSha256": "f5361315a7e284315285e27f11f5380ac456513f1966e204da52b58039cace56",
+  "browserProduct": "Google Chrome for Testing",
+  "browserExecutableSha256": "6b5da320179b656aefdb74ff10bc0bd33ba8d5ea869347e04e0a6b2bdd815e96",
+  "playwrightVersion": "1.63.0",
+  "mediaManifest": {
+    "id": "wardogs-menu-full-2026-09-26",
+    "sha256": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388"
+  },
+  "checks": [
+    {
+      "name": "desktop-cs-metadata-and-real-playback",
+      "status": "passed",
+      "durationMs": 4094,
+      "observed": {
+        "metadata": {
+          "lang": "cs",
+          "canonicals": [
+            "https://valkyriawdg.cz/cs"
+          ],
+          "alternates": [
+            {
+              "language": "cs",
+              "href": "https://valkyriawdg.cz/cs"
+            },
+            {
+              "language": "en",
+              "href": "https://valkyriawdg.cz/en"
+            },
+            {
+              "language": "x-default",
+              "href": "https://valkyriawdg.cz/cs"
+            }
+          ],
+          "ogImage": [
+            "https://valkyriawdg.cz/api/social/cs/site?v=1"
+          ],
+          "twitterImage": [
+            "https://valkyriawdg.cz/api/social/cs/site?v=1"
+          ]
+        },
+        "before": {
+          "currentTime": 0.137003,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 4,
+          "droppedFrames": 0
+        },
+        "after": {
+          "currentTime": 2.648138,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 84,
+          "droppedFrames": 4
+        }
+      }
+    },
+    {
+      "name": "desktop-en-metadata-and-real-playback",
+      "status": "passed",
+      "durationMs": 3394,
+      "observed": {
+        "metadata": {
+          "lang": "en",
+          "canonicals": [
+            "https://valkyriawdg.cz/en"
+          ],
+          "alternates": [
+            {
+              "language": "cs",
+              "href": "https://valkyriawdg.cz/cs"
+            },
+            {
+              "language": "en",
+              "href": "https://valkyriawdg.cz/en"
+            },
+            {
+              "language": "x-default",
+              "href": "https://valkyriawdg.cz/cs"
+            }
+          ],
+          "ogImage": [
+            "https://valkyriawdg.cz/api/social/en/site?v=1"
+          ],
+          "twitterImage": [
+            "https://valkyriawdg.cz/api/social/en/site?v=1"
+          ]
+        },
+        "before": {
+          "currentTime": 0.118521,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 7,
+          "droppedFrames": 0
+        },
+        "after": {
+          "currentTime": 2.638397,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 82,
+          "droppedFrames": 0
+        }
+      }
+    },
+    {
+      "name": "manual-pause-reload-resume",
+      "status": "passed",
+      "durationMs": 1904,
+      "observed": {
+        "before": {
+          "currentTime": 2.945722,
+          "duration": 192.466,
+          "paused": true,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 91,
+          "droppedFrames": 0
+        },
+        "paused": {
+          "currentTime": 2.945722,
+          "duration": 192.466,
+          "paused": true,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 91,
+          "droppedFrames": 0
+        },
+        "reloaded": {
+          "currentTime": 0,
+          "duration": null,
+          "paused": true,
+          "width": 0,
+          "height": 0,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": null,
+          "sourceOrigin": null,
+          "sourceSearch": null,
+          "frames": 0,
+          "droppedFrames": 0
+        },
+        "resumed": {
+          "currentTime": 0.106573,
+          "duration": 192.466,
+          "paused": false,
+          "width": 1920,
+          "height": 1080,
+          "muted": true,
+          "loop": true,
+          "error": null,
+          "rate": 1,
+          "source": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+          "sourceOrigin": "https://valkyriawdg.cz",
+          "sourceSearch": "",
+          "frames": 6,
+          "droppedFrames": 0
+        }
+      }
+    },
+    {
+      "name": "mobile-cs-poster-and-metadata",
+      "status": "passed",
+      "durationMs": 1723,
+      "observed": {
+        "metadata": {
+          "lang": "cs",
+          "canonicals": [
+            "https://valkyriawdg.cz/cs"
+          ],
+          "alternates": [
+            {
+              "language": "cs",
+              "href": "https://valkyriawdg.cz/cs"
+            },
+            {
+              "language": "en",
+              "href": "https://valkyriawdg.cz/en"
+            },
+            {
+              "language": "x-default",
+              "href": "https://valkyriawdg.cz/cs"
+            }
+          ],
+          "ogImage": [
+            "https://valkyriawdg.cz/api/social/cs/site?v=1"
+          ],
+          "twitterImage": [
+            "https://valkyriawdg.cz/api/social/cs/site?v=1"
+          ]
+        },
+        "poster": {
+          "state": "paused",
+          "reason": "narrow-coarse",
+          "loaded": true,
+          "attachedSources": 0,
+          "paused": true,
+          "currentTime": 0,
+          "currentSrc": "",
+          "posterOrigin": "https://valkyriawdg.cz",
+          "posterPath": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+          "posterSearch": ""
+        },
+        "videoRequestsBeforeOptIn": 0
+      }
+    },
+    {
+      "name": "mobile-en-poster-and-metadata",
+      "status": "passed",
+      "durationMs": 2053,
+      "observed": {
+        "metadata": {
+          "lang": "en",
+          "canonicals": [
+            "https://valkyriawdg.cz/en"
+          ],
+          "alternates": [
+            {
+              "language": "cs",
+              "href": "https://valkyriawdg.cz/cs"
+            },
+            {
+              "language": "en",
+              "href": "https://valkyriawdg.cz/en"
+            },
+            {
+              "language": "x-default",
+              "href": "https://valkyriawdg.cz/cs"
+            }
+          ],
+          "ogImage": [
+            "https://valkyriawdg.cz/api/social/en/site?v=1"
+          ],
+          "twitterImage": [
+            "https://valkyriawdg.cz/api/social/en/site?v=1"
+          ]
+        },
+        "poster": {
+          "state": "paused",
+          "reason": "narrow-coarse",
+          "loaded": true,
+          "attachedSources": 0,
+          "paused": true,
+          "currentTime": 0,
+          "currentSrc": "",
+          "posterOrigin": "https://valkyriawdg.cz",
+          "posterPath": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+          "posterSearch": ""
+        },
+        "videoRequestsBeforeOptIn": 0
+      }
+    },
+    {
+      "name": "no-uncaught-errors-or-write-attempts",
+      "status": "failed",
+      "durationMs": 2,
+      "errorType": "AssertionError",
+      "reason": "A browser operation or assertion failed; inspect this named scenario."
+    }
+  ],
+  "captures": [
+    {
+      "file": "browser-after-home-cs-desktop.png",
+      "caption": "Actual anonymous production /cs in Google Chrome for Testing 154.0.8037.57, 1440x900 desktop. Canonical/language/social metadata checked and real background playback advanced. No sign-in or content writes.",
+      "sha256": "fe4ef4be57229b3eff8342670b29f34110729aa7f7c37f1dd7e892fdff2946b1",
+      "bytes": 1346747,
+      "width": 1440,
+      "height": 900,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/cs",
+      "locale": "cs",
+      "layout": {
+        "width": 1440,
+        "documentWidth": 1440
+      }
+    },
+    {
+      "file": "browser-after-home-en-desktop.png",
+      "caption": "Actual anonymous production /en in Google Chrome for Testing 154.0.8037.57, 1440x900 desktop. Canonical/language/social metadata checked and real background playback advanced. No sign-in or content writes.",
+      "sha256": "7d7af24aa2eae79001686af93360111319d2a3e2c918cb13f269e7b5d6627a9b",
+      "bytes": 1343181,
+      "width": 1440,
+      "height": 900,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/en",
+      "locale": "en",
+      "layout": {
+        "width": 1440,
+        "documentWidth": 1440
+      }
+    },
+    {
+      "file": "browser-after-home-cs-mobile.png",
+      "caption": "Actual anonymous production /cs, Google Chrome for Testing 154.0.8037.57 with 390x844 mobile/touch emulation. Poster policy requested zero video bytes before opt-in. This is not a physical phone.",
+      "sha256": "f246a46bb89c98af30a7beea3b222c902931fe5177c3adc4fdcd7ed9aab90884",
+      "bytes": 321449,
+      "width": 390,
+      "height": 844,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/cs",
+      "locale": "cs",
+      "layout": {
+        "width": 390,
+        "documentWidth": 390
+      }
+    },
+    {
+      "file": "browser-after-home-en-mobile.png",
+      "caption": "Actual anonymous production /en, Google Chrome for Testing 154.0.8037.57 with 390x844 mobile/touch emulation. Poster policy requested zero video bytes before opt-in. This is not a physical phone.",
+      "sha256": "c83f5c4782a91e19dcb3d8afce845f719091f7bce1e845388348d80e4a0f8015",
+      "bytes": 319393,
+      "width": 390,
+      "height": 844,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/en",
+      "locale": "en",
+      "layout": {
+        "width": 390,
+        "documentWidth": 390
+      }
+    }
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "failedRequests": [
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/members",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/login",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/members",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/login",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/clan",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/matches",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/cs/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/news",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/clan",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/matches",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    },
+    {
+      "method": "GET",
+      "path": "/en/privacy",
+      "resourceType": "fetch",
+      "sameOrigin": true
+    }
+  ],
+  "cancelledRequests": [],
+  "httpFailures": [],
+  "unexpectedOriginRequests": [],
+  "unexpectedOriginResponses": [],
+  "observedWriteAttempts": [],
+  "webSocketAttempts": [],
+  "limits": [
+    "Anonymous public pages only. Fresh contexts, no owner cookies, no authentication or production content mutation.",
+    "Initial routed requests are filtered to same-origin GET/HEAD. Playwright can follow redirect hops without routing them again; this is not a complete pre-network isolation boundary.",
+    "Every observed request/response origin is checked; unexpected-origin hops or write attempts fail the run. WebSocket attempts are blocked by routeWebSocket and fail the run.",
+    "Short native playback interval, not full-loop, cross-codec, constrained-network or physical-device qualification.",
+    "Mobile viewport/touch and reduced-motion settings are browser emulation, not physical Android or iOS.",
+    "Actual screenshot visual inspection is required separately from this script."
+  ],
+  "browserVersion": "154.0.8037.57",
+  "activeCheck": null,
+  "fatal": {
+    "errorType": "AssertionError",
+    "reason": "Setup or named browser check failed; remaining checks are not run."
+  },
+  "completedAt": "2026-09-28T17:33:52.146Z",
+  "summary": {
+    "total": 6,
+    "passed": 5,
+    "failed": 1,
+    "expectedChecks": 6
+  },
+  "status": "failed",
+  "visualInspection": "Required separately; not asserted by this script."
+}

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-28T17:32:55.872992+00:00",
+  "origin": "https://valkyriawdg.cz",
+  "image": "majorluk/valkyria-www@sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93",
+  "sourceRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+  "containerStatus": "running",
+  "health": "healthy",
+  "readiness": {
+    "status": "ready",
+    "checks": {
+      "config": "ok",
+      "database": "ok",
+      "schema": "ok",
+      "media": "ok"
+    }
+  },
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "capabilitiesDropped": [
+    "ALL"
+  ],
+  "securityOptions": [
+    "no-new-privileges:true"
+  ],
+  "publishedPorts": [],
+  "mounts": [
+    {
+      "destination": "/app/apps/web/.next/cache",
+      "writable": true,
+      "type": "bind"
+    },
+    {
+      "destination": "/app/storage/editorial",
+      "writable": true,
+      "type": "bind"
+    },
+    {
+      "destination": "/app/apps/web/public/media/background",
+      "writable": false,
+      "type": "bind"
+    }
+  ],
+  "watchtowerEnabled": "false",
+  "authentication": {
+    "discordCredentialsPresent": false,
+    "localAdminLoginEnabled": false
+  },
+  "publisherTimer": {
+    "Result": "success",
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled"
+  },
+  "publisherService": {
+    "Result": "success",
+    "ExecMainExitTimestamp": "Mon 2026-09-28 19:32:20 CEST",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "static"
+  },
+  "backupTimer": {
+    "Result": "success",
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled"
+  },
+  "backupService": {
+    "Result": "success",
+    "ExecMainExitTimestamp": "Mon 2026-09-28 19:31:23 CEST",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "static"
+  },
+  "media": [
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "bytes": 51032923,
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b"
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "bytes": 13654192,
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e"
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "bytes": 19561104,
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309"
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "bytes": 181198,
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+    }
+  ],
+  "limitations": [
+    "Service success is not proof of overdue-content monitoring or alert delivery.",
+    "This read-only inspection does not exercise authenticated sessions or perform a restore."
+  ]
+}

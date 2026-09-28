@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "sourceReportSha256": "0157b2d74089e8b1096c8d08076b8f07c93520c408c4e2d08331b254634d30ed",
+  "counts": {
+    "tests": 8,
+    "passed": 0,
+    "failed": 8,
+    "pending": 0
+  },
+  "success": false,
+  "tests": [
+    {
+      "name": "match prose game scope after a concurrent owner move denies save after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 108.74119999999994,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies publish after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 29.464100000000144,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies unpublish after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 18.15560000000005,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies restore after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 24.558799999999792,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies save after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 30.74240000000009,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies publish after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 31.452999999999975,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies unpublish after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 29.47109999999975,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies restore after the owner moves outside the actor scope",
+      "status": "failed",
+      "durationMs": 33.11700000000019,
+      "failure": [
+        "AssertionError: expected null to be an instance of AccessDeniedError"
+      ]
+    }
+  ]
+}

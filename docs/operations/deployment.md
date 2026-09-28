@@ -27,7 +27,7 @@ foundation check alone is not a container build or live deployment.
 
 | Item | Value / source |
 |---|---|
-| Repository variable `CONTAINER_PUBLISH_ENABLED` | `false` until first release readiness review |
+| Repository variable `CONTAINER_PUBLISH_ENABLED` | Bootstrap default: `false` until first release readiness review; read the current repository value before each publication |
 | Workflow input `expected_sha` | Full accepted main revision; must equal the immutable workflow SHA |
 | Repository/environment variable `DOCKERHUB_IMAGE` | Operator-selected existing `namespace/repository` with explicitly approved public/private visibility |
 | Environment secret `DOCKERHUB_USERNAME` | Registry username; no live value in source |
@@ -102,6 +102,38 @@ Local development uses an ignored `.local/editorial-media` directory; no uploade
 belong in a Git commit, CI artifact or Docker build context.
 
 ## Host integration
+
+### Unified origin cutover
+
+The owner authorized the shared platform at `https://valkyria.cz` on 2026-09-28.
+This is an operating contract; completed deployment evidence belongs in `docs/STATUS.md`.
+Set both `APP_URL` and `BETTER_AUTH_URL` to that origin in the protected runtime file
+**and** any explicit Compose `environment` overrides. Check the effective container
+configuration and the stored `background.media` setting, which takes precedence over
+background environment defaults. Serve approved Wardogs media from the canonical origin.
+
+Route the apex and `www.valkyria.cz` through the existing tunnel and reverse proxy.
+Redirect `www` to the apex with the path and query intact. On the old Wardogs hosts,
+redirect `/`, `/cs` and `/cs/` to `/cs/wardogs`, and `/en` and `/en/` to `/en/wardogs`.
+Preserve the query. Other paths transfer unchanged to the canonical host: shared list
+filters, entity-based detail redirects, media and API paths must retain their semantics.
+Only replace the apex/www address records involved in this cutover; preserve unrelated
+DNS records, tunnel ingress and proxy hosts. Record protected snapshots and readbacks.
+
+Keep `valkyriahll.cz` serving the legacy site until its archive and manuals have been
+accepted. Leave `LEGACY_HLL_HOSTS` empty. With no approved clan footage or configured
+provider, use `HLL_BACKGROUND_CLIPS_JSON=[]` and `SERVER_STATUS_SOURCE=none`; never
+load synthetic fixtures into production. Keep Discord and local administrator login
+disabled for this promotion. Existing cookies do not transfer between the two domains.
+
+Migration `0001_unified_platform_scope` is additive. Before it runs, pair a fresh
+database backup with editorial media and prove restoration into a separate, newly
+created disposable database. Expect the migration runner to report one applied and
+one already applied migration (two total), then zero applied/two already applied on
+retry. Never remove migration journal rows for an image rollback. The previous image
+does not enforce the new game scope on local grants: keep both login methods disabled
+and do not create scoped administrator grants during this rollback window. Once scoped
+administration is enabled, this older image is no longer an authorization-safe fallback.
 
 Target pattern: outbound HTTPS tunnel → existing reverse proxy → isolated web container.
 Connect only to the existing proxy and database networks. Do not open a public application
