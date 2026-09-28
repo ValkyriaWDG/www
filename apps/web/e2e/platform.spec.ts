@@ -77,10 +77,12 @@ test.describe('platform routing', () => {
     };
     for (const width of [1920, 1366]) {
       await page.setViewportSize({ width, height: 900 });
-      for (const path of ['/cs/wardogs/news', '/cs/hll/news', '/cs']) {
+      const rows: Record<string, number> = {};
+      for (const path of ['/cs/wardogs', '/cs/hll', '/cs/wardogs/news', '/cs/hll/news', '/cs']) {
         await page.goto(path);
         await expect(page.locator('[data-platform-bar]')).toHaveCount(0);
         const { brand, game, language, account } = await top();
+        rows[path] = game.y + game.height / 2;
         // Logo top left; game switch, language and account in that order on one row at the top right.
         expect(brand.x, `${path} @${width}`).toBeLessThan(width * 0.1);
         expect(game.x + game.width, `${path} @${width}`).toBeLessThanOrEqual(language.x);
@@ -90,6 +92,9 @@ test.describe('platform routing', () => {
         expect(account.x + account.width, `${path} @${width}`).toBeGreaterThan(width * 0.9);
         expect(game.y, `${path} @${width}`).toBeLessThan(140);
       }
+      // The control row sits at the same height on both main menus and content pages.
+      const centers = Object.values(rows);
+      expect(Math.max(...centers) - Math.min(...centers), `${JSON.stringify(rows)} @${width}`).toBeLessThan(12);
     }
     // Phones: the full-width game switch row sits directly under the header in both games.
     await page.setViewportSize({ width: 390, height: 844 });
