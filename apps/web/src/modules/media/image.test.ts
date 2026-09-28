@@ -1,11 +1,11 @@
-import { mkdtemp, rm, symlink, writeFile, mkdir } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, symlink, writeFile, mkdir } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { DomainError } from '@/lib/result';
 import { FULL_MAX_EDGE, MAX_UPLOAD_BYTES, THUMB_MAX_EDGE, detectImageFormat, processImage } from './image';
-import { readVariant, resolveMediaRoot, variantKey, variantPath, writeVariants } from './storage';
+import { readVariant, removeAssetFiles, resolveMediaRoot, variantKey, variantPath, writeVariants } from './storage';
 
 const solid = (width: number, height: number) => sharp({ create: { width, height, channels: 3, background: { r: 120, g: 90, b: 30 } } });
 
@@ -87,14 +87,20 @@ describe('image intake', () => {
 });
 
 describe('media storage layout', () => {
+  let fixture: string;
   let root: string;
+  let outside: string;
   const id = '0b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
 
   beforeAll(async () => {
-    root = await mkdtemp(path.join(os.tmpdir(), 'valkyria-media-unit-'));
+    fixture = await mkdtemp(path.join(os.tmpdir(), 'valkyria-media-unit-'));
+    root = path.join(fixture, 'media');
+    outside = path.join(fixture, 'outside');
+    await mkdir(root);
+    await mkdir(outside);
   });
   afterAll(async () => {
-    await rm(root, { recursive: true, force: true });
+    await rm(fixture, { recursive: true, force: true });
   });
 
   it('uses server-generated keys under the root', async () => {
@@ -112,10 +118,71 @@ describe('media storage layout', () => {
     }
     expect(() => variantPath(root, id, '../x' as 'full')).toThrow();
     const linked = '1b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
-    const secret = path.join(root, 'secret.txt');
+    const secret = path.join(outside, 'full.webp');
     await writeFile(secret, 'secret');
-    await mkdir(path.join(root, linked));
-    await symlink(secret, path.join(root, linked, 'full.webp'));
+    if (process.platform === 'win32') {
+      // Junctions exercise a real outside-root escape without requiring Windows symlink privileges.
+      await symlink(outside, path.join(root, linked), 'junction');
+    } else {
+      // Keep the final-file symlink assertion that exercises O_NOFOLLOW on POSIX.
+      await mkdir(path.join(root, linked));
+      await symlink(secret, path.join(root, linked, 'full.webp'));
+    }
+    expect(await readFile(path.join(root, linked, 'full.webp'), 'utf8')).toBe('secret');
     expect(await readVariant(root, linked, 'full')).toBeNull();
+  });
+
+  it('rejects reads through an asset directory linked outside the media root', async () => {
+    const linked = '2b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
+    const directory = path.join(outside, linked);
+    await mkdir(directory);
+    await writeFile(path.join(directory, 'full.webp'), 'outside-full');
+    await symlink(directory, path.join(root, linked), process.platform === 'win32' ? 'junction' : 'dir');
+    expect(await readFile(path.join(root, linked, 'full.webp'), 'utf8')).toBe('outside-full');
+    expect(await readVariant(root, linked, 'full')).toBeNull();
+  });
+
+  it('rejects writes through an asset directory linked outside the media root', async () => {
+    const linked = '3b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
+    const directory = path.join(outside, linked);
+    await mkdir(directory);
+    await writeFile(path.join(directory, 'full.webp'), 'outside-full');
+    await writeFile(path.join(directory, 'thumb.webp'), 'outside-thumb');
+    await symlink(directory, path.join(root, linked), process.platform === 'win32' ? 'junction' : 'dir');
+    await expect(writeVariants(root, linked, { full: Buffer.from('replacement-full'), thumb: Buffer.from('replacement-thumb') })).rejects.toThrow();
+    expect(await readFile(path.join(directory, 'full.webp'), 'utf8')).toBe('outside-full');
+    expect(await readFile(path.join(directory, 'thumb.webp'), 'utf8')).toBe('outside-thumb');
+    expect((await readdir(directory)).sort()).toEqual(['full.webp', 'thumb.webp']);
+  });
+
+  it('rejects asset directory aliases to another asset within the root', async () => {
+    const linked = '4b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
+    const target = '7b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
+    await writeVariants(root, target, { full: Buffer.from('private-full'), thumb: Buffer.from('private-thumb') });
+    await symlink(path.join(root, target), path.join(root, linked), process.platform === 'win32' ? 'junction' : 'dir');
+    expect(await readFile(path.join(root, linked, 'full.webp'), 'utf8')).toBe('private-full');
+    expect(await readVariant(root, linked, 'full')).toBeNull();
+    await expect(writeVariants(root, linked, { full: Buffer.from('replacement-full'), thumb: Buffer.from('replacement-thumb') })).rejects.toThrow();
+    expect(await readFile(path.join(root, target, 'full.webp'), 'utf8')).toBe('private-full');
+  });
+
+  it('removes an asset directory link without removing its external target', async () => {
+    const linked = '5b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
+    const directory = path.join(outside, linked);
+    await mkdir(directory);
+    await writeFile(path.join(directory, 'full.webp'), 'outside-full');
+    await symlink(directory, path.join(root, linked), process.platform === 'win32' ? 'junction' : 'dir');
+    await removeAssetFiles(root, linked);
+    expect(await readdir(root)).not.toContain(linked);
+    expect(await readFile(path.join(directory, 'full.webp'), 'utf8')).toBe('outside-full');
+  });
+
+  it('allows a configured root alias while preserving normal asset isolation', async () => {
+    const rootAlias = path.join(fixture, 'configured-root');
+    const asset = '6b8f6c2e-1c2d-4e5f-8a9b-0c1d2e3f4a5b';
+    await symlink(root, rootAlias, process.platform === 'win32' ? 'junction' : 'dir');
+    await writeVariants(rootAlias, asset, { full: Buffer.from('root-full'), thumb: Buffer.from('root-thumb') });
+    expect((await readVariant(rootAlias, asset, 'full'))?.toString()).toBe('root-full');
+    expect(await readFile(path.join(root, asset, 'thumb.webp'), 'utf8')).toBe('root-thumb');
   });
 });

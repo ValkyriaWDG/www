@@ -1,0 +1,9 @@
+{
+  "recordedOn": "2026-09-28",
+  "encoding": "SHA-256 of UTF-8 source normalized CRLF to LF",
+  "sourceFiles": {
+    "apps/web/src/components/public/presskit.test.ts": "a49522d804fcf8d46c20838072f5986dfceb594d5dbd2eefef95413ddb776ca2",
+    "apps/web/src/modules/media/image.test.ts": "825555de5dbcd429847ad84410ddf855b836a40b93dd6a27f5277dbb14acc426",
+    "apps/web/src/modules/media/storage.ts": "2a57ea700757058a8314ea846088dc9c3605e4bc029b87cd63fb53a47c306f2e"
+  }
+}
