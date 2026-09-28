@@ -45,8 +45,9 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
   const [gameId, setGameId] = useState('');
   const [file, setFile] = useState<{ name: string; content: string } | null>(null);
   const [side, setSide] = useState<StatisticsSide>(initial?.valkyriaSide ?? suggestedSide ?? 'allies');
-  const [publishPlayers, setPublishPlayers] = useState(initial?.publishPlayers ?? false);
-  const [settings, setSettings] = useState({ side: initial?.valkyriaSide ?? 'allies', publishPlayers: initial?.publishPlayers ?? false });
+  // Owner decision: player rows are public by default; the editor's saved choice carries over to a replacement import.
+  const [publishPlayers, setPublishPlayers] = useState(initial?.publishPlayers ?? true);
+  const [settings, setSettings] = useState({ side: initial?.valkyriaSide ?? 'allies', publishPlayers: initial?.publishPlayers ?? true });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [notice, setNotice] = useState<{ kind: 'success' | 'error'; text: string } | null>(null);
   const [pending, setPending] = useState<string | null>(null);
@@ -120,7 +121,10 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
     setNotice(null);
     setPending('settings');
     const result = await updateMatchStatisticsSettingsAction({ matchId, valkyriaSide: settings.side, publishPlayers: settings.publishPlayers });
-    finish(result, t('settingsSaved'), setCurrent);
+    finish(result, t('settingsSaved'), (data) => {
+      setCurrent(data);
+      setPublishPlayers(data.publishPlayers);
+    });
   };
 
   const remove = async () => {

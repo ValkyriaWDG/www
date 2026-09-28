@@ -181,7 +181,8 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   Allies/Axis sides with 0–5 sector scores. Game statistics (team totals, kills by weapon
   type, weapons, optional player rows) import from a configured CRCON server by game ID
   or from an uploaded scoreboard JSON into `match_statistics` (migration 0002), with
-  source/game ID/import time; player rows are public only when an editor publishes them.
+  source/game ID/import time; player rows are public by default after an import (owner
+  decision 2026-09-28) and an editor can hide them; a replacement import keeps that choice.
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.
