@@ -21,6 +21,14 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 ## Checkpoint (resume here)
 
+Issues #29 and #31 candidate: [SEO and sharing](engineering/seo-and-sharing.md)
+adds bilingual homepage canonicals, branded publication-aware PNG templates for
+site/news/matches, editorial sharing previews and published-article JSON-LD.
+[Local evidence](evidence/seo-social-2026-09-26/README.md) includes actual images,
+CS/EN desktop/mobile editor captures, long-title stress coverage and regression
+results. This candidate is not deployed; #29 still requires a new production HTTP
+check after an authorized release. Historical deployment evidence remains intact.
+
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
 Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-length

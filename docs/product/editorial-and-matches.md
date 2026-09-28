@@ -23,6 +23,10 @@ cover/inline images, captions, publication/update dates and related posts where 
 Metadata/canonical/OG rendering uses published fields only. Public RSS/feed is optional,
 but any implemented feed must obey the exact same locale-specific publication gate.
 
+The [sharing workflow](../engineering/seo-and-sharing.md) generates branded 1200 × 630
+PNG templates for published articles and matches from those same public projections.
+The editor's sharing section previews only the selected translation's published image.
+
 Each post/page is one entity with a `ContentTranslation` for each available locale;
 do not create unrelated duplicate posts for translations. Each translation owns its
 slug, draft and published revisions, title, body, excerpt, cover presentation, SEO,

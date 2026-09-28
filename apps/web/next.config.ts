@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@valkyria/db'],
   // Native/server-only libraries stay external to the server bundle.
   serverExternalPackages: ['sharp', 'pg'],
+  outputFileTracingIncludes: {
+    '/api/social/**': ['./node_modules/@fontsource/barlow-condensed/files/*600-normal.woff'],
+  },
   images: {
     // Editorial media is delivered by the publication-aware /api/media route, not the optimizer.
     unoptimized: true,

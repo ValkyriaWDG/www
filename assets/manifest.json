@@ -1252,6 +1252,138 @@
       "bytes": 318978,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "seo-social-2026-09-26-site-cs",
+      "path": "docs/evidence/seo-social-2026-09-26/site-cs.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "33eb9307edf25df475c4d6a6b1196871d2e960106275ea647de32996985f4a08",
+      "bytes": 218097,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-site-en",
+      "path": "docs/evidence/seo-social-2026-09-26/site-en.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "5a1492fcc451375ba3cc9ce96325c3e9c7f8694a2db5713944fb1f22ce2b6fe4",
+      "bytes": 217480,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-news-cs",
+      "path": "docs/evidence/seo-social-2026-09-26/news-cs.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "d21aa586c4466f54c818a7907da9e29a68b6f9442de3850d78eb9fe5739e0b97",
+      "bytes": 124036,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-news-en",
+      "path": "docs/evidence/seo-social-2026-09-26/news-en.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "f7bf18d1f1488d153057853a4160b7fc8a9629db159745ef0e779428f983be3d",
+      "bytes": 124031,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-wardogs-news-cs",
+      "path": "docs/evidence/seo-social-2026-09-26/wardogs-news-cs.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "8864bda9c03acd27006a9089bf19efe726b019966c5152c55a860bc83f3f68ec",
+      "bytes": 217754,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-result-en",
+      "path": "docs/evidence/seo-social-2026-09-26/result-en.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "2201a51088e9f15c185822879bc1d590bbbc8908e253625ccda55fe6e27cb5e1",
+      "bytes": 126186,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-unknown-result-cs",
+      "path": "docs/evidence/seo-social-2026-09-26/unknown-result-cs.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "017cdb6e94c160c6794b1bf8d77f48d40d4787f0cd4b7139df5a8e02e55fa95b",
+      "bytes": 225614,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-long-result-cs",
+      "path": "docs/evidence/seo-social-2026-09-26/long-result-cs.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "f681685dff31c76d2ce5e2c5d406bdda8500cfe4511b2ec97ea2bf07dd6dabd5",
+      "bytes": 138604,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "seo-social-2026-09-26-editor-cs-1440",
+      "path": "docs/evidence/seo-social-2026-09-26/editor-cs-1440.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "a5383de6608d6c2974a34ed8322d072acd7991ca6aa94918eb91b801ee7953b1",
+      "bytes": 73360,
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "id": "seo-social-2026-09-26-editor-cs-390",
+      "path": "docs/evidence/seo-social-2026-09-26/editor-cs-390.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "03cacd2f79ea4c993f5c1edbe3ee0b78609dac5f86239f47485bd37c4a6597af",
+      "bytes": 60603,
+      "width": 390,
+      "height": 960
+    },
+    {
+      "id": "seo-social-2026-09-26-editor-en-1440",
+      "path": "docs/evidence/seo-social-2026-09-26/editor-en-1440.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "5d0e0e55ec752932ff70929d67caef02adc5c9eb2ab855868c2979e4336d799d",
+      "bytes": 101037,
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "id": "seo-social-2026-09-26-editor-en-390",
+      "path": "docs/evidence/seo-social-2026-09-26/editor-en-390.png",
+      "source": "Actual local production-build PNG/browser capture; synthetic data. See seo-social evidence provenance and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria branding, synthetic fixtures and Wardogs presskit imagery; excluded from the Apache code license; no general third-party redistribution license asserted",
+      "sha256": "1b5bd81edb70017c28f628273ae2f35b0ea001fb426c22e1ce1142b8935fbd5e",
+      "bytes": 58888,
+      "width": 390,
+      "height": 960
     }
   ]
 }

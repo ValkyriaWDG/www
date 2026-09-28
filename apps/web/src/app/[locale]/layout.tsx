@@ -9,6 +9,7 @@ import { MenuShell } from '@/components/shell/menu-shell';
 import { routing } from '@/i18n/routing';
 import { getHeaderAccountState } from '@/modules/auth/header-state';
 import { getSiteOrigin } from '@/lib/site';
+import { sharingMetadata } from '@/modules/social/metadata';
 import '@/styles/globals.css';
 
 export const dynamicParams = false;
@@ -29,12 +30,14 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Pr
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'common.site' });
+  const sharing = sharingMetadata(locale, 'site', undefined, undefined, t('name'), t('description'));
   return {
     metadataBase: new URL(getSiteOrigin()),
     title: { default: t('name'), template: `%s · ${t('name')}` },
     description: t('description'),
     applicationName: t('name'),
-    openGraph: { siteName: t('name'), locale: locale === 'cs' ? 'cs_CZ' : 'en_GB', type: 'website' },
+    openGraph: { siteName: t('name'), locale: locale === 'cs' ? 'cs_CZ' : 'en_GB', type: 'website', images: sharing.images },
+    twitter: sharing.twitter,
   };
 }
 

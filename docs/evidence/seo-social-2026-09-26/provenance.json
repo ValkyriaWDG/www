@@ -1,0 +1,33 @@
+{
+  "baseRevision": "507e704d288cd93d7baa0d1ab22ba8347fd67b0a",
+  "sourceDirty": true,
+  "description": "Actual source files used by the local build/captures; SHA-256 of UTF-8 with CRLF normalized to LF. Exact commit acceptance is separately recorded by CI.",
+  "sources": {
+    "apps/web/e2e/social-seo.spec.ts": "a6003341ac2b45b512303f52540112e086d1a36c706da20a84fe47f46d9127e9",
+    "apps/web/e2e/visual-social.spec.ts": "397e9a673c543b01fcc0e37b64299ee72eddd3a6a34718f44ac1670ab8ebc49c",
+    "apps/web/src/app/api/social/[locale]/[kind]/[[...slug]]/route.ts": "4628f860a4e68e465877c395f6b3b5b54ad9dd6b2bfb22036daf2eb6161383a7",
+    "apps/web/src/components/admin/sharing-preview.tsx": "d19d82ed956b6a59ed905b94b57e7b4384b23579b57bcb33635ba00331db4cb0",
+    "apps/web/src/i18n/messages/cs/social.json": "a086112c5ef09a128e7f0e9acf686475a703685db024abc2ed9f4c42804aeb07",
+    "apps/web/src/i18n/messages/en/social.json": "8a212f725ac56bcf3339257ed6ba27edae4bc2a9dd3bd2b92da643a445d5f942",
+    "apps/web/src/modules/social/handler.ts": "dbd8eefd165f880c11063c3772c653eab83ffcdda1866d52ea3a049685b14712",
+    "apps/web/src/modules/social/metadata.ts": "da4525d54ca70d391de8f3430cb8027517757ac4d763947ef4aacf01d84e1b1e",
+    "apps/web/src/modules/social/model.ts": "71ce5a119410af98fd9a2f226b5458e3e35a2305c61e20c3194b646173b02fb1",
+    "apps/web/src/modules/social/render.tsx": "e181580efe56fa0fa86e9804eaebd1c140e50651866b87575287a2d875d2368e",
+    "apps/web/src/modules/social/social.test.ts": "ba4f9d4cf201b7f8ac56562c472d890e9a85e11282ef2f82576ceb2d7d586695",
+    "apps/web/src/modules/social/structured-data.ts": "00d263f291b61645b73f950479165947be631e86b0401954afaf01b9dbb94bf4",
+    "apps/web/tests/integration/social-images.test.ts": "6b27340162733d6fa97cfc272b366a21f4719e0cf128294ef4fd026f0049a82e",
+    "apps/web/e2e/public-news.spec.ts": "014bf07de652ada16781a2fe6d038a978de56e99ba05f1a568ff4f4862413836",
+    "apps/web/next.config.ts": "64074d83fbd639c46471f1af1788cd7347f40c506c21848be7976aea05ae98a2",
+    "apps/web/src/app/[locale]/layout.tsx": "0db19918df247c618eaf6df5c9acea3946c3409f2cde319dd6424bfd8ec49672",
+    "apps/web/src/app/[locale]/matches/[slug]/page.tsx": "a64458cca1eaba17a6510b36673830cee5fcb49453a968f10759c1de88025af9",
+    "apps/web/src/app/[locale]/matches/page.tsx": "b2cd158e10cdcf906ef310632d3b6997d3b50cb0aa2d58e105ebae6696afdd1c",
+    "apps/web/src/app/[locale]/members/[slug]/page.tsx": "03f462cd6c1461d6e27709c7fd13c741cb1e74a837b3f401bc6a9d81b9897f81",
+    "apps/web/src/app/[locale]/news/[slug]/page.tsx": "389b7c5214fb49c08a13a4ca858164b91d77a26d27498464411379c4948237ae",
+    "apps/web/src/app/[locale]/news/page.tsx": "9b1edd5082d81ada6cb9845d1359fc38af4127912c5004663c1e059629335abd",
+    "apps/web/src/app/[locale]/page.tsx": "8ac103c45862a49dfdb4ca2a509a739ec36e7458eac9625201d741c40cce350c",
+    "apps/web/src/app/robots.ts": "5d596b2f26f5579a42de57d154c3856f2f309feda95681516aa1ad37e66f715a",
+    "apps/web/src/components/admin/news-editor.tsx": "10201b489cc89d5e8dc99b61acb5efcc14e0506c9f49815897de134c3b490008",
+    "apps/web/src/components/public/core-page-data.ts": "b27d49a449b19844d0c0e1e39d4ad06091e15b642d4420b7760311104c3dd3a3",
+    "apps/web/src/i18n/messages/index.ts": "44991f70a8a5eecf93f1fa22c57d1fa21a292f62538b197ba976c30604853134"
+  }
+}
