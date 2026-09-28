@@ -1505,6 +1505,83 @@
       "bytes": 1650708,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "article-layout-2026-09-28-red-article-partial-fonts",
+      "path": "docs/evidence/article-layout-2026-09-28/red-article-partial-fonts.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "de81969be508db8bb5be48e6d69d4f09c1adc24b01c7649970cbb452e5a65519",
+      "bytes": 174583,
+      "width": 391,
+      "height": 844
+    },
+    {
+      "id": "article-layout-2026-09-28-red-article-loaded-fonts",
+      "path": "docs/evidence/article-layout-2026-09-28/red-article-loaded-fonts.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "c80d48e5084bbf5c605b64e8386356fc6e5af68320f8b4d21330c12e4e3ea54f",
+      "bytes": 178021,
+      "width": 391,
+      "height": 844
+    },
+    {
+      "id": "article-layout-2026-09-28-green-article-partial-fonts",
+      "path": "docs/evidence/article-layout-2026-09-28/green-article-partial-fonts.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "dc344133f1a9617e56c175ceb766e5eb8a5c917a3e77eb0a5fb016074cf71120",
+      "bytes": 178218,
+      "width": 391,
+      "height": 844
+    },
+    {
+      "id": "article-layout-2026-09-28-green-article-loaded-fonts",
+      "path": "docs/evidence/article-layout-2026-09-28/green-article-loaded-fonts.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "c80d48e5084bbf5c605b64e8386356fc6e5af68320f8b4d21330c12e4e3ea54f",
+      "bytes": 178021,
+      "width": 391,
+      "height": 844
+    },
+    {
+      "id": "article-layout-2026-09-28-green-article-en-mobile-loaded-fonts",
+      "path": "docs/evidence/article-layout-2026-09-28/green-article-en-mobile-loaded-fonts.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "5be3612ffbed8d8296e64923e75dc0adf4bef384597806871b2e860e9ffb5acf",
+      "bytes": 170251,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "article-layout-2026-09-28-green-article-cs-desktop-long-author",
+      "path": "docs/evidence/article-layout-2026-09-28/green-article-cs-desktop-long-author.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "ec0a6579930b264cf67847cac937869b8df6b5b8cd2975df44668bf9b7a0f671",
+      "bytes": 399093,
+      "width": 1280,
+      "height": 844
+    },
+    {
+      "id": "article-layout-2026-09-28-green-article-en-desktop-long-author",
+      "path": "docs/evidence/article-layout-2026-09-28/green-article-en-desktop-long-author.png",
+      "source": "Actual local synthetic-article browser capture; base df48609e384aca679fb5b72073ea9188ee4785b5 and candidate fingerprints in adjacent source.json; 2026-09-28",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, synthetic fixtures and clan branding; verification evidence only; clan mark excluded from Apache code license",
+      "sha256": "f5d27eb386ff567d2570635cbd3ab4bfd6f129ca9a256998e6618a8d875d8176",
+      "bytes": 395639,
+      "width": 1280,
+      "height": 844
     }
   ]
 }

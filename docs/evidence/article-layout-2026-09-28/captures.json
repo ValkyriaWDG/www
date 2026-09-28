@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "captures": [
+    {
+      "file": "red-article-partial-fonts.png",
+      "sha256": "de81969be508db8bb5be48e6d69d4f09c1adc24b01c7649970cbb452e5a65519",
+      "width": 391,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    },
+    {
+      "file": "red-article-loaded-fonts.png",
+      "sha256": "c80d48e5084bbf5c605b64e8386356fc6e5af68320f8b4d21330c12e4e3ea54f",
+      "width": 391,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    },
+    {
+      "file": "green-article-partial-fonts.png",
+      "sha256": "dc344133f1a9617e56c175ceb766e5eb8a5c917a3e77eb0a5fb016074cf71120",
+      "width": 391,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    },
+    {
+      "file": "green-article-loaded-fonts.png",
+      "sha256": "c80d48e5084bbf5c605b64e8386356fc6e5af68320f8b4d21330c12e4e3ea54f",
+      "width": 391,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    },
+    {
+      "file": "green-article-en-mobile-loaded-fonts.png",
+      "sha256": "5be3612ffbed8d8296e64923e75dc0adf4bef384597806871b2e860e9ffb5acf",
+      "width": 390,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    },
+    {
+      "file": "green-article-cs-desktop-long-author.png",
+      "sha256": "ec0a6579930b264cf67847cac937869b8df6b5b8cd2975df44668bf9b7a0f671",
+      "width": 1280,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    },
+    {
+      "file": "green-article-en-desktop-long-author.png",
+      "sha256": "f5d27eb386ff567d2570635cbd3ab4bfd6f129ca9a256998e6618a8d875d8176",
+      "width": 1280,
+      "height": 844,
+      "scope": "Synthetic public article, local standalone application, Windows Chrome for Testing154.0.8037.57; actual captured browser pixels."
+    }
+  ]
+}

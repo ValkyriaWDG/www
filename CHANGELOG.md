@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+- Add localized homepage canonicals and branded news, match and site sharing images,
+  editorial sharing previews and published-article structured data.
+- Revalidate durable authorization for Discord sessions and scheduled publishing;
+  keep hosted Logi integration and live sign-in acceptance deferred.
+- Stabilize mobile article metadata while font subsets load independently, preserving
+  the existing desktop layout and unchanged layout-shift budgets.
+- Qualify the pinned Trixie runtime, cold-mobile page budgets, previous-image rollback
+  and encrypted paired-backup byte verification; refresh CI action pins and media tests.
+
+No new schema migration or runtime credential is required. These source changes are
+not a deployment claim; see [current status](docs/STATUS.md) for the accepted revision,
+publication, production checks and remaining browser/authentication/operational limits.
+
 ## 1.0.0 — 2026-09-26
 
 First release of the Valkyria website application (milestones M1–M3). Not deployed:

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "phase": "red",
+  "rawPlaywrightReportSha256": "e7b4c6aac0652c704dfe97a5bbaa5b879e2eb72efceb95816ee4fe123d8f06b4",
+  "stats": {
+    "startTime": "2026-09-28T16:32:04.359Z",
+    "duration": 7323.346,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "name": "mobile cs 391px article metadata keeps its rows as fonts arrive separately",
+      "expectedStatus": "passed",
+      "status": "unexpected",
+      "runs": [
+        {
+          "status": "failed",
+          "durationMs": 1826,
+          "retry": 0,
+          "error": "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 1\nReceived:   32.796875"
+        }
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "locale": "cs",
+      "width": 391,
+      "browser": "154.0.8037.57",
+      "before": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 210.34375
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 178.21875
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "displayOnly": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 181.640625
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 162
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "bodyLatin": {
+        "height": 24.796875,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 173.6875
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 226.671875,
+            "width": 161.21875
+          }
+        ],
+        "coverTop": 410.6875
+      },
+      "after": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 174.171875
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 161.21875
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "shifts": [
+        0.0035533664686011844,
+        0.14467523140678865,
+        0.14467239232731402
+      ],
+      "fontSwapShiftSum": 0.2929009902027039
+    }
+  ],
+  "scope": "Standalone production app, synthetic fixtures, Chrome for Testing on Windows. Display publication date fixed before baseline; Linux-like sans fallback; actual font responses gated by subset. Shift sum covers staged swaps after baseline, not full-navigation CLS."
+}
