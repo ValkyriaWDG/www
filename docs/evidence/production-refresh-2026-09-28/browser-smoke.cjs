@@ -30,6 +30,13 @@ assert(!existsSync(reportPath), 'Preserve prior reports: select a new report ID.
 const appRequire = createRequire(path.join(root, 'apps/web/package.json'));
 const { chromium } = appRequire('@playwright/test');
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+const manifestBytes = readFileSync(path.join(root, 'assets/background-media.json'));
+const manifest = JSON.parse(manifestBytes);
+const approvedVideos = new Set(manifest.assets.filter(asset => ['primary', 'alternate'].includes(asset.role) && asset.width === 1920 && asset.height === 1080 && ['video/mp4', 'video/webm'].includes(asset.mimeType)).map(asset => `/media/background/${asset.filename}`));
+const approvedPoster = manifest.assets.find(asset => asset.role === 'poster');
+assert.equal(approvedVideos.size, 2, 'Manifest must identify the two 1080p renditions.');
+assert(approvedPoster, 'Manifest must identify the poster.');
+const posterPath = `/media/background/${approvedPoster.filename}`;
 const report = {
   schemaVersion: 1, evidenceKind: 'anonymous-public-production-browser', origin,
   startedAt: new Date().toISOString(),
@@ -39,10 +46,13 @@ const report = {
   harnessSha256: sha(readFileSync(__filename)),
   browserProduct, browserExecutableSha256: sha(readFileSync(executablePath)),
   playwrightVersion: appRequire('@playwright/test/package.json').version,
-  checks: [], captures: [], pageErrors: [], blockedRequests: [], failedRequests: [],
+  mediaManifest: { id: manifest.id, sha256: sha(manifestBytes) },
+  checks: [], captures: [], pageErrors: [], blockedRequests: [], failedRequests: [], cancelledRequests: [], httpFailures: [],
+  unexpectedOriginRequests: [], unexpectedOriginResponses: [], observedWriteAttempts: [], webSocketAttempts: [],
   limits: [
     'Anonymous public pages only. Fresh contexts, no owner cookies, no authentication or production content mutation.',
-    'Same-origin GET/HEAD requests only; other methods and external origins are blocked.',
+    'Initial routed requests are filtered to same-origin GET/HEAD. Playwright can follow redirect hops without routing them again; this is not a complete pre-network isolation boundary.',
+    'Every observed request/response origin is checked; unexpected-origin hops or write attempts fail the run. WebSocket attempts are blocked by routeWebSocket and fail the run.',
     'Short native playback interval, not full-loop, cross-codec, constrained-network or physical-device qualification.',
     'Mobile viewport/touch and reduced-motion settings are browser emulation, not physical Android or iOS.',
     'Actual screenshot visual inspection is required separately from this script.',
@@ -52,6 +62,8 @@ const save = () => writeFileSync(reportPath, JSON.stringify(report, null, 2) + '
 const safePath = raw => { try { const u = new URL(raw); return u.origin === origin ? u.pathname : '[external-origin]'; } catch { return '[invalid-url]'; } };
 let browser;
 const contexts = new Set();
+const closingContexts = new WeakSet();
+const requestContexts = new WeakMap();
 async function check(name, fn) {
   const started = Date.now(); let deadline;
   report.activeCheck = name; save(); console.log(`START ${name}`);
@@ -67,6 +79,28 @@ async function check(name, fn) {
 async function newContext(options) {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'en-US', timezoneId: 'Europe/Prague', serviceWorkers: 'block', ...options });
   contexts.add(ctx);
+  ctx.on('request', request => {
+    requestContexts.set(request, ctx);
+    if (new URL(request.url()).origin !== origin) report.unexpectedOriginRequests.push({ method: request.method(), path: safePath(request.url()), resourceType: request.resourceType() });
+    if (!['GET', 'HEAD'].includes(request.method())) report.observedWriteAttempts.push({ method: request.method(), path: safePath(request.url()) });
+  });
+  ctx.on('response', response => {
+    if (new URL(response.url()).origin !== origin) report.unexpectedOriginResponses.push({ path: safePath(response.url()), status: response.status() });
+    else if (response.status() >= 400) report.httpFailures.push({ path: safePath(response.url()), status: response.status(), resourceType: response.request().resourceType() });
+  });
+  ctx.on('requestfailed', request => {
+    const sameOrigin = new URL(request.url()).origin === origin;
+    const browserCancelled = request.failure()?.errorText?.includes('ERR_ABORTED');
+    // Chromium reports aborted navigation/media loads during route changes, pause or context disposal.
+    const legitimateCancellation = browserCancelled && (request.isNavigationRequest() || request.resourceType() === 'media' || /\.(mp4|webm)(?:\?|$)/i.test(request.url()) || closingContexts.has(requestContexts.get(request)));
+    const record = { method: request.method(), path: safePath(request.url()), resourceType: request.resourceType(), sameOrigin };
+    (legitimateCancellation ? report.cancelledRequests : report.failedRequests).push(record);
+  });
+  await ctx.routeWebSocket('**/*', async socket => {
+    report.webSocketAttempts.push({ path: safePath(socket.url()) });
+    // Do not call connectToServer: no upstream WebSocket connection is made by this route.
+    await socket.close({ code: 1008, reason: 'Public verification does not allow WebSockets.' });
+  });
   await ctx.route('**/*', async route => {
     const request = route.request(), u = new URL(request.url());
     if (!['GET', 'HEAD'].includes(request.method()) || u.origin !== origin) {
@@ -77,12 +111,11 @@ async function newContext(options) {
   });
   ctx.on('page', page => {
     page.on('pageerror', error => report.pageErrors.push({ type: error.name ?? 'Error', route: safePath(page.url()) }));
-    page.on('requestfailed', request => report.failedRequests.push({ method: request.method(), path: safePath(request.url()), kind: request.failure()?.errorText?.includes('ERR_ABORTED') ? 'cancelled' : 'failed' }));
   });
   ctx.setDefaultTimeout(15000); ctx.setDefaultNavigationTimeout(30000);
   return ctx;
 }
-async function dispose(ctx) { await ctx.close(); contexts.delete(ctx); }
+async function dispose(ctx) { closingContexts.add(ctx); await ctx.close(); contexts.delete(ctx); }
 async function pageMetadata(page, locale) {
   await page.waitForFunction(() => document.querySelectorAll('link[rel="canonical"]').length === 1);
   const facts = await page.evaluate(() => ({
@@ -104,8 +137,15 @@ async function sample(page) {
     width: video.videoWidth, height: video.videoHeight, muted: video.muted, loop: video.loop,
     error: video.error?.code ?? null, rate: video.playbackRate,
     source: video.currentSrc ? new URL(video.currentSrc).pathname : null,
+    sourceOrigin: video.currentSrc ? new URL(video.currentSrc).origin : null,
+    sourceSearch: video.currentSrc ? new URL(video.currentSrc).search : null,
     frames: video.getVideoPlaybackQuality().totalVideoFrames, droppedFrames: video.getVideoPlaybackQuality().droppedVideoFrames,
   }));
+}
+function requireApprovedPlayback(facts) {
+  assert.equal(facts.sourceOrigin, origin, 'Native playback must use the authorized origin.');
+  assert.equal(facts.sourceSearch, '', 'Approved media URLs have no query string.');
+  assert(approvedVideos.has(facts.source), 'Native playback must select an approved 1080p rendition.');
 }
 async function capture(page, filename, caption) {
   await page.evaluate(async () => {
@@ -134,6 +174,7 @@ async function capture(page, filename, caption) {
     const metadata = await pageMetadata(page, locale);
     await page.waitForFunction(() => { const v = document.querySelector('[data-background-video]'); return v && !v.paused && !v.error && v.currentTime > 0.1; }, null, { timeout: 25000 });
     const before = await sample(page); await page.waitForTimeout(2500); const after = await sample(page);
+    requireApprovedPlayback(before); requireApprovedPlayback(after);
     assert(after.currentTime > before.currentTime + 0.5); assert(after.frames > before.frames);
     assert(after.duration > 192.3 && after.duration < 192.6); assert.equal(after.width, 1920); assert.equal(after.height, 1080);
     assert.equal(after.error, null); assert.equal(after.rate, 1); assert(after.muted && after.loop);
@@ -150,30 +191,41 @@ async function capture(page, filename, caption) {
     const reloaded = await sample(page); assert(reloaded.paused); assert.equal(reloaded.currentTime, 0);
     await page.locator('[data-background-toggle]').click();
     await page.waitForFunction(() => { const v = document.querySelector('[data-background-video]'); return v && !v.paused && v.currentTime > 0.1; });
-    return { before, paused, reloaded, resumed: await sample(page) };
+    const resumed = await sample(page); requireApprovedPlayback(resumed);
+    return { before, paused, reloaded, resumed };
   });
   await dispose(desktop);
   for (const locale of ['cs', 'en']) await check(`mobile-${locale}-poster-and-metadata`, async () => {
     const mobile = await newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
     try {
-      const requests = []; mobile.on('request', request => { if (/\.(mp4|webm)(?:\?|$)/i.test(request.url())) requests.push(safePath(request.url())); });
+      const requests = []; mobile.on('request', request => { if (request.resourceType() === 'media' || /\.(mp4|webm)(?:\?|$)/i.test(request.url())) requests.push({ path: safePath(request.url()), resourceType: request.resourceType() }); });
       const page = await mobile.newPage(); const response = await page.goto(`${origin}/${locale}`, { waitUntil: 'domcontentloaded' }); assert.equal(response.status(), 200);
       const metadata = await pageMetadata(page, locale);
       await page.waitForFunction(() => document.querySelector('[data-background-reason]')?.getAttribute('data-background-reason') === 'narrow-coarse');
       await page.waitForTimeout(1000);
       const poster = await page.locator('[data-background-state]').evaluate(layer => {
         const video = layer.querySelector('video'), image = layer.querySelector('img');
-        return { state: layer.getAttribute('data-background-state'), reason: layer.getAttribute('data-background-reason'), loaded: Boolean(image?.complete && image.naturalWidth > 0), attachedSources: video?.querySelectorAll('source').length ?? null, paused: video?.paused, currentTime: video?.currentTime };
+        return { state: layer.getAttribute('data-background-state'), reason: layer.getAttribute('data-background-reason'), loaded: Boolean(image?.complete && image.naturalWidth > 0), attachedSources: video?.querySelectorAll('source').length ?? null, paused: video?.paused, currentTime: video?.currentTime,
+          currentSrc: video?.currentSrc === '' ? '' : '[unexpected-nonempty-source]', posterOrigin: image?.currentSrc ? new URL(image.currentSrc).origin : null, posterPath: image?.currentSrc ? new URL(image.currentSrc).pathname : null, posterSearch: image?.currentSrc ? new URL(image.currentSrc).search : null };
       });
       assert.equal(poster.state, 'paused'); assert(poster.loaded); assert.equal(poster.attachedSources, 0); assert.equal(requests.length, 0);
+      assert.equal(poster.paused, true); assert.equal(poster.currentTime, 0); assert.equal(poster.currentSrc, '');
+      assert.equal(poster.posterOrigin, origin); assert.equal(poster.posterPath, posterPath); assert.equal(poster.posterSearch, '');
       await capture(page, `home-${locale}-mobile.png`, `Actual anonymous production /${locale}, ${browserProduct} ${report.browserVersion} with 390x844 mobile/touch emulation. Poster policy requested zero video bytes before opt-in. This is not a physical phone.`);
+      assert.equal(requests.length, 0, 'No media-type or video-extension requests through the completed capture.');
       return { metadata, poster, videoRequestsBeforeOptIn: requests.length };
     } finally { await dispose(mobile); }
   });
   await check('no-uncaught-errors-or-write-attempts', async () => {
     assert.equal(report.pageErrors.length, 0);
     assert.equal(report.blockedRequests.filter(request => !['GET', 'HEAD'].includes(request.method)).length, 0);
-    return { pageErrors: report.pageErrors.length, writeAttempts: 0, blockedExternalRequests: report.blockedRequests.length };
+    assert.equal(report.observedWriteAttempts.length, 0, 'No write attempts across observed redirect hops.');
+    assert.equal(report.unexpectedOriginRequests.length, 0, 'No unexpected-origin request hops.');
+    assert.equal(report.unexpectedOriginResponses.length, 0, 'No unexpected-origin response hops.');
+    assert.equal(report.webSocketAttempts.length, 0, 'No WebSocket attempts.');
+    assert.equal(report.failedRequests.filter(request => request.sameOrigin).length, 0, 'No non-cancelled same-origin request failures.');
+    assert.equal(report.httpFailures.length, 0, 'No same-origin HTTP errors.');
+    return { pageErrors: report.pageErrors.length, writeAttempts: 0, blockedExternalRequests: report.blockedRequests.length, unexpectedOriginRequests: 0, unexpectedOriginResponses: 0, webSocketAttempts: 0, sameOriginRequestFailures: 0, httpFailures: 0, legitimateCancellations: report.cancelledRequests.length };
   });
 })().catch(error => {
   report.fatal = { errorType: error?.name ?? 'Error', reason: 'Setup or named browser check failed; remaining checks are not run.' };

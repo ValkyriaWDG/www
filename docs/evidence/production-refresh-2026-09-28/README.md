@@ -7,7 +7,7 @@ that a new container has been published or deployed.
 
 ## Before-state
 
-[HTTP observations](http-before.json): **24 of 37 checks passed, 13 failed** against the accepted target
+[Reviewed HTTP observations](http-before-reviewed.json): **24 of 37 checks passed, 13 failed** against the accepted target
 behavior. Failures are preserved as the baseline, not described as successful acceptance:
 
 - `/cs` and `/en` have no canonical or reciprocal language links, reproducing
@@ -23,6 +23,13 @@ recorded separately and is not a claim about the running container. The operator
 [registry preflight](registry-preflight.json) establishes that the existing Docker Hub repository is
 public; it does not identify a new image or prove a deployment.
 
+The [original baseline](http-before.json) is retained unchanged. Review strengthened the harness:
+public indexing rejects both meta/header `noindex` or `none`; social PNG checks now force a complete
+Sharp RGBA decode with a 756,000-pixel input limit and a 5 MiB response limit. These verification changes
+do not change application behavior. The repeated before run still observes the same 13 missing-feature
+failures. Social endpoints currently return HTML 404s, so valid production PNG decoding remains pending
+until the after run. The original and reviewed reports each record their exact harness hash.
+
 An earlier local diagnostic pass over-required an explicit `og:url` on home/member-list pages and
 `no-store` on the sitemap. These were harness assumptions, not accepted application requirements.
 The final harness checks an `og:url` for consistency when supplied and accepts either `no-store` or
@@ -32,26 +39,36 @@ HTTP harness that will also be used after deployment. Homepage canonical presenc
 
 ## Reproducible public reads
 
-Both scripts run from a checkout with Node 24; the browser script additionally resolves the existing
-application Playwright dependency. No PostgreSQL instance, owner cookies or provider credentials are
-used. HTTP requests use only anonymous GET/HEAD; the browser uses new isolated contexts and blocks
-other methods and external origins. Neither script submits login, changes content or edits infrastructure.
+Both scripts run from a checkout with Node 24 and installed application dependencies: HTTP uses Sharp
+for full image decoding, and the browser script resolves Playwright. No PostgreSQL instance, owner
+cookies or provider credentials are used. HTTP requests use only anonymous GET/HEAD with automatic
+redirects disabled. The browser uses new isolated contexts and filters initial routed requests to
+same-origin GET/HEAD. Playwright may follow redirect hops without routing them again, so this is **not
+a complete pre-network isolation boundary**. Every observed request/response origin is checked and
+any unexpected-origin hop or write attempt fails the run. WebSocket routing blocks connection attempts
+and records them as failures. Neither script intentionally submits login, changes content or edits
+infrastructure; no current application external request or WebSocket is expected.
 
 The HTTP script verifies root redirect, health, Czech/English canonicals and reciprocal languages,
-Open Graph/Twitter metadata, real 1200×630 social PNG headers/signature/dimensions, robots, sitemap,
+Open Graph/Twitter metadata, fully decoded 1200×630 social PNGs, robots, sitemap,
 anonymous privacy cache, and the four approved media derivatives through HEAD and 1,024-byte ranges.
 It never downloads whole video files, saves response HTML or serializes cookies.
 
 The browser script is prepared for six bounded checks: Czech and English desktop metadata/native
 playback, manual pause/reload/resume, Czech and English mobile poster/metadata, and no uncaught errors
-or write attempts. It saves four actual public captures. Mobile/touch is emulation; these are short
+or network/write failures. Playback must select an approved same-origin 1080p MP4/WebM path from the
+media manifest; the poster must be the approved same-origin poster. Mobile checks require paused video,
+time zero, empty `currentSrc`, no attached sources and zero media-type/video-extension requests through
+the completed screenshot. Non-cancelled same-origin request failures and HTTP statuses >=400 fail the
+run; legitimate aborted navigation/media requests are listed separately. It saves four actual public
+captures. Mobile/touch is emulation; these are short
 playback measurements, not full-loop, all-codec or physical-device qualification. Captures must be
 inspected separately before their captions and asset-manifest entries are accepted.
 
 Before-state command, run from the repository root:
 
 ```sh
-node docs/evidence/production-refresh-2026-09-28/http-smoke.mjs --stage before
+node docs/evidence/production-refresh-2026-09-28/http-smoke.mjs --stage before --report-id http-before-reviewed
 ```
 
 After the deployment operator verifies the actual running source label and pulled digest, use their

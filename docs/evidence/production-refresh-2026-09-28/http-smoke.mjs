@@ -2,6 +2,7 @@
 import { readFile, writeFile, access } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -25,6 +26,8 @@ const reportId = arg('--report-id') ?? `http-${stage}`;
 if (!/^[a-z0-9-]{1,80}$/.test(reportId)) throw new Error('Invalid report ID.');
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(directory, '../../..');
+const appRequire = createRequire(path.join(root, 'apps/web/package.json'));
+const sharp = appRequire('sharp');
 const reportFile = path.join(directory, `${reportId}.json`);
 try { await access(reportFile); throw new Error('Report already exists; choose a new report ID to preserve prior observations.'); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
@@ -34,6 +37,7 @@ const manifest = JSON.parse(manifestBytes);
 const report = {
   schemaVersion: 1, evidenceKind: 'anonymous-public-production-http', stage, origin,
   startedAt: new Date().toISOString(), nodeVersion: process.version,
+  imageDecoder: { name: 'sharp', version: sharp.versions.sharp, limitInputPixels: 1200 * 630, maximumBytes: 5 * 1024 * 1024 },
   localHarnessRevision: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
   harnessSha256: hash(await readFile(fileURLToPath(import.meta.url))),
   deploymentIdentity: { revision: revision ?? null, imageDigest: imageDigest ?? null, identityReference: identityReference ?? null,
@@ -121,7 +125,9 @@ for (const locale of ['cs', 'en']) {
       // Home/member-list metadata inherits the shared image without an explicit og:url.
       // Check consistency when present; canonical presence is asserted independently above.
       expect(page.ogUrl.length <= 1 && (page.ogUrl.length === 0 || page.ogUrl[0] === origin + pathname), 'Open Graph URL matches canonical when supplied', page.ogUrl);
-      expect(!page.robots.some((value) => /noindex/i.test(value)), 'public page is indexable', page.robots);
+      const indexingDirectives = { meta: page.robots, header: response.headers.get('x-robots-tag') };
+      const forbidsIndexing = (value) => /(?:^|[\s,:])(?:noindex|none)(?=$|[\s,;])/i.test(value ?? '');
+      expect(!page.robots.some(forbidsIndexing) && !forbidsIndexing(indexingDirectives.header), 'public meta robots and X-Robots-Tag omit noindex/none', indexingDirectives);
       if (['', '/news', '/matches'].includes(suffix)) {
         const image = `${origin}/api/social/${locale}/${suffix.slice(1) || 'site'}?v=1`;
         expect(page.ogImage.length === 1 && page.ogImage[0] === image, 'one branded social PNG URL', page.ogImage);
@@ -155,7 +161,18 @@ for (const locale of ['cs', 'en']) {
     const bytes = await limitedBytes(response, 5 * 1024 * 1024);
     const png = bytes.subarray(0, 8).toString('hex') === '89504e470d0a1a0a';
     entry.image = { sha256: hash(bytes), bytes: bytes.length, png, width: png && bytes.length >= 24 ? bytes.readUInt32BE(16) : null, height: png && bytes.length >= 24 ? bytes.readUInt32BE(20) : null };
-    expect(png && entry.image.width === 1200 && entry.image.height === 630, 'real 1200x630 PNG', entry.image);
+    expect(png && entry.image.width === 1200 && entry.image.height === 630, '1200x630 PNG header', entry.image);
+    entry.image.decode = { passed: false };
+    if (png) {
+      try {
+        // Raw output forces complete image decoding; metadata/IHDR inspection alone cannot prove it.
+        const decoded = await sharp(bytes, { limitInputPixels: 1200 * 630, failOn: 'warning', pages: 1 })
+          .ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+        entry.image.decode = { passed: decoded.info.width === 1200 && decoded.info.height === 630 && decoded.info.channels === 4 && decoded.data.length === 1200 * 630 * 4,
+          width: decoded.info.width, height: decoded.info.height, channels: decoded.info.channels, decodedBytes: decoded.data.length };
+      } catch (error) { entry.image.decode.errorType = error?.name ?? 'Error'; }
+    }
+    expect(entry.image.decode.passed, 'complete bounded 1200x630 RGBA decode', entry.image.decode);
   });
 }
 await request('robots public social and private exclusions', '/robots.txt', {}, async (response, entry, expect) => {
