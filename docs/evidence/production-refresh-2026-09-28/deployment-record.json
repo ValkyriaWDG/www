@@ -1,0 +1,45 @@
+{
+  "startedAt": "2026-09-28T19:31:19.931732+02:00",
+  "oldImage": "majorluk/valkyria-www@sha256:2ceb72d0b67fd462fa93733c752b60cdc708f36584bcffb5537be31bb5c360d4",
+  "oldSourceRevision": "d0f98b0475e7dfb07add2a679c49acce23259684",
+  "candidateImage": "majorluk/valkyria-www@sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93",
+  "sourceRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+  "schemaChanged": false,
+  "runtimeConfigurationPreserved": true,
+  "result": "promoted",
+  "quiescedAt": "2026-09-28T19:31:21.742242+02:00",
+  "pairedBackup": {
+    "completedAt": "2026-09-28T19:31:23.755055+02:00",
+    "databaseBytes": 80449,
+    "editorialBytes": 129,
+    "checksumsPassed": true,
+    "dumpReadable": true,
+    "archiveReadable": true,
+    "archiveEntries": 1,
+    "semanticRestorePerformed": false
+  },
+  "migrations": {
+    "applied": 0,
+    "alreadyApplied": 1,
+    "total": 1,
+    "journalHash": "5347af4a36366b393215cdf4a7a4b395f3d32351caad8fecefeb6672ac670bb3"
+  },
+  "authentication": {
+    "discordCredentialsPresent": false,
+    "localAdminLoginEnabled": false
+  },
+  "health": "healthy",
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "publishedPorts": [],
+  "capabilitiesDropped": [
+    "ALL"
+  ],
+  "securityOptions": [
+    "no-new-privileges:true"
+  ],
+  "watchtowerEnabled": false,
+  "readyAt": "2026-09-28T19:31:38.487938+02:00",
+  "publisherTimerRestored": true,
+  "finishedAt": "2026-09-28T19:31:38.516406+02:00"
+}

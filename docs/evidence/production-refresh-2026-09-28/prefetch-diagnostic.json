@@ -1,0 +1,386 @@
+{
+  "startedAt": "2026-09-28T17:35:21.701Z",
+  "requests": [
+    {
+      "path": "/cs/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/cs/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/cs/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/cs/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/cs/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/cs/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/cs",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/cs/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/cs/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/cs/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/cs/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/cs/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/cs/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/en/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/en/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/en/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/en/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/en/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "path": "/en",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "path": "/en/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    }
+  ],
+  "failures": [
+    {
+      "path": "/cs/members",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/matches",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/news",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/privacy",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/login",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/cs",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/news",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/clan",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/members",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/login",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/matches",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/cs/privacy",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en/clan",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/en/matches",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/en/members",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/en/login",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true,
+      "duringClose": false
+    },
+    {
+      "path": "/en/news",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en/members",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en/clan",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en/login",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en/matches",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "type": "fetch",
+      "error": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false,
+      "duringClose": false
+    }
+  ],
+  "httpErrors": [],
+  "pageErrors": [],
+  "boundaries": [],
+  "browserVersion": "154.0.8037.57",
+  "beforeNavigationFailureCount": 12,
+  "beforeDisposalFailureCount": 24,
+  "completedAt": "2026-09-28T17:35:35.259Z"
+}

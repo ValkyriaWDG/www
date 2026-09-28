@@ -8,7 +8,6 @@ const { existsSync, readFileSync, writeFileSync } = require('node:fs');
 const { createRequire } = require('node:module');
 const { execFileSync } = require('node:child_process');
 const path = require('node:path');
-const { isAbortedRscPrefetch } = require('./request-classification.cjs');
 const root = path.resolve(__dirname, '../../..');
 const args = process.argv.slice(2);
 const arg = name => args.includes(name) ? args[args.indexOf(name) + 1] : undefined;
@@ -45,7 +44,6 @@ const report = {
     provenance: 'Operator-supplied observed identity; browser checks do not establish container digest or source labels.' },
   localHarnessRevision: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
   harnessSha256: sha(readFileSync(__filename)),
-  requestClassifierSha256: sha(readFileSync(path.join(__dirname, 'request-classification.cjs'))),
   browserProduct, browserExecutableSha256: sha(readFileSync(executablePath)),
   playwrightVersion: appRequire('@playwright/test/package.json').version,
   mediaManifest: { id: manifest.id, sha256: sha(manifestBytes) },
@@ -92,18 +90,10 @@ async function newContext(options) {
   });
   ctx.on('requestfailed', request => {
     const sameOrigin = new URL(request.url()).origin === origin;
-    const rawErrorCode = request.failure()?.errorText;
-    const errorCode = /^(?:net::)?ERR_[A-Z0-9_]+$/.test(rawErrorCode ?? '') ? rawErrorCode : '[other-error]';
-    const headers = request.headers();
-    const record = { method: request.method(), path: safePath(request.url()), resourceType: request.resourceType(), sameOrigin,
-      errorCode, rsc: headers.rsc === '1', prefetch: headers['next-router-prefetch'] === '1',
-      segmentPrefetch: Boolean(headers['next-router-segment-prefetch']), duringContextClose: closingContexts.has(requestContexts.get(request)) };
-    const browserCancelled = errorCode === 'net::ERR_ABORTED';
+    const browserCancelled = request.failure()?.errorText?.includes('ERR_ABORTED');
     // Chromium reports aborted navigation/media loads during route changes, pause or context disposal.
-    const lifecycleCancellation = browserCancelled && (request.isNavigationRequest() || request.resourceType() === 'media' || /\.(mp4|webm)(?:\?|$)/i.test(request.url()) || record.duringContextClose);
-    const prefetchCancellation = isAbortedRscPrefetch(record);
-    const legitimateCancellation = lifecycleCancellation || prefetchCancellation;
-    if (legitimateCancellation) record.cancellationReason = prefetchCancellation ? 'best-effort-rsc-prefetch' : 'navigation-media-or-context-disposal';
+    const legitimateCancellation = browserCancelled && (request.isNavigationRequest() || request.resourceType() === 'media' || /\.(mp4|webm)(?:\?|$)/i.test(request.url()) || closingContexts.has(requestContexts.get(request)));
+    const record = { method: request.method(), path: safePath(request.url()), resourceType: request.resourceType(), sameOrigin };
     (legitimateCancellation ? report.cancelledRequests : report.failedRequests).push(record);
   });
   await ctx.routeWebSocket('**/*', async socket => {
@@ -204,29 +194,6 @@ async function capture(page, filename, caption) {
     const resumed = await sample(page); requireApprovedPlayback(resumed);
     return { before, paused, reloaded, resumed };
   });
-  await check('public-menu-client-navigation-both-locales', async () => {
-    const visits = [];
-    // Begin in English after the existing playback scenario; every news/home hop uses the public menu.
-    for (const locale of ['en', 'cs']) {
-      if (locale === 'cs') { await page.locator('a[data-locale="cs"]').click(); await page.waitForURL(`${origin}/cs`); }
-      const documentToken = `${locale}-production-navigation-proof`;
-      await page.evaluate(token => { window.__publicSmokeDocumentToken = token; }, documentToken);
-      await page.locator('[data-nav="desktop"] [data-nav-item="news"]').click();
-      await page.waitForURL(`${origin}/${locale}/news`);
-      await page.getByRole('heading', { name: locale === 'cs' ? 'Novinky' : 'News', exact: true }).waitFor({ state: 'visible' });
-      assert.equal(await page.locator('html').getAttribute('lang'), locale);
-      assert.equal(await page.evaluate(() => window.__publicSmokeDocumentToken), documentToken, 'News navigation remains in the same document.');
-      assert.equal(await page.getByText(locale === 'cs' ? 'Novinky se nepodařilo načíst.' : 'The news could not be loaded.', { exact: true }).count(), 0);
-      visits.push({ route: safePath(page.url()), heading: locale === 'cs' ? 'Novinky' : 'News', sameDocument: true });
-      await page.locator('[data-nav="desktop"] [data-nav-item="home"]').click();
-      await page.waitForURL(`${origin}/${locale}`);
-      await page.locator('[data-nav="desktop"] [data-nav-item="home"][aria-current="page"]').waitFor({ state: 'visible' });
-      assert.equal(await page.evaluate(() => window.__publicSmokeDocumentToken), documentToken, 'Home navigation remains in the same document.');
-      assert.equal(await page.locator('[data-background-video]').count(), 1);
-      visits.push({ route: safePath(page.url()), homeActive: true, sameDocument: true });
-    }
-    return { visits };
-  });
   await dispose(desktop);
   for (const locale of ['cs', 'en']) await check(`mobile-${locale}-poster-and-metadata`, async () => {
     const mobile = await newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
@@ -268,8 +235,8 @@ async function capture(page, filename, caption) {
   try { await Promise.race([browser?.close(), new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('Close deadline')), 10000); })]); }
   catch { report.cleanupIncomplete = true; } finally { clearTimeout(timer); }
   report.completedAt = new Date().toISOString();
-  report.summary = { total: report.checks.length, passed: report.checks.filter(item => item.status === 'passed').length, failed: report.checks.filter(item => item.status === 'failed').length, expectedChecks: 7 };
-  report.status = !report.fatal && !report.cleanupIncomplete && report.summary.total === 7 && report.summary.failed === 0 ? 'passed' : 'failed';
+  report.summary = { total: report.checks.length, passed: report.checks.filter(item => item.status === 'passed').length, failed: report.checks.filter(item => item.status === 'failed').length, expectedChecks: 6 };
+  report.status = !report.fatal && !report.cleanupIncomplete && report.summary.total === 6 && report.summary.failed === 0 ? 'passed' : 'failed';
   report.visualInspection = 'Required separately; not asserted by this script.'; save();
   console.log(JSON.stringify({ status: report.status, ...report.summary }));
   if (report.status !== 'passed') process.exitCode = 1;

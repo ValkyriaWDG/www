@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-28T17:30:40.4713821Z",
+  "sourceRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+  "image": "majorluk/valkyria-www",
+  "tag": "sha-9a872918ad4d89935eb26118d853d40776af7d66",
+  "digest": "sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93",
+  "visibility": "public",
+  "runId": 36457009482,
+  "runUrl": "https://github.com/ValkyriaWDG/www/actions/runs/36457009482",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36457009482/job/109045814614",
+      "conclusion": "success",
+      "name": "verify / Foundation"
+    },
+    {
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36457009482/job/109046084367",
+      "conclusion": "success",
+      "name": "verify / Application"
+    },
+    {
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36457009482/job/109049793746",
+      "conclusion": "success",
+      "name": "verify / Quality gate"
+    },
+    {
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36457009482/job/109049832469",
+      "conclusion": "success",
+      "name": "publish"
+    }
+  ],
+  "digestEvidence": "Publish job pulled the returned digest and asserted its OCI revision equals the expected full source SHA; recorded digest equals its IMAGE_DIGEST and pull output.",
+  "deploymentEstablishedByThisRecord": false
+}
