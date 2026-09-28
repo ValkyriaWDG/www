@@ -96,7 +96,7 @@ try {
       const response = await page.goto(origin + route, { waitUntil: 'load', timeout: 60000 });
       await page.locator('h1').first().waitFor({ state: 'visible', timeout: 15000 });
       assert.equal(await page.locator('html').getAttribute('lang'), 'cs');
-      if (route.startsWith('/cs/news/')) assert.match(await page.locator('h1').first().innerText(), /Ukázka/);
+      if (/\/news\/[^/]+$/.test(route)) assert.match(await page.locator('h1').first().innerText(), /Ukázka/);
       await page.waitForTimeout(Math.max(2000, policy.profile.observationMs - (Date.now() - started)));
       const vitals = await page.evaluate(() => window.__pageBudget);
       const network = [...resources.values()].filter(row => row.url.startsWith('http'));

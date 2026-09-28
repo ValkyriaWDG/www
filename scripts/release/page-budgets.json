@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "runs": 3,
-  "routes": ["/cs", "/cs/news", "/cs/news/ukazka-obrazky-tabulka-a-odkazy"],
+  "routes": ["/cs", "/cs/wardogs", "/cs/hll", "/cs/news", "/cs/wardogs/news/ukazka-obrazky-tabulka-a-odkazy"],
   "profile": {
     "viewport": { "width": 390, "height": 844 },
     "deviceScaleFactor": 1,

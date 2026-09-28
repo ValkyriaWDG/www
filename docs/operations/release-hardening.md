@@ -23,8 +23,9 @@ that port; the fixture Discord mock uses the following port plus 1000. The runne
 only its own process tree. On Windows, set the same variables with `$env:NAME='value'`;
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an installed Chromium/Edge executable.
 
-The [policy](../../scripts/release/page-budgets.json) measures `/cs`, `/cs/news` and a
-published synthetic article with a cover, inline image and table. Each route gets three
+The [policy](../../scripts/release/page-budgets.json) measures the community hub `/cs`,
+both game landings (`/cs/wardogs`, `/cs/hll`), `/cs/news` and a published synthetic
+Wardogs article at its canonical URL with a cover, inline image and table. Each route gets three
 new mobile browser contexts at 390 × 844, no cache or service worker, 4× CPU slowdown,
 150 ms latency, 1.6 Mbps download and 750 Kbps upload. Chromium's CDP network and CPU
 emulation apply during navigation. Observers run for at least 10 seconds, including at
