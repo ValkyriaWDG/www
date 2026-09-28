@@ -9,6 +9,7 @@ without turning it into a game asset mirror.
 | Supplied HLL captures | `docs/design/references/hll/`; unchanged originals, design-only, excluded from runtime |
 | Supplied Wardogs captures | `docs/design/references/`; reference-only, never copy into app public output |
 | Selected Wardogs presskit originals | `assets/presskit/wardogs-january-2026/`; editorial/game-identification candidates with separate provenance, never the clan identity |
+| Selected HLL runtime artwork | `apps/web/public/images/hll/`; ten small WebP derivatives, [source and transform catalog](../../assets/hll-runtime-artwork.json), decorative/editorial use |
 | Legacy site graphics | URL inventory in research; review individual use and provenance before copying |
 | Raw game archives/Bink/AVI | Local-only, excluded from Git and build context |
 | Approved web video/poster | Versioned external delivery or read-only deployment media; record digest and rights |
@@ -63,6 +64,11 @@ conversion does not change the third-party provenance or usage status.
 If source assets remain unavailable, build the complete media component against a
 neutral original CSS fallback and synthetic test clip. Finish every independent part
 of the task, list the missing asset precisely, and keep production media disabled.
+
+HLL now also has a reviewed static game-scene fallback: see the
+[HLL graphics delivery](hll-graphics-delivery.md). Its existence does not imply a
+clan battle recording has been delivered. Empty `HLL_BACKGROUND_CLIPS_JSON` must
+remain a still image, without a fake play button or unrelated tutorial video.
 
 ## Reference index
 

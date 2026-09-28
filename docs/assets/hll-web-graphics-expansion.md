@@ -1,8 +1,10 @@
 # Additional HLL web graphics and custom production brief
 
 Research date: 2026-09-28. This extends the [initial media handoff](hll-media-research.md)
-for the original WWII Hell Let Loose. It is a selection and production brief; no
-new web graphics have been implemented or deployed.
+for the original WWII Hell Let Loose. The research snapshot below was completed
+before implementation. The subsequent [graphics delivery](hll-graphics-delivery.md)
+ships a selected artwork batch and sharing templates; the other candidates and
+teaching diagrams remain proposals. Deployment is tracked separately.
 
 The follow-up downloaded and decoded **20 additional source images**: ten from
 official developer articles and ten from community repositories, totaling

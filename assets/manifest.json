@@ -2362,6 +2362,114 @@
       "bytes": 25056,
       "width": 1280,
       "height": 720
+    },
+    {
+      "id": "hll-graphics-proof-hll-landing-cs-1920x1080",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-landing-cs-1920x1080.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /cs/hll",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "1389077df533e6195bc7f1fde46423bc84775486a7cfc339ec7069595f306616",
+      "bytes": 1461551,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-graphics-proof-hll-landing-en-1366x768",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-landing-en-1366x768.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /en/hll",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "fb8ecec8cae6c7298558e22ea65c18a2b333ca4204d0abd46a4756f447b280ad",
+      "bytes": 794978,
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "id": "hll-graphics-proof-hll-landing-cs-390x844",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-landing-cs-390x844.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /cs/hll",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "bbaaade2dc95fe45467eb24626f3389b39d14c32e5cb692f44c0fa0b077747e8",
+      "bytes": 281505,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-graphics-proof-hll-manual-cs-1920x1200",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-manual-cs-1920x1200.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /cs/hll/field-manual",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "e7e7b920de6424c42d63ac1957b10ae29deda94178f414b728dd46db01af2556",
+      "bytes": 898720,
+      "width": 1920,
+      "height": 1200
+    },
+    {
+      "id": "hll-graphics-proof-hll-manual-en-390x844",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-manual-en-390x844.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /en/hll/field-manual?category=communication",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "7f6c91ccad6ba9d49aeef9baf9afabc53811d8d495039afd278aeb1548c9fb5e",
+      "bytes": 256632,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-graphics-proof-hll-news-cs-1920x1200",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-news-cs-1920x1200.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /cs/hll/news",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "0902b77b2a12e9807636f8ea089e391cc3524c7a6e6bb45c37154897662a08cc",
+      "bytes": 952708,
+      "width": 1920,
+      "height": 1200
+    },
+    {
+      "id": "hll-graphics-proof-hll-site-cs",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-site-cs.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /api/social/cs/site?game=hll",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "1bf8761e2b4bc803d897c674f2bbb843f1fbc52fa973d866911b328d701593cc",
+      "bytes": 216210,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "hll-graphics-proof-hll-news-cs",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-news-cs.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /api/social/cs/news/ukazka-seznam-02",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "7e13781f47fb1455a2258e896a60d1e0edd440089c037111a882f8c0e291d4e9",
+      "bytes": 214580,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "hll-graphics-proof-hll-result-en",
+      "path": "docs/evidence/hll-graphics-2026-09-28/hll-result-en.png",
+      "source": "Chromium 153.0.8010.12; local standalone build 05bbde2774267b5d175fb3eda9ea85b4634214e7; /api/social/en/matches/ukazka-hll-historicky",
+      "usage": "verification-only; actual application capture or HTTP image response; synthetic editorial data; not runtime artwork",
+      "rights": "Project UI and synthetic test content with third-party HLL imagery; third-party content excluded from Apache-2.0 code license",
+      "transformations": "None; exact captured PNG bytes, no masking or image replacement",
+      "sha256": "4bf7cac4f1506febf584d227d59767f7dce0af45bf325398c9614d828ac96f5f",
+      "bytes": 225524,
+      "width": 1200,
+      "height": 630
     }
   ]
 }
