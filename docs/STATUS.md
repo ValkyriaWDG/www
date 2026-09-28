@@ -1,10 +1,10 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **1.0.0 deployment; publication authorization hardening prepared; live authentication deferred.**
+Updated: 2026-09-28. Stage: **SEO, release qualification and authorization fixes merged; delivery maintenance tracked in #39; live authentication deferred.**
 
 ## Publication authorization hardening
 
-PR #35 is narrowed from the retired custom bot receiver to provider-independent
+PR #35 was merged as `df119f8df2fff5d84c579c0843dd5c1bf4942468`, narrowed from the retired custom bot receiver to provider-independent
 website fixes. Discord request authorization rereads its durable session/observation
 after mapping waits; scheduled publication locks and revalidates its exact membership
 or local grant before publishing and after audit waits. Same-timestamp updates and
@@ -13,7 +13,11 @@ transport tables and unapplied `0001_role_sync.sql` are removed from the candida
 There is no schema change, provider activation or Logi readiness claim.
 
 See [local proof and limitations](evidence/authority-fences-2026-09-28/README.md).
-Hosted membership/SSO acceptance stays in #8/#23; this candidate does not close those
+[CI 36436602897](https://github.com/ValkyriaWDG/www/actions/runs/36436602897) passed
+for head `9faefd03ea53c838a9d731690c813c3be1562589`, tested merge
+`f807ff95ff08e76c09fbb7cb5d3d7512f2541766`: 39 tooling, 374 unit, 240 database
+and 119 browser tests; 67 opt-in browser cases were skipped. Image/release and page
+budget checks also passed. Hosted membership/SSO acceptance stays in #8/#23; this does not close those
 issues. The deployment observations below are historical and were not refreshed by
 this local work. Continue the shared platform and hosted Logi workstreams against
 their agreed contracts rather than restoring the custom bot protocol.
@@ -37,7 +41,7 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 ## Checkpoint (resume here)
 
-Issue #26 candidate: [release hardening](operations/release-hardening.md) adds cold
+Issue #26 is accepted: [release hardening](operations/release-hardening.md) adds cold
 mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
 disposable previous-image/database rollback rehearsals. [CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812)
 passed for PR source `677c07f8e284ec6de936094102e0f6858b1e3a81`, tested as merge
@@ -61,12 +65,24 @@ on head `cfececb5fa5e48c013f1593a3ac2f9855df17588` / tested merge
 `07a58689f7ca8051200f128eca14b43fc9f7c1ad`: 39 tooling, 374 unit, 229 database
 and 119 browser tests, both runtime variants' CS/EN social PNGs, all 12 rollback
 steps and all nine page-budget samples. Issue #26 is closed with acceptance proof.
-The narrowed authorization candidate now incorporates that accepted main; its own
-changed source still requires fresh CI. Hosted Logi is the selected integration
+The authorization qualification above includes that accepted main. Hosted Logi is the selected integration
 direction; #34 was closed unmerged as superseded and #35 retains only independent
 website authorization fixes. Follow the updated
 [integration handoff](engineering/follow-up-integration-2026-09-26.md). No candidate
 image has been published or deployed; the recorded live deployment remains unchanged.
+
+Maintenance [PR #39](https://github.com/ValkyriaWDG/www/pull/39) / issue #38 consolidates action updates #10–#14, the scoped
+[esbuild advisory repair](engineering/esbuild-advisory-2026-09-28.md), portable
+[media tests and storage path validation](evidence/portable-media-2026-09-28/README.md).
+[Action compatibility](engineering/ci-action-refresh-2026-09-28.md) records preserved
+publication gates. The PR records its current reviewed head, complete CI and merge
+status; verify those before release. Local success does not replace current-head CI.
+
+Issue #25 now has [native Edge H.264 evidence](evidence/native-media-2026-09-28/README.md):
+11 MP4-only and two dual-source scenarios passed, including a natural 192.4723-second
+wrap and controlled WebM-to-MP4 fallback. Historical source hashes and actual captures
+are recorded; Chrome, Firefox, Safari/iOS, physical devices and production playback
+remain outside that local run.
 
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
@@ -106,14 +122,15 @@ Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
 ## Not verified here (operator or environment inputs)
 
 - Live Discord OAuth, guild and role IDs (tests use the local REST mock).
-- MP4/H.264 playback in the application: this Chromium has no H.264 and the Chrome
-  download host is blocked; Firefox/Safari not run. WebM playback is verified.
+- The original cloud Chromium lacked H.264. Native Edge MP4 playback is now verified
+  by the separate evidence above; actual Chrome, Firefox, Safari/iOS and physical
+  mobile-device acceptance remain open in #25.
 - Live SSO/admin configuration and acceptance remain deferred. Production host, DNS,
   proxy/TLS, registry publication, media delivery and `publish-due` timer were subsequently
   verified in the first-deployment evidence linked above.
 - The initial 1.0.0 validation did not include rollback rehearsal or page-weight/Web
-  Vitals budgets. Issue #26's accepted historical Linux qualification and the separate
-  pending combined-source qualification are recorded in the checkpoint above.
+  Vitals budgets. Issue #26's accepted combined-source Linux qualification is recorded
+  in the checkpoint and durable release evidence above.
 
 ## Media
 

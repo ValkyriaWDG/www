@@ -1,0 +1,779 @@
+{
+  "schemaVersion": 1,
+  "status": "accepted-disposable-release-qualification",
+  "recordedOn": "2026-09-28",
+  "run": {
+    "id": "36435186950",
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "createdAt": "2026-09-28T14:20:06Z",
+    "updatedAt": "2026-09-28T14:28:49Z",
+    "pullRequestHead": "cfececb5fa5e48c013f1593a3ac2f9855df17588",
+    "testedMergeRevision": "07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+    "baseRevision": "b37931393cd9b836415724d9572765f8615c31e8",
+    "jobs": [
+      {
+        "name": "Foundation",
+        "conclusion": "success",
+        "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/job/108971157564"
+      },
+      {
+        "name": "Application",
+        "conclusion": "success",
+        "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/job/108971254657"
+      },
+      {
+        "name": "Quality gate",
+        "conclusion": "success",
+        "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/job/108974887920"
+      }
+    ]
+  },
+  "acceptance": {
+    "pullRequest": "https://github.com/ValkyriaWDG/www/pull/32",
+    "issue": "https://github.com/ValkyriaWDG/www/issues/26",
+    "issueProof": "https://github.com/ValkyriaWDG/www/issues/26#issuecomment-5872056794",
+    "mergedAt": "2026-09-28T14:30:32Z",
+    "mainMergeRevision": "eaf9f911f13c0b929c8f7d90529c0ccab5dd0701",
+    "testedTree": "33db7cb738863e2e0c8b4530c181c5e85b749715",
+    "acceptedTree": "33db7cb738863e2e0c8b4530c181c5e85b749715",
+    "treesEqual": true,
+    "scope": "PR #32 integrated with #33; identical committed tree at tested checkout and accepted squash commit. This does not qualify later maintenance/auth changes or publish an image."
+  },
+  "checks": {
+    "environment": {
+      "os": "Ubuntu 24.04.5",
+      "runner": "2.337.0",
+      "node": "v24.21.0",
+      "browser": "153.0.8010.12",
+      "postgresMajor": 17
+    },
+    "foundationFiles": 745,
+    "toolingPassed": 39,
+    "unitPassed": 374,
+    "integrationPassed": 229,
+    "browserPassed": 119,
+    "browserSkipped": 67,
+    "frozenInstall": "success",
+    "lint": "success",
+    "typecheck": "success",
+    "productionBuild": "success",
+    "containerSmoke": "success"
+  },
+  "containers": {
+    "status": "passed",
+    "startedAt": "2026-09-28T14:23:08.096Z",
+    "finishedAt": "2026-09-28T14:23:40.080Z",
+    "policy": {
+      "schemaVersion": 1,
+      "baselineRuntime": "docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6",
+      "candidateRuntime": "docker.io/library/node:24-trixie-slim@sha256:8ec5d7557396cfe32d21c3f9c13072355ceab22b584578ca4bb28af31120cffe",
+      "previousImage": "majorluk/valkyria-www@sha256:2ceb72d0b67fd462fa93733c752b60cdc708f36584bcffb5537be31bb5c360d4",
+      "previousRevision": "d0f98b0475e7dfb07add2a679c49acce23259684",
+      "postgresImage": "docker.io/library/postgres:17@sha256:d74eeac9a635390a49bc21bd49fccd973de707e2a53a76ac49b552b8712ec46f",
+      "trivyImage": "mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08"
+    },
+    "stepResults": [
+      {
+        "id": "local-docker-only",
+        "status": "passed"
+      },
+      {
+        "id": "immutable-previous-image",
+        "status": "passed"
+      },
+      {
+        "id": "matching-candidate-source-revisions",
+        "status": "passed"
+      },
+      {
+        "id": "create-disposable-internal-fixture",
+        "status": "passed"
+      },
+      {
+        "id": "previous-schema-and-synthetic-fixtures",
+        "status": "passed"
+      },
+      {
+        "id": "previous-image-before-upgrade",
+        "status": "passed"
+      },
+      {
+        "id": "pre-upgrade-backup",
+        "status": "passed"
+      },
+      {
+        "id": "candidate-migrations-and-expansion-probe",
+        "status": "passed"
+      },
+      {
+        "id": "runtime-bookworm",
+        "status": "passed"
+      },
+      {
+        "id": "runtime-trixie",
+        "status": "passed"
+      },
+      {
+        "id": "previous-image-after-candidate-migrations",
+        "status": "passed"
+      },
+      {
+        "id": "restore-based-rollback",
+        "status": "passed"
+      }
+    ],
+    "cleanup": {
+      "status": "passed"
+    },
+    "previousImage": {
+      "imageId": "sha256:bc9b386a14a934751a8d3ca0aa5aa13fc3006534ceeba1f09787d2ecc6adcf72",
+      "sourceRevision": "d0f98b0475e7dfb07add2a679c49acce23259684"
+    },
+    "backup": {
+      "tableCount": 25,
+      "tableFingerprints": {
+        "drizzle.__drizzle_migrations": "1:b70582dd48cbc211ee572ee93ae1b94e",
+        "public.asset": "5:33b096ee1ca3072ad495f893c1d7fe06",
+        "public.audit_event": "6:5e20e0847d8725409dd503738be64bb3",
+        "public.auth_account": "0:",
+        "public.auth_rate_limit": "0:",
+        "public.auth_session": "0:",
+        "public.auth_two_factor": "0:",
+        "public.auth_user": "0:",
+        "public.auth_verification": "0:",
+        "public.content_document": "21:aa515901a2191fff34ad23e26ee4172a",
+        "public.content_revision": "31:6132c8aebdef875426c62db68e663260",
+        "public.content_translation": "31:794b842856ab3fa5895a0b49521c2155",
+        "public.guild_membership": "0:",
+        "public.local_admin_grant": "0:",
+        "public.match": "7:525ee0422717fb3fbd5cb2d27823c656",
+        "public.match_result": "3:7d57d94831425e1bf76261d8e2e66f0b",
+        "public.match_round": "4:c716cbc0ff9382f5708ef4217a6ff5a1",
+        "public.member_profile": "6:8157d2e65002d5c74f5e46b22c4756c8",
+        "public.prose_revision": "12:6fa9c34b0019b00221740ae49c8912cb",
+        "public.prose_translation": "12:50dfb36ded749900c8ade7de5a5323c6",
+        "public.publication_schedule": "1:4d0cde8bb92ed6f2cbbf99438af61062",
+        "public.role_mapping_version": "0:",
+        "public.site_setting": "0:",
+        "public.slug_redirect": "0:",
+        "public.taxonomy_term": "7:1691949af669ad9559a76bc724c874e1"
+      },
+      "media": {
+        "bytes": 23370,
+        "sha256": "9571a3f1bdffc69f218a6d8dfbfb1307797dfdb8255850ad4f3afcfe65d713d0"
+      }
+    },
+    "migrations": {
+      "appliedProductionMigrations": 0,
+      "repeatApplied": 0,
+      "syntheticExpansion": "Nullable text column on content_document; test-only, outside migration journal."
+    },
+    "runtimes": [
+      {
+        "name": "bookworm",
+        "imageId": "sha256:d86e4d833c18634385c122a2ecd9776ecb48378bc420a246f21823d3239b50d7",
+        "imageBytes": 285374034,
+        "sourceRevision": "07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+        "native": {
+          "uid": 10001,
+          "node": "v24.21.0",
+          "protectedRoot": true,
+          "writableMediaAndCache": true,
+          "packageManagersAbsent": true,
+          "sharp": {
+            "format": "webp",
+            "width": 8,
+            "height": 8
+          },
+          "socialImages": "passed; see shared socialImages renders"
+        },
+        "healthCommandPassed": true,
+        "databaseFailureRecovery": "not-run",
+        "publicPages": {
+          "count": 4,
+          "allStatus200": true
+        },
+        "mediaMatchesBackup": true
+      },
+      {
+        "name": "trixie",
+        "imageId": "sha256:8d1499a4431b2e3e931babc60a65c75d14f16097fae58346bc17689fc124401d",
+        "imageBytes": 289605732,
+        "sourceRevision": "07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+        "native": {
+          "uid": 10001,
+          "node": "v24.21.0",
+          "protectedRoot": true,
+          "writableMediaAndCache": true,
+          "packageManagersAbsent": true,
+          "sharp": {
+            "format": "webp",
+            "width": 8,
+            "height": 8
+          },
+          "socialImages": "passed; see shared socialImages renders"
+        },
+        "healthCommandPassed": true,
+        "databaseFailureRecovery": "passed",
+        "publicPages": {
+          "count": 4,
+          "allStatus200": true
+        },
+        "mediaMatchesBackup": true
+      }
+    ],
+    "imageSizeDeltaBytes": 4231698,
+    "imageSizeDeltaPercent": 1.4828602100497967,
+    "previousAfterMigrations": {
+      "media": {
+        "bytes": 23370,
+        "sha256": "9571a3f1bdffc69f218a6d8dfbfb1307797dfdb8255850ad4f3afcfe65d713d0"
+      },
+      "dataUnchanged": true,
+      "publicPages": {
+        "count": 4,
+        "allStatus200": true
+      }
+    },
+    "restore": {
+      "media": "Unchanged retained fixture volume; no media-write migration was exercised.",
+      "allRestoredTableContentsMatch": true,
+      "publicPages": {
+        "count": 4,
+        "allStatus200": true
+      }
+    },
+    "limits": [
+      "Disposable synthetic data only; no production DB, media, registry publication or deployment.",
+      "Applied production migration count is recorded in the candidate migration step. Synthetic nullable-column expansion is a separate test probe, never bundled as application schema.",
+      "Image rollback compatibility must be rerun for every release; passing this candidate does not qualify future destructive migrations."
+    ],
+    "verifiedRoutes": [
+      "/cs",
+      "/en",
+      "/cs/news",
+      "/cs/news/ukazka-obrazky-tabulka-a-odkazy"
+    ],
+    "socialImages": {
+      "status": "passed",
+      "renders": [
+        {
+          "locale": "cs",
+          "status": 200,
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 218260,
+          "sha256": "fe5f747d32483878abd0d9f199f38199f9a439ee1e7eb26c38f14580884edeb7",
+          "decoded": true
+        },
+        {
+          "locale": "en",
+          "status": 200,
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 217653,
+          "sha256": "399eb39f3627995c60fd8082e7c50afe6526a2801c0f8eb0e34956ba3d98598d",
+          "decoded": true
+        }
+      ]
+    }
+  },
+  "vulnerabilityComparison": {
+    "status": "passed",
+    "counting": "Package/advisory pairs, not unique CVEs; unique counts are separate.",
+    "baseline": {
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "packages": 122,
+      "highCritical": 56,
+      "fixableHighCritical": 0,
+      "unfixedHighCritical": 56,
+      "high": 52,
+      "critical": 4,
+      "uniqueHighCriticalAdvisories": 18
+    },
+    "candidate": {
+      "os": {
+        "Family": "debian",
+        "Name": "13.7"
+      },
+      "packages": 113,
+      "highCritical": 43,
+      "fixableHighCritical": 0,
+      "unfixedHighCritical": 43,
+      "high": 43,
+      "critical": 0,
+      "uniqueHighCriticalAdvisories": 8
+    },
+    "candidateAdvisories": [
+      {
+        "id": "CVE-2026-76642",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "bsdutils",
+          "libblkid1",
+          "liblastlog2-2",
+          "libmount1",
+          "libsmartcols1",
+          "libuuid1",
+          "login",
+          "mount",
+          "util-linux"
+        ]
+      },
+      {
+        "id": "CVE-2026-78408",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "bsdutils",
+          "libblkid1",
+          "liblastlog2-2",
+          "libmount1",
+          "libsmartcols1",
+          "libuuid1",
+          "login",
+          "mount",
+          "util-linux"
+        ]
+      },
+      {
+        "id": "CVE-2026-78409",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "bsdutils",
+          "libblkid1",
+          "liblastlog2-2",
+          "libmount1",
+          "libsmartcols1",
+          "libuuid1",
+          "login",
+          "mount",
+          "util-linux"
+        ]
+      },
+      {
+        "id": "CVE-2026-78410",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "bsdutils",
+          "libblkid1",
+          "liblastlog2-2",
+          "libmount1",
+          "libsmartcols1",
+          "libuuid1",
+          "login",
+          "mount",
+          "util-linux"
+        ]
+      },
+      {
+        "id": "CVE-2026-54369",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "libacl1"
+        ]
+      },
+      {
+        "id": "CVE-2026-16742",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "libsystemd0",
+          "libudev1"
+        ]
+      },
+      {
+        "id": "CVE-2025-69720",
+        "severity": "HIGH",
+        "status": "affected",
+        "fixedVersion": null,
+        "packages": [
+          "libtinfo6",
+          "ncurses-base",
+          "ncurses-bin"
+        ]
+      },
+      {
+        "id": "CVE-2026-9538",
+        "severity": "HIGH",
+        "status": "fix_deferred",
+        "fixedVersion": null,
+        "packages": [
+          "perl-base"
+        ]
+      }
+    ],
+    "delta": {
+      "highCritical": -13,
+      "packages": -9
+    },
+    "limit": "Unfixed advisories remain visible for review; fewer packages or advisories is not a guarantee of absence of vulnerabilities."
+  },
+  "sbom": {
+    "status": "success",
+    "archiveDigestVerified": true,
+    "file": "valkyria-web.cdx.json",
+    "bytes": 206952,
+    "sha256": "62df3e4bb52ea086796767a68592a971d4aed92cd6d35eaf42b9be6c06baf71e",
+    "format": "CycloneDX",
+    "specVersion": "1.6",
+    "components": 114,
+    "imageId": "sha256:8d1499a4431b2e3e931babc60a65c75d14f16097fae58346bc17689fc124401d",
+    "sourceRevision": "07a58689f7ca8051200f128eca14b43fc9f7c1ad"
+  },
+  "pageBudgets": {
+    "status": "passed",
+    "startedAt": "2026-09-28T14:27:03.544Z",
+    "finishedAt": "2026-09-28T14:28:37.254Z",
+    "sourceRevision": "07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+    "sourceDirty": true,
+    "dirtyPaths": [
+      "sbom/valkyria-web.cdx.json"
+    ],
+    "environment": {
+      "platform": "linux",
+      "node": "v24.21.0",
+      "build": "Next.js standalone production",
+      "data": "Dedicated loopback PostgreSQL synthetic fixtures; never production",
+      "background": "CSS fallback; delivered game binaries are excluded from CI. No video is fetched.",
+      "profile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "deviceScaleFactor": 1,
+        "cpuSlowdown": 4,
+        "latencyMs": 150,
+        "downloadBytesPerSecond": 200000,
+        "uploadBytesPerSecond": 93750,
+        "observationMs": 10000,
+        "reducedMotion": "reduce",
+        "cache": "disabled",
+        "serviceWorkers": "blocked"
+      },
+      "browser": "153.0.8010.12"
+    },
+    "limits": {
+      "javascriptBytes": 358400,
+      "cssBytes": 61440,
+      "fontBytes": 184320,
+      "totalBytes": 1048576,
+      "lcpMs": 2500,
+      "cls": 0.1
+    },
+    "assessment": {
+      "errors": [],
+      "routes": [
+        {
+          "route": "/cs",
+          "medianLcpMs": 1976,
+          "maximumCls": 0.04939995730776214,
+          "maximumTransferBytes": 501933
+        },
+        {
+          "route": "/cs/news",
+          "medianLcpMs": 884,
+          "maximumCls": 0.00252080976065602,
+          "maximumTransferBytes": 493827
+        },
+        {
+          "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+          "medianLcpMs": 984,
+          "maximumCls": 0.005100045925100745,
+          "maximumTransferBytes": 586833
+        }
+      ]
+    },
+    "samples": [
+      {
+        "route": "/cs",
+        "run": 1,
+        "status": 200,
+        "javascriptBytes": 177387,
+        "cssBytes": 21159,
+        "fontBytes": 143631,
+        "totalBytes": 501927,
+        "lcpMs": 2192,
+        "cls": 0.04939995730776214,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10014
+      },
+      {
+        "route": "/cs",
+        "run": 2,
+        "status": 200,
+        "javascriptBytes": 177387,
+        "cssBytes": 21159,
+        "fontBytes": 143631,
+        "totalBytes": 501928,
+        "lcpMs": 1976,
+        "cls": 0.04939995730776214,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10015
+      },
+      {
+        "route": "/cs",
+        "run": 3,
+        "status": 200,
+        "javascriptBytes": 177387,
+        "cssBytes": 21159,
+        "fontBytes": 143631,
+        "totalBytes": 501933,
+        "lcpMs": 1968,
+        "cls": 0.04939995730776214,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10011
+      },
+      {
+        "route": "/cs/news",
+        "run": 1,
+        "status": 200,
+        "javascriptBytes": 178748,
+        "cssBytes": 21159,
+        "fontBytes": 120330,
+        "totalBytes": 493827,
+        "lcpMs": 888,
+        "cls": 0.00252080976065602,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10010
+      },
+      {
+        "route": "/cs/news",
+        "run": 2,
+        "status": 200,
+        "javascriptBytes": 178748,
+        "cssBytes": 21159,
+        "fontBytes": 120330,
+        "totalBytes": 491085,
+        "lcpMs": 868,
+        "cls": 0.00252080976065602,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10014
+      },
+      {
+        "route": "/cs/news",
+        "run": 3,
+        "status": 200,
+        "javascriptBytes": 178748,
+        "cssBytes": 21159,
+        "fontBytes": 120330,
+        "totalBytes": 491042,
+        "lcpMs": 884,
+        "cls": 0.00252080976065602,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10011
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "run": 1,
+        "status": 200,
+        "javascriptBytes": 177387,
+        "cssBytes": 21159,
+        "fontBytes": 184141,
+        "totalBytes": 586829,
+        "lcpMs": 988,
+        "cls": 0.005070962307689428,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10012
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "run": 2,
+        "status": 200,
+        "javascriptBytes": 177387,
+        "cssBytes": 21159,
+        "fontBytes": 184141,
+        "totalBytes": 586833,
+        "lcpMs": 984,
+        "cls": 0.005100045925100745,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10013
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "run": 3,
+        "status": 200,
+        "javascriptBytes": 177387,
+        "cssBytes": 21159,
+        "fontBytes": 184141,
+        "totalBytes": 586825,
+        "lcpMs": 980,
+        "cls": 0.005100045925100745,
+        "videoRequests": 0,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "observationMs": 10011
+      }
+    ],
+    "captures": [
+      {
+        "file": "page-1.png",
+        "route": "/cs",
+        "sha256": "1c7274028c07b55127e02858a2908a9972fa97b367b33c906ec9333409fa65a7",
+        "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website.",
+        "bytes": 199594,
+        "hashVerified": true,
+        "visuallyReviewed": true
+      },
+      {
+        "file": "page-2.png",
+        "route": "/cs/news",
+        "sha256": "26d9546303fa7159bed57a6840194af0f645335ce8546c115e6f3ee0ff99701d",
+        "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website.",
+        "bytes": 633848,
+        "hashVerified": true,
+        "visuallyReviewed": true
+      },
+      {
+        "file": "page-3.png",
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "sha256": "55f53e580bb1fc63326eaffc4683edcdd6128405bb7b6b4cd6701252497ef644",
+        "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website.",
+        "bytes": 359634,
+        "hashVerified": true,
+        "visuallyReviewed": true
+      }
+    ],
+    "limitations": [
+      "Lab cold-navigation measurements, not field Core Web Vitals or INP.",
+      "Optional delivered background poster/video is not bundled; its real playback is a separate media gate.",
+      "LCP median of three runs; every transfer/CLS sample must meet limits; observer window is bounded."
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "10975563332",
+      "name": "playwright-report-07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/artifacts/10975563332",
+      "archiveBytes": 384906,
+      "archiveDigest": "sha256:376131ec4423c1f6ec049682e990f27a8aec1c9444d2bd7a6f8341faa69f7966",
+      "expiresAt": "2026-10-12T14:28:38Z",
+      "expiredAtReview": false
+    },
+    {
+      "id": "10975352240",
+      "name": "release-rehearsal-07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/artifacts/10975352240",
+      "archiveBytes": 2782,
+      "archiveDigest": "sha256:0f673e40ad21ed6c8a8daf0646232610e0e7f31ba316e1ba334ced63bfcd1f58",
+      "expiresAt": "2026-12-27T14:20:06Z",
+      "expiredAtReview": false
+    },
+    {
+      "id": "10975317330",
+      "name": "sbom-07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/artifacts/10975317330",
+      "archiveBytes": 13335,
+      "archiveDigest": "sha256:340e123046e6ff4e610726a5412667c0b4e60bc4b3650b5a3d7d83f0215b6f36",
+      "expiresAt": "2026-12-27T14:20:06Z",
+      "expiredAtReview": false
+    },
+    {
+      "id": "10975242404",
+      "name": "runtime-scans-07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/artifacts/10975242404",
+      "archiveBytes": 99373,
+      "archiveDigest": "sha256:b7132046f91a7368d0263fd52ab4caf4ff94a274c8eff9abcb676b501bc3168e",
+      "expiresAt": "2026-12-27T14:20:06Z",
+      "expiredAtReview": false
+    },
+    {
+      "id": "10974904902",
+      "name": "page-budgets-07a58689f7ca8051200f128eca14b43fc9f7c1ad",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36435186950/artifacts/10974904902",
+      "archiveBytes": 1179073,
+      "archiveDigest": "sha256:16ef85b51721cbe6155ddfcc511c219035e337f60ef6c823763a85f49e2e75de",
+      "expiresAt": "2026-12-27T14:20:06Z",
+      "expiredAtReview": false
+    }
+  ],
+  "downloadedFiles": [
+    {
+      "file": "rehearsal/report.json",
+      "bytes": 10771,
+      "sha256": "fd7bb3ce3f654483e0c8a98770b3f15080d3b0f98d1efe31f2b790cabb9104e2"
+    },
+    {
+      "file": "scans/bookworm.json",
+      "bytes": 536465,
+      "sha256": "8493f529087640276830f3dafa34c512429678a962a15471afcdf58f64bca414"
+    },
+    {
+      "file": "scans/ci.json",
+      "bytes": 452979,
+      "sha256": "af0528277ec172d3d81104de51e64926005ec31543618d846b1642ded2334c71"
+    },
+    {
+      "file": "scans/comparison.json",
+      "bytes": 17367,
+      "sha256": "5e895f0c0874550972efc8280b5325131179f694e3624adbb854f9be9b303b07"
+    },
+    {
+      "file": "pages/report.json",
+      "bytes": 71189,
+      "sha256": "b57d35112ce6010288a29d57a7afd5708be50834d0e3927021e6127a6a963e7a"
+    },
+    {
+      "file": "pages/page-1.png",
+      "bytes": 199594,
+      "sha256": "1c7274028c07b55127e02858a2908a9972fa97b367b33c906ec9333409fa65a7"
+    },
+    {
+      "file": "pages/page-2.png",
+      "bytes": 633848,
+      "sha256": "26d9546303fa7159bed57a6840194af0f645335ce8546c115e6f3ee0ff99701d"
+    },
+    {
+      "file": "pages/page-3.png",
+      "bytes": 359634,
+      "sha256": "55f53e580bb1fc63326eaffc4683edcdd6128405bb7b6b4cd6701252497ef644"
+    },
+    {
+      "file": "full.log",
+      "bytes": 400019,
+      "sha256": "458bed3d88fcde008bd61173b401ead90e423e5b258ac59b723cdfef32ad5230"
+    }
+  ],
+  "limits": [
+    "The 67 skipped browser cases are not counted as passing; provider/opt-in acceptance remains separate.",
+    "Only recorded disposable synthetic image/schema/media fixtures are qualified. No production deployment, registry publication, DNS change or Discord operation is established.",
+    "Current page captures were inspected and hash-verified, but remain in the expiring page-budget archive; existing committed screenshots retain their historical source labels.",
+    "This compact record preserves measurements, hashes and limits, not complete scan databases, browser traces or full logs. Raw artifacts expire on their recorded dates.",
+    "The page report is not a clean-tree measurement: its exact sole dirty path is the generated SBOM. No other dirty paths are inferred.",
+    "The accepted CI predates the separate CI action/esbuild maintenance change and uses its own recorded toolchain."
+  ]
+}

@@ -1,5 +1,24 @@
 # Release hardening evidence — 2026-09-26
 
+## Accepted combined source — 2026-09-28
+
+[CI 36435186950](https://github.com/ValkyriaWDG/www/actions/runs/36435186950) passed
+for PR #32 head `cfececb5fa5e48c013f1593a3ac2f9855df17588`, tested as merge
+`07a58689f7ca8051200f128eca14b43fc9f7c1ad`. Its committed tree matches accepted
+main commit `eaf9f911f13c0b929c8f7d90529c0ccab5dd0701`. The
+[durable acceptance record](accepted-2026-09-28.json) preserves actual report hashes,
+39 tooling / 374 unit / 229 PostgreSQL / 119 browser passes, 67 browser skips,
+all 12 runtime/rollback steps, decoded CS/EN social PNGs in both images and the
+114-component SBOM. All nine cold-mobile samples pass; LCP medians are
+1976/884/984 ms. The exact page-report dirty path is `sbom/valkyria-web.cdx.json`.
+Candidate scans retain 43 unfixed HIGH findings and zero CRITICAL findings.
+[Issue #26 acceptance](https://github.com/ValkyriaWDG/www/issues/26#issuecomment-5872056794)
+records closure. Raw artifacts expire on their recorded dates; current Linux
+capture hashes are verified, while committed historical images below retain their
+original provenance. This qualifies the recorded synthetic fixtures and lab checks,
+not production deployment, future migrations, delivered-video playback or Logi.
+Earlier results and failures below remain unchanged historical evidence.
+
 ## Accepted historical CI and combined-source refresh — 2026-09-28
 
 [CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812) passed
@@ -32,10 +51,10 @@ an unchanged synthetic volume. It does not prove production deployment, a future
 migration, real-media restoration or enabled Discord integration. Social PNG
 checks were N/A because the route did not yet exist in that source.
 
-The refreshed PR #32 now incorporates PR #33 from main
-`b37931393cd9b836415724d9572765f8615c31e8`. **The combined source still needs its
-own full CI; none of the historical results above are relabeled as combined proof.**
-Both runtime variants must now render/decode the CS/EN 1200×630 social PNGs.
+At this earlier checkpoint, refreshed PR #32 incorporated PR #33 from main
+`b37931393cd9b836415724d9572765f8615c31e8` and still needed its own full CI,
+including CS/EN 1200×630 social PNG rendering/decoding in both runtime variants.
+That later acceptance is recorded above; these historical results are not relabeled.
 Hosted Logi is the integration direction; legacy custom-bot PRs #34/#35 are not
 release prerequisites. See the [current integration handoff](../../engineering/follow-up-integration-2026-09-26.md).
 No registry publication, production migration, DNS change or deployment was made.

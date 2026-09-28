@@ -1,0 +1,74 @@
+{
+  "sourceConfiguration": "MP4-only environment; unmodified application player and native media APIs",
+  "check": "route-persistence",
+  "recordedAt": "2026-09-28T14:24:21.597Z",
+  "revision": {
+    "sha": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+    "dirty": false
+  },
+  "browser": "154.0.4258.37",
+  "visited": [
+    {
+      "route": "/cs/news",
+      "currentTimeBefore": 0.97167,
+      "currentTimeAfter": 1.110897,
+      "state": {
+        "state": "playing",
+        "reason": "allowed"
+      }
+    },
+    {
+      "route": "/cs/matches",
+      "currentTimeBefore": 1.532415,
+      "currentTimeAfter": 1.60363,
+      "state": {
+        "state": "playing",
+        "reason": "allowed"
+      }
+    },
+    {
+      "route": "/cs/members",
+      "currentTimeBefore": 2.007472,
+      "currentTimeAfter": 2.079228,
+      "state": {
+        "state": "playing",
+        "reason": "allowed"
+      }
+    },
+    {
+      "route": "/cs",
+      "currentTimeBefore": 2.488394,
+      "currentTimeAfter": 2.553812,
+      "state": {
+        "state": "playing",
+        "reason": "allowed"
+      }
+    }
+  ],
+  "videoRequests": [
+    {
+      "url": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "range": "bytes=0-"
+    }
+  ],
+  "admin": {
+    "facts": {
+      "paused": true,
+      "currentTime": 3.037559,
+      "currentSrc": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "readyState": 4,
+      "videoWidth": 1920,
+      "videoHeight": 1080,
+      "duration": 192.466016,
+      "loop": true,
+      "muted": true,
+      "objectFit": "cover",
+      "videoDecodedBytes": 1257441,
+      "audioDecodedBytes": 0,
+      "totalVideoFrames": 94,
+      "droppedVideoFrames": 2,
+      "videoElements": 1
+    },
+    "directLoadVideoRequests": 0
+  }
+}

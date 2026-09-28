@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import { constants } from 'node:fs';
-import { mkdir, open, rename, rm, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, open, realpath, rename, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 /**
@@ -39,10 +39,12 @@ export function variantKey(assetId: string, variant: MediaVariant): string {
   return `${assetId}/${variant}.webp`;
 }
 
+class MediaPathError extends Error {}
+
 function assertInside(root: string, target: string): string {
   const base = path.resolve(root);
   const resolved = path.resolve(base, target);
-  if (!resolved.startsWith(base + path.sep)) throw new Error('Media path escapes the storage root.');
+  if (!resolved.startsWith(base + path.sep)) throw new MediaPathError('Media path escapes the storage root.');
   return resolved;
 }
 
@@ -55,12 +57,26 @@ export function variantPath(root: string, assetId: string, variant: MediaVariant
   return assertInside(root, variantKey(assetId, variant));
 }
 
+async function resolvedAssetDirectory(root: string, assetId: string): Promise<string> {
+  const rawDirectory = assetDirectory(root, assetId);
+  if ((await lstat(/*turbopackIgnore: true*/ rawDirectory)).isSymbolicLink()) {
+    throw new MediaPathError('Media asset directories cannot be symbolic links.');
+  }
+  const [resolvedRoot, directory] = await Promise.all([
+    realpath(/*turbopackIgnore: true*/ root),
+    realpath(/*turbopackIgnore: true*/ rawDirectory),
+  ]);
+  // The volume must remain application-controlled: path checks cannot prevent a
+  // separate process from replacing directories between verification and I/O.
+  return assertInside(resolvedRoot, directory);
+}
+
 /** Writes both variants atomically (temp file + rename) into a fresh asset directory. */
 export async function writeVariants(root: string, assetId: string, files: Record<MediaVariant, Uint8Array>): Promise<void> {
-  const directory = assetDirectory(root, assetId);
-  await mkdir(/*turbopackIgnore: true*/ directory, { recursive: true, mode: 0o750 });
+  await mkdir(/*turbopackIgnore: true*/ assetDirectory(root, assetId), { recursive: true, mode: 0o750 });
+  const directory = await resolvedAssetDirectory(root, assetId);
   for (const variant of MEDIA_VARIANTS) {
-    const target = variantPath(root, assetId, variant);
+    const target = path.join(directory, `${variant}.webp`);
     const temp = path.join(directory, `.${variant}.${randomBytes(6).toString('hex')}.tmp`);
     await writeFile(/*turbopackIgnore: true*/ temp, files[variant], { mode: 0o640, flag: 'wx' });
     await rename(/*turbopackIgnore: true*/ temp, target);
@@ -76,6 +92,9 @@ export async function readVariant(root: string, assetId: string, variant: MediaV
     return null;
   }
   try {
+    const directory = await resolvedAssetDirectory(root, assetId);
+    target = path.join(directory, `${variant}.webp`);
+    if ((await lstat(/*turbopackIgnore: true*/ target)).isSymbolicLink()) return null;
     const handle = await open(/*turbopackIgnore: true*/ target, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0));
     try {
       const info = await handle.stat();
@@ -85,6 +104,7 @@ export async function readVariant(root: string, assetId: string, variant: MediaV
       await handle.close();
     }
   } catch (error) {
+    if (error instanceof MediaPathError) return null;
     const code = (error as NodeJS.ErrnoException).code;
     if (code === 'ENOENT' || code === 'ELOOP' || code === 'ENOTDIR' || code === 'EISDIR') return null;
     throw error;

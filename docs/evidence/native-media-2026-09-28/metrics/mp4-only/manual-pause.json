@@ -1,0 +1,18 @@
+{
+  "sourceConfiguration": "MP4-only environment; unmodified application player and native media APIs",
+  "check": "manual-pause",
+  "recordedAt": "2026-09-28T14:24:29.300Z",
+  "revision": {
+    "sha": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+    "dirty": false
+  },
+  "browser": "154.0.4258.37",
+  "pausedAt": 0.933457,
+  "requestsWhilePaused": 0,
+  "requestsAfterResume": [
+    {
+      "url": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "range": "bytes=0-"
+    }
+  ]
+}

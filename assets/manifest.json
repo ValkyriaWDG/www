@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-26",
+  "recordedAt": "2026-09-28",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -1428,6 +1428,39 @@
       "bytes": 58888,
       "width": 390,
       "height": 960
+    },
+    {
+      "id": "native-media-2026-09-28-cs-desktop-home-playing",
+      "path": "docs/evidence/native-media-2026-09-28/cs-desktop-home-playing.png",
+      "source": "Actual local standalone application browser capture; Microsoft Edge 154.0.4258.37; 2026-09-28; see adjacent evidence report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "b93489a0295de60afa05207a8aaf8031eb7fff3134fd90eb48337f3261f9d9ed",
+      "bytes": 1455338,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "native-media-2026-09-28-controlled-webm-network-failure",
+      "path": "docs/evidence/native-media-2026-09-28/controlled-webm-network-failure.png",
+      "source": "Actual local standalone application browser capture; Microsoft Edge 154.0.4258.37; 2026-09-28; see adjacent evidence report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "cf1956b3b1c7dde054f597281bf2f0350aeb0d5105da1af7671b537e9bb2f04b",
+      "bytes": 1453056,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "native-media-2026-09-28-cs-mobile-home-poster",
+      "path": "docs/evidence/native-media-2026-09-28/cs-mobile-home-poster.png",
+      "source": "Actual local standalone application browser capture; Microsoft Edge 154.0.4258.37; 2026-09-28; see adjacent evidence report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "adb1b94ed69da7edcbe6659ce3be7b9c2ad60ddbd6b7bec698c62d74b9a247a3",
+      "bytes": 1468409,
+      "width": 1024,
+      "height": 2216
     }
   ]
 }

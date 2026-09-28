@@ -1,0 +1,21 @@
+{
+  "sourceConfiguration": "MP4-only environment; unmodified application player and native media APIs",
+  "check": "rejected-media",
+  "recordedAt": "2026-09-28T14:24:34.287Z",
+  "revision": {
+    "sha": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+    "dirty": false
+  },
+  "browser": "154.0.4258.37",
+  "state": {
+    "state": "unavailable",
+    "reason": "allowed"
+  },
+  "poster": {
+    "src": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+    "complete": true,
+    "naturalWidth": 1920,
+    "naturalHeight": 1080,
+    "visible": true
+  }
+}
