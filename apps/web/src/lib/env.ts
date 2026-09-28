@@ -67,6 +67,8 @@ const serverEnvSchema = z.object({
   /** Game-server status source: none until an authorized provider is approved; `synthetic-fixture` for development/tests. */
   SERVER_STATUS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['none', 'synthetic-fixture']).default('none')),
   SERVER_STATUS_FIXTURE_SCENARIO: z.preprocess(emptyToUndefined, z.enum(['mixed', 'unavailable', 'empty']).default('mixed')),
+  /** Legacy HLL hostnames routed here at the domain cutover; read by proxy.ts (empty = inactive). */
+  LEGACY_HLL_HOSTS: z.string().default(''),
   ROLE_SYNC_SIGNING_SECRET: optionalSecret,
 });
 

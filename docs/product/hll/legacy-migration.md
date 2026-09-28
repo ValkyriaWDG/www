@@ -108,6 +108,22 @@ The ranking routes `/zebricky/{zabiti,win-rate,zabiti-za-minutu,kd-pomer,serie-z
 
 Use allowlisted server-side provider adapters and minimal public projections. Hosted Logi is a separate system; these legacy endpoints are discovery evidence, not proof of equivalent Logi capabilities or authorization. Choose one operational owner for future events/participation, and one editorial owner for articles/manuals. Expose observed-at/stale/unavailable states; unavailable data is not zero players or an empty calendar. Preserve historical results without claiming all legacy data has been exported.
 
+## Implementation status
+
+- Manifest and resolver: `apps/web/src/modules/legacy/hll.ts` encodes the tables above.
+  Implemented destinations (`/`, `/servery`, `/matches`, `/guide`, `/guide/{8 slugs}`,
+  `/clanky`, `/about` → `/cs/clan`) resolve to 308 redirects; everything else is `pending`
+  (FAQ, events, tournaments, rankings, stats, legacy match IDs, individual articles) or
+  unknown (404). Legacy list pagination is not carried over; `/matches?page=N` opens the
+  results view.
+- `LEGACY_HLL_HOSTS` activates the resolver in `proxy.ts` for explicitly routed legacy
+  hostnames only; it is empty by default and changes nothing until the cutover release.
+- Guides: `tsx src/cli/import-legacy-manual.ts [--apply]` creates private Czech draft shells
+  (working title, legacy slug, category, source URL/date/language, credits) without body
+  text; publication stays blocked until an editor adds reviewed content. Guide text and
+  images were not fetched: the cloud environment blocks the legacy host, and reuse status
+  of external illustrations is unrecorded.
+
 ## Completion gates for implementation
 
 - Account for every collection and explicit URL above; enumerate the remaining match history from an authorized source before final redirects.
