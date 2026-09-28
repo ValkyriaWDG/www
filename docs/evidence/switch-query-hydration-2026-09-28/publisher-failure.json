@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-before-fix",
+  "sourceRevision": "40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9",
+  "run": {
+    "id": 36469751788,
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36469751788",
+    "event": "workflow_dispatch",
+    "attempt": 1,
+    "conclusion": "failure"
+  },
+  "scope": "Original synthetic Linux CI failure; no production data or credentials",
+  "observedFailure": {
+    "test": "game switch keeps the locale and the page category, or explains the destination",
+    "file": "apps/web/e2e/platform.spec.ts",
+    "line": 69,
+    "from": "/cs/wardogs/matches?view=results",
+    "expected": "/cs/hll/matches?view=results",
+    "actual": "/cs/hll/matches",
+    "mechanism": "Visible Suspense fallback emits query-less actionable anchor while the correct query-preserving anchor remains in a hidden streamed segment",
+    "traceObservations": [
+      {
+        "timestamp": 39755.627,
+        "sourcePath": "/cs/wardogs/matches?view=results",
+        "visibleHref": "/cs/hll/matches",
+        "hiddenHref": "/cs/hll/matches?view=results"
+      },
+      {
+        "timestamp": 39826.399,
+        "callId": "call@769",
+        "event": "click locator resolves query-less HLL anchor"
+      },
+      {
+        "timestamp": 40015.803,
+        "callId": "call@769",
+        "event": "navigated to query-less destination"
+      }
+    ]
+  },
+  "tests": {
+    "unit": {
+      "passed": 439,
+      "failed": 0
+    },
+    "integration": {
+      "passed": 272,
+      "failed": 0
+    },
+    "tooling": {
+      "passed": 126,
+      "failed": 0,
+      "skipped": 0
+    },
+    "encryptedRecovery": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    "realRestore": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "passed": 109,
+      "failed": 1,
+      "skipped": 79,
+      "didNotRun": 50
+    }
+  },
+  "pageBudgets": {
+    "status": "skipped",
+    "reason": "Browser step failed first",
+    "samples": 0
+  },
+  "publication": {
+    "status": "skipped",
+    "inputGuard": "not-run",
+    "registryLogin": "not-run",
+    "imagePush": "not-run",
+    "digest": null,
+    "ociRevisionVerification": "not-run",
+    "deploymentPerformed": false
+  },
+  "screenshot": {
+    "file": "publisher-query-loss-before.png",
+    "sha256": "be9fde00ef538e81d76b8a404947f2a3115e984a6a443f783d8b4e5068dcf0ba",
+    "width": 1280,
+    "height": 720,
+    "caption": "Original failed publication, Chromium at 1280 × 720: switching from Wardogs results to HLL opened the Upcoming tab. The trace proves that the visible pre-hydration link omitted view=results; this viewport capture does not display the browser address bar."
+  },
+  "originalEvidence": [
+    {
+      "kind": "application.log",
+      "sha256": "4cdf218a5cb0735dc50191b6d19c7ffcc75302d70b3c23e612fe77871082dcf9"
+    },
+    {
+      "kind": "failed-trace-summary.json",
+      "sha256": "56a7ced4817a3b878cfe3d17799c0b9090a495b06f34fcf25c7641e6213e9d70"
+    },
+    {
+      "kind": "644284077aa484dece3bec0779a75142aed1b50d.zip",
+      "sha256": "ca75e587e9d20315ee31c0796bf5c08a14c1b82b8077bc3ac5dbca64ed34a6c4"
+    },
+    {
+      "kind": "111ba22b4c3cd138e815f46c4ba7bb614ae59255.png",
+      "sha256": "be9fde00ef538e81d76b8a404947f2a3115e984a6a443f783d8b4e5068dcf0ba"
+    },
+    {
+      "kind": "55a08cc18a1918941c5a908f97c50b16260adc5e.md",
+      "sha256": "02245ed4798c2870989680b26d7d4ac9a3cf912c20498fc414f45ad460305bc2"
+    }
+  ],
+  "limitations": [
+    "Screenshot is original and unedited; it illustrates the wrong selected tab, while query-string loss is established by trace events",
+    "This is failure preservation only; it does not establish fix or deployment acceptance"
+  ],
+  "browser": {
+    "name": "chromium",
+    "playwrightVersion": "1.63.0",
+    "platform": "linux",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "deviceScaleFactor": 1,
+    "timezone": "Europe/Prague",
+    "locale": "en-US",
+    "bypassCSP": false
+  }
+}
