@@ -811,3 +811,7 @@ h3.repeatHeading {
 .statTable td[data-numeric] {
   text-align: end;
 }
+
+.statTable thead th:not(:first-child) {
+  text-align: end;
+}

@@ -99,15 +99,25 @@ test('field manual editor with source metadata', async ({ browser }) => {
   await shot(page, 'admin-manual-editor-cs-1440x900.png', 'Field manual article editor (full page): the shared rich-text editor, HLL category, publication controls and the source/ordering form (original URL, date, language, credits, review).', 'editor (platform-wide)', true);
 });
 
-test('HLL match editor with map, mode, side and sector score', async ({ browser }) => {
+test('HLL match editor: rounds and game statistics', async ({ browser }) => {
   const client = new pg.Client({ connectionString: e2eDatabaseUrl() });
   await client.connect();
   const id = (await client.query<{ id: string }>(`select id from match where game = 'hell-let-loose' and is_fixture and status = 'completed' order by starts_at limit 1`)).rows[0]?.id;
   await client.end();
   if (!id) throw new Error('No completed HLL match fixture');
-  const page = await open(browser, 'match_manager', `/cs/admin/matches/${id}`);
-  await expect(page.locator('[data-hll-rounds]')).toBeVisible();
-  await page.locator('[data-rounds-editor]').scrollIntoViewIfNeeded();
+  const page = await open(browser, 'match_manager', `/cs/admin/matches/${id}`, 1440, 1200);
   await expect(page.locator('[data-statistics-panel]')).toHaveAttribute('data-statistics-state', 'imported');
-  await shot(page, 'admin-hll-match-editor-cs-1440x900.png', 'Match editor for a completed synthetic HLL match (full page): the result, the HLL round (official map list, Warfare/Offensive/Skirmish mode, Allies/Axis side, 0–5 sector scores) and the game statistics panel with the imported synthetic scoreboard, team totals, side and player-publication settings and the CRCON/upload import form.', 'match_manager', true);
+  await page.locator('[data-rounds-editor]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await page.evaluate(() => window.scrollBy(0, -80));
+  await page.screenshot({ path: path.join(outDir, 'admin-hll-match-rounds-cs-1440x1200.png'), animations: 'disabled', caret: 'hide' });
+  captures.push({
+    file: 'admin-hll-match-rounds-cs-1440x1200.png',
+    caption: 'Match editor for a completed synthetic HLL match: the HLL round with a map field backed by the official HLL map list, Warfare/Offensive/Skirmish mode, Allies/Axis side and 0–5 sector scores, followed by the start of the game statistics panel.',
+    viewport: '1440x1200',
+    uiLocale: 'cs',
+    role: 'match_manager',
+  });
+  await page.locator('[data-group="statistics"]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await page.evaluate(() => window.scrollBy(0, -80));
+  await shot(page, 'admin-hll-match-statistics-cs-1440x1200.png', 'Game statistics panel of the same match: the imported synthetic scoreboard (source, game time, import time, 12 players, player rows public), team totals for Valkyria (Spojenci) and the opponent (Osa), side and publication settings, and the import form (configured CRCON server by game ID, or an uploaded scoreboard JSON; no server is configured in this environment).', 'match_manager');
 });
