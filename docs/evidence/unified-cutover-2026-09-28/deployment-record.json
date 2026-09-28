@@ -1,0 +1,1078 @@
+{
+  "schemaVersion": 1,
+  "attempt": 2,
+  "initialMigrationCount": 2,
+  "schemaChanged": false,
+  "startedAt": "2026-09-28T20:34:37.578222+00:00",
+  "finishedAt": "2026-09-28T20:37:55.465309+00:00",
+  "quiescedAt": "2026-09-28T20:34:38.904830+00:00",
+  "candidateHealthyAt": "2026-09-28T20:35:45.590750+00:00",
+  "readyAt": "2026-09-28T20:37:55.041184+00:00",
+  "result": "promoted",
+  "phase": "accepted",
+  "sourceRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+  "candidateImage": "majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+  "oldSourceRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+  "oldImage": "majorluk/valkyria-www@sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93",
+  "origin": "https://valkyria.cz",
+  "authenticationDisabled": true,
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "watchtowerEnabled": false,
+  "legacyHllLinksPreserved": true,
+  "hllBackgroundClips": 0,
+  "serverStatusSource": "none",
+  "legacyHllHosts": [],
+  "pairedBackup": {
+    "semanticRestorePerformed": true,
+    "tables": 27,
+    "sequences": 1,
+    "rowCountsAndHashesMatch": true,
+    "mediaFiles": 0,
+    "mediaHashesMatch": true,
+    "sourceUnchanged": true,
+    "completedAt": "2026-09-28T20:35:20.206495+00:00"
+  },
+  "isolatedRestore": {
+    "database": "new unique disposable target",
+    "ownershipVerified": true,
+    "verifiedDatabaseDropped": true,
+    "liveDatabaseRestorePerformed": false
+  },
+  "migrationRuns": [
+    {
+      "applied": 0,
+      "alreadyApplied": 2,
+      "total": 2
+    },
+    {
+      "applied": 0,
+      "alreadyApplied": 2,
+      "total": 2
+    }
+  ],
+  "timersRestored": {
+    "valkyria-web-publish.timer": true,
+    "valkyria-web-backup.timer": true
+  },
+  "publicSmoke": [
+    {
+      "path": "/api/health/live",
+      "status": 200,
+      "canonical": null
+    },
+    {
+      "path": "/api/health/ready",
+      "status": 200,
+      "canonical": null
+    },
+    {
+      "path": "/cs",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs"
+    },
+    {
+      "path": "/en",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en"
+    },
+    {
+      "path": "/cs/wardogs",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs/wardogs"
+    },
+    {
+      "path": "/en/wardogs",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en/wardogs"
+    },
+    {
+      "path": "/cs/hll",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs/hll"
+    },
+    {
+      "path": "/en/hll",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en/hll"
+    },
+    {
+      "path": "/cs/hll/field-manual",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs/hll/field-manual"
+    },
+    {
+      "path": "/en/hll/field-manual",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en/hll/field-manual"
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "status": 206,
+      "mime": "image/webp",
+      "rangeBytes": 1024
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "status": 206,
+      "mime": "video/mp4",
+      "rangeBytes": 1024
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "status": 206,
+      "mime": "video/webm",
+      "rangeBytes": 1024
+    }
+  ],
+  "routingConvergence": {
+    "kind": "two-round-canonical-live-and-readiness-convergence",
+    "acceptanceDeadlineSeconds": 300,
+    "minimumRoundSpacingSeconds": 5,
+    "pendingAttempts": 23,
+    "coherentRounds": 2,
+    "accepted": true,
+    "rounds": [
+      {
+        "startedAt": "2026-09-28T20:35:45.605645+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:35:45.797571+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:35:50.804213+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:35:50.936166+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:35:55.946738+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:35:56.160964+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:01.170320+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:01.317408+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:06.325417+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:06.502548+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:11.514725+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:11.671009+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:16.683018+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:16.850242+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:21.857576+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:22.014947+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:27.026905+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:27.186074+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:32.194066+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:32.348718+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:37.365113+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:37.519507+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:42.529609+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:36:42.957325+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:47.966462+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:36:48.357742+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:53.367261+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:53.504452+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:58.521161+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:58.657253+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:03.663206+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:03.797988+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:08.807279+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:08.960342+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:13.971080+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:14.120413+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:19.126424+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:19.278601+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:24.288042+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:24.963040+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:29.989538+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:30.482106+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:35.497208+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:35.955285+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:40.966767+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:41.340026+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:46.346100+00:00",
+        "status": "coherent",
+        "finishedAt": "2026-09-28T20:37:46.861170+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:51.869262+00:00",
+        "status": "coherent",
+        "finishedAt": "2026-09-28T20:37:52.392833+00:00"
+      }
+    ]
+  },
+  "httpProbes": [
+    {
+      "observedAt": "2026-09-28T20:35:45.611985+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:35:50.811675+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:35:55.957226+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:01.178206+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:06.339523+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:11.528170+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:16.691824+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:21.870605+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:27.036021+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:32.220720+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:37.371949+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:42.539195+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370547,
+      "bodySha256": "c38b9489ce87cc763f355855651a1bcb24de8e4d9516c651f96b12c5fce7c826"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:42.826572+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:47.974557+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "500bd4f9c8d8273a330bb6a607392f2373469ccbde0ff3ed31c2db619a44b583"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:48.225563+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:53.375310+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:58.528951+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:03.671755+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:08.820685+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:13.984199+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:19.134734+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:24.302198+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "27f376ff6c3080b14744f5829015400b3dcd2c95294f144d1129f07af9f1e90f"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:24.797355+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:30.007315+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "11ccadeec4e74cad40953141e7388704324f9cc395dbeb56a8047c1379b3b258"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:30.332565+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:35.516611+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "acd71720ef14ee69f22502d05765caf18bf49821858f3264752b84b1cc61c0d5"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:35.825268+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:40.976210+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "56786043309f2e97a7daa511e52c9aa77884cde499c7beafb4b30778e539e731"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:41.212660+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:46.354616+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "7cf6316c4813ed47f5d4a6729c8b9e360001a4107eed198887db8eb3fb1fb8e8"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:46.562599+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:46.687938+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/ready",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:51.877238+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "68fe81a8c7cb80476cbb44ed2baafb9d1b0ce8f5c4ca3c9922831992521a4ab7"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:52.105709+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:52.247476+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/ready",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:52.411925+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:52.539202+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/ready",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:52.666754+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 370613,
+      "bodySha256": "ce27a59bf8f6b293de35a0cd0d2c236856e8c8486bee8406058d3311f777b149"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:53.105446+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 363181,
+      "bodySha256": "0446ea674e738a9b209b59336eaba7a072473595bf7552e8d6ad1a6c9a8bd8dd"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:53.329235+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs/wardogs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 366840,
+      "bodySha256": "a26fdcd83fae43502a278eaa5eef89ec3d3bca68e9b917d16c4e602986e24807"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:53.574084+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en/wardogs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 359402,
+      "bodySha256": "85ceba5dbe3dad551b1c95a7f126a1e6e5e68eaae6a7ea9178849d024ebbef66"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:53.782108+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs/hll",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 229969,
+      "bodySha256": "3c81b12f322b2bb1a37bec70a7ebee73eec4317478768b109d23a6f8667518c6"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:53.972222+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en/hll",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 222486,
+      "bodySha256": "1bdcfef84e15ff7a40fb20d824675b6c2417621c66c12eaeeed970b0df247181"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:54.159097+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs/hll/field-manual",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 227585,
+      "bodySha256": "9541bdc9819258d53a8575435d3c05a6f9a9eb4d35f508c989b9c3a7110f3da4"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:54.366142+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en/hll/field-manual",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "transferEncoding": "chunked",
+      "cfMitigated": null,
+      "bodyBytes": 220128,
+      "bodySha256": "c4a515feb6c54e5b79df7871c46b4d10eabb87ccf821590a03c7357276136b09"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:54.586165+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "status": 206,
+      "contentType": "image/webp",
+      "contentEncoding": null,
+      "transferEncoding": null,
+      "cfMitigated": null,
+      "bodyBytes": 1024,
+      "bodySha256": "020e9beee1acf6ed1db9f59f17f40799f4ed270fea69cf6aad22c61508bf87de"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:54.739332+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "status": 206,
+      "contentType": "video/mp4",
+      "contentEncoding": null,
+      "transferEncoding": null,
+      "cfMitigated": null,
+      "bodyBytes": 1024,
+      "bodySha256": "f2f1e69d2283bec8261befe003fca27e4a4aa62aa0bb19669806b96b19fc81a7"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:54.902249+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "status": 206,
+      "contentType": "video/webm",
+      "contentEncoding": null,
+      "transferEncoding": null,
+      "cfMitigated": null,
+      "bodyBytes": 1024,
+      "bodySha256": "6fadaabb712000e8cdf4e429866d885554bec800496d7efd83fd7410a9d789e9"
+    }
+  ],
+  "routingObservation": {
+    "kind": "two-round-canonical-live-and-readiness-convergence",
+    "acceptanceDeadlineSeconds": 300,
+    "minimumRoundSpacingSeconds": 5,
+    "pendingAttempts": 23,
+    "coherentRounds": 2,
+    "accepted": true,
+    "rounds": [
+      {
+        "startedAt": "2026-09-28T20:35:45.605645+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:35:45.797571+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:35:50.804213+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:35:50.936166+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:35:55.946738+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:35:56.160964+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:01.170320+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:01.317408+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:06.325417+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:06.502548+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:11.514725+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:11.671009+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:16.683018+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:16.850242+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:21.857576+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:22.014947+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:27.026905+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:27.186074+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:32.194066+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:32.348718+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:37.365113+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:37.519507+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:42.529609+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:36:42.957325+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:47.966462+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:36:48.357742+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:53.367261+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:53.504452+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:36:58.521161+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:36:58.657253+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:03.663206+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:03.797988+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:08.807279+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:08.960342+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:13.971080+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:14.120413+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:19.126424+00:00",
+        "status": "pending",
+        "failureCode": "canonical_route_not_ready",
+        "finishedAt": "2026-09-28T20:37:19.278601+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:24.288042+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:24.963040+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:29.989538+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:30.482106+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:35.497208+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:35.955285+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:40.966767+00:00",
+        "status": "pending",
+        "failureCode": "public_health_non_json_content_type",
+        "finishedAt": "2026-09-28T20:37:41.340026+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:46.346100+00:00",
+        "status": "coherent",
+        "finishedAt": "2026-09-28T20:37:46.861170+00:00"
+      },
+      {
+        "startedAt": "2026-09-28T20:37:51.869262+00:00",
+        "status": "coherent",
+        "finishedAt": "2026-09-28T20:37:52.392833+00:00"
+      }
+    ]
+  },
+  "rollbackPolicy": "old image/config only; no live database restore or migration downgrade",
+  "limitations": [
+    "Protected configuration, database fingerprints, raw response previews and host identifiers are omitted.",
+    "The first failed attempt is retained separately; its original response anomaly remains unproven.",
+    "This cutover does not enable authentication, Logi, HLL clips or live server data.",
+    "This actual paired local restore does not establish encrypted off-host recovery.",
+    "Canonical routing and independent browser/HTTP acceptance are recorded separately."
+  ]
+}

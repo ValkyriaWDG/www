@@ -1,0 +1,15 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{createRequire}=require('node:module');
+const source=fs.readFileSync(path.join(__dirname,'http-smoke.mjs'),'utf8');
+const code=source.slice(source.indexOf('const decode ='),source.indexOf('async function limitedBytes'));
+const sandbox={};vm.createContext(sandbox);vm.runInContext(code+';this.parseMetadata=metadata;',sandbox);
+test('metadata parser preserves CS/EN reciprocal URLs and query escaping',()=>{const meta=sandbox.parseMetadata('<html lang="cs"><title>Test &amp; Valkyria</title><link rel="canonical" href="https://valkyria.cz/cs/hll"><link rel="alternate" hreflang="en" href="https://valkyria.cz/en/hll"><meta property="og:image" content="https://valkyria.cz/api/social/cs/site?v=1&amp;q=2">');assert.equal(meta.language,'cs');assert.equal(meta.title,'Test & Valkyria');assert.equal(meta.canonical[0],'https://valkyria.cz/cs/hll');assert.equal(meta.alternates[0].href,'https://valkyria.cz/en/hll');assert(meta.ogImage[0].endsWith('?v=1&q=2'));});
+const forbidText=source.split('\n').find(line=>line.includes('const forbidsIndexing = ')).trim().slice('const forbidsIndexing = '.length,-1);const forbidsIndexing=vm.runInNewContext(forbidText);
+for(const [value,expected] of [['googlebot: noindex',true],['NONE',true],['index, follow',false],['noimageindex',false]])test('index policy '+value,()=>assert.equal(forbidsIndexing(value),expected));
+const dep=process.env.VERIFICATION_DEPENDENCY_ROOT;assert(dep,'Set installed dependency checkout path');const sharp=createRequire(path.join(dep,'apps/web/package.json'))('sharp');
+const decodeText=source.slice(source.indexOf('const decoded = await sharp(bytes'),source.indexOf('entry.image.decode = { passed: decoded.info.width'));
+const decode= new Function('sharp','bytes','return (async()=>{'+decodeText+'return decoded;})()');
+test('actual complete PNG decoder accepts expected dimensions',async()=>{const input=await sharp({create:{width:1200,height:630,channels:3,background:'#171717'}}).png().toBuffer();const decoded=await decode(sharp,input);assert.equal(decoded.info.width,1200);assert.equal(decoded.info.height,630);assert.equal(decoded.data.length,1200*630*4);});
+test('actual complete PNG decoder rejects truncated body',async()=>{const input=await sharp({create:{width:1200,height:630,channels:3,background:'#171717'}}).png().toBuffer();await assert.rejects(()=>decode(sharp,input.subarray(0,24)));});
+test('actual complete PNG decoder rejects oversized image',async()=>{const input=await sharp({create:{width:1201,height:630,channels:3,background:'#171717'}}).png().toBuffer();await assert.rejects(()=>decode(sharp,input));});
+test('reports and captures use exclusive creation',()=>{assert(source.includes("open(reportFile, 'wx')"));const b=fs.readFileSync(path.join(__dirname,'browser-smoke.cjs'),'utf8');assert(b.includes("openSync(reportPath,'wx')"));assert(b.includes("writeFileSync(path.join(__dirname,file),bytes,{flag:'wx'})"));});

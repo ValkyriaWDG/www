@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-28T20:42:06.876479+00:00",
+  "origin": "https://valkyria.cz",
+  "image": "majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+  "sourceRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+  "containerStatus": "running",
+  "health": "healthy",
+  "readiness": {
+    "status": "ready",
+    "checks": {
+      "config": "ok",
+      "database": "ok",
+      "schema": "ok",
+      "media": "ok"
+    }
+  },
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "capabilitiesDropped": [
+    "ALL"
+  ],
+  "securityOptions": [
+    "no-new-privileges:true"
+  ],
+  "publishedPorts": [],
+  "mounts": [
+    {
+      "destination": "/app/apps/web/.next/cache",
+      "writable": true,
+      "type": "bind"
+    },
+    {
+      "destination": "/app/storage/editorial",
+      "writable": true,
+      "type": "bind"
+    },
+    {
+      "destination": "/app/apps/web/public/media/background",
+      "writable": false,
+      "type": "bind"
+    }
+  ],
+  "watchtowerEnabled": "false",
+  "authentication": {
+    "discordCredentialsPresent": false,
+    "localAdminLoginEnabled": false
+  },
+  "hll": {
+    "backgroundClips": 0,
+    "serverStatusSource": "none",
+    "legacyHosts": []
+  },
+  "backgroundMediaOrigin": "https://valkyria.cz",
+  "approvedMediaHashesMatch": true,
+  "publisherTimer": {
+    "Result": "success",
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled"
+  },
+  "publisherService": {
+    "Result": "success",
+    "ExecMainExitTimestamp": "Mon 2026-09-28 22:41:09 CEST",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "static"
+  },
+  "backupTimer": {
+    "Result": "success",
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled"
+  },
+  "backupService": {
+    "Result": "success",
+    "ExecMainExitTimestamp": "Mon 2026-09-28 22:34:51 CEST",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "static"
+  },
+  "media": [
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "bytes": 51032923,
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b"
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "bytes": 13654192,
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e"
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "bytes": 19561104,
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309"
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "bytes": 181198,
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+    }
+  ],
+  "limitations": [
+    "Service success is not proof of overdue-content monitoring or alert delivery.",
+    "This read-only inspection does not exercise authenticated sessions or perform a restore."
+  ]
+}

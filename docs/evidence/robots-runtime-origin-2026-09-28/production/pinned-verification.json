@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-09-28T21:31:14.370359+00:00",
+  "revision": "e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a",
+  "digest": "sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25",
+  "files": {
+    "promote-image.py": {
+      "reviewedUnpinnedSha256": "77d02b49e291ea8b69ac49cea5bafccef8dae025f773b377fbc871ed1d225890",
+      "pinnedSha256": "1ff75479266849294039a5f216540655d651318291fe884f19883fc24cdc1741"
+    },
+    "verify-runtime.py": {
+      "reviewedUnpinnedSha256": "7126f16a7b78ff388f97181cf96ce1d4289e6c3520cd5fcc6f4e02633c3f51c6",
+      "pinnedSha256": "18ba1e910468a5610af55c8b38bb51cb46e784ea41d10b87bd4cf90ac52bac0d"
+    },
+    "collect-deployment.mjs": {
+      "reviewedUnpinnedSha256": "11d58c7133eb55de79ac1ec1a8c14265a294747732acd05cb01271fff4fbcf57",
+      "pinnedSha256": "00a04af607d124cf01520d68f3a188aeb7aeb95866ca74ed6eded2778b2d976a"
+    }
+  },
+  "tests": [
+    {
+      "suite": "inherited",
+      "exitCode": 0
+    },
+    {
+      "suite": "hotfix",
+      "exitCode": 0
+    },
+    {
+      "suite": "verifier",
+      "exitCode": 0
+    },
+    {
+      "suite": "collector",
+      "exitCode": 0
+    }
+  ]
+}
