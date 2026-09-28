@@ -2,7 +2,7 @@ import { publicationSchedule, siteSetting, type Executor } from '@valkyria/db';
 import { eq, sql } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
 import type { Capability } from '@/modules/access/capabilities';
-import { verifyIssuerAuthority, type IssuerCheck, type IssuerVerdict } from '@/modules/access/issuer';
+import { authorizeIssuer, revalidateIssuerFence, type IssuerCheck, type IssuerFence, type IssuerVerdict } from '@/modules/access/issuer';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { applyPublication, assertPublishable } from './publication';
@@ -43,6 +43,7 @@ export type PublisherOptions = {
   limit?: number;
   /** Claim lease; an unfinished claim becomes claimable again afterwards (default 5 min). */
   leaseMs?: number;
+  /** Trusted test dependency override; production always captures and locks an issuer fence. */
   verifyIssuer?: VerifyIssuer;
   log?: (message: string) => void;
 };
@@ -66,6 +67,10 @@ class PermanentFailure extends Error {
   constructor(readonly code: string) {
     super(code);
   }
+}
+
+class IssuerInvalidated extends Error {
+  constructor(readonly verdict: 'revoked' | 'unknown') { super(`issuer_${verdict}`); }
 }
 
 type Claim = Pick<ScheduleRow, 'id' | 'attempts' | 'translationId' | 'locale' | 'revisionId' | 'issuerKind' | 'issuerUserId' | 'issuerLabel' | 'issuerGrantId' | 'issuerGrantVersion' | 'capability'>;
@@ -222,7 +227,7 @@ async function failClaim(db: Executor, claim: Claim, code: string, now: Date): P
   });
 }
 
-async function publishClaim(db: Executor, claim: Claim, now: Date): Promise<Outcome> {
+async function publishClaim(db: Executor, claim: Claim, now: Date, fence: IssuerFence | undefined, clock: () => Date): Promise<Outcome> {
   return inTransaction(db, async (tx) => {
     const schedule = await lockOwnedClaim(tx, claim);
     if (!schedule) return 'skipped';
@@ -240,6 +245,10 @@ async function publishClaim(db: Executor, claim: Claim, now: Date): Promise<Outc
       throw error;
     }
     let result: Awaited<ReturnType<typeof applyPublication>>;
+    if (fence) {
+      const verdict = await revalidateIssuerFence(tx, fence, clock);
+      if (verdict !== 'authorized') throw new IssuerInvalidated(verdict);
+    }
     try {
       result = await applyPublication(tx, { translation, revision, now });
     } catch (error) {
@@ -269,6 +278,13 @@ async function publishClaim(db: Executor, claim: Claim, now: Date): Promise<Outc
         issuer: issuerSummary(claim),
       },
     });
+    // Publication or audit writes can themselves wait on locks. Retain the same
+    // row lock and check expiry again as the transaction's final awaited work.
+    // Failure rolls back the live pointer, completion and success audit together.
+    if (fence) {
+      const verdict = await revalidateIssuerFence(tx, fence, clock);
+      if (verdict !== 'authorized') throw new IssuerInvalidated(verdict);
+    }
     return 'completed';
   });
 }
@@ -298,10 +314,10 @@ async function writeHeartbeat(db: Executor, now: Date, summary: PublisherRunSumm
  * cannot run); individual intent failures are recorded on the intent and in the audit log.
  */
 export async function runPublisher(db: Executor, options: PublisherOptions = {}): Promise<PublisherRunSummary> {
-  const now = options.now?.() ?? new Date();
+  const clock = options.now ?? (() => new Date());
+  const now = clock();
   const limit = Math.min(Math.max(options.limit ?? 25, 1), 200);
   const leaseMs = Math.min(Math.max(options.leaseMs ?? 5 * 60_000, 10_000), 60 * 60_000);
-  const verifyIssuer: VerifyIssuer = options.verifyIssuer ?? ((executor, input) => verifyIssuerAuthority(executor, input));
   const log = options.log ?? (() => undefined);
   const summary: PublisherRunSummary = { ranAt: now.toISOString(), claimed: 0, completed: 0, blocked: 0, failed: 0, skipped: 0, exhausted: 0 };
 
@@ -319,14 +335,22 @@ export async function runPublisher(db: Executor, options: PublisherOptions = {})
         outcome = await blockClaim(db, claim, 'invalid_capability', now);
       } else {
         let verdict: IssuerVerdict;
+        let fence: IssuerFence | undefined;
         try {
-          verdict = await verifyIssuer(db, {
+          const input: IssuerCheck = {
             issuerKind: claim.issuerKind,
             issuerUserId: claim.issuerUserId,
             grantId: claim.issuerGrantId,
             grantVersion: claim.issuerGrantVersion,
             capability: SCHEDULE_CAPABILITY,
-          });
+          };
+          if (options.verifyIssuer) {
+            verdict = await options.verifyIssuer(db, input);
+          } else {
+            const authority = await authorizeIssuer(db, input, { now: clock });
+            verdict = authority.verdict;
+            if (authority.verdict === 'authorized') fence = authority.fence;
+          }
         } catch {
           verdict = 'unknown';
         }
@@ -334,11 +358,16 @@ export async function runPublisher(db: Executor, options: PublisherOptions = {})
           outcome = await blockClaim(db, claim, verdict === 'revoked' ? 'revoked' : 'unknown', now);
         } else {
           try {
-            outcome = await publishClaim(db, claim, now);
+            outcome = await publishClaim(db, claim, now, fence, clock);
           } catch (error) {
-            const code = errorCode(error);
-            // If even recording the failure fails, the claim stays leased and is recovered later.
-            outcome = await failClaim(db, claim, code, now).catch(() => 'failed' as const);
+            // The failed publication transaction has rolled back before we lock
+            // the claim again to record a durable denial.
+            if (error instanceof IssuerInvalidated) outcome = await blockClaim(db, claim, error.verdict, clock());
+            else {
+              const code = errorCode(error);
+              // If even recording the failure fails, the claim stays leased and is recovered later.
+              outcome = await failClaim(db, claim, code, now).catch(() => 'failed' as const);
+            }
           }
         }
       }

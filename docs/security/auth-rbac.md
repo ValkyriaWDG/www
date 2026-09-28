@@ -80,21 +80,35 @@ Discord server-side; an unknown guild or unconfigured mapping grants no private 
 - Periodic reconciliation corrects missed gateway events; 429 honors Retry-After with
   bounded retries and backoff. Do not interpret timeout/403 as successful zero-role sync.
 
-For v1, a server-only Discord REST adapter can provide authoritative refreshes; the
-optional worker adds event-driven invalidation later. Do not claim an event integration
-is live when only its contract/mock exists. Never trust a posted role list from a user.
+The existing server-only Discord REST adapter provides authoritative refreshes.
+Hosted Logi is the selected future integration; its identity, membership freshness
+and revocation contract require separate acceptance. The retired custom bot's
+receiver and signed sequence protocol are not implemented by this change. Never
+trust a posted role list, treat a Logi service key as user authority or claim live
+provider acceptance from offline fixtures.
 
-## Optional bot-to-web contract
+## Authority across awaited work
 
-Reserve `POST /api/integrations/discord/role-sync`. Versioned JSON fields:
-`schemaVersion`, `eventId`, `guildId`, `userId`, `roleIds`, `membershipState`,
-`observedAt`, `sequence`. IDs are strings. The production design must choose and test
-a concrete authenticated transport; recommended HMAC-SHA256 over timestamp, nonce and
-raw body, with constant-time comparison, a 5-minute receive window, durable replay
-receipts and key rotation. Secret remains only in operator/worker/server configuration.
-Reject wrong guild, malformed roles, oversized payload, stale timestamp and replay.
-An older snapshot cannot resurrect a user after a newer departure event. HMAC proves
-sender integrity, not permission to map arbitrary new application capabilities.
+Interactive Discord authorization rereads the durable session and membership after
+awaited role-mapping work. A deleted/expired session or changed observation denies
+the earlier decision. The observation includes an ephemeral PostgreSQL row-version
+token (`xmin` plus `ctid`), read atomically with its fields. Same-timestamp or
+same-value updates therefore cannot reuse a cached authorization result. This token
+stays server-side within the current request/freshness window: never persist it,
+expose it in a DTO or use it as a provider sequence or durable identity. PostgreSQL
+transaction IDs can wrap and row locations can move; a changed token fails closed.
+See [PostgreSQL system columns](https://www.postgresql.org/docs/current/ddl-system-columns.html).
+
+Scheduled publication carries the exact verified membership observation or local
+grant identity/version into its transaction. After acquiring content locks, it takes
+a shared lock on that authority row and revalidates it before publication and again
+after the awaited audit write. Changed/revoked/expired authority rolls back the live
+pointer, success audit and completion together, then blocks the saved intent.
+The authority lock remains until commit. There is no provider I/O while holding it,
+and a valid independent local recovery grant still works during a Discord outage.
+No schema migration, new transport, provider activation or live revocation claim is
+included. These checks cannot invalidate an upstream change that has not yet been
+observed; the existing read/write freshness limits still apply.
 
 ## Local admin recovery
 

@@ -1,6 +1,22 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **1.0.0 — public website deployed; live authentication deferred.**
+Updated: 2026-09-28. Stage: **1.0.0 deployment; publication authorization hardening prepared; live authentication deferred.**
+
+## Publication authorization hardening
+
+PR #35 is narrowed from the retired custom bot receiver to provider-independent
+website fixes. Discord request authorization rereads its durable session/observation
+after mapping waits; scheduled publication locks and revalidates its exact membership
+or local grant before publishing and after audit waits. Same-timestamp updates and
+revocation cannot reuse the earlier authorization. The old receiver, custom-bot CI,
+transport tables and unapplied `0001_role_sync.sql` are removed from the candidate.
+There is no schema change, provider activation or Logi readiness claim.
+
+See [local proof and limitations](evidence/authority-fences-2026-09-28/README.md).
+Hosted membership/SSO acceptance stays in #8/#23; this candidate does not close those
+issues. The deployment observations below are historical and were not refreshed by
+this local work. Continue the shared platform and hosted Logi workstreams against
+their agreed contracts rather than restoring the custom bot protocol.
 
 ## First public deployment
 
@@ -39,11 +55,16 @@ includes actual images, CS/EN desktop/mobile editor captures, long-title stress
 coverage and regression results. Issue #29 still requires production HTTP verification
 after an authorized release; source merge does not prove deployment.
 
-The refreshed #32 combines that main revision with release hardening. **The new
-combined source still requires its own complete CI**, including both runtime variants'
-CS/EN social PNG probes. Historical green runs do not qualify this changed source.
-Hosted Logi is the selected integration direction; custom-bot PRs #34/#35 are not
-prerequisites and must not be merged automatically. Follow the updated
+PR #32 merged as `eaf9f911f13c0b929c8f7d90529c0ccab5dd0701` after
+[CI 36435186950](https://github.com/ValkyriaWDG/www/actions/runs/36435186950) passed
+on head `cfececb5fa5e48c013f1593a3ac2f9855df17588` / tested merge
+`07a58689f7ca8051200f128eca14b43fc9f7c1ad`: 39 tooling, 374 unit, 229 database
+and 119 browser tests, both runtime variants' CS/EN social PNGs, all 12 rollback
+steps and all nine page-budget samples. Issue #26 is closed with acceptance proof.
+The narrowed authorization candidate now incorporates that accepted main; its own
+changed source still requires fresh CI. Hosted Logi is the selected integration
+direction; #34 was closed unmerged as superseded and #35 retains only independent
+website authorization fixes. Follow the updated
 [integration handoff](engineering/follow-up-integration-2026-09-26.md). No candidate
 image has been published or deployed; the recorded live deployment remains unchanged.
 

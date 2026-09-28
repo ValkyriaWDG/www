@@ -1,4 +1,4 @@
-import { auditEvent, guildMembership, roleMappingVersion } from '@valkyria/db';
+import { auditEvent, authSession, guildMembership, roleMappingVersion } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { recordMembershipObservation, readMembership } from '@/modules/access/membership';
@@ -37,6 +37,7 @@ beforeEach(() => {
 async function discordIdentity() {
   const identity = await insertDiscordUser(database.db);
   const session: ActorSession = { id: crypto.randomUUID(), userId: identity.userId, assurance: 'discord', expiresAt: new Date(NOW.getTime() + 3_600_000) };
+  await database.db.insert(authSession).values({ ...session, assurance: 'discord', token: crypto.randomUUID() });
   const user = { id: identity.userId, name: 'Synthetic Member', twoFactorEnabled: false };
   return { ...identity, session, user };
 }
