@@ -2,9 +2,10 @@
 
 ## Scope and source of truth
 
-This public repository belongs to Valkyria. Extend its working Czech-first bilingual
-(Czech/English) website into one HLL/Wardogs platform, with future canonical origin
-`https://valkyria.cz` (current deployment: `https://valkyriawdg.cz`). Both games share
+This public repository belongs to Valkyria. Maintain its working Czech-first bilingual
+(Czech/English) HLL/Wardogs platform at canonical origin `https://valkyria.cz`.
+The old Wardogs hosts redirect there; `valkyriahll.cz` still serves the legacy site.
+Both games share
 CMS, identity, database and deployment with explicit game scope. The owner selected an
 HLL in-game-inspired menu/browser/manual visual direction. The working application
 lives in `apps/web`; read `docs/STATUS.md` for accepted source revisions, historical

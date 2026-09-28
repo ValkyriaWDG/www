@@ -1,20 +1,74 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **WDG production refresh accepted; unified HLL/WDG deployment to valkyria.cz authorized and being qualified. Live authentication remains deferred.**
+Updated: 2026-09-28. Stage: **Unified HLL/WDG deployed to valkyria.cz; robots-origin and browser-network acceptance remain open. Live authentication remains deferred.**
 
-## Unified cutover qualification
+## Current unified deployment
+
+**https://valkyria.cz** serves the Czech-first bilingual community hub and HLL/Wardogs
+sections at source `5e83abc91560480e21b60c4a2638c0b52b0e1720`, with immutable image
+`majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48`.
+Promotion completed on **2026-09-28 at 20:37:55 UTC (22:37:55 CEST)**. The
+[cutover evidence](evidence/unified-cutover-2026-09-28/README.md) records full source,
+publication, backup, recovery, routing, public-check and inspected screenshot proof.
+
+PR #51 fixed query-preserving game/language switch hydration and merged after its
+required CI passed. Exact-main [CI 36474517364](https://github.com/ValkyriaWDG/www/actions/runs/36474517364)
+and protected [publisher 36476285050](https://github.com/ValkyriaWDG/www/actions/runs/36476285050)
+passed: **439 unit, 272 database, 143 browser, 126 tooling, 13 encrypted-recovery and
+6 real restore tests**; 98 opt-in captures skipped. All 15 cold-mobile samples and
+12 image/rollback stages passed. The image has no fixable HIGH/CRITICAL finding;
+43 unfixed findings remain recorded. The immutable registry digest and OCI revision matched.
+
+The first production attempt restored its fresh **25-table** paired backup, applied
+0001 once, and then failed public health JSON parsing. It recovered the old image/config
+and routes without downgrading the database. The failed response body was not retained,
+so its cause remains unproven. The second attempt used a revised diagnostic/convergence
+protocol, created another fresh backup and actually restored all **27 tables** and the
+editorial archive into owned disposable targets. Both migration runs were **0 applied,
+2 already applied**, preserving all rows, the journal and sequences. Two coherent
+canonical/live/readiness rounds preceded the single successful full smoke. Both timers
+resumed. No live database restore, fixtures or legacy-content import occurred.
+
+The [runtime readbacks](evidence/unified-cutover-2026-09-28/runtime-after.json) confirm
+the exact image/source, all four readiness checks, uid 10001, read-only root, dropped
+capabilities, no public host ports, unchanged approved background hashes and Watchtower
+off. The publication service subsequently exited successfully. Authentication stays
+off; hosted Logi/status is unconfigured and HLL has no battle clips, using its static fallback.
+
+`www.valkyria.cz` redirects to the apex. Both WDG hosts redirect with **308**, mapping
+their locale landings to `/{locale}/wardogs` and preserving other paths and queries.
+**The old `valkyriahll.cz` site was not changed.** Existing HLL archive links remain.
+
+Public checks at **20:40 UTC** retained **54/55 HTTP** and **9/10 browser** results.
+Robots still advertises the old WDG Host/Sitemap origin ([#53](https://github.com/ValkyriaWDG/www/issues/53)).
+All nine browser UI/playback/navigation scenarios passed, but the strict network gate
+failed on five non-prefetch RSC aborts ([#46](https://github.com/ValkyriaWDG/www/issues/46)).
+Six actual production captures were inspected. No failed check was waived or rerun to
+replace its result. The 20:38 runtime readback precedes these checks; the later 20:42
+readback separately corroborates the same identity and healthy services.
+
+Remaining work: #53 robots origin; #46 browser network diagnosis; #36 legacy HLL content,
+approved footage and remaining unified features; #23/#8 live login/hosted Logi, recovery
+administrator, privacy decisions and off-host recovery/monitoring; #25 physical-device,
+Safari/retail-Firefox and media-performance coverage. Draft CRCON/statistics PR #50 and
+its migration 0002 are **not** part of this deployment. Incident #52 retains the two
+deployment attempts, actual rollback/recovery and the limits of their diagnosis.
+
+## Earlier unified qualification failure
 
 PR #37 merged as `40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9`; its PR and exact-main
 CI passed. The separate [publisher 36469751788](https://github.com/ValkyriaWDG/www/actions/runs/36469751788)
 then caught a real query-loss defect before registry access: the game switch exposed
 a query-less link while its query-aware segment was still hidden. The language switch
-used the same fallback pattern. Issue #49 tracks the repair; the original
+used the same fallback pattern. Issue #49 was subsequently resolved by PR #51; the original
 [trace observations and screenshot](evidence/switch-query-hydration-2026-09-28/README.md)
 are preserved. No image was published, no production data was migrated and no domain
-route was changed by that failed run. The previous WDG image below remains current
-until a separately qualified image is actually promoted.
+route was changed by that failed publisher. The subsequently qualified source and
+actual promotion are recorded above; the original failed record remains unchanged.
 
-## Latest production refresh
+## Previous WDG production refresh
+
+Historical 2026-09-28 checkpoint, superseded by the unified deployment above.
 
 PR #44 merged as `9a872918ad4d89935eb26118d853d40776af7d66`. Its final PR CI and
 [exact-main CI 36455739949](https://github.com/ValkyriaWDG/www/actions/runs/36455739949)
@@ -26,7 +80,7 @@ below. Issue #43 is closed with red/green measurements and inspected screenshots
 [Publication 36457009482](https://github.com/ValkyriaWDG/www/actions/runs/36457009482)
 passed its separate verification and protected environment gate. The public image
 `majorluk/valkyria-www@sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93`
-is now running at that exact source revision. No version tag or mutable image alias
+was deployed at that exact source revision. No version tag or mutable image alias
 was created. [Runtime readback](evidence/production-refresh-2026-09-28/runtime-after.json)
 confirms healthy configuration/database/schema/media, uid 10001, a read-only root,
 dropped capabilities, no published host ports, unchanged approved media hashes and
@@ -65,8 +119,8 @@ separate from this deployment.
 
 Merged PR [#37](https://github.com/ValkyriaWDG/www/pull/37),
 issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
-[handoff](handoff/hll-claude-code-cloud.md); unified source is implemented, while
-its production promotion and DNS cutover remain unaccepted as described above.
+[handoff](handoff/hll-claude-code-cloud.md); unified source and canonical production
+cutover are delivered as recorded above, with explicit remaining acceptance items.
 
 - **Routes:** `/cs` and `/en` are the community hub; `/{locale}/hll/...` (news, matches,
   servers, members, field-manual, clan, community) and `/{locale}/wardogs/...` (the
@@ -92,7 +146,7 @@ its production promotion and DNS cutover remain unaccepted as described above.
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi and
 real server status, legacy guide text/images (host blocked in this environment; reuse of
 external illustrations unrecorded), FAQ/events/tournaments/leaderboards destinations,
-legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
+legacy match-ID aliases and scoped media library for game-scoped editors.
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
 browser tests passed (98 opt-in capture cases skipped); 33 captioned captures; after
@@ -109,11 +163,10 @@ retaken; CI for the pushed head is linked from PR #37. Details:
 [hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md). Earlier preparation
 evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
 
-Current task: the owner authorized deployment to `valkyria.cz` and its Cloudflare
-Tunnel route. Integrate current main, qualify the exact combined revision and additive
-migration, then publish and deploy. Keep legacy `valkyriahll.cz` unchanged until its
-content migration is accepted. Clan footage and hosted Logi remain pending; deploy
-the honest static stage and unavailable-provider states without synthetic production data.
+Next task: retain the canonical deployment and its proof, repair robots metadata #53
+and investigate the separate network gate #46. Keep legacy `valkyriahll.cz` unchanged
+until its content migration is accepted. Clan footage and hosted Logi remain pending;
+preserve the static stage and unavailable-provider states without synthetic production data.
 
 ## Publication authorization hardening
 

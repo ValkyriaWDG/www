@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-28T20:39:41.393Z",
+  "status": "corroborated-attempt02-mixed-external-routing",
+  "scope": "Read-only source-host report and retained canonical-proxy access/error snapshots",
+  "parkingLiveResponses": [
+    {
+      "observedAt": "2026-09-28T20:36:42.826572+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:36:48.225563+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:24.797355+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:30.332565+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:35.825268+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    },
+    {
+      "observedAt": "2026-09-28T20:37:41.212660+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bodyBytes": 19254,
+      "bodySha256": "13a8c34e360db9323c9f37b9a81960c6a2d37d2b43bb80df32b4e6d1d7467899"
+    }
+  ],
+  "proxyEvidence": {
+    "helperLiveRequestsBefore203746": 0,
+    "firstLiveRequestTime": "2026-09-28T20:37:46Z",
+    "successfulCsRequestsBeforeFirstLive": 6,
+    "errorLog": "Three video buffering warnings only; no health errors"
+  },
+  "acceptanceObserved": {
+    "result": "promoted",
+    "phase": "accepted",
+    "pendingRounds": 23,
+    "coherentRounds": 2,
+    "fullSmokeChecks": 13,
+    "firstGoodLiveAt": "2026-09-28T20:37:46.562599+00:00",
+    "finishedAt": "2026-09-28T20:37:55.465309+00:00"
+  },
+  "assessment": "While some requests reached the newly routed application, six health requests still received byte-identical Active24 parking HTML without appearing in the new proxy access log. This corroborates mixed external destination routing during attempt02. The exact Cloudflare/DNS propagation mechanism is not established by these logs.",
+  "limitations": [
+    "NPM does not log CF-Ray and helper report does not retain the query nonce; correlation uses the dedicated helper User-Agent, path and timestamp window.",
+    "This does not retroactively establish attempt01 cause: its matched live request reached proxy15, and the returned response body was not retained.",
+    "Reviewer did not launch, preflight or mutate deployment/routing/services; snapshot observation is not independent production browser acceptance.",
+    "Raw proxy logs and HTTP response previews remain protected outside Git; public correlation identifiers are omitted."
+  ]
+}

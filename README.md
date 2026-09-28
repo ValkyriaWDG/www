@@ -1,15 +1,15 @@
 # Valkyria
 
-Czech-first bilingual community website for **Valkyria**, extending the existing
-Wardogs experience with an HLL game-menu section, shared CMS and identity.
+Czech-first bilingual community website for **Valkyria**, with HLL and Wardogs
+game-menu sections, shared CMS and identity.
 
-**Future canonical domain:** `valkyria.cz` · **Current Wardogs domain:** `valkyriawdg.cz` · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
+**Live canonical domain:** [valkyria.cz](https://valkyria.cz) · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
 
-> The working website, editorial administration and full-length background media are
-> implemented; the unified-platform/HLL extension is implemented on draft PR #37 (not
-> deployed). See [status](docs/STATUS.md) for accepted source, historical deployment
-> evidence and remaining live authentication, Logi, footage and operational checks. A
-> merged source revision is not automatically deployed.
+> The unified hub, HLL and Wardogs sections were deployed on 2026-09-28. The old WDG
+> hosts redirect to the canonical site; `valkyriahll.cz` retains the legacy website.
+> See [status](docs/STATUS.md) and [cutover evidence](docs/evidence/unified-cutover-2026-09-28/README.md)
+> for exact deployed identity and the retained robots/browser-network failures. Live
+> authentication, hosted Logi and HLL battle footage remain deferred.
 
 ## Start here
 
@@ -38,8 +38,8 @@ News/blog includes WordPress-like rich-text editing, image management, drafts/re
 preview and publishing. Reuse existing match management for reviewed historical import
 and editorial publication; future event/sign-up/roster operations use hosted Logi where
 its capabilities are verified, without creating a second writable operational master.
-The planned game switch keeps both sections under one canonical origin; existing
-external links remain until the reviewed migration is implemented. The
+The game switch keeps both sections under one canonical origin; legacy HLL
+external links remain until the reviewed content migration is accepted. The
 [current integration contract](docs/integrations/logi/contract.md) governs this extension
 over the earlier standalone [editorial and match requirements](docs/product/editorial-and-matches.md).
 

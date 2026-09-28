@@ -2222,6 +2222,72 @@
       "bytes": 244380,
       "width": 1280,
       "height": 720
+    },
+    {
+      "id": "unified-cutover-2026-09-28-browser-after-01-hub-cs-desktop",
+      "path": "docs/evidence/unified-cutover-2026-09-28/browser-after-01-hub-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz/cs; source 5e83abc91560480e21b60c4a2638c0b52b0e1720; 2026-09-28 20:40 UTC. Chrome for Testing 154.0.8037.57, viewport 1440x900. Nine UI checks passed; the separate network gate failed on five non-prefetch RSC aborts. Visually inspected by the integrating agent; see the adjacent full failed report and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and approved third-party game imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "01e63cbddd8137e0700c6ad28c50036b9f48e3344db1e48725753723495321ea",
+      "bytes": 413971,
+      "width": 1440,
+      "height": 1096
+    },
+    {
+      "id": "unified-cutover-2026-09-28-browser-after-01-hll-cs-desktop",
+      "path": "docs/evidence/unified-cutover-2026-09-28/browser-after-01-hll-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz/cs/hll; source 5e83abc91560480e21b60c4a2638c0b52b0e1720; 2026-09-28 20:40 UTC. Chrome for Testing 154.0.8037.57, viewport 1440x900. Nine UI checks passed; the separate network gate failed on five non-prefetch RSC aborts. Visually inspected by the integrating agent; see the adjacent full failed report and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and approved third-party game imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "e4719121d5aca02881998fea08e56b2154d852ee1131fa306fbcf98acf504ae0",
+      "bytes": 653124,
+      "width": 1440,
+      "height": 904
+    },
+    {
+      "id": "unified-cutover-2026-09-28-browser-after-01-wardogs-cs-desktop",
+      "path": "docs/evidence/unified-cutover-2026-09-28/browser-after-01-wardogs-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz/cs/wardogs; source 5e83abc91560480e21b60c4a2638c0b52b0e1720; 2026-09-28 20:40 UTC. Chrome for Testing 154.0.8037.57, viewport 1440x900. Nine UI checks passed; the separate network gate failed on five non-prefetch RSC aborts. Visually inspected by the integrating agent; see the adjacent full failed report and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and approved third-party game imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "c662fe9f924fa96afa753073542fcd316ac6cadd09f696b7f5562b385c42924d",
+      "bytes": 1292761,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "unified-cutover-2026-09-28-browser-after-01-hub-en-mobile",
+      "path": "docs/evidence/unified-cutover-2026-09-28/browser-after-01-hub-en-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz/en; source 5e83abc91560480e21b60c4a2638c0b52b0e1720; 2026-09-28 20:40 UTC. Chrome for Testing 154.0.8037.57, viewport 390x844. Nine UI checks passed; the separate network gate failed on five non-prefetch RSC aborts. Visually inspected by the integrating agent; see the adjacent full failed report and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and approved third-party game imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "b1d2b4c7003114ccf965e6351fd0ed0869b8419afdbc42fb5d6af69094b94416",
+      "bytes": 211587,
+      "width": 390,
+      "height": 1523
+    },
+    {
+      "id": "unified-cutover-2026-09-28-browser-after-01-hll-en-mobile",
+      "path": "docs/evidence/unified-cutover-2026-09-28/browser-after-01-hll-en-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz/en/hll; source 5e83abc91560480e21b60c4a2638c0b52b0e1720; 2026-09-28 20:40 UTC. Chrome for Testing 154.0.8037.57, viewport 390x844. Nine UI checks passed; the separate network gate failed on five non-prefetch RSC aborts. Visually inspected by the integrating agent; see the adjacent full failed report and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and approved third-party game imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "2078204772df0dbd9eb483e13087ef5d03080fc69ae43e80a7d601a3f4951cb3",
+      "bytes": 220619,
+      "width": 390,
+      "height": 908
+    },
+    {
+      "id": "unified-cutover-2026-09-28-browser-after-01-wardogs-en-mobile",
+      "path": "docs/evidence/unified-cutover-2026-09-28/browser-after-01-wardogs-en-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz/en/wardogs; source 5e83abc91560480e21b60c4a2638c0b52b0e1720; 2026-09-28 20:40 UTC. Chrome for Testing 154.0.8037.57, viewport 390x844. Nine UI checks passed; the separate network gate failed on five non-prefetch RSC aborts. Visually inspected by the integrating agent; see the adjacent full failed report and captions.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and approved third-party game imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "245e3ffaf391861c6d478a9d1c945d80c5a302eb599d5c21dd4f1c740f992fcc",
+      "bytes": 289168,
+      "width": 390,
+      "height": 844
     }
   ]
 }
