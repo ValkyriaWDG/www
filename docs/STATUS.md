@@ -36,7 +36,16 @@ legacy match-ID aliases, scoped media library for game-scoped editors, domain cu
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
 browser tests passed (98 opt-in capture cases skipped); 33 captioned captures; after
-merging main `df48609` (ops/docs only) foundation + 53 tooling tests passed. Details:
+merging main `df48609` (ops/docs only) foundation + 53 tooling tests passed.
+On `9d4fe3c` the HLL links drop a fourth Barlow weight (landing fonts 189,826 → 152,344 B;
+limit 184,320 B), page budgets cover both game landings and the canonical Wardogs article,
+and the rollback rehearsal loads fixtures with `--schema-compatible` and proves each
+image's own routes. Merging main `9a87291` brings the [#44](https://github.com/ValkyriaWDG/www/pull/44) article metadata repair; on
+the canonical Wardogs article it removed the 0.24 CLS seen in one CI budget run and in 5
+of 10 local runs at 8× CPU (0 of 10 after). On merge `17a47cd` 53 tooling, lint, types,
+439 unit and 141 browser tests and all 15 budget runs passed; 264 integration tests and a
+previous-image rollback stand-in passed on `9d4fe3c`, where the HLL captures were
+retaken; CI for the pushed head is linked from PR #37. Details:
 [hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md). Earlier preparation
 evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
 

@@ -7,9 +7,12 @@ OAuth, Discord or production database was touched.
 ## Context
 
 - **Application revision:** `ad0ea20b2aebf10e2bd1d4d93ba39670eb78e691` (branch
-  `feat/hll-platform-handoff`, including the merge of `main` at `425fb5f`). Checks and
-  captures below ran on this source; the capture harness and this record are committed
-  on top without application changes.
+  `feat/hll-platform-handoff`, including the merge of `main` at `425fb5f`) for the checks
+  table and the admin captures. The `public/` and `servers-unavailable/` captures were
+  retaken on `9d4fe3c6781019db9c0614377d1a5d85e7098230`, whose only application changes
+  since are the HLL menu/footer link weights (the landing loaded a fourth Barlow weight
+  and exceeded the font budget) and the dev-only fixture loader; admin pages do not use
+  the HLL stylesheet. See [Release qualification](#release-qualification) for later revisions.
 - **Environment:** Claude Code cloud container, Ubuntu 24.04.4, Node.js 24.21.0,
   pnpm 10.34.5, PostgreSQL 16.13, Next.js 16.3.6 standalone production build,
   Playwright 1.63.0 with Chromium 141.0.7390.37 (`PLAYWRIGHT_CHROMIUM_EXECUTABLE`).
@@ -56,6 +59,30 @@ Existing Wardogs, news, matches and admin specs pass against the canonical game 
 | Field manual | Browse, category, search (diacritics, SL), no results, article TOC/provenance, drafts hidden, translation notice | Passed | `field-manual.test.ts`, `platform.spec.ts`; manual captures |
 | Game-scoped authority | HLL editor limited, Wardogs post denied, scoped creation; scheduled publication fenced to the document game | Passed | `game-scope.test.ts`, `authority-fences.test.ts`, `admin-game-scope.spec.ts`; admin captures |
 | Legacy URLs | Reviewed map; pending/unknown never redirected to Home; inactive by default | Passed (unit) | `modules/legacy/hll.test.ts`, `lib/legacy-hosts.test.ts` |
+
+## Release qualification
+
+Local checks with Node.js 24.21.0 on merge `17a47cd129c06f0a2e297ed8189341b4da8975ec`
+unless a row names `9d4fe3c`. That merge of main `9a87291` adds the [#44](https://github.com/ValkyriaWDG/www/pull/44) article
+metadata CSS, its browser regression and documentation; no TypeScript source changed.
+
+| Check | Revision | Result |
+|---|---|---|
+| Foundation / tooling | `17a47cd` | Passed / 53 passed |
+| Lint, types | `17a47cd` | Passed |
+| Unit | `17a47cd` | 439 passed (46 files) |
+| Integration (PostgreSQL) | `9d4fe3c` | 264 passed (27 files), including `fixtures-schema-compat.test.ts`: on the 0000 schema fixtures fail with a schema error, load with `schemaCompatible` and name the skipped field manual, then load completely after 0001 |
+| Browser | `17a47cd` | 141 passed; 98 opt-in capture cases skipped. Main's `article-font-stability.spec.ts` now opens the canonical Wardogs article URL |
+| Cold mobile page budgets | `17a47cd` | `node scripts/release/measure-pages.mjs`: all 15 runs passed for `/cs`, `/cs/wardogs`, `/cs/hll`, `/cs/news` and the canonical Wardogs article. LCP medians 1952/1976/1900/1040/1184 ms; CLS at most 0.041. HLL landing fonts 152,344 B (189,826 B, over the 184,320 B limit, before the weight change). The article's 184,141 B equals main's accepted report and leaves 179 B headroom |
+| Article layout shift | `9d4fe3c` → `17a47cd` | CI run [36452522282](https://github.com/ValkyriaWDG/www/actions/runs/36452522282) recorded 0.2406 CLS in one of three article runs. Locally, the headless shell at 8× CPU slowdown gave 0.235–0.241 in 5 of 10 runs (once exactly 0.2405808): the author item joined the date's line and dropped back about 90 ms later, moving the cover and body by 33 px twice. Main tracked the same failure in [#43](https://github.com/ValkyriaWDG/www/issues/43); after merging its [#44](https://github.com/ValkyriaWDG/www/pull/44) repair, 10 of 10 runs stayed at most 0.0051 |
+| Rollback flow, local stand-in | `9d4fe3c` | Previous image `d0f98b0` migrated and seeded a disposable local database. The new fixture CLI exited 2 with the schema error without the flag; with `--schema-compatible` it loaded 18 news, 7 matches, 6 members and 5 images and named the skipped field manual. The previous image served `/cs`, `/en`, `/cs/news` and the old article URL. Candidate migrations applied 1, then 0. The candidate standalone build served those pages, the canonical article, `/cs/hll` and `/cs/hll/field-manual`, and answered the old article URL with 308 to the canonical one. The previous image then served its routes on the migrated schema. The published media SHA-256 matched in all three |
+
+Candidate images could not be built here (package installation inside the Docker build
+has no registry access), so the containerized rehearsal itself ran only in CI. CI run
+[36452522282](https://github.com/ValkyriaWDG/www/actions/runs/36452522282) on `9d4fe3c`
+passed all 12 rehearsal steps, the container smoke test, image scan, SBOM and 136 browser
+tests before the page-budget failure above.
+CI for the head that carries this record is linked from PR #37.
 
 ## Captures
 
