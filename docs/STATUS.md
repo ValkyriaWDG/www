@@ -1,10 +1,47 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **Unified HLL/WDG deployed to valkyria.cz; robots-origin and browser-network acceptance remain open. Live authentication remains deferred.**
+Updated: 2026-09-28. Stage: **Unified HLL/WDG deployed to valkyria.cz; robots origin accepted in production. Browser-network acceptance and live authentication remain open.**
 
-## Current unified deployment
+## Current production: robots-origin hotfix
 
-**https://valkyria.cz** serves the Czech-first bilingual community hub and HLL/Wardogs
+**https://valkyria.cz** now serves source `e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a`
+from `majorluk/valkyria-www@sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25`.
+The image-only promotion completed at **21:33:47 UTC (23:33:47 CEST)** on 2026-09-28.
+[Production acceptance](evidence/robots-runtime-origin-2026-09-28/production/README.md)
+links PR #54, exact-main CI **36484523293**, protected publisher **36484542039**,
+immutable registry/OCI verification and actual runtime/public proof.
+
+Qualification passed **439 unit, 272 database, 144 browser, 126 tooling, 13 encrypted
+recovery and 6 real restore tests**; 98 opt-in capture cases were skipped. All 15
+page-budget samples and 12 rollback stages passed. Scans record zero fixable
+HIGH/CRITICAL findings and 43 unfixed findings, not zero vulnerabilities.
+
+The fresh quiesced paired backup was actually restored into a new ownership-checked
+disposable database: **27 tables, one sequence and the zero-file editorial archive**
+matched. Both candidate migrations were **0 / 2 / 2** with source fingerprints unchanged.
+All 14 promotion smoke checks passed; both timers resumed. The **21:34:31 UTC**
+readback confirms the exact image, four readiness checks, preserved media/security
+and disabled authentication. No schema, origin, routing or provider activation changed.
+
+After a purge of only the canonical robots URL, the normal URL advertised the correct
+Host/Sitemap. The independent **21:35:24 UTC** HTTP run passed **55/55**, accepting
+#53's production behavior. Its observed edge Cache-Control remains
+`public, max-age=14400, must-revalidate`; no cache-policy repair is claimed.
+The original cutover's **54/55 HTTP** and **9/10 browser** reports below remain immutable.
+No new browser run was used to waive #46: the non-prefetch RSC cancellation gate remains
+failed/open, and its six screenshots remain proof for the original `5e83abc` UI.
+
+Next work: diagnose #46 with its retained failures; continue #23/#8 live auth/hosted
+Logi and operational acceptance, #25 physical-device/media coverage and separately
+owned #36 HLL content/footage work. Old `valkyriahll.cz` remains unchanged. Draft
+CRCON/statistics PR #50 and migration 0002 are outside this deployment; #52 retains
+the original cutover failure's unproven cause.
+
+## Original unified deployment
+
+Historical cutover observations, superseded by the image-only hotfix above.
+
+At the original cutover, **https://valkyria.cz** served the Czech-first bilingual community hub and HLL/Wardogs
 sections at source `5e83abc91560480e21b60c4a2638c0b52b0e1720`, with immutable image
 `majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48`.
 Promotion completed on **2026-09-28 at 20:37:55 UTC (22:37:55 CEST)**. The
@@ -40,14 +77,15 @@ their locale landings to `/{locale}/wardogs` and preserving other paths and quer
 **The old `valkyriahll.cz` site was not changed.** Existing HLL archive links remain.
 
 Public checks at **20:40 UTC** retained **54/55 HTTP** and **9/10 browser** results.
-Robots still advertises the old WDG Host/Sitemap origin ([#53](https://github.com/ValkyriaWDG/www/issues/53)).
+At that observation, robots advertised the old WDG Host/Sitemap origin ([#53](https://github.com/ValkyriaWDG/www/issues/53)); the later repair is accepted above.
 All nine browser UI/playback/navigation scenarios passed, but the strict network gate
 failed on five non-prefetch RSC aborts ([#46](https://github.com/ValkyriaWDG/www/issues/46)).
 Six actual production captures were inspected. No failed check was waived or rerun to
 replace its result. The 20:38 runtime readback precedes these checks; the later 20:42
 readback separately corroborates the same identity and healthy services.
 
-Remaining work: #53 robots origin; #46 browser network diagnosis; #36 legacy HLL content,
+At this historical checkpoint #53 was still open; its production fix is accepted above.
+Remaining work: #46 browser network diagnosis; #36 legacy HLL content,
 approved footage and remaining unified features; #23/#8 live login/hosted Logi, recovery
 administrator, privacy decisions and off-host recovery/monitoring; #25 physical-device,
 Safari/retail-Firefox and media-performance coverage. Draft CRCON/statistics PR #50 and
@@ -163,8 +201,8 @@ retaken; CI for the pushed head is linked from PR #37. Details:
 [hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md). Earlier preparation
 evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
 
-Next task: retain the canonical deployment and its proof, repair robots metadata #53
-and investigate the separate network gate #46. Keep legacy `valkyriahll.cz` unchanged
+Next task: retain the accepted robots metadata #53 production proof and investigate
+the separate network gate #46. Keep legacy `valkyriahll.cz` unchanged
 until its content migration is accepted. Clan footage and hosted Logi remain pending;
 preserve the static stage and unavailable-provider states without synthetic production data.
 

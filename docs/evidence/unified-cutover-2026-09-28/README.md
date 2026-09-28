@@ -6,6 +6,12 @@ completed at **20:37:55 UTC**. Independent public verification remains **partial
 failed**: HTTP **54/55** and browser **9/10**. The robots origin defect and the
 non-prefetch RSC cancellations below are not waived by healthy runtime checks.
 
+These are historical observations for `5e83abc`. The later
+[robots-origin hotfix production record](../robots-runtime-origin-2026-09-28/production/README.md)
+documents source `e03d3c5`, its actual 21:33:47 UTC promotion and separate **55/55** HTTP
+acceptance. Original report bytes and all six screenshots remain unchanged; #46's
+browser-network failure is still open.
+
 - Source at this cutover: `5e83abc91560480e21b60c4a2638c0b52b0e1720`.
 - Image at this cutover: `majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48`.
 - Canonical origin: `https://valkyria.cz`; `www` redirects to the apex. Legacy Wardogs
@@ -115,9 +121,9 @@ The immutable [HTTP report](http-after-01.json) passed **54/55** checks. Canonic
 alternates, redirect paths/queries, six fully decoded 1200×630 social PNGs, sitemap
 privacy, anonymous access boundaries and approved media headers/ranges passed.
 **`/robots.txt` still advertised the old `valkyriawdg.cz` Host/Sitemap origin.** The
-[#53 runtime-origin repair](https://github.com/ValkyriaWDG/www/issues/53) must obtain
-its own source/publication/runtime proof; this report
-will not be overwritten after that fix.
+[#53 runtime-origin repair](https://github.com/ValkyriaWDG/www/issues/53) subsequently
+obtained its own [source/publication/runtime and 55/55 HTTP proof](../robots-runtime-origin-2026-09-28/production/README.md).
+This original failed report remains unchanged.
 
 The immutable [browser report](browser-after-01.json) passed **9/10** checks. All nine
 functional/playback/navigation scenarios passed; the tenth network gate failed on **five
@@ -173,8 +179,9 @@ They are registered as evidence-only assets, not application content.
 
 ## Remaining acceptance boundaries
 
-- Repair and separately qualify the robots runtime-origin defect. Preserve the failed
-  HTTP report and require a new report ID for a genuinely new observation.
+The robots runtime-origin defect is now accepted in its separate hotfix record above.
+The remaining boundaries are:
+
 - #46 retains non-prefetch RSC abort diagnosis; passing rendered UI is not a network-gate pass.
 - Discord/recovery login, hosted Logi/SSO, membership freshness/role removal and provider
   callback registration remain deferred. No live auth acceptance is claimed.

@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "operation": "robots-image-only",
+  "startedAt": "2026-09-28T21:32:25.605575+00:00",
+  "finishedAt": "2026-09-28T21:33:47.633171+00:00",
+  "quiescedAt": "2026-09-28T21:32:27.144826+00:00",
+  "candidateHealthyAt": "2026-09-28T21:33:36.577780+00:00",
+  "readyAt": "2026-09-28T21:33:47.212452+00:00",
+  "result": "promoted",
+  "phase": "accepted",
+  "sourceRevision": "e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a",
+  "candidateImage": "majorluk/valkyria-www@sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25",
+  "oldSourceRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+  "oldImage": "majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+  "origin": "https://valkyria.cz",
+  "schemaChanged": false,
+  "initialMigrationCount": 2,
+  "authenticationDisabled": true,
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "watchtowerEnabled": false,
+  "pairedBackup": {
+    "semanticRestorePerformed": true,
+    "tables": 27,
+    "sequences": 1,
+    "rowCountsAndHashesMatch": true,
+    "mediaFiles": 0,
+    "mediaHashesMatch": true,
+    "sourceUnchanged": true,
+    "completedAt": "2026-09-28T21:33:08.982256+00:00"
+  },
+  "isolatedRestore": {
+    "database": "new unique disposable target",
+    "ownershipVerified": true,
+    "verifiedDatabaseDropped": true,
+    "liveDatabaseRestorePerformed": false
+  },
+  "migrationRuns": [
+    {
+      "applied": 0,
+      "alreadyApplied": 2,
+      "total": 2
+    },
+    {
+      "applied": 0,
+      "alreadyApplied": 2,
+      "total": 2
+    }
+  ],
+  "timersRestored": {
+    "publisher": true,
+    "backup": true
+  },
+  "publicSmoke": [
+    {
+      "path": "/api/health/live",
+      "status": 200,
+      "canonical": null
+    },
+    {
+      "path": "/api/health/ready",
+      "status": 200,
+      "canonical": null
+    },
+    {
+      "path": "/cs",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs"
+    },
+    {
+      "path": "/en",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en"
+    },
+    {
+      "path": "/cs/wardogs",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs/wardogs"
+    },
+    {
+      "path": "/en/wardogs",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en/wardogs"
+    },
+    {
+      "path": "/cs/hll",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs/hll"
+    },
+    {
+      "path": "/en/hll",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en/hll"
+    },
+    {
+      "path": "/cs/hll/field-manual",
+      "status": 200,
+      "canonical": "https://valkyria.cz/cs/hll/field-manual"
+    },
+    {
+      "path": "/en/hll/field-manual",
+      "status": 200,
+      "canonical": "https://valkyria.cz/en/hll/field-manual"
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "status": 206,
+      "mime": "image/webp",
+      "rangeBytes": 1024
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "status": 206,
+      "mime": "video/mp4",
+      "rangeBytes": 1024
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "status": 206,
+      "mime": "video/webm",
+      "rangeBytes": 1024
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "host": "https://valkyria.cz",
+      "sitemap": "https://valkyria.cz/sitemap.xml"
+    }
+  ],
+  "routingObservation": {
+    "kind": "existing-canonical-route-health-convergence",
+    "accepted": true,
+    "coherentRounds": 2,
+    "pendingAttempts": 0,
+    "acceptanceDeadlineSeconds": 300,
+    "minimumRoundSpacingSeconds": 5,
+    "rounds": [
+      {
+        "startedAt": "2026-09-28T21:33:36.606954+00:00",
+        "finishedAt": "2026-09-28T21:33:38.051896+00:00",
+        "status": "coherent"
+      },
+      {
+        "startedAt": "2026-09-28T21:33:43.063061+00:00",
+        "finishedAt": "2026-09-28T21:33:43.588269+00:00",
+        "status": "coherent"
+      }
+    ]
+  },
+  "httpProbes": [
+    {
+      "observedAt": "2026-09-28T21:33:36.621955+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "bodyBytes": 370547,
+      "bodySha256": "06170485bcbd56a4ca2f430daa28c83498c30f4fa23ec2822f4883e492665289",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:37.748664+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "bodyBytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "contentType": "application/json",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:37.913366+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/ready",
+      "status": 200,
+      "bodyBytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5",
+      "contentType": "application/json",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:43.071165+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "bodyBytes": 370547,
+      "bodySha256": "9562154dab73c3b8e1972fb3970c34cf95dc3cefbf088291e91449fa520e0641",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:43.332249+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "bodyBytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "contentType": "application/json",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:43.452659+00:00",
+      "phase": "routing_convergence",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/ready",
+      "status": 200,
+      "bodyBytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5",
+      "contentType": "application/json",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:43.605336+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/live",
+      "status": 200,
+      "bodyBytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "contentType": "application/json",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:43.769961+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/api/health/ready",
+      "status": 200,
+      "bodyBytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5",
+      "contentType": "application/json",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:43.911797+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs",
+      "status": 200,
+      "bodyBytes": 370613,
+      "bodySha256": "6b6334f2a9e40b03b5f90edac55acfeaef1924c6625c7d97e45f79ccb59f638b",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:44.249331+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en",
+      "status": 200,
+      "bodyBytes": 363181,
+      "bodySha256": "1b085a96a7a2e23b52e3c6a557130dc255cf3717b696104b8808e566bed86ba9",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:44.523235+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs/wardogs",
+      "status": 200,
+      "bodyBytes": 366840,
+      "bodySha256": "766ad2c1955d2a1dd221479a98138a78a68f9c1b6b97c8c352ae294956cead02",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:44.814774+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en/wardogs",
+      "status": 200,
+      "bodyBytes": 359402,
+      "bodySha256": "19afbecda7cf40803f0a4bf7fd70ef757579483157f7513b3d19622785708f9c",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:45.195076+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs/hll",
+      "status": 200,
+      "bodyBytes": 229869,
+      "bodySha256": "205b72cd97deeda187f346c3ec30117520aae995979dbea7308a6fe6618220fa",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:45.574495+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en/hll",
+      "status": 200,
+      "bodyBytes": 222486,
+      "bodySha256": "1e3815625bd4450b3a499b41436397541b54ef229aaccedac68c0e8a7b24cc93",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:45.785633+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/cs/hll/field-manual",
+      "status": 200,
+      "bodyBytes": 227585,
+      "bodySha256": "3c963b1e0154e89f21f11aa90afc52e0c88908cb23b1b9077339256a4a398fa1",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:46.067732+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/en/hll/field-manual",
+      "status": 200,
+      "bodyBytes": 220128,
+      "bodySha256": "aa6f39b7bc7b4cbd825689548daf5fd7cd0e793de396990adba2a894f48c28c2",
+      "contentType": "text/html",
+      "transferEncoding": "chunked"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:46.284818+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "status": 206,
+      "bodyBytes": 1024,
+      "bodySha256": "020e9beee1acf6ed1db9f59f17f40799f4ed270fea69cf6aad22c61508bf87de",
+      "contentType": "image/webp"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:46.509618+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "status": 206,
+      "bodyBytes": 1024,
+      "bodySha256": "f2f1e69d2283bec8261befe003fca27e4a4aa62aa0bb19669806b96b19fc81a7",
+      "contentType": "video/mp4"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:46.692331+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "status": 206,
+      "bodyBytes": 1024,
+      "bodySha256": "6fadaabb712000e8cdf4e429866d885554bec800496d7efd83fd7410a9d789e9",
+      "contentType": "video/webm"
+    },
+    {
+      "observedAt": "2026-09-28T21:33:46.838310+00:00",
+      "phase": "public_smoke",
+      "origin": "https://valkyria.cz",
+      "path": "/robots.txt",
+      "status": 200,
+      "bodyBytes": 251,
+      "bodySha256": "77478aa67ae98857f2e62a3c41328fc6f8e6de04ac7a0c9d8acfb1e4227e4d66",
+      "contentType": "text/plain",
+      "transferEncoding": "chunked"
+    }
+  ],
+  "rollbackPolicy": "Prior 5e83/79bf image and image-pin/revision files only; no routing changes, live database restore or schema downgrade.",
+  "limitations": [
+    "Only explicitly whitelisted observations are exported; credentials, raw headers/previews, configuration fingerprints and host identifiers are omitted.",
+    "This collector validates a protected report; it does not independently contact runtime or providers.",
+    "Paired local semantic recovery does not establish encrypted off-host recovery.",
+    "The prior image has a known robots-origin defect, deliberately excluded from its rollback acceptance.",
+    "Original attempt-01 response anomaly remains unexplained; earlier records are preserved."
+  ]
+}

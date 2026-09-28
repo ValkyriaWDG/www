@@ -7,9 +7,11 @@ game-menu sections, shared CMS and identity.
 
 > The unified hub, HLL and Wardogs sections were deployed on 2026-09-28. The old WDG
 > hosts redirect to the canonical site; `valkyriahll.cz` retains the legacy website.
-> See [status](docs/STATUS.md) and [cutover evidence](docs/evidence/unified-cutover-2026-09-28/README.md)
-> for exact deployed identity and the retained robots/browser-network failures. Live
-> authentication, hosted Logi and HLL battle footage remain deferred.
+> The subsequent [robots-origin hotfix](docs/evidence/robots-runtime-origin-2026-09-28/production/README.md)
+> is deployed and passed 55/55 public HTTP checks. See [status](docs/STATUS.md) for the
+> exact current identity; the [original cutover](docs/evidence/unified-cutover-2026-09-28/README.md)
+> retains its failed reports. Browser-network investigation, live authentication,
+> hosted Logi and HLL battle footage remain open.
 
 ## Start here
 
@@ -99,7 +101,7 @@ pnpm dev                              # http://localhost:3000 → /cs
 | `pnpm check:foundation` / `pnpm test:foundation` | Repository hygiene, links, asset provenance and skill checks |
 
 CI runs all of the above plus a container startup/migration/health smoke test. Container
-publication stays disabled until the release gate in [deployment](docs/operations/deployment.md).
+publication uses the separate protected manual workflow in [deployment](docs/operations/deployment.md).
 
 ## Sources and license
 

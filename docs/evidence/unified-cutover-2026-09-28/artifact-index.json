@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "Public evidence records, actual production captures, reproduction harnesses, tests and README; historical and failed results remain separately labelled",
+  "scope": "Public evidence records and documentation; canonical LF Git bytes for text, exact bytes for binaries; private helpers/configuration excluded",
   "artifacts": [
     {
       "file": "browser-after-01-hll-cs-desktop.png",
@@ -44,13 +44,13 @@
     },
     {
       "file": "deployment-record.json",
-      "bytes": 37672,
-      "sha256": "6455371def7725118f8ede8672254f8f2f743301e2e35b18ebda81f6087fa6eb"
+      "bytes": 36594,
+      "sha256": "bcb3342aa33147cc4ad297c9a676b54c2171d2c2c26b3cb9ac477b4771f3393d"
     },
     {
       "file": "failed-deployment-01.json",
-      "bytes": 1906,
-      "sha256": "3f073ef04dab38c4de0c27c462001e17779c0c8e6ac890d6f62efdf4175ac4b5"
+      "bytes": 1857,
+      "sha256": "1d63c91138a78bf12a160ff246246eb66de2d7ef5b0752e86422bda5402d87eb"
     },
     {
       "file": "first-candidate-main-ci.json",
@@ -84,8 +84,8 @@
     },
     {
       "file": "local-tests.txt",
-      "bytes": 1508,
-      "sha256": "1dc917a1bd7aa912a08c2707c30e5a1f30fe879216af9f14fb4205971f33327a"
+      "bytes": 1475,
+      "sha256": "fe81509e2053e83b13b21e7af14581da41764bf2b3852de4f6f74633a3425357"
     },
     {
       "file": "main-ci.json",
@@ -104,8 +104,8 @@
     },
     {
       "file": "README.md",
-      "bytes": 13615,
-      "sha256": "5106c5d945cd61b9aa0d94ef0eec5f160227b7ee271136ed17fb8fbe43fcdcfa"
+      "bytes": 14021,
+      "sha256": "a68954cf0654664abc315f6f0667c004d260fcc11e7c26ecad676832ba36bef8"
     },
     {
       "file": "registry-before-publish.json",
@@ -129,18 +129,18 @@
     },
     {
       "file": "routing-convergence.json",
-      "bytes": 3307,
-      "sha256": "2d77dc14beefdcd96bbbfef2a6ec282e8984190b9bfbca84433887c7e12a5c15"
+      "bytes": 3235,
+      "sha256": "0ba2646c0b498dc7aff8ac143bf7055b5ae829644cb82e8e5bb8a2ea8f64d883"
     },
     {
       "file": "runtime-after.json",
-      "bytes": 3123,
-      "sha256": "4d56747362dcf2128c25738b69e666ed915ebea3cc3ba4bf0d2902d52c7b264d"
+      "bytes": 3013,
+      "sha256": "57d222a0d2f1baf80ee8291beebb97d2ce5aefc41cd3b3a7caf49c6bd19f2f01"
     },
     {
       "file": "runtime-before-public-checks.json",
-      "bytes": 3123,
-      "sha256": "9050f82efd2b570ee332540749acdc4a868b986b2ba2e324444dac64c9029701"
+      "bytes": 3013,
+      "sha256": "cbfc69629291bf21a80d0a822eb8a364d6d5faea97b3ce835fc303ff45a3ae31"
     },
     {
       "file": "switch-fix-pr-ci.json",
