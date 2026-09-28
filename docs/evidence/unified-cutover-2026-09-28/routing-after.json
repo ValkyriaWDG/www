@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-28T20:39:11.681Z",
+  "origin": "https://valkyria.cz",
+  "canonicalProxy": {
+    "domains": [
+      "valkyria.cz",
+      "www.valkyria.cz"
+    ],
+    "online": true
+  },
+  "dns": {
+    "domains": [
+      "valkyria.cz",
+      "www.valkyria.cz"
+    ],
+    "type": "CNAME",
+    "proxied": true,
+    "target": "existing authorized tunnel",
+    "unrelatedRecordsPreserved": true
+  },
+  "tunnel": {
+    "newHostnames": [
+      "valkyria.cz",
+      "www.valkyria.cz"
+    ],
+    "previousIngressCount": 17,
+    "currentIngressCount": 19,
+    "previousIngressPreserved": true
+  },
+  "redirects": {
+    "domains": [
+      "valkyriawdg.cz",
+      "www.valkyriawdg.cz"
+    ],
+    "status": 308,
+    "czechLanding": "/cs/wardogs",
+    "englishLanding": "/en/wardogs",
+    "otherPathsAndQueries": "preserved",
+    "wwwCanonical": "https://valkyria.cz"
+  },
+  "legacyHll": {
+    "domain": "valkyriahll.cz",
+    "changed": false
+  },
+  "observations": {
+    "canonical": "2026-09-28T20:36:21.061Z",
+    "dns": "2026-09-28T20:36:27.384Z",
+    "redirect": "2026-09-28T20:39:11.049Z"
+  },
+  "limitations": [
+    "Configuration readbacks are complemented by separately recorded public HTTP/browser checks.",
+    "Existing legacy HLL content is retained; its full migration is not accepted by this cutover."
+  ]
+}

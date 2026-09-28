@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "scope": "Public evidence records and documentation; canonical LF Git bytes for text, exact bytes for binaries; private helpers/configuration excluded",
+  "artifacts": [
+    {
+      "file": "browser-after-01-hll-cs-desktop.png",
+      "bytes": 653124,
+      "sha256": "e4719121d5aca02881998fea08e56b2154d852ee1131fa306fbcf98acf504ae0"
+    },
+    {
+      "file": "browser-after-01-hll-en-mobile.png",
+      "bytes": 220619,
+      "sha256": "2078204772df0dbd9eb483e13087ef5d03080fc69ae43e80a7d601a3f4951cb3"
+    },
+    {
+      "file": "browser-after-01-hub-cs-desktop.png",
+      "bytes": 413971,
+      "sha256": "01e63cbddd8137e0700c6ad28c50036b9f48e3344db1e48725753723495321ea"
+    },
+    {
+      "file": "browser-after-01-hub-en-mobile.png",
+      "bytes": 211587,
+      "sha256": "b1d2b4c7003114ccf965e6351fd0ed0869b8419afdbc42fb5d6af69094b94416"
+    },
+    {
+      "file": "browser-after-01-wardogs-cs-desktop.png",
+      "bytes": 1292761,
+      "sha256": "c662fe9f924fa96afa753073542fcd316ac6cadd09f696b7f5562b385c42924d"
+    },
+    {
+      "file": "browser-after-01-wardogs-en-mobile.png",
+      "bytes": 289168,
+      "sha256": "245e3ffaf391861c6d478a9d1c945d80c5a302eb599d5c21dd4f1c740f992fcc"
+    },
+    {
+      "file": "browser-after-01.json",
+      "bytes": 46067,
+      "sha256": "75b0637633385560b3ecf91cbef639928a5538aa134149a14d180693ede9e737"
+    },
+    {
+      "file": "browser-smoke.cjs",
+      "bytes": 24456,
+      "sha256": "6738cc964055aee7c8d8083e1e51d4f96752319453c752126ca3a6405552737b"
+    },
+    {
+      "file": "deployment-record.json",
+      "bytes": 36594,
+      "sha256": "bcb3342aa33147cc4ad297c9a676b54c2171d2c2c26b3cb9ac477b4771f3393d"
+    },
+    {
+      "file": "failed-deployment-01.json",
+      "bytes": 1857,
+      "sha256": "1d63c91138a78bf12a160ff246246eb66de2d7ef5b0752e86422bda5402d87eb"
+    },
+    {
+      "file": "first-candidate-main-ci.json",
+      "bytes": 11580,
+      "sha256": "2a5543437472f81174e1f8dc3850e2ee6f69f12f5ef97bc4cef1c244b001865c"
+    },
+    {
+      "file": "first-candidate-pr-ci.json",
+      "bytes": 11499,
+      "sha256": "415ecee0087c62bd77e6c730947e0dcc28d656586b7cf542e66eab14c7d24d71"
+    },
+    {
+      "file": "first-candidate-registry-before-publish.json",
+      "bytes": 209,
+      "sha256": "31fe36b885cd07258ba33b4e5e6fbd0b82e8d5f0a924fc88541208af36d7e534"
+    },
+    {
+      "file": "harness.test.cjs",
+      "bytes": 3061,
+      "sha256": "f2f7835a4808a8663352a38dd8a379f8c4f06c0ec2858490589c4047b836331b"
+    },
+    {
+      "file": "http-after-01.json",
+      "bytes": 168878,
+      "sha256": "d8e53e965682faad37274be8932ed6e363cd73d909f15b3caa1d91dd44212f1b"
+    },
+    {
+      "file": "http-smoke.mjs",
+      "bytes": 21511,
+      "sha256": "90dffe887b0d3599bf58f74dbf11b7e64479f973b2d25d80b848eebeacd32f66"
+    },
+    {
+      "file": "local-tests.txt",
+      "bytes": 1475,
+      "sha256": "fe81509e2053e83b13b21e7af14581da41764bf2b3852de4f6f74633a3425357"
+    },
+    {
+      "file": "main-ci.json",
+      "bytes": 11580,
+      "sha256": "9ef6aa2a415284ebd809406c029ef500bcb9081d83837be38cb5990d66e045ba"
+    },
+    {
+      "file": "public-verification.md",
+      "bytes": 5333,
+      "sha256": "c9cfda3292e222ce311d36c820c0653e7d26e7f45f07dde329ad3697fcde6d1a"
+    },
+    {
+      "file": "publisher-qualification.json",
+      "bytes": 18406,
+      "sha256": "9fad7fe49486c1538f341fd9d996d152f90a50f635b8788ab954bb100af65804"
+    },
+    {
+      "file": "README.md",
+      "bytes": 14021,
+      "sha256": "a68954cf0654664abc315f6f0667c004d260fcc11e7c26ecad676832ba36bef8"
+    },
+    {
+      "file": "registry-before-publish.json",
+      "bytes": 209,
+      "sha256": "e9b24e354f4343fee9049e93913213c920b5a8d4e94cbb2957935e03486be3ca"
+    },
+    {
+      "file": "request-classification.cjs",
+      "bytes": 466,
+      "sha256": "5fe236dbe035f6540f18edfad270f71ddce7ed35823698146bd5251cda517eac"
+    },
+    {
+      "file": "request-classification.test.cjs",
+      "bytes": 1385,
+      "sha256": "eb3da9ebfe3d36a0dc127e034327ee97da4efdade47d8dd06fdf52e78963cbc7"
+    },
+    {
+      "file": "routing-after.json",
+      "bytes": 1340,
+      "sha256": "00449596d99bcf76705e1f82617f4030b8dba58355c109c965eda88bca258d64"
+    },
+    {
+      "file": "routing-convergence.json",
+      "bytes": 3235,
+      "sha256": "0ba2646c0b498dc7aff8ac143bf7055b5ae829644cb82e8e5bb8a2ea8f64d883"
+    },
+    {
+      "file": "runtime-after.json",
+      "bytes": 3013,
+      "sha256": "57d222a0d2f1baf80ee8291beebb97d2ce5aefc41cd3b3a7caf49c6bd19f2f01"
+    },
+    {
+      "file": "runtime-before-public-checks.json",
+      "bytes": 3013,
+      "sha256": "cbfc69629291bf21a80d0a822eb8a364d6d5faea97b3ce835fc303ff45a3ae31"
+    },
+    {
+      "file": "switch-fix-pr-ci.json",
+      "bytes": 11499,
+      "sha256": "070bf12e3c74639cd9a64e78999deaaee7d8c6f52f6950074d46ef7a2d0496d0"
+    }
+  ]
+}

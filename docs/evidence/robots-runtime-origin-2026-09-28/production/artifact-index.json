@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "scope": "Public evidence records and documentation; canonical LF Git bytes for text, exact bytes for binaries; private helpers/configuration excluded",
+  "artifacts": [
+    {
+      "file": "deployment-record.json",
+      "bytes": 12301,
+      "sha256": "e3ff9dbb40d065d00b396439acdcd58c87ff762c3fc0c64a9cddda8e1d9ee153"
+    },
+    {
+      "file": "http-after-02.json",
+      "bytes": 168878,
+      "sha256": "7db11d2fd369f735f949d573b2091f6a9bbfae7242b0c5b19b9431549bfa4558"
+    },
+    {
+      "file": "main-ci.json",
+      "bytes": 11580,
+      "sha256": "250ad134102db1d913cf2cb6642a1c7ba6fadd5128d5ec21ae9a71231b6c55bf"
+    },
+    {
+      "file": "pinned-verification.json",
+      "bytes": 1146,
+      "sha256": "b24b79d324b37cd78b6f9eaf5f106caef4e679e03a2a2038f05b36040a4951a6"
+    },
+    {
+      "file": "pr-ci.json",
+      "bytes": 11499,
+      "sha256": "baf02cecdc50564e8c968acc04974103dd32b786ad1660ecf9ef23771df5ecd1"
+    },
+    {
+      "file": "publisher-qualification.json",
+      "bytes": 18302,
+      "sha256": "fe6cf905e60261a51e6e0956f3c8089ea0e458c8a0d3a916fd445b2eb407b0d5"
+    },
+    {
+      "file": "publisher-service-after.txt",
+      "bytes": 170,
+      "sha256": "8de524690e8eae86e53e6381b36593b129511b1023af571209cc615fda46e3b8"
+    },
+    {
+      "file": "README.md",
+      "bytes": 8417,
+      "sha256": "902007eb2eb973d5c3fc5be8f4dc9d7df09640be14c045217cc70bcae11f8b11"
+    },
+    {
+      "file": "registry-before-publish.json",
+      "bytes": 209,
+      "sha256": "b2f60ca3a509a5384e7b0095877c35eeea8ff203dc3689cf416b980412b7fe36"
+    },
+    {
+      "file": "robots-cache-purge.json",
+      "bytes": 1924,
+      "sha256": "28f15402ebb7a9afc6f3c58cee15d8e2643fe14f51817e244f7fd94df80aca85"
+    },
+    {
+      "file": "runtime-after.json",
+      "bytes": 2864,
+      "sha256": "2acddea384c57dac0a123c0c140e5bf549cfeb99c4fc7f85da894c86152584d1"
+    }
+  ]
+}

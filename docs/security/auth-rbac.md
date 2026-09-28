@@ -10,7 +10,9 @@ Discord is the primary identity provider. Start with `identify`; request other s
 only for a documented need. Prefer server-side bot member lookup for the configured
 guild over broad user guild access. Never request administrator bot permissions for
 role reads. Explicitly configure callback URLs for localhost and
-`https://valkyriawdg.cz/api/auth/callback/discord`, verifying the selected library route.
+`https://valkyria.cz/api/auth/callback/discord`, verifying the selected library route.
+Register and verify that canonical callback when live authentication is configured;
+the 2026-09-28 domain cutover did not register callbacks or enable either login method.
 Validate state, redirect URI and session/cookie protections; use PKCE where supported
 by the provider/library. Untrusted return URLs must not permit open redirects.
 
