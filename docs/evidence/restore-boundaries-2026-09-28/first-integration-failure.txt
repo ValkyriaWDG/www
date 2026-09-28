@@ -1,0 +1,37 @@
+▶ real same-cluster rehearsal ownership and restore contract
+  ✔ existing target CLI preserves its sentinel and never creates work directory (744.9727ms)
+  ✔ real CREATE collision preserves the competitor database and never captures (662.7939ms)
+  ✔ permission-denied CREATE leaves no target and records no database ownership (413.5465ms)
+  ✖ empty editorial source round trip succeeds without inventing public media (9666.5474ms)
+  ✔ published and private media round trip preserves table/variant hashes and HTTP policy (6335.9676ms)
+✖ real same-cluster rehearsal ownership and restore contract (23681.1948ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23864.0102
+
+✖ failing tests:
+
+test at scripts/tests/restore-rehearsal.integration.mjs:94:13
+✖ empty editorial source round trip succeeds without inventing public media (9666.5474ms)
+  AssertionError [ERR_ASSERTION]: operation_failed
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<checkout>/scripts/tests/restore-rehearsal.integration.mjs:97:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///<checkout>/scripts/tests/restore-rehearsal.integration.mjs:94:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

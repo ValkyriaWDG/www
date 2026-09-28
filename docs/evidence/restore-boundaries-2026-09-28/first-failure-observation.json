@@ -1,0 +1,23 @@
+{
+  "provenance": "Recovered empty-case JSON from previously observed tool output; original report bytes were overwritten. No original-byte hash or original source fingerprint is asserted.",
+  "originalOverallTestResult": { "tests": 6, "passed": 4, "failed": 2, "skipped": 0, "durationMs": 23864.0102 },
+  "emptyCase": {
+    "schemaVersion": 1,
+    "startedAt": "2026-09-28T17:23:25.268Z",
+    "status": "failed",
+    "steps": {
+      "backup": {
+        "database": { "bytes": 73384, "sha256": "463319ba37084295389c79ef88d140b36c868636a8f5dc913f565a944a5a91ba" },
+        "media": { "bytes": 82, "sha256": "891c3a562c75bf4256582bb24a1fcdfe7766b4cdd7d8925e62f5dda282fac058" }
+      },
+      "migrate": { "applied": 0 },
+      "rows": { "tables": 25, "contentMatches": true },
+      "media": { "files": 0, "assets": 0, "variants": 0, "byteHashesMatch": true }
+    },
+    "ownership": { "workDirectory": "created-retained", "database": "created-retained", "appProcess": "stopped" },
+    "code": "operation_failed",
+    "finishedAt": "2026-09-28T17:23:32.802Z",
+    "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+  },
+  "limitation": "No failing HTTP phase, raw child error or captured pre-run source hash; the cause remains unconfirmed."
+}
