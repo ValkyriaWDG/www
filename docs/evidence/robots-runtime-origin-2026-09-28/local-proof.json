@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-28T20:56:09.896Z",
+  "issue": 53,
+  "sourceBase": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+  "environment": {
+    "node": "v24.21.0",
+    "next": "16.3.6",
+    "playwright": "1.63.0",
+    "os": "Windows",
+    "database": "owned disposable PostgreSQL 18.4, loopback only",
+    "browser": "Chrome for Testing 154.0.8037.57"
+  },
+  "build": {
+    "command": "pnpm build",
+    "appUrl": "https://build-origin.invalid",
+    "betterAuthUrl": "https://build-origin.invalid",
+    "databaseProvided": false,
+    "buildId": "BBXTyBfvGn_iTIECmYEk_",
+    "robotsInStaticPrerenderManifest": false,
+    "result": "passed"
+  },
+  "runtime": {
+    "appUrl": "http://127.0.0.1:3138",
+    "mockOrigin": "http://127.0.0.1:4138",
+    "providers": "synthetic local fixtures only"
+  },
+  "runs": [
+    {
+      "report": "red.json",
+      "command": "pnpm exec playwright test e2e/social-seo.spec.ts --project chromium --workers 1 --grep 'robots uses' --reporter=list,json",
+      "buildOrigin": "http://127.0.0.1:3137",
+      "stats": {
+        "startTime": "2026-09-28T20:50:48.856Z",
+        "duration": 3872.7129999999997,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "result": "expected failure: response Host retained build origin",
+      "testSha256": "605c80a11989af0a874915f5be42ca06a8f3acc77cc679fdeca77b009920000f"
+    },
+    {
+      "report": "green.json",
+      "stats": {
+        "startTime": "2026-09-28T20:52:43.856Z",
+        "duration": 10431.021,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "result": "failed: runtime Host/Sitemap correct, incorrect no-store test assumption; Next dynamic text metadata emits public, max-age=0, must-revalidate"
+    },
+    {
+      "report": "green-reviewed.json",
+      "stats": {
+        "startTime": "2026-09-28T20:54:11.048Z",
+        "duration": 5962.89,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "result": "passed after correcting cache assertion based on installed Next source"
+    },
+    {
+      "report": "green-final.json",
+      "command": "pnpm exec playwright test e2e/social-seo.spec.ts --project chromium --workers 1 --reporter=list,json",
+      "stats": {
+        "startTime": "2026-09-28T20:54:36.354Z",
+        "duration": 6768.295,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "result": "passed with all seven private exclusions asserted"
+    }
+  ],
+  "observedRobotsResponse": {
+    "runtimeOrigin": "http://127.0.0.1:3138",
+    "status": 200,
+    "cacheControl": "public, max-age=0, must-revalidate",
+    "body": "User-Agent: *\nAllow: /\nAllow: /api/social/\nDisallow: /api/\nDisallow: /cs/admin\nDisallow: /en/admin\nDisallow: /cs/account\nDisallow: /en/account\nDisallow: /cs/login\nDisallow: /en/login\n\nHost: http://127.0.0.1:3138\nSitemap: http://127.0.0.1:3138/sitemap.xml\n"
+  },
+  "sourceFiles": {
+    "apps/web/src/app/robots.ts": "72f51a24a519d80dce7e5805fd401f43ad0b003c4ac20ad0ceda6a3ed0b1e449",
+    "apps/web/e2e/social-seo.spec.ts": "19f795452a7eadae63aa01bf0cc430b64364e0bcc2b758f43dd421eb3d2ace4d",
+    "scripts/release/runtime-policy.json": "d4ce7abbff07e730d453451faaf42afe1d7760530d220f1493149503072539d0"
+  },
+  "checks": {
+    "productionBuild": "passed",
+    "fullLint": "passed",
+    "finalFocusedLint": "passed",
+    "workspaceTypecheck": "passed",
+    "finalAppTsc": "passed",
+    "foundation": "passed, 1112 files",
+    "diffCheck": "passed"
+  },
+  "limitations": [
+    "Local standalone production build only; no new production requests or deployment performed.",
+    "No screenshot: robots.txt is a machine-readable text endpoint; actual HTTP response and production E2E assertions are the proof.",
+    "Baseline and intermediate failures remain preserved; no rerun-to-green without an explained code or test correction.",
+    "Broader CI/image rollback validation belongs to the PR pipeline."
+  ],
+  "sourceCommit": "73737b9824331d5b144534cbc81cebdc339e6491",
+  "cleanup": {
+    "ownedFixtureDropped": true,
+    "otherClientsBeforeStop": 0,
+    "portablePostgresSmartStopped": true,
+    "appAndMockStopped": true
+  }
+}

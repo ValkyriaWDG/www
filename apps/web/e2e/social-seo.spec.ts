@@ -2,6 +2,28 @@ import { expect, test } from '@playwright/test';
 import { FIXTURE_SLUGS } from '../src/fixtures/data';
 
 test.describe('public sharing and homepage SEO', () => {
+  test('robots uses the standalone runtime origin instead of the build origin', async ({ request, baseURL }, testInfo) => {
+    // The production artifact must remain portable: CI builds and serves at different origins.
+    const response = await request.get('/robots.txt');
+    expect(response.status()).toBe(200);
+    const body = await response.text();
+    const cacheControl = response.headers()['cache-control'];
+    await testInfo.attach('robots-response', {
+      body: JSON.stringify({ runtimeOrigin: baseURL, status: response.status(), cacheControl, body }, null, 2),
+      contentType: 'application/json',
+    });
+    const directives = body.split(/\r?\n/).filter(Boolean);
+    expect(directives).toContain(`Host: ${baseURL}`);
+    expect(directives).toContain(`Sitemap: ${baseURL}/sitemap.xml`);
+    expect(directives).toContain('Allow: /');
+    expect(directives).toContain('Allow: /api/social/');
+    for (const route of ['/api/', '/cs/admin', '/en/admin', '/cs/account', '/en/account', '/cs/login', '/en/login']) {
+      expect(directives).toContain(`Disallow: ${route}`);
+    }
+    // Next's dynamic text metadata handler requires revalidation instead of caching a build response.
+    expect(cacheControl).toBe('public, max-age=0, must-revalidate');
+  });
+
   for (const locale of ['cs', 'en']) {
     test(`${locale} homepage has one self-canonical and reciprocal languages`, async ({ page, baseURL }) => {
       await page.goto(`/${locale}`);

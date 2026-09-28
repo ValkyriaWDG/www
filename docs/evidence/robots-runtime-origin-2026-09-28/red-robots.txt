@@ -1,0 +1,13 @@
+User-Agent: *
+Allow: /
+Allow: /api/social/
+Disallow: /api/
+Disallow: /cs/admin
+Disallow: /en/admin
+Disallow: /cs/account
+Disallow: /en/account
+Disallow: /cs/login
+Disallow: /en/login
+
+Host: http://127.0.0.1:3137
+Sitemap: http://127.0.0.1:3137/sitemap.xml
