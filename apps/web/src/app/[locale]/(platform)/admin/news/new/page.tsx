@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import styles from '@/components/admin/admin.module.css';
 import { NewPostForm } from '@/components/admin/new-post-form';
+import { creatableScopes } from '@/components/admin/scope-options';
 import { GuardedLink } from '@/components/shell/guarded-link';
 import { routing } from '@/i18n/routing';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
@@ -38,7 +39,7 @@ export default async function NewPostPage({ params }: PageProps<'/[locale]/admin
           <p className={styles.lead}>{t('new.lead')}</p>
         </div>
       </div>
-      <NewPostForm uiLocale={locale} />
+      <NewPostForm uiLocale={locale} scopes={await creatableScopes(locale, access.principal, 'news')} />
     </section>
   );
 }

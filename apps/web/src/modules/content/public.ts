@@ -18,6 +18,8 @@ import {
 import { and, desc, eq, ilike, isNotNull, isNull, ne, or, sql, type SQL } from 'drizzle-orm';
 import { z } from 'zod';
 import { getDb } from '@/lib/db';
+import { parseDbGame } from '@/modules/games/registry';
+import { canonicalNewsPath } from '@/modules/games/routes';
 import { buildArticle } from './article';
 import { isValidSlug, SLUG_PATTERN } from './slug';
 import type { AvailableTaxonomy, ArticleDTO, CounterpartResolution, NewsLookup, NewsSummary, Paginated, SitemapEntry, TaxonomyLabel } from './types';
@@ -322,9 +324,11 @@ async function sitemapRows(db: Executor, kind: 'news' | 'page') {
       locale: contentTranslation.locale,
       liveSlug: contentTranslation.liveSlug,
       publishedAt: contentTranslation.publishedAt,
+      game: sql<Game | null>`${contentRevision.taxonomy}->>'game'`,
     })
     .from(contentTranslation)
     .innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
+    .innerJoin(contentRevision, and(eq(contentRevision.id, contentTranslation.publishedRevisionId), eq(contentRevision.translationId, contentTranslation.id)))
     .where(
       and(
         eq(contentDocument.kind, kind),
@@ -353,9 +357,9 @@ function toSitemap(rows: Awaited<ReturnType<typeof sitemapRows>>, pathOf: (row: 
   }));
 }
 
-/** Every published news URL (both locales) with published-only hreflang alternates. */
+/** Every published news URL (both locales, canonical game section) with published-only hreflang alternates. */
 export async function listPublishedNewsForSitemap(db: Executor = getDb()): Promise<SitemapEntry[]> {
-  return toSitemap(await sitemapRows(db, 'news'), (row) => `/${row.locale}/news/${row.liveSlug}`);
+  return toSitemap(await sitemapRows(db, 'news'), (row) => `/${row.locale}${canonicalNewsPath(parseDbGame(row.game), row.liveSlug!)}`);
 }
 
 /** Published core pages (both locales) with published-only alternates. */

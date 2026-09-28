@@ -32,7 +32,8 @@ describe('sitemap sources', () => {
     // Alternates only ever point at URLs that are themselves published entries.
     const published = new Set(news.map((entry) => entry.path));
     for (const entry of news) {
-      expect(entry.path.startsWith(`/${entry.locale}/news/`)).toBe(true);
+      // Canonical section: community posts at /news/<slug>, game posts at /<game>/news/<slug>.
+      expect(entry.path).toMatch(new RegExp(`^/${entry.locale}(/(hll|wardogs))?/news/[a-z0-9-]+$`));
       for (const path of Object.values(entry.alternates)) expect(published.has(path!)).toBe(true);
     }
     // Some Czech posts have no published English counterpart (cs-only / private en draft).

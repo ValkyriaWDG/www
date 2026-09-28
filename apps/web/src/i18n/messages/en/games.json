@@ -164,5 +164,47 @@
       "pingNote": "Latency (ping) is not shown: it would be measured from the website server, not from your computer.",
       "back": "Back to the server list"
     }
+  },
+  "manual": {
+    "title": "Field manual",
+    "intro": "Valkyria guides and procedures for {game}, from first setup to leading a squad.",
+    "browseSubtitle": "All categories",
+    "searchSubtitle": "Search results",
+    "searchLabel": "Search the field manual",
+    "searchPlaceholder": "e.g. SL or spawn",
+    "searching": "Searching…",
+    "categoriesLabel": "Field manual categories",
+    "allCategories": "All categories",
+    "articleCount": "{count, plural, one {# article} other {# articles}}",
+    "resultSummary": "{count, plural, =0 {No results} one {# result} other {# results}} for “{q}”",
+    "resultSummaryCategory": "{count, plural, =0 {No results} one {# result} other {# results}} for “{q}” in {category}",
+    "clearSearch": "Clear search",
+    "categoryGridLabel": "Categories",
+    "articleListLabel": "Articles",
+    "openCategory": "Open category {category}",
+    "noResultsTitle": "Nothing found",
+    "noResultsBody": "Try another word or a common abbreviation (SL, TC, AT), or browse the categories.",
+    "unknownCategoryTitle": "Category not found",
+    "unknownCategoryBody": "This category has no published articles. Choose another category.",
+    "emptyTitle": "The field manual is being prepared",
+    "emptyBody": "No article is published yet. Guides from the previous website are under editorial review.",
+    "loadError": "The field manual could not be loaded.",
+    "retry": "Try again",
+    "metaDescription": "Valkyria field manual for {game}: guides, roles, communication and procedures.",
+    "article": {
+      "back": "Back to the field manual",
+      "toc": "Contents",
+      "source": "Source and authors",
+      "sourceLink": "Original guide",
+      "sourcePublished": "Originally published",
+      "sourceLanguage": "Original language",
+      "languages": {
+        "cs": "Czech",
+        "sk": "Slovak",
+        "en": "English"
+      },
+      "credits": "Authors",
+      "reviewed": "Reviewed"
+    }
   }
 }

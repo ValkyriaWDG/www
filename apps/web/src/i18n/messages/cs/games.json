@@ -164,5 +164,47 @@
       "pingNote": "Odezvu (ping) nezobrazujeme: měřili bychom ji ze serveru webu, ne z vašeho počítače.",
       "back": "Zpět na seznam serverů"
     }
+  },
+  "manual": {
+    "title": "Příručka",
+    "intro": "Návody a postupy klanu Valkyria pro {game}: od prvního nastavení po velení jednotce.",
+    "browseSubtitle": "Všechny kategorie",
+    "searchSubtitle": "Výsledky hledání",
+    "searchLabel": "Hledat v příručce",
+    "searchPlaceholder": "Např. SL nebo spawn",
+    "searching": "Hledání…",
+    "categoriesLabel": "Kategorie příručky",
+    "allCategories": "Všechny kategorie",
+    "articleCount": "{count, plural, one {# článek} few {# články} other {# článků}}",
+    "resultSummary": "{count, plural, =0 {Žádný výsledek} one {# výsledek} few {# výsledky} other {# výsledků}} pro „{q}“",
+    "resultSummaryCategory": "{count, plural, =0 {Žádný výsledek} one {# výsledek} few {# výsledky} other {# výsledků}} pro „{q}“ v kategorii {category}",
+    "clearSearch": "Zrušit hledání",
+    "categoryGridLabel": "Kategorie",
+    "articleListLabel": "Články",
+    "openCategory": "Otevřít kategorii {category}",
+    "noResultsTitle": "Nic jsme nenašli",
+    "noResultsBody": "Zkuste jiné slovo nebo běžnou zkratku (SL, TC, AT) a hledejte bez diakritiky, nebo procházejte kategorie.",
+    "unknownCategoryTitle": "Kategorie neexistuje",
+    "unknownCategoryBody": "Tato kategorie nemá žádné zveřejněné články. Vyberte jinou kategorii.",
+    "emptyTitle": "Příručka se připravuje",
+    "emptyBody": "Zatím není zveřejněný žádný článek. Návody z původního webu procházejí redakční kontrolou.",
+    "loadError": "Příručku se nepodařilo načíst.",
+    "retry": "Zkusit znovu",
+    "metaDescription": "Příručka klanu Valkyria pro {game}: návody, role, komunikace a postupy.",
+    "article": {
+      "back": "Zpět do příručky",
+      "toc": "Obsah článku",
+      "source": "Zdroj a autoři",
+      "sourceLink": "Původní návod",
+      "sourcePublished": "Původně zveřejněno",
+      "sourceLanguage": "Jazyk originálu",
+      "languages": {
+        "cs": "čeština",
+        "sk": "slovenština",
+        "en": "angličtina"
+      },
+      "credits": "Autoři",
+      "reviewed": "Zkontrolováno"
+    }
   }
 }

@@ -3,6 +3,7 @@ import {
   contentDocument,
   contentRevision,
   contentTranslation,
+  manualArticle,
   match,
   matchResult,
   matchRound,
@@ -21,22 +22,24 @@ import { and, eq, inArray, like, or } from 'drizzle-orm';
 import { DEFAULT_MATCH_TIME_ZONE, zonedDate, zonedLocalToInstant } from '../modules/matches/time';
 import { ensureSeedTaxonomy } from '../seed/index';
 import { imageAssetIds, SEED_RICH_TEXT_SCHEMA_VERSION } from '../seed/rich-text';
-import { SEED_CATEGORIES } from '../seed/taxonomy';
+import { SEED_CATEGORIES, SEED_MANUAL_CATEGORIES } from '../seed/taxonomy';
 import {
   FIXTURE_ASSET_IDS,
   FIXTURE_IMAGES,
   FIXTURE_MATCHES,
   FIXTURE_MEMBERS,
+  FIXTURE_MANUAL,
   FIXTURE_NEWS,
   FIXTURE_TAGS,
   matchRecap,
   memberBio,
+  type FixtureManual,
   type FixtureMatch,
   type FixtureNews,
 } from './data';
 import { createFixtureAsset, FIXTURE_FILENAME_PREFIX, FIXTURE_PROVENANCE, removeFixtureFiles, resolveMediaRoot } from './images';
 
-export { FIXTURE_ASSET_IDS, FIXTURE_SLUGS } from './data';
+export { FIXTURE_ASSET_IDS, FIXTURE_MANUAL_SLUGS, FIXTURE_SLUGS } from './data';
 export { resolveMediaRoot } from './images';
 
 export type FixtureReport = {
@@ -45,6 +48,8 @@ export type FixtureReport = {
   matches: number;
   news: number;
   newsTranslations: number;
+  manual: number;
+  manualTranslations: number;
   schedules: number;
   prose: number;
 };
@@ -297,6 +302,67 @@ async function insertNews(tx: Executor, fixture: FixtureNews, now: Date) {
   return { translations, schedules };
 }
 
+async function insertManual(tx: Executor, fixture: FixtureManual, now: Date): Promise<number> {
+  const at = new Date(now.getTime() - fixture.days * DAY);
+  const category = SEED_MANUAL_CATEGORIES.find((entry) => entry.key === fixture.category)!;
+  const [document] = await tx
+    .insert(contentDocument)
+    .values({ kind: 'manual', game: 'hell-let-loose', categoryKey: fixture.category, tagKeys: [], isFixture: true, createdAt: at, updatedAt: at })
+    .returning({ id: contentDocument.id });
+  await tx.insert(manualArticle).values({
+    documentId: document!.id,
+    sortOrder: fixture.sortOrder,
+    sourceUrl: fixture.meta.sourceUrl,
+    sourcePublishedOn: fixture.meta.sourcePublishedOn,
+    sourceLanguage: fixture.meta.sourceLanguage,
+    credits: fixture.meta.credits,
+    reviewedAt: fixture.meta.reviewed ? at : null,
+  });
+  let translations = 0;
+  for (const [locale, copy] of Object.entries(fixture.translations) as [Locale, NonNullable<FixtureManual['translations'][Locale]>][]) {
+    const cover: CoverSnapshot | null = copy.cover
+      ? {
+          assetId: FIXTURE_ASSET_IDS.newsCover,
+          alt: locale === 'cs' ? 'Syntetický titulní obrázek s nápisem SYNTHETIC FIXTURE' : 'Synthetic cover image reading SYNTHETIC FIXTURE',
+          caption: '',
+          decorative: false,
+        }
+      : null;
+    const [translation] = await tx
+      .insert(contentTranslation)
+      .values({ documentId: document!.id, locale, namespace: 'manual', draftSlug: copy.slug, createdAt: at, updatedAt: at })
+      .returning({ id: contentTranslation.id });
+    const [revision] = await tx
+      .insert(contentRevision)
+      .values({
+        translationId: translation!.id,
+        locale,
+        kind: 'save',
+        schemaVersion: SEED_RICH_TEXT_SCHEMA_VERSION,
+        title: copy.title,
+        slug: copy.slug,
+        excerpt: copy.excerpt,
+        body: copy.body,
+        cover,
+        taxonomy: { category: { key: category.key, label: locale === 'cs' ? category.labelCs : category.labelEn }, tags: [], game: 'hell-let-loose' },
+        authorLabel: locale === 'cs' ? 'Syntetický autor' : 'Synthetic author',
+        seoTitle: '',
+        seoDescription: '',
+        assetIds: [...new Set([...imageAssetIds(copy.body), ...(cover ? [cover.assetId] : [])])],
+        createdByLabel: FIXTURE_LABEL,
+        createdAt: at,
+      })
+      .returning({ id: contentRevision.id });
+    const live = copy.state === 'published';
+    await tx
+      .update(contentTranslation)
+      .set({ draftRevisionId: revision!.id, ...(live ? { publishedRevisionId: revision!.id, liveSlug: copy.slug, publishedAt: at, firstPublishedAt: at } : {}) })
+      .where(eq(contentTranslation.id, translation!.id));
+    translations += 1;
+  }
+  return translations;
+}
+
 /**
  * Replaces the synthetic fixture set (reset first, so repeated loads are idempotent and
  * relative dates are refreshed). Requires the caller to have passed `assertFixturesAllowed`.
@@ -326,7 +392,11 @@ export async function loadFixtures(db: Database, options: { now?: Date; mediaRoo
       newsTranslations += counts.translations;
       schedules += counts.schedules;
     }
+    let manualTranslations = 0;
+    for (const fixture of FIXTURE_MANUAL) manualTranslations += await insertManual(tx, fixture, now);
     return {
+      manual: FIXTURE_MANUAL.length,
+      manualTranslations,
       assets: FIXTURE_IMAGES.length,
       members: FIXTURE_MEMBERS.length,
       matches: FIXTURE_MATCHES.length,

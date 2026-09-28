@@ -18,6 +18,10 @@
         "title": "News",
         "description": "Write, edit, schedule and publish news articles."
       },
+      "manual": {
+        "title": "Field manual",
+        "description": "Hell Let Loose Field Manual articles: categories, sources, revisions and publication."
+      },
       "content": {
         "title": "Pages",
         "description": "Editing and publishing the clan, community and privacy pages in both languages."

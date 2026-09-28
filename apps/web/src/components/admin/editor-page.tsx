@@ -11,9 +11,11 @@ import { listTaxonomyOptions } from '@/modules/content/admin-queries';
 import { getEditorState, listRevisions } from '@/modules/content/editor';
 import { uuidSchema } from '@/modules/content/inputs';
 import { getPublisherStatus } from '@/modules/content/schedule';
+import { getManualMetaForAdmin, listManualCategoryOptions } from '@/modules/field-manual/admin';
 import type { DocumentEditorState } from '@/modules/content/types';
 import styles from './admin.module.css';
 import { MissingTranslation } from './missing-translation';
+import { ManualMetaForm } from './manual-meta-form';
 import { NewsEditor } from './news-editor';
 import { oneOf, type RawSearchParams } from './search-params';
 
@@ -49,16 +51,18 @@ export async function EditorPage({
   actor: Principal;
   state: DocumentEditorState;
   contentLocale: 'cs' | 'en';
-  mode: 'news' | 'page';
+  mode: 'news' | 'page' | 'manual';
 }) {
   const t = await getTranslations({ locale, namespace: 'adminEditorial' });
   const db = getDb();
   const translation = state.translations[contentLocale];
-  const basePath = mode === 'news' ? '/admin/news' : '/admin/content';
-  const [revisions, taxonomy, publisher] = await Promise.all([
+  const basePath = mode === 'news' ? '/admin/news' : mode === 'manual' ? '/admin/manual' : '/admin/content';
+  const manualGame = mode === 'manual' ? (state.document.game ?? 'hell-let-loose') : null;
+  const [revisions, taxonomy, publisher, manualMeta] = await Promise.all([
     translation ? listRevisions(db, actor, { translationId: translation.id }) : Promise.resolve([]),
-    listTaxonomyOptions(db, actor),
+    manualGame ? listManualCategoryOptions(db, actor, manualGame) : listTaxonomyOptions(db, actor),
     getPublisherStatus(db, actor),
+    mode === 'manual' ? getManualMetaForAdmin(db, actor, state.document.id) : Promise.resolve(null),
   ]);
   const heading =
     mode === 'page' && state.document.pageKey
@@ -72,10 +76,10 @@ export async function EditorPage({
         <div>
           <p className={styles.eyebrow}>
             <GuardedLink href={basePath} className={styles.textLink}>
-              {mode === 'news' ? t('list.title') : t('pages.title')}
+              {mode === 'news' ? t('list.title') : mode === 'manual' ? t('manual.title') : t('pages.title')}
             </GuardedLink>
           </p>
-          <h1 id="editor-heading">{mode === 'news' ? t('editor.heading') : heading}</h1>
+          <h1 id="editor-heading">{mode === 'news' ? t('editor.heading') : mode === 'manual' ? t('manual.editorHeading') : heading}</h1>
         </div>
       </div>
       {translation ? (
@@ -93,6 +97,7 @@ export async function EditorPage({
       ) : (
         <MissingTranslation documentId={state.document.id} locale={contentLocale} basePath={basePath} pageKey={state.document.pageKey} existing={state.translations[other] ? other : null} />
       )}
+      {manualMeta ? <ManualMetaForm documentId={state.document.id} initial={manualMeta} archived={Boolean(state.document.archivedAt)} /> : null}
     </section>
   );
 }

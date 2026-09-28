@@ -31,6 +31,8 @@ export type RichTextProps = {
   /** Site origin; links to other origins (and mailto:) get the external indicator. */
   siteOrigin?: string;
   className?: string;
+  /** Fragment ids of top-level headings by block index (see {@link headingOutline}). */
+  anchors?: ReadonlyMap<number, string>;
 };
 
 /** Public URL of a delivered media variant (publication-aware route). */
@@ -40,17 +42,61 @@ export function mediaUrl(assetId: string, variant: 'full' | 'thumb' = 'full'): s
 
 type RenderContext = Pick<RichTextProps, 'assets' | 'labels' | 'siteOrigin'>;
 
-export function RichText({ doc, assets, labels, siteOrigin, className }: RichTextProps) {
+export type OutlineEntry = { id: string; level: 2 | 3; text: string; index: number };
+
+function inlineText(nodes: readonly InlineNode[] | undefined): string {
+  return (nodes ?? [])
+    .map((node) => (node?.type === 'text' && typeof node.text === 'string' ? node.text : ' '))
+    .join('')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Table of contents of the top-level headings with stable, unique fragment ids derived
+ * from the heading text (ASCII-folded; `section-N` when nothing remains). Pass
+ * `anchors` from {@link outlineAnchors} to {@link RichText} so the ids match.
+ */
+export function headingOutline(doc: RichTextDocument): OutlineEntry[] {
+  const content = Array.isArray(doc?.content) ? doc.content : [];
+  const used = new Set<string>();
+  const outline: OutlineEntry[] = [];
+  content.forEach((node, index) => {
+    if (node?.type !== 'heading') return;
+    const text = inlineText(node.content);
+    if (!text) return;
+    const base =
+      text
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 60)
+        .replace(/-+$/g, '') || `section-${outline.length + 1}`;
+    let id = base;
+    for (let n = 2; used.has(id); n += 1) id = `${base}-${n}`;
+    used.add(id);
+    outline.push({ id, level: node.attrs?.level === 3 ? 3 : 2, text, index });
+  });
+  return outline;
+}
+
+export function outlineAnchors(outline: readonly OutlineEntry[]): ReadonlyMap<number, string> {
+  return new Map(outline.map((entry) => [entry.index, entry.id]));
+}
+
+export function RichText({ doc, assets, labels, siteOrigin, className, anchors }: RichTextProps) {
   const ctx: RenderContext = { assets, labels, siteOrigin };
   const content = Array.isArray(doc?.content) ? doc.content : [];
-  return <div className={className ? `${styles.root} ${className}` : styles.root}>{renderBlocks(content, ctx)}</div>;
+  return <div className={className ? `${styles.root} ${className}` : styles.root}>{renderBlocks(content, ctx, anchors)}</div>;
 }
 
-function renderBlocks(nodes: readonly BlockNode[], ctx: RenderContext): ReactNode[] {
-  return nodes.map((node, index) => renderBlock(node, index, ctx));
+function renderBlocks(nodes: readonly BlockNode[], ctx: RenderContext, anchors?: ReadonlyMap<number, string>): ReactNode[] {
+  return nodes.map((node, index) => renderBlock(node, index, ctx, anchors?.get(index)));
 }
 
-function renderBlock(node: BlockNode, key: number, ctx: RenderContext): ReactNode {
+function renderBlock(node: BlockNode, key: number, ctx: RenderContext, anchor?: string): ReactNode {
   switch (node?.type) {
     case 'paragraph': {
       const inline = renderInline(node.content ?? [], ctx);
@@ -59,7 +105,15 @@ function renderBlock(node: BlockNode, key: number, ctx: RenderContext): ReactNod
     case 'heading': {
       const inline = renderInline(node.content ?? [], ctx);
       if (inline.length === 0) return null;
-      return node.attrs?.level === 3 ? <h3 key={key}>{inline}</h3> : <h2 key={key}>{inline}</h2>;
+      return node.attrs?.level === 3 ? (
+        <h3 key={key} id={anchor}>
+          {inline}
+        </h3>
+      ) : (
+        <h2 key={key} id={anchor}>
+          {inline}
+        </h2>
+      );
     }
     case 'bulletList':
       return <ul key={key}>{node.content.map((item, i) => <li key={i}>{renderBlocks(item.content ?? [], ctx)}</li>)}</ul>;

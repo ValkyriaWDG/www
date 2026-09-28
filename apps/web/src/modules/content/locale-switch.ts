@@ -1,6 +1,6 @@
 import { LOCALES, type Locale } from '@valkyria/db';
 import { filterSafeQuery } from '@/lib/locale-redirect';
-import { isGameRoute } from '@/modules/games/registry';
+import { gameHasSection, isGameRoute, type GameRoute } from '@/modules/games/registry';
 import { isValidSlug } from './slug';
 import type { CounterpartResolution } from './types';
 
@@ -12,7 +12,8 @@ import type { CounterpartResolution } from './types';
  * - `/xx/news/<slug>` and `/xx/<game>/news/<slug>` are mapped by entity identity to the
  *   published counterpart slug (keeping the game section); without one →
  *   `/<to>[/<game>]/news?missing=<from>:<slug>` (only when the source is published),
- *   otherwise the target news list.
+ *   otherwise the target news list. `/xx/<game>/field-manual/<slug>` works the same way
+ *   against the game's field manual.
  * - Every other path keeps its suffix under `/<to>` with only allowlisted, bounded
  *   query parameters; pagination is always reset and tokens/return URLs never forwarded.
  */
@@ -22,7 +23,10 @@ const DEFAULT_LOCALE: Locale = 'cs';
 // Unreserved path characters only: no percent-encoding, spaces, backslashes or controls.
 const SAFE_PATH = /^\/[A-Za-z0-9\-._~/]*$/;
 
-export type CounterpartResolver = (fromLocale: Locale, slug: string, toLocale: Locale) => Promise<CounterpartResolution>;
+/** Which collection the slug belongs to: news (optionally in a game section) or a game's field manual. */
+export type CounterpartTarget = { kind: 'news'; game: GameRoute | null } | { kind: 'manual'; game: GameRoute };
+
+export type CounterpartResolver = (fromLocale: Locale, slug: string, toLocale: Locale, target: CounterpartTarget) => Promise<CounterpartResolution>;
 
 function isLocale(value: unknown): value is Locale {
   return typeof value === 'string' && (LOCALES as readonly string[]).includes(value);
@@ -73,11 +77,19 @@ export async function resolveLocaleSwitch(
 
   const game = isGameRoute(segments[0]) ? segments[0] : null;
   const local = game ? segments.slice(1) : segments;
-  if (local[0] === 'news' && local.length === 2) {
-    const list = `/${to}${game ? `/${game}` : ''}/news`;
+  const target: CounterpartTarget | null =
+    local.length !== 2
+      ? null
+      : local[0] === 'news'
+        ? { kind: 'news', game }
+        : local[0] === 'field-manual' && game && gameHasSection(game, 'field-manual')
+          ? { kind: 'manual', game }
+          : null;
+  if (target) {
+    const list = `/${to}${game ? `/${game}` : ''}/${local[0]}`;
     const slug = local[1]!;
     if (!isValidSlug(slug)) return list;
-    const resolution = await resolveCounterpart(source.locale, slug, to);
+    const resolution = await resolveCounterpart(source.locale, slug, to, target);
     if (!resolution) return list;
     if (resolution.kind === 'published') return `${list}/${resolution.slug}`;
     const missing = new URLSearchParams({ missing: `${source.locale}:${resolution.sourceSlug}` });

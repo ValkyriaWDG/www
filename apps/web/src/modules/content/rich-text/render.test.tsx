@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { RichText } from './render';
+import { headingOutline, outlineAnchors, RichText } from './render';
 import { parseRichTextDocument, type RichTextDocument } from './schema';
 
 const ASSET = '0d2b8a9e-5a4c-4b7d-8f3e-1c2d3e4f5a61';
@@ -137,5 +137,33 @@ describe('RichText renderer', () => {
     expect(html).toMatch(/<div class="[^"]*" role="region" aria-label="Tabulka \(posuňte vodorovně\)" tabindex="0"><table/);
     expect(html).toContain('<thead><tr><th scope="col"><p>Mapa</p></th><th scope="col"><p>Skóre</p></th></tr></thead>');
     expect(html).toContain('<td colSpan="2"><p>Celkem</p></td>');
+  });
+
+  it('derives a table of contents with unique ASCII anchors that match the rendered headings', () => {
+    const heading = (level: 2 | 3, text: string) => ({ type: 'heading', attrs: { level }, content: [{ type: 'text', text }] });
+    const parsed = parseRichTextDocument({
+      type: 'doc',
+      content: [
+        heading(2, 'Příprava hry'),
+        { type: 'paragraph', content: [{ type: 'text', text: 'Text' }] },
+        heading(3, 'Časté chyby'),
+        heading(2, 'Příprava hry'),
+        heading(2, '!!!'),
+      ],
+    });
+    if (!parsed.ok) throw new Error(parsed.issues.join('\n'));
+    const outline = headingOutline(parsed.doc);
+    expect(outline.map(({ id, level, text }) => ({ id, level, text }))).toEqual([
+      { id: 'priprava-hry', level: 2, text: 'Příprava hry' },
+      { id: 'caste-chyby', level: 3, text: 'Časté chyby' },
+      { id: 'priprava-hry-2', level: 2, text: 'Příprava hry' },
+      { id: 'section-4', level: 2, text: '!!!' },
+    ]);
+    const html = renderToStaticMarkup(<RichText doc={parsed.doc} assets={new Map()} labels={labels} anchors={outlineAnchors(outline)} />);
+    expect(html).toContain('<h2 id="priprava-hry">Příprava hry</h2>');
+    expect(html).toContain('<h3 id="caste-chyby">Časté chyby</h3>');
+    expect(html).toContain('<h2 id="priprava-hry-2">');
+    // Without anchors headings stay id-less (news articles are unchanged).
+    expect(renderToStaticMarkup(<RichText doc={parsed.doc} assets={new Map()} labels={labels} />)).not.toContain(' id=');
   });
 });

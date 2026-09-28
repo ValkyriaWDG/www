@@ -3,6 +3,7 @@ import {
   contentRevision,
   contentTranslation,
   LOCALES,
+  manualCategory,
   PAGE_KEYS,
   taxonomyTerm,
   type Database,
@@ -13,7 +14,7 @@ import type { Actor } from '../modules/access/types';
 import { recordAudit } from '../modules/audit/audit';
 import { SEED_AUTHOR_LABEL, SEED_PAGES } from './pages';
 import { imageAssetIds, SEED_RICH_TEXT_SCHEMA_VERSION } from './rich-text';
-import { SEED_CATEGORIES } from './taxonomy';
+import { SEED_CATEGORIES, SEED_MANUAL_CATEGORIES } from './taxonomy';
 
 /*
  * Production seed: reviewed public content only, inserted when missing by stable keys
@@ -26,7 +27,7 @@ export type SeedReport = { inserted: string[]; skipped: string[] };
 
 const SEED_ACTOR: Actor = { kind: 'system', label: 'seed', capabilities: new Set() };
 
-/** Inserts the reviewed news categories that are missing. */
+/** Inserts the reviewed news and field manual categories that are missing. */
 export async function ensureSeedTaxonomy(db: Executor, report: SeedReport = { inserted: [], skipped: [] }): Promise<SeedReport> {
   for (const category of SEED_CATEGORIES) {
     const rows = await db
@@ -35,6 +36,14 @@ export async function ensureSeedTaxonomy(db: Executor, report: SeedReport = { in
       .onConflictDoNothing({ target: [taxonomyTerm.kind, taxonomyTerm.key] })
       .returning({ id: taxonomyTerm.id });
     (rows.length > 0 ? report.inserted : report.skipped).push(`taxonomy category ${category.key}`);
+  }
+  for (const category of SEED_MANUAL_CATEGORIES) {
+    const rows = await db
+      .insert(manualCategory)
+      .values({ ...category })
+      .onConflictDoNothing({ target: [manualCategory.game, manualCategory.key] })
+      .returning({ id: manualCategory.id });
+    (rows.length > 0 ? report.inserted : report.skipped).push(`manual category ${category.game}/${category.key}`);
   }
   return report;
 }

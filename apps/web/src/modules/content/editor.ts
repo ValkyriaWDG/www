@@ -4,6 +4,7 @@ import {
   contentDocument,
   contentRevision,
   contentTranslation,
+  manualArticle,
   publicationSchedule,
   type CoverSnapshot,
   type DocumentKind,
@@ -125,6 +126,7 @@ export async function createDocument(
 ): Promise<CreateDocumentResult> {
   await authorize(db, actor, 'content.edit', 'write', { action: 'content.create', entityType: 'content_document' });
   const input = parseInput(createDocumentSchema, rawInput);
+  if (input.kind === 'manual' && !input.game) throw new DomainError('validation', 'A manual article needs a game.', { game: 'required' });
   await authorizeGameScope(db, actor, 'content.edit', [input.game ?? null], { action: 'content.create', entityType: 'content_document' });
   const now = deps.now?.() ?? new Date();
   const body = input.fields?.body !== undefined ? requireValidBody(input.fields.body) : { doc: emptyDocument(), assetIds: [] };
@@ -132,11 +134,11 @@ export async function createDocument(
 
   return mapSlugRace(
     inTransaction(db, async (tx) => {
-      await assertTaxonomyKeys(tx, input.categoryKey, input.tagKeys);
+      await assertTaxonomyKeys(tx, input.categoryKey, input.tagKeys, { kind: input.kind, game: input.game ?? null });
       const [document] = await tx
         .insert(contentDocument)
         .values({
-          kind: 'news',
+          kind: input.kind,
           game: input.game ?? null,
           categoryKey: input.categoryKey ?? null,
           tagKeys: [...new Set(input.tagKeys ?? [])],
@@ -145,8 +147,9 @@ export async function createDocument(
           updatedAt: now,
         })
         .returning();
+      if (input.kind === 'manual') await tx.insert(manualArticle).values({ documentId: document!.id, createdAt: now, updatedAt: now });
       const translationId = randomUUID();
-      const namespace: DocumentKind = 'news';
+      const namespace: DocumentKind = input.kind;
       let slug: string;
       if (input.slug) {
         await assertSlugAvailable(tx, { namespace, locale: input.locale, slug: input.slug, translationId });
@@ -187,7 +190,7 @@ export async function createDocument(
         entityId: document!.id,
         translationId,
         locale: input.locale,
-        summary: { kind: 'news', slug, revisionId: revision.id },
+        summary: { kind: input.kind, slug, revisionId: revision.id },
       });
       return {
         documentId: document!.id,
@@ -323,7 +326,8 @@ export async function saveDraft(db: Executor, actor: Actor, rawInput: SaveDraftI
           tagKeys: input.shared.tagKeys !== undefined ? [...new Set(input.shared.tagKeys)] : document.tagKeys,
           game: input.shared.game !== undefined ? input.shared.game : document.game,
         };
-        await assertTaxonomyKeys(tx, next.categoryKey, next.tagKeys);
+        await assertTaxonomyKeys(tx, next.categoryKey, next.tagKeys, { kind: document.kind, game: next.game });
+        if (document.kind === 'manual' && next.game === null) throw new DomainError('validation', 'A manual article needs a game.', { game: 'required' });
         const [updated] = await tx
           .update(contentDocument)
           .set({ ...next, version: document.version + 1, updatedAt: now })

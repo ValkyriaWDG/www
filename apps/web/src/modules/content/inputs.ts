@@ -63,7 +63,8 @@ export const sharedFieldsSchema = z.object({
 });
 
 export const createDocumentSchema = z.object({
-  kind: z.literal('news').default('news'),
+  /** News post or Field Manual article (core pages are seeded, never created here). */
+  kind: z.enum(['news', 'manual']).default('news'),
   locale: localeSchema,
   title: plainText(FIELD_LIMITS.title).pipe(z.string().min(1)),
   slug: slugSchema.optional(),

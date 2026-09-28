@@ -53,7 +53,7 @@ describe('resolveLocaleSwitch', () => {
   it('maps an article through its entity counterpart', async () => {
     const resolver = vi.fn<CounterpartResolver>(async () => ({ kind: 'published', slug: 'english-slug' }));
     expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/news/cesky-slug?page=2' }, resolver)).toBe('/en/news/english-slug');
-    expect(resolver).toHaveBeenCalledWith('cs', 'cesky-slug', 'en');
+    expect(resolver).toHaveBeenCalledWith('cs', 'cesky-slug', 'en', { kind: 'news', game: null });
   });
 
   it('links a missing translation to the source article via the target news list', async () => {
@@ -67,10 +67,21 @@ describe('resolveLocaleSwitch', () => {
   it('keeps the game section while mapping an article counterpart', async () => {
     const resolver = vi.fn<CounterpartResolver>(async () => ({ kind: 'published', slug: 'ecl-report' }));
     expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/news/zprava-ecl' }, resolver)).toBe('/en/hll/news/ecl-report');
-    expect(resolver).toHaveBeenCalledWith('cs', 'zprava-ecl', 'en');
+    expect(resolver).toHaveBeenCalledWith('cs', 'zprava-ecl', 'en', { kind: 'news', game: 'hll' });
     const missing: CounterpartResolver = async () => ({ kind: 'missing', sourceSlug: 'zprava-ecl' });
     expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/news/zprava-ecl' }, missing)).toBe('/en/hll/news?missing=cs%3Azprava-ecl');
     expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/wardogs/news/Bad_Slug' }, never)).toBe('/en/wardogs/news');
+  });
+
+  it('maps a field manual article within its game and falls back to the manual', async () => {
+    const resolver = vi.fn<CounterpartResolver>(async () => ({ kind: 'published', slug: 'squad-leader' }));
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/field-manual/velitel-druzstva?q=sl' }, resolver)).toBe('/en/hll/field-manual/squad-leader');
+    expect(resolver).toHaveBeenCalledWith('cs', 'velitel-druzstva', 'en', { kind: 'manual', game: 'hll' });
+    const missing: CounterpartResolver = async () => ({ kind: 'missing', sourceSlug: 'velitel-druzstva' });
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/field-manual/velitel-druzstva' }, missing)).toBe('/en/hll/field-manual?missing=cs%3Avelitel-druzstva');
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/field-manual/koncept' }, async () => null)).toBe('/en/hll/field-manual');
+    // Wardogs has no field manual: the path is kept as-is (and 404s) instead of being mapped.
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/wardogs/field-manual/x' }, never)).toBe('/en/wardogs/field-manual/x');
   });
 
   it('keeps game sections and shared-slug details as they are', async () => {

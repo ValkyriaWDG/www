@@ -7,6 +7,8 @@ import { GameButton } from '@/components/ui/game-button';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getSiteOrigin } from '@/lib/site';
+import { gameRouteFromDb } from '@/modules/games/registry';
+import { canonicalNewsPath, gamePath } from '@/modules/games/routes';
 import { DomainError } from '@/lib/result';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { uuidSchema } from '@/modules/content/inputs';
@@ -27,8 +29,8 @@ export async function previewMetadata(locale: AppLocale): Promise<Metadata> {
  * content language) under the admin "unpublished preview" banner. An opaque URL alone
  * grants nothing.
  */
-export async function PreviewPage({ locale, id, raw, mode }: { locale: AppLocale; id: string; raw: RawSearchParams; mode: 'news' | 'page' }) {
-  const basePath = mode === 'news' ? '/admin/news' : '/admin/content';
+export async function PreviewPage({ locale, id, raw, mode }: { locale: AppLocale; id: string; raw: RawSearchParams; mode: 'news' | 'page' | 'manual' }) {
+  const basePath = mode === 'news' ? '/admin/news' : mode === 'manual' ? '/admin/manual' : '/admin/content';
   const access = await requireAdminPage({ locale, path: `${basePath}/${encodeURIComponent(id)}/preview`, capability: 'content.read_private' });
   if (!access.ok) return access.denied;
   const state = await loadEditorState(access.principal, id);
@@ -46,7 +48,14 @@ export async function PreviewPage({ locale, id, raw, mode }: { locale: AppLocale
   }
   const [t, articleLabels] = await Promise.all([getTranslations({ locale, namespace: 'adminEditorial' }), getArticleViewLabels(contentLocale)]);
   const isDraft = !revisionId || revisionId === translation.draft?.id;
-  const livePath = translation.liveSlug ? (mode === 'page' && state.document.pageKey ? `/${contentLocale}/${state.document.pageKey}` : `/${contentLocale}/news/${translation.liveSlug}`) : null;
+  const game = state.document.game;
+  const livePath = !translation.liveSlug
+    ? null
+    : mode === 'page' && state.document.pageKey
+      ? `/${contentLocale}/${state.document.pageKey}`
+      : mode === 'manual' && game
+        ? `/${contentLocale}${gamePath(gameRouteFromDb(game), 'field-manual', translation.liveSlug)}`
+        : `/${contentLocale}${canonicalNewsPath(game, translation.liveSlug)}`;
 
   return (
     <div data-testid="preview-page" data-content-locale={contentLocale}>
