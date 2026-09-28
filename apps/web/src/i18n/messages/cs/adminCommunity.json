@@ -117,7 +117,12 @@
     "unknown_setting": "Toto nastavení zde nelze měnit.",
     "conflict": "Nastavení mezitím změnil někdo jiný.",
     "invalid_content": "Text obsahuje obsah, který nelze uložit. Odstraňte neobvyklé formátování a zkuste to znovu.",
-    "invalid": "Zkontrolujte tuto hodnotu."
+    "invalid": "Zkontrolujte tuto hodnotu.",
+    "hll_side": "Zvolte stranu Spojenci, nebo Osa (případně nechte prázdné).",
+    "hll_sector_score": "V HLL je skóre kola počet držených sektorů: 0 až 5.",
+    "invalid_scoreboard": "Soubor ani odpověď serveru neobsahují tabulku hry se statistikami hráčů.",
+    "unknown_server": "Tento server není nastaven jako zdroj statistik.",
+    "hll_only": "Statistiky ze hry lze importovat jen u zápasů Hell Let Loose."
   },
   "media": {
     "none": "Bez obrázku",
@@ -179,7 +184,14 @@
     "remove": "Odebrat kolo {number}",
     "removeShort": "Odebrat",
     "add": "Přidat kolo",
-    "count": "{count, plural, =0 {Žádné kolo} one {# kolo} few {# kola} many {# kola} other {# kol}}"
+    "count": "{count, plural, =0 {Žádné kolo} one {# kolo} few {# kola} many {# kola} other {# kol}}",
+    "hllIntro": "Hell Let Loose: jedno kolo = jedna mapa. Skóre je počet držených sektorů (0–5), strana je Spojenci nebo Osa.",
+    "mapSuggestions": "Oficiální mapy HLL",
+    "sideNone": "Nezadáno",
+    "sideAllies": "Spojenci",
+    "sideAxis": "Osa",
+    "modeNone": "Nezadáno",
+    "sectorHint": "0–5 sektorů"
   },
   "matches": {
     "list": {
@@ -252,7 +264,8 @@
         "schedule": "Termín",
         "presentation": "Veřejná prezentace",
         "result": "Výsledek a kola",
-        "private": "Interní správa"
+        "private": "Interní správa",
+        "statistics": "Statistiky ze hry"
       },
       "fields": {
         "game": "Hra",
@@ -609,5 +622,66 @@
     "redactionNote": "Tajné údaje, tokeny, identifikátory relací a e-mailové adresy se nikdy nezobrazují.",
     "detailMissingTitle": "Událost nenalezena",
     "detailMissingBody": "Vybraná událost neexistuje."
+  },
+  "statistics": {
+    "groupTitle": "Statistiky ze hry (CRCON)",
+    "intro": "Statistiky odehrané hry z herního serveru (CRCON) doplní veřejný detail zápasu o souhrn týmů, zbraně a volitelně hráče. Ukládají se odděleně od výsledku zápasu, se zdrojem a časem importu.",
+    "currentTitle": "Importované statistiky",
+    "source": "Zdroj",
+    "sourceCrcon": "CRCON: {server}, hra č. {game}",
+    "sourceUpload": "Nahraný soubor: {file}",
+    "game": "Mapa a režim",
+    "gameTime": "Začátek hry",
+    "importedAt": "Importováno",
+    "players": "Hráči",
+    "playersPublic": "řádky hráčů jsou veřejné",
+    "playersPrivate": "řádky hráčů nejsou veřejné",
+    "teamsCaption": "Souhrn týmů v importované hře",
+    "metric": "Údaj",
+    "valkyriaColumn": "Valkyria ({side})",
+    "opponentColumn": "Soupeř ({side})",
+    "metrics": {
+      "players": "Hráči",
+      "kills": "Zabití",
+      "deaths": "Úmrtí",
+      "teamkills": "Týmová zabití",
+      "combat": "Boj",
+      "offense": "Útok",
+      "defense": "Obrana",
+      "support": "Podpora"
+    },
+    "sides": {
+      "allies": "Spojenci",
+      "axis": "Osa"
+    },
+    "side": "Strana Valkyrie v této hře",
+    "sideHint": "Podle ní se týmy ve statistikách přiřadí Valkyrii a soupeři.",
+    "publishPlayers": "Zveřejnit statistiky jednotlivých hráčů",
+    "publishPlayersHint": "Herní přezdívky a čísla hráčů obou týmů. Bez zaškrtnutí je veřejný jen souhrn týmů a zbraní.",
+    "saveSettings": "Uložit nastavení",
+    "settingsSaved": "Nastavení statistik uloženo.",
+    "remove": "Odebrat statistiky",
+    "removeConfirm": "Opravdu odebrat importované statistiky?",
+    "cancel": "Zrušit",
+    "removed": "Statistiky odebrány.",
+    "importTitle": "Import statistik",
+    "replaceTitle": "Nahradit statistiky novým importem",
+    "sourceLabel": "Zdroj dat",
+    "sourceOptionCrcon": "Z herního serveru (CRCON)",
+    "sourceOptionCrconHint": "Web si tabulku hry stáhne sám z nastaveného serveru.",
+    "noSources": "Žádný server CRCON zatím není nastaven (HLL_SERVER_SOURCES_JSON).",
+    "noSourcesShort": "Není nastaven žádný server",
+    "sourceOptionUpload": "Nahrát soubor JSON",
+    "sourceOptionUploadHint": "Export tabulky hry z CRCON (odpověď get_map_scoreboard).",
+    "server": "Server",
+    "gameId": "ID hry v CRCON",
+    "gameIdHint": "Číslo hry z veřejných statistik CRCON (např. …/games/1234).",
+    "file": "Soubor s tabulkou hry",
+    "fileHint": "Soubor JSON; údaje o jednotlivých zabitích se před odesláním vynechají.",
+    "import": "Importovat statistiky",
+    "replace": "Nahradit statistiky",
+    "importNote": "Import nahradí dříve uložené statistiky tohoto zápasu.",
+    "imported": "Statistiky importovány.",
+    "working": "Probíhá…"
   }
 }

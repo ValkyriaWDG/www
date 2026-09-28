@@ -1,10 +1,11 @@
 'use client';
 
-import type { MatchOutcome } from '@valkyria/db/schema';
+import type { Game, MatchOutcome } from '@valkyria/db/schema';
 import { useTranslations } from 'next-intl';
 import { useRef } from 'react';
 import { FieldError, Select, TextField } from '@/components/ui/form-fields';
 import { GameButton } from '@/components/ui/game-button';
+import { HLL_MAPS, HLL_MODES, HLL_SIDES } from '@/modules/games/hll-catalog';
 import { errorsBelow, type FieldErrors } from './errors';
 import { emptyRound, MAX_ROUND_ROWS, type RoundValues } from './match-form';
 import { useFieldError } from './use-messages';
@@ -17,13 +18,19 @@ type RoundsEditorProps = {
   onChange: (rounds: RoundValues[]) => void;
   errors: FieldErrors;
   disabled?: boolean;
+  /** Hell Let Loose rounds offer the official maps, modes and Allies/Axis sides. */
+  game?: Game;
 };
 
 /**
  * Optional maps/rounds: add, remove and reorder with buttons (no drag-only interaction).
  * After a move, focus follows the moved round's button so keyboard users keep context.
  */
-export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEditorProps) {
+export function RoundsEditor({ rounds, onChange, errors, disabled, game }: RoundsEditorProps) {
+  const hll = game === 'hell-let-loose';
+  /** Keeps a stored value that is not in the list visible (it must be corrected, never silently dropped). */
+  const withCurrent = (options: { value: string; label: string }[], current: string) =>
+    current && !options.some((option) => option.value === current) ? [...options, { value: current, label: current }] : options;
   const t = useTranslations('adminCommunity.rounds');
   const tOutcome = useTranslations('adminCommunity.common.outcome');
   const fieldError = useFieldError();
@@ -54,6 +61,18 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
   return (
     <div data-rounds-editor="">
       <p className={styles.groupIntro}>{t('intro')}</p>
+      {hll ? (
+        <p className={styles.groupIntro} data-hll-rounds="">
+          {t('hllIntro')}
+        </p>
+      ) : null}
+      {hll ? (
+        <datalist id="hll-map-suggestions" aria-label={t('mapSuggestions')}>
+          {HLL_MAPS.map((map) => (
+            <option key={map} value={map} />
+          ))}
+        </datalist>
+      ) : null}
       <ol ref={listRef} className={styles.repeatList} aria-label={t('listLabel')} hidden={rounds.length === 0}>
         {rounds.map((round, index) => {
           const number = index + 1;
@@ -68,31 +87,61 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                     label={t('mapName')}
                     value={round.mapName}
                     maxLength={80}
+                    list={hll ? 'hll-map-suggestions' : undefined}
+                    autoComplete="off"
                     disabled={disabled}
                     onChange={(event) => update(index, { mapName: event.target.value })}
                     error={fieldError(errorsBelow(errors, `${prefix}.mapName`))}
                   />
-                  <TextField
-                    name={`round-${round.key}-mode`}
-                    label={t('mode')}
-                    value={round.mode}
-                    maxLength={60}
-                    disabled={disabled}
-                    onChange={(event) => update(index, { mode: event.target.value })}
-                    error={fieldError(errorsBelow(errors, `${prefix}.mode`))}
-                  />
-                  <TextField
-                    name={`round-${round.key}-side`}
-                    label={t('side')}
-                    value={round.side}
-                    maxLength={60}
-                    disabled={disabled}
-                    onChange={(event) => update(index, { side: event.target.value })}
-                    error={fieldError(errorsBelow(errors, `${prefix}.side`))}
-                  />
+                  {hll ? (
+                    <Select
+                      name={`round-${round.key}-mode`}
+                      label={t('mode')}
+                      value={round.mode}
+                      disabled={disabled}
+                      onChange={(event) => update(index, { mode: event.target.value })}
+                      options={withCurrent([{ value: '', label: t('modeNone') }, ...HLL_MODES.map((mode) => ({ value: mode, label: mode }))], round.mode)}
+                      error={fieldError(errorsBelow(errors, `${prefix}.mode`))}
+                    />
+                  ) : (
+                    <TextField
+                      name={`round-${round.key}-mode`}
+                      label={t('mode')}
+                      value={round.mode}
+                      maxLength={60}
+                      disabled={disabled}
+                      onChange={(event) => update(index, { mode: event.target.value })}
+                      error={fieldError(errorsBelow(errors, `${prefix}.mode`))}
+                    />
+                  )}
+                  {hll ? (
+                    <Select
+                      name={`round-${round.key}-side`}
+                      label={t('side')}
+                      value={round.side}
+                      disabled={disabled}
+                      onChange={(event) => update(index, { side: event.target.value })}
+                      options={withCurrent(
+                        [{ value: '', label: t('sideNone') }, ...HLL_SIDES.map((side) => ({ value: side, label: t(side === 'allies' ? 'sideAllies' : 'sideAxis') }))],
+                        round.side,
+                      )}
+                      error={fieldError(errorsBelow(errors, `${prefix}.side`))}
+                    />
+                  ) : (
+                    <TextField
+                      name={`round-${round.key}-side`}
+                      label={t('side')}
+                      value={round.side}
+                      maxLength={60}
+                      disabled={disabled}
+                      onChange={(event) => update(index, { side: event.target.value })}
+                      error={fieldError(errorsBelow(errors, `${prefix}.side`))}
+                    />
+                  )}
                   <TextField
                     name={`round-${round.key}-score-valkyria`}
                     label={t('scoreValkyria')}
+                    hint={hll ? t('sectorHint') : undefined}
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={round.scoreValkyria}
@@ -103,6 +152,7 @@ export function RoundsEditor({ rounds, onChange, errors, disabled }: RoundsEdito
                   <TextField
                     name={`round-${round.key}-score-opponent`}
                     label={t('scoreOpponent')}
+                    hint={hll ? t('sectorHint') : undefined}
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={round.scoreOpponent}

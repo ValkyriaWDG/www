@@ -126,6 +126,70 @@
     },
     "links": "Odkazy",
     "event": "Stránka akce",
-    "versusBanner": "Valkyria proti týmu {opponent}"
+    "versusBanner": "Valkyria proti týmu {opponent}",
+    "sides": {
+      "allies": "Spojenci",
+      "axis": "Osa"
+    }
+  },
+  "statistics": {
+    "title": "Statistiky zápasu",
+    "summaryCaption": "Souhrn týmů",
+    "metric": "Údaj",
+    "valkyria": "Valkyria ({side})",
+    "valkyriaShort": "Valkyria",
+    "opponent": "{name} ({side})",
+    "sides": {
+      "allies": "Spojenci",
+      "axis": "Osa"
+    },
+    "metrics": {
+      "players": "Hráči",
+      "kills": "Zabití",
+      "deaths": "Úmrtí",
+      "teamkills": "Týmová zabití",
+      "combat": "Boj",
+      "offense": "Útok",
+      "defense": "Obrana",
+      "support": "Podpora"
+    },
+    "killsByType": "Zabití podle typu zbraně",
+    "weaponType": "Typ zbraně",
+    "weaponTypes": {
+      "infantry": "Pěchotní zbraně",
+      "machine_gun": "Kulomety",
+      "sniper": "Odstřelovačky",
+      "grenade": "Granáty",
+      "bazooka": "Protitankové zbraně",
+      "pak": "Protitanková děla",
+      "mine": "Miny",
+      "satchel": "Nálože",
+      "armor": "Tanky a vozidla",
+      "artillery": "Dělostřelectvo",
+      "self_propelled_artillery": "Samohybné dělostřelectvo",
+      "commander": "Schopnosti velitele"
+    },
+    "playersCaption": "Statistiky hráčů",
+    "columns": {
+      "player": "Hráč",
+      "team": "Tým",
+      "kills": "Zabití",
+      "deaths": "Úmrtí",
+      "kd": "K/D",
+      "kpm": "Zabití/min",
+      "topWeapon": "Hlavní zbraň"
+    },
+    "unknownSide": "Nezjištěn",
+    "playersPrivate": "Statistiky jednotlivých hráčů ({count}) nejsou zveřejněny.",
+    "kills": "{count, plural, one {# zabití} few {# zabití} many {# zabití} other {# zabití}}",
+    "noWeapons": "Bez zaznamenaných zabití.",
+    "sourceCrcon": "Zdroj: herní server (CRCON), hra č. {game}",
+    "sourceUpload": "Zdroj: nahraný export tabulky hry",
+    "importedAt": "Importováno {time}",
+    "tabs": {
+      "summary": "Souhrn",
+      "players": "Hráči",
+      "weapons": "Zbraně"
+    }
   }
 }

@@ -235,7 +235,7 @@ describe('synthetic fixture set', () => {
     expect((await t.db.select().from(match))[0]?.coverAssetId).toBeNull();
     expect((await t.db.select().from(memberProfile)).map((row) => row.id)).toEqual([realMember.id]);
     const documents = await t.db.select().from(contentDocument);
-    expect(documents.map((row) => row.pageKey).sort()).toEqual(['clan', 'community', 'privacy']);
+    expect(documents.map((row) => row.pageKey).sort()).toEqual(['clan', 'community', 'faq', 'privacy']);
     expect(await t.db.select().from(asset)).toHaveLength(0);
     expect((await t.db.select().from(taxonomyTerm)).map((row) => row.kind)).toEqual(['category', 'category', 'category', 'category']);
     for (const id of Object.values(FIXTURE_ASSET_IDS)) expect(existsSync(path.join(mediaRoot, id))).toBe(false);

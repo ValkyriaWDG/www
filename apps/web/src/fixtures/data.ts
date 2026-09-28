@@ -377,7 +377,7 @@ export const FIXTURE_MATCHES: FixtureMatch[] = [
     vodLinks: [],
     internalNotes: '',
     result: { scoreValkyria: 3, scoreOpponent: 2, outcome: 'win', verification: 'provisional', source: 'Synthetic historical fixture (not a real result)' },
-    rounds: [{ mapName: 'Synthetic Map D', mode: null, side: 'Synthetic side A', scoreValkyria: 3, scoreOpponent: 2, outcome: 'win' }],
+    rounds: [{ mapName: 'Synthetic Map D', mode: 'Warfare', side: 'allies', scoreValkyria: 3, scoreOpponent: 2, outcome: 'win' }],
     recap: {},
   },
   {

@@ -76,6 +76,7 @@
       "servers": "Servery",
       "members": "Členové",
       "field-manual": "Příručka",
+      "faq": "FAQ",
       "clan": "O klanu",
       "community": "Přidej se"
     },
@@ -162,7 +163,20 @@
       "copyFailed": "Kopírování se nezdařilo – adresu opište ručně.",
       "noConnect": "Postup připojení zatím není zveřejněn. Zeptejte se na Discordu.",
       "pingNote": "Odezvu (ping) nezobrazujeme: měřili bychom ji ze serveru webu, ne z vašeho počítače.",
-      "back": "Zpět na seznam serverů"
+      "back": "Zpět na seznam serverů",
+      "nextMap": "Další mapa",
+      "timeRemaining": "Zbývá do konce kola",
+      "timeValueHours": "{hours} h {minutes} min",
+      "timeValueMinutes": "{minutes} min",
+      "score": "Skóre (držené sektory)",
+      "scoreValue": "Spojenci {allied} : {axis} Osa",
+      "teams": "Hráči v týmech",
+      "teamsValue": "Spojenci {allied} · Osa {axis}",
+      "liveStats": "Živé statistiky serveru"
+    },
+    "partial": {
+      "title": "Některé servery teď neodpovídají.",
+      "body": "U nich zobrazujeme poslední známý stav jako neaktuální, nebo stav neznámý. Neznamená to, že jsou offline."
     }
   },
   "manual": {

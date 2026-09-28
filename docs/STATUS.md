@@ -155,7 +155,7 @@ separate from this deployment.
 
 ## Unified platform / HLL implementation
 
-Merged PR [#37](https://github.com/ValkyriaWDG/www/pull/37),
+Merged PR [#37](https://github.com/ValkyriaWDG/www/pull/37) (`40da3df`),
 issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
 [handoff](handoff/hll-claude-code-cloud.md); unified source and canonical production
 cutover are delivered as recorded above, with explicit remaining acceptance items.
@@ -173,18 +173,38 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   `games`; content, manual, matches and members check the resource game on every private
   read and mutation (denials audited). Media/settings/audit/access stay platform-only.
 - **Servers:** server-only status boundary with fresh/stale/unavailable read models;
-  `SERVER_STATUS_SOURCE=none` by default, labelled synthetic snapshots for tests.
+  `SERVER_STATUS_SOURCE=none` by default, `crcon` reads CRCON's public
+  `get_public_info` for the servers in `HLL_SERVER_SOURCES_JSON` (map, mode, players,
+  next map, time left, score, teams, stats link; per-server outage), labelled synthetic
+  snapshots for tests. Real hosts are configured at deployment and are not yet verified.
+- **HLL matches:** the shared match editor offers the official HLL maps, modes and
+  Allies/Axis sides with 0–5 sector scores. Game statistics (team totals, kills by weapon
+  type, weapons, optional player rows) import from a configured CRCON server by game ID
+  or from an uploaded scoreboard JSON into `match_statistics` (migration 0002), with
+  source/game ID/import time; player rows are public only when an editor publishes them.
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.
 - **Legacy:** reviewed redirect resolver, active only for `LEGACY_HLL_HOSTS` (empty).
-- **Migration:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
-  repeated run verified locally).
+- **FAQ:** shared core page `faq` (`/cs/hll/faq`, `/cs/faq`) with a question index; the
+  seed creates only an unpublished Czech/English outline of the legacy questions, so the
+  page stays unpublished until editors write and publish the answers.
+- **Migrations:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
+  repeated run verified locally), `0002_match_statistics.sql` (new table only) and
+  `0003_faq_page.sql` (widens the page-key check).
 
-Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi and
-real server status, legacy guide text/images (host blocked in this environment; reuse of
-external illustrations unrecorded), FAQ/events/tournaments/leaderboards destinations,
+Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
+acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
+text/images and match history (host blocked in this environment; reuse of external
+illustrations unrecorded), events/tournaments/rankings destinations, FAQ answers, tactical map,
 legacy match-ID aliases and scoped media library for game-scoped editors.
+Legacy parity for servers, matches and game statistics:
+[hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (468 unit, 281
+integration, 144 browser tests at `59b3e38`, after the review fixes). After merging PR #55
+and main `048c179` (`c8fc2d7`): foundation, 126 tooling, lint, types, 493 unit, 283
+integration, build, 156 browser (106 opt-in skipped), the 4 empty-playlist artwork tests
+and all 15 page-budget samples passed.
+PR #37 before its merge:
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
 browser tests passed (98 opt-in capture cases skipped); 33 captioned captures; after
@@ -205,6 +225,14 @@ Next task: retain the accepted robots metadata #53 production proof and investig
 the separate network gate #46. Keep legacy `valkyriahll.cz` unchanged
 until its content migration is accepted. Clan footage and hosted Logi remain pending;
 preserve the static stage and unavailable-provider states without synthetic production data.
+
+Follow-up after PR #37 (PR #50, which also incorporates the HLL graphics of PR #55; not deployed):
+CRCON server status, HLL rounds, imported match statistics (migration 0002) and the FAQ
+page (migration 0003). Next: configure the real CRCON hosts and decide player-statistics
+publication; write and publish the FAQ answers; choose the owners of events (Logi) and
+tournaments (CMS) and a source for rankings before building them. Release boundary: not part of the deployed `e03d3c5`; it requires migrations
+0002 and 0003 even with `SERVER_STATUS_SOURCE=none`, so integrate accepted main and qualify the
+exact resulting head before a later release.
 
 ## Publication authorization hardening
 
@@ -430,6 +458,65 @@ records source fingerprints, eight image placements, zero external requests,
 page errors and horizontal overflow. Captures are inspected before publication.
 The foundation checker and all 19 tooling tests pass, including 13 presskit integrity
 cases covering tampering, unsafe SVG, path traversal and catalog drift.
+
+## HLL graphics research (2026-09-28)
+
+The [media handoff](assets/hll-media-research.md) inventories 158 installed MP4s
+(151 tutorials and seven logo intros) and proposes eight manual categories. No
+standalone ambient/menu movie was identified among the loose files. The two
+catalogs record 16 tutorial candidates and 39 visually reviewed public-source
+images with measured metadata, hashes and suggested placements. These are
+research candidates; no new runtime graphics, videos or game archives were added.
+
+Verification: all 158 MP4s probed successfully; all 39 selected images decoded.
+An independent local comparison matched all **55 selected source byte counts and
+SHA-256 values** to their catalogs. `node scripts/check-foundation.mjs` and
+`git diff --check` passed. Sampled visual inspection is not full video playback,
+gameplay-rule validation or publication approval. Next: select the first cover/
+guide batch, preserve instructional diagrams without cropping, and deliver the
+owner's clan battle recordings through the existing media pipeline. Deployment
+acceptance is maintained separately from this documentation-only research.
+
+Follow-up internet research adds a [web graphics brief](assets/hll-web-graphics-expansion.md)
+and a [separate 20-image catalog](assets/hll-web-image-candidates.json): ten official
+developer-article sources and ten community map/role/overlay sources, all decoded,
+visually reviewed and independently matched by byte count and SHA-256 (37,641,864
+bytes). The original 39-image catalog remains unchanged. Source release/playtest
+context, pinned repository revisions, overlay alignment requirements and individual
+artwork provenance are recorded. The brief also specifies eight custom covers,
+three editorial templates and four teaching diagrams for a future production pass;
+none of those custom deliverables is claimed as implemented. Foundation and whitespace
+checks passed for this documentation extension; full application checks remain CI's
+separate responsibility. No runtime assets, deployment or issue closure changed.
+
+## HLL graphics implementation (2026-09-28)
+
+The [graphics delivery](assets/hll-graphics-delivery.md) supersedes the earlier
+research-only checkpoint for its selected runtime batch. HLL now uses a full
+viewport scene in the persistent shell, with paused/dimmed reading pages and
+visible localized playback controls. Ten local WebP derivatives (746,768 bytes)
+provide the still fallback, eight manual-category illustrations and HLL news art.
+Published CMS covers retain priority. HLL site/news/match sharing uses game-scoped
+localized artwork; the source registries and code-license exclusions are recorded.
+
+[Inspected evidence](evidence/hll-graphics-2026-09-28/README.md) contains desktop,
+mobile, CS/EN and actual social PNGs, with 464 unit, 273 integration, 37 selected
+browser and four actual-artwork tests passing. The local integration run used
+PostgreSQL 18.4 with Unicode locale and a temporary Windows Sharp cache mitigation;
+CI independently uses PostgreSQL 17. Full lint, types, build and 126 foundation
+tests passed. Final PR-head CI is tracked on PR #55.
+
+After CI exposed a legacy expectation that HLL news had no images, the test now
+requires both decoded HLL assets and rejects Wardogs art. The complete local
+browser suite then passed **150 tests**, with 102 opt-in capture cases skipped;
+the separate four-test actual-artwork proof remains above. Main `048c179`'s
+production documentation is incorporated without altering its deployed-source
+statements. Runtime implementation and the inspected captures remain unchanged.
+
+The final clan recording is still absent. Empty HLL clip configuration deliberately
+shows the real still; synthetic test playback is separate proof. Issue #36 remains
+open for the broader HLL acceptance scope. This branch performs no deployment;
+the production cutover checkpoint remains owned and recorded separately.
 
 ## GitHub
 

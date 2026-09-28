@@ -16,7 +16,7 @@ export const LOGI_GAME_IDS = ['hell_let_loose', 'wardogs'] as const;
 export type LogiGameId = (typeof LOGI_GAME_IDS)[number];
 
 /** Public sections a game can expose, in the English route vocabulary. */
-export const GAME_SECTIONS = ['news', 'matches', 'servers', 'members', 'field-manual', 'clan', 'community'] as const;
+export const GAME_SECTIONS = ['news', 'matches', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community'] as const;
 export type GameSection = (typeof GAME_SECTIONS)[number];
 
 export type GameTheme = 'hll' | 'wardogs';
@@ -37,7 +37,7 @@ export const GAME_REGISTRY: Readonly<Record<GameRoute, GameDefinition>> = {
     db: 'hell-let-loose',
     logi: 'hell_let_loose',
     theme: 'hll',
-    sections: ['news', 'matches', 'servers', 'members', 'field-manual', 'clan', 'community'],
+    sections: ['news', 'matches', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community'],
   },
   wardogs: {
     route: 'wardogs',

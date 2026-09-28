@@ -5,6 +5,7 @@
   display: grid;
   grid-template-areas: 'brand divider nav tools';
   grid-template-columns: auto auto minmax(0, 1fr) auto;
+  padding-top: env(safe-area-inset-top);
   align-items: stretch;
   min-height: var(--header-height);
   padding-inline: var(--brand-inset) var(--safe-inset);
@@ -97,7 +98,7 @@
   outline-offset: -4px;
 }
 
-/* ---- Right tools: language + account ---- */
+/* ---- Right tools: community link, game switch, language + account (as in the HLL masthead) ---- */
 .tools {
   grid-area: tools;
   display: flex;
@@ -169,8 +170,44 @@ a.languageOption:hover {
   letter-spacing: 0;
 }
 
-.accountSlot {
+.accountSlot,
+.gameSlot {
   display: flex;
+}
+
+/* A long account name never pushes the controls into the tab navigation. */
+.tools .accountLabel {
+  max-width: 11em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.communityLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.communityLink:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Full-width game switch row below the strip (768–1023 and phones), as in HLL. */
+.mobileGame {
+  grid-area: game;
+  display: none;
+  padding-bottom: var(--space-2);
 }
 
 .account {
@@ -341,10 +378,54 @@ a.languageOption:hover {
   }
 }
 
-/* 1024–1279: condensed language control (flags + codes; names stay in accessible text). */
-@media (max-width: 1279px) {
+/*
+ * The Wardogs strip shares its row with the tab navigation, so its right-side controls
+ * condense in steps as the width drops: the community link moves to the mobile menu
+ * (below 1600), the language control shows flags + codes (below 1440; names stay in
+ * accessible text, in both shells), the account action becomes an icon with an
+ * accessible name (below 1280) and the game switch becomes a full-width row under the
+ * strip (below 1152), as in the HLL masthead below 1024.
+ */
+@media (max-width: 1599px) {
+  .communityLink {
+    display: none;
+  }
+}
+
+@media (max-width: 1439px) {
   .languageName {
     display: none;
+  }
+}
+
+@media (max-width: 1279px) {
+  .tools .accountLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .tools .account {
+    padding: 0 11px;
+  }
+}
+
+@media (max-width: 1151px) {
+  .header {
+    grid-template-areas:
+      'brand divider nav tools'
+      'game game game game';
+  }
+
+  .gameSlot {
+    display: none;
+  }
+
+  .mobileGame {
+    display: block;
   }
 }
 
@@ -381,6 +462,7 @@ a.languageOption:hover {
   .header {
     grid-template-areas:
       'brand . tools menu'
+      'game game game game'
       'panel panel panel panel';
     grid-template-columns: auto minmax(0, 1fr) auto auto;
     column-gap: var(--space-2);
@@ -422,52 +504,5 @@ a.languageOption:hover {
   .account,
   .menuButton {
     border-color: ButtonText;
-  }
-}
-
-/* ---- Platform bar: community link and the persistent game switch above the strip ---- */
-.platformBar {
-  position: relative;
-  z-index: var(--layer-header);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px var(--space-4);
-  min-height: 52px;
-  padding: calc(4px + env(safe-area-inset-top)) var(--safe-inset) 4px var(--brand-inset);
-  border-bottom: var(--border-hairline) solid rgb(168 168 154 / 0.14);
-  background: rgb(16 17 15 / 0.97);
-}
-
-.platformLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  min-height: 44px;
-  color: var(--color-text-muted);
-  font-family: var(--font-display);
-  font-size: var(--text-small);
-  font-weight: 600;
-  letter-spacing: var(--tracking-meta);
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.platformLink:hover {
-  color: var(--color-text);
-}
-
-.platformName {
-  color: var(--color-text);
-}
-
-.platformSeparator {
-  color: var(--color-accent);
-}
-
-@media (max-width: 767px) {
-  .platformBar {
-    padding-inline: var(--safe-inset);
   }
 }

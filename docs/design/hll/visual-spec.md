@@ -1,12 +1,12 @@
 # Valkyria HLL visual and interaction specification
 
 **Date:** 2026-09-28
-**Status:** Implementation handoff; the owner approved an HLL-inspired direction, not an exact recreation of the game. Layout values, colors and motion below are proposed implementation targets derived from the supplied references. They are not extracted game design tokens.
+**Status:** Implementation handoff; the owner approved an HLL-inspired direction and a fullscreen scenic background, replacing the earlier central-video-box proposal. Layout values, colors and motion below are proposed implementation targets derived from the supplied references. They are not extracted game design tokens.
 **Scope:** Extend `ValkyriaWDG/www`; do not create a second application, CMS, identity store or database. This document supplies the HLL visual direction previously left undecided in the [website prompt](../../handoff/hll-claude-code-cloud.md). Preserve the [unified-platform decision](../../architecture/decisions/0002-unified-valkyria-platform.md) and the separate Logi integration contract. This document does not authorize production cutover.
 
 ## 1. Intended experience
 
-The HLL section should feel like opening a military game's community menu: a calm cinematic scene, an open left navigation, tall condensed headings, flat translucent surfaces, thin dividers and a restrained khaki highlight. Its purpose is immediately clear: Valkyria's HLL community, people, news, fixtures/results, servers and guides. The clan's battle footage replaces the central soldier presentation. Visitors must be able to read, navigate and join the community without waiting for video or authentication.
+The HLL section should feel like opening a military game's community menu: a calm cinematic scene, an open left navigation, tall condensed headings, flat translucent surfaces, thin dividers and a restrained khaki highlight. Its purpose is immediately clear: Valkyria's HLL community, people, news, fixtures/results, servers and guides. The clan's battle footage fills the entire viewport behind the interface, rather than occupying the soldier's central presentation area. Visitors must be able to read, navigate and join the community without waiting for video or authentication.
 
 Keep Valkyria's existing crest and shared identity prominent. The HLL game title is the division label; it does not replace the clan brand. Give HLL and Wardogs separate theme/media configuration over shared accessible primitives. HLL uses cool gray, smoke, off-white and khaki; the Wardogs presentation retains its own approved treatment. Do not apply an existing Wardogs-specific visual instruction globally to the new HLL section.
 
@@ -19,7 +19,7 @@ All supplied originals are 1920 × 1200. Their final repository location is `doc
 | Ref | Original filename | Read this aspect | Website application |
 |---|---|---|---|
 | 01 | `20260920205625_1.jpg` | Two team tables, centered score, group totals and restrained separators | Completed match summary and optional approved statistics |
-| 02 | `20260928153014_1.jpg` | Open left menu, upper-left identity, large central stage and quiet bottom utilities | HLL landing; clan battle footage replaces the soldier |
+| 02 | `20260928153014_1.jpg` | Open left menu, upper-left identity, large central stage and quiet bottom utilities | HLL landing navigation; clan battle footage becomes a fullscreen background |
 | 03 | `20260928153017_1.jpg` | Grouped list on the left, central identity, contextual information on the right | Member/team list and profile; no copied progression system |
 | 04 | `20260928153022_1.jpg` | Large image cards with bottom labels and dark gradients | Recruitment, training categories and featured editorial collections |
 | 05 | `20260928153028_1.jpg` | Three-part deployment composition and unavailable-action state | Match briefing with event facts, approved map/cover and participation information |
@@ -70,7 +70,7 @@ Target canonical origin is `https://valkyria.cz` after a separately approved cut
 | Target route | Czech label | English label | Primary layout |
 |---|---|---|---|
 | `/{locale}` | Komunita Valkyria | Valkyria community | Shared hub with two game choices |
-| `/{locale}/hll` | Hlavní menu | Main menu | Open menu and cinematic stage |
+| `/{locale}/hll` | Hlavní menu | Main menu | Open menu over a fullscreen cinematic scene |
 | `/{locale}/hll/news` and `/news/{slug}` | Novinky | News | Editorial list and readable article |
 | `/{locale}/hll/clan` | O klanu | Clan | History, identity and recruitment |
 | `/{locale}/hll/members` and `/members/{slug}` | Členové | Members | Search/group list and approved profile |
@@ -90,13 +90,13 @@ URL state is authoritative. `/` deterministically redirects to `/cs`; no languag
 
 ## 5. HLL landing composition
 
-At 1920 × 1200, reserve approximately y=80–180 for identity/shared controls, a 340 px wide menu lane at x=80, a 48 px gap, and the remaining right-hand stage. The menu may begin around y=380–440 to preserve the open composition while fitting seven 48 px links, a clear Discord CTA and utilities. The principal video plane is a landscape region centered in the remaining stage, approximately 1120 × 630 px; keep footage focal points away from the menu. Blend its edges into the dark scenic underlay using a subtle gradient; do not distort footage into the soldier's portrait silhouette.
+At 1920 × 1200, reserve approximately y=80–180 for identity/shared controls and a 340 px wide menu lane at x=80. The menu may begin around y=380–440 to preserve the open composition while fitting seven 48 px links, a clear Discord CTA and utilities. The poster and video plane are fixed to all four viewport edges, behind the complete interface. Use `object-fit: cover` with a reviewed focal point. There is no central aspect-ratio card, masked edge, reserved empty media panel or missing-footage label. Keep important scenery away from the left navigation; a strong left readability gradient and quieter bottom veil protect foreground text.
 
-The stage is the visual focus; do not cover its center with KPI tiles. One compact editorial strip below it may show the next published fixture and latest published news, each with a real link. Omit a teaser when no record exists or use a calm factual empty message. The primary CTA is `Připojit se na Discord / Join Discord`, with verified destination. `Přihlášení / Sign in` remains separate from recruitment.
+The background is the visual focus; do not cover its center with KPI tiles. One compact editorial strip in the lower right may show the next published fixture and latest published news, each with a real link. Omit a teaser when no record exists. The primary CTA is `Připojit se na Discord / Join Discord`, with verified destination. `Přihlášení / Sign in` remains separate from recruitment. Playback controls live in the utility footer outside the decorative media layer.
 
 Use plain text navigation at rest. Hover adds a subdued surface and short khaki marker; active destination adds a persistent marker and `aria-current="page"`. A focused item has a visible external ring independent of selection. A 2–4 px marker may move at most 4 px on entry; no layout shift or continuous pulsing. The lower utility row offers motion preference, privacy, credits/asset attribution and links relevant to the shared platform. Do not add `Quit`, game purchase actions or a fake game version.
 
-At desktop heights below 850 px, reduce vertical gaps and start the menu directly below identity. At any height where it will not fit, let the document scroll. Never scale the whole interface down, clip bottom actions, or require fullscreen. On narrow screens the identity/control row is followed by a compact landscape poster/video, then the visible navigation and news/fixture strip in normal document flow. No fixed overlay may hide links behind mobile browser chrome.
+At desktop heights below 850 px, reduce vertical gaps and start the menu directly below identity. At any height where it will not fit, let the document scroll. Never scale the whole interface down, clip bottom actions, or require browser fullscreen. On narrow screens the scene still fills the viewport: identity, visible navigation, news/fixture strip and footer remain in normal document flow above it. No fixed interactive overlay may hide links behind mobile browser chrome.
 
 ## 6. Content-page composition
 
@@ -182,31 +182,31 @@ Card titles may wrap to three lines in grids; detail titles remain complete. Dis
 
 ## 9. Video selection and playback lifecycle
 
-**No HLL clan video has been supplied yet.** Implement the fallback and media lifecycle independently; do not substitute Wardogs video, a stock battle clip, an animated screenshot or a generated soldier. A neutral CSS underlay with the clan crest is an acceptable initial fallback. An owner-approved HLL poster may be added with provenance. The final footage asset acceptance remains open until real media is supplied and inspected.
+**No HLL clan video has been supplied yet.** Keep the configured clip set empty until real recordings arrive; do not substitute Wardogs video, tutorial footage, an animated screenshot or a generated soldier. The default fullscreen poster is `/images/hll/scene-poster.webp`, with provenance in the asset manifest; the CSS underlay and subtle clan crest remain fallback layers. Do not show a production placeholder announcing missing footage. The final footage asset acceptance remains open until real media is supplied and inspected.
 
 The owner wants multiple clips later, randomly selected on a fresh opening and stable while browsing. Use the following precise contract:
 
-1. Server rendering produces deterministic HTML, accessible navigation and a stable default poster/underlay with reserved aspect ratio. Do not call random selection in SSR and hydrate with a different selection. Do not use a random server response that defeats page caching solely for decorative media.
+1. Server rendering produces deterministic HTML, accessible navigation and a stable default poster/underlay covering the viewport without affecting content geometry. Do not call random selection in SSR and hydrate with a different selection. Do not use a random server response that defeats page caching solely for decorative media.
 2. A browser-lifetime provider, mounted above locale/game route transitions where feasible, chooses one valid enabled HLL clip once after hydration on the first HLL entry. If the set is empty, remain on the poster. If there is one clip, choose it. If there are several, equal probability is sufficient; a fresh opening may legitimately choose the same one again.
 3. A fresh full document load/reload is a new selection opportunity. Client-side links, filters, language changes, history traversal, preference dialogs, re-renders, game switches away/back and BFCache restore retain the chosen HLL ID. Do not store the chosen ID persistently in localStorage/sessionStorage if that would prevent fresh-load selection. Store playback preference separately. Preserve selection even when policy prevents playback.
 4. Attach a video source only after evaluating motion/data policy. Use muted, inline playback and one video element; background audio is never enabled. Resolve the play promise. The poster stays until a decoded frame is ready; failed autoplay leaves a usable static page with an explicit play affordance where appropriate.
-5. Keep the selection for the browser lifetime. Returning to the HLL landing resumes the same available element/time where practical; if navigation unmounted the decoder, resuming the same clip is sufficient and must not reroll. Do not run both games' decoders concurrently. Pause when not on the landing, not meaningfully visible, document hidden, user-paused or a dialog requires a calm background.
+5. Keep the selection for the browser lifetime. Mount media in the persistent HLL shell: HLL content routes retain the same element/time, pause it and expose the dimmed poster. A direct content-page load must not attach a video source. Returning to the HLL landing resumes playback only if the shared motion policy allows it. If a game/locale transition unmounts the decoder, preserve the chosen clip and saved position without rerolling. Do not run both games' decoders concurrently. Pause when not on the landing, document hidden or user-paused.
 6. `prefers-reduced-motion: reduce`, available `Save-Data`/`navigator.connection.saveData`, or a user's video-off preference defaults to poster-only with **no video source/preload requests**. Mobile/coarse-pointer layouts default to poster-only and an explicit play control. An intentional local play action can allow the selected clip for that visit, but never silently overrides a later user stop or newly enabled reduced-motion preference. React to preference changes; absence of the Save-Data API is not proof of a fast connection.
-7. Pause/play is an ordinary focusable text/icon button with localized accessible name and current state; keep it outside decorative `aria-hidden` media. A decorative background video is not a screen-reader content item. If the same footage later becomes an editorial player with meaningful sound/information, provide conventional controls and appropriate captions/transcript in that separate context.
+7. On the landing, pause/play is an ordinary focusable text/icon button in the utility footer with localized accessible name and current state; keep it outside decorative `aria-hidden` media. Content-page controls are disabled and explicitly describe the still-image state; they cannot override the reading-page pause rule. With no configured clip, omit playback controls. A decorative background video is not a screen-reader content item. If the same footage later becomes an editorial player with meaningful sound/information, provide conventional controls and appropriate captions/transcript in that separate context.
 8. On network/decode failure try at most one compatible alternate rendition of the **same** clip if policy allows. Otherwise hold the poster, show a restrained playback-unavailable hint next to the control and keep navigation working. No endless retry or random cycling through the entire library. A removed/invalid selected ID falls back to a poster for the visit rather than continual reselection.
 9. Loop the same selected clip if continuous decorative playback is enabled. Do not shuffle at each loop. Preserve the full owner-supplied duration unless the owner approves an edit; do not silently trim a long clip to meet an arbitrary duration target. A content review can request a separate loop edit explicitly.
 
 Each clip needs stable ID, poster, approved rendition list, MIME, dimensions, duration, bytes, focal point, source/rights record and enabled state. Select a compact rendition once for narrow playback and a desktop rendition once for wide playback; avoid redownloading a new rendition on every resize. Use standard browser-compatible encodings confirmed by actual playback. Reuse the repository's media delivery policy: do not place large MP4/WebM/AVI sources in Git. Cloud preview assets and eventual production delivery are separate operations; local file paths are not browser URLs.
 
-Use `object-fit: cover` only with an approved focal point for scenery; use `contain` if the supplied clip has meaningful edge content that would otherwise disappear. No logo, subtitle or score may be cropped inadvertently. Apply a left readability gradient behind the menu and a mild overall veil, preserving footage detail in the stage. Do not blur/filter the moving video continuously on low-end devices; the static content-page poster can be processed or dimmed separately.
+Use `object-fit: cover` only with an approved focal point for scenery; footage with meaningful edge content requires another approved rendition/crop or a separate editorial player. No logo, subtitle or score may be cropped inadvertently. Apply a left readability gradient behind the menu and a mild overall veil, preserving scenery across the viewport. Do not blur/filter the moving video continuously on low-end devices; dim the static content-page poster separately.
 
 ## 10. Responsive, accessibility and motion requirements
 
 | CSS viewport width | Composition |
 |---|---|
-| 1440 px and wider | Open menu; broad stage; 3-column manual/news; full list/detail where useful |
+| 1440 px and wider | Open menu over fullscreen scene; 3-column manual/news; full list/detail where useful |
 | 1024–1439 px | Narrower menu and title; 2-column cards; simplify optional contextual panels before compressing body text |
-| 768–1023 px | Stacked stage/content; compact shared controls; filters above lists; optional detail panels become routable sections |
+| 768–1023 px | Stacked foreground content over fullscreen scene; compact shared controls; filters above lists; optional detail panels become routable sections |
 | Below 768 px | One column; 20 px gutters (16 px at 360–390 widths if needed); visible menu or labeled drawer; poster-first video |
 
 Breakpoints describe behavior, not device detection. At 320 CSS px and 200% text zoom, controls and paragraphs reflow without page-wide horizontal overflow. At 400% zoom on a wide desktop, use the compact layout. Permit bounded horizontal scrolling for genuinely two-dimensional statistics/maps, with a text alternative and labeled region. Respect safe-area insets; use dynamic viewport units only where supported and never fixed-height clipping of content.

@@ -98,3 +98,90 @@ test('field manual editor with source metadata', async ({ browser }) => {
   await expect(page.getByTestId('manual-meta-save')).toBeVisible();
   await shot(page, 'admin-manual-editor-cs-1440x900.png', 'Field manual article editor (full page): the shared rich-text editor, HLL category, publication controls and the source/ordering form (original URL, date, language, credits, review).', 'editor (platform-wide)', true);
 });
+
+test('HLL match editor: rounds and game statistics', async ({ browser }) => {
+  const client = new pg.Client({ connectionString: e2eDatabaseUrl() });
+  await client.connect();
+  const id = (await client.query<{ id: string }>(`select id from match where game = 'hell-let-loose' and is_fixture and status = 'completed' order by starts_at limit 1`)).rows[0]?.id;
+  await client.end();
+  if (!id) throw new Error('No completed HLL match fixture');
+  const page = await open(browser, 'match_manager', `/cs/admin/matches/${id}`, 1440, 1200);
+  await expect(page.locator('[data-statistics-panel]')).toHaveAttribute('data-statistics-state', 'imported');
+  await page.locator('[data-rounds-editor]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await page.evaluate(() => window.scrollBy(0, -80));
+  await page.screenshot({ path: path.join(outDir, 'admin-hll-match-rounds-cs-1440x1200.png'), animations: 'disabled', caret: 'hide' });
+  captures.push({
+    file: 'admin-hll-match-rounds-cs-1440x1200.png',
+    caption: 'Match editor for a completed synthetic HLL match: the HLL round with a map field backed by the official HLL map list, Warfare/Offensive/Skirmish mode, Allies/Axis side and 0–5 sector scores, followed by the start of the game statistics panel.',
+    viewport: '1440x1200',
+    uiLocale: 'cs',
+    role: 'match_manager',
+  });
+  await page.locator('[data-group="statistics"]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await page.evaluate(() => window.scrollBy(0, -80));
+  await page.screenshot({ path: path.join(outDir, 'admin-hll-match-statistics-cs-1440x1200.png'), animations: 'disabled', caret: 'hide' });
+  captures.push({
+    file: 'admin-hll-match-statistics-cs-1440x1200.png',
+    caption: 'Game statistics panel of the same match: the imported synthetic scoreboard (source, game time, import time, 12 players, player rows public), team totals for Valkyria (Spojenci) and the opponent (Osa), side and publication settings, and the start of the replacement import form (the configured synthetic CRCON server by game ID, or an uploaded scoreboard JSON).',
+    viewport: '1440x1200',
+    uiLocale: 'cs',
+    role: 'match_manager',
+  });
+  await page.locator('[data-statistics-import]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await page.evaluate(() => window.scrollBy(0, -80));
+  await page.getByLabel(/^ID hry v CRCON/).fill('1234');
+  await shot(page, 'admin-hll-match-statistics-import-cs-1440x1200.png', 'Replacement import in the same panel: the configured synthetic CRCON server is selected, game ID 1234 entered, with the Valkyria side and the player-publication choice; submitting downloads get_map_scoreboard from that server (exercised end to end in admin-hll-matches.spec.ts against the loopback CRCON mock). Not submitted here.', 'match_manager');
+});
+
+test('HLL FAQ after the Czech publication; English still unpublished', async ({ browser }) => {
+  // Runs after admin-faq.spec.ts (chromium-admin), which publishes only the Czech FAQ.
+  const views = [
+    {
+      url: '/cs/hll/faq',
+      file: 'hll-faq-cs-1440x900.png',
+      width: 1440,
+      height: 900,
+      fullPage: true,
+      published: 'true',
+      caption:
+        'HLL FAQ /cs/hll/faq (full page) after an editor published the Czech version in the e2e run: FAQ in the HLL section bar, the question index in the editor’s order linking to each answer, then the answers. The first answer is a synthetic test answer; the others still show the seeded “answer in preparation” placeholder, because the seed stores only the legacy question topics as an unpublished draft.',
+    },
+    {
+      url: '/cs/hll/faq#jak-ziskat-vip-na-nasich-serverech',
+      file: 'hll-faq-anchor-cs-390x844.png',
+      width: 390,
+      height: 844,
+      fullPage: false,
+      published: 'true',
+      caption: 'The same FAQ on a 390×844 phone after following the “Jak získat VIP na našich serverech?” index link: the page opens at that question.',
+    },
+    {
+      url: '/en/hll/faq',
+      file: 'hll-faq-unpublished-en-1366x768.png',
+      width: 1366,
+      height: 768,
+      fullPage: false,
+      published: 'false',
+      caption: 'English FAQ /en/hll/faq at the same time: the English translation is published separately and is still a draft, so the page shows the honest unpublished state (no Czech text, no draft outline).',
+    },
+  ] as const;
+  for (const view of views) {
+    const english = view.url.startsWith('/en');
+    const context = await browser.newContext({
+      viewport: { width: view.width, height: view.height },
+      deviceScaleFactor: 1,
+      locale: english ? 'en-GB' : 'cs-CZ',
+      timezoneId: 'Europe/Prague',
+      isMobile: view.width < 768,
+      hasTouch: view.width < 768,
+    });
+    const page = await context.newPage();
+    await page.goto(view.url);
+    await expect(page.locator('[data-core-page="faq"]')).toHaveAttribute('data-published', view.published);
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState('networkidle');
+    await page.screenshot({ path: path.join(outDir, view.file), animations: 'disabled', caret: 'hide', fullPage: view.fullPage });
+    captures.push({ file: view.file, caption: view.caption, viewport: `${view.width}x${view.height}${view.fullPage ? ' (full page)' : ''}`, uiLocale: english ? 'en' : 'cs', role: 'visitor' });
+    await context.close();
+  }
+});

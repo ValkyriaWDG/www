@@ -64,8 +64,10 @@ const serverEnvSchema = z.object({
   BACKGROUND_MEDIA_ALLOWED_ORIGINS: z.string().default(''),
   /** Reviewed HLL stage clip set (JSON array, see modules/hll/media.ts); empty until owner footage is approved. */
   HLL_BACKGROUND_CLIPS_JSON: z.string().default('[]'),
-  /** Game-server status source: none until an authorized provider is approved; `synthetic-fixture` for development/tests. */
-  SERVER_STATUS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['none', 'synthetic-fixture']).default('none')),
+  /** Game-server status source: `none` by default; `crcon` reads HLL_SERVER_SOURCES_JSON; `synthetic-fixture` for development/tests. */
+  SERVER_STATUS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['none', 'crcon', 'synthetic-fixture']).default('none')),
+  /** HLL servers for the `crcon` source (JSON array, see modules/integrations/servers/crcon.ts). Never commit real hosts. */
+  HLL_SERVER_SOURCES_JSON: z.string().default('[]'),
   SERVER_STATUS_FIXTURE_SCENARIO: z.preprocess(emptyToUndefined, z.enum(['mixed', 'unavailable', 'empty']).default('mixed')),
   /** Legacy HLL hostnames routed here at the domain cutover; read by proxy.ts (empty = inactive). */
   LEGACY_HLL_HOSTS: z.string().default(''),

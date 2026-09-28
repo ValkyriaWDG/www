@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/co
 
 const CONTENT_LOCALES = ['cs', 'en'] as const;
 
-/** Core static pages (clan, community, privacy) with per-language publication state. */
+/** Core static pages (clan, community, privacy, faq) with per-language publication state. */
 export default async function AdminContentPage({ params }: PageProps<'/[locale]/admin/content'>) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();

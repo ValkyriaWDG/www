@@ -49,6 +49,7 @@ const baseMatch = {
   coverAssetId: null,
   internalNotes: 'private',
   rounds: [],
+  statistics: null,
   recapDetail: {} as AdminMatch['recapDetail'],
   createdAt: '2026-09-26T10:00:00.000Z',
 } as AdminMatch;

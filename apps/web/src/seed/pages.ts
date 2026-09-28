@@ -208,7 +208,62 @@ const privacy: Record<Locale, SeedPageCopy> = {
   },
 };
 
+/*
+ * FAQ outline for editors: the question topics of the legacy valkyriahll.cz FAQ
+ * (docs/product/hll/legacy-migration.md), without answers. Legacy answers (age limits,
+ * training frequency, VIP thresholds) are not confirmed policy, so the seed stores this
+ * only as an unpublished draft; editors write and publish the answers.
+ */
+const FAQ_PENDING = { cs: 'Odpověď připravujeme.', en: 'We are preparing this answer.' } as const;
+const FAQ_QUESTIONS: Record<Locale, string[]> = {
+  cs: [
+    'Jak se přidat do Valkyrie?',
+    'Jak získat VIP na našich serverech?',
+    'Pořádáte tréninky?',
+    'Jaké jsou požadavky na přijetí?',
+    'Hrajete soutěžní zápasy?',
+    'Jak často pořádáte akce?',
+    'Potřebuji zkušenosti s Hell Let Loose?',
+    'Jak spolu komunikujeme?',
+    'Jaká jsme komunita?',
+    'Kolik času musím hraní věnovat?',
+    'Na čem nám záleží?',
+  ],
+  en: [
+    'How do I join Valkyria?',
+    'How do I get VIP on our servers?',
+    'Do you run training sessions?',
+    'What are the requirements to join?',
+    'Do you play competitive matches?',
+    'How often do you hold events?',
+    'Do I need Hell Let Loose experience?',
+    'How do we communicate?',
+    'What kind of community are we?',
+    'How much time do I need to commit?',
+    'What do we value?',
+  ],
+};
+const faq: Record<Locale, SeedPageCopy> = {
+  cs: {
+    title: 'Časté dotazy',
+    excerpt: 'Odpovědi na nejčastější otázky o Valkyrii, náboru a hraní Hell Let Loose.',
+    seoTitle: 'Časté dotazy',
+    seoDescription: 'Nejčastější otázky o komunitě Valkyria, náboru, VIP a hraní Hell Let Loose.',
+    body: doc(...FAQ_QUESTIONS.cs.flatMap((question) => [h2(question), p(FAQ_PENDING.cs)])),
+  },
+  en: {
+    title: 'Frequently asked questions',
+    excerpt: 'Answers to the most common questions about Valkyria, joining and playing Hell Let Loose.',
+    seoTitle: 'Frequently asked questions',
+    seoDescription: 'The most common questions about the Valkyria community, joining, VIP and playing Hell Let Loose.',
+    body: doc(...FAQ_QUESTIONS.en.flatMap((question) => [h2(question), p(FAQ_PENDING.en)])),
+  },
+};
+
 /** Core static pages; both locales are required for launch. The route slug equals the page key. */
-export const SEED_PAGES: Record<PageKey, Record<Locale, SeedPageCopy>> = { clan, community, privacy };
+export const SEED_PAGES: Record<PageKey, Record<Locale, SeedPageCopy>> = { clan, community, privacy, faq };
+
+/** Pages the seed creates only as unpublished drafts (no reviewed public copy exists yet). */
+export const SEED_DRAFT_ONLY_PAGES: ReadonlySet<PageKey> = new Set<PageKey>(['faq']);
 
 export const SEED_AUTHOR_LABEL = 'Valkyria';

@@ -113,7 +113,7 @@ test.describe('presskit illustrations', () => {
     await expect(frameOf(page, 'flying').locator('figcaption')).toHaveText(/does not show a Valkyria event/);
   });
 
-  test('coverless Wardogs posts show the unchanged game wordmark; other games keep text', async ({ page }) => {
+  test('coverless posts use their own game artwork without mixing HLL and Wardogs', async ({ page }) => {
     await page.goto('/cs/news');
     const wardogs = page.locator('[data-placeholder-game="wardogs"]').first();
     await expect(wardogs.locator('img')).toHaveAttribute('src', '/presskit/wardogs-fullmark-white.svg');
@@ -129,9 +129,22 @@ test.describe('presskit illustrations', () => {
     expect(mark.widthShare).toBeLessThanOrEqual(0.63);
     expect(mark.heightShare).toBeLessThan(1);
     expect(mark.ratio).toBeCloseTo(2467 / 489, 0);
+    await expect(wardogs.locator('img[src^="/images/hll/"]')).toHaveCount(0);
     await page.goto('/cs/news?game=hell-let-loose');
-    const hll = page.locator('[data-placeholder-game="hell-let-loose"]');
-    if ((await hll.count()) > 0) await expect(hll.first().locator('img')).toHaveCount(0);
+    const hllCard = page.locator(`[data-news-card="${FIXTURE_SLUGS.news.listingCs[1]}"]`);
+    await expect(hllCard).toHaveAttribute('data-news-scope', 'hell-let-loose');
+    const hll = hllCard.locator('[data-placeholder-game="hell-let-loose"]');
+    await expect(hll).toBeVisible();
+    await expect(hll).toHaveAttribute('aria-hidden', 'true');
+    await expect(hll.locator('img')).toHaveCount(2);
+    for (const source of ['/images/hll/news.webp', '/brand/valkyria-emblem-733.webp']) {
+      const image = hll.locator(`img[src="${source}"]`);
+      await expect(image).toHaveAttribute('alt', '');
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate(async (img: HTMLImageElement) => { await img.decode(); });
+      await expect.poll(() => image.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+    }
+    await expect(hllCard.locator('img[src^="/presskit/"]')).toHaveCount(0);
   });
 });
 

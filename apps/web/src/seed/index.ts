@@ -12,7 +12,7 @@ import {
 import { and, eq } from 'drizzle-orm';
 import type { Actor } from '../modules/access/types';
 import { recordAudit } from '../modules/audit/audit';
-import { SEED_AUTHOR_LABEL, SEED_PAGES } from './pages';
+import { SEED_AUTHOR_LABEL, SEED_DRAFT_ONLY_PAGES, SEED_PAGES } from './pages';
 import { imageAssetIds, SEED_RICH_TEXT_SCHEMA_VERSION } from './rich-text';
 import { SEED_CATEGORIES, SEED_MANUAL_CATEGORIES } from './taxonomy';
 
@@ -20,7 +20,8 @@ import { SEED_CATEGORIES, SEED_MANUAL_CATEGORIES } from './taxonomy';
  * Production seed: reviewed public content only, inserted when missing by stable keys
  * (page key + locale, taxonomy kind + key). Existing rows are never updated, so content
  * edited by administrators is preserved and re-running changes nothing. No accounts,
- * grants, fixtures or settings are created.
+ * grants, fixtures or settings are created. Pages without reviewed copy (the FAQ) are
+ * created as unpublished drafts only.
  */
 
 export type SeedReport = { inserted: string[]; skipped: string[] };
@@ -74,6 +75,7 @@ async function seedPage(db: Database, pageKey: (typeof PAGE_KEYS)[number], repor
         continue;
       }
       const copy = SEED_PAGES[pageKey][locale];
+      const publish = !SEED_DRAFT_ONLY_PAGES.has(pageKey);
       const [translation] = await tx
         .insert(contentTranslation)
         .values({ documentId: document!.id, locale, namespace: 'page', draftSlug: pageKey })
@@ -100,14 +102,11 @@ async function seedPage(db: Database, pageKey: (typeof PAGE_KEYS)[number], repor
         .returning({ id: contentRevision.id });
       await tx
         .update(contentTranslation)
-        .set({
-          draftRevisionId: revision!.id,
-          publishedRevisionId: revision!.id,
-          liveSlug: pageKey,
-          publishedAt: now,
-          firstPublishedAt: now,
-          updatedAt: now,
-        })
+        .set(
+          publish
+            ? { draftRevisionId: revision!.id, publishedRevisionId: revision!.id, liveSlug: pageKey, publishedAt: now, firstPublishedAt: now, updatedAt: now }
+            : { draftRevisionId: revision!.id, updatedAt: now },
+        )
         .where(eq(contentTranslation.id, translation!.id));
       await recordAudit(tx, {
         actor: SEED_ACTOR,
@@ -117,9 +116,9 @@ async function seedPage(db: Database, pageKey: (typeof PAGE_KEYS)[number], repor
         entityId: document!.id,
         translationId: translation!.id,
         locale,
-        summary: { pageKey, revisionId: revision!.id },
+        summary: { pageKey, revisionId: revision!.id, published: publish },
       });
-      report.inserted.push(label);
+      report.inserted.push(publish ? label : `${label} draft`);
     }
   });
 }

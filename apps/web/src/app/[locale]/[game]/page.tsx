@@ -14,12 +14,18 @@ import { getServerEnv } from '@/lib/env';
 import { GAME_REGISTRY, isGameRoute } from '@/modules/games/registry';
 import { canonicalMatchPath, gamePath } from '@/modules/games/routes';
 import { getNextPublicMatch } from '@/modules/matches/queries';
+import { sharingMetadata } from '@/modules/social/metadata';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/[game]'>): Promise<Metadata> {
   const { locale, game } = await params;
   if (!hasLocale(routing.locales, locale) || !isGameRoute(game)) return {};
   const t = await getTranslations({ locale, namespace: `games.${game}.meta` });
-  return { title: { absolute: t('title') }, description: t('description'), alternates: bilingualAlternates(locale, gamePath(game)) };
+  const sharing = sharingMetadata(locale, 'site', undefined, undefined, t('title'), t('description'), game);
+  return {
+    title: { absolute: t('title') }, description: t('description'), alternates: bilingualAlternates(locale, gamePath(game)),
+    openGraph: { type: 'website', title: t('title'), description: t('description'), url: `/${locale}${gamePath(game)}`, siteName: 'Valkyria', locale: locale === 'cs' ? 'cs_CZ' : 'en_GB', images: sharing.images },
+    twitter: sharing.twitter,
+  };
 }
 
 /**

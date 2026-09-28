@@ -6,7 +6,9 @@ next-env.d.ts
 dist/
 coverage/
 playwright-report/
+playwright-report-hll-artwork/
 test-results/
+test-results-hll-artwork/
 .turbo/
 *.tsbuildinfo
 *.log

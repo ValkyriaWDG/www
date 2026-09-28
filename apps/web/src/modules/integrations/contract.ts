@@ -6,7 +6,7 @@ import type { GameRoute } from '@/modules/games/registry';
  * boundary types, not a claim about Logi's wire format. Every projection carries its
  * source identity, observation time and freshness; missing values stay `null`.
  */
-export const INTEGRATION_CONTRACT_VERSION = '0.2';
+export const INTEGRATION_CONTRACT_VERSION = '0.3';
 
 export type Freshness = 'fresh' | 'stale' | 'unavailable';
 export type SourceKind = 'logi' | 'crcon' | 'synthetic';
@@ -63,11 +63,20 @@ export type ServerSnapshot = {
   mode: string | null;
   players: number | null;
   capacity: number | null;
+  /** Following layer in the rotation, when reported. */
+  nextMap: string | null;
+  /** Round time left at `observedAt` (only while the observation is fresh). */
+  timeRemainingSeconds: number | null;
+  /** Sectors held per side and players per team at `observedAt` (only while fresh). */
+  score: { allied: number; axis: number } | null;
+  teams: { allied: number; axis: number } | null;
   /** When the source observed these values (ISO 8601). */
   observedAt: string | null;
   freshness: Freshness;
   /** Approved public join information; never a password or an administrative endpoint. */
   connect: { kind: 'none' } | { kind: 'address'; address: string };
+  /** Configured public live-statistics page for this server. */
+  statsUrl: string | null;
 };
 
 /** Collector health: not proof of the hosted bot process or Discord health. */

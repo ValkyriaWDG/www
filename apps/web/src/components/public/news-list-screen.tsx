@@ -29,7 +29,7 @@ export async function newsListMetadata(locale: AppLocale, query: RawSearchParams
   const t = await getTranslations({ locale, namespace: 'news.meta' });
   const games = await getTranslations({ locale, namespace: 'games' });
   const title = game ? games('sectionTitle', { section: t('title'), game: games(`names.${game}`) }) : t('title');
-  const sharing = sharingMetadata(locale, 'news', undefined, undefined, title, t('description'));
+  const sharing = sharingMetadata(locale, 'news', undefined, undefined, title, t('description'), game ?? undefined);
   return {
     title,
     description: t('description'),

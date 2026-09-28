@@ -40,7 +40,7 @@ describe('game registry', () => {
   });
 
   it('exposes the HLL menu order and keeps the Wardogs order', () => {
-    expect(gameMenu('hll').map((item) => item.section)).toEqual(['news', 'matches', 'servers', 'members', 'field-manual', 'clan', 'community']);
+    expect(gameMenu('hll').map((item) => item.section)).toEqual(['news', 'matches', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community']);
     expect(gameMenu('wardogs').map((item) => item.href)).toEqual([
       '/wardogs/news',
       '/wardogs/clan',

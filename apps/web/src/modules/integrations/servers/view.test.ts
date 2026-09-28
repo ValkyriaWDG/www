@@ -11,9 +11,14 @@ const server = (publicId: string, patch: Partial<ServerSnapshot> = {}): ServerSn
   mode: null,
   players: null,
   capacity: null,
+  nextMap: null,
+  timeRemainingSeconds: null,
+  score: null,
+  teams: null,
   observedAt: null,
   freshness: 'unavailable',
   connect: { kind: 'none' },
+  statsUrl: null,
   ...patch,
 });
 

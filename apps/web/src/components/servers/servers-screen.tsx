@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
+import { ExternalLink } from '@/components/public/external-link';
 import { firstParam, type RawSearchParams } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
 import { DetailPane, EmptyState, FeedbackNotice, GameButton, PageHeader, SelectionTable, StatusBadge, type SelectionColumn, type StatusKind } from '@/components/ui';
@@ -24,7 +25,11 @@ const FRESHNESS_KIND: Record<Freshness, StatusKind> = { fresh: 'success', stale:
  * known rows marked stale), no selection, a removed selection, and selected.
  */
 export async function ServersScreen({ locale, game, query }: { locale: AppLocale; game: GameRoute; query: RawSearchParams | undefined }) {
-  const [t, games] = await Promise.all([getTranslations({ locale, namespace: 'games.servers' }), getTranslations({ locale, namespace: 'games' })]);
+  const [t, games, common] = await Promise.all([
+    getTranslations({ locale, namespace: 'games.servers' }),
+    getTranslations({ locale, namespace: 'games' }),
+    getTranslations({ locale, namespace: 'common.external' }),
+  ]);
   const overview = await getServerOverview(game);
   const base = `${gamePath(game)}/servers`;
   const servers = overview.state === 'not_configured' ? [] : overview.servers;
@@ -49,6 +54,13 @@ export async function ServersScreen({ locale, game, query }: { locale: AppLocale
         </span>
       </span>
     );
+  };
+  const remaining = (seconds: number | null): ReactNode => {
+    if (seconds === null) return dash;
+    const minutes = Math.round(seconds / 60);
+    return minutes >= 60
+      ? t('detail.timeValueHours', { hours: Math.floor(minutes / 60), minutes: minutes % 60 })
+      : t('detail.timeValueMinutes', { minutes });
   };
   const observed = (server: ServerSnapshot) =>
     server.observedAt ? t('observed', { time: formatDate(server.observedAt, locale, 'dateTimeZone') }) : t('neverObserved');
@@ -131,7 +143,14 @@ export async function ServersScreen({ locale, game, query }: { locale: AppLocale
           metadata={[
             { label: t('detail.map'), value: selected.map ?? dash },
             { label: t('detail.mode'), value: selected.mode ?? dash },
+            { label: t('detail.nextMap'), value: selected.nextMap ?? dash },
+            { label: t('detail.timeRemaining'), value: remaining(selected.timeRemainingSeconds) },
+            {
+              label: t('detail.score'),
+              value: selected.score ? <span data-server-score="">{t('detail.scoreValue', selected.score)}</span> : dash,
+            },
             { label: t('detail.population'), value: population(selected) },
+            { label: t('detail.teams'), value: selected.teams ? t('detail.teamsValue', selected.teams) : dash },
             { label: t('detail.reachability'), value: t(`reachability.${selected.reachability}`) },
             { label: t('detail.freshness'), value: freshness(selected) },
             {
@@ -156,6 +175,13 @@ export async function ServersScreen({ locale, game, query }: { locale: AppLocale
               <p className={styles.connectNone}>{t('detail.noConnect')}</p>
             )}
             <p className={styles.connectNote}>{t('detail.pingNote')}</p>
+            {selected.statsUrl ? (
+              <p className={styles.connectRow}>
+                <ExternalLink href={selected.statsUrl} externalLabel={common('suffix')} variant="button" data-server-stats="">
+                  {t('detail.liveStats')}
+                </ExternalLink>
+              </p>
+            ) : null}
           </section>
         </DetailPane>
       );
@@ -183,6 +209,13 @@ export async function ServersScreen({ locale, game, query }: { locale: AppLocale
         <p className={styles.synthetic} data-synthetic-data="">
           {t('synthetic')}
         </p>
+      ) : null}
+      {overview.state === 'ok' && overview.partial ? (
+        <div className={styles.notice} data-server-source="partial">
+          <FeedbackNotice kind="warning" title={t('partial.title')} live={false}>
+            <p>{t('partial.body')}</p>
+          </FeedbackNotice>
+        </div>
       ) : null}
       {overview.state === 'unavailable' ? (
         <div className={styles.notice} data-server-source="unavailable">

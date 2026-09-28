@@ -20,8 +20,8 @@ import { GAMES, LOCALES, createdAt, sqlList, tz, updatedAt, type Game, type Loca
 export const DOCUMENT_KINDS = ['news', 'page', 'manual'] as const;
 export type DocumentKind = (typeof DOCUMENT_KINDS)[number];
 
-/** Fixed keys for core static pages rendered at `/clan`, `/community`, `/privacy`. */
-export const PAGE_KEYS = ['clan', 'community', 'privacy'] as const;
+/** Fixed keys for core static pages rendered at `/clan`, `/community`, `/privacy`, `/faq`. */
+export const PAGE_KEYS = ['clan', 'community', 'privacy', 'faq'] as const;
 export type PageKey = (typeof PAGE_KEYS)[number];
 
 export const REVISION_KINDS = ['autosave', 'save', 'restore', 'seed'] as const;

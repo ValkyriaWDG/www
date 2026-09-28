@@ -1,10 +1,11 @@
 import 'server-only';
-import { match, matchResult, matchRound, type AssetScope, type Executor, type MatchStatus } from '@valkyria/db';
+import { match, matchResult, matchRound, type AssetScope, type Executor, type Game, type MatchStatus } from '@valkyria/db';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
 import type { Capability } from '@/modules/access/capabilities';
 import { actorUserId } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
+import { roundIssuesForGame } from '@/modules/games/hll-catalog';
 import { recordAudit } from '@/modules/audit/audit';
 import { assertUsableAssets } from '@/modules/prose/assets';
 import { assertVersion, authorize, authorizeGames, isUniqueViolation, parseInput } from '@/modules/prose/domain';
@@ -103,6 +104,12 @@ async function replaceRounds(db: Executor, matchId: string, rounds: NormalizedRo
   if (rounds.length > 0) await db.insert(matchRound).values(rounds.map((round) => ({ ...round, matchId })));
 }
 
+/** Game-specific round rules (HLL: Allies/Axis side, 0–5 sector scores). */
+function assertRoundsForGame(game: Game, rounds: NormalizedRound[]) {
+  const issues = roundIssuesForGame(game, rounds);
+  if (Object.keys(issues).length > 0) throw new DomainError('validation', 'Rounds do not match the game rules.', issues);
+}
+
 function roundsHaveScores(rounds: NormalizedRound[]) {
   return rounds.some((round) => round.scoreValkyria !== null || round.scoreOpponent !== null || (round.outcome !== null && round.outcome !== 'unknown'));
 }
@@ -187,6 +194,7 @@ export async function updateMatch(db: Executor, actor: Actor, input: UpdateMatch
       // Moving a match to another game needs the capability in both games.
       const games = data.game !== undefined && data.game !== current.game ? [current.game, data.game] : [current.game];
       await authorizeGames(db, actor, 'matches.edit', games, { action: 'match.update', entityType: 'match', entityId: current.id });
+      if (data.rounds) assertRoundsForGame(data.game ?? current.game, data.rounds);
       if (data.rounds && current.status !== 'completed' && roundsHaveScores(data.rounds)) {
         throw new DomainError('validation', 'Round scores require a completed match.', { rounds: 'scores_require_completed' });
       }
@@ -400,6 +408,7 @@ export async function recordResult(db: Executor, actor: Actor, input: RecordResu
     const current = await lockMatch(tx, data.id, data.expectedVersion);
     await authorizeGames(db, actor, 'matches.edit', [current.game], { action: 'match.result', entityType: 'match', entityId: current.id });
     if (current.status === 'cancelled') throw new DomainError('invalid_state', 'A cancelled match has no result.', { status: 'cancelled' });
+    if (data.rounds) assertRoundsForGame(current.game, data.rounds);
     const now = new Date();
     requireNotFarFuture(current, now);
     const [previous] = await tx.select().from(matchResult).where(eq(matchResult.matchId, current.id)).limit(1);

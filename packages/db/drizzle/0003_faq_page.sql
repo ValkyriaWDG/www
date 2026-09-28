@@ -1,0 +1,2 @@
+ALTER TABLE "content_document" DROP CONSTRAINT "content_document_page_key_ck";--> statement-breakpoint
+ALTER TABLE "content_document" ADD CONSTRAINT "content_document_page_key_ck" CHECK (("content_document"."kind" = 'page' and "content_document"."page_key" in ('clan', 'community', 'privacy', 'faq')) or ("content_document"."kind" in ('news', 'manual') and "content_document"."page_key" is null));

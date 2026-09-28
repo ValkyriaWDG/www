@@ -5,11 +5,13 @@ import { DetailPane } from '@/components/ui/panels';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
+import { isHllSide } from '@/modules/games/hll-catalog';
 import { canonicalMatchPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge } from './match-parts';
+import { MatchStatistics } from './match-statistics';
 import styles from './matches.module.css';
 
 /**
@@ -148,7 +150,7 @@ export async function MatchDetailPane({
                             <td data-numeric="">{round.ordinal}</td>
                             {showRoundColumn.map ? <td>{round.mapName ?? '—'}</td> : null}
                             {showRoundColumn.mode ? <td>{round.mode ?? '—'}</td> : null}
-                            {showRoundColumn.side ? <td>{round.side ?? '—'}</td> : null}
+                            {showRoundColumn.side ? <td>{isHllSide(round.side) ? t(`detail.sides.${round.side}`) : (round.side ?? '—')}</td> : null}
                             <td data-numeric="">
                               {score ?? (
                                 <>
@@ -165,6 +167,9 @@ export async function MatchDetailPane({
                   </table>
                 </div>
               </section>
+            ) : null}
+            {match.statistics ? (
+              <MatchStatistics statistics={match.statistics} locale={locale} titleId={titleId} opponentLabel={match.opponentShortCode ?? match.opponentName} />
             ) : null}
             {eventUrl || vods.length > 0 ? (
               <section className={styles.block} aria-labelledby={`${titleId}-links`} data-match-links="">

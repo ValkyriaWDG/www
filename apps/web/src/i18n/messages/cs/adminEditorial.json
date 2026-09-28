@@ -350,7 +350,8 @@
     "keys": {
       "clan": "Klan",
       "community": "Komunita",
-      "privacy": "Ochrana soukromí"
+      "privacy": "Ochrana soukromí",
+      "faq": "Časté dotazy"
     }
   },
   "fieldErrors": {

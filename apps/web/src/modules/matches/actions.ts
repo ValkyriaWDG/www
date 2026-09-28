@@ -24,7 +24,14 @@ import {
   unpublishMatch,
   updateMatch,
 } from './service';
-import type { AdminMatch } from './types';
+import {
+  importMatchStatistics,
+  removeMatchStatistics,
+  updateMatchStatisticsSettings,
+  type ImportStatisticsInput,
+  type StatisticsSettingsInput,
+} from './statistics-service';
+import type { AdminMatch, MatchStatisticsView } from './types';
 
 /*
  * Server actions of the match administration. Every action authorizes on the server
@@ -226,6 +233,46 @@ export async function unpublishMatchRecapAction(input: { matchId: string; locale
       await unpublishProse(getDb(), actor, { owner: { kind: 'match', id: target.matchId }, locale: target.locale, expectedVersion: target.expectedVersion });
       revalidateMatchViews();
       return recapDetail(actor, target.matchId, target.locale);
+    },
+    'matchId',
+  );
+}
+
+/** Imports (or replaces) the CRCON statistics of an HLL match from a configured server or an uploaded scoreboard. */
+export async function importMatchStatisticsAction(input: ImportStatisticsInput): Promise<ActionResult<MatchStatisticsView>> {
+  return run(
+    input,
+    { capability: 'matches.edit', action: 'match.statistics.import' },
+    async (actor) => {
+      const result = await importMatchStatistics(getDb(), actor, input);
+      revalidateMatchViews();
+      return result;
+    },
+    'matchId',
+  );
+}
+
+export async function updateMatchStatisticsSettingsAction(input: StatisticsSettingsInput): Promise<ActionResult<MatchStatisticsView>> {
+  return run(
+    input,
+    { capability: 'matches.edit', action: 'match.statistics.update' },
+    async (actor) => {
+      const result = await updateMatchStatisticsSettings(getDb(), actor, input);
+      revalidateMatchViews();
+      return result;
+    },
+    'matchId',
+  );
+}
+
+export async function removeMatchStatisticsAction(input: { matchId: string }): Promise<ActionResult<{ matchId: string }>> {
+  return run(
+    input,
+    { capability: 'matches.edit', action: 'match.statistics.remove' },
+    async (actor) => {
+      const result = await removeMatchStatistics(getDb(), actor, input);
+      revalidateMatchViews();
+      return result;
     },
     'matchId',
   );

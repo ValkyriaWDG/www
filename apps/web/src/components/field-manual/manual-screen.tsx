@@ -1,6 +1,7 @@
 import type { Executor, Game, Locale } from '@valkyria/db';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { getHllManualArtwork } from '@/components/hll/artwork';
 import { bilingualAlternates } from '@/components/public/metadata';
 import { ListLoadError } from '@/components/public/list-load-error';
 import newsStyles from '@/components/public/news.module.css';
@@ -63,8 +64,9 @@ export async function manualListMetadata(locale: AppLocale, game: GameRoute, que
 }
 
 function ArticleCard({ item, game, priority }: { item: ManualSummary; game: GameRoute; priority: boolean }) {
+  const artwork = !item.cover ? getHllManualArtwork(game, item.category?.key) : null;
   return (
-    <article className={styles.articleCard} data-manual-article={item.slug} data-has-cover={item.cover ? 'true' : 'false'}>
+    <article className={styles.articleCard} data-manual-article={item.slug} data-has-cover={item.cover || artwork ? 'true' : 'false'}>
       {item.cover ? (
         <div className={styles.articleMedia}>
           {/* eslint-disable-next-line @next/next/no-img-element -- publication-aware media route */}
@@ -76,6 +78,11 @@ function ArticleCard({ item, game, priority }: { item: ManualSummary; game: Game
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
           />
+        </div>
+      ) : artwork ? (
+        <div className={styles.articleMedia} data-decorative-artwork="">
+          {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; category title names the decorative art */}
+          <img src={artwork.src} alt="" width={artwork.width} height={artwork.height} style={{ objectPosition: artwork.objectPosition }} loading={priority ? 'eager' : 'lazy'} decoding="async" />
         </div>
       ) : null}
       <div className={styles.articleBody}>
@@ -91,12 +98,16 @@ function ArticleCard({ item, game, priority }: { item: ManualSummary; game: Game
   );
 }
 
-function CategoryCard({ category, cover, href, countLabel }: { category: ManualCategorySummary; cover: ManualSummary['cover']; href: string; countLabel: string }) {
+function CategoryCard({ category, cover, game, href, countLabel }: { category: ManualCategorySummary; cover: ManualSummary['cover']; game: GameRoute; href: string; countLabel: string }) {
+  const artwork = !cover ? getHllManualArtwork(game, category.key) : null;
   return (
-    <article className={styles.categoryCard} data-manual-category={category.key} data-has-cover={cover ? '' : undefined}>
+    <article className={styles.categoryCard} data-manual-category={category.key} data-has-cover={cover || artwork ? '' : undefined}>
       {cover ? (
         // eslint-disable-next-line @next/next/no-img-element -- publication-aware media route; decorative behind the label
         <img className={styles.categoryImage} src={mediaUrl(cover.assetId, 'thumb')} alt="" width={cover.width} height={cover.height} loading="lazy" decoding="async" />
+      ) : artwork ? (
+        // eslint-disable-next-line @next/next/no-img-element -- registered static WebP; decorative behind the category label
+        <img className={styles.categoryImage} src={artwork.src} alt="" width={artwork.width} height={artwork.height} style={{ objectPosition: artwork.objectPosition }} loading="lazy" decoding="async" data-decorative-artwork="" />
       ) : null}
       <div className={styles.categoryText}>
         <h2 className={styles.categoryTitle}>
@@ -168,6 +179,7 @@ export async function ManualScreen({ locale, game, query }: { locale: AppLocale;
             <CategoryCard
               category={category}
               cover={firstCover.get(category.key) ?? null}
+              game={game}
               href={manualListHref(game, { category: category.key })}
               countLabel={t('articleCount', { count: category.count })}
             />

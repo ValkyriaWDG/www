@@ -121,8 +121,8 @@ The runner:
    loads clearly synthetic content with the dev-only fixture CLI and serves it through
    the previous image. The dev fixture CLI is bind-mounted for the test, not shipped.
    It runs with `--schema-compatible`, so it loads every fixture group the older schema
-   can store and the report names the skipped groups (the field manual needs the
-   unified-platform migration). Without that flag a missing table fails the load.
+   can store and the report names the skipped groups (the field manual and match
+   statistics need newer migrations). Without that flag a missing table fails the load.
 3. Makes a logical database backup and records every table's count/content fingerprint
    plus the delivered published media hash.
 4. Applies candidate migrations explicitly, verifies a repeated run applies zero,

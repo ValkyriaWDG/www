@@ -126,6 +126,70 @@
     },
     "links": "Links",
     "event": "Event page",
-    "versusBanner": "Valkyria versus {opponent}"
+    "versusBanner": "Valkyria versus {opponent}",
+    "sides": {
+      "allies": "Allies",
+      "axis": "Axis"
+    }
+  },
+  "statistics": {
+    "title": "Match statistics",
+    "summaryCaption": "Team totals",
+    "metric": "Metric",
+    "valkyria": "Valkyria ({side})",
+    "valkyriaShort": "Valkyria",
+    "opponent": "{name} ({side})",
+    "sides": {
+      "allies": "Allies",
+      "axis": "Axis"
+    },
+    "metrics": {
+      "players": "Players",
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "teamkills": "Team kills",
+      "combat": "Combat",
+      "offense": "Offense",
+      "defense": "Defense",
+      "support": "Support"
+    },
+    "killsByType": "Kills by weapon type",
+    "weaponType": "Weapon type",
+    "weaponTypes": {
+      "infantry": "Infantry weapons",
+      "machine_gun": "Machine guns",
+      "sniper": "Sniper rifles",
+      "grenade": "Grenades",
+      "bazooka": "Anti-tank weapons",
+      "pak": "Anti-tank guns",
+      "mine": "Mines",
+      "satchel": "Satchels",
+      "armor": "Tanks and vehicles",
+      "artillery": "Artillery",
+      "self_propelled_artillery": "Self-propelled artillery",
+      "commander": "Commander abilities"
+    },
+    "playersCaption": "Player statistics",
+    "columns": {
+      "player": "Player",
+      "team": "Team",
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "kd": "K/D",
+      "kpm": "Kills/min",
+      "topWeapon": "Top weapon"
+    },
+    "unknownSide": "Unknown",
+    "playersPrivate": "Individual player statistics ({count}) are not published.",
+    "kills": "{count, plural, one {# kill} other {# kills}}",
+    "noWeapons": "No kills recorded.",
+    "sourceCrcon": "Source: game server (CRCON), game {game}",
+    "sourceUpload": "Source: uploaded game scoreboard export",
+    "importedAt": "Imported {time}",
+    "tabs": {
+      "summary": "Summary",
+      "players": "Players",
+      "weapons": "Weapons"
+    }
   }
 }

@@ -30,7 +30,7 @@ async function main() {
     }
     const report = await loadFixtures(handle.db, { mediaRoot, schemaCompatible: argv.includes('--schema-compatible') });
     console.log(
-      `Synthetic fixtures loaded into ${databaseName}: ${report.members} members, ${report.matches} matches, ${report.news} news documents (${report.newsTranslations} translations, ${report.schedules} schedule), ${report.manual} field manual documents (${report.manualTranslations} translations), ${report.prose} prose translations, ${report.assets} generated images in ${mediaRoot}.`,
+      `Synthetic fixtures loaded into ${databaseName}: ${report.members} members, ${report.matches} matches, ${report.news} news documents (${report.newsTranslations} translations, ${report.schedules} schedule), ${report.manual} field manual documents (${report.manualTranslations} translations), ${report.statistics} match statistics, ${report.prose} prose translations, ${report.assets} generated images in ${mediaRoot}.`,
     );
     if (report.skipped.length > 0) console.log(`Skipped fixture groups for this older schema: ${report.skipped.join(', ')}.`);
   } finally {

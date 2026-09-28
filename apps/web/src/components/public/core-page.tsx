@@ -10,7 +10,7 @@ import type { ArticleDTO } from '@/modules/content/types';
 import styles from './pages.module.css';
 
 /**
- * Core static page (clan, community, privacy): published title/excerpt/body of the
+ * Core static page (clan, community, privacy, faq): published title/excerpt/body of the
  * active locale in a readable frame over the darkened scene. An unpublished page is an
  * honest localized state, never another language's copy. `before`/`after` hold
  * page-specific contextual blocks (Discord, HLL website, community choices).
@@ -22,6 +22,7 @@ export async function CorePage({
   before,
   after,
   home,
+  anchors,
 }: {
   locale: AppLocale;
   pageKey: PageKey;
@@ -30,6 +31,8 @@ export async function CorePage({
   after?: ReactNode;
   /** Breadcrumb root when shown inside a game section (default: the community hub). */
   home?: { href: string; label: string };
+  /** Heading anchors (block index → id) for an in-page index such as the FAQ questions. */
+  anchors?: ReadonlyMap<number, string>;
 }) {
   const t = await getTranslations({ locale, namespace: 'pages' });
   const tr = await getTranslations({ locale, namespace: 'news.richText' });
@@ -49,7 +52,7 @@ export async function CorePage({
         {page ? (
           <SectionFrame title={t(`${pageKey}.frameTitle`)} titleId={`${pageKey}-content`}>
             <div className={styles.body} lang={page.locale}>
-              <RichText doc={page.body} assets={page.assets} labels={{ tableRegion: tr('tableRegion'), externalLink: tr('externalLink') }} siteOrigin={getSiteOrigin()} />
+              <RichText doc={page.body} assets={page.assets} labels={{ tableRegion: tr('tableRegion'), externalLink: tr('externalLink') }} siteOrigin={getSiteOrigin()} anchors={anchors} />
             </div>
           </SectionFrame>
         ) : (

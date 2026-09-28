@@ -351,6 +351,47 @@ describe('match concurrency, slugs and deletion', () => {
       'rounds',
     );
   });
+
+  it('applies Hell Let Loose round rules: Allies/Axis side and 0–5 sector scores', async () => {
+    const created = await createMatch(t.db, actors.matchManager, fixture({ game: 'hell-let-loose', startsAt: inHours(-3) }));
+    const planned = await updateMatch(t.db, actors.matchManager, {
+      id: created.id,
+      expectedVersion: created.version,
+      rounds: [{ mapName: 'Carentan', mode: 'Warfare', side: 'axis' }],
+    });
+    const badSide = await expectDomain(
+      updateMatch(t.db, actors.matchManager, { id: created.id, expectedVersion: planned.version, rounds: [{ mapName: 'Carentan', side: 'Blue team' }] }),
+      'validation',
+    );
+    expect(badSide.fieldErrors).toEqual({ 'rounds.0.side': 'hll_side' });
+    const badScore = await expectDomain(
+      recordResult(t.db, actors.matchManager, {
+        id: created.id,
+        expectedVersion: planned.version,
+        scoreValkyria: 6,
+        scoreOpponent: 1,
+        outcome: 'win',
+        verification: 'provisional',
+        source: 'Synthetic test',
+        rounds: [{ mapName: 'Carentan', mode: 'Warfare', side: 'axis', scoreValkyria: 6, scoreOpponent: 1, outcome: 'win' }],
+      }),
+      'validation',
+    );
+    expect(badScore.fieldErrors).toEqual({ 'rounds.0.scoreValkyria': 'hll_sector_score' });
+    await recordResult(t.db, actors.matchManager, {
+      id: created.id,
+      expectedVersion: planned.version,
+      scoreValkyria: 4,
+      scoreOpponent: 1,
+      outcome: 'win',
+      verification: 'provisional',
+      source: 'Synthetic test',
+      rounds: [{ mapName: 'Carentan', mode: 'Warfare', side: 'axis', scoreValkyria: 4, scoreOpponent: 1, outcome: 'win' }],
+    });
+    // Other games keep free-text sides.
+    const wardogs = await createMatch(t.db, actors.matchManager, fixture());
+    await updateMatch(t.db, actors.matchManager, { id: wardogs.id, expectedVersion: wardogs.version, rounds: [{ mapName: 'Synthetic', side: 'Blue team' }] });
+  });
 });
 
 describe('start time and DST handling', () => {

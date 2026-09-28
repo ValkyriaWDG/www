@@ -222,7 +222,7 @@ export async function getPublishedNewsBySlug(locale: string, slug: string, db: E
   return null;
 }
 
-/** Published core page (`clan`, `community`, `privacy`) for a locale, or `null`. */
+/** Published core page (`clan`, `community`, `privacy`, `faq`) for a locale, or `null`. */
 export async function getPublishedPage(locale: string, pageKey: string, db: Executor = getDb()): Promise<ArticleDTO | null> {
   if (!isLocale(locale) || !(PAGE_KEYS as readonly string[]).includes(pageKey)) return null;
   const [row] = await db

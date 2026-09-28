@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/co
   return { title: t('editMetaTitle'), robots: { index: false, follow: false } };
 }
 
-/** Core page editor (clan, community, privacy): same editor, fixed slug, per-language publication. */
+/** Core page editor (clan, community, privacy, faq): same editor, fixed slug, per-language publication. */
 export default async function EditCorePage({ params, searchParams }: PageProps<'/[locale]/admin/content/[id]'>) {
   const { locale, id } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();

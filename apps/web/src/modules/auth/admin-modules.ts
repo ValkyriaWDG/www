@@ -20,7 +20,7 @@ export const ADMIN_MODULES: readonly AdminModule[] = [
   { key: 'news', path: '/admin/news', anyOf: ['content.edit'] },
   // HLL Field Manual articles; the same editor, revisions and publication rules as news.
   { key: 'manual', path: '/admin/manual', anyOf: ['content.edit'] },
-  // Core static pages (clan, community, privacy); same editor and publication rules as news.
+  // Core static pages (clan, community, privacy, faq); same editor and publication rules as news.
   { key: 'content', path: '/admin/content', anyOf: ['content.edit'] },
   { key: 'media', path: '/admin/media', anyOf: ['media.editorial.manage', 'media.match.manage'] },
   { key: 'matches', path: '/admin/matches', anyOf: ['matches.edit'] },

@@ -56,6 +56,17 @@
     },
     "frameTitle": "Zpracování údajů"
   },
+  "faq": {
+    "navLabel": "Časté dotazy",
+    "meta": {
+      "title": "Časté dotazy",
+      "description": "Odpovědi na nejčastější otázky o komunitě Valkyria, náboru, VIP a hraní Hell Let Loose."
+    },
+    "frameTitle": "Otázky a odpovědi",
+    "indexTitle": "Otázky",
+    "actionsTitle": "Nenašel jsi odpověď?",
+    "joinAction": "Jak se přidat"
+  },
   "hll": {
     "title": "Hell Let Loose",
     "body": "Naše historie z Hell Let Loose, zápasy a archiv zůstávají na našem původním webu.",

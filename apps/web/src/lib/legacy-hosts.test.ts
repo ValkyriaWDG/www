@@ -17,13 +17,14 @@ describe('legacy host redirects', () => {
     expect(legacyHostRedirect(req('valkyriahll.cz', '/guide/tanky'), config)).toBe('https://valkyria.cz/cs/hll/field-manual/tanky');
     expect(legacyHostRedirect(req('www.valkyriahll.cz', '/matches', 'page=3'), config)).toBe('https://valkyria.cz/cs/hll/matches?view=results');
     expect(legacyHostRedirect(req('valkyriahll.cz', '/'), config)).toBe('https://valkyria.cz/cs/hll');
+    expect(legacyHostRedirect(req('valkyriahll.cz', '/faq'), config)).toBe('https://valkyria.cz/cs/hll/faq');
   });
 
   it('is inactive for other hosts, unconfigured deployments and pending or unknown paths', () => {
     expect(legacyHostRedirect(req('valkyria.cz', '/guide/tanky'), config)).toBeNull();
     expect(legacyHostRedirect(req('valkyriahll.cz', '/guide/tanky'), { hosts: new Set(), origin: 'https://valkyria.cz' })).toBeNull();
     expect(legacyHostRedirect(req('valkyriahll.cz', '/guide/tanky'), { ...config, origin: null })).toBeNull();
-    expect(legacyHostRedirect(req('valkyriahll.cz', '/faq'), config)).toBeNull();
+    expect(legacyHostRedirect(req('valkyriahll.cz', '/events'), config)).toBeNull();
     expect(legacyHostRedirect(req('valkyriahll.cz', '/unknown'), config)).toBeNull();
   });
 });

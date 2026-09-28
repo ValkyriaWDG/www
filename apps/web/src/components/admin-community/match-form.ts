@@ -1,4 +1,5 @@
 import type { CompetitionType, Game, MatchOutcome, MatchStatus, ResultVerification } from '@valkyria/db/schema';
+import { roundIssuesForGame } from '@/modules/games/hll-catalog';
 import { DEFAULT_MATCH_TIME_ZONE, isValidTimeZone, ZonedTimeError, zonedLocalDateTime, zonedLocalToInstant } from '@/modules/matches/time';
 import type { AdminMatch } from '@/modules/matches/types';
 import type { FieldErrors } from './errors';
@@ -296,8 +297,16 @@ export function validateFacts(values: FactsValues): FieldErrors {
   return errors;
 }
 
-export function validateRounds(rounds: RoundValues[]): FieldErrors {
+export function validateRounds(rounds: RoundValues[], game?: Game): FieldErrors {
   const errors: FieldErrors = {};
+  if (game) {
+    const parsed = rounds.map((round) => {
+      const v = parseCount(round.scoreValkyria);
+      const o = parseCount(round.scoreOpponent);
+      return { side: round.side.trim() || null, scoreValkyria: Number.isNaN(v) ? null : v, scoreOpponent: Number.isNaN(o) ? null : o };
+    });
+    Object.assign(errors, roundIssuesForGame(game, parsed));
+  }
   rounds.forEach((round, index) => {
     for (const field of ['scoreValkyria', 'scoreOpponent'] as const) {
       if (Number.isNaN(parseCount(round[field]))) errors[`rounds.${index}.${field}`] = 'invalid_number';

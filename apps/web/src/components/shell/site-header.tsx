@@ -15,10 +15,11 @@ import styles from './header.module.css';
 type SiteHeaderProps = { account: ShellAccount; hllUrl: string | null; presentation: ShellPresentation };
 
 /**
- * Platform bar (community hub link + persistent game switch) above the narrow charcoal
- * strip: brand → primary nav → language + account; compact disclosure below 768 px. The
- * shared frame lists community routes; the Wardogs frame lists its unchanged menu under
- * `/wardogs`.
+ * Narrow charcoal strip: brand → primary nav → community link, game switch, language and
+ * account, in the same order and corner as the HLL masthead. Below 1024 px the game switch
+ * becomes a full-width row under the strip (as in HLL); below 768 px the navigation moves
+ * into a disclosure. The shared frame lists community routes; the Wardogs frame lists its
+ * unchanged menu under `/wardogs`.
  */
 export async function SiteHeader({ account, hllUrl, presentation }: SiteHeaderProps) {
   const t = await getTranslations('common');
@@ -31,51 +32,53 @@ export async function SiteHeader({ account, hllUrl, presentation }: SiteHeaderPr
   const mobileAccountLinks = accountLinks(account, (key) => t(`nav.${key}`));
 
   return (
-    <>
-      <div className={styles.platformBar} data-platform-bar="">
-        <GuardedLink href="/" className={styles.platformLink} data-platform-home="">
-          <span className={styles.platformName}>{t('platform.name')}</span>
-          <span className={styles.platformSeparator} aria-hidden="true">
-            {'//'}
-          </span>
-          <span>{t('platform.community')}</span>
+    <header className={styles.header} data-shell-header="">
+      <GuardedLink href={presentation === 'wardogs' ? '/wardogs' : '/'} className={styles.brand} data-brand="">
+        <Image src={mark} alt={t('brand.homeLabel')} className={styles.brandMark} loading="eager" sizes="44px" />
+      </GuardedLink>
+      <span className={styles.divider} aria-hidden="true" />
+      <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="desktop" />
+      <div className={styles.tools}>
+        <GuardedLink href="/" className={styles.communityLink} data-platform-home="">
+          {t('platform.hubLink')}
         </GuardedLink>
-        <GameSwitch variant="bar" />
-      </div>
-      <header className={styles.header} data-shell-header="">
-        <GuardedLink href={presentation === 'wardogs' ? '/wardogs' : '/'} className={styles.brand} data-brand="">
-          <Image src={mark} alt={t('brand.homeLabel')} className={styles.brandMark} loading="eager" sizes="44px" />
-        </GuardedLink>
-        <span className={styles.divider} aria-hidden="true" />
-        <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="desktop" />
-        <div className={styles.tools}>
-          <LanguageSwitcher />
-          <div className={styles.accountSlot}>
-            <AccountSlot account={account} />
-          </div>
+        <div className={styles.gameSlot}>
+          <GameSwitch variant="bar" />
         </div>
-        <MobileMenu label={t('nav.menu')}>
-          <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="mobile" />
-          <ul className={styles.mobileLinks}>
-            {mobileAccountLinks.map((link) => (
-              <li key={link.key}>
-                <GuardedLink href={link.href} className={styles.mobileLink} data-mobile-link={link.key}>
-                  {link.label}
-                </GuardedLink>
-              </li>
-            ))}
-            {hllUrl ? (
-              <li>
-                <a href={hllUrl} className={styles.mobileLink} data-mobile-link="hll">
-                  {t('nav.hllWebsite')}
-                  <ExternalIcon size={16} />
-                  <span className="visually-hidden"> {t('external.suffix')}</span>
-                </a>
-              </li>
-            ) : null}
-          </ul>
-        </MobileMenu>
-      </header>
-    </>
+        <LanguageSwitcher />
+        <div className={styles.accountSlot}>
+          <AccountSlot account={account} />
+        </div>
+      </div>
+      <MobileMenu label={t('nav.menu')}>
+        <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="mobile" />
+        <ul className={styles.mobileLinks}>
+          <li>
+            <GuardedLink href="/" className={styles.mobileLink} data-mobile-link="community">
+              {t('platform.hubLink')}
+            </GuardedLink>
+          </li>
+          {mobileAccountLinks.map((link) => (
+            <li key={link.key}>
+              <GuardedLink href={link.href} className={styles.mobileLink} data-mobile-link={link.key}>
+                {link.label}
+              </GuardedLink>
+            </li>
+          ))}
+          {hllUrl ? (
+            <li>
+              <a href={hllUrl} className={styles.mobileLink} data-mobile-link="hll">
+                {t('nav.hllWebsite')}
+                <ExternalIcon size={16} />
+                <span className="visually-hidden"> {t('external.suffix')}</span>
+              </a>
+            </li>
+          ) : null}
+        </ul>
+      </MobileMenu>
+      <div className={styles.mobileGame}>
+        <GameSwitch variant="stack" />
+      </div>
+    </header>
   );
 }

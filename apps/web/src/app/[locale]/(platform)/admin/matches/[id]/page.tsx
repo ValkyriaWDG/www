@@ -8,6 +8,7 @@ import { getDb } from '@/lib/db';
 import { can } from '@/modules/access/policy';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { getMatchForAdmin } from '@/modules/matches/queries';
+import { statisticsSources } from '@/modules/matches/statistics-service';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,5 +29,14 @@ export default async function EditMatchPage({ params, searchParams }: PageProps<
   const match = await getMatchForAdmin(getDb(), access.principal, id);
   if (!match) notFound();
   const created = (await searchParams).created === '1';
-  return <MatchEditor key={match.id} uiLocale={locale} initial={match} canPublish={can(access.principal, 'matches.publish')} created={created} />;
+  return (
+    <MatchEditor
+      key={match.id}
+      uiLocale={locale}
+      initial={match}
+      canPublish={can(access.principal, 'matches.publish')}
+      created={created}
+      statisticsSources={match.game === 'hell-let-loose' ? statisticsSources() : []}
+    />
+  );
 }

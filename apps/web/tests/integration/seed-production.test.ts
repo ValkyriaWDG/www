@@ -16,9 +16,10 @@ import {
 } from '@valkyria/db';
 import { and, count, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { getPublishedPage } from '@/modules/content/public';
 import { parseRichTextDocument, RICH_TEXT_SCHEMA_VERSION } from '@/modules/content/rich-text/schema';
 import { runSeed } from '@/seed/index';
-import { SEED_PAGES } from '@/seed/pages';
+import { SEED_DRAFT_ONLY_PAGES, SEED_PAGES } from '@/seed/pages';
 import { SEED_RICH_TEXT_SCHEMA_VERSION } from '@/seed/rich-text';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
 
@@ -64,18 +65,21 @@ describe('production seed', () => {
     }
   });
 
-  it('publishes both locales of every core page with live slug equal to the page key', async () => {
+  it('publishes both locales of every reviewed core page with live slug equal to the page key', async () => {
     const report = await runSeed(t.db);
-    expect(report.inserted).toEqual(expect.arrayContaining(['page clan (cs)', 'page clan (en)', 'page privacy (en)', 'taxonomy category announcement', 'manual category hell-let-loose/roles']));
+    expect(report.inserted).toEqual(
+      expect.arrayContaining(['page clan (cs)', 'page clan (en)', 'page privacy (en)', 'page faq (cs) draft', 'page faq (en) draft', 'taxonomy category announcement', 'manual category hell-let-loose/roles']),
+    );
     for (const pageKey of PAGE_KEYS) {
       const [document] = await t.db.select().from(contentDocument).where(eq(contentDocument.pageKey, pageKey));
       expect(document).toMatchObject({ kind: 'page', isFixture: false });
       const translations = await t.db.select().from(contentTranslation).where(eq(contentTranslation.documentId, document!.id));
       expect(translations.map((row) => row.locale).sort()).toEqual(['cs', 'en']);
       for (const translation of translations) {
-        expect(translation).toMatchObject({ namespace: 'page', liveSlug: pageKey, draftSlug: pageKey });
-        expect(translation.publishedRevisionId).toBe(translation.draftRevisionId);
-        const [revision] = await t.db.select().from(contentRevision).where(eq(contentRevision.id, translation.publishedRevisionId!));
+        const draftOnly = SEED_DRAFT_ONLY_PAGES.has(pageKey);
+        expect(translation).toMatchObject({ namespace: 'page', liveSlug: draftOnly ? null : pageKey, draftSlug: pageKey });
+        expect(translation.publishedRevisionId).toBe(draftOnly ? null : translation.draftRevisionId);
+        const [revision] = await t.db.select().from(contentRevision).where(eq(contentRevision.id, translation.draftRevisionId!));
         expect(revision).toMatchObject({ kind: 'seed', locale: translation.locale, slug: pageKey, schemaVersion: RICH_TEXT_SCHEMA_VERSION });
         expect(parseRichTextDocument(revision!.body).ok).toBe(true);
         expect(revision!.title.length).toBeGreaterThan(0);
@@ -91,6 +95,23 @@ describe('production seed', () => {
       ]),
     );
     expect(categories.filter((row) => row.kind === 'tag')).toHaveLength(0);
+  });
+
+  it('seeds the FAQ only as an unpublished outline of the legacy questions', async () => {
+    const [document] = await t.db.select().from(contentDocument).where(eq(contentDocument.pageKey, 'faq'));
+    for (const locale of LOCALES) {
+      expect(await getPublishedPage(locale, 'faq', t.db)).toBeNull();
+      const [translation] = await t.db
+        .select()
+        .from(contentTranslation)
+        .where(and(eq(contentTranslation.documentId, document!.id), eq(contentTranslation.locale, locale)));
+      const [draft] = await t.db.select().from(contentRevision).where(eq(contentRevision.id, translation!.draftRevisionId!));
+      const blocks = (draft!.body.content ?? []) as { type: string }[];
+      expect(blocks.filter((block) => block.type === 'heading')).toHaveLength(11);
+      expect(JSON.stringify(draft!.body)).toContain(locale === 'cs' ? 'Odpověď připravujeme.' : 'We are preparing this answer.');
+    }
+    // The published core pages are unaffected.
+    expect((await getPublishedPage('cs', 'clan', t.db))?.title).toBe('Klan Valkyria');
   });
 
   it('is idempotent and never overwrites administrator edits', async () => {
@@ -161,9 +182,9 @@ describe('seed CLI', () => {
       const env = { ...process.env, DATABASE_URL: target.url };
       const first = await run(process.execPath, [tsxCli, 'src/cli/seed.ts'], { cwd: appRoot, env });
       expect(first.stdout).toContain('inserted: page clan (cs)');
-      expect(first.stdout).toContain('Seed complete: 19 inserted, 0 skipped.');
+      expect(first.stdout).toContain('Seed complete: 22 inserted, 0 skipped.');
       const second = await run(process.execPath, [tsxCli, 'src/cli/seed.ts'], { cwd: appRoot, env });
-      expect(second.stdout).toContain('Seed complete: 0 inserted, 16 skipped.');
+      expect(second.stdout).toContain('Seed complete: 0 inserted, 18 skipped.');
 
       const broken = await run(process.execPath, [tsxCli, 'src/cli/seed.ts'], {
         cwd: appRoot,

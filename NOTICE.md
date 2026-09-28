@@ -29,3 +29,10 @@ this repository does not assert a general redistribution license. See the
 [presskit guide](docs/assets/presskit-2026-01.md) and
 [source catalog](assets/presskit/wardogs-january-2026/catalog.json) for provenance
 and intended editorial/game-identification use.
+
+The ten HLL runtime WebP derivatives are selected promotional game imagery from
+the official Steam listing and developer update material. Their sources, source
+hashes, transformations and intended placements are recorded in
+[the runtime artwork catalog](assets/hll-runtime-artwork.json). They retain their
+respective rights holders' rights and are excluded from the Apache-2.0 license.
+They illustrate the game, not actual Valkyria matches or verified game mechanics.

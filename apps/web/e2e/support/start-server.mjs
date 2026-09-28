@@ -32,6 +32,9 @@ const discordMock = path.join(appDir, 'e2e', 'support', 'discord-mock.mjs');
 if (existsSync(discordMock)) {
   children.push(spawn(process.execPath, [discordMock], { stdio: 'inherit', env: process.env }));
 }
+if (process.env.E2E_CRCON_MOCK_PORT) {
+  children.push(spawn(process.execPath, [path.join(appDir, 'e2e', 'support', 'crcon-mock.mjs')], { stdio: 'inherit', env: process.env }));
+}
 const server = spawn(process.execPath, [path.join(appDir, 'scripts', 'serve-standalone.mjs')], { stdio: 'inherit', env: process.env });
 children.push(server);
 const stop = (signal) => children.forEach((child) => child.kill(signal));

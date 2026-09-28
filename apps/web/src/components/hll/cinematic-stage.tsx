@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { PauseIcon, PlayIcon, VideoOffIcon } from '@/components/ui/icons';
 import {
   decideBackgroundPlayback,
@@ -9,29 +9,35 @@ import {
   focalPointToObjectPosition,
   isVideoLayerVisible,
   type MediaStatus,
+  type PlaybackDecision,
 } from '@/components/shell/background-policy';
 import { setBackgroundPreference, useMotionInputs } from '@/components/shell/background-store';
+import { getRouteMode } from '@/components/shell/route-mode';
+import { usePathname } from '@/i18n/navigation';
 import { chooseRendition, type HllClip, type HllClipType } from '@/modules/hll/media';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import { getSavedTime, getStageSelection, setSavedTime } from './stage-store';
 import styles from './hll.module.css';
 
-export type StageLabels = { region: string; pending: string; play: string; pause: string; unavailable: string; posterOnly: string };
+export type StageLabels = { play: string; pause: string; unavailable: string; posterOnly: string };
 
 const subscribeNever = () => () => {};
 
 /** At most one alternate rendition of the same clip is tried after a failure. */
 const MAX_FAILED_RENDITIONS = 1;
 
+type StageControl = { running: boolean; unavailable: boolean; contentPage: boolean; labels: StageLabels; onToggle: () => void };
+const StageContext = createContext<StageControl | null>(null);
+
 /**
- * HLL cinematic stage (spec §9). Server HTML is deterministic: the static fallback (and
+ * Persistent fullscreen HLL background (spec §9). Server HTML is deterministic: the static fallback (and
  * the selected clip's poster only after hydration). One clip is selected per document
  * after hydration and kept for the browser lifetime; its source is attached only when
  * the shared motion policy allows playback (no video request under reduced motion,
  * Save-Data, slow connections, a narrow touch default or an explicit pause). One muted
  * inline element loops the same clip; failures fall back to the poster with a hint.
  */
-export function CinematicStage({ clips, labels }: { clips: HllClip[]; labels: StageLabels }) {
+export function CinematicStage({ clips, labels, children }: { clips: HllClip[]; labels: StageLabels; children: ReactNode }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const idsKey = clips.map((clip) => clip.id).join('|');
   // Chosen once per document after hydration (the server snapshot is always `null`).
@@ -42,8 +48,11 @@ export function CinematicStage({ clips, labels }: { clips: HllClip[]; labels: St
   );
   const [media, setMedia] = useState<MediaStatus>('idle');
   const [failed, setFailed] = useState<string[]>([]);
+  const [failedPosterUrl, setFailedPosterUrl] = useState<string | null>(null);
   const [presented, setPresented] = useState(false);
   const { preference, environment } = useMotionInputs();
+  const routeMode = getRouteMode(usePathname());
+  const contentPage = routeMode !== 'home';
 
   const clip = picked?.id ? (clips.find((candidate) => candidate.id === picked.id) ?? null) : null;
   const rendition = useMemo(() => {
@@ -54,7 +63,9 @@ export function CinematicStage({ clips, labels }: { clips: HllClip[]; labels: St
   }, [clip, picked, failed]);
 
   const hasSources = Boolean(clip && rendition);
-  const decision = decideBackgroundPlayback({ preference, environment, routeMode: 'home', hasSources });
+  const motionDecision = decideBackgroundPlayback({ preference, environment, routeMode, hasSources });
+  // HLL reading screens deliberately stay calm, even after an explicit landing opt-in.
+  const decision: PlaybackDecision = contentPage && hasSources ? { play: false, reason: 'route' } : motionDecision;
   const mediaStatus: MediaStatus = clip && !rendition && failed.length > 0 ? 'error' : media;
   const state = picked === null ? 'pending' : !clip ? 'fallback' : deriveBackgroundState(decision, mediaStatus);
 
@@ -120,7 +131,7 @@ export function CinematicStage({ clips, labels }: { clips: HllClip[]; labels: St
     return () => document.removeEventListener('visibilitychange', onVisibility);
   }, [decision.play, hasSources, mediaStatus, play]);
 
-  // Leaving the landing releases the decoder but remembers the position of the same clip.
+  // Switching game/layout releases the decoder; HLL content routes retain this element.
   useEffect(() => {
     const video = videoRef.current;
     return () => {
@@ -130,7 +141,7 @@ export function CinematicStage({ clips, labels }: { clips: HllClip[]; labels: St
 
   const running = state === 'playing' || state === 'loading';
   const onToggle = () => {
-    if (state === 'unavailable') return;
+    if (state === 'unavailable' || contentPage) return;
     if (running) {
       setBackgroundPreference('paused');
       videoRef.current?.pause();
@@ -142,64 +153,88 @@ export function CinematicStage({ clips, labels }: { clips: HllClip[]; labels: St
   const objectPosition = focalPointToObjectPosition(clip?.focalPoint);
 
   return (
-    <div
-      className={styles.stage}
-      data-hll-stage-state={state}
-      data-hll-stage-reason={clip ? decision.reason : 'no-clip'}
-      data-hll-clip={clip?.id ?? ''}
-      data-hll-clip-count={clips.length}
-      data-video-visible={clip && isVideoLayerVisible(deriveBackgroundState(decision, mediaStatus), presented) ? '' : undefined}
-    >
-      <div className={styles.stageMedia} aria-hidden="true">
-        <div className={styles.stageFallback}>
-          <Image src={emblem} alt="" className={styles.stageCrest} sizes="(max-width: 767px) 40vw, 18vw" />
+    <StageContext.Provider value={clip ? { running, unavailable: state === 'unavailable', contentPage, labels, onToggle } : null}>
+      <div
+        className={`${styles.scene} ${styles.stage}`}
+        aria-hidden="true"
+        data-hll-scene=""
+        data-hll-stage-state={state}
+        data-hll-stage-reason={clip ? decision.reason : 'no-clip'}
+        data-hll-clip={clip?.id ?? ''}
+        data-hll-clip-count={clips.length}
+        data-video-visible={clip && isVideoLayerVisible(deriveBackgroundState(decision, mediaStatus), presented) ? '' : undefined}
+      >
+        <div className={styles.stageMedia}>
+          <div className={styles.sceneBase} />
+          {/* The default poster is real HLL scenery; it does not imply clan footage exists. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className={styles.stagePoster} src="/images/hll/scene-poster.webp" alt="" fetchPriority="high" decoding="async" data-hll-default-poster="" />
+          {clip?.posterUrl && clip.posterUrl !== failedPosterUrl ? (
+            // Approved poster of the selected clip; decorative and sized by the viewport.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className={styles.stagePoster}
+              src={clip.posterUrl}
+              alt=""
+              decoding="async"
+              style={{ objectPosition }}
+              onError={() => setFailedPosterUrl(clip.posterUrl)}
+              data-hll-stage-poster=""
+            />
+          ) : null}
+          {clip ? (
+            <video
+              ref={videoRef}
+              className={styles.stageVideo}
+              tabIndex={-1}
+              muted
+              loop
+              playsInline
+              preload="none"
+              disablePictureInPicture
+              disableRemotePlayback
+              style={{ objectPosition }}
+              onPlaying={() => {
+                setPresented(true);
+                setMedia('playing');
+              }}
+              onWaiting={() => setMedia((status) => (status === 'playing' ? 'loading' : status))}
+              onError={() => {
+                if (rendition) fail(rendition.src);
+              }}
+              data-hll-stage-video=""
+            />
+          ) : null}
+          <div className={styles.stageFallback}>
+            <Image src={emblem} alt="" className={styles.stageCrest} sizes="(max-width: 767px) 40vw, 18vw" />
+          </div>
+          <div className={styles.sceneVeil} />
         </div>
-        {clip?.posterUrl ? (
-          // Approved poster of the selected clip; decorative and sized by CSS.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className={styles.stagePoster} src={clip.posterUrl} alt="" decoding="async" style={{ objectPosition }} />
-        ) : null}
-        {clip ? (
-          <video
-            ref={videoRef}
-            className={styles.stageVideo}
-            tabIndex={-1}
-            muted
-            loop
-            playsInline
-            preload="none"
-            disablePictureInPicture
-            disableRemotePlayback
-            style={{ objectPosition }}
-            onPlaying={() => {
-              setPresented(true);
-              setMedia('playing');
-            }}
-            onWaiting={() => setMedia((status) => (status === 'playing' ? 'loading' : status))}
-            onError={() => {
-              if (rendition) fail(rendition.src);
-            }}
-            data-hll-stage-video=""
-          />
-        ) : null}
       </div>
-      {clips.length === 0 ? <p className={styles.stageCaption}>{labels.pending}</p> : null}
-      {clip ? (
-        <div className={styles.stageControls}>
-          <button
-            type="button"
-            className={styles.stageButton}
-            onClick={onToggle}
-            disabled={state === 'unavailable'}
-            aria-pressed={running}
-            data-hll-stage-toggle=""
-          >
-            {state === 'unavailable' ? <VideoOffIcon /> : running ? <PauseIcon /> : <PlayIcon />}
-            <span>{state === 'unavailable' ? labels.unavailable : running ? labels.pause : labels.play}</span>
-          </button>
-          {state === 'unavailable' ? null : !running ? <span className={styles.stageHint}>{labels.posterOnly}</span> : null}
-        </div>
-      ) : null}
+      {children}
+    </StageContext.Provider>
+  );
+}
+
+/** Kept in the utility footer, outside the decorative aria-hidden scene. */
+export function CinematicStageControls() {
+  const control = useContext(StageContext);
+  if (!control) return null;
+  const { running, unavailable, contentPage, labels, onToggle } = control;
+  return (
+    <div className={styles.stageControls}>
+      <button
+        type="button"
+        className={styles.stageButton}
+        onClick={onToggle}
+        disabled={unavailable || contentPage}
+        aria-pressed={running}
+        data-hll-stage-toggle=""
+      >
+        {unavailable || contentPage ? <VideoOffIcon /> : running ? <PauseIcon /> : <PlayIcon />}
+        <span>{unavailable ? labels.unavailable : contentPage ? labels.posterOnly : running ? labels.pause : labels.play}</span>
+      </button>
+      {!unavailable && !running && !contentPage ? <span className={styles.stageHint}>{labels.posterOnly}</span> : null}
     </div>
   );
 }
