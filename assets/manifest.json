@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-26",
+  "recordedAt": "2026-09-28",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -1252,6 +1252,162 @@
       "bytes": 318978,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "hll-20260920205625_1",
+      "path": "docs/design/references/hll/20260920205625_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260920205625_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "82feae811690cad77c73615defc8584a71e2a462be04319bdb8e3e84ef299ce3",
+      "bytes": 324635,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153014_1",
+      "path": "docs/design/references/hll/20260928153014_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153014_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "1f9f408347f3f3836cc28e470dd5ed4d271210d1517c4283cf378289cf7e7d98",
+      "bytes": 395074,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153017_1",
+      "path": "docs/design/references/hll/20260928153017_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153017_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "15263deaf0638d02208851fcb3ac9ee6c1c944fab4e317e4a903722cdeda6198",
+      "bytes": 441903,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153022_1",
+      "path": "docs/design/references/hll/20260928153022_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153022_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "c361877259ee96d1d73b4d773eaf9691d2eae17dc4c5e7b2cac84481c36dddda",
+      "bytes": 275743,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153028_1",
+      "path": "docs/design/references/hll/20260928153028_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153028_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "2a08aa50ba53aa72186becb0f336a2b6c0f899247b1c3590cc784cce80575426",
+      "bytes": 173050,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153031_1",
+      "path": "docs/design/references/hll/20260928153031_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153031_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "2c68a9c11e84f3c3cb3dbb28aea604ea064077523882791ae096ac52251a8103",
+      "bytes": 286766,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153035_1",
+      "path": "docs/design/references/hll/20260928153035_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153035_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "14c0ac233126c3429847765fda06f655fd822e4b866ef439c8c74a4e9b2118c6",
+      "bytes": 249778,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153038_1",
+      "path": "docs/design/references/hll/20260928153038_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153038_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "af0b324cd100e8124d2423989f006107e480ee232d0d53db75dddd4962112a70",
+      "bytes": 624792,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153041_1",
+      "path": "docs/design/references/hll/20260928153041_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153041_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "ed0e6dd39329ad5be90b36c818e8843525d156bf8f9b7d3aa745c6addbd6927f",
+      "bytes": 528804,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153050_1",
+      "path": "docs/design/references/hll/20260928153050_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153050_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "d2b8e2d9b5a3fc54bdce9f7b85268c400de70f4ca0a28fa16a06109cd23d4218",
+      "bytes": 379945,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153107_1",
+      "path": "docs/design/references/hll/20260928153107_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153107_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "977b47394d5de6c8bd2fa8d44ad49b6f09d3a9919d5a88c15f6c82b49576cc96",
+      "bytes": 160756,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153234_1",
+      "path": "docs/design/references/hll/20260928153234_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153234_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "1c6e9ff419a178998b7d9dd3430aca3a84ad6b1a808dd842da85d12f0ad728f7",
+      "bytes": 220803,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
+    },
+    {
+      "id": "hll-20260928153237_1",
+      "path": "docs/design/references/hll/20260928153237_1.jpg",
+      "source": "Owner-provided Hell Let Loose screenshot 20260928153237_1.jpg (2026-09-28 handoff)",
+      "usage": "design-reference-only",
+      "rights": "Third-party game imagery and incidental UI identifiers; supplied as design references, no runtime use or third-party asset license asserted",
+      "sha256": "6c25e2308ba33febc9cc4109cd6dac7c4e7aa8e299eb5f957af9156a050bbd49",
+      "bytes": 270538,
+      "height": 1200,
+      "width": 1920,
+      "transformations": "None; original screenshot bytes preserved"
     }
   ]
 }

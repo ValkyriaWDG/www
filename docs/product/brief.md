@@ -1,5 +1,7 @@
 # Product brief
 
+> Current extension: [HLL product scope](hll/README.md) and [unified platform ADR](../architecture/decisions/0002-unified-valkyria-platform.md) supersede the single-game/domain portions below. The owner selected the supplied HLL in-game direction; this document also preserves the original Wardogs baseline.
+
 Status: implementation baseline, 2026-09-26. Owner: Valkyria / @KasheK420.
 
 ## Outcome

@@ -1,6 +1,29 @@
 # Current status
 
-Updated: 2026-09-26. Stage: **1.0.0 — public website deployed; live authentication deferred.**
+Updated: 2026-09-28. Stage: **existing 1.0.0 deployment; unified HLL/WDG implementation handoff prepared.**
+
+## Unified platform / HLL preparation
+
+Continue [issue #36](https://github.com/ValkyriaWDG/www/issues/36) using
+[the Claude handoff](handoff/hll-claude-code-cloud.md) on `feat/hll-platform-handoff`.
+The owner selected one application on future `valkyria.cz` with separate game
+sections, shared CMS/session and explicit game scope. HLL now has a selected
+in-game-inspired direction, [13 original references](design/references/hll/README.md),
+[a visual spec](design/hll/visual-spec.md), [legacy/manual inventory](product/hll/legacy-migration.md),
+module placement guides, a footage slot and [Logi contract 0.2](integrations/logi/contract.md).
+
+This change prepares documentation/assets/folders only. It does not implement HLL
+routes, migrations, video playback or integrations, and does not change production.
+Final clan footage and hosted tenant/SSO acceptance remain pending. See the
+[preparation evidence](evidence/hll-handoff-2026-09-28/README.md).
+Local preparation validation passed: 712-file foundation check, 19 foundation tests,
+whitespace validation and all 13 source/copy/manifest hash comparisons. Application
+CI is reported on the matching PR revision; no new HLL runtime behavior is claimed.
+
+Logi was fast-forwarded to main `6fbfe4e7d9c41e9a5bdc004c65f1e2d935c86e0b`;
+[feat/valkyria-integration](https://github.com/Ninjonik/logi/tree/feat/valkyria-integration)
+is prepared remotely without application changes or an empty PR. No merge/deployment
+was performed. The runtime evidence below remains historical, not re-run by this handoff.
 
 ## First public deployment
 

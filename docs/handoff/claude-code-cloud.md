@@ -1,5 +1,7 @@
 # Claude Code Cloud implementation handoff
 
+> For the current unified-platform/HLL assignment read [the new handoff](hll-claude-code-cloud.md) first. Do not rebuild the existing application or create a separate HLL deployment.
+
 You are implementing the Valkyria clan website in `ValkyriaWDG/www`.
 The repository owner has already supplied the product direction, reference captures,
 clan logo and repository foundation. Your job is to turn this brief into a working,

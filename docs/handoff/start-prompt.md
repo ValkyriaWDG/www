@@ -1,5 +1,7 @@
 # Paste into Claude Code Cloud
 
+> For the current unified-platform/HLL assignment use [the new complete prompt](hll-claude-code-cloud.md). The original Wardogs foundation prompt below is historical context.
+
 Use the following prompt with repository **ValkyriaWDG/www**, starting from **main**.
 For an already-running implementation, keep its current branch and use the
 [media integration handoff](background-media-integration.md); do not restart work.
