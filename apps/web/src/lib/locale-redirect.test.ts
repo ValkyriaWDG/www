@@ -13,6 +13,13 @@ describe('resolveUnprefixedRedirect', () => {
     expect(resolveUnprefixedRedirect('/admin/news/new', new URLSearchParams())).toBe('/cs/admin/news/new');
   });
 
+  it('redirects unprefixed game sections to Czech without choosing a game for the root', () => {
+    expect(resolveUnprefixedRedirect('/hll', new URLSearchParams())).toBe('/cs/hll');
+    expect(resolveUnprefixedRedirect('/wardogs/matches', new URLSearchParams('view=results'))).toBe('/cs/wardogs/matches?view=results');
+    expect(resolveUnprefixedRedirect('/hll/servers', new URLSearchParams('server=srv-1'))).toBe('/cs/hll/servers?server=srv-1');
+    expect(resolveUnprefixedRedirect('/hell-let-loose', new URLSearchParams())).toBeNull();
+  });
+
   it('does not rewrite unknown paths or unsupported explicit locales', () => {
     expect(resolveUnprefixedRedirect('/de/news', new URLSearchParams())).toBeNull();
     expect(resolveUnprefixedRedirect('/wp-admin', new URLSearchParams())).toBeNull();

@@ -1,0 +1,95 @@
+/* Game switch: two full game names in one bordered group, like the language control. */
+.switch {
+  display: flex;
+}
+
+.list {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.34);
+  background: rgb(12 12 11 / 0.4);
+  list-style: none;
+}
+
+.item {
+  display: flex;
+}
+
+.item + .item {
+  border-left: var(--border-hairline) solid rgb(168 168 154 / 0.24);
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 42px;
+  padding: 0 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color var(--motion-fast) ease-out,
+    color var(--motion-fast) ease-out;
+}
+
+a.option:hover {
+  background: var(--color-nav-item-hover);
+  color: var(--color-text);
+}
+
+.option[aria-current='true'] {
+  background: var(--color-selected-wash);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
+.option:focus-visible {
+  outline-offset: -3px;
+}
+
+.switch[data-variant='bar'] .option {
+  min-height: 44px;
+  padding-inline: 12px;
+  font-size: 0.8125rem;
+}
+
+.switch[data-variant='stack'] .list {
+  width: 100%;
+}
+
+.switch[data-variant='stack'] .item {
+  flex: 1 1 0;
+}
+
+.switch[data-variant='stack'] .option {
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+@media (min-width: 2200px) {
+  .option {
+    min-height: 52px;
+    padding-inline: 16px;
+    font-size: 1rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .list {
+    border-color: ButtonText;
+  }
+
+  .option[aria-current='true'] {
+    border-bottom: 3px solid Highlight;
+  }
+}

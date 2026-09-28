@@ -21,12 +21,15 @@ export async function CorePage({
   page,
   before,
   after,
+  home,
 }: {
   locale: AppLocale;
   pageKey: PageKey;
   page: ArticleDTO | null;
   before?: ReactNode;
   after?: ReactNode;
+  /** Breadcrumb root when shown inside a game section (default: the community hub). */
+  home?: { href: string; label: string };
 }) {
   const t = await getTranslations({ locale, namespace: 'pages' });
   const tr = await getTranslations({ locale, namespace: 'news.richText' });
@@ -35,7 +38,7 @@ export async function CorePage({
   return (
     <PageMain width="reading" labelledBy={titleId}>
       <PageHeader
-        breadcrumbs={[{ href: '/', label: t('shared.breadcrumbHome') }, { label: navLabel }]}
+        breadcrumbs={[home ?? { href: '/', label: t('shared.breadcrumbHome') }, { label: navLabel }]}
         eyebrow={t('shared.eyebrow')}
         title={page ? <span lang={page.locale}>{page.title}</span> : navLabel}
         titleId={titleId}

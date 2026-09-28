@@ -1,0 +1,108 @@
+{
+  "names": {
+    "hll": "Hell Let Loose",
+    "wardogs": "Wardogs"
+  },
+  "menuLabel": {
+    "hll": "Hell Let Loose – hlavní menu",
+    "wardogs": "Wardogs – hlavní menu"
+  },
+  "eyebrow": {
+    "hll": "Valkyria // Hell Let Loose",
+    "wardogs": "Valkyria // Wardogs"
+  },
+  "sectionTitle": "{section} – {game}",
+  "communityLabel": "Komunita",
+  "newsIntro": "Novinky, reportáže a oznámení divize {game}. Společné komunitní články jsou označené.",
+  "matchesIntro": "Nadcházející zápasy a výsledky divize {game}.",
+  "membersIntro": "Členové se zveřejněným profilem a veřejnou příslušností ke hře {game}.",
+  "switchNotice": {
+    "detail": {
+      "title": "Přepnuto na {game}",
+      "body": "Předchozí stránka nemá v sekci {game} protějšek, proto zobrazujeme odpovídající seznam."
+    },
+    "section": {
+      "title": "Přepnuto na {game}",
+      "body": "Tato část webu v sekci {game} není, proto zobrazujeme její hlavní menu."
+    }
+  },
+  "hub": {
+    "meta": {
+      "title": "Valkyria – česko-slovenská herní komunita",
+      "description": "Komunita Valkyria: Hell Let Loose a Wardogs na jednom webu. Novinky, zápasy, členové a nábor."
+    },
+    "eyebrow": "Valkyria // CZ & SK",
+    "heading": "Komunita Valkyria",
+    "intro": "Česko-slovenská herní komunita. Vyberte hru, nebo pokračujte do společných částí webu.",
+    "choose": "Vyberte hru",
+    "cards": {
+      "hll": {
+        "body": "Klanové zápasy, servery, Příručka a nábor do jednotky.",
+        "cta": "Vstoupit do sekce Hell Let Loose"
+      },
+      "wardogs": {
+        "body": "Divize Wardogs: novinky, zápasy a členové.",
+        "cta": "Vstoupit do sekce Wardogs"
+      }
+    },
+    "shared": {
+      "title": "Společné pro celou komunitu",
+      "news": "Všechny novinky",
+      "clan": "O klanu",
+      "members": "Členové",
+      "matches": "Všechny zápasy",
+      "community": "Jak se přidat"
+    },
+    "latestNews": "Nejnovější článek",
+    "noNews": "Zatím nebyly zveřejněny žádné novinky."
+  },
+  "wardogs": {
+    "meta": {
+      "title": "Wardogs – hlavní menu · Valkyria",
+      "description": "Divize Wardogs komunity Valkyria: novinky, zápasy, členové a Discord."
+    }
+  },
+  "hll": {
+    "meta": {
+      "title": "Hell Let Loose – hlavní menu · Valkyria",
+      "description": "Valkyria Hell Let Loose: klanové zápasy a výsledky, servery, Příručka, členové a nábor."
+    },
+    "heading": "Valkyria – Hell Let Loose",
+    "division": "Hell Let Loose",
+    "clanName": "Valkyria",
+    "menu": {
+      "news": "Novinky",
+      "matches": "Zápasy",
+      "servers": "Servery",
+      "members": "Členové",
+      "field-manual": "Příručka",
+      "clan": "O klanu",
+      "community": "Přidej se"
+    },
+    "menuLabel": "Menu Hell Let Loose",
+    "mainMenu": "Hlavní menu",
+    "communityLink": "Komunita Valkyria",
+    "joinDiscord": "Připojit se na Discord",
+    "discordUnavailable": "Pozvánka na Discord teď není nastavena.",
+    "stage": {
+      "label": "Záběry z bitev klanu",
+      "pending": "Záběry z bitev klanu doplníme po schválení.",
+      "play": "Přehrát záběry",
+      "pause": "Pozastavit záběry",
+      "unavailable": "Záběry teď nelze přehrát.",
+      "posterOnly": "Zobrazen statický obraz."
+    },
+    "strip": {
+      "label": "Aktuálně",
+      "nextMatch": "Příští zápas",
+      "latestNews": "Nejnovější zpráva",
+      "versus": "vs. {opponent}"
+    },
+    "utilities": {
+      "label": "Další odkazy",
+      "privacy": "Soukromí",
+      "community": "Komunita",
+      "signIn": "Přihlášení"
+    }
+  }
+}

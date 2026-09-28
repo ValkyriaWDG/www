@@ -1,5 +1,6 @@
 import { LOCALES, type Locale } from '@valkyria/db';
 import { filterSafeQuery } from '@/lib/locale-redirect';
+import { isGameRoute } from '@/modules/games/registry';
 import { isValidSlug } from './slug';
 import type { CounterpartResolution } from './types';
 
@@ -8,9 +9,10 @@ import type { CounterpartResolution } from './types';
  * - `from` must be a same-site relative path under `/cs` or `/en`; anything else
  *   (protocol-relative `//`, backslashes, schemes, control/encoded characters, dot
  *   segments, overlong input) falls back to `/<to>`.
- * - `/xx/news/<slug>` is mapped by entity identity to the published counterpart slug;
- *   without one → `/<to>/news?missing=<from>:<slug>` (only when the source is published),
- *   otherwise `/<to>/news`.
+ * - `/xx/news/<slug>` and `/xx/<game>/news/<slug>` are mapped by entity identity to the
+ *   published counterpart slug (keeping the game section); without one →
+ *   `/<to>[/<game>]/news?missing=<from>:<slug>` (only when the source is published),
+ *   otherwise the target news list.
  * - Every other path keeps its suffix under `/<to>` with only allowlisted, bounded
  *   query parameters; pagination is always reset and tokens/return URLs never forwarded.
  */
@@ -69,14 +71,17 @@ export async function resolveLocaleSwitch(
   if (!source) return `/${to}`;
   const { segments } = source;
 
-  if (segments[0] === 'news' && segments.length === 2) {
-    const slug = segments[1]!;
-    if (!isValidSlug(slug)) return `/${to}/news`;
+  const game = isGameRoute(segments[0]) ? segments[0] : null;
+  const local = game ? segments.slice(1) : segments;
+  if (local[0] === 'news' && local.length === 2) {
+    const list = `/${to}${game ? `/${game}` : ''}/news`;
+    const slug = local[1]!;
+    if (!isValidSlug(slug)) return list;
     const resolution = await resolveCounterpart(source.locale, slug, to);
-    if (!resolution) return `/${to}/news`;
-    if (resolution.kind === 'published') return `/${to}/news/${resolution.slug}`;
+    if (!resolution) return list;
+    if (resolution.kind === 'published') return `${list}/${resolution.slug}`;
     const missing = new URLSearchParams({ missing: `${source.locale}:${resolution.sourceSlug}` });
-    return `/${to}/news?${missing.toString()}`;
+    return `${list}?${missing.toString()}`;
   }
 
   const suffix = segments.length > 0 ? `/${segments.join('/')}` : '';

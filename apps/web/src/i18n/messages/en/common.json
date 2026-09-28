@@ -24,7 +24,9 @@
     "account": "MY ACCOUNT",
     "admin": "ADMINISTRATION",
     "accountMenu": "Account",
-    "menu": "MENU"
+    "menu": "MENU",
+    "hub": "COMMUNITY",
+    "servers": "SERVERS"
   },
   "language": {
     "groupLabel": "Website language",
@@ -115,5 +117,18 @@
     "warning": "Warning",
     "danger": "Error",
     "accent": "Highlighted"
+  },
+  "gameSwitch": {
+    "label": "Game",
+    "current": "– current game",
+    "switchTo": "Switch to {game}",
+    "games": {
+      "hll": "Hell Let Loose",
+      "wardogs": "Wardogs"
+    }
+  },
+  "platform": {
+    "name": "Valkyria",
+    "community": "Community"
   }
 }

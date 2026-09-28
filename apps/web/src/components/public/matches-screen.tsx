@@ -3,6 +3,8 @@ import { EmptyState, FilterBar, GameButton, LinkTabs, Pagination, SelectionTable
 import { formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
+import { GAME_REGISTRY, gameRouteFromDb, type GameRoute } from '@/modules/games/registry';
+import { sectionBase } from '@/modules/games/routes';
 import { getPublicMatch, getPublicMatchCounts, listPublicMatches } from '@/modules/matches/queries';
 import type { PublicMatchCounts, PublicMatchDetail, PublicMatchPage, PublicMatchSummary } from '@/modules/matches/types';
 import { ListLoadError } from './list-load-error';
@@ -23,23 +25,35 @@ const VIEWS: MatchView[] = ['upcoming', 'results'];
  */
 export async function MatchesScreen({
   locale,
-  filters,
+  filters: requested,
   mode,
   selected,
+  game = null,
 }: {
   locale: AppLocale;
   filters: MatchFilters;
   mode: 'list' | 'detail';
   /** The canonical detail (detail mode). */
   selected?: PublicMatchDetail | null;
+  /** Game section (fixed game, no game filter) or `null` for the shared all-games list. */
+  game?: GameRoute | null;
 }) {
   const t = await getMatchTranslations(locale);
   const db = getDb();
+  const base = sectionBase(game);
+  const scopedGame = game ? GAME_REGISTRY[game].db : undefined;
+  const filters: MatchFilters = scopedGame ? { ...requested, game: undefined } : requested;
+  const effectiveGame = scopedGame ?? filters.game;
+  const listHref = (next: Partial<MatchFilters>) => matchesListHref(next, base);
+  // Game lists keep their list context on the detail URL; the shared list links to each
+  // match's canonical game section.
+  const detailHref = (row: { slug: string; game: PublicMatchSummary['game'] }, context: Partial<Omit<MatchFilters, 'view'>>) =>
+    game ? matchDetailHref(row.slug, context, base) : matchDetailHref(row.slug, {}, sectionBase(gameRouteFromDb(row.game)));
   let page: PublicMatchPage | null = null;
   let counts: PublicMatchCounts | null = null;
   try {
     [page, counts] = await Promise.all([
-      listPublicMatches(db, { view: filters.view, game: filters.game, q: filters.q, page: filters.page, pageSize: MATCH_PAGE_SIZE }),
+      listPublicMatches(db, { view: filters.view, game: effectiveGame, q: filters.q, page: filters.page, pageSize: MATCH_PAGE_SIZE }),
       getPublicMatchCounts(db),
     ]);
   } catch (error) {
@@ -53,13 +67,13 @@ export async function MatchesScreen({
 
   const filtered = hasMatchFilters(filters);
   const listFilters = { game: filters.game, q: filters.q };
-  const viewCount = (view: MatchView) => (counts ? (filters.game ? counts.byGame[filters.game][view] : counts[view]) : null);
+  const viewCount = (view: MatchView) => (counts ? (effectiveGame ? counts.byGame[effectiveGame][view] : counts[view]) : null);
   const tabs = VIEWS.map((view) => {
     const count = viewCount(view);
     const label = t(`list.views.${view}`);
     return {
       key: view,
-      href: matchesListHref({ ...listFilters, view }),
+      href: listHref({ ...listFilters, view }),
       label: count === null ? label : t('list.viewTab', { label, formatted: formatNumber(count, locale) }),
     };
   });
@@ -89,12 +103,12 @@ export async function MatchesScreen({
   ];
 
   // No published fixtures at all in this view (independent of filters) vs. no filter matches.
-  const emptyView = counts ? counts[filters.view] === 0 : !filtered;
+  const emptyView = counts ? (effectiveGame ? counts.byGame[effectiveGame][filters.view] : counts[filters.view]) === 0 : !filtered;
   const otherView: MatchView = filters.view === 'upcoming' ? 'results' : 'upcoming';
 
   let listContent;
   if (!page) {
-    listContent = <ListLoadError message={t('list.loadError')} retryLabel={t('list.retry')} retryHref={matchesListHref(filters)} />;
+    listContent = <ListLoadError message={t('list.loadError')} retryLabel={t('list.retry')} retryHref={listHref(filters)} />;
   } else if (page.items.length > 0) {
     listContent = (
       <div className={styles.table} data-match-table={filters.view}>
@@ -104,7 +118,7 @@ export async function MatchesScreen({
           columns={columns}
           rows={page.items}
           getRowKey={(match) => match.slug}
-          getRowHref={(match) => matchDetailHref(match.slug, { ...listFilters, page: filters.page })}
+          getRowHref={(match) => detailHref(match, { ...listFilters, page: filters.page })}
           linkColumn="match"
           selectedKey={mode === 'detail' ? (selected?.slug ?? null) : null}
         />
@@ -115,7 +129,7 @@ export async function MatchesScreen({
       <EmptyState
         title={t('list.pageEmptyTitle')}
         action={
-          <GameButton href={matchesListHref({ ...filters, page: 1 })} intent="secondary">
+          <GameButton href={listHref({ ...filters, page: 1 })} intent="secondary">
             {t('list.firstPage')}
           </GameButton>
         }
@@ -126,7 +140,7 @@ export async function MatchesScreen({
       <EmptyState
         title={t('list.filteredEmptyTitle')}
         action={
-          <GameButton href={matchesListHref({ view: filters.view })} intent="secondary" data-clear-filters="">
+          <GameButton href={listHref({ view: filters.view })} intent="secondary" data-clear-filters="">
             {t('list.clearFilters')}
           </GameButton>
         }
@@ -140,7 +154,7 @@ export async function MatchesScreen({
       <EmptyState
         title={upcoming ? t('list.emptyUpcomingTitle') : t('list.emptyResultsTitle')}
         action={
-          <GameButton href={matchesListHref({ ...listFilters, view: otherView })} intent="secondary">
+          <GameButton href={listHref({ ...listFilters, view: otherView })} intent="secondary">
             {upcoming ? t('list.showResults') : t('list.showUpcoming')}
           </GameButton>
         }
@@ -159,33 +173,37 @@ export async function MatchesScreen({
       <div className={styles.toolbar}>
         <LinkTabs label={t('list.viewsLabel')} tabs={tabs} current={mode === 'list' ? filters.view : ''} />
         <FilterBar
-          action="/matches"
+          action={`${base}/matches`}
           searchLabel={t('list.searchLabel')}
           searchValue={filters.q}
           searchPlaceholder={t('list.searchPlaceholder')}
           hiddenParams={hiddenParams}
-          filters={[
-            {
-              name: 'game',
-              label: t('list.gameGroup'),
-              options: [
-                { value: 'all', label: t('list.all'), href: matchesListHref({ ...filters, game: undefined, page: 1 }), current: !filters.game },
-                ...GAMES.map((game) => ({
-                  value: game,
-                  label: t(`games.${game}`),
-                  href: matchesListHref({ ...filters, game, page: 1 }),
-                  current: filters.game === game,
-                })),
-              ],
-            },
-          ]}
-          resetHref={filtered ? matchesListHref({ view: filters.view }) : null}
+          filters={
+            game
+              ? []
+              : [
+                  {
+                    name: 'game',
+                    label: t('list.gameGroup'),
+                    options: [
+                      { value: 'all', label: t('list.all'), href: listHref({ ...filters, game: undefined, page: 1 }), current: !filters.game },
+                      ...GAMES.map((value) => ({
+                        value,
+                        label: t(`games.${value}`),
+                        href: listHref({ ...filters, game: value, page: 1 }),
+                        current: filters.game === value,
+                      })),
+                    ],
+                  },
+                ]
+          }
+          resetHref={filtered ? listHref({ view: filters.view }) : null}
           resultSummary={page ? t('list.resultCount', { count: page.total }) : undefined}
         />
       </div>
       <div className={styles.list}>
         {listContent}
-        {page ? <Pagination page={page.page} pageCount={page.pageCount} hrefForPage={(value) => matchesListHref({ ...filters, page: value })} /> : null}
+        {page ? <Pagination page={page.page} pageCount={page.pageCount} hrefForPage={(value) => listHref({ ...filters, page: value })} /> : null}
         <p className={styles.note}>{t('list.timeZoneNote')}</p>
       </div>
       {pane ? (
@@ -194,7 +212,7 @@ export async function MatchesScreen({
             match={pane}
             locale={locale}
             mode={mode === 'detail' ? 'detail' : 'preview'}
-            detailHref={matchDetailHref(pane.slug, { ...listFilters, page: filters.page })}
+            detailHref={detailHref(pane, { ...listFilters, page: filters.page })}
             titleId={mode === 'detail' ? 'match-overview-title' : 'match-preview-title'}
           />
         </div>

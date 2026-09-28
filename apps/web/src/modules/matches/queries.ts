@@ -149,7 +149,8 @@ export async function listPublicMatches(db: Executor, input: PublicMatchListInpu
  * Earliest published live match, or scheduled match starting at/after `now` (with a
  * short grace period for fixtures that have just started), else `null`.
  */
-export async function getNextPublicMatch(db: Executor, now: Date = new Date()): Promise<PublicMatchSummary | null> {
+export async function getNextPublicMatch(db: Executor, now: Date = new Date(), game?: Game): Promise<PublicMatchSummary | null> {
+  if (game !== undefined && !GAMES.includes(game)) return null;
   const rows = await db
     .select(summaryColumns)
     .from(match)
@@ -157,6 +158,7 @@ export async function getNextPublicMatch(db: Executor, now: Date = new Date()): 
     .where(
       and(
         isPublished,
+        game ? eq(match.game, game) : undefined,
         or(eq(match.status, 'live'), and(eq(match.status, 'scheduled'), gte(match.startsAt, new Date(now.getTime() - NEXT_MATCH_GRACE_MS)))),
       ),
     )

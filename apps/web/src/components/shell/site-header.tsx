@@ -3,55 +3,79 @@ import Image from 'next/image';
 import { ExternalIcon } from '@/components/ui/icons';
 import mark from '../../../public/brand/valkyria-mark-132.webp';
 import { AccountSlot, accountLinks, type ShellAccount } from './account-slot';
+import { GameSwitch } from './game-switch';
 import { GuardedLink } from './guarded-link';
 import { LanguageSwitcher } from './language-switcher';
 import { MobileMenu } from './mobile-menu';
 import { PrimaryNav, type PrimaryNavItem } from './primary-nav';
-import { NAV_SECTIONS } from './route-mode';
+import { NAV_SECTIONS, WARDOGS_NAV_SECTIONS } from './route-mode';
+import type { ShellPresentation } from './menu-shell';
 import styles from './header.module.css';
 
-type SiteHeaderProps = { account: ShellAccount; hllUrl: string | null };
+type SiteHeaderProps = { account: ShellAccount; hllUrl: string | null; presentation: ShellPresentation };
 
-/** Narrow charcoal strip: brand → primary nav → language + account; compact disclosure below 768 px. */
-export async function SiteHeader({ account, hllUrl }: SiteHeaderProps) {
+/**
+ * Platform bar (community hub link + persistent game switch) above the narrow charcoal
+ * strip: brand → primary nav → language + account; compact disclosure below 768 px. The
+ * shared frame lists community routes; the Wardogs frame lists its unchanged menu under
+ * `/wardogs`.
+ */
+export async function SiteHeader({ account, hllUrl, presentation }: SiteHeaderProps) {
   const t = await getTranslations('common');
-  const items: PrimaryNavItem[] = NAV_SECTIONS.map((section) => ({ key: section.key, href: section.href, label: t(`nav.${section.key}`) }));
+  const sections = presentation === 'wardogs' ? WARDOGS_NAV_SECTIONS : NAV_SECTIONS;
+  const items: PrimaryNavItem[] = sections.map((section) => ({
+    key: section.key,
+    href: section.href,
+    label: section.key === 'home' && presentation === 'platform' ? t('nav.hub') : t(`nav.${section.key}`),
+  }));
   const mobileAccountLinks = accountLinks(account, (key) => t(`nav.${key}`));
 
   return (
-    <header className={styles.header} data-shell-header="">
-      <GuardedLink href="/" className={styles.brand} data-brand="">
-        <Image src={mark} alt={t('brand.homeLabel')} className={styles.brandMark} loading="eager" sizes="44px" />
-      </GuardedLink>
-      <span className={styles.divider} aria-hidden="true" />
-      <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="desktop" />
-      <div className={styles.tools}>
-        <LanguageSwitcher />
-        <div className={styles.accountSlot}>
-          <AccountSlot account={account} />
-        </div>
+    <>
+      <div className={styles.platformBar} data-platform-bar="">
+        <GuardedLink href="/" className={styles.platformLink} data-platform-home="">
+          <span className={styles.platformName}>{t('platform.name')}</span>
+          <span className={styles.platformSeparator} aria-hidden="true">
+            {'//'}
+          </span>
+          <span>{t('platform.community')}</span>
+        </GuardedLink>
+        <GameSwitch variant="bar" />
       </div>
-      <MobileMenu label={t('nav.menu')}>
-        <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="mobile" />
-        <ul className={styles.mobileLinks}>
-          {mobileAccountLinks.map((link) => (
-            <li key={link.key}>
-              <GuardedLink href={link.href} className={styles.mobileLink} data-mobile-link={link.key}>
-                {link.label}
-              </GuardedLink>
-            </li>
-          ))}
-          {hllUrl ? (
-            <li>
-              <a href={hllUrl} className={styles.mobileLink} data-mobile-link="hll">
-                {t('nav.hllWebsite')}
-                <ExternalIcon size={16} />
-                <span className="visually-hidden"> {t('external.suffix')}</span>
-              </a>
-            </li>
-          ) : null}
-        </ul>
-      </MobileMenu>
-    </header>
+      <header className={styles.header} data-shell-header="">
+        <GuardedLink href={presentation === 'wardogs' ? '/wardogs' : '/'} className={styles.brand} data-brand="">
+          <Image src={mark} alt={t('brand.homeLabel')} className={styles.brandMark} loading="eager" sizes="44px" />
+        </GuardedLink>
+        <span className={styles.divider} aria-hidden="true" />
+        <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="desktop" />
+        <div className={styles.tools}>
+          <LanguageSwitcher />
+          <div className={styles.accountSlot}>
+            <AccountSlot account={account} />
+          </div>
+        </div>
+        <MobileMenu label={t('nav.menu')}>
+          <PrimaryNav items={items} label={t('a11y.mainNavigation')} variant="mobile" />
+          <ul className={styles.mobileLinks}>
+            {mobileAccountLinks.map((link) => (
+              <li key={link.key}>
+                <GuardedLink href={link.href} className={styles.mobileLink} data-mobile-link={link.key}>
+                  {link.label}
+                </GuardedLink>
+              </li>
+            ))}
+            {hllUrl ? (
+              <li>
+                <a href={hllUrl} className={styles.mobileLink} data-mobile-link="hll">
+                  {t('nav.hllWebsite')}
+                  <ExternalIcon size={16} />
+                  <span className="visually-hidden"> {t('external.suffix')}</span>
+                </a>
+              </li>
+            ) : null}
+          </ul>
+        </MobileMenu>
+      </header>
+    </>
   );
 }

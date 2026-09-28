@@ -1,0 +1,108 @@
+{
+  "names": {
+    "hll": "Hell Let Loose",
+    "wardogs": "Wardogs"
+  },
+  "menuLabel": {
+    "hll": "Hell Let Loose – main menu",
+    "wardogs": "Wardogs – main menu"
+  },
+  "eyebrow": {
+    "hll": "Valkyria // Hell Let Loose",
+    "wardogs": "Valkyria // Wardogs"
+  },
+  "sectionTitle": "{section} – {game}",
+  "communityLabel": "Community",
+  "newsIntro": "News, reports and announcements of the {game} division. Shared community posts are labelled.",
+  "matchesIntro": "Upcoming fixtures and results of the {game} division.",
+  "membersIntro": "Members with a published profile and a public {game} affiliation.",
+  "switchNotice": {
+    "detail": {
+      "title": "Switched to {game}",
+      "body": "The previous page has no counterpart in {game}, so the matching list is shown."
+    },
+    "section": {
+      "title": "Switched to {game}",
+      "body": "This part of the website does not exist for {game}, so its main menu is shown."
+    }
+  },
+  "hub": {
+    "meta": {
+      "title": "Valkyria – Czech & Slovak gaming community",
+      "description": "The Valkyria community: Hell Let Loose and Wardogs on one website. News, matches, members and recruitment."
+    },
+    "eyebrow": "Valkyria // CZ & SK",
+    "heading": "Valkyria community",
+    "intro": "A Czech and Slovak gaming community. Choose a game or continue to the shared pages.",
+    "choose": "Choose a game",
+    "cards": {
+      "hll": {
+        "body": "Clan matches, servers, the Field Manual and unit recruitment.",
+        "cta": "Enter the Hell Let Loose section"
+      },
+      "wardogs": {
+        "body": "The Wardogs division: news, matches and members.",
+        "cta": "Enter the Wardogs section"
+      }
+    },
+    "shared": {
+      "title": "Shared by the whole community",
+      "news": "All news",
+      "clan": "About the clan",
+      "members": "Members",
+      "matches": "All matches",
+      "community": "How to join"
+    },
+    "latestNews": "Latest post",
+    "noNews": "No news has been published yet."
+  },
+  "wardogs": {
+    "meta": {
+      "title": "Wardogs – main menu · Valkyria",
+      "description": "The Valkyria Wardogs division: news, matches, members and Discord."
+    }
+  },
+  "hll": {
+    "meta": {
+      "title": "Hell Let Loose – main menu · Valkyria",
+      "description": "Valkyria Hell Let Loose: clan fixtures and results, servers, Field Manual, members and recruitment."
+    },
+    "heading": "Valkyria – Hell Let Loose",
+    "division": "Hell Let Loose",
+    "clanName": "Valkyria",
+    "menu": {
+      "news": "News",
+      "matches": "Matches",
+      "servers": "Servers",
+      "members": "Members",
+      "field-manual": "Field manual",
+      "clan": "Clan",
+      "community": "Join us"
+    },
+    "menuLabel": "Hell Let Loose menu",
+    "mainMenu": "Main menu",
+    "communityLink": "Valkyria community",
+    "joinDiscord": "Join Discord",
+    "discordUnavailable": "The Discord invitation is not configured right now.",
+    "stage": {
+      "label": "Clan battle footage",
+      "pending": "Clan battle footage will be added once approved.",
+      "play": "Play footage",
+      "pause": "Pause footage",
+      "unavailable": "The footage cannot be played right now.",
+      "posterOnly": "A still image is shown."
+    },
+    "strip": {
+      "label": "Latest",
+      "nextMatch": "Next match",
+      "latestNews": "Latest news",
+      "versus": "vs. {opponent}"
+    },
+    "utilities": {
+      "label": "More links",
+      "privacy": "Privacy",
+      "community": "Community",
+      "signIn": "Sign in"
+    }
+  }
+}

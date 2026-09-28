@@ -4,10 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
-import type { ShellAccount } from '@/components/shell/account-slot';
-import { MenuShell } from '@/components/shell/menu-shell';
 import { routing } from '@/i18n/routing';
-import { getHeaderAccountState } from '@/modules/auth/header-state';
 import { getSiteOrigin } from '@/lib/site';
 import '@/styles/globals.css';
 
@@ -45,15 +42,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   // Reading the per-request nonce keeps every UI route dynamically rendered so the
   // nonce-based CSP applies to all framework scripts (no prerendered HTML without nonces).
   await headers();
-  // Signed-in projection for the header; visibility is convenience only, account/admin
-  // routes authorize every request on the server.
-  const account: ShellAccount = await getHeaderAccountState();
+  // The presentation frame is chosen by the route group below: `(platform)` for the
+  // community hub, shared pages, account and admin; `[game]` for HLL and Wardogs.
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider>
-          <MenuShell account={account}>{children as ReactNode}</MenuShell>
-        </NextIntlClientProvider>
+        <NextIntlClientProvider>{children as ReactNode}</NextIntlClientProvider>
       </body>
     </html>
   );

@@ -8,7 +8,6 @@
   align-items: stretch;
   min-height: var(--header-height);
   padding-inline: var(--brand-inset) var(--safe-inset);
-  padding-top: env(safe-area-inset-top);
   border-bottom: var(--border-hairline) solid var(--color-chrome-line);
   background: rgb(27 28 25 / 0.97);
 }
@@ -143,7 +142,7 @@ a.languageOption:hover {
 }
 
 .languageOption[aria-current='true'] {
-  background: rgb(217 173 50 / 0.12);
+  background: var(--color-selected-wash);
   box-shadow: inset 0 -2px 0 var(--color-accent);
   color: var(--color-accent-strong);
 }
@@ -423,5 +422,52 @@ a.languageOption:hover {
   .account,
   .menuButton {
     border-color: ButtonText;
+  }
+}
+
+/* ---- Platform bar: community link and the persistent game switch above the strip ---- */
+.platformBar {
+  position: relative;
+  z-index: var(--layer-header);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px var(--space-4);
+  min-height: 52px;
+  padding: calc(4px + env(safe-area-inset-top)) var(--safe-inset) 4px var(--brand-inset);
+  border-bottom: var(--border-hairline) solid rgb(168 168 154 / 0.14);
+  background: rgb(16 17 15 / 0.97);
+}
+
+.platformLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: 44px;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.platformLink:hover {
+  color: var(--color-text);
+}
+
+.platformName {
+  color: var(--color-text);
+}
+
+.platformSeparator {
+  color: var(--color-accent);
+}
+
+@media (max-width: 767px) {
+  .platformBar {
+    padding-inline: var(--safe-inset);
   }
 }

@@ -39,6 +39,9 @@
   --color-scrim: 10 10 9;
   --color-info: #a9c8e8;
   --color-selected-wash: rgb(217 173 50 / 0.16);
+  --color-accent-glow: rgb(217 173 50 / 0.18);
+  --color-dialog-border: rgb(217 173 50 / 0.72);
+  --gradient-selected-row: linear-gradient(90deg, rgb(217 173 50 / 0.3), rgb(217 173 50 / 0.14));
 
   --gradient-primary: linear-gradient(180deg, rgb(118 87 12 / 0.78), rgb(155 117 24 / 0.92));
   --gradient-nav-active: linear-gradient(0deg, rgb(217 173 50 / 0.34), rgb(217 173 50 / 0));
@@ -136,4 +139,71 @@
     --motion-base: 0ms;
     --motion-slow: 0ms;
   }
+}
+
+/*
+ * HLL game theme (docs/design/hll/visual-spec.md §3): cool charcoal/gray translucent
+ * layers, off-white text and a muted khaki selection. Scoped to the HLL section frame
+ * (`data-theme="hll"`) so shared primitives restyle through tokens; the Wardogs and
+ * shared frames keep the values above. Starting estimates, not extracted game tokens.
+ */
+[data-theme='hll'] {
+  --hll-bg: #171a1f;
+  --hll-panel: #25282d;
+  --hll-panel-overlay: rgb(20 23 27 / 0.88);
+  --hll-panel-hover: #363a40;
+  --hll-text: #f0efea;
+  --hll-text-muted: #c1c3c5;
+  --hll-accent: #c5b967;
+  --hll-accent-fill: #b7aa5c;
+  --hll-on-accent: #171a1f;
+  --hll-divider: #62666c;
+  --hll-focus: #f1de8c;
+
+  --color-scene-base: var(--hll-bg);
+  --color-chrome: #1d2025;
+  --color-chrome-strong: #15171b;
+  --color-panel: var(--hll-panel-overlay);
+  --color-panel-solid: var(--hll-panel);
+  --color-panel-soft: rgb(44 48 54 / 0.8);
+  --color-row: rgb(46 50 56 / 0.86);
+  --color-row-alt: rgb(29 32 37 / 0.9);
+  --color-border: var(--hll-divider);
+  --color-border-strong: #a9adb3;
+  --color-text: var(--hll-text);
+  --color-text-muted: var(--hll-text-muted);
+  --color-text-dim: #9ea2a7;
+  --color-accent: var(--hll-accent);
+  --color-accent-strong: #d8cd84;
+  --color-accent-surface: #5c5730;
+  --color-accent-wash: rgb(197 185 103 / 0.22);
+  --color-success: #9fc9aa;
+  --color-warning: #e1cc84;
+  --color-danger: #f1a0a0;
+  --color-danger-surface: #4d2528;
+  --color-focus: var(--hll-focus);
+  --color-chrome-line: rgb(169 173 179 / 0.22);
+  --color-nav-item: rgb(255 255 255 / 0.03);
+  --color-nav-item-hover: rgb(255 255 255 / 0.08);
+  --color-nav-edge: rgb(169 173 179 / 0.4);
+  --color-control: rgb(37 40 45 / 0.9);
+  --color-control-hover: var(--hll-panel-hover);
+  --color-control-pressed: rgb(23 26 31 / 0.95);
+  --color-scrim: 14 16 19;
+  --color-selected-wash: rgb(197 185 103 / 0.16);
+  --color-accent-glow: rgb(197 185 103 / 0.14);
+  --color-dialog-border: rgb(197 185 103 / 0.72);
+  --gradient-selected-row: linear-gradient(90deg, rgb(197 185 103 / 0.28), rgb(197 185 103 / 0.1));
+  --gradient-primary: linear-gradient(180deg, rgb(112 105 55 / 0.92), rgb(92 87 48 / 0.96));
+  --gradient-nav-active: linear-gradient(0deg, rgb(197 185 103 / 0.28), rgb(197 185 103 / 0));
+  /* Shared primary controls keep light text on a deep khaki fill (≥4.5:1). */
+  --gradient-cta: linear-gradient(180deg, rgb(112 105 55 / 0.95), rgb(88 83 44 / 0.96));
+  --gradient-cta-hover: linear-gradient(180deg, rgb(126 118 62 / 0.96), rgb(98 92 49 / 0.97));
+
+  --radius-panel: 2px;
+  --radius-control: 2px;
+  --safe-inset: clamp(20px, 4.2vw, 80px);
+  --content-max: 1760px;
+  --text-page-heading: clamp(2rem, 2.1vw + 1rem, 3.5rem);
+  --tracking-nav: 0.035em;
 }

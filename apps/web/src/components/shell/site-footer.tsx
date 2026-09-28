@@ -5,14 +5,14 @@ import { BackgroundToggle } from './background-toggle';
 import { GuardedLink } from './guarded-link';
 import styles from './footer.module.css';
 
-type SiteFooterProps = { discordUrl: string | null; hllUrl: string | null; hasBackgroundVideo: boolean };
+type SiteFooterProps = { discordUrl: string | null; hllUrl: string | null; hasBackgroundVideo: boolean; newsHref: string };
 
 /**
  * Utility rail / site footer on every localized page: community links on the left
  * (Discord, News, HLL WEB), background control plus visible HLL WEB and Privacy links on
  * the right. On home it sits under the action stack like reference 09's utility rows.
  */
-export async function SiteFooter({ discordUrl, hllUrl, hasBackgroundVideo }: SiteFooterProps) {
+export async function SiteFooter({ discordUrl, hllUrl, hasBackgroundVideo, newsHref }: SiteFooterProps) {
   const t = await getTranslations('common');
   const external = t('external.suffix');
   return (
@@ -21,7 +21,7 @@ export async function SiteFooter({ discordUrl, hllUrl, hasBackgroundVideo }: Sit
         {discordUrl ? (
           <UtilityButton href={discordUrl} external externalLabel={external} label={t('footer.discord')} icon={<CommunityIcon />} tooltipAlign="start" data-utility="discord" />
         ) : null}
-        <UtilityButton href="/news" label={t('footer.news')} icon={<NewsIcon />} tooltipAlign={discordUrl ? 'center' : 'start'} data-utility="news" />
+        <UtilityButton href={newsHref} label={t('footer.news')} icon={<NewsIcon />} tooltipAlign={discordUrl ? 'center' : 'start'} data-utility="news" />
         {hllUrl ? <UtilityButton href={hllUrl} external externalLabel={external} label={t('nav.hllWebsite')} icon={<GlobeIcon />} data-utility="hll" /> : null}
       </div>
       <div className={styles.group} data-group="end">

@@ -83,8 +83,12 @@ export function parseNewsFilters(params: RawSearchParams | undefined): NewsFilte
   };
 }
 
-export function newsListHref(filters: Partial<NewsFilters>): string {
-  return buildHref('/news', [
+/**
+ * List URL under a section base: `''` for the shared community list, `/hll` or `/wardogs`
+ * for a game section (see `sectionBase`).
+ */
+export function newsListHref(filters: Partial<NewsFilters>, base = ''): string {
+  return buildHref(`${base}/news`, [
     ['category', filters.category],
     ['game', filters.game],
     ['q', filters.q],
@@ -124,8 +128,8 @@ export function parseMemberFilters(params: RawSearchParams | undefined): MemberF
   };
 }
 
-export function membersListHref(filters: Partial<MemberFilters>): string {
-  return buildHref('/members', [
+export function membersListHref(filters: Partial<MemberFilters>, base = ''): string {
+  return buildHref(`${base}/members`, [
     ['game', filters.game],
     ['role', filters.role],
     ['q', filters.q],
@@ -156,8 +160,8 @@ export function parseMatchFilters(params: RawSearchParams | undefined, fallbackV
 }
 
 /** List URL; the default `upcoming` view is implicit. */
-export function matchesListHref(filters: Partial<MatchFilters>): string {
-  return buildHref('/matches', [
+export function matchesListHref(filters: Partial<MatchFilters>, base = ''): string {
+  return buildHref(`${base}/matches`, [
     ['view', filters.view === 'results' ? 'results' : undefined],
     ['game', filters.game],
     ['q', filters.q],
@@ -169,8 +173,8 @@ export function matchesListHref(filters: Partial<MatchFilters>): string {
  * Canonical detail URL that keeps the list context (game/search/page) for the desktop
  * list+detail layout; the view is derived from the match status on the detail page.
  */
-export function matchDetailHref(slug: string, filters: Partial<Omit<MatchFilters, 'view'>> = {}): string {
-  return buildHref(`/matches/${slug}`, [
+export function matchDetailHref(slug: string, filters: Partial<Omit<MatchFilters, 'view'>> = {}, base = ''): string {
+  return buildHref(`${base}/matches/${slug}`, [
     ['game', filters.game],
     ['q', filters.q],
     ['page', filters.page],

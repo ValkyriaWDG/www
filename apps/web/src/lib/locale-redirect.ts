@@ -2,6 +2,8 @@ import { routing } from '@/i18n/routing';
 
 /** Logical UI suffixes that exist under `/cs` and `/en`. */
 export const UI_ROOT_SEGMENTS = [
+  'hll',
+  'wardogs',
   'news',
   'clan',
   'members',
@@ -14,7 +16,7 @@ export const UI_ROOT_SEGMENTS = [
 ] as const;
 
 /** Non-sensitive shareable filter/query keys preserved on redirects and language switches. */
-export const SAFE_QUERY_KEYS = ['game', 'status', 'q', 'page', 'category', 'tag', 'role', 'view', 'lang'] as const;
+export const SAFE_QUERY_KEYS = ['game', 'status', 'q', 'page', 'category', 'tag', 'role', 'view', 'lang', 'server'] as const;
 
 const SAFE_QUERY_VALUE = /^[\p{L}\p{N} _.,:-]{0,80}$/u;
 

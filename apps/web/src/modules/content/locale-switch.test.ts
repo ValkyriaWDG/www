@@ -63,4 +63,19 @@ describe('resolveLocaleSwitch', () => {
     expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/news/koncept' }, unpublished)).toBe('/en/news');
     expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/news/Not_A_Slug' }, never)).toBe('/en/news');
   });
+
+  it('keeps the game section while mapping an article counterpart', async () => {
+    const resolver = vi.fn<CounterpartResolver>(async () => ({ kind: 'published', slug: 'ecl-report' }));
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/news/zprava-ecl' }, resolver)).toBe('/en/hll/news/ecl-report');
+    expect(resolver).toHaveBeenCalledWith('cs', 'zprava-ecl', 'en');
+    const missing: CounterpartResolver = async () => ({ kind: 'missing', sourceSlug: 'zprava-ecl' });
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/news/zprava-ecl' }, missing)).toBe('/en/hll/news?missing=cs%3Azprava-ecl');
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/wardogs/news/Bad_Slug' }, never)).toBe('/en/wardogs/news');
+  });
+
+  it('keeps game sections and shared-slug details as they are', async () => {
+    expect(await resolveLocaleSwitch({ to: 'en', from: '/cs/hll/matches/vlk-vs-yoko?view=results&page=2' }, never)).toBe('/en/hll/matches/vlk-vs-yoko?view=results');
+    expect(await resolveLocaleSwitch({ to: 'cs', from: '/en/hll/servers?server=srv-1' }, never)).toBe('/cs/hll/servers?server=srv-1');
+    expect(await resolveLocaleSwitch({ to: 'cs', from: '/en/wardogs' }, never)).toBe('/cs/wardogs');
+  });
 });
