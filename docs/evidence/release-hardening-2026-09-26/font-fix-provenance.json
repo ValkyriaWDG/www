@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "sourceRevision": "1c034dd2347e1e4d7836c39320b0b8ed8bf302be",
+  "sourceDirty": true,
+  "scope": "Local production build plus mobile filter correction; separate Linux rerun still required.",
+  "sourceHashes": [
+    {
+      "file": "scripts/release/measure-pages.mjs",
+      "normalization": "CRLF normalized to LF",
+      "sha256": "f36889d86b61001cfc2d77cead6e12b7ea57a24c0d345847b3e860164d511547"
+    },
+    {
+      "file": "scripts/release/page-budgets.json",
+      "normalization": "CRLF normalized to LF",
+      "sha256": "d89cbb4ba00982b8a76ff8fa8048661de201c0a0c2d331c35f3988b938cb5444"
+    },
+    {
+      "file": "apps/web/src/components/ui/data.module.css",
+      "normalization": "CRLF normalized to LF",
+      "sha256": "61142197d9bf3e77c0e59a8faf9f32bbced3b3b375ce9fce74096e033f844b3a"
+    },
+    {
+      "file": "apps/web/e2e/news-font-stability.spec.ts",
+      "normalization": "CRLF normalized to LF",
+      "sha256": "2e62aa90d9bfbd1769d10a31309bd050398acd1c8ee64bab49bf9cc28d59e6f6"
+    },
+    {
+      "file": "scripts/release/rehearsal-diagnostics.mjs",
+      "normalization": "CRLF normalized to LF",
+      "sha256": "37445c89f6d864919f33a9266f5df5c15d7f7f22ef7ba42e183025d241d04326"
+    },
+    {
+      "file": "scripts/release/rehearse-images.mjs",
+      "normalization": "CRLF normalized to LF",
+      "sha256": "5a00ef5fdf8568da1a413b0153c366af721e02e6ed7afbf5baaa38b5e48c399c"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "page-budgets-ci-before-font-fix.json",
+      "bytes": 8466,
+      "sha256": "cd5d35757b982e4d957b659c080b1c8a3eae0060a147c6561282e2d28cf0edf0"
+    },
+    {
+      "file": "font-fallback-diagnosis.json",
+      "bytes": 37444,
+      "sha256": "4e8bb93ea220d138793d3ef943f2fb7d6cfbb99022144a5b4a6a23513494f219"
+    },
+    {
+      "file": "page-budgets-font-fix.json",
+      "bytes": 77255,
+      "sha256": "adf32f52261491d8d1edc8364cd720d9b4ce6ca8320d9123558bd45624c43594"
+    },
+    {
+      "file": "news-font-fix.png",
+      "bytes": 642474,
+      "sha256": "177cd67d66deb54b9464b4e79ef89ecadad1ad2f2a97f644f26407d131939aef"
+    }
+  ]
+}

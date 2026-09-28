@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "sourceRevision": "507e704d288cd93d7baa0d1ab22ba8347fd67b0a",
+  "sourceDirty": true,
+  "scope": "Local pre-commit browser evidence; does not prove the eventual commit or Linux image checks",
+  "sourceHashes": [
+    {
+      "file": "scripts/release/measure-pages.mjs",
+      "normalization": "UTF-8 text with CRLF normalized to LF to match Git checkout",
+      "sha256": "6d19b287cabc50e53050d40e6c653cf729ec76d906b754e6a40614fbfa630900"
+    },
+    {
+      "file": "scripts/release/page-budgets.json",
+      "normalization": "UTF-8 text with CRLF normalized to LF to match Git checkout",
+      "sha256": "d89cbb4ba00982b8a76ff8fa8048661de201c0a0c2d331c35f3988b938cb5444"
+    },
+    {
+      "file": "apps/web/src/components/shell/menu-shell.tsx",
+      "normalization": "UTF-8 text with CRLF normalized to LF to match Git checkout",
+      "sha256": "dd99f5e701052e16e0881491b7cbd65255de7852340560fa501ef82fa2510d3e"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "page-budgets-before.json",
+      "bytes": 8348,
+      "sha256": "179ee40421fe03ebc83b66c679b9f3f763635652ef15ec209b7f8738a456dcc1"
+    },
+    {
+      "file": "page-budgets-after.json",
+      "bytes": 8265,
+      "sha256": "12524f594772efffb611e0d75c019752d72ff275b21588d39a2e2f1d2adaee7d"
+    },
+    {
+      "file": "container-local-attempt.json",
+      "bytes": 1593,
+      "sha256": "d0f802d6b90b83b503a35b4a731122868075b1ae948d968b3a1716f1aa3b0941"
+    },
+    {
+      "file": "page-1.png",
+      "bytes": 186914,
+      "sha256": "56a5b142858c04f755ee2810149a11ba4a82a8342ec285d90ed48c8b621e59ad"
+    },
+    {
+      "file": "page-2.png",
+      "bytes": 638684,
+      "sha256": "9fe9fcd327889c8b14bd22ea7fbbec1d54823f77054378a8fc631d3c1b6bb066"
+    },
+    {
+      "file": "page-3.png",
+      "bytes": 348999,
+      "sha256": "0057128d600ac1fff7a1f70fc9eab3abffd966c2ec8bdec66b08b33f8eaf22f9"
+    }
+  ]
+}
