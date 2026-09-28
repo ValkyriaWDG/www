@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-28T17:46:24.088Z",
+  "issue": "https://github.com/ValkyriaWDG/www/issues/45",
+  "baseRevision": "f492b30a11e15de96948fe436908b3919cb46d12",
+  "branch": "fix/restore-rehearsal-boundaries",
+  "context": "Uncommitted bounded patch on the recorded base; no claim that the base alone contains these changes.",
+  "sourceFiles": {
+    "apps/web/scripts/restore-rehearsal.mjs": {
+      "sha256Lf": "453881665f2eeaea503aa98d21ee70329103353581ef291853aaa47aa061bef0"
+    },
+    "scripts/tests/restore-rehearsal.test.mjs": {
+      "sha256Lf": "899a009ba3a1f562843d09a16a687b6d89c560efd9a539ed59896114335e31cc"
+    },
+    "scripts/tests/restore-rehearsal.integration.mjs": {
+      "sha256Lf": "d42a82b24480050d7c78b8ae495e017667672bf3d3ab07d328ba349987eeef1f"
+    }
+  },
+  "tools": {
+    "scope": "Synthetic loopback PostgreSQL and standalone HTTP only",
+    "node": "v24.21.0",
+    "postgresql": "18.4",
+    "pg_dump": "pg_dump (PostgreSQL) 18.4",
+    "pg_restore": "pg_restore (PostgreSQL) 18.4"
+  },
+  "checks": [
+    {
+      "command": "node --test scripts/tests/restore-rehearsal.test.mjs",
+      "result": "passed",
+      "tests": 73,
+      "skipped": 0
+    },
+    {
+      "command": "node --test scripts/tests/*.test.mjs",
+      "result": "passed",
+      "tests": 126,
+      "skipped": 0
+    },
+    {
+      "command": "node --test scripts/tests/restore-rehearsal.integration.mjs",
+      "result": "passed",
+      "tests": 6,
+      "skipped": 0,
+      "durationMs": 18371.1345
+    },
+    {
+      "command": "pnpm build",
+      "result": "passed",
+      "scope": "Full application build; no application source changed in this slice"
+    },
+    {
+      "command": "pnpm lint",
+      "result": "passed",
+      "scope": "Full application lint before final reviewer-driven script refinements"
+    },
+    {
+      "command": "pnpm --filter @valkyria/web exec eslint --max-warnings=0 scripts/restore-rehearsal.mjs",
+      "result": "passed",
+      "scope": "Final changed application script"
+    }
+  ],
+  "initialFailure": {
+    "tests": 6,
+    "passed": 4,
+    "failed": 2,
+    "skipped": 0,
+    "sourceFingerprint": "Not captured",
+    "cause": "Not established; initial empty-case HTTP/start failure retained, subsequent passes are not a diagnosed fix",
+    "recoveredObservation": "first-failure-observation.json"
+  },
+  "originalLocalTestOutputHashes": {
+    "unit-reviewed.tap": {
+      "sha256": "4af3e9241b46682e8619f8c472b538472c6bc8c10a23f4b8efccd07c0790a781",
+      "bytes": 4509
+    },
+    "tooling-reviewed.tap": {
+      "sha256": "c2ab94d01770631de008bebb439ceaf4d48d4fc9ee39d23fea00a73d18f774a3",
+      "bytes": 9109
+    },
+    "integration-reviewed.tap": {
+      "sha256": "0ef9528251f0fb64a1dbcac8a82a828a89f0fc7caaac9735b51b4b027bd2fcad",
+      "bytes": 753
+    },
+    "integration-first.tap": {
+      "sha256": "6c4b4b179cc4218f7cf5b0e454cc0ccc51f4c3a2f8e10f3c7ef7fca01eab4c75",
+      "bytes": 1835
+    }
+  },
+  "clientArchive": {
+    "publisherUrl": "https://get.enterprisedb.com/postgresql/postgresql-18.4-1-windows-x64-binaries.zip",
+    "observedBytes": 337444127,
+    "observedSha256": "7effe34c0bf89027b3f171447d351cbc460f4566c8d0f643daec67f140787858",
+    "verification": "Official EDB HTTPS download linked by PostgreSQL; local digest recorded, no independent publisher digest asserted; only client executables/DLLs extracted locally"
+  },
+  "limitations": [
+    "Synthetic loopback Windows only; Linux exact-head CI remains required",
+    "No production, Discord, provider authentication, off-host or encrypted recovery acceptance",
+    "No browser/static-asset/container rollback proof",
+    "Source/build/parent paths and writers must remain operator-controlled and frozen"
+  ],
+  "artifacts": {
+    "boundary-tests.txt": {
+      "bytes": 4427,
+      "sha256": "bb458699c7b7dcfa9864eae4e6e6a2f65f8464a839005aa99d7846accec52ec4"
+    },
+    "first-failure-observation.json": {
+      "bytes": 1342,
+      "sha256": "f3f746cbfa1cb35115996815d5805989d58bdb303ddc4dc217033db1494d3a0f"
+    },
+    "first-integration-failure.txt": {
+      "bytes": 1638,
+      "sha256": "b1632bc62ea7947af07dea1e391ec5888fa2df0d2485a0c4d4b2f12839f88cd1"
+    },
+    "integration-tests.txt": {
+      "bytes": 738,
+      "sha256": "7b0e6a68e7705fe3cb3a8a9a2999ac9e7a2905668aad18450a52fcc4afb3e128"
+    },
+    "integration.json": {
+      "bytes": 4875,
+      "sha256": "99be8a7e4020438e0a6b0ce60a817270c2643f656506f0e49dbde323c052a028"
+    },
+    "README.md": {
+      "bytes": 5777,
+      "sha256": "3f848c04ef0c92a4d674407eba98e005966744cf70692cee9bf8c30a1ede24f2"
+    },
+    "tooling-tests.txt": {
+      "bytes": 8974,
+      "sha256": "6ed84cab95cbd2a2a03cfe16bc693d31347362e31a6e5874ffaf23a45bcd5e43"
+    }
+  },
+  "publicTextSanitization": "Public TAP removes local checkout paths and whitespace-only line indentation; original local output hashes above identify retained raw TAP."
+}
