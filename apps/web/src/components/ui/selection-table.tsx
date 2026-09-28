@@ -38,6 +38,8 @@ export type SelectionTableProps<Row> = {
   onSort?: (key: string) => void;
   /** Server-side sorting through a GET form: header buttons submit `name=key:direction`. */
   sortForm?: { action: string; name?: string; params?: Record<string, string> };
+  /** `false` keeps the scroll position (row selection that only updates a detail pane). */
+  linkScroll?: boolean;
 };
 
 /**
@@ -45,7 +47,7 @@ export type SelectionTableProps<Row> = {
  * selected row, a real link per row, sortable headers as buttons with `aria-sort`. Wide
  * tables scroll inside a labelled, focusable region instead of the whole page.
  */
-export function SelectionTable<Row>({ caption, captionHidden, columns, rows, getRowKey, getRowHref, linkColumn, selectedKey, sort, onSort, sortForm }: SelectionTableProps<Row>) {
+export function SelectionTable<Row>({ caption, captionHidden, columns, rows, getRowKey, getRowHref, linkColumn, selectedKey, sort, onSort, sortForm, linkScroll }: SelectionTableProps<Row>) {
   const t = useTranslations('common');
   const formId = useId();
   const nextDirection = (key: string): SortDirection => (sort?.key === key && sort.direction === 'ascending' ? 'descending' : 'ascending');
@@ -114,7 +116,7 @@ export function SelectionTable<Row>({ caption, captionHidden, columns, rows, get
                     return (
                       <Cell key={column.key} scope={column.rowHeader ? 'row' : undefined} data-align={column.align} data-numeric={column.numeric || undefined}>
                         {column.key === linkColumn ? (
-                          <Link href={getRowHref(row)} className={styles.rowLink} aria-current={selected ? 'page' : undefined}>
+                          <Link href={getRowHref(row)} scroll={linkScroll} className={styles.rowLink} aria-current={selected ? 'page' : undefined}>
                             {content}
                             {selected ? <span className="visually-hidden"> ({t('table.selected')})</span> : null}
                           </Link>

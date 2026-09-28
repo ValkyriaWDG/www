@@ -104,5 +104,65 @@
       "community": "Community",
       "signIn": "Sign in"
     }
+  },
+  "servers": {
+    "title": "Servers",
+    "intro": "Observed status of the configured Valkyria servers with the time of observation. Missing values are never estimated.",
+    "synthetic": "Synthetic demo data – not the live status of Valkyria servers.",
+    "caption": "Valkyria servers",
+    "columns": {
+      "server": "Server",
+      "players": "Players",
+      "mode": "Mode",
+      "status": "Data status"
+    },
+    "mapUnknown": "Map unknown",
+    "notAvailable": "Not available",
+    "observed": "Observed {time}",
+    "neverObserved": "Observation time unknown",
+    "freshness": {
+      "fresh": "Current",
+      "stale": "Stale",
+      "unavailable": "Unknown"
+    },
+    "reachability": {
+      "online": "Reachable",
+      "offline": "Unreachable",
+      "unknown": "Unknown"
+    },
+    "notConfigured": {
+      "title": "No server status source is configured yet.",
+      "body": "Valkyria servers will be added once a data source is approved. Until then no estimates or player counts are shown."
+    },
+    "empty": {
+      "title": "No servers are configured.",
+      "body": "The data source is connected but contains no Valkyria server."
+    },
+    "unavailable": {
+      "title": "The server data source is not responding.",
+      "body": "This does not mean the servers are offline or empty.",
+      "lastKnown": "The last known observations are listed below and marked as stale.",
+      "retry": "Reload"
+    },
+    "selectPrompt": "Select a server",
+    "missingSelection": "The selected server is no longer listed.",
+    "selectBody": "Details appear once you select a server from the list.",
+    "detail": {
+      "eyebrow": "Server details",
+      "map": "Map",
+      "mode": "Mode",
+      "population": "Players / capacity",
+      "reachability": "Reachability",
+      "freshness": "Data status",
+      "observedAt": "Last observation",
+      "connect": "Connect",
+      "address": "Public address",
+      "copy": "Copy address",
+      "copied": "Address copied.",
+      "copyFailed": "Copying failed – please copy the address manually.",
+      "noConnect": "Connection instructions are not published yet. Ask on Discord.",
+      "pingNote": "Latency (ping) is not shown: it would be measured from the website server, not from your computer.",
+      "back": "Back to the server list"
+    }
   }
 }

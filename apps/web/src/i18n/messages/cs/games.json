@@ -104,5 +104,65 @@
       "community": "Komunita",
       "signIn": "Přihlášení"
     }
+  },
+  "servers": {
+    "title": "Servery",
+    "intro": "Pozorovaný stav nakonfigurovaných serverů Valkyria s časem pozorování. Chybějící údaje nevyplňujeme odhadem.",
+    "synthetic": "Syntetická ukázková data – nejde o živý stav serverů Valkyria.",
+    "caption": "Servery Valkyria",
+    "columns": {
+      "server": "Server",
+      "players": "Hráči",
+      "mode": "Režim",
+      "status": "Stav údajů"
+    },
+    "mapUnknown": "Mapa neznámá",
+    "notAvailable": "Není k dispozici",
+    "observed": "Pozorováno {time}",
+    "neverObserved": "Čas pozorování není znám",
+    "freshness": {
+      "fresh": "Aktuální",
+      "stale": "Neaktuální",
+      "unavailable": "Neznámý"
+    },
+    "reachability": {
+      "online": "Dostupný",
+      "offline": "Nedostupný",
+      "unknown": "Neznámý"
+    },
+    "notConfigured": {
+      "title": "Zdroj stavu serverů zatím není nastaven.",
+      "body": "Servery Valkyria doplníme po schválení zdroje dat. Do té doby nezobrazujeme žádné odhady ani počty hráčů."
+    },
+    "empty": {
+      "title": "Nejsou nastaveny žádné servery.",
+      "body": "Zdroj dat je připojen, ale neobsahuje žádný server Valkyria."
+    },
+    "unavailable": {
+      "title": "Zdroj dat o serverech teď neodpovídá.",
+      "body": "To neznamená, že jsou servery offline nebo prázdné.",
+      "lastKnown": "Níže jsou poslední známá pozorování, označená jako neaktuální.",
+      "retry": "Načíst znovu"
+    },
+    "selectPrompt": "Vyberte server",
+    "missingSelection": "Vybraný server už v seznamu není.",
+    "selectBody": "Podrobnosti se zobrazí po výběru serveru ze seznamu.",
+    "detail": {
+      "eyebrow": "Detail serveru",
+      "map": "Mapa",
+      "mode": "Režim",
+      "population": "Hráči / kapacita",
+      "reachability": "Dostupnost",
+      "freshness": "Stav údajů",
+      "observedAt": "Poslední pozorování",
+      "connect": "Připojení",
+      "address": "Veřejná adresa",
+      "copy": "Kopírovat adresu",
+      "copied": "Adresa zkopírována.",
+      "copyFailed": "Kopírování se nezdařilo – adresu opište ručně.",
+      "noConnect": "Postup připojení zatím není zveřejněn. Zeptejte se na Discordu.",
+      "pingNote": "Odezvu (ping) nezobrazujeme: měřili bychom ji ze serveru webu, ne z vašeho počítače.",
+      "back": "Zpět na seznam serverů"
+    }
   }
 }
