@@ -2756,6 +2756,83 @@
       "bytes": 17656,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "hll-masthead-2026-09-28-masthead-masthead-before-hll-landing-cs-1920x1080",
+      "path": "docs/evidence/hll-masthead-2026-09-28/masthead/masthead-before-hll-landing-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c8fc2d7 (same HLL masthead as main 0794a71); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4c5ba66a98916c125f5271ec243ea0ff9d0f1e0a0112b7b996c7c7a1e94c2efa",
+      "bytes": 40062,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-masthead-2026-09-28-masthead-masthead-wardogs-landing-cs-1920x1080",
+      "path": "docs/evidence/hll-masthead-2026-09-28/masthead/masthead-wardogs-landing-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at 46d22ff; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f1fa8f2929e93bdff7f2e83b0f059db8337fc4a361a02c6ccd4cbdd7f85f3f28",
+      "bytes": 39512,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-masthead-2026-09-28-masthead-masthead-after-hll-landing-cs-1920x1080",
+      "path": "docs/evidence/hll-masthead-2026-09-28/masthead/masthead-after-hll-landing-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at 46d22ff; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "6d5b40c4d6713acc243e5bd469fd6fccfe83b0e9a38bff2ad69e4d9c43dfa6d2",
+      "bytes": 39590,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-masthead-2026-09-28-masthead-masthead-after-hll-landing-cs-1366x768",
+      "path": "docs/evidence/hll-masthead-2026-09-28/masthead/masthead-after-hll-landing-cs-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at 46d22ff; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "99ef539cb97a4ee1cbfdd784a9511a8de5d4481f76296d3f77b4800eb08d9da2",
+      "bytes": 27746,
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "id": "hll-masthead-2026-09-28-masthead-masthead-after-hll-news-cs-1920x1080",
+      "path": "docs/evidence/hll-masthead-2026-09-28/masthead/masthead-after-hll-news-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at 46d22ff; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f358155b8a5b5eac0624e085f30540dea5bfda222f98ad269b38d58a79ed7fdd",
+      "bytes": 75264,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-masthead-2026-09-28-masthead-masthead-after-hll-landing-cs-390x844",
+      "path": "docs/evidence/hll-masthead-2026-09-28/masthead/masthead-after-hll-landing-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at 46d22ff; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "fd900edaa9b1de765a333d29ea9734f6591b9fe4975122fa64e14660e6724c28",
+      "bytes": 18072,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-masthead-2026-09-28-statistics-admin-hll-statistics-import-default-cs-1440x900",
+      "path": "docs/evidence/hll-masthead-2026-09-28/statistics/admin-hll-statistics-import-default-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at 46d22ff; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "82fdd44a0d38e2e467f02d0862269a484ac11bc339e078fe194a607bbc1cc1a7",
+      "bytes": 50722,
+      "width": 1440,
+      "height": 900
     }
   ]
 }

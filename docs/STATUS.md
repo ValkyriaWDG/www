@@ -181,7 +181,8 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   Allies/Axis sides with 0–5 sector scores. Game statistics (team totals, kills by weapon
   type, weapons, optional player rows) import from a configured CRCON server by game ID
   or from an uploaded scoreboard JSON into `match_statistics` (migration 0002), with
-  source/game ID/import time; player rows are public only when an editor publishes them.
+  source/game ID/import time; player rows are public by default after an import (owner
+  decision 2026-09-28) and an editor can hide them; a replacement import keeps that choice.
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.
@@ -208,7 +209,11 @@ and all 15 page-budget samples passed. PR #50 merged as `52a9897`; its exact-mai
 header-position browser test (`TypeError` reading `x` of a `null` box): the query-aware game
 switch replaces its server fallback during hydration, and the test measured the replaced
 element. The test now waits for both switches to finish hydrating and polls the box
-(`platform.spec.ts`, 120/120 repeated passes); the application is unchanged.
+(`platform.spec.ts`, 120/120 repeated passes); the application is unchanged. PR #57
+merged as `0794a71`. Owner follow-ups: the HLL main menu masthead now sits at the Wardogs
+position and imported player rows are public by default
+([evidence](evidence/hll-masthead-2026-09-28/README.md); 493 unit, 283 integration, 156
+browser tests at `46d22ff`).
 PR #37 before its merge:
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136

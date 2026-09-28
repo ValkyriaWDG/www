@@ -79,7 +79,8 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await panel.locator('[data-statistics-action="import"]').click();
   await expect(panel.getByText('Statistiky importovány.')).toBeVisible();
   await expect(panel).toHaveAttribute('data-statistics-state', 'imported');
-  await expect(panel.locator('[data-statistics-player-count]')).toContainText('12 · řádky hráčů nejsou veřejné');
+  // Player rows are public by default (owner decision); the editor can hide them.
+  await expect(panel.locator('[data-statistics-player-count]')).toContainText('12 · řádky hráčů jsou veřejné');
   await expect(panel.locator('[data-statistics-teams] thead')).toContainText('Valkyria (Osa)');
 
   await visitor.goto(publicPath);
@@ -87,18 +88,19 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await expect(statistics.locator('[data-statistics-provenance]')).toContainText('nahraný export tabulky hry');
   await expect(statistics.locator('[data-statistics-summary]')).toContainText('Valkyria (Osa)');
   await statistics.getByRole('tab', { name: 'Hráči' }).click();
-  await expect(statistics.locator('[data-statistics-players="private"]')).toContainText('nejsou zveřejněny');
-  await expect(statistics.getByText('[SYN] Allies Player 01')).toHaveCount(0);
+  await expect(statistics.locator('[data-statistics-players] tbody tr')).toHaveCount(12);
   await statistics.getByRole('tab', { name: 'Zbraně' }).click();
   await expect(statistics.locator('[data-statistics-weapons]')).toContainText('KARABINER 98K');
 
-  // Publishing player rows is an explicit editor decision.
-  await panel.getByLabel(/^Zveřejnit statistiky jednotlivých hráčů/).first().check();
+  // Hiding player rows is an explicit editor decision.
+  await panel.getByLabel(/^Zveřejnit statistiky jednotlivých hráčů/).first().uncheck();
   await panel.locator('[data-statistics-action="settings"]').click();
   await expect(panel.getByText('Nastavení statistik uloženo.')).toBeVisible();
+  await expect(panel.locator('[data-statistics-player-count]')).toContainText('12 · řádky hráčů nejsou veřejné');
   await visitor.goto(publicPath);
   await visitor.locator('[data-match-statistics]').getByRole('tab', { name: 'Hráči' }).click();
-  await expect(visitor.locator('[data-statistics-players] tbody tr')).toHaveCount(12);
+  await expect(visitor.locator('[data-statistics-players="private"]')).toContainText('nejsou zveřejněny');
+  await expect(visitor.getByText('[SYN] Allies Player 01')).toHaveCount(0);
 
   // Replace them with the scoreboard the web downloads itself from the CRCON server by game ID.
   await panel.getByRole('radio', { name: /^Z herního serveru \(CRCON\)/ }).check();
@@ -115,6 +117,7 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await panel.locator('[data-statistics-action="import"]').click();
   await expect(panel.getByText('Statistiky importovány.')).toBeVisible();
   await expect(panel.locator('[data-statistics-current]')).toContainText('CRCON: [SYNTHETIC] CRCON Mock Alpha, hra č. 1234');
+  // The replacement import keeps the editor's saved choice (hidden).
   await expect(panel.locator('[data-statistics-player-count]')).toContainText('10 · řádky hráčů nejsou veřejné');
   await visitor.goto(publicPath);
   const downloaded = visitor.locator('[data-match-statistics]');

@@ -657,7 +657,7 @@
     "side": "Strana Valkyrie v této hře",
     "sideHint": "Podle ní se týmy ve statistikách přiřadí Valkyrii a soupeři.",
     "publishPlayers": "Zveřejnit statistiky jednotlivých hráčů",
-    "publishPlayersHint": "Herní přezdívky a čísla hráčů obou týmů. Bez zaškrtnutí je veřejný jen souhrn týmů a zbraní.",
+    "publishPlayersHint": "Herní přezdívky a čísla hráčů obou týmů; ve výchozím stavu zapnuto. Bez zaškrtnutí je veřejný jen souhrn týmů a zbraní.",
     "saveSettings": "Uložit nastavení",
     "settingsSaved": "Nastavení statistik uloženo.",
     "remove": "Odebrat statistiky",

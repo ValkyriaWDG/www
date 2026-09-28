@@ -657,7 +657,7 @@
     "side": "Valkyria side in this game",
     "sideHint": "Assigns the teams in the statistics to Valkyria and the opponent.",
     "publishPlayers": "Publish individual player statistics",
-    "publishPlayersHint": "In-game names and numbers of both teams. Unchecked, only team and weapon totals are public.",
+    "publishPlayersHint": "In-game names and numbers of both teams; on by default. Unchecked, only team and weapon totals are public.",
     "saveSettings": "Save settings",
     "settingsSaved": "Statistics settings saved.",
     "remove": "Remove statistics",
