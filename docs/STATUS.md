@@ -94,13 +94,17 @@ its production promotion and DNS cutover remain unaccepted as described above.
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.
 - **Legacy:** reviewed redirect resolver, active only for `LEGACY_HLL_HOSTS` (empty).
+- **FAQ:** shared core page `faq` (`/cs/hll/faq`, `/cs/faq`) with a question index; the
+  seed creates only an unpublished Czech/English outline of the legacy questions, so the
+  page stays unpublished until editors write and publish the answers.
 - **Migrations:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
-  repeated run verified locally) and `0002_match_statistics.sql` (new table only).
+  repeated run verified locally), `0002_match_statistics.sql` (new table only) and
+  `0003_faq_page.sql` (widens the page-key check).
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
 text/images and match history (host blocked in this environment; reuse of external
-illustrations unrecorded), FAQ/events/tournaments/rankings destinations, tactical map,
+illustrations unrecorded), events/tournaments/rankings destinations, FAQ answers, tactical map,
 legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
 Legacy parity for servers, matches and game statistics:
 [hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (468 unit, 281
@@ -129,11 +133,11 @@ content migration is accepted. Clan footage and hosted Logi remain pending; depl
 the honest static stage and unavailable-provider states without synthetic production data.
 
 Follow-up after PR #37 (branch `feat/hll-platform-handoff`, new draft PR, not deployed):
-CRCON server status, HLL rounds and imported match statistics (migration 0002). Next:
-configure the real CRCON hosts and decide player-statistics publication; choose the
-owners of events (Logi) and tournaments/FAQ (CMS) and a source for rankings before
-building them. Release boundary: not part of the #37 + #51 cutover; it requires migration
-0002 even with `SERVER_STATUS_SOURCE=none`, so integrate accepted main and qualify the
+CRCON server status, HLL rounds, imported match statistics (migration 0002) and the FAQ
+page (migration 0003). Next: configure the real CRCON hosts and decide player-statistics
+publication; write and publish the FAQ answers; choose the owners of events (Logi) and
+tournaments (CMS) and a source for rankings before building them. Release boundary: not part of the #37 + #51 cutover; it requires migrations
+0002 and 0003 even with `SERVER_STATUS_SOURCE=none`, so integrate accepted main and qualify the
 exact resulting head before a later release.
 
 ## Publication authorization hardening

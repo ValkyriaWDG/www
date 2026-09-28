@@ -2299,6 +2299,39 @@
       "bytes": 244380,
       "width": 1280,
       "height": 720
+    },
+    {
+      "id": "hll-parity-2026-09-28-faq-hll-faq-cs-1440x900",
+      "path": "docs/evidence/hll-parity-2026-09-28/faq/hll-faq-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 046176e; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "29970276d354d50415d8296f708830d7490a7fe90ebcdc793b30e131ebfa8096",
+      "bytes": 83854,
+      "width": 1440,
+      "height": 2791
+    },
+    {
+      "id": "hll-parity-2026-09-28-faq-hll-faq-anchor-cs-390x844",
+      "path": "docs/evidence/hll-parity-2026-09-28/faq/hll-faq-anchor-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 046176e; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d3350ecc2d96f6628cb5c5a21a5ce3a65f927a17d1450a6d196b47441eae81b1",
+      "bytes": 20588,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-parity-2026-09-28-faq-hll-faq-unpublished-en-1366x768",
+      "path": "docs/evidence/hll-parity-2026-09-28/faq/hll-faq-unpublished-en-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 046176e; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "129afc7c1bba75794985cc7e92141512881d989f01bbd2825adcac7db0e612e5",
+      "bytes": 25784,
+      "width": 1366,
+      "height": 768
     }
   ]
 }

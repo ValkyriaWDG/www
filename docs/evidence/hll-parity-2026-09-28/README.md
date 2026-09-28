@@ -33,7 +33,8 @@ Legacy features from the [inventory](../../product/hll/legacy-migration.md):
 | Tactical map, videos | Videos: existing VOD links. Tactical map: **not implemented** (CRCON stores no map positions) | — |
 | Rankings (`/zebricky/*`), per-server `/stats/*` | **Not implemented**: needs an aggregate statistics source; a configured `statsUrl` links to live stats | — |
 | Events | **Not implemented**: owner of events is Logi (contract 0.3); tenant access pending | — |
-| Tournaments, FAQ | **Not implemented** | — |
+| FAQ (`/faq`, eleven questions) | Shared core page `faq` at `/cs/hll/faq` (and `/cs/faq`): per-language drafts, preview and publication in the page editor, question index linking to answers; seeded only as an unpublished outline of the legacy question topics (answers not confirmed policy); legacy `/faq` redirect active | `seed-production.test.ts`, `platform.spec.ts`, `admin-faq.spec.ts`; FAQ captures |
+| Tournaments | **Not implemented** | — |
 | Legacy match history (26 pages) and match-ID aliases | **Not imported**: the legacy host is blocked here and no authorized export exists | — |
 
 ## Checks
@@ -62,6 +63,15 @@ Legacy features from the [inventory](../../product/hll/legacy-migration.md):
   failed on `5530a8b`, passed after.
 - Checks on `59b3e38`: foundation (1129 files), lint, types, 468 unit (48 files), 281
   integration (30 files), standalone build, 144 browser passed (101 opt-in skipped).
+
+### FAQ (`046176e`)
+
+Migration `0003_faq_page.sql` only widens `content_document_page_key_ck` to allow `faq`.
+Checks on `046176e`: lint, types, 468 unit (48 files), 282 integration (30 files, incl. the
+draft-only FAQ seed), standalone build, 148 browser passed (102 opt-in skipped),
+foundation. The opt-in Wardogs capture `visual.spec.ts` "keyboard focus on the primary
+CTA" fails on a fresh e2e database because no Discord invite is configured there; it is
+not part of the default suite and is unrelated to the FAQ.
 
 Behaviour covered: CRCON config accepts HTTPS (loopback HTTP only for a mock), rejects
 credentials/queries/duplicates; real-HTTP requests without redirects, with body limits and
@@ -100,6 +110,23 @@ match rights denied.
   (visible only because an editor published them).
 
   ![Players tab on a phone](matches/hll-match-statistics-players-en-390x844.webp)
+
+### FAQ (`046176e`)
+
+- **`faq/hll-faq-cs-1440x900.webp`** — `/cs/hll/faq` (full page) after an editor published
+  the Czech version in the e2e run: FAQ in the HLL section bar, question index in the
+  editor's order, answers. The first answer is a synthetic test answer; the others still
+  show the seeded "answer in preparation" placeholder.
+
+  ![Published Czech FAQ with the question index](faq/hll-faq-cs-1440x900.webp)
+- **`faq/hll-faq-anchor-cs-390x844.webp`** — The same FAQ on a 390×844 phone after following
+  the "Jak získat VIP na našich serverech?" index link.
+
+  ![FAQ opened at one question on a phone](faq/hll-faq-anchor-cs-390x844.webp)
+- **`faq/hll-faq-unpublished-en-1366x768.webp`** — `/en/hll/faq` at the same time: English
+  is published separately and still a draft, so the page shows the unpublished state.
+
+  ![English FAQ still unpublished](faq/hll-faq-unpublished-en-1366x768.webp)
 
 ### Administration
 
