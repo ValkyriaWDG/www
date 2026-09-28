@@ -106,7 +106,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-cs-1920x1200.png',
-    caption: 'HLL landing /cs/hll at 1920×1200 (compare reference 02): left menu lane with seven destinations, Discord CTA, utilities, the cinematic stage playing the labelled SYNTHETIC TEST CLIP (not clan footage) and the strip with the next HLL match/latest HLL post.',
+    caption: 'HLL landing /cs/hll at 1920×1200 (compare reference 02): left menu lane with seven destinations, Discord CTA, utilities, the cinematic stage playing the labelled SYNTHETIC TEST CLIP (not clan footage) and the strip with the latest HLL post (the fixtures have no upcoming HLL match, so no match teaser is shown).',
     locale: 'cs',
     path: '/cs/hll',
     width: 1920,
@@ -115,7 +115,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-en-1920x1200.png',
-    caption: 'HLL landing /en/hll at 1920×1200 under reduced motion: poster-only stage (no video request), English menu labels and Czech/UK flag language switch with text labels.',
+    caption: 'HLL landing /en/hll at 1920×1200 under reduced motion: poster-only stage showing the labelled synthetic poster (no video request), English menu labels and Czech/UK flag language switch with text labels.',
     locale: 'en',
     path: '/en/hll',
     width: 1920,
@@ -152,7 +152,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-focus-cs-1920x1200.png',
-    caption: 'Keyboard focus on the HLL main menu (/cs/hll): visible khaki focus ring and selection marker on ZÁPASY, not conveyed by color alone.',
+    caption: 'Keyboard focus on the HLL main menu (/cs/hll, reduced motion): visible focus outline around ZÁPASY; the stage shows the labelled synthetic poster with an explicit play control.',
     locale: 'cs',
     path: '/cs/hll',
     width: 1920,

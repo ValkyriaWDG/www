@@ -33,8 +33,15 @@ Not done / blocked: approved clan footage (stage shows its fallback), hosted Log
 real server status, legacy guide text/images (host blocked in this environment; reuse of
 external illustrations unrecorded), FAQ/events/tournaments/leaderboards destinations,
 legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
-Evidence: [hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md).
-Earlier preparation evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
+Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
+tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
+browser tests passed (98 opt-in capture cases skipped); 33 captioned captures. Details:
+[hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md). Earlier preparation
+evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
+
+Next task: owner review of PR #37 and the captures; supply approved clan footage and
+the legacy guide text/illustration reuse decisions; then hosted Logi adapter acceptance
+and the FAQ/events/tournament/leaderboard destinations before any domain cutover.
 
 ## Publication authorization hardening
 

@@ -2,26 +2,34 @@ import type { BrowserContext, Page, Route } from '@playwright/test';
 
 /**
  * Explicitly labelled synthetic test media for the HLL stage. The clip is a moving test
- * pattern reading "SYNTHETIC TEST CLIP", recorded in the browser itself (canvas +
- * MediaRecorder) so no footage or binary fixture is committed. It proves the playback
- * lifecycle only; real HLL footage acceptance stays a separate gate.
+ * pattern reading "SYNTHETIC TEST CLIP" and its poster reads "SYNTHETIC TEST POSTER";
+ * both are rendered in the browser itself (canvas + MediaRecorder), so no footage or
+ * binary fixture is committed. They prove the playback lifecycle only; real HLL
+ * footage acceptance stays a separate gate.
  */
 
 /** Must match HLL_BACKGROUND_CLIPS_JSON in e2e/support/server-env.ts. */
 export const SYNTHETIC_CLIP_IDS = ['synthetic-a', 'synthetic-b'] as const;
 export const SYNTHETIC_MEDIA_PREFIX = '/e2e-media/';
 
-let cached: Buffer | null = null;
+let cached: { webm: Buffer; poster: Buffer } | null = null;
 
-async function recordWebm(context: BrowserContext): Promise<Buffer> {
+/** Records the clip and renders its poster (dark frame reading "SYNTHETIC TEST POSTER"). */
+async function recordMedia(context: BrowserContext): Promise<{ webm: Buffer; poster: Buffer }> {
   if (cached) return cached;
   const page = await context.newPage();
   try {
-    const base64 = await page.evaluate(async () => {
+    const { webm, poster } = await page.evaluate(async () => {
       const canvas = document.createElement('canvas');
       canvas.width = 320;
       canvas.height = 180;
       const ctx = canvas.getContext('2d')!;
+      ctx.fillStyle = '#1b1e23';
+      ctx.fillRect(0, 0, 320, 180);
+      ctx.fillStyle = '#8d8f93';
+      ctx.font = '16px sans-serif';
+      ctx.fillText('SYNTHETIC TEST POSTER', 62, 96);
+      const posterUrl = canvas.toDataURL('image/png');
       const stream = canvas.captureStream(20);
       const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' : 'video/webm';
       const recorder = new MediaRecorder(stream, { mimeType });
@@ -54,17 +62,14 @@ async function recordWebm(context: BrowserContext): Promise<Buffer> {
       const bytes = new Uint8Array(await new Blob(chunks, { type: 'video/webm' }).arrayBuffer());
       let binary = '';
       for (const byte of bytes) binary += String.fromCharCode(byte);
-      return btoa(binary);
+      return { webm: btoa(binary), poster: posterUrl.slice(posterUrl.indexOf(',') + 1) };
     });
-    cached = Buffer.from(base64, 'base64');
+    cached = { webm: Buffer.from(webm, 'base64'), poster: Buffer.from(poster, 'base64') };
     return cached;
   } finally {
     await page.close();
   }
 }
-
-// 1×1 dark PNG poster.
-const POSTER = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 
 export type SyntheticMediaLog = { video: string[]; poster: string[] };
 
@@ -74,12 +79,13 @@ export type SyntheticMediaLog = { video: string[]; poster: string[] };
  */
 export async function serveSyntheticMedia(page: Page, options: { fail?: boolean } = {}): Promise<SyntheticMediaLog> {
   const log: SyntheticMediaLog = { video: [], poster: [] };
-  const webm = options.fail ? null : await recordWebm(page.context());
+  const media = await recordMedia(page.context());
+  const webm = options.fail ? null : media.webm;
   await page.route(`**${SYNTHETIC_MEDIA_PREFIX}**`, async (route: Route) => {
     const path = new URL(route.request().url()).pathname;
     if (path.endsWith('.png')) {
       log.poster.push(path);
-      await route.fulfill({ status: 200, contentType: 'image/png', body: POSTER });
+      await route.fulfill({ status: 200, contentType: 'image/png', body: media.poster });
       return;
     }
     log.video.push(path);
