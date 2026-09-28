@@ -63,8 +63,16 @@ function entityId(input: unknown): string | null {
   return typeof raw === 'string' && /^[0-9a-f-]{36}$/i.test(raw) ? raw : null;
 }
 
-async function editableHllMatch(db: Executor, actor: Actor, id: string, action: string) {
-  const [row] = await db.select({ id: match.id, game: match.game }).from(match).where(eq(match.id, id)).limit(1);
+/**
+ * Reads the match's game and checks `matches.edit` there and that it is an HLL match.
+ * With `lock` (a mutation transaction) the match row is locked first — lock order match →
+ * match_statistics, as match updates and deletes — so the game cannot change until the
+ * mutation commits; the early unlocked check cannot authorize after awaited work such as
+ * a CRCON fetch. A denial is audited on `db`, outside the rolled-back transaction.
+ */
+async function editableHllMatch(db: Executor, actor: Actor, id: string, action: string, lock?: Executor) {
+  const query = (lock ?? db).select({ id: match.id, game: match.game }).from(match).where(eq(match.id, id));
+  const [row] = lock ? await query.for('update') : await query.limit(1);
   if (!row) throw new DomainError('not_found');
   await authorizeGames(db, actor, 'matches.edit', [row.game], { action, entityType: 'match', entityId: id });
   if (row.game !== 'hell-let-loose') throw new DomainError('invalid_state', 'Statistics import is available for Hell Let Loose matches.', { source: 'hll_only' });
@@ -94,6 +102,7 @@ async function scoreboardBody(input: z.output<typeof importSchema>, deps: Statis
 export async function importMatchStatistics(db: Executor, actor: Actor, input: ImportStatisticsInput, deps: StatisticsDeps = {}): Promise<MatchStatisticsView> {
   await authorize(db, actor, 'matches.edit', { intent: 'write', action: 'match.statistics.import', entityType: 'match', entityId: entityId(input) });
   const data = parseInput(importSchema, input);
+  // Fail fast before the (possibly slow) fetch; the transaction rechecks under the lock.
   await editableHllMatch(db, actor, data.matchId, 'match.statistics.import');
   const { body, label, field } = await scoreboardBody(data, deps);
   const parsed = parseCrconScoreboard(body);
@@ -119,6 +128,7 @@ export async function importMatchStatistics(db: Executor, actor: Actor, input: I
     updatedAt: now,
   };
   await db.transaction(async (tx) => {
+    await editableHllMatch(db, actor, data.matchId, 'match.statistics.import', tx);
     await tx.insert(matchStatistics).values({ matchId: data.matchId, ...values }).onConflictDoUpdate({ target: matchStatistics.matchId, set: values });
     await tx.update(match).set({ updatedAt: now }).where(eq(match.id, data.matchId));
     await recordAudit(tx, {
@@ -146,6 +156,7 @@ export async function updateMatchStatisticsSettings(db: Executor, actor: Actor, 
   await editableHllMatch(db, actor, data.matchId, 'match.statistics.update');
   const now = new Date();
   await db.transaction(async (tx) => {
+    await editableHllMatch(db, actor, data.matchId, 'match.statistics.update', tx);
     const updated = await tx
       .update(matchStatistics)
       .set({ valkyriaSide: data.valkyriaSide, publishPlayers: data.publishPlayers, updatedAt: now })
@@ -171,6 +182,7 @@ export async function removeMatchStatistics(db: Executor, actor: Actor, input: {
   const data = parseInput(removeSchema, input);
   await editableHllMatch(db, actor, data.matchId, 'match.statistics.remove');
   await db.transaction(async (tx) => {
+    await editableHllMatch(db, actor, data.matchId, 'match.statistics.remove', tx);
     const removed = await tx.delete(matchStatistics).where(eq(matchStatistics.matchId, data.matchId)).returning({ matchId: matchStatistics.matchId });
     if (removed.length === 0) throw new DomainError('not_found');
     await tx.update(match).set({ updatedAt: new Date() }).where(eq(match.id, data.matchId));
