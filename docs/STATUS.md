@@ -84,10 +84,14 @@ issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on
 - **Migrations:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
   repeated run verified locally) and `0002_match_statistics.sql` (new table only).
 
-Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi and
-real server status, legacy guide text/images (host blocked in this environment; reuse of
-external illustrations unrecorded), FAQ/events/tournaments/leaderboards destinations,
+Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
+acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
+text/images and match history (host blocked in this environment; reuse of external
+illustrations unrecorded), FAQ/events/tournaments/rankings destinations, tactical map,
 legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
+Legacy parity for servers, matches and game statistics:
+[hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (466 unit, 269
+integration, 144 browser tests at `288e621`/`1a14ce0`).
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
 browser tests passed (98 opt-in capture cases skipped); 33 captioned captures; after
@@ -109,6 +113,12 @@ Tunnel route. Integrate current main, qualify the exact combined revision and ad
 migration, then publish and deploy. Keep legacy `valkyriahll.cz` unchanged until its
 content migration is accepted. Clan footage and hosted Logi remain pending; deploy
 the honest static stage and unavailable-provider states without synthetic production data.
+
+Follow-up after PR #37 (branch `feat/hll-platform-handoff`, new draft PR, not deployed):
+CRCON server status, HLL rounds and imported match statistics (migration 0002). Next:
+configure the real CRCON hosts and decide player-statistics publication; choose the
+owners of events (Logi) and tournaments/FAQ (CMS) and a source for rankings before
+building them.
 
 ## Publication authorization hardening
 

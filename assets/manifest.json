@@ -2189,6 +2189,72 @@
       "bytes": 318978,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "hll-parity-2026-09-28-servers-hll-servers-crcon-cs-1920x1200",
+      "path": "docs/evidence/hll-parity-2026-09-28/servers/hll-servers-crcon-cs-1920x1200.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 8ebe1be5f859; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1ed8912643d8232abd74989ec345124594ee4277769d77c291c3a1093e37f23b",
+      "bytes": 61192,
+      "width": 1920,
+      "height": 1200
+    },
+    {
+      "id": "hll-parity-2026-09-28-servers-hll-servers-crcon-en-390x844",
+      "path": "docs/evidence/hll-parity-2026-09-28/servers/hll-servers-crcon-en-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 8ebe1be5f859; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "188768889c8152970faf7b480c5132b845afdfc33db0f533947354e3484d82ef",
+      "bytes": 38256,
+      "width": 390,
+      "height": 1724
+    },
+    {
+      "id": "hll-parity-2026-09-28-matches-hll-match-statistics-cs-1440x900",
+      "path": "docs/evidence/hll-parity-2026-09-28/matches/hll-match-statistics-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 288e621; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5f6aaa6e78a9382237c31b171b4f2924e94437a1d26e805c20e49466cb0e4f62",
+      "bytes": 67986,
+      "width": 1440,
+      "height": 1997
+    },
+    {
+      "id": "hll-parity-2026-09-28-matches-hll-match-statistics-players-en-390x844",
+      "path": "docs/evidence/hll-parity-2026-09-28/matches/hll-match-statistics-players-en-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 288e621; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "b35f18b7bd53268f44e3199dd51bdf217970707a1cc92e6588237ce06325a4cf",
+      "bytes": 25230,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-parity-2026-09-28-admin-admin-hll-match-rounds-cs-1440x1200",
+      "path": "docs/evidence/hll-parity-2026-09-28/admin/admin-hll-match-rounds-cs-1440x1200.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 1a14ce0; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "12e96ce8894d64c5d731f1b88052cd4920afa9cfc67119f21f12f60d8c15b3af",
+      "bytes": 49504,
+      "width": 1440,
+      "height": 1200
+    },
+    {
+      "id": "hll-parity-2026-09-28-admin-admin-hll-match-statistics-cs-1440x1200",
+      "path": "docs/evidence/hll-parity-2026-09-28/admin/admin-hll-match-statistics-cs-1440x1200.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 1a14ce0; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "b4baeecfd12d98274a37864c22e857f2421573866984e8716789d0d6d8299b36",
+      "bytes": 51326,
+      "width": 1440,
+      "height": 1200
     }
   ]
 }
