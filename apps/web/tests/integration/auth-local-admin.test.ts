@@ -109,7 +109,7 @@ describe('scheduled issuer verification', () => {
     const admin = await insertLocalAdmin(h.db, { twoFactorEnabled: true, roles: ['editor'] });
     const verdict = await verifyIssuerAuthority(
       h.db,
-      { issuerKind: 'local_admin', issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish' },
+      { issuerKind: 'local_admin', issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish', game: 'wardogs' },
       { fetchImpl: failingFetch, env: testAccessEnv({ DISCORD_API_BASE_URL: 'https://discord.invalid/api/v10' }) },
     );
     expect(verdict).toBe('authorized');
@@ -117,7 +117,7 @@ describe('scheduled issuer verification', () => {
 
   it('revokes delegated authority when the grant changes, is revoked or lacks the capability', async () => {
     const admin = await insertLocalAdmin(h.db, { twoFactorEnabled: true, roles: ['editor'] });
-    const check = { issuerKind: 'local_admin' as const, issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish' as const };
+    const check = { issuerKind: 'local_admin' as const, issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish' as const, game: 'wardogs' as const };
     expect(await verifyIssuerAuthority(h.db, { ...check, capability: 'matches.publish' }, { fetchImpl: failingFetch })).toBe('revoked');
     expect(await verifyIssuerAuthority(h.db, { ...check, grantId: null }, { fetchImpl: failingFetch })).toBe('revoked');
 
@@ -129,10 +129,19 @@ describe('scheduled issuer verification', () => {
     expect(await verifyIssuerAuthority(h.db, { ...check, grantVersion: 2 }, { fetchImpl: failingFetch })).toBe('revoked');
   });
 
+  it('limits a game-scoped local grant to its game at execution time', async () => {
+    const admin = await insertLocalAdmin(h.db, { twoFactorEnabled: true, roles: ['editor'] });
+    await h.db.update(localAdminGrant).set({ games: ['hell-let-loose'] }).where(eq(localAdminGrant.id, admin.grantId));
+    const check = { issuerKind: 'local_admin' as const, issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish' as const };
+    expect(await verifyIssuerAuthority(h.db, { ...check, game: 'hell-let-loose' }, { fetchImpl: failingFetch })).toBe('authorized');
+    expect(await verifyIssuerAuthority(h.db, { ...check, game: 'wardogs' }, { fetchImpl: failingFetch })).toBe('revoked');
+    expect(await verifyIssuerAuthority(h.db, { ...check, game: null }, { fetchImpl: failingFetch })).toBe('revoked');
+  });
+
   it('revokes a local issuer that gained a social account or whose grant belongs to someone else', async () => {
     const admin = await insertLocalAdmin(h.db, { twoFactorEnabled: true });
     const other = await insertLocalAdmin(h.db, { twoFactorEnabled: true });
-    const check = { issuerKind: 'local_admin' as const, issuerUserId: admin.userId, grantId: other.grantId, grantVersion: 1, capability: 'content.publish' as const };
+    const check = { issuerKind: 'local_admin' as const, issuerUserId: admin.userId, grantId: other.grantId, grantVersion: 1, capability: 'content.publish' as const, game: 'wardogs' as const };
     expect(await verifyIssuerAuthority(h.db, check, { fetchImpl: failingFetch })).toBe('revoked');
     await h.db.insert(authAccount).values({ id: crypto.randomUUID(), accountId: syntheticSnowflake(), providerId: 'discord', userId: admin.userId });
     expect(await verifyIssuerAuthority(h.db, { ...check, grantId: admin.grantId }, { fetchImpl: failingFetch })).toBe('revoked');
@@ -140,7 +149,7 @@ describe('scheduled issuer verification', () => {
 
   it('re-verifies a Discord issuer against a fresh snapshot and the current mapping', async () => {
     const issuer = await insertDiscordUser(h.db);
-    const check = { issuerKind: 'discord' as const, issuerUserId: issuer.userId, grantId: null, grantVersion: null, capability: 'content.publish' as const };
+    const check = { issuerKind: 'discord' as const, issuerUserId: issuer.userId, grantId: null, grantVersion: null, capability: 'content.publish' as const, game: 'wardogs' as const };
     const deps = { fetchImpl: createDiscordFetch(h.members, h.discordCalls), env: testAccessEnv() };
     const ageSnapshot = () =>
       h.db.execute(
@@ -178,7 +187,7 @@ describe('scheduled issuer verification', () => {
     });
     const verdict = await verifyIssuerAuthority(
       h.db,
-      { issuerKind: 'discord', issuerUserId: issuer.userId, grantId: null, grantVersion: null, capability: 'matches.publish' },
+      { issuerKind: 'discord', issuerUserId: issuer.userId, grantId: null, grantVersion: null, capability: 'matches.publish', game: 'wardogs' },
       { fetchImpl: failingFetch, env: testAccessEnv() },
     );
     expect(verdict).toBe('authorized');
@@ -186,13 +195,13 @@ describe('scheduled issuer verification', () => {
 
   it('treats unknown issuers and unconfigured Discord correctly', async () => {
     expect(
-      await verifyIssuerAuthority(h.db, { issuerKind: 'discord', issuerUserId: crypto.randomUUID(), grantId: null, grantVersion: null, capability: 'content.publish' }),
+      await verifyIssuerAuthority(h.db, { issuerKind: 'discord', issuerUserId: crypto.randomUUID(), grantId: null, grantVersion: null, capability: 'content.publish', game: 'wardogs' }),
     ).toBe('revoked');
     const issuer = await insertDiscordUser(h.db);
     expect(
       await verifyIssuerAuthority(
         h.db,
-        { issuerKind: 'discord', issuerUserId: issuer.userId, grantId: null, grantVersion: null, capability: 'content.publish' },
+        { issuerKind: 'discord', issuerUserId: issuer.userId, grantId: null, grantVersion: null, capability: 'content.publish', game: 'wardogs' },
         { fetchImpl: failingFetch, env: testAccessEnv({ DISCORD_GUILD_ID: undefined }) },
       ),
     ).toBe('unknown');
@@ -253,7 +262,7 @@ describe('operator provisioning (CLI core)', () => {
     const [grant] = await h.db.select().from(localAdminGrant).where(eq(localAdminGrant.id, admin.grantId));
     expect(grant!.revokedAt).not.toBeNull();
     expect(
-      await verifyIssuerAuthority(h.db, { issuerKind: 'local_admin', issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish' }),
+      await verifyIssuerAuthority(h.db, { issuerKind: 'local_admin', issuerUserId: admin.userId, grantId: admin.grantId, grantVersion: 1, capability: 'content.publish', game: 'wardogs' }),
     ).toBe('revoked');
     await expect(revokeLocalAdmin(h.db, { email: admin.email, operator: 'op' })).rejects.toMatchObject({ code: 'already_revoked' });
   });

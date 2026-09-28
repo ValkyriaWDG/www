@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { authSession, contentTranslation, guildMembership, localAdminGrant, publicationSchedule } from '@valkyria/db';
+import { authSession, contentDocument, contentTranslation, guildMembership, localAdminGrant, publicationSchedule } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { readMembership, recordMembershipObservation } from '@/modules/access/membership';
@@ -110,6 +110,34 @@ describe('transactional scheduled-publication authority', () => {
     }
     expect(await publishing).toMatchObject({ completed: changed ? 0 : 1, blocked: changed ? 1 : 0 });
     expect((await database.db.select().from(publicationSchedule).where(eq(publicationSchedule.id, schedule.id)))[0]?.state).toBe(changed ? 'blocked' : 'completed');
+  });
+
+  it.each([false, true])('fences the resource game of a game-scoped grant (moved to another game=%s)', async (moved) => {
+    const local = await insertLocalAdmin(database.db, { roles: ['editor'], games: ['hell-let-loose'] });
+    const editor = testPrincipal(['editor'], { userId: local.userId, source: 'local_admin', assurance: 'mfa', localGrant: { id: local.grantId, version: 1 }, games: ['hell-let-loose'] });
+    const runAt = new Date();
+    const createdAt = new Date(runAt.getTime() - 60_000);
+    const post = await createDocument(database.db, editor, { kind: 'news', locale: 'cs', title: 'Scoped scheduled publication', slug: `game-fence-${randomUUID()}`, game: 'hell-let-loose', fields: { excerpt: 'Synthetic excerpt', body: sampleBody('Synthetic content') } });
+    const schedule = await scheduleTranslation(database.db, editor, { translationId: post.translationId, dueAt: new Date(runAt.getTime() - 1000).toISOString() }, { now: () => createdAt });
+    const blocker = await database.pool.connect();
+    await blocker.query('begin');
+    await blocker.query('select id from content_translation where id=$1 for update', [post.translationId]);
+    const publishing = runPublisher(database.db, { now: () => runAt });
+    try {
+      await waitForBlockedQuery('content_translation');
+      // A platform editor moves the post to Wardogs after the HLL-only issuer was authorized.
+      if (moved) await database.db.update(contentDocument).set({ game: 'wardogs' }).where(eq(contentDocument.id, post.documentId));
+    } finally {
+      await blocker.query('rollback');
+      blocker.release();
+    }
+    expect(await publishing).toMatchObject({ completed: moved ? 0 : 1, blocked: moved ? 1 : 0 });
+    expect((await database.db.select().from(publicationSchedule).where(eq(publicationSchedule.id, schedule.id)))[0]).toMatchObject(
+      moved ? { state: 'blocked', lastError: 'issuer_revoked' } : { state: 'completed' },
+    );
+    const [after] = await database.db.select().from(contentTranslation).where(eq(contentTranslation.id, post.translationId));
+    if (moved) expect(after?.publishedRevisionId).toBeNull();
+    else expect(after?.publishedRevisionId).not.toBeNull();
   });
 
   it.each(['departure', 'role-removal', 'same-timestamp-aba'] as const)('blocks publication after %s commits while waiting for content', async (change) => {

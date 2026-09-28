@@ -1,4 +1,4 @@
-import { publicationSchedule, siteSetting, type Executor } from '@valkyria/db';
+import { contentDocument, contentTranslation, publicationSchedule, siteSetting, type Executor, type Game } from '@valkyria/db';
 import { eq, sql } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
 import type { Capability } from '@/modules/access/capabilities';
@@ -246,6 +246,8 @@ async function publishClaim(db: Executor, claim: Claim, now: Date, fence: Issuer
     }
     let result: Awaited<ReturnType<typeof applyPublication>>;
     if (fence) {
+      // Authority was granted for the document's game; a move to another game since then revokes it.
+      if (document.game !== fence.game) throw new IssuerInvalidated('revoked');
       const verdict = await revalidateIssuerFence(tx, fence, clock);
       if (verdict !== 'authorized') throw new IssuerInvalidated(verdict);
     }
@@ -309,10 +311,22 @@ async function writeHeartbeat(db: Executor, now: Date, summary: PublisherRunSumm
     .onConflictDoUpdate({ target: siteSetting.key, set: { value, version: sql`${siteSetting.version} + 1`, updatedAt: now } });
 }
 
+/** Current game of the scheduled translation's document (authority is re-checked for it). */
+async function claimGame(db: Executor, translationId: string): Promise<Game | null> {
+  const [row] = await db
+    .select({ game: contentDocument.game })
+    .from(contentTranslation)
+    .innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
+    .where(eq(contentTranslation.id, translationId))
+    .limit(1);
+  return row?.game ?? null;
+}
+
 /**
  * Runs one publisher pass. Throws only on infrastructure failure (e.g. the claim query
  * cannot run); individual intent failures are recorded on the intent and in the audit log.
  */
+
 export async function runPublisher(db: Executor, options: PublisherOptions = {}): Promise<PublisherRunSummary> {
   const clock = options.now ?? (() => new Date());
   const now = clock();
@@ -343,6 +357,7 @@ export async function runPublisher(db: Executor, options: PublisherOptions = {})
             grantId: claim.issuerGrantId,
             grantVersion: claim.issuerGrantVersion,
             capability: SCHEDULE_CAPABILITY,
+            game: await claimGame(db, claim.translationId),
           };
           if (options.verifyIssuer) {
             verdict = await options.verifyIssuer(db, input);

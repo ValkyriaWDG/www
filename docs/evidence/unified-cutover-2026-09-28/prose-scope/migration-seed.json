@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "sourceReportSha256": "b1bddd06d300c4e1ba986c7a8892730a990ce20734a520cc62c3dcfe8943c217",
+  "counts": {
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "pending": 0
+  },
+  "success": true,
+  "tests": [
+    {
+      "name": "fixtures on the schema that predates the field manual fails with a schema error unless schema-compatible loading is requested",
+      "status": "passed",
+      "durationMs": 37.47939999999994,
+      "failure": []
+    },
+    {
+      "name": "fixtures on the schema that predates the field manual loads every group the older schema stores and names the skipped field manual",
+      "status": "passed",
+      "durationMs": 597.741,
+      "failure": []
+    },
+    {
+      "name": "fixtures on the schema that predates the field manual loads the complete set, field manual included, after the remaining migrations",
+      "status": "passed",
+      "durationMs": 573.5626,
+      "failure": []
+    },
+    {
+      "name": "migration runner applies the full chain to an empty database, then is a no-op on rerun",
+      "status": "passed",
+      "durationMs": 283.1191,
+      "failure": []
+    },
+    {
+      "name": "migration runner serializes concurrent runners without duplicating journal rows",
+      "status": "passed",
+      "durationMs": 3754.0269000000003,
+      "failure": []
+    },
+    {
+      "name": "migration runner reports failures without credentials",
+      "status": "passed",
+      "durationMs": 70.0667999999996,
+      "failure": []
+    },
+    {
+      "name": "production seed uses the current rich-text schema version and valid bodies",
+      "status": "passed",
+      "durationMs": 2.41599999999994,
+      "failure": []
+    },
+    {
+      "name": "production seed publishes both locales of every core page with live slug equal to the page key",
+      "status": "passed",
+      "durationMs": 90.48350000000005,
+      "failure": []
+    },
+    {
+      "name": "production seed is idempotent and never overwrites administrator edits",
+      "status": "passed",
+      "durationMs": 20.291300000000092,
+      "failure": []
+    },
+    {
+      "name": "production seed creates no accounts, grants, members, matches or fixtures",
+      "status": "passed",
+      "durationMs": 2.6969000000001415,
+      "failure": []
+    },
+    {
+      "name": "production seed uses only reviewed facts and links, including the HLL website link on clan and community pages",
+      "status": "passed",
+      "durationMs": 1.2001000000000204,
+      "failure": []
+    },
+    {
+      "name": "seed CLI prints inserted/skipped items, changes nothing on a second run and fails with a non-zero exit",
+      "status": "passed",
+      "durationMs": 3674.3532000000005,
+      "failure": []
+    }
+  ]
+}

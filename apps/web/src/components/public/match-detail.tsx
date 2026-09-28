@@ -5,6 +5,7 @@ import { DetailPane } from '@/components/ui/panels';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
+import { canonicalMatchPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
@@ -113,7 +114,7 @@ export async function MatchDetailPane({
               <LocalizedProseView
                 prose={match.recap}
                 locale={locale}
-                path={`/matches/${match.slug}`}
+                path={canonicalMatchPath(match.game, match.slug)}
                 labels={{
                   missingTitle: t('detail.recapMissingTitle'),
                   missingBody: t('detail.recapMissingBody'),

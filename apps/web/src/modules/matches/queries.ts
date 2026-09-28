@@ -14,9 +14,10 @@ import {
   type ResultVerification,
 } from '@valkyria/db';
 import { and, asc, count, desc, eq, gte, inArray, lte, or, type SQL } from 'drizzle-orm';
+import { capabilityScope } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { loadAssetDefaults, loadPublicImages } from '@/modules/prose/assets';
-import { authorize, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
+import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { adminMatchListSchema, publicMatchListSchema, type AdminMatchListInput, type PublicMatchListInput } from './schemas';
@@ -149,7 +150,8 @@ export async function listPublicMatches(db: Executor, input: PublicMatchListInpu
  * Earliest published live match, or scheduled match starting at/after `now` (with a
  * short grace period for fixtures that have just started), else `null`.
  */
-export async function getNextPublicMatch(db: Executor, now: Date = new Date()): Promise<PublicMatchSummary | null> {
+export async function getNextPublicMatch(db: Executor, now: Date = new Date(), game?: Game): Promise<PublicMatchSummary | null> {
+  if (game !== undefined && !GAMES.includes(game)) return null;
   const rows = await db
     .select(summaryColumns)
     .from(match)
@@ -157,6 +159,7 @@ export async function getNextPublicMatch(db: Executor, now: Date = new Date()): 
     .where(
       and(
         isPublished,
+        game ? eq(match.game, game) : undefined,
         or(eq(match.status, 'live'), and(eq(match.status, 'scheduled'), gte(match.startsAt, new Date(now.getTime() - NEXT_MATCH_GRACE_MS)))),
       ),
     )
@@ -294,7 +297,11 @@ function adminItem(row: typeof match.$inferSelect, result: typeof matchResult.$i
 export async function listMatchesForAdmin(db: Executor, actor: Actor, input: AdminMatchListInput = {}): Promise<AdminMatchPage> {
   await authorize(db, actor, 'matches.edit', { intent: 'read', action: 'match.list', entityType: 'match' });
   const query = parseInput(adminMatchListSchema, input);
+  const scope = capabilityScope(actor, 'matches.edit');
+  if (scope === null || (scope !== 'all' && scope.size === 0)) return { items: [], total: 0, page: query.page, pageCount: 0 };
   const conditions: (SQL | undefined)[] = [
+    // Only matches of games in the actor's scope; the game filter never widens it.
+    scope === 'all' ? undefined : inArray(match.game, [...scope]),
     query.game ? eq(match.game, query.game) : undefined,
     query.status ? eq(match.status, query.status) : undefined,
     query.publication ? eq(match.publication, query.publication) : undefined,
@@ -332,6 +339,7 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
   if (typeof id !== 'string' || !/^[0-9a-f-]{36}$/i.test(id)) return null;
   const [row] = await db.select({ match, result: matchResult }).from(match).leftJoin(matchResult, eq(matchResult.matchId, match.id)).where(eq(match.id, id)).limit(1);
   if (!row) return null;
+  await authorizeGames(db, actor, 'matches.edit', [row.match.game], { action: 'match.read', entityType: 'match', entityId: id });
   const [rounds, recapDetail] = await Promise.all([loadRounds(db, id), loadProseAdminDetail(db, { kind: 'match', id })]);
   const recap = { cs: recapDetail.cs.status, en: recapDetail.en.status };
   return {
@@ -352,10 +360,10 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
 }
 
 
-/** Slugs and last-modified times of every published match (sitemap; shared across locales). */
-export async function listPublicMatchesForSitemap(db: Executor): Promise<{ slug: string; updatedAt: Date }[]> {
+/** Game, slug and last-modified time of every published match (sitemap; shared across locales). */
+export async function listPublicMatchesForSitemap(db: Executor): Promise<{ game: Game; slug: string; updatedAt: Date }[]> {
   return db
-    .select({ slug: match.slug, updatedAt: match.updatedAt })
+    .select({ game: match.game, slug: match.slug, updatedAt: match.updatedAt })
     .from(match)
     .where(isPublished)
     .orderBy(desc(match.startsAt))

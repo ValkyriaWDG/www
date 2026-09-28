@@ -1,4 +1,4 @@
-import { authAccount, localAdminGrant, LOCAL_GRANT_ROLES, type Executor, type LocalGrantRole } from '@valkyria/db';
+import { authAccount, GAMES, localAdminGrant, LOCAL_GRANT_ROLES, type Executor, type Game, type LocalGrantRole } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
 
 /** Better Auth provider ID of email/password (credential) accounts. */
@@ -9,6 +9,8 @@ export type LocalGrant = {
   id: string;
   userId: string;
   roles: LocalGrantRole[];
+  /** `null` = explicit platform-wide grant; otherwise only these games. */
+  games: Game[] | null;
   version: number;
   expiresAt: Date | null;
   revokedAt: Date | null;
@@ -33,14 +35,16 @@ export async function findLocalGrantById(db: Executor, grantId: string): Promise
 
 function toGrant(row: typeof localAdminGrant.$inferSelect): LocalGrant {
   const roles = row.roles.filter((role): role is LocalGrantRole => (LOCAL_GRANT_ROLES as readonly string[]).includes(role));
-  return { id: row.id, userId: row.userId, roles, version: row.version, expiresAt: row.expiresAt, revokedAt: row.revokedAt };
+  // Unknown stored games are dropped; an emptied scoped list grants nothing (fail closed).
+  const games = row.games === null ? null : row.games.filter((game): game is Game => (GAMES as readonly string[]).includes(game));
+  return { id: row.id, userId: row.userId, roles, games, version: row.version, expiresAt: row.expiresAt, revokedAt: row.revokedAt };
 }
 
 /** A grant is usable only when neither revoked nor expired at `now`. */
 export function isGrantActive(grant: LocalGrant, now: Date): boolean {
   if (grant.revokedAt) return false;
   if (grant.expiresAt && grant.expiresAt.getTime() <= now.getTime()) return false;
-  return grant.roles.length > 0;
+  return grant.roles.length > 0 && (grant.games === null || grant.games.length > 0);
 }
 
 export async function summarizeAccounts(db: Executor, userId: string): Promise<AccountSummary> {

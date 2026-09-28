@@ -11,6 +11,7 @@ import {
   resetLocalAdminPassword,
   revokeLocalAdmin,
 } from '../modules/auth/local-admin';
+import type { Game } from '@valkyria/db';
 
 /**
  * Operator CLI for local recovery administrators (`pnpm admin:provision`, bundled as
@@ -19,14 +20,15 @@ import {
  * environment, and are never printed or logged.
  *
  *   create --email <email> --name <label> --roles administrator[,owner,editor,match_manager]
- *          [--expires-at <ISO date>] [--operator <label>] [--password-stdin]
+ *          [--games hell-let-loose[,wardogs]] [--expires-at <ISO date>] [--operator <label>] [--password-stdin]
+ *   Without --games the grant is platform-wide (all games and community content).
  *   revoke --email <email> [--operator <label>]
  *   reset-password --email <email> [--operator <label>] [--password-stdin]
  *   list
  */
 
 const USAGE = `Usage:
-  provision-local-admin create --email <email> --name <label> --roles <role[,role]> [--expires-at <iso>] [--operator <label>] [--password-stdin]
+  provision-local-admin create --email <email> --name <label> --roles <role[,role]> [--games <game[,game]>] [--expires-at <iso>] [--operator <label>] [--password-stdin]
   provision-local-admin revoke --email <email> [--operator <label>]
   provision-local-admin reset-password --email <email> [--operator <label>] [--password-stdin]
   provision-local-admin list
@@ -34,7 +36,7 @@ Roles: editor, match_manager, administrator, owner. Passwords are read from stdi
 
 type Args = { command: string | undefined; options: Map<string, string | true> };
 
-const VALUE_FLAGS = new Set(['email', 'name', 'roles', 'operator', 'expires-at']);
+const VALUE_FLAGS = new Set(['email', 'name', 'roles', 'games', 'operator', 'expires-at']);
 const BOOLEAN_FLAGS = new Set(['password-stdin', 'help']);
 
 function parseArgs(argv: string[]): Args {
@@ -159,8 +161,13 @@ async function main(): Promise<number> {
         const expiresAt = typeof expiresRaw === 'string' ? new Date(expiresRaw) : null;
         if (expiresAt && Number.isNaN(expiresAt.getTime())) throw new UsageError('--expires-at must be an ISO date.');
         const password = await readPassword(args, { email, name });
-        const result = await createLocalAdmin(handle.db, { email, name, roles, password, operator: operatorLabel(args), expiresAt });
-        console.log(`Created local administrator ${result.userId} (grant ${result.grantId}, version 1, roles ${roles.join(',')}).`);
+        const gamesRaw = args.options.get('games');
+        if (gamesRaw === true) throw new UsageError('Option --games needs a value.');
+        const games = gamesRaw === undefined ? null : (gamesRaw.split(',').map((value) => value.trim()) as Game[]);
+        const result = await createLocalAdmin(handle.db, { email, name, roles, games, password, operator: operatorLabel(args), expiresAt });
+        console.log(
+          `Created local administrator ${result.userId} (grant ${result.grantId}, version 1, roles ${roles.join(',')}, games ${games ? games.join(',') : 'all'}).`,
+        );
         console.log('Next: enable LOCAL_ADMIN_LOGIN_ENABLED, sign in at /cs/login/recovery and enroll TOTP before any admin access.');
         return 0;
       }

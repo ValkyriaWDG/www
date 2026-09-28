@@ -2,12 +2,18 @@
 
 ## Scope and source of truth
 
-This public repository belongs to Valkyria. Build a Czech-first bilingual (Czech/English) clan website for
-`https://valkyriawdg.cz`, with a Wardogs main-menu presentation and an HLL heritage.
-The working application lives in `apps/web`. Read `docs/STATUS.md` for accepted
-source revisions, historical deployment evidence and remaining launch dependencies.
-The initial handoff describes product requirements; do not restart the scaffold or
-infer current production state from it.
+This public repository belongs to Valkyria. Extend its working Czech-first bilingual
+(Czech/English) website into one HLL/Wardogs platform, with future canonical origin
+`https://valkyria.cz` (current deployment: `https://valkyriawdg.cz`). Both games share
+CMS, identity, database and deployment with explicit game scope. The owner selected an
+HLL in-game-inspired menu/browser/manual visual direction. The working application
+lives in `apps/web`; read `docs/STATUS.md` for accepted source revisions, historical
+deployment evidence and remaining launch dependencies. For this work, start with the
+[HLL cloud handoff](docs/handoff/hll-claude-code-cloud.md) and
+[unified platform ADR](docs/architecture/decisions/0002-unified-valkyria-platform.md);
+these supersede older single-game or separate-HLL-app proposals. Do not restart the
+scaffold or infer current production state from older handoffs; branch implementation is
+not proof of deployment or domain cutover.
 
 Read, in order:
 

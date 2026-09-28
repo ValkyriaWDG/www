@@ -1,9 +1,10 @@
 import 'server-only';
 import { LOCALES, memberProfile, type Executor, type Game, type Locale, type PublicRoleKey } from '@valkyria/db';
 import { and, asc, count, desc, eq, isNotNull, sql, type SQL } from 'drizzle-orm';
+import { capabilityScope } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { loadPublicImages } from '@/modules/prose/assets';
-import { authorize, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
+import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { adminMemberListSchema, publicMemberListSchema, type AdminMemberListInput, type PublicMemberListInput } from './schemas';
@@ -98,7 +99,13 @@ function adminItem(row: typeof memberProfile.$inferSelect, biography: AdminMembe
 export async function listMembersForAdmin(db: Executor, actor: Actor, input: AdminMemberListInput = {}): Promise<AdminMemberPage> {
   await authorize(db, actor, 'members.edit', { intent: 'read', action: 'member.list', entityType: 'member_profile' });
   const query = parseInput(adminMemberListSchema, input);
+  const scope = capabilityScope(actor, 'members.edit');
+  if (scope === null || (scope !== 'all' && scope.size === 0)) return { items: [], total: 0, page: query.page, pageCount: 0 };
   const conditions: (SQL | undefined)[] = [
+    // Scoped editors see profiles whose every affiliation is in scope (never unaffiliated ones).
+    scope === 'all'
+      ? undefined
+      : sql`cardinality(${memberProfile.games}) > 0 and ${memberProfile.games} <@ array[${sql.join([...scope].map((game) => sql`${game}`), sql`, `)}]::text[]`,
     query.state ? eq(memberProfile.state, query.state) : undefined,
     query.q ? foldedContains([memberProfile.displayName, memberProfile.slug], query.q) : undefined,
   ];
@@ -131,6 +138,7 @@ export async function getMemberForAdmin(db: Executor, actor: Actor, id: string):
   if (typeof id !== 'string' || !/^[0-9a-f-]{36}$/i.test(id)) return null;
   const [row] = await db.select().from(memberProfile).where(eq(memberProfile.id, id)).limit(1);
   if (!row) return null;
+  await authorizeGames(db, actor, 'members.edit', row.games, { action: 'member.read', entityType: 'member_profile', entityId: id });
   const biographyDetail = await loadProseAdminDetail(db, { kind: 'member', id });
   return {
     ...adminItem(row, { cs: biographyDetail.cs.status, en: biographyDetail.en.status }),

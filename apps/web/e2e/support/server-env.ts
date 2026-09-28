@@ -43,7 +43,31 @@ export function e2eServerEnv(options: {
       '200000000000000002': ['editor'],
       '200000000000000003': ['match_manager'],
       '200000000000000004': ['administrator'],
+      // Game-scoped grant: editor authority for Hell Let Loose content only.
+      '200000000000000005': { roles: ['editor'], games: ['hell-let-loose'] },
     }),
+    // Labelled synthetic server snapshots (never real Valkyria server state).
+    SERVER_STATUS_SOURCE: 'synthetic-fixture',
+    SERVER_STATUS_FIXTURE_SCENARIO: 'mixed',
+    HLL_BACKGROUND_CLIPS_JSON: JSON.stringify(SYNTHETIC_HLL_CLIPS),
     ...options.background,
   };
 }
+
+/**
+ * Two synthetic stage clips on same-origin paths that the server does not serve: tests
+ * that route `/e2e-media/**` receive a browser-generated test pattern (see
+ * e2e/support/synthetic-video.ts); every other page exercises the failure fallback.
+ */
+const SYNTHETIC_HLL_CLIPS = ['synthetic-a', 'synthetic-b'].map((id) => ({
+  id,
+  enabled: true,
+  provenance: 'Synthetic browser-generated test pattern for automated tests',
+  rights: 'Test-only; never public media',
+  posterUrl: `/e2e-media/${id}-poster.png`,
+  durationSeconds: 2,
+  renditions: [
+    { src: `/e2e-media/${id}-desktop.webm`, type: 'video/webm', width: 1280, height: 720, bytes: 200_000, profile: 'desktop' },
+    { src: `/e2e-media/${id}-compact.webm`, type: 'video/webm', width: 640, height: 360, bytes: 80_000, profile: 'compact' },
+  ],
+}));

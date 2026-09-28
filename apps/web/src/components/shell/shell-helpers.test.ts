@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { paginationWindow } from '@/components/ui/pagination-window';
 import { parseDiscordInvite, parseExternalHttpsUrl } from './external-links';
 import { buildLocaleSwitchHref } from './locale-switch';
-import { getCurrentSection, getRouteMode, stripLocale } from './route-mode';
+import { getCurrentSection, getRouteMode, stripLocale, WARDOGS_NAV_SECTIONS } from './route-mode';
 import { forestPath, mountainPath, ridgePath, seededRandom } from './scene-geometry';
 
 describe('route mode and current section', () => {
@@ -13,9 +13,13 @@ describe('route mode and current section', () => {
     expect(stripLocale('/news?game=wardogs')).toBe('/news');
   });
 
-  it('classifies home, public and admin routes', () => {
-    expect(getRouteMode('/cs')).toBe('home');
-    expect(getRouteMode('/')).toBe('home');
+  it('classifies hub, game landing, public and admin routes', () => {
+    expect(getRouteMode('/cs')).toBe('hub');
+    expect(getRouteMode('/')).toBe('hub');
+    expect(getRouteMode('/cs/wardogs')).toBe('home');
+    expect(getRouteMode('/en/hll')).toBe('home');
+    expect(getRouteMode('/cs/hll/news')).toBe('public');
+    expect(getRouteMode('/cs/wardogsx')).toBe('public');
     expect(getRouteMode('/en/matches')).toBe('public');
     expect(getRouteMode('/cs/login')).toBe('public');
     expect(getRouteMode('/cs/admin/news/new')).toBe('admin');
@@ -29,6 +33,14 @@ describe('route mode and current section', () => {
     expect(getCurrentSection('/members/someone')).toBe('members');
     expect(getCurrentSection('/newsletter')).toBeNull();
     expect(getCurrentSection('/account')).toBeNull();
+  });
+
+  it('matches Wardogs sections under the game prefix only', () => {
+    expect(getCurrentSection('/cs/wardogs', WARDOGS_NAV_SECTIONS)).toBe('home');
+    expect(getCurrentSection('/cs/wardogs/matches/some-match', WARDOGS_NAV_SECTIONS)).toBe('matches');
+    expect(getCurrentSection('/en/wardogs/members/someone', WARDOGS_NAV_SECTIONS)).toBe('members');
+    expect(getCurrentSection('/cs/news', WARDOGS_NAV_SECTIONS)).toBeNull();
+    expect(getCurrentSection('/cs/hll/news', WARDOGS_NAV_SECTIONS)).toBeNull();
   });
 });
 

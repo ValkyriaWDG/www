@@ -6,10 +6,12 @@ import {
   authTwoFactor,
   authUser,
   authVerification,
+  GAMES,
   LOCAL_GRANT_ROLES,
   localAdminGrant,
   type Database,
   type Executor,
+  type Game,
   type LocalGrantRole,
 } from '@valkyria/db';
 import { hashPassword } from 'better-auth/crypto';
@@ -35,6 +37,7 @@ export class ProvisioningError extends Error {
       | 'invalid_email'
       | 'invalid_name'
       | 'invalid_roles'
+      | 'invalid_games'
       | 'invalid_operator'
       | 'weak_password'
       | 'user_exists'
@@ -138,6 +141,8 @@ export type CreateLocalAdminInput = {
   email: string;
   name: string;
   roles: LocalGrantRole[];
+  /** Games the roles apply to; omitted/`null` = explicit platform-wide grant. `owner` is always platform-wide. */
+  games?: Game[] | null;
   password: string;
   operator: string;
   expiresAt?: Date | null;
@@ -152,6 +157,11 @@ export async function createLocalAdmin(db: Database, input: CreateLocalAdminInpu
     throw new ProvisioningError('invalid_roles', 'At least one valid role is required.');
   }
   if (input.expiresAt && input.expiresAt.getTime() <= Date.now()) throw new ProvisioningError('invalid_expiry', 'The expiry must be in the future.');
+  const games = input.games ?? null;
+  if (games !== null && (games.length === 0 || !games.every((game) => (GAMES as readonly string[]).includes(game)))) {
+    throw new ProvisioningError('invalid_games', 'Games must be database game IDs (wardogs, hell-let-loose).');
+  }
+  if (games !== null && input.roles.includes('owner')) throw new ProvisioningError('invalid_games', 'The owner role is always platform-wide.');
   assertStrongPassword(input.password, { email, name });
   const passwordHash = await hashPassword(input.password);
 
@@ -172,14 +182,14 @@ export async function createLocalAdmin(db: Database, input: CreateLocalAdminInpu
     });
     const [grant] = await tx
       .insert(localAdminGrant)
-      .values({ userId, roles: [...new Set(input.roles)], version: 1, provisionedBy: operator, expiresAt: input.expiresAt ?? null })
+      .values({ userId, roles: [...new Set(input.roles)], games: games ? [...new Set(games)].sort() : null, version: 1, provisionedBy: operator, expiresAt: input.expiresAt ?? null })
       .returning({ id: localAdminGrant.id });
     await recordOperatorAudit(tx, {
       operator,
       action: 'access.local_grant_created',
       entityId: grant!.id,
       userId,
-      summary: { roles: [...new Set(input.roles)], version: 1, expiresAt: input.expiresAt?.toISOString() ?? null },
+      summary: { roles: [...new Set(input.roles)], games: games ?? 'all', version: 1, expiresAt: input.expiresAt?.toISOString() ?? null },
     });
     return { userId, grantId: grant!.id };
   });

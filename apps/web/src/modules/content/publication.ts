@@ -2,10 +2,12 @@ import 'server-only';
 import { asset, contentTranslation, publicationSchedule, slugRedirect, type Executor, type Locale } from '@valkyria/db';
 import { and, eq, inArray, isNotNull, ne } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
+import { gameRouteFromDb } from '@/modules/games/registry';
+import { gamePath } from '@/modules/games/routes';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { isUniqueViolation } from './db-errors';
-import { authorize } from './guard';
+import { authorize, authorizeGameScope } from './guard';
 import { parseInput, translationVersionSchema, type TranslationVersionInput } from './inputs';
 import { isRichTextEmpty, parseRichTextDocument } from './rich-text/schema';
 import { isValidSlug } from './slug';
@@ -36,7 +38,8 @@ export async function assertPublishable(tx: Executor, document: DocumentRow, rev
   const fieldErrors: Record<string, string> = {};
   if (revision.title.trim() === '') fieldErrors.title = 'required';
   if (!isValidSlug(revision.slug)) fieldErrors.slug = 'invalid';
-  if (document.kind === 'news' && revision.excerpt.trim() === '') fieldErrors.excerpt = 'required';
+  // News cards and Field Manual search results both show the summary.
+  if ((document.kind === 'news' || document.kind === 'manual') && revision.excerpt.trim() === '') fieldErrors.excerpt = 'required';
   const parsed = parseRichTextDocument(revision.body);
   if (!parsed.ok) fieldErrors.body = 'invalid';
   else if (isRichTextEmpty(parsed.doc)) fieldErrors.body = 'required';
@@ -125,9 +128,10 @@ export async function applyPublication(
  */
 export async function affectedPublicPaths(
   tx: Executor,
-  params: { documentId: string; kind: DocumentRow['kind']; pageKey: DocumentRow['pageKey']; locale: Locale; slugs: (string | null)[] },
+  params: { documentId: string; kind: DocumentRow['kind']; pageKey: DocumentRow['pageKey']; game?: DocumentRow['game']; locale: Locale; slugs: (string | null)[] },
 ): Promise<string[]> {
   const paths = new Set<string>(['/sitemap.xml', `/${params.locale}`]);
+  const game = params.game ? gameRouteFromDb(params.game) : null;
   const counterparts = await tx
     .select({ locale: contentTranslation.locale, liveSlug: contentTranslation.liveSlug })
     .from(contentTranslation)
@@ -141,12 +145,18 @@ export async function affectedPublicPaths(
   if (params.kind === 'page' && params.pageKey) {
     paths.add(`/${params.locale}/${params.pageKey}`);
     for (const other of counterparts) paths.add(`/${other.locale}/${params.pageKey}`);
+  } else if (params.kind === 'manual' && game) {
+    const base = `${gamePath(game)}/field-manual`;
+    paths.add(`/${params.locale}${base}`);
+    for (const slug of params.slugs) if (slug) paths.add(`/${params.locale}${base}/${slug}`);
+    for (const other of counterparts) paths.add(`/${other.locale}${base}/${other.liveSlug}`);
   } else {
+    // Canonical detail under its section; the shared list and the game landing teasers.
     paths.add(`/${params.locale}/news`);
-    for (const slug of params.slugs) if (slug) paths.add(`/${params.locale}/news/${slug}`);
-    for (const other of counterparts) {
-      paths.add(`/${other.locale}/news/${other.liveSlug}`);
-    }
+    if (game) paths.add(`/${params.locale}${gamePath(game, 'news')}`).add(`/${params.locale}${gamePath(game)}`);
+    const detail = (slug: string) => (game ? gamePath(game, 'news', slug) : `/news/${slug}`);
+    for (const slug of params.slugs) if (slug) paths.add(`/${params.locale}${detail(slug)}`);
+    for (const other of counterparts) if (other.liveSlug) paths.add(`/${other.locale}${detail(other.liveSlug)}`);
   }
   return [...paths];
 }
@@ -185,6 +195,7 @@ export async function publishTranslation(
       const translation = await lockTranslation(tx, input.translationId);
       assertVersion(translation.version, input.expectedVersion);
       const document = await readDocument(tx, translation.documentId, 'share');
+      await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.publish', entityType: 'content_document', entityId: document.id });
       assertNotArchived(document);
       if (!translation.draftRevisionId) throw new DomainError('invalid_state', 'Nothing to publish.');
       const revision = await readRevision(tx, translation.id, translation.draftRevisionId);
@@ -239,6 +250,7 @@ export async function publishTranslation(
           documentId: document.id,
           kind: document.kind,
           pageKey: document.pageKey,
+          game: document.game,
           locale: translation.locale,
           slugs: [result.slug, result.previousSlug],
         }),
@@ -262,6 +274,7 @@ export async function unpublishTranslation(
     assertVersion(translation.version, input.expectedVersion);
     if (!translation.publishedRevisionId) throw new DomainError('invalid_state', 'The translation is not published.');
     const document = await readDocument(tx, translation.documentId, 'share');
+    await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.unpublish', entityType: 'content_document', entityId: document.id });
     const [updated] = await tx
       .update(contentTranslation)
       .set({ publishedRevisionId: null, liveSlug: null, publishedAt: null, version: translation.version + 1, updatedAt: now })
@@ -291,6 +304,7 @@ export async function unpublishTranslation(
         documentId: document.id,
         kind: document.kind,
         pageKey: document.pageKey,
+        game: document.game,
         locale: translation.locale,
         slugs: [translation.liveSlug],
       }),

@@ -25,6 +25,8 @@ export const E2E_ROLE_IDS = {
   editor: '200000000000000002',
   match_manager: '200000000000000003',
   administrator: '200000000000000004',
+  /** Editor scoped to Hell Let Loose (`{ roles: ['editor'], games: ['hell-let-loose'] }`). */
+  hll_editor: '200000000000000005',
 } as const;
 export type E2ERole = keyof typeof E2E_ROLE_IDS;
 

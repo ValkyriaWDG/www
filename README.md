@@ -1,22 +1,23 @@
 # Valkyria
 
-Czech-first bilingual community website for **Valkyria**, built around a Wardogs-inspired
-game-menu experience and the clan's Hell Let Loose heritage.
+Czech-first bilingual community website for **Valkyria**, extending the existing
+Wardogs experience with an HLL game-menu section, shared CMS and identity.
 
-**Target domain:** `valkyriawdg.cz` · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
+**Future canonical domain:** `valkyria.cz` · **Current Wardogs domain:** `valkyriawdg.cz` · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
 
 > The working website, editorial administration and full-length background media are
-> implemented. See [status](docs/STATUS.md) for accepted source, historical deployment
-> evidence and remaining live authentication, Logi and operational checks. A merged
-> source revision is not automatically deployed.
+> implemented; the unified-platform/HLL extension is implemented on draft PR #37 (not
+> deployed). See [status](docs/STATUS.md) for accepted source, historical deployment
+> evidence and remaining live authentication, Logi, footage and operational checks. A
+> merged source revision is not automatically deployed.
 
 ## Start here
 
 | Audience | Entry point |
 |---|---|
-| Owner resuming Claude Code Cloud | [Current status](docs/STATUS.md), assigned issue and [original requirements](docs/handoff/start-prompt.md) |
-| Implementation agent | [Detailed handoff](docs/handoff/claude-code-cloud.md) and [AGENTS.md](AGENTS.md) |
-| Product/design | [Brief](docs/product/brief.md), [visual specification](docs/design/visual-spec.md), [screen map](docs/design/screen-map.md) |
+| Owner resuming Claude Code Cloud | [Current status](docs/STATUS.md), assigned issue and the [unified platform / HLL prompt](docs/handoff/hll-claude-code-cloud.md) |
+| Implementation agent | [Current handoff](docs/handoff/hll-claude-code-cloud.md), [detailed foundation handoff](docs/handoff/claude-code-cloud.md) and [AGENTS.md](AGENTS.md) |
+| Product/design | [Brief](docs/product/brief.md), [HLL scope](docs/product/hll/README.md), [HLL visual specification](docs/design/hll/visual-spec.md), [Wardogs specification](docs/design/visual-spec.md), [screen map](docs/design/screen-map.md) |
 | Engineering | [Architecture](docs/architecture/overview.md), [data model](docs/architecture/data-model.md), [auth/RBAC](docs/security/auth-rbac.md) |
 | Agent execution | [Skill catalog](docs/engineering/skills.md), [task workflow](docs/engineering/agent-workflow.md), [verification](docs/engineering/verification-workflow.md) |
 | Delivery | [Implementation plan](docs/implementation/plan.md), [backlog](docs/implementation/github-backlog.md), [deployment](docs/operations/deployment.md) |
@@ -24,18 +25,23 @@ game-menu experience and the clan's Hell Let Loose heritage.
 
 ## Product direction
 
-A cinematic backdrop with a faded Valkyria crest, compact top navigation, amber
-selection states and sharp translucent panels. Public pages cover the clan, members,
-news, matches/results and Discord. Authorized administrators manage content; match
-availability and rosters are a later milestone. Public and admin UI support Czech
+One community platform with separate game presentations: Wardogs retains its cinematic
+backdrop, top navigation and amber selection; HLL uses a left menu, cool charcoal
+layers and khaki highlights over future clan battle footage. Public pages cover the
+clan, members, news, matches/results, servers, the editable Field Manual and Discord.
+Authorized administrators manage editorial content. Public and admin UI support Czech
 (default) and English with a visible Czech/UK flag language switcher. Code, technical
 documentation, GitHub descriptions and AI prompts stay English. See
 [the localization contract](docs/product/localization.md).
 
 News/blog includes WordPress-like rich-text editing, image management, drafts/revisions,
-preview and publishing. Admin match creation, scheduling and result entry belong to the
-first release. A visible HLL WEBSITE link keeps the existing HLL community accessible.
-See [editorial and match requirements](docs/product/editorial-and-matches.md).
+preview and publishing. Reuse existing match management for reviewed historical import
+and editorial publication; future event/sign-up/roster operations use hosted Logi where
+its capabilities are verified, without creating a second writable operational master.
+The planned game switch keeps both sections under one canonical origin; existing
+external links remain until the reviewed migration is implemented. The
+[current integration contract](docs/integrations/logi/contract.md) governs this extension
+over the earlier standalone [editorial and match requirements](docs/product/editorial-and-matches.md).
 
 The [reference captures](docs/design/references/README.md) and
 [supplied clan logo](assets/brand/valkyria-logo.png) are committed so cloud agents can

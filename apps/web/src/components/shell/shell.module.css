@@ -48,6 +48,11 @@
   opacity: 0.86;
 }
 
+/* Community hub: dimmed shared scene with the crest; the page carries the game choices. */
+[data-route-mode='hub'] .scrim {
+  opacity: 0.58;
+}
+
 /* Ghosted clan crest: centered at ~50% x / 47% of the stage below the header; home only. */
 .emblem {
   position: absolute;
@@ -61,7 +66,8 @@
   transform: translate(-50%, -50%);
 }
 
-[data-route-mode='home'] .emblem {
+[data-route-mode='home'] .emblem,
+[data-route-mode='hub'] .emblem {
   display: block;
 }
 

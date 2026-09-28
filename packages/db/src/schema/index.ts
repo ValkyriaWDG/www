@@ -5,3 +5,4 @@ export * from './audit.ts';
 export * from './media.ts';
 export * from './content.ts';
 export * from './community.ts';
+export * from './manual.ts';

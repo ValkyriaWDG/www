@@ -41,5 +41,9 @@ test('isolated HTTP probe bounds delayed and oversized responses and rejects red
     await assert.rejects(containerHttp(docker, 'fixture', '/delay', { port, timeoutMs: 100 }));
     await assert.rejects(containerHttp(docker, 'fixture', '/large', { port }), /exceeds 2 MiB/);
     await assert.rejects(containerHttp(docker, 'fixture', '/redirect', { port }));
+    const redirect = await containerHttp(docker, 'fixture', '/redirect', { port, redirect: 'manual' });
+    assert.equal(redirect.status, 302);
+    assert.equal(redirect.headers.get('location'), '/large');
+    await assert.rejects(containerHttp(docker, 'fixture', '/redirect', { port, redirect: 'follow' }));
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
 });

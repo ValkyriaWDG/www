@@ -47,7 +47,7 @@ describe('social image publication and presentation contract', () => {
     expect(articleStructuredData({ ...article, isPreview: true }, 'https://site.example')).toBeNull();
     expect(articleStructuredData({ ...article, publishedAt: null }, 'https://site.example')).toBeNull();
     const data = articleStructuredData({ ...article, title: '</script><script>alert(1)</script>' }, 'https://site.example');
-    expect(data).toMatchObject({ '@type': 'BlogPosting', url: 'https://site.example/cs/news/verejny-clanek', inLanguage: 'cs-CZ' });
+    expect(data).toMatchObject({ '@type': 'BlogPosting', url: 'https://site.example/cs/wardogs/news/verejny-clanek', inLanguage: 'cs-CZ' });
     const serialized = serializeStructuredData(data);
     expect(serialized).not.toContain('<');
     expect(JSON.parse(serialized)).toEqual(data);

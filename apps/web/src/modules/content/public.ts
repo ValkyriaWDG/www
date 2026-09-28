@@ -18,6 +18,8 @@ import {
 import { and, desc, eq, ilike, isNotNull, isNull, ne, or, sql, type SQL } from 'drizzle-orm';
 import { z } from 'zod';
 import { getDb } from '@/lib/db';
+import { parseDbGame } from '@/modules/games/registry';
+import { canonicalNewsPath } from '@/modules/games/routes';
 import { buildArticle } from './article';
 import { isValidSlug, SLUG_PATTERN } from './slug';
 import type { AvailableTaxonomy, ArticleDTO, CounterpartResolution, NewsLookup, NewsSummary, Paginated, SitemapEntry, TaxonomyLabel } from './types';
@@ -40,6 +42,8 @@ const listSchema = z.object({
   category: z.string().optional(),
   tag: z.string().optional(),
   game: z.string().optional(),
+  /** Game section view: that game's posts plus explicit community posts (no game). */
+  gameScope: z.string().optional(),
   q: z.string().optional(),
 });
 export type ListPublishedNewsInput = z.input<typeof listSchema>;
@@ -115,6 +119,15 @@ function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, (char) => `\\${char}`);
 }
 
+/**
+ * Published-snapshot game scope of a game section: the game's own posts plus community
+ * posts without a game. Unknown values fail closed (`null` → empty result), never "all".
+ */
+function gameScopeCondition(game: unknown): SQL | null {
+  if (typeof game !== 'string' || !(GAMES as readonly string[]).includes(game)) return null;
+  return sql`(${contentRevision.taxonomy}->>'game' = ${game} or ${contentRevision.taxonomy}->>'game' is null)`;
+}
+
 const orderNewest = [desc(sql`coalesce(${contentTranslation.firstPublishedAt}, ${contentTranslation.publishedAt})`), desc(contentTranslation.id)];
 
 /** Published news of one locale with category/tag/game/search filters and pagination. */
@@ -135,6 +148,11 @@ export async function listPublishedNews(rawInput: ListPublishedNewsInput, db: Ex
   if (input.game) {
     if (!(GAMES as readonly string[]).includes(input.game)) return empty;
     conditions.push(sql`${contentRevision.taxonomy}->>'game' = ${input.game}`);
+  }
+  if (input.gameScope !== undefined) {
+    const scope = gameScopeCondition(input.gameScope);
+    if (!scope) return empty;
+    conditions.push(scope);
   }
   const q = input.q?.replace(/\s+/g, ' ').trim().slice(0, 80);
   if (q) {
@@ -253,7 +271,7 @@ export async function resolveNewsCounterpart(
 
 /** Related published posts of the same locale, ranked by shared category/tags/game. */
 export async function getRelatedNews(
-  input: { locale: string; documentId: string; limit?: number },
+  input: { locale: string; documentId: string; limit?: number; gameScope?: Game },
   db: Executor = getDb(),
 ): Promise<NewsSummary[]> {
   if (!isLocale(input.locale) || !z.uuid().safeParse(input.documentId).success) return [];
@@ -269,7 +287,9 @@ export async function getRelatedNews(
     .where(and(liveCondition(input.locale, 'news'), eq(contentDocument.id, input.documentId)));
   if (!current) return [];
   const taxonomy = current.taxonomy;
-  const candidates = await publishedNewsQuery(db, and(liveCondition(input.locale, 'news'), ne(contentDocument.id, input.documentId))!)
+  const scope = input.gameScope !== undefined ? gameScopeCondition(input.gameScope) : undefined;
+  if (scope === null) return [];
+  const candidates = await publishedNewsQuery(db, and(liveCondition(input.locale, 'news'), ne(contentDocument.id, input.documentId), scope)!)
     .orderBy(...orderNewest)
     .limit(50);
   const tagKeys = new Set((taxonomy.tags ?? []).map((tag) => tag.key));
@@ -288,9 +308,11 @@ export async function getRelatedNews(
 }
 
 /** Newest published post of a locale for the small homepage teaser, or `null`. */
-export async function getLatestNewsTeaser(locale: string, db: Executor = getDb()): Promise<NewsSummary | null> {
+export async function getLatestNewsTeaser(locale: string, db: Executor = getDb(), gameScope?: Game): Promise<NewsSummary | null> {
   if (!isLocale(locale)) return null;
-  const [row] = await publishedNewsQuery(db, liveCondition(locale, 'news')).orderBy(...orderNewest).limit(1);
+  const scope = gameScope !== undefined ? gameScopeCondition(gameScope) : undefined;
+  if (scope === null) return null;
+  const [row] = await publishedNewsQuery(db, and(liveCondition(locale, 'news'), scope)!).orderBy(...orderNewest).limit(1);
   return row ? toSummary(row) : null;
 }
 
@@ -302,9 +324,11 @@ async function sitemapRows(db: Executor, kind: 'news' | 'page') {
       locale: contentTranslation.locale,
       liveSlug: contentTranslation.liveSlug,
       publishedAt: contentTranslation.publishedAt,
+      game: sql<Game | null>`${contentRevision.taxonomy}->>'game'`,
     })
     .from(contentTranslation)
     .innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
+    .innerJoin(contentRevision, and(eq(contentRevision.id, contentTranslation.publishedRevisionId), eq(contentRevision.translationId, contentTranslation.id)))
     .where(
       and(
         eq(contentDocument.kind, kind),
@@ -333,9 +357,9 @@ function toSitemap(rows: Awaited<ReturnType<typeof sitemapRows>>, pathOf: (row: 
   }));
 }
 
-/** Every published news URL (both locales) with published-only hreflang alternates. */
+/** Every published news URL (both locales, canonical game section) with published-only hreflang alternates. */
 export async function listPublishedNewsForSitemap(db: Executor = getDb()): Promise<SitemapEntry[]> {
-  return toSitemap(await sitemapRows(db, 'news'), (row) => `/${row.locale}/news/${row.liveSlug}`);
+  return toSitemap(await sitemapRows(db, 'news'), (row) => `/${row.locale}${canonicalNewsPath(parseDbGame(row.game), row.liveSlug!)}`);
 }
 
 /** Published core pages (both locales) with published-only alternates. */
@@ -344,8 +368,10 @@ export async function listPublishedPagesForSitemap(db: Executor = getDb()): Prom
 }
 
 /** Categories, tags and games that have published posts in `locale` (for filters). */
-export async function getAvailableTaxonomy(locale: string, db: Executor = getDb()): Promise<AvailableTaxonomy> {
+export async function getAvailableTaxonomy(locale: string, db: Executor = getDb(), gameScope?: Game): Promise<AvailableTaxonomy> {
   if (!isLocale(locale)) return { categories: [], tags: [], games: [] };
+  const scope = gameScope !== undefined ? gameScopeCondition(gameScope) : undefined;
+  if (scope === null) return { categories: [], tags: [], games: [] };
   const rows = await db
     .select({ taxonomy: contentRevision.taxonomy })
     .from(contentTranslation)
@@ -354,7 +380,7 @@ export async function getAvailableTaxonomy(locale: string, db: Executor = getDb(
       contentRevision,
       and(eq(contentRevision.id, contentTranslation.publishedRevisionId), eq(contentRevision.translationId, contentTranslation.id)),
     )
-    .where(liveCondition(locale, 'news'))
+    .where(and(liveCondition(locale, 'news'), scope))
     .orderBy(desc(contentTranslation.publishedAt))
     .limit(5000);
   const categories = new Map<string, { label: string; count: number }>();

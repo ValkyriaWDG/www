@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { bigint, check, index, integer, jsonb, pgTable, text, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 import { authUser } from './auth.ts';
-import { createdAt, sqlList, tz, updatedAt } from './common.ts';
+import { GAMES, createdAt, sqlList, tz, updatedAt, type Game } from './common.ts';
 
 /** Application roles that a configured Discord guild role ID may map to. */
 export const MAPPABLE_ROLES = ['member', 'editor', 'match_manager', 'administrator'] as const;
@@ -10,6 +10,12 @@ export const LOCAL_GRANT_ROLES = ['editor', 'match_manager', 'administrator', 'o
 export type MappableRole = (typeof MAPPABLE_ROLES)[number];
 export type LocalGrantRole = (typeof LOCAL_GRANT_ROLES)[number];
 export type AppRole = MappableRole | LocalGrantRole;
+
+/**
+ * Stored canonical mapping entry: a role list is a platform-wide grant (the original v1
+ * format, unchanged digest); `{ roles, games }` grants the roles only for those games.
+ */
+export type StoredRoleMappingEntry = MappableRole[] | { roles: MappableRole[]; games: Game[] };
 
 export const MEMBERSHIP_STATES = ['present', 'left', 'unknown'] as const;
 export type MembershipState = (typeof MEMBERSHIP_STATES)[number];
@@ -64,7 +70,7 @@ export const roleMappingVersion = pgTable(
     version: integer('version').notNull().unique(),
     digest: text('digest').notNull().unique(),
     guildId: text('guild_id'),
-    mapping: jsonb('mapping').$type<Record<string, MappableRole[]>>().notNull(),
+    mapping: jsonb('mapping').$type<Record<string, StoredRoleMappingEntry>>().notNull(),
     createdAt: createdAt(),
   },
 );
@@ -81,6 +87,8 @@ export const localAdminGrant = pgTable(
       .notNull()
       .references(() => authUser.id, { onDelete: 'cascade' }),
     roles: text('roles').array().$type<LocalGrantRole[]>().notNull(),
+    /** Games the roles apply to; `null` is an explicit platform-wide grant (all games and community). */
+    games: text('games').array().$type<Game[]>(),
     /** Incremented on every change; delegated schedules record and re-check it. */
     version: integer('version').notNull().default(1),
     provisionedBy: text('provisioned_by').notNull(),
@@ -92,5 +100,6 @@ export const localAdminGrant = pgTable(
   (t) => [
     uniqueIndex('local_admin_grant_user_uq').on(t.userId),
     check('local_admin_grant_roles_ck', sql`cardinality(${t.roles}) > 0 and ${t.roles} <@ array[${sqlList(LOCAL_GRANT_ROLES)}]::text[]`),
+    check('local_admin_grant_games_ck', sql`${t.games} is null or (cardinality(${t.games}) > 0 and ${t.games} <@ array[${sqlList(GAMES)}]::text[])`),
   ],
 );

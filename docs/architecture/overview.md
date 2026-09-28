@@ -1,5 +1,7 @@
 # Architecture
 
+> Current extension: follow [ADR-WEB-002](decisions/0002-unified-valkyria-platform.md) for one HLL/Wardogs application on future valkyria.cz. Retain existing modules/persistence; add explicit game context and permissions.
+
 ## Decision
 
 Use a modular TypeScript monolith: Next.js App Router, React, PostgreSQL, Drizzle ORM

@@ -3,6 +3,7 @@ import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
+import { canonicalNewsPath } from '@/modules/games/routes';
 import type { NewsSummary } from '@/modules/content/types';
 import { WARDOGS_MARK } from './presskit';
 import { TagList } from './tags';
@@ -16,11 +17,26 @@ export type NewsCardLabels = { games: Record<Game, string>; placeholder: string;
  * neutral placeholder, never a broken image), category/game eyebrow, title link covering
  * the panel, excerpt, date and approved author label, tags. Published snapshot data only.
  */
-export function NewsCard({ item, locale, labels, priority = false }: { item: NewsSummary; locale: AppLocale; labels: NewsCardLabels; priority?: boolean }) {
+export function NewsCard({
+  item,
+  locale,
+  labels,
+  priority = false,
+  communityLabel,
+}: {
+  item: NewsSummary;
+  locale: AppLocale;
+  labels: NewsCardLabels;
+  priority?: boolean;
+  /** In a game section, names shared community posts explicitly (they link to `/news/<slug>`). */
+  communityLabel?: string;
+}) {
   const titleId = `news-${item.translationId}`;
-  const eyebrow = [item.category?.label, item.game ? labels.games[item.game] : null].filter(Boolean).join(' · ');
+  const scopeLabel = item.game ? labels.games[item.game] : (communityLabel ?? null);
+  const sameAsCategory = scopeLabel && item.category?.label.toLocaleLowerCase() === scopeLabel.toLocaleLowerCase();
+  const eyebrow = [item.category?.label, sameAsCategory ? null : scopeLabel].filter(Boolean).join(' · ');
   return (
-    <article className={styles.card} aria-labelledby={titleId} data-news-card={item.slug}>
+    <article className={styles.card} aria-labelledby={titleId} data-news-card={item.slug} data-news-scope={item.game ?? 'community'}>
       <div className={styles.media}>
         {item.cover ? (
           // eslint-disable-next-line @next/next/no-img-element -- publication-aware media route, not the optimizer
@@ -48,7 +64,7 @@ export function NewsCard({ item, locale, labels, priority = false }: { item: New
       <div className={styles.body}>
         {eyebrow ? <p className={styles.eyebrow}>{eyebrow}</p> : null}
         <h2 id={titleId} className={styles.title}>
-          <Link href={`/news/${item.slug}`} className={styles.link}>
+          <Link href={canonicalNewsPath(item.game, item.slug)} className={styles.link}>
             {item.title}
           </Link>
         </h2>

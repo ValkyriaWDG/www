@@ -5,6 +5,8 @@ import { getBackgroundMedia } from '@/lib/background-media';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import type { ShellAccount } from './account-slot';
 import { BackgroundMedia } from './background-media';
+import type { BackgroundMediaConfig } from './background-policy';
+import { DEFAULT_FOCAL_POINT } from './background-policy';
 import { SceneFallback } from './scene-fallback';
 import { getShellLinks } from './shell-config';
 import { ShellFrame } from './shell-frame';
@@ -13,16 +15,25 @@ import { SiteHeader } from './site-header';
 import styles from './shell.module.css';
 
 /**
- * Persistent Wardogs-menu shell for every `/cs` and `/en` page: fixed scene (original
- * fallback → optional poster → optional video) with route-dependent scrim, faded central
- * emblem on home, header strip, page content and utility footer. Pages render their own
+ * `platform`: the shared Valkyria frame for the community hub, shared pages, account and
+ * administration (static original scene, no game footage). `wardogs`: the Wardogs menu
+ * presentation under `/wardogs` with its approved background media.
+ */
+export type ShellPresentation = 'platform' | 'wardogs';
+
+const NO_MEDIA: BackgroundMediaConfig = { posterUrl: null, sources: [], focalPoint: DEFAULT_FOCAL_POINT };
+
+/**
+ * Persistent menu shell: fixed scene (original fallback → optional poster → optional
+ * video) with route-dependent scrim, faded central emblem on landings, header strip,
+ * page content and utility footer. Pages render their own
  * `<main id="main-content" tabIndex={-1}>` (see `PageMain`).
  */
-export async function MenuShell({ account, children }: { account: ShellAccount; children: ReactNode }) {
+export async function MenuShell({ account, children, presentation }: { account: ShellAccount; children: ReactNode; presentation: ShellPresentation }) {
   const t = await getTranslations('common.a11y');
-  const [media, links] = await Promise.all([getBackgroundMedia(), getShellLinks()]);
+  const [media, links] = await Promise.all([presentation === 'wardogs' ? getBackgroundMedia() : NO_MEDIA, getShellLinks()]);
   return (
-    <ShellFrame>
+    <ShellFrame presentation={presentation}>
       <a className="skip-link" href="#main-content">
         {t('skipToContent')}
       </a>
@@ -33,9 +44,14 @@ export async function MenuShell({ account, children }: { account: ShellAccount; 
         <div className={styles.vignette} />
         <Image src={emblem} alt="" className={styles.emblem} sizes="(max-width: 767px) 60vw, 22vw" loading="eager" fetchPriority="high" data-emblem="" />
       </div>
-      <SiteHeader account={account} hllUrl={links.hllUrl} />
+      <SiteHeader account={account} hllUrl={links.hllUrl} presentation={presentation} />
       <div className={styles.content}>{children}</div>
-      <SiteFooter discordUrl={links.discordUrl} hllUrl={links.hllUrl} hasBackgroundVideo={media.sources.length > 0} />
+      <SiteFooter
+        discordUrl={links.discordUrl}
+        hllUrl={links.hllUrl}
+        hasBackgroundVideo={media.sources.length > 0}
+        newsHref={presentation === 'wardogs' ? '/wardogs/news' : '/news'}
+      />
     </ShellFrame>
   );
 }

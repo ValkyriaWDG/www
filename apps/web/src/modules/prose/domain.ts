@@ -1,9 +1,9 @@
-import type { Executor, Locale } from '@valkyria/db';
+import type { Executor, Game, Locale } from '@valkyria/db';
 import { sql, type SQL, type SQLWrapper } from 'drizzle-orm';
 import type { z } from 'zod';
 import { DomainError } from '@/lib/result';
 import type { Capability } from '@/modules/access/capabilities';
-import { assertCan, assertCanWrite } from '@/modules/access/policy';
+import { assertCan, assertCanWrite, canForGame } from '@/modules/access/policy';
 import { AccessDeniedError, type Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { escapeLike, foldSearchTerm } from './text';
@@ -62,6 +62,35 @@ export async function authorize(db: Executor, actor: Actor, capability: Capabili
     }
     throw error;
   }
+}
+
+/**
+ * Resource-level game scope for community records (ADR-WEB-002): every listed game must
+ * be covered by the actor's grant; `[]`/`null` means a community record that needs a
+ * platform-wide grant. Denials are audited through `db` (outside the failing transaction).
+ */
+export async function authorizeGames(
+  db: Executor,
+  actor: Actor,
+  capability: Capability,
+  games: readonly (Game | null)[],
+  context: Omit<GuardContext, 'intent'>,
+): Promise<void> {
+  if (actor.kind !== 'principal') return;
+  const targets = games.length > 0 ? games : [null];
+  if (targets.every((game) => canForGame(actor, capability, game))) return;
+  await recordAudit(db, {
+    actor,
+    action: context.action,
+    outcome: 'denied',
+    capability,
+    entityType: context.entityType,
+    entityId: context.entityId ?? null,
+    translationId: context.translationId ?? null,
+    locale: context.locale ?? null,
+    summary: { code: 'forbidden', reason: 'game_scope' },
+  }).catch(() => undefined);
+  throw new AccessDeniedError('forbidden', capability);
 }
 
 /** Extracts the PostgreSQL error (Drizzle wraps driver errors as `cause`). */

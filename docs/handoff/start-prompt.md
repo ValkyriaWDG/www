@@ -1,7 +1,8 @@
 # Original implementation prompt (M1–M3)
 
 M1–M3 are implemented. This historical prompt preserves the initial requirements;
-do not use it to restart completed work. For a new task, read [current status](../STATUS.md),
+do not use it to restart completed work. For the unified-platform/HLL assignment use
+[the complete prompt](hll-claude-code-cloud.md). For a new task, read [current status](../STATUS.md),
 the assigned issue and its specific handoff. Preserve an already-running task's branch.
 Hosted Logi is now the selected integration; follow the
 [integration checkpoint](../engineering/follow-up-integration-2026-09-26.md).

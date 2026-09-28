@@ -2,12 +2,13 @@
 
 @AGENTS.md
 
-Read [the cloud implementation handoff](docs/handoff/claude-code-cloud.md) before
-coding. It defines the reading order, milestone boundaries, cloud setup, acceptance
-criteria and delivery format. A working application is already committed. Start from
-[current status](docs/STATUS.md), the assigned issue and the actual source; use the
-initial handoff as requirements, not an instruction to rebuild completed milestones.
-Foundation CI alone does not establish application or production verification.
+For the unified platform/HLL task read [the current Claude handoff](docs/handoff/hll-claude-code-cloud.md)
+first, including its committed screenshots, design spec and legacy inventory. The
+Wardogs application and the unified platform extension are implemented; start from
+[current status](docs/STATUS.md), the assigned issue and the actual source. Older
+[foundation instructions](docs/handoff/claude-code-cloud.md) remain historical context
+where compatible; do not restart the app from a scaffold or rebuild completed
+milestones. Foundation CI alone does not establish application or production verification.
 
 The website is Czech-first with Czech/English switching using Czech/UK flags and
 text labels. Code, technical documentation, GitHub descriptions and AI prompts stay

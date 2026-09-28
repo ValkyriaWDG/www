@@ -63,7 +63,8 @@ export const sharedFieldsSchema = z.object({
 });
 
 export const createDocumentSchema = z.object({
-  kind: z.literal('news').default('news'),
+  /** News post or Field Manual article (core pages are seeded, never created here). */
+  kind: z.enum(['news', 'manual']).default('news'),
   locale: localeSchema,
   title: plainText(FIELD_LIMITS.title).pipe(z.string().min(1)),
   slug: slugSchema.optional(),
@@ -123,6 +124,8 @@ export const listDocumentsSchema = z.object({
   kind: z.enum(DOCUMENT_KINDS).optional(),
   state: z.enum(ADMIN_STATES).optional(),
   locale: localeSchema.optional(),
+  /** Scope filter inside the actor's permitted games (`community` = no game). */
+  game: z.enum([...GAMES, 'community']).optional(),
   page: z.number().int().min(1).max(10_000).default(1),
   pageSize: z.number().int().min(1).max(50).default(20),
 });

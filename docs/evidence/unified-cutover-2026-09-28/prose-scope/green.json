@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "sourceReportSha256": "f11cc88238f1d2510d6b51617f10c4348f9faa3d205a3499f813e25f6825020a",
+  "counts": {
+    "tests": 33,
+    "passed": 33,
+    "failed": 0,
+    "pending": 0
+  },
+  "success": true,
+  "tests": [
+    {
+      "name": "authority after awaited database work denies cached interactive authority after departure commits during mapping work",
+      "status": "passed",
+      "durationMs": 122.26939999999922,
+      "failure": []
+    },
+    {
+      "name": "authority after awaited database work denies cached interactive authority after role-removal commits during mapping work",
+      "status": "passed",
+      "durationMs": 38.00659999999971,
+      "failure": []
+    },
+    {
+      "name": "authority after awaited database work denies cached interactive authority after same-timestamp-aba commits during mapping work",
+      "status": "passed",
+      "durationMs": 16.95129999999972,
+      "failure": []
+    },
+    {
+      "name": "authority after awaited database work denies cached interactive authority after session-revocation commits during mapping work",
+      "status": "passed",
+      "durationMs": 25.230899999999565,
+      "failure": []
+    },
+    {
+      "name": "authority after awaited database work changes the ephemeral row token for a same-value update within one transaction",
+      "status": "passed",
+      "durationMs": 4.59270000000015,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority preserves local recovery and fences grant changes (changed=false)",
+      "status": "passed",
+      "durationMs": 129.15070000000014,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority preserves local recovery and fences grant changes (changed=true)",
+      "status": "passed",
+      "durationMs": 106.2462000000005,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority fences the resource game of a game-scoped grant (moved to another game=false)",
+      "status": "passed",
+      "durationMs": 91.5021999999999,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority fences the resource game of a game-scoped grant (moved to another game=true)",
+      "status": "passed",
+      "durationMs": 90.89179999999942,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority blocks publication after departure commits while waiting for content",
+      "status": "passed",
+      "durationMs": 47.98399999999947,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority blocks publication after role-removal commits while waiting for content",
+      "status": "passed",
+      "durationMs": 50.36110000000008,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority blocks publication after same-timestamp-aba commits while waiting for content",
+      "status": "passed",
+      "durationMs": 42.96360000000004,
+      "failure": []
+    },
+    {
+      "name": "transactional scheduled-publication authority rolls back publication when the membership observation expires during its audit write",
+      "status": "passed",
+      "durationMs": 28.781299999999646,
+      "failure": []
+    },
+    {
+      "name": "game-scoped editorial authority lets an HLL editor create HLL posts but not Wardogs or community posts, and audits the denial",
+      "status": "passed",
+      "durationMs": 25.67750000000001,
+      "failure": []
+    },
+    {
+      "name": "game-scoped editorial authority hides another game’s drafts from private reads, previews, lists and mutations",
+      "status": "passed",
+      "durationMs": 69.0764999999999,
+      "failure": []
+    },
+    {
+      "name": "game-scoped editorial authority refuses to move a post into a game outside the scope and leaves it unchanged",
+      "status": "passed",
+      "durationMs": 8.453599999999824,
+      "failure": []
+    },
+    {
+      "name": "game-scoped match authority restricts creation, changes, results and private reads to the scoped game",
+      "status": "passed",
+      "durationMs": 32.49050000000011,
+      "failure": []
+    },
+    {
+      "name": "game-scoped member authority requires the capability for every affiliation of a profile",
+      "status": "passed",
+      "durationMs": 12.173300000000154,
+      "failure": []
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies save after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 125.87439999999992,
+      "failure": []
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies publish after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 36.609300000000076,
+      "failure": []
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies unpublish after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 30.223000000000184,
+      "failure": []
+    },
+    {
+      "name": "match prose game scope after a concurrent owner move denies restore after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 31.657799999999952,
+      "failure": []
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies save after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 30.922199999999975,
+      "failure": []
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies publish after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 30.397899999999936,
+      "failure": []
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies unpublish after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 30.59739999999988,
+      "failure": []
+    },
+    {
+      "name": "member prose game scope after a concurrent owner move denies restore after the owner moves outside the actor scope",
+      "status": "passed",
+      "durationMs": 31.028899999999794,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication publishes Czech without affecting English, and each locale independently",
+      "status": "passed",
+      "durationMs": 116.86590000000001,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication applies the owner global gate: unpublished matches and hidden members expose no prose",
+      "status": "passed",
+      "durationMs": 31.173999999999978,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication follows the owner domain for authorization",
+      "status": "passed",
+      "durationMs": 11.061099999999897,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication detects same-translation conflicts while the two locales stay independent",
+      "status": "passed",
+      "durationMs": 15.124699999999848,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication restores an earlier revision to draft without touching the live revision",
+      "status": "passed",
+      "durationMs": 31.0958999999998,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication validates rich text, cover alt text and referenced media",
+      "status": "passed",
+      "durationMs": 14.5628999999999,
+      "failure": []
+    },
+    {
+      "name": "localized prose publication uses the published recap snapshot for cover alt text and gates media visibility",
+      "status": "passed",
+      "durationMs": 65.75789999999984,
+      "failure": []
+    }
+  ]
+}

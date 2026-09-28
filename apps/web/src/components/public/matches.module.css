@@ -306,7 +306,7 @@
   aspect-ratio: 16 / 6;
   padding: var(--space-4);
   background:
-    radial-gradient(ellipse at 20% 50%, rgb(217 173 50 / 0.18), transparent 60%),
+    radial-gradient(ellipse at 20% 50%, var(--color-accent-glow), transparent 60%),
     repeating-linear-gradient(135deg, rgb(255 255 255 / 0.025) 0 10px, transparent 10px 20px),
     linear-gradient(160deg, rgb(58 59 54 / 0.95), rgb(22 23 20 / 0.98));
 }

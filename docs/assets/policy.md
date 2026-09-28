@@ -6,6 +6,7 @@ without turning it into a game asset mirror.
 | Asset class | Location / treatment |
 |---|---|
 | Supplied clan logo | `assets/brand/valkyria-logo.png`; exact original, 733 × 811 RGBA |
+| Supplied HLL captures | `docs/design/references/hll/`; unchanged originals, design-only, excluded from runtime |
 | Supplied Wardogs captures | `docs/design/references/`; reference-only, never copy into app public output |
 | Selected Wardogs presskit originals | `assets/presskit/wardogs-january-2026/`; editorial/game-identification candidates with separate provenance, never the clan identity |
 | Legacy site graphics | URL inventory in research; review individual use and provenance before copying |
@@ -52,7 +53,7 @@ accessible to the task, SHA-256, file metadata and usage approval/provenance.
 Do not commit expiring signed URLs or access tokens. Do not claim a final background
 is complete when only a CSS fallback or an unrelated placeholder is present.
 
-Preserve the entire available AVI timeline in every runtime video rendition. The
+For the existing Wardogs source, preserve the entire available AVI timeline in every runtime video rendition. The
 owner rejected the 15-second edited loop. Encoding, resolution/frame-rate reduction,
 audio removal and metadata stripping are permitted; shortening, fades, reversal and
 artificial loop edits are not. Optimize size without removing time. Record unfinished

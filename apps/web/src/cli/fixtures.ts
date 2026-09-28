@@ -1,5 +1,5 @@
 import { createDb, redactConnectionDetails } from '@valkyria/db';
-import { loadFixtures, resetFixtures, resolveMediaRoot } from '../fixtures/index';
+import { FixtureSchemaError, loadFixtures, resetFixtures, resolveMediaRoot } from '../fixtures/index';
 import { assertFixturesAllowed, databaseNameFromUrl, FixtureGuardError } from '../fixtures/guard';
 
 /**
@@ -7,6 +7,8 @@ import { assertFixturesAllowed, databaseNameFromUrl, FixtureGuardError } from '.
  * Refuses to run without `--allow-fixtures`, and under NODE_ENV=production unless the
  * database name ends with `_dev`, `_test` or `_e2e`. Default: replace the fixture set.
  * `--reset`: remove fixture data only (seeded and admin-created data stay).
+ * `--schema-compatible`: leave out, and name, the fixture groups an older schema cannot
+ * store (used by the release rollback rehearsal against the previous image's schema).
  */
 async function main() {
   const argv = process.argv.slice(2);
@@ -26,10 +28,11 @@ async function main() {
       );
       return;
     }
-    const report = await loadFixtures(handle.db, { mediaRoot });
+    const report = await loadFixtures(handle.db, { mediaRoot, schemaCompatible: argv.includes('--schema-compatible') });
     console.log(
-      `Synthetic fixtures loaded into ${databaseName}: ${report.members} members, ${report.matches} matches, ${report.news} news documents (${report.newsTranslations} translations, ${report.schedules} schedule), ${report.prose} prose translations, ${report.assets} generated images in ${mediaRoot}.`,
+      `Synthetic fixtures loaded into ${databaseName}: ${report.members} members, ${report.matches} matches, ${report.news} news documents (${report.newsTranslations} translations, ${report.schedules} schedule), ${report.manual} field manual documents (${report.manualTranslations} translations), ${report.prose} prose translations, ${report.assets} generated images in ${mediaRoot}.`,
     );
+    if (report.skipped.length > 0) console.log(`Skipped fixture groups for this older schema: ${report.skipped.join(', ')}.`);
   } finally {
     await handle.close();
   }
@@ -42,5 +45,5 @@ function describe(error: unknown): string {
 
 main().catch((error: unknown) => {
   console.error(`Fixtures failed: ${redactConnectionDetails(describe(error))}`);
-  process.exit(error instanceof FixtureGuardError ? 2 : 1);
+  process.exit(error instanceof FixtureGuardError || error instanceof FixtureSchemaError ? 2 : 1);
 });

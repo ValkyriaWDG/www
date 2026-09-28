@@ -53,7 +53,8 @@
       "modified": "Upraveno",
       "cs": "Čeština",
       "en": "Angličtina",
-      "actions": "Akce"
+      "actions": "Akce",
+      "scope": "Rozsah"
     },
     "searchLabel": "Hledat příspěvky",
     "searchPlaceholder": "Název nebo adresa…",
@@ -64,7 +65,8 @@
     "emptyBody": "Vytvořte první příspěvek; zůstane soukromým konceptem, dokud ho nezveřejníte.",
     "clearFilters": "Zrušit filtry",
     "caption": "Příspěvky s odděleným stavem české a anglické verze",
-    "scheduledFor": "Termín {time}"
+    "scheduledFor": "Termín {time}",
+    "communityScope": "Komunita"
   },
   "rowActions": {
     "edit": "Upravit",
@@ -104,7 +106,12 @@
     "titleRequired": "Zadejte název.",
     "creating": "Vytváření konceptu…",
     "cancel": "Zrušit",
-    "submit": "{locale, select, cs {Vytvořit český koncept} en {Vytvořit anglický koncept} other {Vytvořit koncept}}"
+    "submit": "{locale, select, cs {Vytvořit český koncept} en {Vytvořit anglický koncept} other {Vytvořit koncept}}",
+    "scopeLabel": "Hra",
+    "scopeHint": "Příspěvek se zobrazí v sekci zvolené hry; komunitní příspěvky patří oběma hrám.",
+    "scopeHintManual": "Článek příručky patří vždy jedné hře.",
+    "noScopeTitle": "Nemáte oprávnění vytvářet obsah",
+    "noScopeBody": "Vaše role nepokrývá žádnou hru, pro kterou lze tento obsah vytvořit. Požádejte správce o přidělení role."
   },
   "missing": {
     "failed": "Překlad se nepodařilo přidat",
@@ -363,5 +370,44 @@
     "scheduleNonexistent": "Tento čas ve zvoleném časovém pásmu neexistuje.",
     "tooLong": "Text je příliš dlouhý.",
     "invalid": "Zkontrolujte toto pole."
+  },
+  "manual": {
+    "metaTitle": "Správa příručky",
+    "eyebrow": "Administrace",
+    "title": "Příručka",
+    "lead": "Návody a manuály ke hře. Česká a anglická verze se zveřejňují nezávisle; převzaté návody uvádějí zdroj a autory.",
+    "newPost": "NOVÝ ČLÁNEK",
+    "emptyTitle": "Příručka zatím nemá žádné články",
+    "emptyBody": "Vytvořte první článek; zůstane soukromým konceptem, dokud ho nezveřejníte.",
+    "caption": "Články příručky s odděleným stavem české a anglické verze",
+    "editorHeading": "Úprava článku příručky",
+    "newTitle": "Nový článek příručky",
+    "newLead": "Zvolte hru, jazyk a pracovní název. Článek se uloží jako soukromý koncept.",
+    "meta": {
+      "title": "Zdroj a řazení",
+      "lead": "Sdílené údaje článku pro obě jazykové verze. Uvádějte původní zdroj a autory převzatých návodů.",
+      "sortOrder": "Pořadí v kategorii",
+      "sortOrderHint": "Nižší číslo se zobrazí dříve.",
+      "sourceUrl": "Původní adresa",
+      "sourceUrlHint": "Nepovinné. Pouze HTTPS odkaz na původní návod.",
+      "invalidUrl": "Zadejte platnou adresu začínající https://.",
+      "sourceDate": "Datum původního zveřejnění",
+      "invalidDate": "Zadejte platné datum.",
+      "sourceLanguage": "Jazyk původního zdroje",
+      "languages": {
+        "none": "Neuvedeno",
+        "cs": "Čeština",
+        "sk": "Slovenština",
+        "en": "Angličtina"
+      },
+      "credits": "Autoři a poděkování",
+      "creditsHint": "Nejvýše 500 znaků. Zobrazí se u článku.",
+      "markReviewed": "Označit jako zkontrolované",
+      "reviewedAt": "Naposledy zkontrolováno {date}.",
+      "neverReviewed": "Článek zatím nikdo nezkontroloval.",
+      "save": "ULOŽIT ÚDAJE",
+      "saving": "Ukládání…",
+      "saved": "Údaje článku jsou uložené."
+    }
   }
 }

@@ -102,10 +102,16 @@ function readEnvironment(): MotionEnvironment {
 function subscribeEnvironment(listener: Listener): () => void {
   const query = window.matchMedia(REDUCED_MOTION_QUERY);
   const info = connection();
-  query.addEventListener('change', listener);
+  const onMotion = () => {
+    // A newly enabled reduced-motion preference ends an earlier explicit "play" choice
+    // (for both game sections); the visitor can opt in again deliberately.
+    if (query.matches && readPreference() === 'playing') setBackgroundPreference('auto');
+    listener();
+  };
+  query.addEventListener('change', onMotion);
   info?.addEventListener?.('change', listener);
   return () => {
-    query.removeEventListener('change', listener);
+    query.removeEventListener('change', onMotion);
     info?.removeEventListener?.('change', listener);
   };
 }
@@ -147,6 +153,16 @@ export function toggleBackground(state: BackgroundState): void {
 }
 
 const serverPreference = (): BackgroundPreference => 'auto';
+
+/**
+ * Global motion inputs shared by every game section: the visitor's explicit choice and
+ * the live device/connection environment (`null` during server render).
+ */
+export function useMotionInputs(): { preference: BackgroundPreference; environment: MotionEnvironment | null } {
+  const preference = useSyncExternalStore(subscribePreference, readPreference, serverPreference);
+  const environment = useSyncExternalStore(subscribeEnvironment, readEnvironment, serverEnvironment);
+  return { preference, environment };
+}
 const serverEnvironment = (): MotionEnvironment | null => null;
 const serverMediaStatus = (): MediaStatus => 'idle';
 

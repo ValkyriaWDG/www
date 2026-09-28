@@ -48,6 +48,7 @@ const auditDenied = cache(async (userId: string | null, label: string, source: s
             status: 'unavailable',
             roles: [],
             capabilities: new Set(),
+            gameScopes: new Map(),
             localGrant: null,
             verifiedAt: null,
           },

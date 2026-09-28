@@ -128,9 +128,11 @@ test.describe('missing article translation', () => {
 
 test.describe('public article', () => {
   test('renders the feature article: cover, table region, inline image, caption and related posts', async ({ page }) => {
+    // The feature post is a Wardogs post: the shared URL redirects to its canonical section.
     await page.goto(`/cs/news/${NEWS.featureCs}`);
+    await expect(page).toHaveURL(new RegExp(`/cs/wardogs/news/${NEWS.featureCs}$`));
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('[Ukázka] Obrázky, tabulka a odkazy');
-    await expect(page.locator('[data-back-link]')).toHaveAttribute('href', '/cs/news');
+    await expect(page.locator('[data-back-link]')).toHaveAttribute('href', '/cs/wardogs/news');
     const cover = page.locator('[data-article-cover] img');
     await expect(cover).toHaveAttribute('src', /\/api\/media\/[0-9a-f-]+\/full$/);
     await expect(cover).toHaveAttribute('alt', /.+/);
@@ -153,8 +155,8 @@ test.describe('public article', () => {
     // and going back before the client navigation commits would leave the page.
     const relatedLink = related.getByRole('link').first();
     const relatedHref = await relatedLink.getAttribute('href');
-    expect(relatedHref).toMatch(/^\/cs\/news\/ukazka-[a-z0-9-]+$/);
-    expect(relatedHref).not.toBe(`/cs/news/${NEWS.featureCs}`);
+    expect(relatedHref).toMatch(/^\/cs\/(wardogs\/|hll\/)?news\/ukazka-[a-z0-9-]+$/);
+    expect(relatedHref).not.toBe(`/cs/wardogs/news/${NEWS.featureCs}`);
     await relatedLink.click();
     await expect(page).toHaveURL(new RegExp(`${relatedHref}$`));
     await expect(page.getByRole('heading', { level: 1 })).not.toHaveText('[Ukázka] Obrázky, tabulka a odkazy');
@@ -171,11 +173,11 @@ test.describe('public article', () => {
   });
 
   test('hreflang alternates list only published counterparts', async ({ page }) => {
-    await page.goto(`/cs/news/${NEWS.featureCs}`);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`/cs/news/${NEWS.featureCs}$`));
-    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', new RegExp(`/en/news/${NEWS.featureEn}$`));
-    await expect(page.locator('link[rel="alternate"][hreflang="cs"]')).toHaveAttribute('href', new RegExp(`/cs/news/${NEWS.featureCs}$`));
-    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', new RegExp(`/cs/news/${NEWS.featureCs}$`));
+    await page.goto(`/cs/wardogs/news/${NEWS.featureCs}`);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`/cs/wardogs/news/${NEWS.featureCs}$`));
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', new RegExp(`/en/wardogs/news/${NEWS.featureEn}$`));
+    await expect(page.locator('link[rel="alternate"][hreflang="cs"]')).toHaveAttribute('href', new RegExp(`/cs/wardogs/news/${NEWS.featureCs}$`));
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', new RegExp(`/cs/wardogs/news/${NEWS.featureCs}$`));
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', new RegExp(`/api/social/cs/news/${NEWS.featureCs}\\?v=1-`));
 

@@ -5,6 +5,7 @@ import {
   contentTranslation,
   publicationSchedule,
   slugRedirect,
+  manualCategory,
   taxonomyTerm,
   type CoverSnapshot,
   type Database,
@@ -14,6 +15,7 @@ import {
   type RevisionKind,
   type ScheduleState,
   type TaxonomySnapshot,
+  type Game,
 } from '@valkyria/db';
 import { and, desc, eq, inArray, ne, notInArray, or, sql } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
@@ -93,9 +95,26 @@ export async function activeSchedule(tx: Executor, translationId: string, lock =
 
 /* --------------------------------- taxonomy --------------------------------- */
 
-export async function assertTaxonomyKeys(tx: Executor, categoryKey: string | null | undefined, tagKeys: readonly string[] | undefined) {
+/**
+ * Validates shared taxonomy keys. News categories are shared taxonomy terms; a Field
+ * Manual article's category must be a manual category of the article's own game.
+ */
+export async function assertTaxonomyKeys(
+  tx: Executor,
+  categoryKey: string | null | undefined,
+  tagKeys: readonly string[] | undefined,
+  scope: { kind: DocumentKind; game: Game | null } = { kind: 'news', game: null },
+) {
   const fieldErrors: Record<string, string> = {};
-  if (categoryKey) {
+  if (categoryKey && scope.kind === 'manual') {
+    const [row] = scope.game
+      ? await tx
+          .select({ key: manualCategory.key })
+          .from(manualCategory)
+          .where(and(eq(manualCategory.game, scope.game), eq(manualCategory.key, categoryKey)))
+      : [];
+    if (!row) fieldErrors.categoryKey = 'unknown_category';
+  } else if (categoryKey) {
     const [row] = await tx
       .select({ key: taxonomyTerm.key })
       .from(taxonomyTerm)
@@ -117,11 +136,18 @@ export async function assertTaxonomyKeys(tx: Executor, categoryKey: string | nul
 export async function snapshotTaxonomy(
   tx: Executor,
   locale: Locale,
-  shared: Pick<DocumentRow, 'categoryKey' | 'tagKeys' | 'game'>,
+  shared: Pick<DocumentRow, 'categoryKey' | 'tagKeys' | 'game'> & { kind?: DocumentKind },
 ): Promise<TaxonomySnapshot> {
   const tagKeys = [...new Set(shared.tagKeys ?? [])];
   const conditions = [];
-  if (shared.categoryKey) conditions.push(and(eq(taxonomyTerm.kind, 'category'), eq(taxonomyTerm.key, shared.categoryKey)));
+  let manualLabel: string | null = null;
+  if (shared.categoryKey && shared.kind === 'manual' && shared.game) {
+    const [row] = await tx
+      .select({ labelCs: manualCategory.labelCs, labelEn: manualCategory.labelEn })
+      .from(manualCategory)
+      .where(and(eq(manualCategory.game, shared.game), eq(manualCategory.key, shared.categoryKey)));
+    manualLabel = row ? (locale === 'cs' ? row.labelCs : row.labelEn) : null;
+  } else if (shared.categoryKey) conditions.push(and(eq(taxonomyTerm.kind, 'category'), eq(taxonomyTerm.key, shared.categoryKey)));
   if (tagKeys.length > 0) conditions.push(and(eq(taxonomyTerm.kind, 'tag'), inArray(taxonomyTerm.key, tagKeys)));
   const rows = conditions.length > 0 ? await tx.select().from(taxonomyTerm).where(or(...conditions)) : [];
   const label = (kind: 'category' | 'tag', key: string) => {
@@ -129,7 +155,7 @@ export async function snapshotTaxonomy(
     return row ? (locale === 'cs' ? row.labelCs : row.labelEn) : key;
   };
   return {
-    category: shared.categoryKey ? { key: shared.categoryKey, label: label('category', shared.categoryKey) } : null,
+    category: shared.categoryKey ? { key: shared.categoryKey, label: manualLabel ?? label('category', shared.categoryKey) } : null,
     tags: tagKeys.map((key) => ({ key, label: label('tag', key) })),
     game: shared.game ?? null,
   };

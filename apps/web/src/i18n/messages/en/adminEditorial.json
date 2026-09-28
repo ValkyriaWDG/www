@@ -53,7 +53,8 @@
       "modified": "Modified",
       "cs": "Czech",
       "en": "English",
-      "actions": "Actions"
+      "actions": "Actions",
+      "scope": "Scope"
     },
     "searchLabel": "Search posts",
     "searchPlaceholder": "Title or address…",
@@ -64,7 +65,8 @@
     "emptyBody": "Create the first post; it stays a private draft until you publish it.",
     "clearFilters": "Clear filters",
     "caption": "Posts with separate Czech and English publication states",
-    "scheduledFor": "Due {time}"
+    "scheduledFor": "Due {time}",
+    "communityScope": "Community"
   },
   "rowActions": {
     "edit": "Edit",
@@ -104,7 +106,12 @@
     "titleRequired": "Enter a title.",
     "creating": "Creating draft…",
     "cancel": "Cancel",
-    "submit": "{locale, select, cs {Create Czech draft} en {Create English draft} other {Create draft}}"
+    "submit": "{locale, select, cs {Create Czech draft} en {Create English draft} other {Create draft}}",
+    "scopeLabel": "Game",
+    "scopeHint": "The post appears in the selected game section; community posts belong to both games.",
+    "scopeHintManual": "A field manual article always belongs to one game.",
+    "noScopeTitle": "You cannot create this content",
+    "noScopeBody": "Your role does not cover any game for which this content can be created. Ask an administrator for a role."
   },
   "missing": {
     "failed": "The translation could not be added",
@@ -363,5 +370,44 @@
     "scheduleNonexistent": "This time does not exist in the selected time zone.",
     "tooLong": "The text is too long.",
     "invalid": "Check this field."
+  },
+  "manual": {
+    "metaTitle": "Field manual management",
+    "eyebrow": "Administration",
+    "title": "Field manual",
+    "lead": "Game guides and manuals. Czech and English versions are published independently; adapted guides credit their source and authors.",
+    "newPost": "NEW ARTICLE",
+    "emptyTitle": "The field manual has no articles yet",
+    "emptyBody": "Create the first article; it stays a private draft until you publish it.",
+    "caption": "Field manual articles with separate Czech and English states",
+    "editorHeading": "Edit field manual article",
+    "newTitle": "New field manual article",
+    "newLead": "Choose the game, language and working title. The article is saved as a private draft.",
+    "meta": {
+      "title": "Source and ordering",
+      "lead": "Shared article details for both language versions. Credit the original source and authors of adapted guides.",
+      "sortOrder": "Order in category",
+      "sortOrderHint": "Lower numbers appear first.",
+      "sourceUrl": "Original address",
+      "sourceUrlHint": "Optional. HTTPS link to the original guide only.",
+      "invalidUrl": "Enter a valid address starting with https://.",
+      "sourceDate": "Original publication date",
+      "invalidDate": "Enter a valid date.",
+      "sourceLanguage": "Original source language",
+      "languages": {
+        "none": "Not stated",
+        "cs": "Czech",
+        "sk": "Slovak",
+        "en": "English"
+      },
+      "credits": "Authors and credits",
+      "creditsHint": "At most 500 characters. Shown with the article.",
+      "markReviewed": "Mark as reviewed",
+      "reviewedAt": "Last reviewed {date}.",
+      "neverReviewed": "Nobody has reviewed this article yet.",
+      "save": "SAVE DETAILS",
+      "saving": "Saving…",
+      "saved": "Article details are saved."
+    }
   }
 }

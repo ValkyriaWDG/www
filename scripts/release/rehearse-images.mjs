@@ -150,7 +150,7 @@ function cli(image, file, name = dbName, extra = []) {
     image,
     'node',
     file,
-    ...(file.endsWith('rehearsal-fixtures.mjs') ? ['--allow-fixtures'] : []),
+    ...(file.endsWith('rehearsal-fixtures.mjs') ? ['--allow-fixtures', '--schema-compatible'] : []),
   ]);
   docker(['rm', container]);
   containers.delete(container);
@@ -199,15 +199,35 @@ function stop(app) {
   docker(['rm', '-f', app.container]);
   containers.delete(app.container);
 }
+const fixtureArticleSlug = 'ukazka-obrazky-tabulka-a-odkazy';
+// Images with game sections serve the synthetic Wardogs article at its canonical game URL
+// and permanently redirect the old shared link; older images serve the old link directly.
+function servesGameSections(app) {
+  const route = '/app/apps/web/.next/server/app/[locale]/[game]/news/[slug]/page.js';
+  return (
+    docker(['exec', app.container, 'node', '-e', `console.log(require('node:fs').existsSync(${JSON.stringify(route)}))`]) ===
+    'true'
+  );
+}
 async function serveProof(app) {
   const pages = [];
-  for (const route of ['/cs', '/en', '/cs/news', '/cs/news/ukazka-obrazky-tabulka-a-odkazy']) {
+  const redirects = [];
+  const gameSections = servesGameSections(app);
+  const article = gameSections ? `/cs/wardogs/news/${fixtureArticleSlug}` : `/cs/news/${fixtureArticleSlug}`;
+  for (const route of ['/cs', '/en', '/cs/news', article, ...(gameSections ? ['/cs/hll', '/cs/hll/field-manual'] : [])]) {
     const response = await containerHttp(docker, app.container, route, { timeoutMs: 15000 });
     assert.equal(response.status, 200);
     const text = await response.text();
     assert(text.includes('<main'));
-    if (route.endsWith('ukazka-obrazky-tabulka-a-odkazy')) assert(text.includes('Ukázka'));
+    if (route === article) assert(text.includes('Ukázka'));
     pages.push({ route, status: response.status });
+  }
+  if (gameSections) {
+    const legacy = `/cs/news/${fixtureArticleSlug}`;
+    const response = await containerHttp(docker, app.container, legacy, { timeoutMs: 15000, redirect: 'manual' });
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get('location'), article);
+    redirects.push({ route: legacy, status: response.status, location: article });
   }
   const media = await containerHttp(docker, app.container, '/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full', {
     timeoutMs: 15000,
@@ -217,6 +237,7 @@ async function serveProof(app) {
   const bytes = Buffer.from(await media.arrayBuffer());
   return {
     pages,
+    redirects,
     media: { bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') },
   };
 }
@@ -329,12 +350,15 @@ try {
   await step('previous-schema-and-synthetic-fixtures', () => {
     cli(policy.previousImage, 'scripts/migrate.mjs');
     cli(policy.previousImage, 'scripts/seed.mjs');
-    cli(candidate, '/app/apps/web/rehearsal-fixtures.mjs', dbName, [
+    // The candidate fixture CLI loads only the groups the previous schema can store.
+    const loaded = cli(candidate, '/app/apps/web/rehearsal-fixtures.mjs', dbName, [
       '--mount',
       `type=bind,src=${fixtureCli},dst=/app/apps/web/rehearsal-fixtures.mjs,readonly`,
     ]);
+    const skipped = /Skipped fixture groups for this older schema: (.+)\./.exec(loaded)?.[1];
     return {
-      fixtureArticle: '/cs/news/ukazka-obrazky-tabulka-a-odkazy',
+      fixtureArticleSlug,
+      skippedFixtureGroups: skipped ? skipped.split(', ') : [],
       productionFixtures: false,
     };
   });

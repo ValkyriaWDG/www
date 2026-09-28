@@ -253,3 +253,13 @@ a.cta:focus-visible {
     border-color: Highlight;
   }
 }
+
+/* Optional game-switch explanation (empty when there is nothing to explain). */
+.notice {
+  max-width: 44rem;
+  margin-top: var(--space-5);
+}
+
+.notice:empty {
+  display: none;
+}

@@ -1,11 +1,11 @@
-import { authUser, guildMembership, localAdminGrant, type Executor } from '@valkyria/db';
+import { authUser, guildMembership, localAdminGrant, type Executor, type Game } from '@valkyria/db';
 import { and, eq } from 'drizzle-orm';
-import { capabilitiesForRoles, type Capability } from './capabilities';
+import { scopesForGrants, type Capability, type RoleGrant } from './capabilities';
 import { accessEnvFromProcess, discordClientConfig, isDiscordMembershipConfigured, WRITE_SNAPSHOT_MAX_AGE_MS, type AccessEnv } from './config';
 import type { DiscordClientDeps } from './discord-client';
 import { findLocalGrantById, isGrantActive, summarizeAccounts } from './local-grant';
 import { membershipRowVersion, readMembership, refreshMembership, snapshotAgeMs } from './membership';
-import { loadRoleMapping, rolesForRoleIds } from './role-mapping';
+import { grantsForRoleIds, loadRoleMapping } from './role-mapping';
 import { isSnowflake } from './snowflake';
 
 export type IssuerCheck = {
@@ -15,7 +15,22 @@ export type IssuerCheck = {
   grantId: string | null;
   grantVersion: number | null;
   capability: Capability;
+  /** Game of the resource at execution time (`null` = community): authority is game-scoped. */
+  game: Game | null;
 };
+
+/** Role grants of a local admin grant (`games: null` = platform-wide). */
+function localGrants(grant: { roles: readonly RoleGrant['role'][]; games: Game[] | null }): RoleGrant[] {
+  return grant.roles.map((role) => ({ role, games: grant.games ?? 'all' }));
+}
+
+/** Whether role grants carry `capability` for a resource of `game` (community needs `all`). */
+function grantsCover(grants: readonly RoleGrant[], capability: Capability, game: Game | null): boolean {
+  const scope = scopesForGrants(grants).gameScopes.get(capability);
+  if (!scope) return false;
+  if (scope === 'all') return true;
+  return game !== null && scope.has(game);
+}
 
 /**
  * `authorized`: the issuer currently holds the capability (fresh Discord snapshot or the
@@ -27,8 +42,8 @@ export type IssuerVerdict = 'authorized' | 'revoked' | 'unknown';
 
 /** Server-only proof captured from the exact observation that granted authority. */
 export type IssuerFence =
-  | { kind: 'discord'; guildId: string; discordUserId: string; rowVersion: string }
-  | { kind: 'local_admin'; userId: string; grantId: string; grantVersion: number; capability: Capability };
+  | { kind: 'discord'; guildId: string; discordUserId: string; rowVersion: string; game: Game | null }
+  | { kind: 'local_admin'; userId: string; grantId: string; grantVersion: number; capability: Capability; game: Game | null };
 export type IssuerAuthorization =
   | { verdict: 'authorized'; fence: IssuerFence }
   | { verdict: 'revoked' | 'unknown' };
@@ -49,6 +64,8 @@ export type IssuerDeps = {
  *   role mapping. Discord failure → `unknown`; departed/removed role/unknown user → `revoked`.
  * - `local_admin`: the recorded grant ID and version must be unchanged, active, still grant
  *   the capability, belong to an existing user without any linked social account.
+ * - Either way the capability must cover the resource's current game (a scoped grant
+ *   never covers another game or community content).
  *   Discord availability is irrelevant and no Discord snapshot is fabricated.
  */
 export async function authorizeIssuer(db: Executor, input: IssuerCheck, deps: IssuerDeps = {}): Promise<IssuerAuthorization> {
@@ -64,8 +81,8 @@ export async function authorizeIssuer(db: Executor, input: IssuerCheck, deps: Is
     if (!grant || grant.userId !== user.id || grant.version !== input.grantVersion) return { verdict: 'revoked' };
     if (!isGrantActive(grant, now())) return { verdict: 'revoked' };
     if (!accounts.hasCredential || accounts.socialProviders.length > 0) return { verdict: 'revoked' };
-    return capabilitiesForRoles(grant.roles).has(input.capability)
-      ? { verdict: 'authorized', fence: { kind: 'local_admin', userId: user.id, grantId: grant.id, grantVersion: grant.version, capability: input.capability } }
+    return grantsCover(localGrants(grant), input.capability, input.game)
+      ? { verdict: 'authorized', fence: { kind: 'local_admin', userId: user.id, grantId: grant.id, grantVersion: grant.version, capability: input.capability, game: input.game } }
       : { verdict: 'revoked' };
   }
 
@@ -91,8 +108,8 @@ export async function authorizeIssuer(db: Executor, input: IssuerCheck, deps: Is
   if (snapshot.source === 'role_sync' || snapshot.state !== 'present') return { verdict: 'revoked' };
   const mapping = loadRoleMapping(env.DISCORD_ROLE_MAPPING_JSON);
   if (!mapping.ok) return { verdict: 'unknown' };
-  return capabilitiesForRoles(rolesForRoleIds(mapping.mapping, snapshot.roleIds)).has(input.capability)
-    ? { verdict: 'authorized', fence: { kind: 'discord', guildId: env.DISCORD_GUILD_ID, discordUserId, rowVersion: snapshot.rowVersion } }
+  return grantsCover(grantsForRoleIds(mapping.mapping, snapshot.roleIds), input.capability, input.game)
+    ? { verdict: 'authorized', fence: { kind: 'discord', guildId: env.DISCORD_GUILD_ID, discordUserId, rowVersion: snapshot.rowVersion, game: input.game } }
     : { verdict: 'revoked' };
 }
 
@@ -105,14 +122,15 @@ export async function verifyIssuerAuthority(db: Executor, input: IssuerCheck, de
  * Call inside the publication transaction after its content locks and before the
  * write. The shared row lock stays held until commit: an invalidation either won
  * first and blocks this publication, or waits until this publication commits.
- * No provider I/O or new grant is allowed while holding these locks.
+ * No provider I/O or new grant is allowed while holding these locks. The caller also
+ * confirms that the locked resource still belongs to `fence.game`.
  */
 export async function revalidateIssuerFence(tx: Executor, fence: IssuerFence, now: () => Date): Promise<IssuerVerdict> {
   if (fence.kind === 'local_admin') {
     const [grant] = await tx.select().from(localAdminGrant).where(eq(localAdminGrant.id, fence.grantId)).for('share');
     if (!grant || grant.userId !== fence.userId || grant.version !== fence.grantVersion) return 'revoked';
     const accounts = await summarizeAccounts(tx, fence.userId);
-    return isGrantActive(grant, now()) && accounts.hasCredential && accounts.socialProviders.length === 0 && capabilitiesForRoles(grant.roles).has(fence.capability) ? 'authorized' : 'revoked';
+    return isGrantActive(grant, now()) && accounts.hasCredential && accounts.socialProviders.length === 0 && grantsCover(localGrants(grant), fence.capability, fence.game) ? 'authorized' : 'revoked';
   }
   const [record] = await tx.select({ membership: guildMembership, rowVersion: membershipRowVersion }).from(guildMembership)
     .where(and(eq(guildMembership.guildId, fence.guildId), eq(guildMembership.discordUserId, fence.discordUserId))).for('share');

@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **Public SEO/social updates and the mobile article repair deployed; live authentication and hosted Logi acceptance remain deferred.**
+Updated: 2026-09-28. Stage: **WDG production refresh accepted; unified HLL/WDG deployment to valkyria.cz authorized and being qualified. Live authentication remains deferred.**
 
 ## Latest production refresh
 
@@ -48,6 +48,59 @@ application/image/browser gates at PR head `19a30dd1b110d11c63a97a1755a352989579
 Do not use the earlier unsafe script against operator targets. This tooling merge
 did not deploy another image or prove off-host recovery. HLL and Logi workstreams remain
 separate from this deployment.
+
+## Unified platform / HLL implementation
+
+Branch `feat/hll-platform-handoff`, draft PR [#37](https://github.com/ValkyriaWDG/www/pull/37),
+issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
+[handoff](handoff/hll-claude-code-cloud.md); nothing is deployed and no DNS changed.
+
+- **Routes:** `/cs` and `/en` are the community hub; `/{locale}/hll/...` (news, matches,
+  servers, members, field-manual, clan, community) and `/{locale}/wardogs/...` (the
+  preserved Wardogs menu shell). Shared lists keep working; news/match details live at
+  their canonical game section and old shared URLs redirect permanently. A game switch
+  keeps locale and page category or explains the destination (`?switch=`).
+- **HLL presentation:** `[data-theme='hll']` token overrides, landing menu lane, content
+  masthead/section bar/drawer and a cinematic stage: one clip per document from
+  `HLL_BACKGROUND_CLIPS_JSON` (empty by default → static fallback), no video request
+  under reduced motion, Save-Data or the narrow touch default, one alternate on failure.
+- **Game-scoped authority:** Discord role mappings and local admin grants can carry
+  `games`; content, manual, matches and members check the resource game on every private
+  read and mutation (denials audited). Media/settings/audit/access stay platform-only.
+- **Servers:** server-only status boundary with fresh/stale/unavailable read models;
+  `SERVER_STATUS_SOURCE=none` by default, labelled synthetic snapshots for tests.
+- **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
+  scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
+  search with abbreviations, table of contents; legacy guides import only as draft shells.
+- **Legacy:** reviewed redirect resolver, active only for `LEGACY_HLL_HOSTS` (empty).
+- **Migration:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
+  repeated run verified locally).
+
+Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi and
+real server status, legacy guide text/images (host blocked in this environment; reuse of
+external illustrations unrecorded), FAQ/events/tournaments/leaderboards destinations,
+legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
+Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
+tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
+browser tests passed (98 opt-in capture cases skipped); 33 captioned captures; after
+merging main `df48609` (ops/docs only) foundation + 53 tooling tests passed.
+On `9d4fe3c` the HLL links drop a fourth Barlow weight (landing fonts 189,826 → 152,344 B;
+limit 184,320 B), page budgets cover both game landings and the canonical Wardogs article,
+and the rollback rehearsal loads fixtures with `--schema-compatible` and proves each
+image's own routes. Merging main `9a87291` brings the [#44](https://github.com/ValkyriaWDG/www/pull/44) article metadata repair; on
+the canonical Wardogs article it removed the 0.24 CLS seen in one CI budget run and in 5
+of 10 local runs at 8× CPU (0 of 10 after). On merge `17a47cd` 53 tooling, lint, types,
+439 unit and 141 browser tests and all 15 budget runs passed; 264 integration tests and a
+previous-image rollback stand-in passed on `9d4fe3c`, where the HLL captures were
+retaken; CI for the pushed head is linked from PR #37. Details:
+[hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md). Earlier preparation
+evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
+
+Current task: the owner authorized deployment to `valkyria.cz` and its Cloudflare
+Tunnel route. Integrate current main, qualify the exact combined revision and additive
+migration, then publish and deploy. Keep legacy `valkyriahll.cz` unchanged until its
+content migration is accepted. Clan footage and hosted Logi remain pending; deploy
+the honest static stage and unavailable-provider states without synthetic production data.
 
 ## Publication authorization hardening
 

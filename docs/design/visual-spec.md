@@ -1,5 +1,7 @@
 # Valkyria visual specification
 
+> This specification describes the Wardogs presentation. Use [the HLL specification](hll/visual-spec.md) for the HLL section; share application primitives without forcing the same game theme.
+
 Status: implementation brief for Claude Code Cloud. This document specifies the target; it is not evidence that a website, animation, or accessibility audit already exists.
 
 The site at `valkyriawdg.cz` is Czech-first and bilingual (`cs` / `en`), including public pages, administration, validation, errors and accessibility labels. Code, identifiers, repository documentation, AI prompts and GitHub descriptions remain English. Follow the canonical [localization contract](../product/localization.md).

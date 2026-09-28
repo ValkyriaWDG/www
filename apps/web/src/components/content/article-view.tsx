@@ -9,6 +9,7 @@ import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl, RichText, type RichTextLabels } from '@/modules/content/rich-text/render';
 import type { ArticleDTO, NewsSummary } from '@/modules/content/types';
+import { canonicalNewsPath } from '@/modules/games/routes';
 import styles from './article-view.module.css';
 
 /** Localized strings for {@link ArticleView}; load them with {@link getArticleViewLabels}. */
@@ -182,7 +183,7 @@ export function ArticleView({ article, labels, preview = false, related = [], ba
                   )}
                 </div>
                 <div className={styles.relatedBody}>
-                  <Link href={`/news/${item.slug}`} className={styles.relatedLink}>
+                  <Link href={canonicalNewsPath(item.game, item.slug)} className={styles.relatedLink}>
                     {item.title}
                   </Link>
                   <p className={styles.relatedDate}>

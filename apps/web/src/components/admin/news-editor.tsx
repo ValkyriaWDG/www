@@ -10,6 +10,8 @@ import { GuardedLink } from '@/components/shell/guarded-link';
 import { useNavigationGuard, useUnsavedChangesGuard } from '@/components/shell/unsaved-changes';
 import { Checkbox, FieldError, Select, TextArea, TextField } from '@/components/ui/form-fields';
 import { GameButton } from '@/components/ui/game-button';
+import { gameHasSection, gameRouteFromDb } from '@/modules/games/registry';
+import { canonicalNewsPath, gamePath } from '@/modules/games/routes';
 import { FeedbackNotice, StatusBadge } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
 import { useRouter } from '@/i18n/navigation';
@@ -46,10 +48,16 @@ import { isLive, publishIntent, translationStatus } from './state-labels';
 type ContentLocale = 'cs' | 'en';
 const LOCALES: ContentLocale[] = ['cs', 'en'];
 const GAMES: Game[] = ['wardogs', 'hell-let-loose'];
+/** Games whose section has a Field Manual (a manual article always belongs to one). */
+const MANUAL_GAMES: Game[] = GAMES.filter((game) => gameHasSection(gameRouteFromDb(game), 'field-manual'));
 
 export type NewsEditorProps = {
-  /** `news`: full post workflow; `page`: core page (fixed slug, no taxonomy/schedule/archive). */
-  mode: 'news' | 'page';
+  /**
+   * `news`: full post workflow; `manual`: the same workflow for a game's Field Manual
+   * article (manual categories, a required game); `page`: core page (fixed slug, no
+   * taxonomy/schedule/archive).
+   */
+  mode: 'news' | 'page' | 'manual';
   uiLocale: AppLocale;
   contentLocale: ContentLocale;
   initialState: DocumentEditorState;
@@ -114,8 +122,9 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
   const bodyLabelId = useId();
   const documentId = initialState.document.id;
   const initialTranslation = initialState.translations[contentLocale]!;
-  const basePath = mode === 'news' ? '/admin/news' : '/admin/content';
+  const basePath = mode === 'news' ? '/admin/news' : mode === 'manual' ? '/admin/manual' : '/admin/content';
   const pageKey = initialState.document.pageKey;
+  const editorial = mode !== 'page';
 
   const [docState, setDocState] = useState(initialState);
   const translation = docState.translations[contentLocale] ?? initialTranslation;
@@ -144,7 +153,14 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
   const dirty = isDirty(machine) || machine.status === 'conflict';
   const live = isLive(translation.state);
   const everPublished = Boolean(translation.published) || Boolean(initialTranslation.published);
-  const publicPath = mode === 'page' && pageKey ? `/${contentLocale}/${pageKey}` : translation.liveSlug ? `/${contentLocale}/news/${translation.liveSlug}` : null;
+  // Canonical public URL of this document (game section for game posts and manual articles).
+  const livePath = (slug: string) =>
+    mode === 'page' && pageKey
+      ? `/${contentLocale}/${pageKey}`
+      : mode === 'manual' && docState.document.game
+        ? `/${contentLocale}${gamePath(gameRouteFromDb(docState.document.game), 'field-manual', slug)}`
+        : `/${contentLocale}${canonicalNewsPath(docState.document.game, slug)}`;
+  const publicPath = mode === 'page' && pageKey ? livePath(pageKey) : translation.liveSlug ? livePath(translation.liveSlug) : null;
   const previewHref = (revisionId?: string) =>
     `/${uiLocale}${basePath}/${documentId}/preview?lang=${contentLocale}${revisionId ? `&revision=${revisionId}` : ''}`;
 
@@ -172,7 +188,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
   const changeTitle = (title: string) => {
     const previous = latest.current.fields;
     const slug =
-      mode === 'news'
+      editorial
         ? suggestedSlug({ previousTitle: previous.title, nextTitle: title, slug: previous.slug, everPublished, slugTouched: latest.current.slugTouched })
         : null;
     change(slug ? { title, slug } : { title });
@@ -211,7 +227,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
         setFieldErrors(groupFieldErrors(local));
         return false;
       }
-      const includeShared = mode === 'news' && sharedPending(latest.current);
+      const includeShared = editorial && sharedPending(latest.current);
       const sharedSeqAtSend = latest.current.sharedSeq;
       dispatch({ type: 'start', kind });
       const result = await saveDraftAction({
@@ -262,7 +278,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
       setFieldErrors(groupFieldErrors(result.fieldErrors));
       return false;
     },
-    [initialTranslation.id, mode, dispatch, machineRef, refreshMeta, refreshRevisions, loadConflict],
+    [initialTranslation.id, editorial, dispatch, machineRef, refreshMeta, refreshRevisions, loadConflict],
   );
 
   /** Serializes saves so each one sends the version produced by the previous one. */
@@ -339,7 +355,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
       if (result.ok) {
         versionRef.current = result.data.version;
         setFieldErrors({});
-        const path = mode === 'page' && pageKey ? `/${contentLocale}/${pageKey}` : `/${contentLocale}/news/${result.data.slug}`;
+        const path = livePath(result.data.slug ?? '');
         setNotice({
           kind: 'success',
           title: t('notices.published', { locale: contentLocale }),
@@ -816,7 +832,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
             </div>
           </details>
 
-          {canPublish && mode === 'news' && !archived ? (
+          {canPublish && editorial && !archived ? (
             <details className={styles.section} open data-testid="schedule-section">
               <summary>{t('panel.schedule')}</summary>
               <div className={styles.sectionBody}>
@@ -840,13 +856,13 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
           <details className={styles.section} open>
             <summary>{t('panel.document')}</summary>
             <div className={styles.sectionBody}>
-              {mode === 'news' ? (
+              {editorial ? (
                 <div>
                   <TextField
                     name="slug"
                     id="editor-slug"
                     label={t('fields.slug')}
-                    hint={t('fields.slugHint', { path: `/${contentLocale}/news/${fields.slug || '…'}` })}
+                    hint={t('fields.slugHint', { path: livePath(fields.slug || '…') })}
                     value={fields.slug}
                     maxLength={120}
                     disabled={readOnly}
@@ -877,7 +893,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
                 name="excerpt"
                 id="editor-excerpt"
                 label={t('fields.excerpt')}
-                hint={mode === 'news' ? t('fields.excerptHint') : t('fields.excerptHintPage')}
+                hint={editorial ? t('fields.excerptHint') : t('fields.excerptHintPage')}
                 rows={3}
                 maxLength={600}
                 value={fields.excerpt}
@@ -966,7 +982,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
             </div>
           </details>
 
-          {mode === 'news' ? (
+          {editorial ? (
             <details className={styles.section} open data-testid="taxonomy-section">
               <summary>{t('panel.taxonomy')}</summary>
               <div className={styles.sectionBody}>
@@ -1008,7 +1024,11 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
                   id="editor-game"
                   label={t('taxonomy.game')}
                   value={shared.game ?? ''}
-                  options={[{ value: '', label: t('taxonomy.noGame') }, ...GAMES.map((game) => ({ value: game, label: tGames(game) }))]}
+                  options={
+                    mode === 'manual'
+                      ? MANUAL_GAMES.map((game) => ({ value: game, label: tGames(game) }))
+                      : [{ value: '', label: t('taxonomy.noGame') }, ...GAMES.map((game) => ({ value: game, label: tGames(game) }))]
+                  }
                   disabled={readOnly}
                   onChange={(event) => changeShared({ game: (event.target.value || null) as Game | null })}
                 />
@@ -1073,7 +1093,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
             </div>
           </details>
 
-          {mode === 'news' && canPublish && !archived ? (
+          {editorial && canPublish && !archived ? (
             <details className={styles.section}>
               <summary>{t('panel.danger')}</summary>
               <div className={styles.sectionBody}>

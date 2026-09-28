@@ -66,7 +66,7 @@ describe('production seed', () => {
 
   it('publishes both locales of every core page with live slug equal to the page key', async () => {
     const report = await runSeed(t.db);
-    expect(report.inserted).toEqual(expect.arrayContaining(['page clan (cs)', 'page clan (en)', 'page privacy (en)', 'taxonomy category announcement']));
+    expect(report.inserted).toEqual(expect.arrayContaining(['page clan (cs)', 'page clan (en)', 'page privacy (en)', 'taxonomy category announcement', 'manual category hell-let-loose/roles']));
     for (const pageKey of PAGE_KEYS) {
       const [document] = await t.db.select().from(contentDocument).where(eq(contentDocument.pageKey, pageKey));
       expect(document).toMatchObject({ kind: 'page', isFixture: false });
@@ -117,7 +117,7 @@ describe('production seed', () => {
     const before = await counts();
     const report = await runSeed(t.db);
     expect(report.inserted).toEqual([]);
-    expect(report.skipped).toHaveLength(4 + PAGE_KEYS.length * LOCALES.length);
+    expect(report.skipped).toHaveLength(4 + 6 + PAGE_KEYS.length * LOCALES.length); // news categories + HLL manual categories + pages
     expect(await counts()).toEqual(before);
     const [after] = await t.db.select().from(contentTranslation).where(eq(contentTranslation.id, cs!.id));
     expect(after?.publishedRevisionId).toBe(edited!.id);
@@ -161,9 +161,9 @@ describe('seed CLI', () => {
       const env = { ...process.env, DATABASE_URL: target.url };
       const first = await run(process.execPath, [tsxCli, 'src/cli/seed.ts'], { cwd: appRoot, env });
       expect(first.stdout).toContain('inserted: page clan (cs)');
-      expect(first.stdout).toContain('Seed complete: 13 inserted, 0 skipped.');
+      expect(first.stdout).toContain('Seed complete: 19 inserted, 0 skipped.');
       const second = await run(process.execPath, [tsxCli, 'src/cli/seed.ts'], { cwd: appRoot, env });
-      expect(second.stdout).toContain('Seed complete: 0 inserted, 10 skipped.');
+      expect(second.stdout).toContain('Seed complete: 0 inserted, 16 skipped.');
 
       const broken = await run(process.execPath, [tsxCli, 'src/cli/seed.ts'], {
         cwd: appRoot,

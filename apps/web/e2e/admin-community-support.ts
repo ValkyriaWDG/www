@@ -28,8 +28,8 @@ export async function matchBySlug(slug: string) {
 }
 
 export async function matchByOpponent(opponent: string) {
-  const result = await e2eDb().query<{ id: string; slug: string; status: string; publication: string; version: number }>(
-    'select id, slug, status, publication, version from match where opponent_name = $1',
+  const result = await e2eDb().query<{ id: string; slug: string; game: string; status: string; publication: string; version: number }>(
+    'select id, slug, game, status, publication, version from match where opponent_name = $1',
     [opponent],
   );
   return result.rows[0] ?? null;

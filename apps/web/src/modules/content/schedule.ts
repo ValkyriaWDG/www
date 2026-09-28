@@ -1,13 +1,13 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
-import { contentTranslation, publicationSchedule, siteSetting, type Executor } from '@valkyria/db';
+import { contentDocument, contentTranslation, publicationSchedule, siteSetting, type Executor } from '@valkyria/db';
 import { and, asc, eq, inArray, lte, or, sql, type SQL } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
 import type { Actor, Principal } from '@/modules/access/types';
 import { AccessDeniedError } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { isUniqueViolation } from './db-errors';
-import { authorize, requirePrincipal } from './guard';
+import { authorize, authorizeGameScope, documentScopeCondition, requirePrincipal } from './guard';
 import {
   listSchedulesSchema,
   parseInput,
@@ -30,6 +30,7 @@ import {
   lockTranslation,
   readDocument,
   readRevision,
+  readTranslation,
   scheduleToDTO,
   type ScheduleRow,
 } from './store';
@@ -121,6 +122,7 @@ export async function scheduleTranslation(db: Executor, actor: Actor, rawInput: 
       const translation = await lockTranslation(tx, input.translationId);
       if (input.expectedVersion !== undefined) assertVersion(translation.version, input.expectedVersion);
       const document = await readDocument(tx, translation.documentId, 'share');
+      await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.schedule', entityType: 'content_document', entityId: document.id });
       assertNotArchived(document);
       const revisionId = input.revisionId ?? translation.draftRevisionId;
       if (!revisionId) throw new DomainError('invalid_state', 'Nothing to schedule.');
@@ -187,6 +189,8 @@ export async function cancelSchedule(db: Executor, actor: Actor, rawInput: { sch
   const now = deps.now?.() ?? new Date();
   return inTransaction(db, async (tx) => {
     const schedule = await lockSchedule(tx, input.scheduleId);
+    const owner = await readDocument(tx, (await readTranslation(tx, schedule.translationId)).documentId);
+    await authorizeGameScope(db, actor, 'content.publish', [owner.game], { action: 'content.schedule.cancel', entityType: 'content_document', entityId: owner.id });
     if (!ACTIVE_SCHEDULE_STATES.includes(schedule.state)) throw new DomainError('invalid_state', 'The schedule is no longer active.');
     const [row] = await tx
       .update(publicationSchedule)
@@ -240,6 +244,7 @@ export async function reapproveSchedule(db: Executor, actor: Actor, rawInput: Re
       }
       const translation = await lockTranslation(tx, previous.translationId);
       const document = await readDocument(tx, translation.documentId, 'share');
+      await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.schedule.reapprove', entityType: 'content_document', entityId: document.id });
       assertNotArchived(document);
       const revision = await readRevision(tx, translation.id, previous.revisionId);
       await assertPublishable(tx, document, revision);
@@ -366,13 +371,22 @@ export async function listSchedules(
       )!,
     );
   }
+  const scope = documentScopeCondition(actor, 'content.read_private');
+  if (scope === 'none') return { items: [], total: 0, page: input.page, pageSize: input.pageSize, pageCount: 0 };
+  if (scope) conditions.push(scope);
   const where = and(...conditions);
-  const [count] = await db.select({ total: sql<number>`count(*)::int` }).from(publicationSchedule).where(where);
+  const [count] = await db
+    .select({ total: sql<number>`count(*)::int` })
+    .from(publicationSchedule)
+    .innerJoin(contentTranslation, eq(contentTranslation.id, publicationSchedule.translationId))
+    .innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
+    .where(where);
   const total = count?.total ?? 0;
   const rows = await db
     .select({ schedule: publicationSchedule, documentId: contentTranslation.documentId })
     .from(publicationSchedule)
     .innerJoin(contentTranslation, eq(contentTranslation.id, publicationSchedule.translationId))
+    .innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
     .where(where)
     .orderBy(asc(publicationSchedule.dueAt), asc(publicationSchedule.id))
     .limit(input.pageSize)

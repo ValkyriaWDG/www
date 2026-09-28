@@ -49,7 +49,7 @@ for (const { locale, width } of [{ locale: 'cs', width: 390 }, { locale: 'cs', w
     }));
     try {
       const slug = locale === 'cs' ? FIXTURE_SLUGS.news.featureCs : FIXTURE_SLUGS.news.featureEn;
-      await page.goto(`/${locale}/news/${slug}`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`/${locale}/wardogs/news/${slug}`, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('[data-article-cover]')).toBeVisible();
       await page.evaluate(() => document.fonts.load('700 28px "Barlow Condensed"'));
       // Fixtures publish relative to the run date. Freeze this synthetic display
@@ -105,7 +105,7 @@ for (const { locale, width } of [{ locale: 'cs', width: 390 }, { locale: 'cs', w
 for (const locale of ['cs', 'en'] as const) {
   test(`${locale} article metadata stays readable with a long author on narrow and desktop screens`, async ({ page }) => {
     const slug = locale === 'cs' ? FIXTURE_SLUGS.news.featureCs : FIXTURE_SLUGS.news.featureEn;
-    await page.goto(`/${locale}/news/${slug}`);
+    await page.goto(`/${locale}/wardogs/news/${slug}`);
     await page.evaluate(() => document.fonts.ready);
     const metadata = page.locator('[data-article] dl');
     const author = metadata.locator('dd[lang]');

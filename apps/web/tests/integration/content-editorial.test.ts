@@ -109,7 +109,8 @@ describe('editorial lifecycle', () => {
 
     const published = await publishTranslation(t.db, editor, { translationId: created.translationId, expectedVersion: saved.version });
     expect(published.slug).toBe('prvni-clanek');
-    expect(published.affectedPaths).toEqual(expect.arrayContaining(['/cs/news', '/cs/news/prvni-clanek', '/sitemap.xml']));
+    // A Wardogs post is revalidated at its canonical game section, the shared list and the game landing.
+    expect(published.affectedPaths).toEqual(expect.arrayContaining(['/cs/news', '/cs/wardogs/news/prvni-clanek', '/cs/wardogs/news', '/cs/wardogs', '/sitemap.xml']));
 
     const list = await listPublishedNews({ locale: 'cs' }, t.db);
     const item = list.items.find((entry) => entry.slug === 'prvni-clanek');
@@ -246,7 +247,7 @@ describe('editorial lifecycle', () => {
     expect(detail?.kind === 'article' && detail.article.counterparts).toEqual({ cs: 'jen-cesky' });
 
     const enPublished = await publishTranslation(t.db, enEditor, { translationId: en.translationId, expectedVersion: en.version });
-    expect(enPublished.affectedPaths).toContain('/cs/news/jen-cesky');
+    expect(enPublished.affectedPaths).toContain('/cs/wardogs/news/jen-cesky');
     expect(await resolveNewsCounterpart('cs', 'jen-cesky', 'en', t.db)).toEqual({ kind: 'published', slug: 'english-only-draft' });
     const csAgain = await getPublishedNewsBySlug('cs', 'jen-cesky', t.db);
     expect(csAgain?.kind === 'article' && csAgain.article.counterparts).toEqual({ cs: 'jen-cesky', en: 'english-only-draft' });
@@ -256,8 +257,8 @@ describe('editorial lifecycle', () => {
     expect(await getPublishedNewsBySlug('en', 'english-only-draft', t.db)).toBeNull();
     expect((await getPublishedNewsBySlug('cs', 'jen-cesky', t.db))?.kind).toBe('article');
     const sitemap = await listPublishedNewsForSitemap(t.db);
-    expect(sitemap.find((entry) => entry.path === '/cs/news/jen-cesky')?.alternates).toEqual({ cs: '/cs/news/jen-cesky' });
-    expect(sitemap.some((entry) => entry.path === '/en/news/english-only-draft')).toBe(false);
+    expect(sitemap.find((entry) => entry.path === '/cs/wardogs/news/jen-cesky')?.alternates).toEqual({ cs: '/cs/wardogs/news/jen-cesky' });
+    expect(sitemap.some((entry) => entry.path === '/en/wardogs/news/english-only-draft')).toBe(false);
   });
 
   it('enforces locale-scoped slugs, redirects on live slug changes and never loops', async () => {

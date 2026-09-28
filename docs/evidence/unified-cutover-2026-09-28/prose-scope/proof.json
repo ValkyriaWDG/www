@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-09-28T18:31:28.987Z",
+  "scope": "Local synthetic PostgreSQL only; no providers or production",
+  "databaseVersion": "18.4",
+  "node": "v24.21.0",
+  "red": {
+    "total": 8,
+    "passed": 0,
+    "failed": 8,
+    "pending": 0,
+    "success": false,
+    "sha256": "0157b2d74089e8b1096c8d08076b8f07c93520c408c4e2d08331b254634d30ed",
+    "originalServiceSha256Lf": "d97ebeda26932fbd5ba983f25858ef908093cf0d88956d6ac80e5416af169218",
+    "expectedFailure": "All eight original service mutations succeeded instead of returning AccessDeniedError after owner game changed"
+  },
+  "green": {
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "pending": 0,
+    "success": true,
+    "sha256": "f11cc88238f1d2510d6b51617f10c4348f9faa3d205a3499f813e25f6825020a"
+  },
+  "migrationAndSeed": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "pending": 0,
+    "success": true,
+    "sha256": "b1bddd06d300c4e1ba986c7a8892730a990ce20734a520cc62c3dcfe8943c217"
+  },
+  "source": [
+    {
+      "path": "apps/web/src/modules/prose/service.ts",
+      "sha256Lf": "99fd2f2056f4bf6c81520da67a9a180a3a964680ecaadbe91fd450a013b5abf3"
+    },
+    {
+      "path": "apps/web/tests/integration/prose-game-scope-race.test.ts",
+      "sha256Lf": "2d41314e37e764ab3fd50b2ba0d3beb6168dd0e58db07e0f56bf4f0fceadc754"
+    },
+    {
+      "path": "packages/db/drizzle/0001_unified_platform_scope.sql",
+      "sha256Lf": "1cc8b9fb85bc335de7c53cccc02a2f9640d6ba01e38974b7a4800154dc8b34d1"
+    }
+  ],
+  "staticChecks": {
+    "scopedEslint": "passed",
+    "typecheck": "passed"
+  },
+  "cleanup": {
+    "ownedBaseDropped": true,
+    "remainingWorkers": 0,
+    "remainingTemplates": 0,
+    "baseDropForced": false,
+    "ownedPostgresSmartStopped": true
+  },
+  "limitations": [
+    "Windows PostgreSQL18.4 local evidence; exact-head Linux CI remains required",
+    "Image-only rollback predating migration0001 must not enable local scoped grants; old image ignores games scope",
+    "No production seed/manual import/auth enablement performed"
+  ],
+  "artifacts": [
+    {
+      "path": "red.json",
+      "sha256": "4d45b5d881eb1d16fcff786d4d20da97e4805da690ad889ece2588ca0653a7fa"
+    },
+    {
+      "path": "green.json",
+      "sha256": "347481c339a385ee4cf1d11c9d7ac5e3c5b272d75aaab191fe3b93cd8a9d1786"
+    },
+    {
+      "path": "migration-seed.json",
+      "sha256": "ad6a92c9ab1a965e42928cd48bb187701c7e5b8f1cabc7f8dd6e37a60999bb01"
+    }
+  ]
+}

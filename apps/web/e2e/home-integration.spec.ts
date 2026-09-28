@@ -2,14 +2,14 @@ import { expect, test } from '@playwright/test';
 import { signInAs } from './support/auth';
 
 test.describe('home and header integration', () => {
-  test('home shows the next published fixture, never a draft', async ({ page }) => {
-    await page.goto('/cs');
+  test('Wardogs home shows its next published fixture, never a draft', async ({ page }) => {
+    await page.goto('/cs/wardogs');
     const strip = page.locator('[data-next-match]');
     await expect(strip).toBeVisible();
-    await expect(strip).toHaveAttribute('href', '/cs/matches/ukazka-wardogs-nadchazejici');
+    await expect(strip).toHaveAttribute('href', '/cs/wardogs/matches/ukazka-wardogs-nadchazejici');
     await expect(page.locator('a[href*="ukazka-wardogs-koncept"]')).toHaveCount(0);
-    await page.goto('/en');
-    await expect(page.locator('[data-next-match]')).toHaveAttribute('href', '/en/matches/ukazka-wardogs-nadchazejici');
+    await page.goto('/en/wardogs');
+    await expect(page.locator('[data-next-match]')).toHaveAttribute('href', '/en/wardogs/matches/ukazka-wardogs-nadchazejici');
   });
 
   test('anonymous header offers sign-in and no administration link', async ({ page }) => {

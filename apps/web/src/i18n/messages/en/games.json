@@ -1,0 +1,210 @@
+{
+  "names": {
+    "hll": "Hell Let Loose",
+    "wardogs": "Wardogs"
+  },
+  "menuLabel": {
+    "hll": "Hell Let Loose – main menu",
+    "wardogs": "Wardogs – main menu"
+  },
+  "eyebrow": {
+    "hll": "Valkyria // Hell Let Loose",
+    "wardogs": "Valkyria // Wardogs"
+  },
+  "sectionTitle": "{section} – {game}",
+  "communityLabel": "Community",
+  "newsIntro": "News, reports and announcements of the {game} division. Shared community posts are labelled.",
+  "matchesIntro": "Upcoming fixtures and results of the {game} division.",
+  "membersIntro": "Members with a published profile and a public {game} affiliation.",
+  "switchNotice": {
+    "detail": {
+      "title": "Switched to {game}",
+      "body": "The previous page has no counterpart in {game}, so the matching list is shown."
+    },
+    "section": {
+      "title": "Switched to {game}",
+      "body": "This part of the website does not exist for {game}, so its main menu is shown."
+    }
+  },
+  "hub": {
+    "meta": {
+      "title": "Valkyria – Czech & Slovak gaming community",
+      "description": "The Valkyria community: Hell Let Loose and Wardogs on one website. News, matches, members and recruitment."
+    },
+    "eyebrow": "Valkyria // CZ & SK",
+    "heading": "Valkyria community",
+    "intro": "A Czech and Slovak gaming community. Choose a game or continue to the shared pages.",
+    "choose": "Choose a game",
+    "cards": {
+      "hll": {
+        "body": "Clan matches, servers, the Field Manual and unit recruitment.",
+        "cta": "Enter the Hell Let Loose section"
+      },
+      "wardogs": {
+        "body": "The Wardogs division: news, matches and members.",
+        "cta": "Enter the Wardogs section"
+      }
+    },
+    "shared": {
+      "title": "Shared by the whole community",
+      "news": "All news",
+      "clan": "About the clan",
+      "members": "Members",
+      "matches": "All matches",
+      "community": "How to join"
+    },
+    "latestNews": "Latest post",
+    "noNews": "No news has been published yet."
+  },
+  "wardogs": {
+    "meta": {
+      "title": "Wardogs – main menu · Valkyria",
+      "description": "The Valkyria Wardogs division: news, matches, members and Discord."
+    }
+  },
+  "hll": {
+    "meta": {
+      "title": "Hell Let Loose – main menu · Valkyria",
+      "description": "Valkyria Hell Let Loose: clan fixtures and results, servers, Field Manual, members and recruitment."
+    },
+    "heading": "Valkyria – Hell Let Loose",
+    "division": "Hell Let Loose",
+    "clanName": "Valkyria",
+    "menu": {
+      "news": "News",
+      "matches": "Matches",
+      "servers": "Servers",
+      "members": "Members",
+      "field-manual": "Field manual",
+      "clan": "Clan",
+      "community": "Join us"
+    },
+    "menuLabel": "Hell Let Loose menu",
+    "mainMenu": "Main menu",
+    "communityLink": "Valkyria community",
+    "joinDiscord": "Join Discord",
+    "discordUnavailable": "The Discord invitation is not configured right now.",
+    "stage": {
+      "label": "Clan battle footage",
+      "pending": "Clan battle footage will be added once approved.",
+      "play": "Play footage",
+      "pause": "Pause footage",
+      "unavailable": "The footage cannot be played right now.",
+      "posterOnly": "A still image is shown."
+    },
+    "strip": {
+      "label": "Latest",
+      "nextMatch": "Next match",
+      "latestNews": "Latest news",
+      "versus": "vs. {opponent}"
+    },
+    "utilities": {
+      "label": "More links",
+      "privacy": "Privacy",
+      "community": "Community",
+      "signIn": "Sign in"
+    }
+  },
+  "servers": {
+    "title": "Servers",
+    "intro": "Observed status of the configured Valkyria servers with the time of observation. Missing values are never estimated.",
+    "synthetic": "Synthetic demo data – not the live status of Valkyria servers.",
+    "caption": "Valkyria servers",
+    "columns": {
+      "server": "Server",
+      "players": "Players",
+      "mode": "Mode",
+      "status": "Data status"
+    },
+    "mapUnknown": "Map unknown",
+    "notAvailable": "Not available",
+    "observed": "Observed {time}",
+    "neverObserved": "Observation time unknown",
+    "freshness": {
+      "fresh": "Current",
+      "stale": "Stale",
+      "unavailable": "Unknown"
+    },
+    "reachability": {
+      "online": "Reachable",
+      "offline": "Unreachable",
+      "unknown": "Unknown"
+    },
+    "notConfigured": {
+      "title": "No server status source is configured yet.",
+      "body": "Valkyria servers will be added once a data source is approved. Until then no estimates or player counts are shown."
+    },
+    "empty": {
+      "title": "No servers are configured.",
+      "body": "The data source is connected but contains no Valkyria server."
+    },
+    "unavailable": {
+      "title": "The server data source is not responding.",
+      "body": "This does not mean the servers are offline or empty.",
+      "lastKnown": "The last known observations are listed below and marked as stale.",
+      "retry": "Reload"
+    },
+    "selectPrompt": "Select a server",
+    "missingSelection": "The selected server is no longer listed.",
+    "selectBody": "Details appear once you select a server from the list.",
+    "detail": {
+      "eyebrow": "Server details",
+      "map": "Map",
+      "mode": "Mode",
+      "population": "Players / capacity",
+      "reachability": "Reachability",
+      "freshness": "Data status",
+      "observedAt": "Last observation",
+      "connect": "Connect",
+      "address": "Public address",
+      "copy": "Copy address",
+      "copied": "Address copied.",
+      "copyFailed": "Copying failed – please copy the address manually.",
+      "noConnect": "Connection instructions are not published yet. Ask on Discord.",
+      "pingNote": "Latency (ping) is not shown: it would be measured from the website server, not from your computer.",
+      "back": "Back to the server list"
+    }
+  },
+  "manual": {
+    "title": "Field manual",
+    "intro": "Valkyria guides and procedures for {game}, from first setup to leading a squad.",
+    "browseSubtitle": "All categories",
+    "searchSubtitle": "Search results",
+    "searchLabel": "Search the field manual",
+    "searchPlaceholder": "e.g. SL or spawn",
+    "searching": "Searching…",
+    "categoriesLabel": "Field manual categories",
+    "allCategories": "All categories",
+    "articleCount": "{count, plural, one {# article} other {# articles}}",
+    "resultSummary": "{count, plural, =0 {No results} one {# result} other {# results}} for “{q}”",
+    "resultSummaryCategory": "{count, plural, =0 {No results} one {# result} other {# results}} for “{q}” in {category}",
+    "clearSearch": "Clear search",
+    "categoryGridLabel": "Categories",
+    "articleListLabel": "Articles",
+    "openCategory": "Open category {category}",
+    "noResultsTitle": "Nothing found",
+    "noResultsBody": "Try another word or a common abbreviation (SL, TC, AT), or browse the categories.",
+    "unknownCategoryTitle": "Category not found",
+    "unknownCategoryBody": "This category has no published articles. Choose another category.",
+    "emptyTitle": "The field manual is being prepared",
+    "emptyBody": "No article is published yet. Guides from the previous website are under editorial review.",
+    "loadError": "The field manual could not be loaded.",
+    "retry": "Try again",
+    "metaDescription": "Valkyria field manual for {game}: guides, roles, communication and procedures.",
+    "article": {
+      "back": "Back to the field manual",
+      "toc": "Contents",
+      "source": "Source and authors",
+      "sourceLink": "Original guide",
+      "sourcePublished": "Originally published",
+      "sourceLanguage": "Original language",
+      "languages": {
+        "cs": "Czech",
+        "sk": "Slovak",
+        "en": "English"
+      },
+      "credits": "Authors",
+      "reviewed": "Reviewed"
+    }
+  }
+}

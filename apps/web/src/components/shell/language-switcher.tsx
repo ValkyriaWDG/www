@@ -6,6 +6,7 @@ import { type MouseEvent, Suspense } from 'react';
 import type { AppLocale } from '@/i18n/routing';
 import { CzechFlag, UnitedKingdomFlag } from './flags';
 import { buildLocaleSwitchHref } from './locale-switch';
+import { runNavigationHandoffs } from './navigation-handoff';
 import { useNavigationGuard } from './unsaved-changes';
 import styles from './header.module.css';
 
@@ -40,10 +41,19 @@ function LanguageSwitcherView({ search, compact }: { search: string; compact: bo
 
   const onSwitch = (event: MouseEvent<HTMLAnchorElement>) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    if (!guard.isDirty()) return;
+    if (!guard.isDirty()) {
+      runNavigationHandoffs();
+      return;
+    }
     event.preventDefault();
     const target = new URL(event.currentTarget.href, window.location.href).toString();
-    guard.confirmNavigation(() => window.location.assign(target), { fullPage: true });
+    guard.confirmNavigation(
+      () => {
+        runNavigationHandoffs();
+        window.location.assign(target);
+      },
+      { fullPage: true },
+    );
   };
 
   return (

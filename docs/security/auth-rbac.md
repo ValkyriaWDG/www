@@ -63,6 +63,21 @@ route handler and private query. Middleware/client visibility are convenience on
 Check object scope to prevent IDOR and cross-match edits. Private roster information
 is not automatically visible to public profile editors.
 
+## Game-scoped authority
+
+One website session covers the community hub, Hell Let Loose and Wardogs; authority is
+scoped per game. A Discord role mapping entry is either a role list (platform-wide) or
+`{"roles": [...], "games": ["hell-let-loose"]}`; local admin grants may carry `games`
+(owner grants stay platform-wide). Capabilities keep a per-game scope: content, field
+manual, match and member reads and mutations check the resource's game (community
+content needs platform-wide authority; a member profile needs every affiliated game;
+moving a resource needs both games). Media library, settings, audit and access
+management stay platform-only and are never granted by a scoped entry. Denials are
+audited with reason `game_scope`, lists and filters are narrowed to the scope, and an
+out-of-scope document renders the localized access-denied panel without its content.
+Scheduled publication re-checks the issuer for the document's game and its fence fails
+when the locked document moved to another game after authorization.
+
 ## Role freshness and failure behavior
 
 Store guild/member/role snapshot, observation time, source and sequence/version.

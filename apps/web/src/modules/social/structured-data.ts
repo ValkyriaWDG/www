@@ -1,4 +1,5 @@
 import type { ArticleDTO } from '@/modules/content/types';
+import { canonicalNewsPath } from '@/modules/games/routes';
 import { socialImagePath } from './model';
 
 /** JSON-LD is data, never executable article HTML (including a literal </script>). */
@@ -8,7 +9,8 @@ export function serializeStructuredData(value: unknown): string {
 
 export function articleStructuredData(article: ArticleDTO, origin: string) {
   if (article.isPreview || !article.publishedAt) return null;
-  const url = new URL(`/${article.locale}/news/${article.slug}`, origin).href;
+  // Canonical section: community posts at /news/<slug>, game posts under their game.
+  const url = new URL(`/${article.locale}${canonicalNewsPath(article.game, article.slug)}`, origin).href;
   return {
     '@context': 'https://schema.org', '@type': 'BlogPosting', '@id': `${url}#article`,
     mainEntityOfPage: url, url, headline: article.title, description: article.excerpt,

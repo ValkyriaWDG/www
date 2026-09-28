@@ -24,7 +24,9 @@
     "account": "MŮJ ÚČET",
     "admin": "SPRÁVA",
     "accountMenu": "Účet",
-    "menu": "MENU"
+    "menu": "MENU",
+    "hub": "KOMUNITA",
+    "servers": "SERVERY"
   },
   "language": {
     "groupLabel": "Jazyk webu",
@@ -115,5 +117,18 @@
     "warning": "Upozornění",
     "danger": "Chyba",
     "accent": "Zvýrazněno"
+  },
+  "gameSwitch": {
+    "label": "Hra",
+    "current": "– aktuální hra",
+    "switchTo": "Přepnout na {game}",
+    "games": {
+      "hll": "Hell Let Loose",
+      "wardogs": "Wardogs"
+    }
+  },
+  "platform": {
+    "name": "Valkyria",
+    "community": "Komunita"
   }
 }

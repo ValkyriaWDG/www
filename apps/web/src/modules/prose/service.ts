@@ -16,7 +16,7 @@ import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { parseRichTextDocument, RICH_TEXT_SCHEMA_VERSION } from '@/modules/content/rich-text/schema';
 import { assertUsableAssets } from './assets';
-import { assertVersion, authorize, isUniqueViolation, parseInput } from './domain';
+import { assertVersion, authorize, authorizeGames, isUniqueViolation, parseInput } from './domain';
 import { ownerCondition } from './queries';
 import {
   MAX_PROSE_BODY_BYTES,
@@ -55,13 +55,39 @@ async function guard(db: Executor, actor: Actor, input: unknown, capability: 'ed
   const rawLocale = (input as { locale?: unknown }).locale;
   const locale = rawLocale === 'cs' || rawLocale === 'en' ? rawLocale : null;
   await authorize(db, actor, policy[capability], { intent, action, entityType: policy.entityType, entityId, locale });
+  if (entityId) {
+    // Recaps/biographies follow their owner's game scope (a member: every affiliation).
+    const games =
+      kind === 'member'
+        ? (await db.select({ games: memberProfile.games }).from(memberProfile).where(eq(memberProfile.id, entityId)).limit(1))[0]?.games
+        : (await db.select({ game: match.game }).from(match).where(eq(match.id, entityId)).limit(1)).map((row) => row.game);
+    if (games) await authorizeGames(db, actor, policy[capability], games, { action, entityType: policy.entityType, entityId, locale });
+  }
   return policy;
 }
 
-async function assertOwnerExists(db: Executor, owner: ProseOwner) {
-  const table = owner.kind === 'member' ? memberProfile : match;
-  const [row] = await db.select({ id: table.id }).from(table).where(eq(table.id, owner.id)).limit(1);
-  if (!row) throw new DomainError('not_found');
+/**
+ * Lock order is owner -> translation, matching owner updates/deletes. A shared owner
+ * lock permits concurrent locale edits but prevents its game scope changing until the
+ * mutation commits. The early guard alone cannot authorize after awaited database work.
+ */
+async function lockOwnerScope(
+  tx: Executor,
+  auditDb: Executor,
+  actor: Actor,
+  owner: ProseOwner,
+  locale: Locale,
+  capability: Capability,
+  action: string,
+) {
+  const games = owner.kind === 'member'
+    ? (await tx.select({ games: memberProfile.games }).from(memberProfile).where(eq(memberProfile.id, owner.id)).for('share'))[0]?.games
+    : (await tx.select({ game: match.game }).from(match).where(eq(match.id, owner.id)).for('share')).map((row) => row.game);
+  if (!games || (owner.kind === 'match' && games.length === 0)) throw new DomainError('not_found');
+  // A denial must survive the mutation rollback; use the outer audit connection.
+  await authorizeGames(auditDb, actor, capability, games, {
+    action, entityType: OWNER_POLICY[owner.kind].entityType, entityId: owner.id, locale,
+  });
 }
 
 async function lockTranslation(db: Executor, owner: ProseOwner, locale: Locale) {
@@ -110,7 +136,7 @@ export async function saveProseDraft(db: Executor, actor: Actor, input: SavePros
 
   try {
     return await db.transaction(async (tx) => {
-      await assertOwnerExists(tx, data.owner);
+      await lockOwnerScope(tx, db, actor, data.owner, data.locale, policy.edit, 'prose.save');
       let translation = await lockTranslation(tx, data.owner, data.locale);
       if (!translation) {
         if (data.expectedVersion !== 0) throw new DomainError('conflict');
@@ -164,6 +190,7 @@ export async function publishProse(db: Executor, actor: Actor, input: PublishPro
   const policy = await guard(db, actor, input, 'publish', 'prose.publish');
   const data = parseInput(publishProseSchema, input);
   return db.transaction(async (tx) => {
+    await lockOwnerScope(tx, db, actor, data.owner, data.locale, policy.publish, 'prose.publish');
     const translation = await lockTranslation(tx, data.owner, data.locale);
     assertVersion(translation, data.expectedVersion);
     const revisionId = data.revisionId ?? translation.draftRevisionId;
@@ -206,6 +233,7 @@ export async function unpublishProse(db: Executor, actor: Actor, input: Unpublis
   const policy = await guard(db, actor, input, 'publish', 'prose.unpublish');
   const data = parseInput(unpublishProseSchema, input);
   return db.transaction(async (tx) => {
+    await lockOwnerScope(tx, db, actor, data.owner, data.locale, policy.publish, 'prose.unpublish');
     const translation = await lockTranslation(tx, data.owner, data.locale);
     assertVersion(translation, data.expectedVersion);
     if (!translation.publishedRevisionId) throw new DomainError('invalid_state', 'Not published.');
@@ -234,6 +262,7 @@ export async function restoreProseRevision(db: Executor, actor: Actor, input: Re
   const policy = await guard(db, actor, input, 'edit', 'prose.restore');
   const data = parseInput(restoreProseRevisionSchema, input);
   return db.transaction(async (tx) => {
+    await lockOwnerScope(tx, db, actor, data.owner, data.locale, policy.edit, 'prose.restore');
     const translation = await lockTranslation(tx, data.owner, data.locale);
     assertVersion(translation, data.expectedVersion);
     const [source] = await tx

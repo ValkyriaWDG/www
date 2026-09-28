@@ -23,8 +23,9 @@ that port; the fixture Discord mock uses the following port plus 1000. The runne
 only its own process tree. On Windows, set the same variables with `$env:NAME='value'`;
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an installed Chromium/Edge executable.
 
-The [policy](../../scripts/release/page-budgets.json) measures `/cs`, `/cs/news` and a
-published synthetic article with a cover, inline image and table. Each route gets three
+The [policy](../../scripts/release/page-budgets.json) measures the community hub `/cs`,
+both game landings (`/cs/wardogs`, `/cs/hll`), `/cs/news` and a published synthetic
+Wardogs article at its canonical URL with a cover, inline image and table. Each route gets three
 new mobile browser contexts at 390 × 844, no cache or service worker, 4× CPU slowdown,
 150 ms latency, 1.6 Mbps download and 750 Kbps upload. Chromium's CDP network and CPU
 emulation apply during navigation. Observers run for at least 10 seconds, including at
@@ -119,6 +120,9 @@ The runner:
 2. Applies the **previous** image's migrations and seed to the disposable database,
    loads clearly synthetic content with the dev-only fixture CLI and serves it through
    the previous image. The dev fixture CLI is bind-mounted for the test, not shipped.
+   It runs with `--schema-compatible`, so it loads every fixture group the older schema
+   can store and the report names the skipped groups (the field manual needs the
+   unified-platform migration). Without that flag a missing table fails the load.
 3. Makes a logical database backup and records every table's count/content fingerprint
    plus the delivered published media hash.
 4. Applies candidate migrations explicitly, verifies a repeated run applies zero,
@@ -128,8 +132,12 @@ The runner:
 5. Starts both runtime variants with read-only roots, dropped capabilities and no new
    privileges. It checks Node 24, UID 10001, denied root writes, writable media/cache,
 absent package managers, real sharp WebP encoding, configured health command,
-   public routes and byte-identical published media. Candidate DB disconnection must
-   produce readiness 503 while liveness stays 200, then recover after reconnection.
+   public routes and byte-identical published media. The route proof follows what each
+   image ships: an image with game sections serves the synthetic Wardogs article at
+   `/cs/wardogs/news/<slug>`, answers the old `/cs/news/<slug>` link with 308 to it and
+   serves `/cs/hll` and its field manual; an older image serves the old link directly.
+   Candidate DB disconnection must produce readiness 503 while liveness stays 200, then
+   recover after reconnection.
    When the candidate source includes the social image route, both candidate variants
    must also serve and fully decode the Czech and English site PNGs at 1200 × 630,
    proving traced font/image availability inside each container. Source absence is an

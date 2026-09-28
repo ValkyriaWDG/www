@@ -1,6 +1,6 @@
 import { authSession, guildMembership, type AppRole, type Executor } from '@valkyria/db';
 import { and, eq, gt } from 'drizzle-orm';
-import { capabilitiesForRoles, type Capability } from './capabilities';
+import { scopesForGrants, type Capability, type GameScope } from './capabilities';
 import {
   discordClientConfig,
   isDiscordMembershipConfigured,
@@ -12,7 +12,7 @@ import {
 import type { DiscordClientDeps } from './discord-client';
 import { findLocalGrant, isGrantActive, summarizeAccounts } from './local-grant';
 import { membershipRowVersion, readMembership, refreshMembership, snapshotAgeMs, type MembershipSnapshot } from './membership';
-import { ensureRoleMappingVersion, loadRoleMapping, rolesForRoleIds } from './role-mapping';
+import { ensureRoleMappingVersion, grantsForRoleIds, loadRoleMapping, rolesForRoleIds } from './role-mapping';
 import { isSnowflake } from './snowflake';
 import type { AccessIntent, Actor, AuthorizationStatus, Principal, SessionAssurance } from './types';
 
@@ -35,6 +35,7 @@ export type ResolveActorInput = {
 
 const ANONYMOUS: Actor = { kind: 'anonymous' };
 const NO_CAPABILITIES: ReadonlySet<Capability> = new Set();
+const NO_SCOPES: ReadonlyMap<Capability, GameScope> = new Map();
 const ASSURANCES: readonly SessionAssurance[] = ['discord', 'password', 'mfa', 'unknown'];
 const CONTROL = /[\u0000-\u001f\u007f-\u009f]/g;
 
@@ -74,6 +75,7 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
       status,
       roles: [],
       capabilities: NO_CAPABILITIES,
+      gameScopes: NO_SCOPES,
       localGrant: null,
       verifiedAt: null,
     });
@@ -83,13 +85,15 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
     if (!grant || !isGrantActive(grant, now)) return deny('verified');
     if (assurance !== 'mfa' || user.twoFactorEnabled !== true) return deny('mfa_required');
     const roles: AppRole[] = [...grant.roles];
+    const scoped = scopesForGrants(roles.map((role) => ({ role, games: grant.games ?? 'all' })));
     return {
       ...base,
       source: 'local_admin',
       label,
       status: 'verified',
       roles,
-      capabilities: capabilitiesForRoles(roles),
+      capabilities: scoped.capabilities,
+      gameScopes: scoped.gameScopes,
       localGrant: { id: grant.id, version: grant.version },
       verifiedAt: now,
     };
@@ -103,6 +107,7 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
     status,
     roles: [],
     capabilities: NO_CAPABILITIES,
+    gameScopes: NO_SCOPES,
     localGrant: null,
     verifiedAt: null,
   });
@@ -152,13 +157,15 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
   const resolvedAt = input.now ?? new Date();
   if (current.sessionExpiresAt <= resolvedAt || snapshotAgeMs(current.membership, resolvedAt) > maxAge) return deny('stale');
   const roles: AppRole[] = rolesForRoleIds(mapping.mapping, current.membership.roleIds);
+  const scoped = scopesForGrants(grantsForRoleIds(mapping.mapping, current.membership.roleIds));
   return {
     ...base,
     source: 'discord',
     label,
     status: 'verified',
     roles,
-    capabilities: capabilitiesForRoles(roles),
+    capabilities: scoped.capabilities,
+    gameScopes: scoped.gameScopes,
     localGrant: null,
     verifiedAt: current.membership.observedAt,
   };

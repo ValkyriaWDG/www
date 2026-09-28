@@ -672,3 +672,159 @@ export const FIXTURE_NEWS: FixtureNews[] = [
     };
   }),
 ];
+
+/* ------------------------------------------------------------ field manual */
+
+export const FIXTURE_MANUAL_SLUGS = {
+  setupCs: 'ukazka-prvni-nastaveni',
+  setupEn: 'sample-first-setup',
+  squadLeaderCs: 'ukazka-velitel-druzstva',
+  calloutsCs: 'ukazka-hlaseni-nepritele',
+  calloutsEn: 'sample-enemy-callouts',
+  tankCs: 'ukazka-posadka-tanku',
+  tankEnDraft: 'sample-tank-crew-draft',
+  draftCs: 'ukazka-koncept-spawny',
+} as const;
+
+export type FixtureManual = {
+  key: string;
+  /** Seeded HLL manual category key. */
+  category: 'getting-started' | 'communication' | 'roles' | 'leadership' | 'vehicles' | 'spawns';
+  sortOrder: number;
+  days: number;
+  meta: { sourceUrl: string | null; sourcePublishedOn: string | null; sourceLanguage: 'cs' | 'sk' | 'en' | null; credits: string; reviewed: boolean };
+  translations: Partial<Record<Locale, Omit<FixtureNewsTranslation, 'state'> & { state: 'published' | 'draft' }>>;
+};
+
+function manualBody(locale: Locale, topic: string, steps: number) {
+  const cs = locale === 'cs';
+  return doc(
+    p(bold(cs ? '[Ukázka] ' : '[Sample] '), cs ? `${topic}: syntetický návod pro vývoj a testy příručky.` : `${topic}: a synthetic guide for field manual development and tests.`),
+    h2(cs ? 'Příprava' : 'Preparation'),
+    p(
+      cs
+        ? 'Příliš žluťoučký kůň úpěl ďábelské ódy. Syntetický odstavec ověřuje české znaky, zalamování a čitelnost delšího textu v příručce.'
+        : 'The quick brown fox jumps over the lazy dog. A synthetic paragraph that checks wrapping and readability of longer manual text.',
+    ),
+    h2(cs ? 'Postup krok za krokem' : 'Step by step'),
+    ol(...Array.from({ length: steps }, (_, i) => (cs ? `Syntetický krok ${i + 1}` : `Synthetic step ${i + 1}`))),
+    h3(cs ? 'Časté chyby' : 'Common mistakes'),
+    ul(cs ? 'Syntetická chyba A' : 'Synthetic mistake A', cs ? 'Syntetická chyba B' : 'Synthetic mistake B'),
+    h2(cs ? 'Shrnutí' : 'Summary'),
+    p(cs ? 'Nejde o skutečný návod klanu Valkyria.' : 'This is not a real Valkyria guide.'),
+  );
+}
+
+const SYNTHETIC_SOURCE = 'https://example.org/synthetic-fixture/field-manual';
+
+export const FIXTURE_MANUAL: FixtureManual[] = [
+  {
+    key: 'setup',
+    category: 'getting-started',
+    sortOrder: 10,
+    days: 3,
+    meta: { sourceUrl: SYNTHETIC_SOURCE, sourcePublishedOn: '2021-03-14', sourceLanguage: 'cs', credits: 'Syntetický autor A, Syntetický autor B', reviewed: true },
+    translations: {
+      cs: {
+        slug: FIXTURE_MANUAL_SLUGS.setupCs,
+        title: '[Ukázka] První nastavení hry',
+        excerpt: 'Syntetický návod: grafika, zvuk a ovládání před prvním nasazením.',
+        body: manualBody('cs', 'První nastavení hry', 4),
+        cover: true,
+        state: 'published',
+      },
+      en: {
+        slug: FIXTURE_MANUAL_SLUGS.setupEn,
+        title: '[Sample] First game setup',
+        excerpt: 'Synthetic guide: graphics, audio and controls before the first deployment.',
+        body: manualBody('en', 'First game setup', 4),
+        cover: true,
+        state: 'published',
+      },
+    },
+  },
+  {
+    key: 'squad-leader',
+    category: 'roles',
+    sortOrder: 10,
+    days: 4,
+    meta: { sourceUrl: null, sourcePublishedOn: null, sourceLanguage: null, credits: '', reviewed: false },
+    translations: {
+      cs: {
+        slug: FIXTURE_MANUAL_SLUGS.squadLeaderCs,
+        title: '[Ukázka] Velitel družstva',
+        excerpt: 'Syntetický návod pro roli velitele družstva: komunikace, garrisony a outposty.',
+        body: manualBody('cs', 'Velitel družstva', 5),
+        cover: false,
+        state: 'published',
+      },
+    },
+  },
+  {
+    key: 'callouts',
+    category: 'communication',
+    sortOrder: 10,
+    days: 5,
+    meta: { sourceUrl: null, sourcePublishedOn: null, sourceLanguage: 'en', credits: 'Synthetic contributor', reviewed: false },
+    translations: {
+      cs: {
+        slug: FIXTURE_MANUAL_SLUGS.calloutsCs,
+        title: '[Ukázka] Hlášení nepřítele',
+        excerpt: 'Syntetický návod: směr, vzdálenost a typ cíle v jedné větě.',
+        body: manualBody('cs', 'Hlášení nepřítele', 3),
+        cover: false,
+        state: 'published',
+      },
+      en: {
+        slug: FIXTURE_MANUAL_SLUGS.calloutsEn,
+        title: '[Sample] Enemy callouts',
+        excerpt: 'Synthetic guide: direction, distance and target type in one sentence.',
+        body: manualBody('en', 'Enemy callouts', 3),
+        cover: false,
+        state: 'published',
+      },
+    },
+  },
+  {
+    key: 'tank-crew',
+    category: 'vehicles',
+    sortOrder: 10,
+    days: 6,
+    meta: { sourceUrl: SYNTHETIC_SOURCE, sourcePublishedOn: '2022-11-02', sourceLanguage: 'sk', credits: 'Syntetický autor C', reviewed: false },
+    translations: {
+      cs: {
+        slug: FIXTURE_MANUAL_SLUGS.tankCs,
+        title: '[Ukázka] Posádka tanku',
+        excerpt: 'Syntetický návod: řidič, střelec a velitel tanku.',
+        body: manualBody('cs', 'Posádka tanku', 3),
+        cover: false,
+        state: 'published',
+      },
+      en: {
+        slug: FIXTURE_MANUAL_SLUGS.tankEnDraft,
+        title: '[Sample] Tank crew (private draft)',
+        excerpt: 'Synthetic private English draft; never public.',
+        body: manualBody('en', 'Tank crew', 3),
+        cover: false,
+        state: 'draft',
+      },
+    },
+  },
+  {
+    key: 'spawns-draft',
+    category: 'spawns',
+    sortOrder: 10,
+    days: 2,
+    meta: { sourceUrl: null, sourcePublishedOn: null, sourceLanguage: null, credits: '', reviewed: false },
+    translations: {
+      cs: {
+        slug: FIXTURE_MANUAL_SLUGS.draftCs,
+        title: '[Ukázka] Soukromý koncept o spawnech',
+        excerpt: 'Syntetický soukromý koncept; nikdy není veřejný ani v hledání.',
+        body: manualBody('cs', 'Soukromý koncept', 2),
+        cover: false,
+        state: 'draft',
+      },
+    },
+  },
+];

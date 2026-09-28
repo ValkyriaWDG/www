@@ -12,7 +12,7 @@ export type PrimaryNavItem = { key: NavSection; href: string; label: string };
  * with `aria-current="page"` (no ARIA tab roles for page navigation).
  */
 export function PrimaryNav({ items, label, variant }: { items: PrimaryNavItem[]; label: string; variant: 'desktop' | 'mobile' }) {
-  const current = getCurrentSection(usePathname());
+  const current = getCurrentSection(usePathname(), items);
   return (
     <nav aria-label={label} className={variant === 'desktop' ? styles.nav : styles.mobileNav} data-nav={variant}>
       <ul className={styles.navList}>
