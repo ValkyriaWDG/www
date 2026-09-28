@@ -1,0 +1,19 @@
+{
+  "browserProduct": "playwright-firefox",
+  "sourceConfiguration": "mp4-only",
+  "check": "manual-pause",
+  "recordedAt": "2026-09-28T15:31:14.581Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "155.0",
+  "pausedAt": 1.010346,
+  "requestsWhilePaused": 0,
+  "requestsAfterResume": [
+    {
+      "url": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "range": "bytes=0-"
+    }
+  ]
+}

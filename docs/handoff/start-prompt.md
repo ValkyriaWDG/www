@@ -1,8 +1,10 @@
-# Paste into Claude Code Cloud
+# Original implementation prompt (M1–M3)
 
-Use the following prompt with repository **ValkyriaWDG/www**, starting from **main**.
-For an already-running implementation, keep its current branch and use the
-[media integration handoff](background-media-integration.md); do not restart work.
+M1–M3 are implemented. This historical prompt preserves the initial requirements;
+do not use it to restart completed work. For a new task, read [current status](../STATUS.md),
+the assigned issue and its specific handoff. Preserve an already-running task's branch.
+Hosted Logi is now the selected integration; follow the
+[integration checkpoint](../engineering/follow-up-integration-2026-09-26.md).
 
 ---
 

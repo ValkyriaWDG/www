@@ -1,0 +1,17 @@
+{
+  "browserProduct": "chrome-for-testing",
+  "sourceConfiguration": "default",
+  "check": "hidden-tab",
+  "recordedAt": "2026-09-28T15:17:55.020Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "154.0.8037.57",
+  "hiddenAt": 0.99754,
+  "resumed": {
+    "from": 1.012054,
+    "to": 1.929534
+  },
+  "visibility": "simulated visibilitychange"
+}

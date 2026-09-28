@@ -4,7 +4,10 @@
 
 This public repository belongs to Valkyria. Build a Czech-first bilingual (Czech/English) clan website for
 `https://valkyriawdg.cz`, with a Wardogs main-menu presentation and an HLL heritage.
-The initial commit series is a **foundation and implementation handoff**, not a working app.
+The working application lives in `apps/web`. Read `docs/STATUS.md` for accepted
+source revisions, historical deployment evidence and remaining launch dependencies.
+The initial handoff describes product requirements; do not restart the scaffold or
+infer current production state from it.
 
 Read, in order:
 
@@ -62,8 +65,8 @@ current task govern work. No screenshot username or game statistic is seed data.
 
 Run `node scripts/check-foundation.mjs` for repository changes, and
 `node --test scripts/tests/*.test.mjs` when changing foundation tooling or skills.
-Once the app exists,
-also run the actual lint, typecheck, unit/integration, browser and image checks named
+For application changes, run the applicable lint, typecheck, unit/integration,
+browser and image checks named
 in [verification](docs/implementation/verification.md). Never replace them with no-op
 scripts or label skipped checks as passing.
 

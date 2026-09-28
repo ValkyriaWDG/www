@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **SEO, release qualification and authorization fixes merged; delivery maintenance tracked in #39; live authentication deferred.**
+Updated: 2026-09-28. Stage: **SEO, release qualification, authorization fixes and CI maintenance merged; browser and encrypted recovery tools qualified locally, pending integrated CI; live authentication deferred.**
 
 ## Publication authorization hardening
 
@@ -23,6 +23,9 @@ this local work. Continue the shared platform and hosted Logi workstreams agains
 their agreed contracts rather than restoring the custom bot protocol.
 
 ## First public deployment
+
+Historical observations from **2026-09-26**, not a fresh runtime check during this
+maintenance work. Present-tense descriptions in this section refer to that observation.
 
 **https://valkyriawdg.cz** serves the Czech-first bilingual website with the complete
 192.47-second background sequence. The public DockerHub image is pinned to source
@@ -78,11 +81,44 @@ Maintenance [PR #39](https://github.com/ValkyriaWDG/www/pull/39) / issue #38 con
 publication gates. The PR records its current reviewed head, complete CI and merge
 status; verify those before release. Local success does not replace current-head CI.
 
+PR #39 merged as `e8f19d7b3f664e82d545a58a97a9e215469e62c5` after
+[CI 36438595440](https://github.com/ValkyriaWDG/www/actions/runs/36438595440).
+The remaining checkout/artifact action refresh in [PR #40](https://github.com/ValkyriaWDG/www/pull/40)
+merged as `425fb5f3ae058764723182b097ecaf7d5bd2119c` after
+[CI 36440170118](https://github.com/ValkyriaWDG/www/actions/runs/36440170118) on head
+`b12f75e6c13a0d46a3666a0cc1c13496060a0806`, tested merge
+`8c7db4486cd1a6248581ee345d6d446346b637e1`. It passed 39 tooling, 379 unit,
+240 PostgreSQL and 119 browser tests (67 opt-in browser cases skipped), image/rollback
+rehearsal, advisory/SBOM checks and all nine page-budget samples. Independent review
+verified the immutable upstream pins and five downloadable evidence archives.
+Neither merge published a container or changed the recorded deployment.
+
 Issue #25 now has [native Edge H.264 evidence](evidence/native-media-2026-09-28/README.md):
 11 MP4-only and two dual-source scenarios passed, including a natural 192.4723-second
 wrap and controlled WebM-to-MP4 fallback. Historical source hashes and actual captures
 are recorded; Chrome, Firefox, Safari/iOS, physical devices and production playback
 remain outside that local run.
+
+The additional [Chrome and Firefox qualification](evidence/browser-media-2026-09-28/README.md)
+passed all 46 executed scenarios on clean application source `e8f19d7`, with full
+192.47-second WebM and MP4 loops in Chrome for Testing 154.0.8037.57 and
+Playwright-patched Firefox 155.0. Chrome recorded zero dropped frames; Firefox MP4
+recorded 61/5,774 dropped frames and a 597 ms maximum frame-callback gap. Functional
+playback passed; smooth playback is not universally accepted. Two unsupported Firefox
+mobile-emulation cases were explicitly excluded. Actual captures, executable/source
+hashes, reproduction harness and metrics are committed. Safari, retail Firefox,
+physical devices and production delivery remain open under #25.
+
+Issue #41 adds the [encrypted paired-backup verifier](operations/encrypted-backup-verification.md):
+an independent manifest hash and full restic snapshot ID pin the exact database/media
+bytes. It rejects stale, incomplete, modified or unsafe recovery sets, uses a new
+destination and retains plaintext explicitly for operator handling. Local Windows
+verification passed 53 tooling and 13 real restic integration tests; independent
+review and the coordinating checkout repeated the recovery checks. The
+[durable evidence](evidence/encrypted-backup-2026-09-28/README.md) records exact source
+fingerprints. Integrated Linux/application CI must pass on the final PR head before
+merge. This does not prove SQL/media semantic restoration, off-host storage,
+scheduling, alert delivery or production recovery; those remain under #23.
 
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
@@ -95,7 +131,9 @@ Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-le
 Evidence: docs/evidence/app-1.0.0/README.md (captioned captures + measurements.json)
 Migrations: packages/db/drizzle/0000_initial_schema.sql (applied; repeated runs no-op)
 Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
-Next executable step: configure Discord OAuth/guild roles and finish remaining #23 acceptance.
+Next checkpoint: final integrated CI for operational qualification; then remaining
+  #23 operator acceptance and #25 device/performance coverage. Hosted Logi contracts
+  must be established before enabling #7/#8/#22 integration.
 ```
 
 ## Verification (release head; application source 64809d0)
@@ -122,9 +160,10 @@ Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
 ## Not verified here (operator or environment inputs)
 
 - Live Discord OAuth, guild and role IDs (tests use the local REST mock).
-- The original cloud Chromium lacked H.264. Native Edge MP4 playback is now verified
-  by the separate evidence above; actual Chrome, Firefox, Safari/iOS and physical
-  mobile-device acceptance remain open in #25.
+- The original cloud Chromium lacked H.264. Separate Windows evidence now covers
+  native Edge, Chrome for Testing and Playwright-patched Firefox. Safari/iOS,
+  retail Firefox, physical mobile devices and the Firefox MP4 frame-drop observation
+  remain open in #25.
 - Live SSO/admin configuration and acceptance remain deferred. Production host, DNS,
   proxy/TLS, registry publication, media delivery and `publish-due` timer were subsequently
   verified in the first-deployment evidence linked above.

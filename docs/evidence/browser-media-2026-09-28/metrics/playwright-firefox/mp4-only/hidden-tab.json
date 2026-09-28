@@ -1,0 +1,17 @@
+{
+  "browserProduct": "playwright-firefox",
+  "sourceConfiguration": "mp4-only",
+  "check": "hidden-tab",
+  "recordedAt": "2026-09-28T15:31:18.807Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "155.0",
+  "hiddenAt": 0.969578,
+  "resumed": {
+    "from": 0.986228,
+    "to": 1.911669
+  },
+  "visibility": "simulated visibilitychange"
+}

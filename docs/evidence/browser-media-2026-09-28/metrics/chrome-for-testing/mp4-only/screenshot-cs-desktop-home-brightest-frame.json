@@ -1,0 +1,25 @@
+{
+  "browserProduct": "chrome-for-testing",
+  "sourceConfiguration": "mp4-only",
+  "check": "screenshot-cs-desktop-home-brightest-frame",
+  "recordedAt": "2026-09-28T15:22:02.342Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "154.0.8037.57",
+  "url": "/cs",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sampledMediaTime": 117.533333,
+  "sampledMeanLuma": 77.65901074558496,
+  "capturedAt": 118.202357,
+  "mediaDigests": {
+    "wardogs-menu-full-1080p-619b27261fc9.mp4": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b",
+    "wardogs-menu-full-720p-040c3de21de3.mp4": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e",
+    "wardogs-menu-full-1080p-b7aa9380dd06.webm": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309",
+    "wardogs-menu-full-poster-f31f6824f259.webp": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+  }
+}

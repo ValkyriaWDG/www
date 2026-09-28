@@ -1,0 +1,57 @@
+{
+  "recordedAt": "2026-09-28T15:15:25.853Z",
+  "sourceRevision": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+  "trackedWorktreeDirty": false,
+  "node": "v24.21.0",
+  "os": "win32",
+  "arch": "x64",
+  "build": {
+    "command": "pnpm install --frozen-lockfile; pnpm build",
+    "result": "passed",
+    "buildId": "8DSJ2nuszlSK6bD-VN1gT"
+  },
+  "browsers": {
+    "chrome": {
+      "product": "Google Chrome for Testing",
+      "version": "154.0.8037.57",
+      "channel": "Stable",
+      "revision": "1689415",
+      "source": "https://storage.googleapis.com/chrome-for-testing-public/154.0.8037.57/win64/chrome-win64.zip",
+      "archiveSha256": "676f51fb82608330db5510ffba53d9e2762d3d7a99464afce54f9e9e25ad6bf7",
+      "executableSha256": "6b5da320179b656aefdb74ff10bc0bd33ba8d5ea869347e04e0a6b2bdd815e96"
+    },
+    "firefox": {
+      "product": "Playwright-patched Firefox",
+      "version": "155.0",
+      "revision": "1543",
+      "applicationBuildId": "20260902192955",
+      "platformBuildId": "20260902195823",
+      "source": "https://cdn.playwright.dev/dbazure/download/playwright/builds/firefox/1543/firefox-win64.zip",
+      "executableSha256": "425a0a0fb606f567a303bdcea727476e124c0deb589050b13668af688da17fcb",
+      "notRetailFirefox": true
+    }
+  },
+  "sourceAndHarnessHashes": {
+    "apps/web/src/components/shell/background-media.tsx": "3e432797697308d6c4645c53ca8368d717945231b3d7cf1f44a995da38c3ad06",
+    "apps/web/src/components/shell/background-store.ts": "3da25333a8759abcefc0b30eabdeda153ec2622c9a5720e0205db15467da3feb",
+    "apps/web/src/components/shell/background-policy.ts": "449a872f6115dc14d4beef42067658c03147f27501fb9dbea9a8c448e0cd2e78",
+    "apps/web/src/components/shell/menu-shell.tsx": "dd99f5e701052e16e0881491b7cbd65255de7852340560fa501ef82fa2510d3e",
+    "apps/web/src/lib/site-config.ts": "61c547f7fb26a78e9d7a275d142991db27b79d6a4a23f8a72bf529fbefc47bc3",
+    "assets/background-media.json": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388",
+    "apps/web/e2e/media/actual-media.spec.ts": "766605013cae1b516107136cb9dc221b827d428f09761e62ee691bcfab14cded",
+    "apps/web/playwright.media.config.ts": "b3d3c2a855e701cda1428d95f47990f1fab3376510bd17ff6c6ef1fbad015ab7",
+    "apps/web/.local/browser-qualification/native.spec.ts": "cc724336cbf8cf6ae9d083b2fc46b4f9a177fd2a586cd01e449a4329528ddfce",
+    "apps/web/.local/browser-qualification/dual.spec.ts": "2fc1b3d7df7b7116c2eae159d51f6507ebd75562f0292e3c4ed45ca7993a6939",
+    "apps/web/.local/browser-qualification/playwright.config.ts": "245f0510036835df8ce6a5e420cb956369f99bd20416827e44a9663ffd68518a"
+  },
+  "officialToolingReferences": [
+    "https://googlechromelabs.github.io/chrome-for-testing/",
+    "https://playwright.dev/docs/browsers"
+  ],
+  "limitations": [
+    "Windows x64 headless desktop only",
+    "Firefox mobile isMobile emulation excluded because Playwright does not support it",
+    "No Safari, macOS, iOS or physical mobile coverage",
+    "No production network, database or real Discord access"
+  ]
+}

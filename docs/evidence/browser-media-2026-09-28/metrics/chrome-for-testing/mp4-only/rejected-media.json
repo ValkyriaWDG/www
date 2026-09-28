@@ -1,0 +1,22 @@
+{
+  "browserProduct": "chrome-for-testing",
+  "sourceConfiguration": "mp4-only",
+  "check": "rejected-media",
+  "recordedAt": "2026-09-28T15:22:30.121Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "154.0.8037.57",
+  "state": {
+    "state": "unavailable",
+    "reason": "allowed"
+  },
+  "poster": {
+    "src": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+    "complete": true,
+    "naturalWidth": 1920,
+    "naturalHeight": 1080,
+    "visible": true
+  }
+}

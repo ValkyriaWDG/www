@@ -23,9 +23,17 @@ access limited to operators. Background media derivatives are delivered separate
 
 ## Restore
 
+For encrypted recovery copies, first use the [paired snapshot verifier](encrypted-backup-verification.md)
+to check the pinned database/media bytes and their age. That check does not restore
+PostgreSQL or extract media; continue with the procedure below on disposable targets
+before accepting a recovery copy.
+
 1. Stop the web service and the scheduled publisher timer.
-2. Verify `sha256sum -c SHA256SUMS`. Restore into an empty database owned by the
-   application role: `pg_restore --no-owner --no-privileges --exit-on-error --dbname "$DATABASE_URL" <dump>`.
+2. For legacy/manual backups, verify `sha256sum -c SHA256SUMS`. For paired encrypted
+   recovery, require the verifier's successful result instead; its three-file output
+   deliberately has no `SHA256SUMS`. Restore `database.dump` (or the verified manual
+   dump) into an empty database owned by the application role:
+   `pg_restore --no-owner --no-privileges --exit-on-error --dbname "$DATABASE_URL" <dump>`.
 3. Extract the media archive into an empty volume; keep ownership for the non-root app user.
 4. Run the image's `scripts/migrate.mjs`. A dump from the same revision applies nothing;
    an older dump applies only the newer forward migrations.

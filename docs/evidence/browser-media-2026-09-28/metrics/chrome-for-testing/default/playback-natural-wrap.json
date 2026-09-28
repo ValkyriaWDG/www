@@ -1,0 +1,163 @@
+{
+  "browserProduct": "chrome-for-testing",
+  "sourceConfiguration": "default",
+  "check": "playback-natural-wrap",
+  "recordedAt": "2026-09-28T15:17:28.766Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "154.0.8037.57",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "codecSupport": {
+    "h264": "probably",
+    "vp9": "probably"
+  },
+  "mediaDigests": {
+    "wardogs-menu-full-1080p-619b27261fc9.mp4": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b",
+    "wardogs-menu-full-720p-040c3de21de3.mp4": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e",
+    "wardogs-menu-full-1080p-b7aa9380dd06.webm": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309",
+    "wardogs-menu-full-poster-f31f6824f259.webp": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+  },
+  "selectedSource": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+  "element": {
+    "paused": false,
+    "currentTime": 1.091411,
+    "currentSrc": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+    "readyState": 4,
+    "videoWidth": 1920,
+    "videoHeight": 1080,
+    "duration": 192.466,
+    "loop": true,
+    "muted": true,
+    "objectFit": "cover",
+    "videoDecodedBytes": 339905,
+    "audioDecodedBytes": 0,
+    "totalVideoFrames": 36,
+    "droppedVideoFrames": 0,
+    "videoElements": 1
+  },
+  "elementAfterWrap": {
+    "paused": false,
+    "currentTime": 1.57282,
+    "currentSrc": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+    "readyState": 4,
+    "videoWidth": 1920,
+    "videoHeight": 1080,
+    "duration": 192.466,
+    "loop": true,
+    "muted": true,
+    "objectFit": "cover",
+    "videoDecodedBytes": 19885761,
+    "audioDecodedBytes": 0,
+    "totalVideoFrames": 5824,
+    "droppedVideoFrames": 0,
+    "videoElements": 1
+  },
+  "advancing": {
+    "from": 0.168472,
+    "to": 1.078444
+  },
+  "poster": {
+    "src": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+    "complete": true,
+    "naturalWidth": 1920,
+    "naturalHeight": 1080,
+    "visible": true
+  },
+  "layers": {
+    "media": {
+      "zIndex": 0,
+      "opacity": 1,
+      "display": "block"
+    },
+    "scrim": {
+      "zIndex": 1,
+      "opacity": 0.04,
+      "display": "block"
+    },
+    "vignette": {
+      "zIndex": 1,
+      "opacity": 1,
+      "display": "block"
+    },
+    "emblem": {
+      "zIndex": 2,
+      "opacity": 0.12,
+      "display": "block"
+    },
+    "emblemInsideMedia": false,
+    "emblemAfterMedia": true,
+    "sceneChildren": [
+      "_M5kzIq__fallback",
+      "_M5kzIq__media",
+      "_HMSwEq__scrim",
+      "_HMSwEq__vignette",
+      "_HMSwEq__emblem"
+    ]
+  },
+  "firstPlaying": {
+    "at": 307.90000009536743,
+    "currentTime": 0.003203
+  },
+  "wrap": {
+    "from": 192.405548,
+    "to": 0.000296,
+    "at": 192773.40000009537,
+    "totalVideoFrames": 5778,
+    "droppedVideoFrames": 0
+  },
+  "elapsedSecondsToWrap": 192.4655,
+  "events": {
+    "waiting": 2,
+    "playing": 2,
+    "seeking": 1,
+    "seeked": 1
+  },
+  "videoLayerHides": 0,
+  "playbackRates": [
+    1
+  ],
+  "frameCallbacksFirstPass": 5774,
+  "medianMediaTimeStep": 0.033,
+  "frameGapMs": {
+    "median": 34,
+    "p95": 34.1,
+    "max": 42
+  },
+  "consecutiveSampleLumaDelta": {
+    "median": 0.0403,
+    "p95": 0.2273,
+    "p99": 0.5464,
+    "max": 1.9903
+  },
+  "wrapSampleLumaDelta": 2.524827749364906,
+  "frameMeanLuma": {
+    "min": 76.3934,
+    "median": 77.0287,
+    "max": 77.6664
+  },
+  "extremes": [
+    {
+      "name": "darkest",
+      "sampledMediaTime": 158.967,
+      "sampledMeanLuma": 76.39335088680188,
+      "capturedAt": 159.655111
+    },
+    {
+      "name": "brightest",
+      "sampledMediaTime": 117.533,
+      "sampledMeanLuma": 77.66638371017244,
+      "capturedAt": 118.182929
+    }
+  ],
+  "videoRequests": [
+    {
+      "url": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "range": "bytes=0-"
+    }
+  ]
+}
