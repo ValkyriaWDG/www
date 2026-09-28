@@ -18,7 +18,7 @@ import {
   type Locale,
   type RichTextDocument,
 } from '@valkyria/db';
-import { and, eq, inArray, like, or } from 'drizzle-orm';
+import { and, eq, inArray, like, or, sql } from 'drizzle-orm';
 import { DEFAULT_MATCH_TIME_ZONE, zonedDate, zonedLocalToInstant } from '../modules/matches/time';
 import { ensureSeedTaxonomy } from '../seed/index';
 import { imageAssetIds, SEED_RICH_TEXT_SCHEMA_VERSION } from '../seed/rich-text';
@@ -52,7 +52,12 @@ export type FixtureReport = {
   manualTranslations: number;
   schedules: number;
   prose: number;
+  /** Fixture groups left out because the connected schema cannot store them. */
+  skipped: string[];
 };
+
+/** Loading needs tables that the connected database schema does not have. */
+export class FixtureSchemaError extends Error {}
 
 export type ResetReport = { documents: number; matches: number; members: number; tags: number; assets: number };
 
@@ -363,16 +368,32 @@ async function insertManual(tx: Executor, fixture: FixtureManual, now: Date): Pr
   return translations;
 }
 
+async function hasFieldManualSchema(db: Executor): Promise<boolean> {
+  const result = await db.execute<{ present: boolean }>(
+    sql`select to_regclass('public.manual_category') is not null and to_regclass('public.manual_article') is not null as present`,
+  );
+  return result.rows[0]?.present === true;
+}
+
 /**
  * Replaces the synthetic fixture set (reset first, so repeated loads are idempotent and
  * relative dates are refreshed). Requires the caller to have passed `assertFixturesAllowed`.
+ * A schema without the field manual tables fails, unless `schemaCompatible` is set: the
+ * release rollback rehearsal loads an older image's schema that way, and the groups the
+ * schema cannot store are left out and named in `skipped`.
  */
-export async function loadFixtures(db: Database, options: { now?: Date; mediaRoot?: string } = {}): Promise<FixtureReport> {
+export async function loadFixtures(
+  db: Database,
+  options: { now?: Date; mediaRoot?: string; schemaCompatible?: boolean } = {},
+): Promise<FixtureReport> {
   const now = options.now ?? new Date();
   const mediaRoot = options.mediaRoot ?? resolveMediaRoot();
+  const manualSchema = await hasFieldManualSchema(db);
+  if (!manualSchema && !options.schemaCompatible)
+    throw new FixtureSchemaError('The field manual tables are missing; apply the database migrations first.');
   await resetFixtures(db, { mediaRoot });
   await db.transaction(async (tx) => {
-    await ensureSeedTaxonomy(tx);
+    await ensureSeedTaxonomy(tx, undefined, { manual: manualSchema });
     await tx
       .insert(taxonomyTerm)
       .values(FIXTURE_TAGS.map((tag) => ({ kind: 'tag' as const, key: tag.key, labelCs: tag.labelCs, labelEn: tag.labelEn })))
@@ -393,10 +414,12 @@ export async function loadFixtures(db: Database, options: { now?: Date; mediaRoo
       schedules += counts.schedules;
     }
     let manualTranslations = 0;
-    for (const fixture of FIXTURE_MANUAL) manualTranslations += await insertManual(tx, fixture, now);
+    const manualFixtures = manualSchema ? FIXTURE_MANUAL : [];
+    for (const fixture of manualFixtures) manualTranslations += await insertManual(tx, fixture, now);
     return {
-      manual: FIXTURE_MANUAL.length,
+      manual: manualFixtures.length,
       manualTranslations,
+      skipped: manualSchema ? [] : ['field manual'],
       assets: FIXTURE_IMAGES.length,
       members: FIXTURE_MEMBERS.length,
       matches: FIXTURE_MATCHES.length,

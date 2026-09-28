@@ -27,8 +27,15 @@ export type SeedReport = { inserted: string[]; skipped: string[] };
 
 const SEED_ACTOR: Actor = { kind: 'system', label: 'seed', capabilities: new Set() };
 
-/** Inserts the reviewed news and field manual categories that are missing. */
-export async function ensureSeedTaxonomy(db: Executor, report: SeedReport = { inserted: [], skipped: [] }): Promise<SeedReport> {
+/**
+ * Inserts the reviewed news and field manual categories that are missing. `manual: false`
+ * leaves out the field manual categories for a schema that predates their table.
+ */
+export async function ensureSeedTaxonomy(
+  db: Executor,
+  report: SeedReport = { inserted: [], skipped: [] },
+  options: { manual?: boolean } = {},
+): Promise<SeedReport> {
   for (const category of SEED_CATEGORIES) {
     const rows = await db
       .insert(taxonomyTerm)
@@ -37,7 +44,7 @@ export async function ensureSeedTaxonomy(db: Executor, report: SeedReport = { in
       .returning({ id: taxonomyTerm.id });
     (rows.length > 0 ? report.inserted : report.skipped).push(`taxonomy category ${category.key}`);
   }
-  for (const category of SEED_MANUAL_CATEGORIES) {
+  for (const category of options.manual === false ? [] : SEED_MANUAL_CATEGORIES) {
     const rows = await db
       .insert(manualCategory)
       .values({ ...category })
