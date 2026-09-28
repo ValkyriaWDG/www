@@ -2,7 +2,7 @@
  * HLL section presentation (docs/design/hll/visual-spec.md). Colors come from the
  * `[data-theme='hll']` tokens in styles/tokens.css; layout values follow §4–§6 and §10.
  * Reference 02 composition at 1920 × 1200: 80 px inset, identity at ~y 80–180, a
- * 340 px menu lane, a 48 px gap and a landscape stage in the remaining width.
+ * 340 px menu lane and a fullscreen scene behind every foreground surface.
  */
 
 .shell {
@@ -15,7 +15,7 @@
   color: var(--hll-text);
 }
 
-/* ---- Static scene underlay: cool smoke over charcoal; darker on content pages ---- */
+/* ---- Viewport scene: approved poster/video, darker and paused on content pages ---- */
 .scene {
   position: fixed;
   inset: 0;
@@ -37,7 +37,9 @@
 .sceneVeil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgb(14 16 19 / 0.82) 0, rgb(14 16 19 / 0.5) 24%, rgb(14 16 19 / 0.05) 52%);
+  background:
+    linear-gradient(0deg, rgb(14 16 19 / 0.55), transparent 40%),
+    linear-gradient(90deg, rgb(14 16 19 / 0.88) 0, rgb(14 16 19 / 0.66) 24%, rgb(14 16 19 / 0.18) 58%);
   transition: opacity var(--motion-slow) ease-out;
 }
 
@@ -261,8 +263,7 @@
   background: rgb(23 26 31 / 0.82);
 }
 
-[data-hll-mode='landing'] .sectionBar,
-[data-hll-mode='landing'] .footer {
+[data-hll-mode='landing'] .sectionBar {
   display: none;
 }
 
@@ -339,10 +340,16 @@
   z-index: var(--layer-content);
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2) var(--space-5);
   padding: var(--space-4) var(--safe-inset) calc(var(--space-4) + env(safe-area-inset-bottom));
   border-top: var(--border-hairline) solid var(--color-chrome-line);
   background: rgb(23 26 31 / 0.9);
+}
+
+[data-hll-mode='landing'] .footer {
+  border-top-color: transparent;
+  background: linear-gradient(0deg, rgb(14 16 19 / 0.82), rgb(14 16 19 / 0.42));
 }
 
 .footerLink {
@@ -439,7 +446,7 @@
 }
 
 .utilities {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   gap: 0 var(--space-5);
   margin: 0;
@@ -469,32 +476,16 @@
   text-underline-offset: 4px;
 }
 
-.stageColumn {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--space-4);
-  min-width: 0;
-  padding-top: clamp(8px, 3vh, 48px);
-}
-
-/* Landscape stage: at most 1120 × 630, edges blended into the underlay. */
+/* Persistent fullscreen media; no aspect-ratio box or edge mask. */
 .stage {
-  position: relative;
-  width: min(100%, 1120px);
-  margin-inline: auto;
+  width: 100%;
+  height: 100%;
 }
 
 .stageMedia {
-  position: relative;
-  aspect-ratio: 16 / 9;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 55% at 60% 38%, rgb(176 182 190 / 0.26), transparent 72%),
-    radial-gradient(ellipse 80% 45% at 50% 100%, rgb(40 43 48 / 0.9), transparent 80%),
-    linear-gradient(180deg, #3a3f46 0%, #2a2e34 55%, #1b1e22 100%);
-  -webkit-mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
-  mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
 }
 
 .stageFallback {
@@ -517,6 +508,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: cover;
 }
 
@@ -529,20 +521,12 @@
   opacity: 1;
 }
 
-.stageCaption {
-  margin: var(--space-2) 0 0;
-  color: var(--hll-text-muted);
-  font-size: var(--text-small);
-  text-align: center;
-}
-
 .stageControls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: var(--space-2) var(--space-3);
-  margin-top: var(--space-2);
+  max-width: 100%;
 }
 
 .stageButton {
@@ -560,6 +544,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  text-align: left;
 }
 
 .stageButton:hover:not(:disabled) {
@@ -577,13 +562,14 @@
   font-size: var(--text-small);
 }
 
-/* Editorial strip under the stage: next published fixture and latest post. */
+/* Quiet foreground teasers leave the scenic center open. */
 .strip {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-3);
-  width: min(100%, 1120px);
-  margin-inline: auto;
+  align-self: end;
+  justify-self: end;
+  width: min(100%, 720px);
 }
 
 .stripItem {
@@ -649,12 +635,9 @@
     font-size: 1.125rem;
   }
 
-  .stageColumn {
-    justify-content: flex-start;
-  }
 }
 
-/* ---- 1024–1439: narrower menu, stage keeps priority ---- */
+/* ---- 1024–1439: narrower menu, scenic center stays open ---- */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .landingGrid {
     grid-template-columns: minmax(250px, 290px) minmax(0, 1fr);
@@ -666,20 +649,11 @@
   }
 }
 
-/* ---- 768–1023: stacked stage and content; compact controls ---- */
+/* ---- 768–1023: stacked foreground content; background stays fullscreen ---- */
 @media (max-width: 1023px) {
   .landingGrid {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--space-5);
-  }
-
-  /* Stage first, then navigation, then the editorial strip (document order for focus). */
-  .stageColumn {
-    display: contents;
-  }
-
-  .stage {
-    order: -1;
   }
 
   .lane {
@@ -779,6 +753,10 @@
 
   .utilityCompactOnly {
     display: list-item;
+  }
+
+  .utilities {
+    display: flex;
   }
 }
 

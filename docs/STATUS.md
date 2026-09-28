@@ -365,6 +365,58 @@ page errors and horizontal overflow. Captures are inspected before publication.
 The foundation checker and all 19 tooling tests pass, including 13 presskit integrity
 cases covering tampering, unsafe SVG, path traversal and catalog drift.
 
+## HLL graphics research (2026-09-28)
+
+The [media handoff](assets/hll-media-research.md) inventories 158 installed MP4s
+(151 tutorials and seven logo intros) and proposes eight manual categories. No
+standalone ambient/menu movie was identified among the loose files. The two
+catalogs record 16 tutorial candidates and 39 visually reviewed public-source
+images with measured metadata, hashes and suggested placements. These are
+research candidates; no new runtime graphics, videos or game archives were added.
+
+Verification: all 158 MP4s probed successfully; all 39 selected images decoded.
+An independent local comparison matched all **55 selected source byte counts and
+SHA-256 values** to their catalogs. `node scripts/check-foundation.mjs` and
+`git diff --check` passed. Sampled visual inspection is not full video playback,
+gameplay-rule validation or publication approval. Next: select the first cover/
+guide batch, preserve instructional diagrams without cropping, and deliver the
+owner's clan battle recordings through the existing media pipeline. Deployment
+acceptance is maintained separately from this documentation-only research.
+
+Follow-up internet research adds a [web graphics brief](assets/hll-web-graphics-expansion.md)
+and a [separate 20-image catalog](assets/hll-web-image-candidates.json): ten official
+developer-article sources and ten community map/role/overlay sources, all decoded,
+visually reviewed and independently matched by byte count and SHA-256 (37,641,864
+bytes). The original 39-image catalog remains unchanged. Source release/playtest
+context, pinned repository revisions, overlay alignment requirements and individual
+artwork provenance are recorded. The brief also specifies eight custom covers,
+three editorial templates and four teaching diagrams for a future production pass;
+none of those custom deliverables is claimed as implemented. Foundation and whitespace
+checks passed for this documentation extension; full application checks remain CI's
+separate responsibility. No runtime assets, deployment or issue closure changed.
+
+## HLL graphics implementation (2026-09-28)
+
+The [graphics delivery](assets/hll-graphics-delivery.md) supersedes the earlier
+research-only checkpoint for its selected runtime batch. HLL now uses a full
+viewport scene in the persistent shell, with paused/dimmed reading pages and
+visible localized playback controls. Ten local WebP derivatives (746,768 bytes)
+provide the still fallback, eight manual-category illustrations and HLL news art.
+Published CMS covers retain priority. HLL site/news/match sharing uses game-scoped
+localized artwork; the source registries and code-license exclusions are recorded.
+
+[Inspected evidence](evidence/hll-graphics-2026-09-28/README.md) contains desktop,
+mobile, CS/EN and actual social PNGs, with 464 unit, 273 integration, 37 selected
+browser and four actual-artwork tests passing. The local integration run used
+PostgreSQL 18.4 with Unicode locale and a temporary Windows Sharp cache mitigation;
+CI independently uses PostgreSQL 17. Full lint, types, build and 126 foundation
+tests passed. Final PR-head CI is tracked on PR #55.
+
+The final clan recording is still absent. Empty HLL clip configuration deliberately
+shows the real still; synthetic test playback is separate proof. Issue #36 remains
+open for the broader HLL acceptance scope. This branch performs no deployment;
+the production cutover checkpoint remains owned and recorded separately.
+
 ## GitHub
 
 Main requires a pull request, the **Quality gate** and linear history. CI runs foundation,

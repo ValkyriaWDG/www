@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "observedOn": "2026-09-28",
+  "game": "Hell Let Loose (original WWII game)",
+  "scope": "Research metadata only; paths are relative to the HLL game subtree. No installed media is included.",
+  "candidateCount": 16,
+  "candidates": [
+    {
+      "id": "game-objectives",
+      "topic": "Game objectives",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/Conquest_V_PC.mp4",
+      "sourceSha256": "ea2935798cc4c2df219cee1efa7707a3ba0e18f2f11ded42b9883ce491cf3fb5",
+      "sourceBytes": 27579874,
+      "durationSeconds": 10.166667,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 5.0833335,
+        "notes": "Map overlay and objective context. Verify current game-mode mechanics.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "communication-markers",
+      "topic": "Communication / markers",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Markers - Non Verbal Communications.mp4",
+      "sourceSha256": "ac32ee36bf9260b6da80336b7a5708bd4c8d02f4ee655e187c01feb76533a6e2",
+      "sourceBytes": 4116441,
+      "durationSeconds": 13.033333,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 6.5166665,
+        "notes": "Marker wheel visible; suitable for communication instruction.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "movement-vaulting",
+      "topic": "Movement / vaulting",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Movement - Vaulting.mp4",
+      "sourceSha256": "57cfa16a356e9b393fa1ad6eddc943cf12b6d113a287beb7094f15b97557185f",
+      "sourceBytes": 4227292,
+      "durationSeconds": 6.666667,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 3.3333335,
+        "notes": "First-person vaulting sample; movement instruction, not decorative hero art.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "movement-leaning",
+      "topic": "Movement / leaning",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Movement - Leaning.mp4",
+      "sourceSha256": "3a59fecae60035f25b4abf6f650b2d0b41d013bf61200487de23e2ef324b1271",
+      "sourceBytes": 8736469,
+      "durationSeconds": 13.8,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 6.9,
+        "notes": "First-person leaning sample near a building.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "commander-supplies",
+      "topic": "Commander supplies",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Supplies - Commander Supply Drop.mp4",
+      "sourceSha256": "6b58d80cf1706a358cbe97ea4819cc653fad8a25194f02d2b2d8b2c310311e19",
+      "sourceBytes": 79756451,
+      "durationSeconds": 32.033333,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 16.0166665,
+        "notes": "Airborne commander supply drop visible.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "supply-truck-crates",
+      "topic": "Supply truck crates",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Supplies - Supply Truck Crate.mp4",
+      "sourceSha256": "2c221b777088fe51e5df866d0b8110ebc3614bc27e48cb3c36a804b9caefadd2",
+      "sourceBytes": 27285398,
+      "durationSeconds": 11.033333,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 5.5166665,
+        "notes": "Supply truck and its crate are visible.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "support-supplies",
+      "topic": "Support supplies",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Supplies - Support Crate.mp4",
+      "sourceSha256": "78a693ee76f8d917d8a45126ceb6651c34794585258be67667a1494821c1332c",
+      "sourceBytes": 27335555,
+      "durationSeconds": 11.033333,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 5.5166665,
+        "notes": "Support crate is visible in a first-person sample.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "engineer-fortifications",
+      "topic": "Engineer / fortifications",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Fortifications - Bunker.mp4",
+      "sourceSha256": "aac1bab1514d328e8cb5996cedd6182493a1089989fcd1156f592eb0a28d1bc0",
+      "sourceBytes": 75754118,
+      "durationSeconds": 116.95,
+      "video": {
+        "codec": "hevc",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 20,
+        "notes": "Construction blueprint/hammer visible; long HEVC source.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "armor-tanks",
+      "topic": "Armor / tanks",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/2024/Tanks.mp4",
+      "sourceSha256": "79d6a898dbcb8473789ec32dd59e63d14be46270d8bcc080477470e6bd16d0f4",
+      "sourceBytes": 79026771,
+      "durationSeconds": 60.864,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 2,
+        "codecs": [
+          "aac",
+          "ac3"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 20,
+        "notes": "Several tanks at sunset with first-person weapon foreground.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "tank-repair",
+      "topic": "Tank repair",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Tanks - Repair.mp4",
+      "sourceSha256": "ea49dd49fb3bd41a41735a85e1188e0c53672831240f5c9bb4f7cd458a2ae3b0",
+      "sourceBytes": 7672979,
+      "durationSeconds": 12.2,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 6.1,
+        "notes": "Tank repair context; evaluate complete clip before teaching specific steps.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "halftrack-deployment",
+      "topic": "Half-track deployment",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/2024/Halftrack.mp4",
+      "sourceSha256": "30dd390dcedfdaba0fb9649a94fd80d73772f00202588520516116a7fd3a6c9a",
+      "sourceBytes": 8977099,
+      "durationSeconds": 6.357,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 2,
+        "codecs": [
+          "aac",
+          "ac3"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 3.1785,
+        "notes": "Half-track shown in desert terrain with first-person HUD.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "antitank-gun",
+      "topic": "Anti-tank gun",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/062024/Anti-Tank Gun - Gunner.mp4",
+      "sourceSha256": "c0274bf484c752ffeeb435ea58a2014ad323a38a82f5424199ae6809d848fb7c",
+      "sourceBytes": 3339617,
+      "durationSeconds": 5.216667,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 2.6083335,
+        "notes": "Anti-tank gun firing in a village/field composition.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "artillery-loading",
+      "topic": "Artillery loading",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/HTP_V_ArtilleryLoading.mp4",
+      "sourceSha256": "4dc70b9bff9451b2c279c669735b6bfabdfdc9ad74c81c8f3279b68d9d590a71",
+      "sourceBytes": 8078887,
+      "durationSeconds": 7.974633,
+      "video": {
+        "codec": "h264",
+        "width": 900,
+        "height": 506,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30000/1001"
+      },
+      "audio": {
+        "trackCount": 0,
+        "codecs": []
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 3.9873165,
+        "notes": "Third-person artillery and loading scene; useful instructional/editorial candidate.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "artillery-shells",
+      "topic": "Artillery shells",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/HTP_V_ArtilleryShell.mp4",
+      "sourceSha256": "ef95c5176e73be1847dc2dd0edf41d8e8fcf8a1e4ec95e460cab0c78223c21cc",
+      "sourceBytes": 6481377,
+      "durationSeconds": 4.871533,
+      "video": {
+        "codec": "h264",
+        "width": 700,
+        "height": 394,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30000/1001"
+      },
+      "audio": {
+        "trackCount": 0,
+        "codecs": []
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 2.4357665,
+        "notes": "Third-person artillery firing/smoke; useful instructional/editorial candidate.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "rifle-grenades",
+      "topic": "Rifle grenades",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/HTP_V_RifleGrenades.mp4",
+      "sourceSha256": "2d4015340962eb40bff49d8c07bde07fe3d2184ef8df8a7884c8c8911401d47d",
+      "sourceBytes": 31443439,
+      "durationSeconds": 23.1,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "30/1"
+      },
+      "audio": {
+        "trackCount": 1,
+        "codecs": [
+          "aac"
+        ]
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 11.55,
+        "notes": "First-person rifle-grenade loading view.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    },
+    {
+      "id": "tank-cosmetics",
+      "topic": "Tank cosmetics",
+      "gameRelativePath": "Content/Movies/HowToPlayVideos/Tank_Cosmetics_No_UI.mp4",
+      "sourceSha256": "4f682da30af794da219c7c1a7aa82d0161df2499e64bbab77602f338d2fbc811",
+      "sourceBytes": 14918653,
+      "durationSeconds": 11.966667,
+      "video": {
+        "codec": "h264",
+        "width": 960,
+        "height": 540,
+        "pixelFormat": "yuv420p",
+        "averageFrameRate": "60/1"
+      },
+      "audio": {
+        "trackCount": 0,
+        "codecs": []
+      },
+      "inspection": {
+        "method": "Local single-frame diagnostic preview, visually inspected",
+        "sampleAtSeconds": 5.9833335,
+        "notes": "Close tank view without usual HUD in the sample, but player hands remain.",
+        "fullPlaybackVerified": false
+      },
+      "proposedUse": "Contextual Field Manual/FAQ instruction; poster/editorial use only after specific selection and provenance review.",
+      "rightsStatus": "Third-party installed-game source candidate; publication permission not established by this inventory.",
+      "deliveryStatus": "Not shipped, not committed as media, not available to cloud agents."
+    }
+  ]
+}

@@ -250,6 +250,28 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Verify shipped HLL artwork with an empty video playlist
+        env:
+          E2E_HLL_EMPTY_MEDIA: '1'
+          CAPTURE_EVIDENCE: '1'
+          EVIDENCE_REVISION: ${{ github.sha }}
+          E2E_PORT: '3118'
+          E2E_DISCORD_MOCK_PORT: '4118'
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report-hll-artwork
+        run: pnpm --filter @valkyria/web test:e2e e2e/hll-artwork.spec.ts --project=chromium --output=test-results-hll-artwork
+      - name: Upload HLL artwork verification
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: hll-artwork-${{ github.sha }}
+          path: |
+            .local/evidence/hll-graphics
+            apps/web/playwright-report-hll-artwork
+            apps/web/test-results-hll-artwork
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
+
   quality:
     name: Quality gate
     needs: [foundation, application]

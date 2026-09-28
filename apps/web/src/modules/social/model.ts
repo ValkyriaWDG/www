@@ -5,9 +5,10 @@ import type { ArticleDTO } from '@/modules/content/types';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import cs from '@/i18n/messages/cs/social.json';
 import en from '@/i18n/messages/en/social.json';
+import type { GameRoute } from '@/modules/games/registry';
 
 export const SOCIAL_SIZE = { width: 1200, height: 630 } as const;
-export const SOCIAL_TEMPLATE_VERSION = '1';
+export const SOCIAL_TEMPLATE_VERSION = '2';
 export type SocialKind = 'site' | 'news' | 'matches';
 export type SocialCard = {
   locale: AppLocale;
@@ -20,7 +21,7 @@ export type SocialCard = {
   game: string;
   /** Only a cover from the currently published DTO, never a draft or remote URL. */
   coverId: string | null;
-  artwork: 'flying' | 'brand';
+  artwork: 'flying' | 'brand' | 'hll-scene';
 };
 
 export const socialCopy = (locale: AppLocale) => (locale === 'cs' ? cs : en);
@@ -35,10 +36,10 @@ export function parseSocialTarget(locale: string, kind: string, slug: string[] =
   return { locale, kind, slug: slug[0] } as { locale: AppLocale; kind: SocialKind; slug: string | undefined };
 }
 
-export function socialImagePath(locale: AppLocale, kind: SocialKind = 'site', slug?: string, revision?: string): string {
+export function socialImagePath(locale: AppLocale, kind: SocialKind = 'site', slug?: string, revision?: string, game?: GameRoute): string {
   const path = `/api/social/${locale}/${kind}${slug ? `/${encodeURIComponent(slug)}` : ''}`;
   const version = revision ? `${SOCIAL_TEMPLATE_VERSION}-${revision}` : SOCIAL_TEMPLATE_VERSION;
-  return `${path}?v=${encodeURIComponent(version)}`;
+  return `${path}?v=${encodeURIComponent(version)}${game ? `&game=${game}` : ''}`;
 }
 
 /** Bound layout work and long tokens without losing Czech grapheme clusters. */
@@ -49,12 +50,13 @@ export function cardText(value: string, maximum = 130): string {
   return bounded.replace(/\S{24,}/gu, (word) => [...word].map((char, i) => (i && i % 18 === 0 ? `\u200b${char}` : char)).join(''));
 }
 
-export function siteCard(locale: AppLocale, kind: SocialKind = 'site'): SocialCard {
+export function siteCard(locale: AppLocale, kind: SocialKind = 'site', game?: GameRoute): SocialCard {
   const copy = socialCopy(locale);
   return {
     locale, kind, title: kind === 'site' ? 'VALKYRIA' : copy[kind], label: copy.community,
-    detail: copy.introduction, score: null, status: '', game: 'WARDOGS // HELL LET LOOSE',
-    coverId: null, artwork: 'flying',
+    detail: game === 'hll' ? copy.hllIntroduction : copy.introduction, score: null, status: '',
+    game: game === 'hll' ? 'HELL LET LOOSE' : game === 'wardogs' ? 'WARDOGS' : 'WARDOGS // HELL LET LOOSE',
+    coverId: null, artwork: game === 'hll' ? 'hll-scene' : game === 'wardogs' ? 'flying' : 'brand',
   };
 }
 
@@ -65,7 +67,7 @@ export function articleCard(article: ArticleDTO): SocialCard {
     label: cardText(article.category?.label || copy.news, 44),
     detail: article.publishedAt ? formatDate(article.publishedAt, article.locale, 'date') : '',
     score: null, status: '', game: article.game === 'wardogs' ? 'WARDOGS' : article.game === 'hell-let-loose' ? 'HELL LET LOOSE' : copy.community,
-    coverId: article.cover?.assetId ?? null, artwork: article.game === 'wardogs' ? 'flying' : 'brand',
+    coverId: article.cover?.assetId ?? null, artwork: article.game === 'wardogs' ? 'flying' : article.game === 'hell-let-loose' ? 'hll-scene' : 'brand',
   };
 }
 
@@ -82,6 +84,6 @@ export function matchCard(match: PublicMatchDetail, locale: AppLocale): SocialCa
     label: match.status === 'completed' ? copy.result : copy.match,
     detail: cardText([formatDate(match.startsAt, locale, 'dateTimeZone', match.timeZone), match.competitionName].filter(Boolean).join(' · '), 110),
     score, status, game: match.game === 'wardogs' ? 'WARDOGS' : 'HELL LET LOOSE',
-    coverId: match.cover?.assetId ?? null, artwork: match.game === 'wardogs' ? 'flying' : 'brand',
+    coverId: match.cover?.assetId ?? null, artwork: match.game === 'wardogs' ? 'flying' : 'hll-scene',
   };
 }

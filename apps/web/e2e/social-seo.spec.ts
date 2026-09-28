@@ -33,14 +33,14 @@ test.describe('public sharing and homepage SEO', () => {
       await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute('href', `${baseURL}/cs`);
       await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', locale === 'cs' ? 'cs_CZ' : 'en_GB');
       await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
-      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `${baseURL}/api/social/${locale}/site?v=1`);
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `${baseURL}/api/social/${locale}/site?v=2`);
     });
   }
 
   test('published article shares the same branded PNG through OG/Twitter/JSON-LD', async ({ page, request }) => {
     await page.goto(`/cs/news/${FIXTURE_SLUGS.news.featureCs}`);
     const og = await page.locator('meta[property="og:image"]').getAttribute('content');
-    expect(og).toContain(`/api/social/cs/news/${FIXTURE_SLUGS.news.featureCs}?v=1-`);
+    expect(og).toContain(`/api/social/cs/news/${FIXTURE_SLUGS.news.featureCs}?v=2-`);
     await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', og!);
     const data = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent() ?? '{}');
     expect(data['@type']).toBe('BlogPosting');
@@ -60,7 +60,7 @@ test.describe('public sharing and homepage SEO', () => {
     for (const path of [
       `cs/news/${FIXTURE_SLUGS.news.scheduledCs}`, `cs/news/${FIXTURE_SLUGS.news.archivedCs}`,
       `en/news/${FIXTURE_SLUGS.news.withEnDraftEn}`, `en/news/${FIXTURE_SLUGS.news.csOnly}`,
-      `cs/matches/${FIXTURE_SLUGS.matches.draft}`, 'de/site', 'cs/admin', 'cs/site/extra', 'cs/news/a/b',
+      `cs/matches/${FIXTURE_SLUGS.matches.draft}`, 'de/site', 'cs/admin', 'cs/site/extra', 'cs/news/a/b', 'cs/site?game=unknown',
     ]) {
       const response = await request.get(`/api/social/${path}`);
       expect(response.status(), path).toBe(404);
@@ -76,4 +76,30 @@ test.describe('public sharing and homepage SEO', () => {
     }
     await expect((await request.get('/robots.txt')).text()).resolves.toContain('Allow: /api/social/');
   });
+
+  test('game landing pages advertise their own sharing artwork', async ({ page, request, baseURL }) => {
+    for (const game of ['hll', 'wardogs']) {
+      await page.goto(`/cs/${game}`);
+      const url = `${baseURL}/api/social/cs/site?v=2&game=${game}`;
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', url);
+      await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', url);
+      await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `${baseURL}/cs/${game}`);
+      const response = await request.get(url);
+      expect(response.status()).toBe(200);
+      expect((await response.body()).subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a');
+    }
+  });
+
+  for (const locale of ['cs', 'en']) {
+    test(`${locale} game collections retain game scope in sharing metadata`, async ({ page, baseURL }) => {
+      for (const game of ['hll', 'wardogs']) {
+        for (const section of ['news', 'matches']) {
+          await page.goto(`/${locale}/${game}/${section}`);
+          const url = `${baseURL}/api/social/${locale}/${section}?v=2&game=${game}`;
+          await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', url);
+          await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', url);
+        }
+      }
+    });
+  }
 });

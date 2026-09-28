@@ -21,7 +21,7 @@ export async function generateMetadata({ params, searchParams }: PageProps<'/[lo
   const filters = parseMatchFilters(await searchParams);
   const [t, games] = await Promise.all([getTranslations({ locale, namespace: 'matches.meta' }), getTranslations({ locale, namespace: 'games' })]);
   const title = games('sectionTitle', { section: t('title'), game: games(`names.${game}`) });
-  const sharing = sharingMetadata(locale, 'matches', undefined, undefined, title, t('description'));
+  const sharing = sharingMetadata(locale, 'matches', undefined, undefined, title, t('description'), game);
   return {
     title,
     description: t('description'),

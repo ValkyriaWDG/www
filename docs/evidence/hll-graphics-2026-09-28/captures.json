@@ -1,0 +1,88 @@
+{
+  "capturedAt": "2026-09-28T21:43:13.146Z",
+  "browser": "Chromium 153.0.8010.12",
+  "revision": "05bbde2774267b5d175fb3eda9ea85b4634214e7",
+  "environment": "Local standalone production build with disposable PostgreSQL fixtures and an empty HLL video playlist",
+  "limitation": "Real shipped HLL artwork; synthetic editorial content and results. No clan footage, production-data verification or live social-network unfurl.",
+  "captures": [
+    {
+      "file": "hll-landing-cs-1920x1080.png",
+      "caption": "Actual HLL landing in CS: shipped full-viewport static game artwork and Valkyria menu. Empty video playlist; no video request or playback control. Teaser content is synthetic, not a clan event.",
+      "route": "/cs/hll",
+      "viewport": "1920x1080",
+      "kind": "browser-screenshot",
+      "sha256": "1389077df533e6195bc7f1fde46423bc84775486a7cfc339ec7069595f306616",
+      "bytes": 1461551
+    },
+    {
+      "file": "hll-landing-en-1366x768.png",
+      "caption": "Actual HLL landing in EN: shipped full-viewport static game artwork and Valkyria menu. Empty video playlist; no video request or playback control. Teaser content is synthetic, not a clan event.",
+      "route": "/en/hll",
+      "viewport": "1366x768",
+      "kind": "browser-screenshot",
+      "sha256": "fb8ecec8cae6c7298558e22ea65c18a2b333ca4204d0abd46a4756f447b280ad",
+      "bytes": 794978
+    },
+    {
+      "file": "hll-landing-cs-390x844.png",
+      "caption": "Actual HLL landing in CS: shipped full-viewport static game artwork and Valkyria menu. Empty video playlist; no video request or playback control. Teaser content is synthetic, not a clan event.",
+      "route": "/cs/hll",
+      "viewport": "390x844",
+      "kind": "browser-screenshot",
+      "sha256": "bbaaade2dc95fe45467eb24626f3389b39d14c32e5cb692f44c0fa0b077747e8",
+      "bytes": 281505
+    },
+    {
+      "file": "hll-manual-cs-1920x1200.png",
+      "caption": "Czech manual categories: the synthetic CMS fixture cover keeps priority for Getting started; Roles, Communication and Vehicles use real shipped decorative HLL artwork. Draft-only categories remain hidden.",
+      "route": "/cs/hll/field-manual",
+      "viewport": "1920x1200",
+      "kind": "browser-screenshot",
+      "sha256": "e7e7b920de6424c42d63ac1957b10ae29deda94178f414b728dd46db01af2556",
+      "bytes": 898720
+    },
+    {
+      "file": "hll-manual-en-390x844.png",
+      "caption": "English manual category on a 390 CSS-pixel viewport, scrolled to the synthetic callouts article: the missing editorial cover uses real shipped decorative teamwork artwork; no translated draft is substituted.",
+      "route": "/en/hll/field-manual?category=communication",
+      "viewport": "390x844",
+      "kind": "browser-screenshot",
+      "sha256": "7f6c91ccad6ba9d49aeef9baf9afabc53811d8d495039afd278aeb1548c9fb5e",
+      "bytes": 256632
+    },
+    {
+      "file": "hll-news-cs-1920x1200.png",
+      "caption": "Czech HLL news with explicitly synthetic announcements: coverless HLL posts use real shipped scenery and a subdued clan crest. Shared community posts remain game-neutral; decorative artwork does not portray the announced event.",
+      "route": "/cs/hll/news",
+      "viewport": "1920x1200",
+      "kind": "browser-screenshot",
+      "sha256": "0902b77b2a12e9807636f8ea089e391cc3524c7a6e6bb45c37154897662a08cc",
+      "bytes": 952708
+    },
+    {
+      "file": "hll-site-cs.png",
+      "route": "/api/social/cs/site?game=hll",
+      "kind": "social-png",
+      "caption": "Actual decoded 1200×630 PNG returned by /api/social/cs/site?game=hll. Shipped HLL artwork with synthetic editorial/result data where applicable; not a live social-network unfurl or clan match proof.",
+      "sha256": "1bf8761e2b4bc803d897c674f2bbb843f1fbc52fa973d866911b328d701593cc",
+      "bytes": 216210
+    },
+    {
+      "file": "hll-news-cs.png",
+      "route": "/api/social/cs/news/ukazka-seznam-02",
+      "kind": "social-png",
+      "caption": "Actual decoded 1200×630 PNG returned by /api/social/cs/news/ukazka-seznam-02. Shipped HLL artwork with synthetic editorial/result data where applicable; not a live social-network unfurl or clan match proof.",
+      "sha256": "7e13781f47fb1455a2258e896a60d1e0edd440089c037111a882f8c0e291d4e9",
+      "bytes": 214580
+    },
+    {
+      "file": "hll-result-en.png",
+      "route": "/api/social/en/matches/ukazka-hll-historicky",
+      "kind": "social-png",
+      "caption": "Actual decoded 1200×630 PNG returned by /api/social/en/matches/ukazka-hll-historicky. Shipped HLL artwork with synthetic editorial/result data where applicable; not a live social-network unfurl or clan match proof.",
+      "sha256": "4bf7cac4f1506febf584d227d59767f7dce0af45bf325398c9614d828ac96f5f",
+      "bytes": 225524
+    }
+  ],
+  "captureRevisionNote": "Captured from the working tree subsequently committed as this revision, with no runtime application changes between capture and commit."
+}

@@ -5,6 +5,7 @@ import { getPublishedNewsBySlug } from '@/modules/content/public';
 import { getPublicMatch } from '@/modules/matches/queries';
 import { deliverMedia } from '@/modules/media/delivery';
 import { articleCard, matchCard, parseSocialTarget, siteCard, type SocialCard } from './model';
+import { isGameRoute } from '@/modules/games/registry';
 
 export type SocialDeps = {
   /** Lazy: the generic website card works without a database or auth configuration. */
@@ -25,7 +26,10 @@ export async function socialImageResponse(request: Request, params: { locale: st
   const target = parseSocialTarget(params.locale, params.kind, params.slug);
   if (!target) return missing();
   try {
-    let card = siteCard(target.locale, target.kind);
+    const requestedGame = new URL(request.url).searchParams.get('game');
+    if (requestedGame !== null && !isGameRoute(requestedGame)) return missing();
+    // Generic artwork is selectable; entity scope always comes from its published DTO.
+    let card = siteCard(target.locale, target.kind, requestedGame && isGameRoute(requestedGame) ? requestedGame : undefined);
     if (target.slug && target.kind === 'news') {
       const result = await getPublishedNewsBySlug(target.locale, target.slug, deps.db());
       if (!result) return missing();

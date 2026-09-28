@@ -10,7 +10,7 @@ import { serveSyntheticMedia } from './support/synthetic-video';
  * evidence. Opt-in only:
  *   CAPTURE_EVIDENCE=1 pnpm test:e2e e2e/visual-hll.spec.ts
  * Output: <repo>/.local/evidence/hll/ (gitignored) + captures.json with captions. Data is
- * synthetic fixtures; the HLL stage uses the labelled browser-generated test pattern with
+ * synthetic fixtures; the fullscreen HLL background uses the labelled browser-generated test pattern with
  * the first clip pinned (`Math.random` = 0) for a deterministic frame, or its poster.
  */
 test.skip(!process.env.CAPTURE_EVIDENCE, 'Set CAPTURE_EVIDENCE=1 to capture HLL platform screenshots.');
@@ -106,7 +106,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-cs-1920x1200.png',
-    caption: 'HLL landing /cs/hll at 1920×1200 (compare reference 02): left menu lane with seven destinations, Discord CTA, utilities, the cinematic stage playing the labelled SYNTHETIC TEST CLIP (not clan footage) and the strip with the latest HLL post (the fixtures have no upcoming HLL match, so no match teaser is shown).',
+    caption: 'HLL landing /cs/hll at 1920×1200 (compare reference 02): left menu lane with seven destinations, Discord CTA and utilities over the fullscreen background playing the labelled SYNTHETIC TEST CLIP (not clan footage); the lower-right strip shows the latest HLL post (the fixtures have no upcoming HLL match, so no match teaser is shown).',
     locale: 'cs',
     path: '/cs/hll',
     width: 1920,
@@ -115,7 +115,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-en-1920x1200.png',
-    caption: 'HLL landing /en/hll at 1920×1200 under reduced motion: poster-only stage showing the labelled synthetic poster (no video request), English menu labels and Czech/UK flag language switch with text labels.',
+    caption: 'HLL landing /en/hll at 1920×1200 under reduced motion: fullscreen background showing the labelled synthetic poster (no video request), English menu labels and Czech/UK flag language switch with text labels.',
     locale: 'en',
     path: '/en/hll',
     width: 1920,
@@ -124,7 +124,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-cs-1366x768.png',
-    caption: 'HLL landing /cs/hll at a short 1366×768 viewport: the menu, CTA and utilities reflow without clipping; stage plays the synthetic test clip.',
+    caption: 'HLL landing /cs/hll at a short 1366×768 viewport: the menu, CTA and utilities reflow without clipping over the fullscreen background playing the synthetic test clip.',
     locale: 'cs',
     path: '/cs/hll',
     width: 1366,
@@ -133,7 +133,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-cs-390x844.png',
-    caption: 'HLL landing /cs/hll on a 390×844 phone (full page): poster-first stage after an explicit play press shows the compact synthetic rendition; menu remains visible below.',
+    caption: 'HLL landing /cs/hll on a 390×844 phone (full page): the viewport-filling background starts the compact synthetic rendition only after an explicit play press; navigation and footer controls remain in normal foreground document flow.',
     locale: 'cs',
     path: '/cs/hll',
     width: 390,
@@ -152,7 +152,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-landing-focus-cs-1920x1200.png',
-    caption: 'Keyboard focus on the HLL main menu (/cs/hll, reduced motion): visible focus outline around ZÁPASY; the stage shows the labelled synthetic poster with an explicit play control.',
+    caption: 'Keyboard focus on the HLL main menu (/cs/hll, reduced motion): visible focus outline around ZÁPASY over the fullscreen labelled synthetic poster; the explicit play control is in the utility footer.',
     locale: 'cs',
     path: '/cs/hll',
     width: 1920,
