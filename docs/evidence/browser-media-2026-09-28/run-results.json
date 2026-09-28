@@ -1,0 +1,291 @@
+[
+  {
+    "product": "chrome-for-testing",
+    "mode": "default",
+    "command": "node apps/web/.local/browser-qualification/run.mjs chrome-for-testing default",
+    "underlyingCommand": "node node_modules/@playwright/test/cli.js test -c .local/browser-qualification/playwright.config.ts",
+    "cwd": "apps/web",
+    "result": "passed",
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "excluded": 0,
+    "reportedDuration": "4.5m",
+    "exitCode": 0,
+    "resultSource": "Observed Playwright list reporter and completed process exit code; this first invocation did not enable the JSON reporter"
+  },
+  {
+    "product": "chrome-for-testing",
+    "mode": "mp4-only",
+    "command": "node apps/web/.local/browser-qualification/run.mjs chrome-for-testing mp4-only",
+    "underlyingCommand": "node node_modules/@playwright/test/cli.js test -c .local/browser-qualification/playwright.config.ts --reporter=list,json",
+    "cwd": "apps/web",
+    "exitCode": 0,
+    "stats": {
+      "startTime": "2026-09-28T15:18:37.566Z",
+      "duration": 263755.69200000004,
+      "expected": 11,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "excluded": [],
+    "cases": [
+      {
+        "name": "the server returns the verified bytes with media types and byte ranges",
+        "status": "passed",
+        "durationMs": 675
+      },
+      {
+        "name": "every rendition loads the full sequence and seeks to the middle and near the end",
+        "status": "passed",
+        "durationMs": 2232
+      },
+      {
+        "name": "desktop: the persistent player plays the full sequence from the start through one natural wrap",
+        "status": "passed",
+        "durationMs": 204163
+      },
+      {
+        "name": "one player continues across public navigation and stays static in administration",
+        "status": "passed",
+        "durationMs": 7770
+      },
+      {
+        "name": "manual pause holds across routes and reloads, and resumes on request",
+        "status": "passed",
+        "durationMs": 7854
+      },
+      {
+        "name": "a hidden tab pauses the real player and a visible one resumes it",
+        "status": "passed",
+        "durationMs": 4144
+      },
+      {
+        "name": "rejected media keeps the delivered poster without an error surface",
+        "status": "passed",
+        "durationMs": 1062
+      },
+      {
+        "name": "reduced-motion: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 7425
+      },
+      {
+        "name": "save-data: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 6626
+      },
+      {
+        "name": "mobile: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 8578
+      },
+      {
+        "name": "Czech and English captures with the delivered media on desktop",
+        "status": "passed",
+        "durationMs": 6959
+      }
+    ]
+  },
+  {
+    "product": "chrome-for-testing",
+    "mode": "fallback",
+    "command": "node apps/web/.local/browser-qualification/run.mjs chrome-for-testing fallback",
+    "underlyingCommand": "node node_modules/@playwright/test/cli.js test -c .local/browser-qualification/playwright.config.ts --reporter=list,json",
+    "cwd": "apps/web",
+    "exitCode": 0,
+    "stats": {
+      "startTime": "2026-09-28T15:31:44.034Z",
+      "duration": 17859.475,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "excluded": [],
+    "cases": [
+      {
+        "name": "default-webm-first",
+        "status": "passed",
+        "durationMs": 6295
+      },
+      {
+        "name": "controlled-webm-network-failure",
+        "status": "passed",
+        "durationMs": 5870
+      }
+    ]
+  },
+  {
+    "product": "playwright-firefox",
+    "mode": "default",
+    "command": "node apps/web/.local/browser-qualification/run.mjs playwright-firefox default",
+    "underlyingCommand": "node node_modules/@playwright/test/cli.js test -c .local/browser-qualification/playwright.config.ts --reporter=list,json",
+    "cwd": "apps/web",
+    "exitCode": 0,
+    "stats": {
+      "startTime": "2026-09-28T15:23:01.970Z",
+      "duration": 256945.968,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "excluded": [
+      "mobile: zero video requests before an explicit opt-in (Playwright isMobile unsupported for Firefox)"
+    ],
+    "cases": [
+      {
+        "name": "the server returns the verified bytes with media types and byte ranges",
+        "status": "passed",
+        "durationMs": 863
+      },
+      {
+        "name": "every rendition loads the full sequence and seeks to the middle and near the end",
+        "status": "passed",
+        "durationMs": 4004
+      },
+      {
+        "name": "desktop: the persistent player plays the full sequence from the start through one natural wrap",
+        "status": "passed",
+        "durationMs": 202663
+      },
+      {
+        "name": "one player continues across public navigation and stays static in administration",
+        "status": "passed",
+        "durationMs": 8231
+      },
+      {
+        "name": "manual pause holds across routes and reloads, and resumes on request",
+        "status": "passed",
+        "durationMs": 8013
+      },
+      {
+        "name": "a hidden tab pauses the real player and a visible one resumes it",
+        "status": "passed",
+        "durationMs": 4192
+      },
+      {
+        "name": "rejected media keeps the delivered poster without an error surface",
+        "status": "passed",
+        "durationMs": 1101
+      },
+      {
+        "name": "reduced-motion: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 7378
+      },
+      {
+        "name": "save-data: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 6822
+      },
+      {
+        "name": "Czech and English captures with the delivered media on desktop",
+        "status": "passed",
+        "durationMs": 7161
+      }
+    ]
+  },
+  {
+    "product": "playwright-firefox",
+    "mode": "mp4-only",
+    "command": "node apps/web/.local/browser-qualification/run.mjs playwright-firefox mp4-only",
+    "underlyingCommand": "node node_modules/@playwright/test/cli.js test -c .local/browser-qualification/playwright.config.ts --reporter=list,json",
+    "cwd": "apps/web",
+    "exitCode": 0,
+    "stats": {
+      "startTime": "2026-09-28T15:27:19.575Z",
+      "duration": 263777.288,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "excluded": [
+      "mobile: zero video requests before an explicit opt-in (Playwright isMobile unsupported for Firefox)"
+    ],
+    "cases": [
+      {
+        "name": "the server returns the verified bytes with media types and byte ranges",
+        "status": "passed",
+        "durationMs": 921
+      },
+      {
+        "name": "every rendition loads the full sequence and seeks to the middle and near the end",
+        "status": "passed",
+        "durationMs": 4565
+      },
+      {
+        "name": "desktop: the persistent player plays the full sequence from the start through one natural wrap",
+        "status": "passed",
+        "durationMs": 207788
+      },
+      {
+        "name": "one player continues across public navigation and stays static in administration",
+        "status": "passed",
+        "durationMs": 8640
+      },
+      {
+        "name": "manual pause holds across routes and reloads, and resumes on request",
+        "status": "passed",
+        "durationMs": 8225
+      },
+      {
+        "name": "a hidden tab pauses the real player and a visible one resumes it",
+        "status": "passed",
+        "durationMs": 4228
+      },
+      {
+        "name": "rejected media keeps the delivered poster without an error surface",
+        "status": "passed",
+        "durationMs": 1035
+      },
+      {
+        "name": "reduced-motion: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 7543
+      },
+      {
+        "name": "save-data: zero video requests before an explicit opt-in",
+        "status": "passed",
+        "durationMs": 7042
+      },
+      {
+        "name": "Czech and English captures with the delivered media on desktop",
+        "status": "passed",
+        "durationMs": 7383
+      }
+    ]
+  },
+  {
+    "product": "playwright-firefox",
+    "mode": "fallback",
+    "command": "node apps/web/.local/browser-qualification/run.mjs playwright-firefox fallback",
+    "underlyingCommand": "node node_modules/@playwright/test/cli.js test -c .local/browser-qualification/playwright.config.ts --reporter=list,json",
+    "cwd": "apps/web",
+    "exitCode": 0,
+    "stats": {
+      "startTime": "2026-09-28T15:32:02.535Z",
+      "duration": 19608.922,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "excluded": [],
+    "cases": [
+      {
+        "name": "default-webm-first",
+        "status": "passed",
+        "durationMs": 7923
+      },
+      {
+        "name": "controlled-webm-network-failure",
+        "status": "passed",
+        "durationMs": 5637
+      }
+    ]
+  }
+]

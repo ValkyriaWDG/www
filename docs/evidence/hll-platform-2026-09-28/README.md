@@ -31,6 +31,12 @@ OAuth, Discord or production database was touched.
 | Captures | `CAPTURE_EVIDENCE=1 … playwright test --project=chromium e2e/visual-hll.spec.ts` and `--project=chromium-admin-capture --no-deps e2e/visual-admin-hll.spec.ts` | 25 + 6 passed |
 | Migration | `0001_unified_platform_scope.sql` applied over 0000 data, then re-run | Upgrade and no-op re-run verified at `a54ca21`; file unchanged since |
 
+After merging main `df48609` (operations scripts, CI and documentation only; no
+application source), `node scripts/check-foundation.mjs` and all 53 tooling tests passed
+again; the application checks above apply to the unchanged application source. The
+actual-media spec (`e2e/media`) now targets the Wardogs section but was not run here
+(delivered media files are absent from this container).
+
 New browser specs: `platform.spec.ts` (hub, game presentation/sections, 404s, game and
 language switch, keyboard, 320 px reflow, servers, field manual), `hll-stage.spec.ts`
 (one clip per document, no reroll across navigation/locale/history, zero video requests

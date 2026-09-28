@@ -4,12 +4,16 @@
 
 This public repository belongs to Valkyria. Extend its working Czech-first bilingual
 (Czech/English) website into one HLL/Wardogs platform, with future canonical origin
-`https://valkyria.cz`. Both games share CMS, identity, database and deployment with
-explicit game scope. The owner selected an HLL in-game-inspired menu/browser/manual
-visual direction. For this work, start with the [HLL cloud handoff](docs/handoff/hll-claude-code-cloud.md)
-and [unified platform ADR](docs/architecture/decisions/0002-unified-valkyria-platform.md);
-these supersede older single-game or separate-HLL-app proposals. Preparation is not
-proof the extension or domain cutover is implemented.
+`https://valkyria.cz` (current deployment: `https://valkyriawdg.cz`). Both games share
+CMS, identity, database and deployment with explicit game scope. The owner selected an
+HLL in-game-inspired menu/browser/manual visual direction. The working application
+lives in `apps/web`; read `docs/STATUS.md` for accepted source revisions, historical
+deployment evidence and remaining launch dependencies. For this work, start with the
+[HLL cloud handoff](docs/handoff/hll-claude-code-cloud.md) and
+[unified platform ADR](docs/architecture/decisions/0002-unified-valkyria-platform.md);
+these supersede older single-game or separate-HLL-app proposals. Do not restart the
+scaffold or infer current production state from older handoffs; branch implementation is
+not proof of deployment or domain cutover.
 
 Read, in order:
 
@@ -67,8 +71,8 @@ current task govern work. No screenshot username or game statistic is seed data.
 
 Run `node scripts/check-foundation.mjs` for repository changes, and
 `node --test scripts/tests/*.test.mjs` when changing foundation tooling or skills.
-Once the app exists,
-also run the actual lint, typecheck, unit/integration, browser and image checks named
+For application changes, run the applicable lint, typecheck, unit/integration,
+browser and image checks named
 in [verification](docs/implementation/verification.md). Never replace them with no-op
 scripts or label skipped checks as passing.
 

@@ -1,0 +1,73 @@
+{
+  "browserProduct": "playwright-firefox",
+  "sourceConfiguration": "default",
+  "check": "delivery",
+  "recordedAt": "2026-09-28T15:23:08.230Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "155.0",
+  "served": [
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "bytes": 51032923,
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b",
+      "contentType": "video/mp4",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "acceptRanges": "bytes",
+      "rangeStatus": 206
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "bytes": 13654192,
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e",
+      "contentType": "video/mp4",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "acceptRanges": "bytes",
+      "rangeStatus": 206
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "bytes": 19561104,
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309",
+      "contentType": "video/webm",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "acceptRanges": "bytes",
+      "rangeStatus": 206
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "bytes": 181198,
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c",
+      "contentType": "image/webp",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "acceptRanges": "bytes",
+      "rangeStatus": 206
+    }
+  ],
+  "containers": {
+    "wardogs-menu-full-1080p-619b27261fc9.mp4": {
+      "tracks": [
+        {
+          "handler": "vide",
+          "width": 1920,
+          "height": 1080,
+          "durationSeconds": 192.46666666666667
+        }
+      ],
+      "faststart": true
+    },
+    "wardogs-menu-full-720p-040c3de21de3.mp4": {
+      "tracks": [
+        {
+          "handler": "vide",
+          "width": 1280,
+          "height": 720,
+          "durationSeconds": 192.46666666666667
+        }
+      ],
+      "faststart": true
+    }
+  }
+}

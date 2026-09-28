@@ -3,10 +3,12 @@
 @AGENTS.md
 
 For the unified platform/HLL task read [the current Claude handoff](docs/handoff/hll-claude-code-cloud.md)
-first, including its committed screenshots, design spec and legacy inventory.
-The existing Wardogs application is implemented. This preparation provides extension
-boundaries, not the HLL runtime. Older [foundation instructions](docs/handoff/claude-code-cloud.md)
-remain historical context where compatible; do not restart the app from a scaffold.
+first, including its committed screenshots, design spec and legacy inventory. The
+Wardogs application and the unified platform extension are implemented; start from
+[current status](docs/STATUS.md), the assigned issue and the actual source. Older
+[foundation instructions](docs/handoff/claude-code-cloud.md) remain historical context
+where compatible; do not restart the app from a scaffold or rebuild completed
+milestones. Foundation CI alone does not establish application or production verification.
 
 The website is Czech-first with Czech/English switching using Czech/UK flags and
 text labels. Code, technical documentation, GitHub descriptions and AI prompts stay

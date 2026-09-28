@@ -1,6 +1,12 @@
 # Claude Code Cloud implementation handoff
 
-> For the current unified-platform/HLL assignment read [the new handoff](hll-claude-code-cloud.md) first. Do not rebuild the existing application or create a separate HLL deployment.
+**Resume note (2026-09-28):** M1–M3 are implemented. This initial brief remains the
+product baseline. For the unified-platform/HLL assignment read [the new handoff](hll-claude-code-cloud.md)
+first; do not rebuild the existing application or create a separate HLL deployment.
+Read [current status](../STATUS.md), the assigned issue and its handoff before making
+changes; do not recreate the scaffold or repeat completed milestones. Hosted Logi
+supersedes the initial custom-bot direction; see the
+[integration checkpoint](../engineering/follow-up-integration-2026-09-26.md).
 
 You are implementing the Valkyria clan website in `ValkyriaWDG/www`.
 The repository owner has already supplied the product direction, reference captures,

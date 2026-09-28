@@ -1,0 +1,19 @@
+{
+  "browserProduct": "chrome-for-testing",
+  "sourceConfiguration": "mp4-only",
+  "check": "manual-pause",
+  "recordedAt": "2026-09-28T15:22:24.339Z",
+  "revision": {
+    "sha": "e8f19d7b3f664e82d545a58a97a9e215469e62c5",
+    "dirty": false
+  },
+  "browser": "154.0.8037.57",
+  "pausedAt": 1.004186,
+  "requestsWhilePaused": 0,
+  "requestsAfterResume": [
+    {
+      "url": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "range": "bytes=0-"
+    }
+  ]
+}

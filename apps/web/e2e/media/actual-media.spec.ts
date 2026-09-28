@@ -11,6 +11,8 @@ import { BACKGROUND_DELIVERY, DELIVERY_DURATION_SECONDS, MEDIA_DIR, MEDIA_PATH_P
  * production build. Nothing here overrides HTMLMediaElement: playback, decoding and
  * looping are the browser's own. Measurements and screenshots are written to the ignored
  * `.local/evidence/background-media/` directory with the tested revision and browser.
+ * The Wardogs section (`/{locale}/wardogs/...`) owns this background; the community hub
+ * and the HLL section never attach it.
  */
 
 const EVIDENCE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../.local/evidence/background-media');
@@ -181,7 +183,7 @@ test.describe('delivered background media', () => {
     const context = await browser.newContext(DESKTOP);
     const page = await context.newPage();
     // Poster-only visit so the application's own player never competes with the probes.
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await page.getByRole('button', { name: PAUSE.cs }).click();
     const renditions = [
       { filename: BACKGROUND_DELIVERY.mp4, type: 'video/mp4; codecs="avc1.640028"', width: 1920, height: 1080 },
@@ -345,7 +347,7 @@ test.describe('delivered background media', () => {
       const probe = document.createElement('video');
       return { h264: probe.canPlayType('video/mp4; codecs="avc1.640028"'), vp9: probe.canPlayType('video/webm; codecs="vp9"') };
     });
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     const media = page.locator('[data-background-state]');
     await expect(media).toHaveAttribute('data-background-state', 'playing');
     await expect(media).toHaveAttribute('data-background-reason', 'allowed');
@@ -497,7 +499,7 @@ test.describe('delivered background media', () => {
     await signInAs(context, { roles: ['editor'], name: 'Synthetic media editor' });
     const page = await context.newPage();
     const requests = trackVideoRequests(page);
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'playing');
     await expectAdvancing(page);
     await page.locator('[data-background-video]').evaluate((element) => {
@@ -511,10 +513,10 @@ test.describe('delivered background media', () => {
     const nav = page.getByRole('navigation', { name: 'Hlavní navigace' });
     const visited: Record<string, unknown>[] = [];
     for (const [label, pattern] of [
-      ['NOVINKY', /\/cs\/news$/],
-      ['ZÁPASY', /\/cs\/matches$/],
-      ['ČLENOVÉ', /\/cs\/members$/],
-      ['HLAVNÍ MENU', /\/cs$/],
+      ['NOVINKY', /\/cs\/wardogs\/news$/],
+      ['ZÁPASY', /\/cs\/wardogs\/matches$/],
+      ['ČLENOVÉ', /\/cs\/wardogs\/members$/],
+      ['HLAVNÍ MENU', /\/cs\/wardogs$/],
     ] as const) {
       const before = (await videoFacts(page)).currentTime;
       await nav.getByRole('link', { name: label, exact: true }).click();
@@ -543,7 +545,7 @@ test.describe('delivered background media', () => {
 
     // Back to the public site: the same element resumes.
     await page.goBack();
-    await expect(page).toHaveURL(/\/cs$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs$/);
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'playing');
     expect(await sameElement()).toBe(true);
     await expectAdvancing(page, 0.3);
@@ -564,7 +566,7 @@ test.describe('delivered background media', () => {
   test('manual pause holds across routes and reloads, and resumes on request', async ({ browser }) => {
     const context = await browser.newContext(DESKTOP);
     const page = await context.newPage();
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'playing');
     await expectAdvancing(page);
     await page.getByRole('button', { name: PAUSE.cs }).click();
@@ -577,7 +579,7 @@ test.describe('delivered background media', () => {
     expect(await page.evaluate(() => window.localStorage.getItem('valkyria.background'))).toBe('paused');
 
     await page.getByRole('navigation', { name: 'Hlavní navigace' }).getByRole('link', { name: 'KLAN', exact: true }).click();
-    await expect(page).toHaveURL(/\/cs\/clan$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs\/clan$/);
     expect((await videoFacts(page)).paused).toBe(true);
 
     // A fresh visit (new context: empty HTTP/media cache, same stored preference) keeps the
@@ -586,7 +588,7 @@ test.describe('delivered background media', () => {
     const revisit = await browser.newContext({ ...DESKTOP, storageState });
     const next = await revisit.newPage();
     const reloadRequests = trackVideoRequests(next);
-    await next.goto('/en');
+    await next.goto('/en/wardogs');
     await expect(next.locator('[data-background-state]')).toHaveAttribute('data-background-reason', 'user-paused');
     await next.waitForLoadState('networkidle');
     await next.waitForTimeout(1_000);
@@ -608,7 +610,7 @@ test.describe('delivered background media', () => {
   test('a hidden tab pauses the real player and a visible one resumes it', async ({ browser }) => {
     const context = await browser.newContext(DESKTOP);
     const page = await context.newPage();
-    await page.goto('/en');
+    await page.goto('/en/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'playing');
     await expectAdvancing(page);
     // Headless Chromium keeps pages visible; the visibility signal is simulated, playback is real.
@@ -633,7 +635,7 @@ test.describe('delivered background media', () => {
     const context = await browser.newContext(DESKTOP);
     const page = await context.newPage();
     await page.route(/\/media\/background\/.*\.(mp4|webm)$/, (route) => route.abort('failed'));
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'unavailable');
     const poster = await posterFacts(page);
     expect(poster).toMatchObject({ src: `${MEDIA_PATH_PREFIX}${BACKGROUND_DELIVERY.poster}`, naturalWidth: 1920, visible: true });
@@ -663,7 +665,7 @@ test.describe('delivered background media', () => {
       const requests = trackVideoRequests(page);
       const locales: Record<string, unknown>[] = [];
       for (const locale of ['cs', 'en'] as const) {
-        await page.goto(`/${locale}`);
+        await page.goto(`/${locale}/wardogs`);
         const media = page.locator('[data-background-state]');
         await expect(media).toHaveAttribute('data-background-reason', scenario.reason);
         await expect(media).toHaveAttribute('data-background-state', 'paused');
@@ -709,18 +711,18 @@ test.describe('delivered background media', () => {
     // Deterministic poster frame: reduced motion keeps the delivered poster without playback.
     const context = await browser.newContext({ ...DESKTOP, reducedMotion: 'reduce' });
     const page = await context.newPage();
-    for (const route of ['/cs/news', '/en/news', '/en/matches']) {
+    for (const route of ['/cs/wardogs/news', '/en/wardogs/news', '/en/wardogs/matches']) {
       await page.goto(route);
       await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-reason', 'reduced-motion');
       await posterFacts(page);
-      await screenshot(page, `${route.split('/')[1]}-desktop-${route.split('/')[2]}-poster`, { state: await backgroundState(page), mediaDigests: mediaDigests(delivered) }, browser);
+      await screenshot(page, `${route.split('/')[1]}-desktop-${route.split('/').at(-1)}-poster`, { state: await backgroundState(page), mediaDigests: mediaDigests(delivered) }, browser);
     }
     await context.close();
 
     // Actual playback frame in English.
     const playing = await browser.newContext(DESKTOP);
     const livePage = await playing.newPage();
-    await livePage.goto('/en');
+    await livePage.goto('/en/wardogs');
     await expect(livePage.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'playing');
     await expectAdvancing(livePage);
     await livePage.waitForTimeout(2_000);
