@@ -340,6 +340,24 @@ page errors and horizontal overflow. Captures are inspected before publication.
 The foundation checker and all 19 tooling tests pass, including 13 presskit integrity
 cases covering tampering, unsafe SVG, path traversal and catalog drift.
 
+## HLL graphics research (2026-09-28)
+
+The [media handoff](assets/hll-media-research.md) inventories 158 installed MP4s
+(151 tutorials and seven logo intros) and proposes eight manual categories. No
+standalone ambient/menu movie was identified among the loose files. The two
+catalogs record 16 tutorial candidates and 39 visually reviewed public-source
+images with measured metadata, hashes and suggested placements. These are
+research candidates; no new runtime graphics, videos or game archives were added.
+
+Verification: all 158 MP4s probed successfully; all 39 selected images decoded.
+An independent local comparison matched all **55 selected source byte counts and
+SHA-256 values** to their catalogs. `node scripts/check-foundation.mjs` and
+`git diff --check` passed. Sampled visual inspection is not full video playback,
+gameplay-rule validation or publication approval. Next: select the first cover/
+guide batch, preserve instructional diagrams without cropping, and deliver the
+owner's clan battle recordings through the existing media pipeline. Deployment
+acceptance is maintained separately from this documentation-only research.
+
 ## GitHub
 
 Main requires a pull request, the **Quality gate** and linear history. CI runs foundation,
