@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-09-28T14:23:41.358Z",
+  "sourceRevision": "14b0863c498f3f117426e448dfe68dcceb977b5f",
+  "trackedWorktreeDirty": false,
+  "nodeVersion": "v24.21.0",
+  "platform": "win32",
+  "arch": "x64",
+  "browserProduct": "Microsoft Edge",
+  "browserVersion": "154.0.4258.37",
+  "browserMode": "headless",
+  "rebuild": "pnpm build passed on 2026-09-28 before run",
+  "buildId": "CsQZWZbcbmDXkWmy1yD7b",
+  "sourceAndHarnessHashes": {
+    "apps/web/src/components/shell/background-media.tsx": "3e432797697308d6c4645c53ca8368d717945231b3d7cf1f44a995da38c3ad06",
+    "apps/web/src/components/shell/background-store.ts": "3da25333a8759abcefc0b30eabdeda153ec2622c9a5720e0205db15467da3feb",
+    "apps/web/src/components/shell/background-policy.ts": "449a872f6115dc14d4beef42067658c03147f27501fb9dbea9a8c448e0cd2e78",
+    "apps/web/src/components/shell/background.module.css": "047bc26ee4a2d6adecae2ef070035f0b2efef8ff02cb5abfa6e15ab884aad615",
+    "apps/web/src/lib/site-config.ts": "61c547f7fb26a78e9d7a275d142991db27b79d6a4a23f8a72bf529fbefc47bc3",
+    "apps/web/src/modules/settings/public.ts": "100c1150961bd4a03418d41feb659ba3527f2bd19867d2d3072d6838ed1b6075",
+    "apps/web/e2e/media/actual-media.spec.ts": "766605013cae1b516107136cb9dc221b827d428f09761e62ee691bcfab14cded",
+    "apps/web/playwright.media.config.ts": "b3d3c2a855e701cda1428d95f47990f1fab3376510bd17ff6c6ef1fbad015ab7",
+    "assets/background-media.json": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388",
+    "apps/web/.local/edge-h264-proof/mp4-only.spec.ts": "b40850bd2aa1de16725a099565fabd8687fe4078cd34cb76531b626b0e97ffa8",
+    "apps/web/.local/edge-h264-proof/dual.spec.ts": "d702b29e1156dd28131fa64dccbbbda21216b765dfc4b59db902e8fc3c664cc8",
+    "apps/web/.local/edge-h264-proof/playwright.config.ts": "04be5164570e8436cf844bc25d425f96ef20afd74336877d133892440ab2d6c6"
+  },
+  "byteEquivalentPlayerAndConfigurationToMain": "b3793139 (git diff for shell, site-config, settings and media manifest was empty)",
+  "noTrackedSourceChanges": true,
+  "controls": {
+    "mp4Only": "Only BACKGROUND_VIDEO_WEBM_URL removed; native application media player and APIs unchanged",
+    "fallback": "Original source order retained; only WebM network requests aborted in a separate scenario",
+    "hiddenTab": "document.hidden/visibilitychange simulated by original test",
+    "saveData": "Network Information API simulated by original test",
+    "mobile": "Pixel7 dimensions/coarse-pointer emulation in desktop Edge; not an Android or iOS device"
+  },
+  "packagedAt": "2026-09-28T14:32:20.679Z",
+  "packagingNote": "Three unchanged real screenshots and sanitized raw metrics; the portable generator creates the tested ignored specs/config. Publication worktree differs from tested execution worktree."
+}
