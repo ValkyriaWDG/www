@@ -13,7 +13,6 @@
     "typecheck": "next typegen && tsc --noEmit -p tsconfig.json",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
-    "test:role-sync": "vitest run --project role-sync-contract",
     "test:e2e": "playwright test",
     "test:e2e:media": "playwright test -c playwright.media.config.ts",
     "db:migrate": "tsx src/cli/migrate.ts",

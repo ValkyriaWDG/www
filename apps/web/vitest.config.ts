@@ -33,17 +33,6 @@ export default defineConfig({
           hookTimeout: 90_000,
         },
       },
-      {
-        extends: true,
-        test: {
-          name: 'role-sync-contract',
-          environment: 'node',
-          include: ['tests/contracts/role-sync.test.ts'],
-          globalSetup: ['tests/contracts/global-setup.ts'],
-          testTimeout: 30_000,
-          hookTimeout: 90_000,
-        },
-      },
     ],
   },
 });

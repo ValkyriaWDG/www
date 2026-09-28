@@ -1,7 +1,4 @@
 import { randomBytes } from 'node:crypto';
-import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import path from 'node:path';
 import { runMigrations } from '@valkyria/db/migrate';
 import pg from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -66,31 +63,6 @@ describe('migration runner', () => {
       expect(rows.rows[0].n).toBe(results[0]!.total);
     } finally {
       await other.drop();
-    }
-  });
-
-  it('upgrades populated pre-role-sync storage without losing observations, then safely reruns', async () => {
-    const other = await freshDatabase();
-    const baseline = await mkdtemp(path.join(tmpdir(), 'valkyria-migration-'));
-    const client = new pg.Client({ connectionString: other.url });
-    try {
-      await mkdir(path.join(baseline, 'meta'));
-      const journal = JSON.parse(await readFile(path.join(migrationsFolder, 'meta/_journal.json'), 'utf8'));
-      journal.entries = journal.entries.filter((entry: { idx: number }) => entry.idx === 0);
-      await writeFile(path.join(baseline, 'meta/_journal.json'), JSON.stringify(journal));
-      await copyFile(path.join(migrationsFolder, '0000_initial_schema.sql'), path.join(baseline, '0000_initial_schema.sql'));
-      await runMigrations(other.url, { migrationsFolder: baseline });
-      await client.connect();
-      await client.query("insert into guild_membership(guild_id,discord_user_id,state,role_ids,observed_at,source) values('111111111111111111','222222222222222222','present',array['333333333333333333'],now(),'rest_refresh')");
-      const upgrade = await runMigrations(other.url, { migrationsFolder });
-      expect(upgrade.applied).toHaveLength(1);
-      expect((await client.query('select state,role_ids,source,authorization_generation::text as generation from guild_membership')).rows).toEqual([{ state: 'present', role_ids: ['333333333333333333'], source: 'rest_refresh', generation: '0' }]);
-      expect((await runMigrations(other.url, { migrationsFolder })).applied).toEqual([]);
-    } finally {
-      await client.end().catch(() => undefined);
-      await other.drop();
-      // Only the fresh directory returned by mkdtemp is removed.
-      await rm(baseline, { recursive: true, force: true });
     }
   });
 

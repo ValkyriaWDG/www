@@ -3,7 +3,8 @@ import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { bilingualAlternates } from '@/components/public/metadata';
+import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
+import { sharingMetadata } from '@/modules/social/metadata';
 import { NewsCard, type NewsCardLabels } from '@/components/public/news-card';
 import newsStyles from '@/components/public/news.module.css';
 import { ListLoadError } from '@/components/public/list-load-error';
@@ -23,10 +24,13 @@ export async function generateMetadata({ params, searchParams }: PageProps<'/[lo
   if (!hasLocale(routing.locales, locale)) return {};
   const filters = parseNewsFilters(await searchParams);
   const t = await getTranslations({ locale, namespace: 'news.meta' });
+  const sharing = sharingMetadata(locale, 'news', undefined, undefined, t('title'), t('description'));
   return {
     title: t('title'),
     description: t('description'),
     alternates: bilingualAlternates(locale, '/news'),
+    openGraph: { type: 'website', title: t('title'), description: t('description'), url: `/${locale}/news`, locale: OG_LOCALE[locale], images: sharing.images },
+    twitter: sharing.twitter,
     // Filtered/search views are useful to share but are not separate documents.
     ...(hasNewsFilters(filters) ? { robots: { index: false, follow: true } } : {}),
   };

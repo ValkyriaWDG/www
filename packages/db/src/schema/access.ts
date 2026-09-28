@@ -37,8 +37,6 @@ export const guildMembership = pgTable(
     source: text('source').$type<MembershipSource>().notNull(),
     /** Monotonic ordering for event sources; an older snapshot never overwrites a newer one. */
     sequence: bigint('sequence', { mode: 'number' }).notNull().default(0),
-    /** Incremented on invalidation; REST may commit only against its captured generation. */
-    authorizationGeneration: bigint('authorization_generation', { mode: 'bigint' }).notNull().default(sql`0`),
     lastRefreshAttemptAt: tz('last_refresh_attempt_at'),
     /** Sanitized machine code of the last failed refresh (e.g. `rate_limited`, `unavailable`). */
     lastRefreshError: text('last_refresh_error'),
@@ -50,8 +48,8 @@ export const guildMembership = pgTable(
     index('guild_membership_user_idx').on(t.userId),
     check('guild_membership_state_ck', sql`${t.state} in (${sqlList(MEMBERSHIP_STATES)})`),
     check('guild_membership_source_ck', sql`${t.source} in (${sqlList(MEMBERSHIP_SOURCES)})`),
-    check('guild_membership_guild_snowflake_ck', sql`${t.guildId} ~ '^[0-9]{1,25}$'`),
-    check('guild_membership_user_snowflake_ck', sql`${t.discordUserId} ~ '^[0-9]{1,25}$'`),
+    check('guild_membership_guild_snowflake_ck', sql`${t.guildId} ~ '^[0-9]{5,25}$'`),
+    check('guild_membership_user_snowflake_ck', sql`${t.discordUserId} ~ '^[0-9]{5,25}$'`),
   ],
 );
 

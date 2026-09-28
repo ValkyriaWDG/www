@@ -11,7 +11,7 @@ import {
 } from './config';
 import type { DiscordClientDeps } from './discord-client';
 import { findLocalGrant, isGrantActive, summarizeAccounts } from './local-grant';
-import { readMembership, refreshMembership, snapshotAgeMs, type MembershipSnapshot } from './membership';
+import { membershipRowVersion, readMembership, refreshMembership, snapshotAgeMs, type MembershipSnapshot } from './membership';
 import { ensureRoleMappingVersion, loadRoleMapping, rolesForRoleIds } from './role-mapping';
 import { isSnowflake } from './snowflake';
 import type { AccessIntent, Actor, AuthorizationStatus, Principal, SessionAssurance } from './types';
@@ -137,17 +137,17 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
     console.error(`[access] could not record role mapping version: ${error instanceof Error ? error.name : 'unknown'}`);
   });
   // Mapping persistence can await a database lock. Re-read the durable session and
-  // membership together after that work so a committed invalidation cannot return
-  // the capabilities from the earlier cached observation. This is a final read
+  // membership together after that work so a changed row cannot return the
+  // capabilities from the earlier cached observation. This is a final read
   // fence, not a session cache; subsequent requests always resolve again.
   const finalNow = input.now ?? new Date();
   const [current] = await db
-    .select({ membership: guildMembership, sessionExpiresAt: authSession.expiresAt })
+    .select({ membership: guildMembership, rowVersion: membershipRowVersion, sessionExpiresAt: authSession.expiresAt })
     .from(guildMembership)
     .innerJoin(authSession, and(eq(authSession.id, session.id), eq(authSession.userId, user.id), eq(authSession.assurance, 'discord'), gt(authSession.expiresAt, finalNow)))
     .where(and(eq(guildMembership.guildId, guildId), eq(guildMembership.discordUserId, discordUserId)))
     .limit(1);
-  if (!current || current.membership.authorizationGeneration !== snapshot.authorizationGeneration) return deny('stale');
+  if (!current || current.rowVersion !== snapshot.rowVersion) return deny('stale');
   if (current.membership.source === 'role_sync' || current.membership.state !== 'present') return deny('not_member');
   const resolvedAt = input.now ?? new Date();
   if (current.sessionExpiresAt <= resolvedAt || snapshotAgeMs(current.membership, resolvedAt) > maxAge) return deny('stale');

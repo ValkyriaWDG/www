@@ -3,6 +3,7 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { HomeMenu } from '@/components/shell/home/home-menu';
+import { bilingualAlternates } from '@/components/public/metadata';
 import type { NextMatch } from '@/components/shell/home/next-match-strip';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { routing } from '@/i18n/routing';
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]'>): Prom
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'home.meta' });
-  return { title: { absolute: t('title') }, description: t('description') };
+  return { title: { absolute: t('title') }, description: t('description'), alternates: bilingualAlternates(locale, '') };
 }
 
 /** Localized main menu (`/cs`, `/en`): reference-09 composition over the persistent scene. */

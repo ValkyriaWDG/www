@@ -80,32 +80,35 @@ Discord server-side; an unknown guild or unconfigured mapping grants no private 
 - Periodic reconciliation corrects missed gateway events; 429 honors Retry-After with
   bounded retries and backoff. Do not interpret timeout/403 as successful zero-role sync.
 
-The server-only Discord REST adapter supplies authoritative refreshes. The implemented
-bot receiver adds event-driven invalidation when explicitly enabled; its default is off.
-Do not claim live guild acceptance from offline fixtures. Never trust browser-posted roles.
+The existing server-only Discord REST adapter provides authoritative refreshes.
+Hosted Logi is the selected future integration; its identity, membership freshness
+and revocation contract require separate acceptance. The retired custom bot's
+receiver and signed sequence protocol are not implemented by this change. Never
+trust a posted role list, treat a Logi service key as user authority or claim live
+provider acceptance from offline fixtures.
 
-## Bot-to-web role-sync receiver
+## Authority across awaited work
 
-The unprefixed `POST /api/integrations/discord/role-sync` accepts versioned JSON fields:
-`schemaVersion`, `eventId`, `guildId`, `userId`, `roleIds`, `membershipState`,
-`observedAt`, `sequence`. IDs and sequence are strings. The implemented transport uses
-HMAC-SHA256 over method, exact path, key ID, timestamp, nonce and raw body, with
-constant-time comparison, a 5-minute receive window, durable producer-scoped receipts
-and rotating keys. Secrets remain only in operator/worker/server configuration.
-Reject wrong guild, malformed roles, oversized payload, stale timestamp and replay.
-An older snapshot cannot resurrect a user after a newer departure event. HMAC proves
-sender integrity, not permission to map arbitrary new application capabilities.
+Interactive Discord authorization rereads the durable session and membership after
+awaited role-mapping work. A deleted/expired session or changed observation denies
+the earlier decision. The observation includes an ephemeral PostgreSQL row-version
+token (`xmin` plus `ctid`), read atomically with its fields. Same-timestamp or
+same-value updates therefore cannot reuse a cached authorization result. This token
+stays server-side within the current request/freshness window: never persist it,
+expose it in a DTO or use it as a provider sequence or durable identity. PostgreSQL
+transaction IDs can wrap and row locations can move; a changed token fails closed.
+See [PostgreSQL system columns](https://www.postgresql.org/docs/current/ddl-system-columns.html).
 
-Accepted events invalidate the REST snapshot and increment its authorization generation.
-Departure or removal of a previously observed role also revokes associated Discord
-sessions. Local password/MFA recovery sessions are independent. A REST lookup captures
-the generation before network I/O and cannot commit if an event changed it. Request
-resolution rechecks durable session and generation after awaited mapping work. Scheduled
-publication carries the verified generation into its transaction and locks/rechecks that
-membership after content locks, holding the authorization fence through commit. Event role
-lists never grant access; resolving interactive or scheduled authority requires fresh
-server-side REST after invalidation. See the [implemented contract and runbook](../integrations/discord-role-sync.md)
-for acknowledgements, durable ordering, retention, key rotation, tests and live gates.
+Scheduled publication carries the exact verified membership observation or local
+grant identity/version into its transaction. After acquiring content locks, it takes
+a shared lock on that authority row and revalidates it before publication and again
+after the awaited audit write. Changed/revoked/expired authority rolls back the live
+pointer, success audit and completion together, then blocks the saved intent.
+The authority lock remains until commit. There is no provider I/O while holding it,
+and a valid independent local recovery grant still works during a Discord outage.
+No schema migration, new transport, provider activation or live revocation claim is
+included. These checks cannot invalidate an upstream change that has not yet been
+observed; the existing read/write freshness limits still apply.
 
 ## Local admin recovery
 

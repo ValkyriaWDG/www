@@ -241,7 +241,7 @@ describe('observation ordering', () => {
     expect(await recordMembershipObservation(database.db, { ...base, state: 'present', roleIds: [ROLE.editor], sequence: 5 })).toBe(true);
     expect(await recordMembershipObservation(database.db, { ...base, state: 'present', roleIds: [ROLE.administrator], sequence: 4 })).toBe(false);
     expect(await recordMembershipObservation(database.db, { ...base, state: 'present', roleIds: [ROLE.matchManager], sequence: 6 })).toBe(true);
-    expect(await readMembership(database.db, GUILD_ID, id.discordUserId)).toMatchObject({ state: 'unknown', roleIds: [], sequence: 6, authorizationGeneration: 2n });
+    expect((await readMembership(database.db, GUILD_ID, id.discordUserId))?.roleIds).toEqual([ROLE.matchManager]);
   });
 
   it('rejects non-snowflake identifiers', async () => {

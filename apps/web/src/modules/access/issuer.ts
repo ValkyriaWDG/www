@@ -4,7 +4,7 @@ import { capabilitiesForRoles, type Capability } from './capabilities';
 import { accessEnvFromProcess, discordClientConfig, isDiscordMembershipConfigured, WRITE_SNAPSHOT_MAX_AGE_MS, type AccessEnv } from './config';
 import type { DiscordClientDeps } from './discord-client';
 import { findLocalGrantById, isGrantActive, summarizeAccounts } from './local-grant';
-import { readMembership, refreshMembership, snapshotAgeMs } from './membership';
+import { membershipRowVersion, readMembership, refreshMembership, snapshotAgeMs } from './membership';
 import { loadRoleMapping, rolesForRoleIds } from './role-mapping';
 import { isSnowflake } from './snowflake';
 
@@ -27,7 +27,7 @@ export type IssuerVerdict = 'authorized' | 'revoked' | 'unknown';
 
 /** Server-only proof captured from the exact observation that granted authority. */
 export type IssuerFence =
-  | { kind: 'discord'; guildId: string; discordUserId: string; generation: bigint; observedAt: Date; roleIds: readonly string[] }
+  | { kind: 'discord'; guildId: string; discordUserId: string; rowVersion: string }
   | { kind: 'local_admin'; userId: string; grantId: string; grantVersion: number; capability: Capability };
 export type IssuerAuthorization =
   | { verdict: 'authorized'; fence: IssuerFence }
@@ -92,7 +92,7 @@ export async function authorizeIssuer(db: Executor, input: IssuerCheck, deps: Is
   const mapping = loadRoleMapping(env.DISCORD_ROLE_MAPPING_JSON);
   if (!mapping.ok) return { verdict: 'unknown' };
   return capabilitiesForRoles(rolesForRoleIds(mapping.mapping, snapshot.roleIds)).has(input.capability)
-    ? { verdict: 'authorized', fence: { kind: 'discord', guildId: env.DISCORD_GUILD_ID, discordUserId, generation: snapshot.authorizationGeneration, observedAt: snapshot.observedAt, roleIds: [...snapshot.roleIds] } }
+    ? { verdict: 'authorized', fence: { kind: 'discord', guildId: env.DISCORD_GUILD_ID, discordUserId, rowVersion: snapshot.rowVersion } }
     : { verdict: 'revoked' };
 }
 
@@ -114,11 +114,10 @@ export async function revalidateIssuerFence(tx: Executor, fence: IssuerFence, no
     const accounts = await summarizeAccounts(tx, fence.userId);
     return isGrantActive(grant, now()) && accounts.hasCredential && accounts.socialProviders.length === 0 && capabilitiesForRoles(grant.roles).has(fence.capability) ? 'authorized' : 'revoked';
   }
-  const [membership] = await tx.select().from(guildMembership)
+  const [record] = await tx.select({ membership: guildMembership, rowVersion: membershipRowVersion }).from(guildMembership)
     .where(and(eq(guildMembership.guildId, fence.guildId), eq(guildMembership.discordUserId, fence.discordUserId))).for('share');
-  if (!membership || membership.authorizationGeneration !== fence.generation || membership.source === 'role_sync' || membership.state !== 'present') return 'revoked';
-  // An independent REST refresh can alter roles without an event generation. Do
-  // not reuse the earlier decision if that observation changed during lock waits.
-  if (membership.observedAt.getTime() !== fence.observedAt.getTime() || JSON.stringify([...membership.roleIds].sort()) !== JSON.stringify([...fence.roleIds].sort())) return 'revoked';
+  if (!record || record.rowVersion !== fence.rowVersion) return 'revoked';
+  const membership = record.membership;
+  if (membership.source === 'role_sync' || membership.state !== 'present') return 'revoked';
   return snapshotAgeMs(membership, now()) <= WRITE_SNAPSHOT_MAX_AGE_MS ? 'authorized' : 'unknown';
 }
