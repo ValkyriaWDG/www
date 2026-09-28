@@ -128,6 +128,30 @@ match rights denied.
 
   ![English FAQ still unpublished](faq/hll-faq-unpublished-en-1366x768.webp)
 
+### Header positions (`9bbb49b`)
+
+Owner request: logo, sign-in, game and language switches at the same places in both
+games. The separate platform bar is gone; Wardogs and the hub carry the game switch beside
+the language control like HLL. `platform.spec.ts` pins the positions at 1920 and 1366 and
+the switch row on phones.
+
+- **`header/header-before-wardogs-cs-1366.webp`** — before (`a331c69`): the game switch in a
+  separate bar above the Wardogs strip.
+
+  ![Wardogs header before](header/header-before-wardogs-cs-1366.webp)
+- **`header/header-after-wardogs-cs-1366.webp`** — after: logo left; game switch, language
+  and sign-in together at the top right.
+
+  ![Wardogs header after](header/header-after-wardogs-cs-1366.webp)
+- **`header/header-after-hll-cs-1366.webp`** — HLL at the same width for comparison.
+
+  ![HLL header for comparison](header/header-after-hll-cs-1366.webp)
+- **`header/header-before-wardogs-cs-390.webp`**, **`header/header-after-wardogs-cs-390.webp`**,
+  **`header/header-after-hll-cs-390.webp`** — phones: before, the switch sat above the logo;
+  after, it is the full-width row under the header in both games.
+
+  ![Wardogs phone header before](header/header-before-wardogs-cs-390.webp) ![Wardogs phone header after](header/header-after-wardogs-cs-390.webp) ![HLL phone header](header/header-after-hll-cs-390.webp)
+
 ### Administration
 
 - **`admin/admin-hll-match-rounds-cs-1440x1200.webp`** — HLL round in the match editor:

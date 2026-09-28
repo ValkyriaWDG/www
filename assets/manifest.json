@@ -2332,6 +2332,72 @@
       "bytes": 25784,
       "width": 1366,
       "height": 768
+    },
+    {
+      "id": "hll-parity-2026-09-28-header-header-before-wardogs-cs-1366",
+      "path": "docs/evidence/hll-parity-2026-09-28/header/header-before-wardogs-cs-1366.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at a331c69; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "578f45b16c75eea3e684ed2007c09667d219e1eb4c7acc19877d78a21dc017a8",
+      "bytes": 10472,
+      "width": 1366,
+      "height": 260
+    },
+    {
+      "id": "hll-parity-2026-09-28-header-header-before-wardogs-cs-390",
+      "path": "docs/evidence/hll-parity-2026-09-28/header/header-before-wardogs-cs-390.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at a331c69; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "0b107f7de4ea07718c8ea79a33c560d74745fad310e9fb2bcbfcb37f66dfcbd4",
+      "bytes": 4696,
+      "width": 390,
+      "height": 260
+    },
+    {
+      "id": "hll-parity-2026-09-28-header-header-after-wardogs-cs-1366",
+      "path": "docs/evidence/hll-parity-2026-09-28/header/header-after-wardogs-cs-1366.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 9bbb49b; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "39e1856f06047f11b62a1035ec0953879042ba884a74ccaae0d5940bed55e59d",
+      "bytes": 12884,
+      "width": 1366,
+      "height": 260
+    },
+    {
+      "id": "hll-parity-2026-09-28-header-header-after-hll-cs-1366",
+      "path": "docs/evidence/hll-parity-2026-09-28/header/header-after-hll-cs-1366.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 9bbb49b; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f1fbcdabd1a7b159b83f29e59aeffb635a35232556a4e7dca30d63e8ec4421de",
+      "bytes": 12376,
+      "width": 1366,
+      "height": 260
+    },
+    {
+      "id": "hll-parity-2026-09-28-header-header-after-wardogs-cs-390",
+      "path": "docs/evidence/hll-parity-2026-09-28/header/header-after-wardogs-cs-390.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 9bbb49b; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "943907de7613adf1c990b260cf5cbb4cd81f93a310ae4484edac7ebdeedbb4d1",
+      "bytes": 4358,
+      "width": 390,
+      "height": 260
+    },
+    {
+      "id": "hll-parity-2026-09-28-header-header-after-hll-cs-390",
+      "path": "docs/evidence/hll-parity-2026-09-28/header/header-after-hll-cs-390.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage test pattern) at 9bbb49b; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "0c8488eb93c986e3698823b65ff4599914229c4b407552b6ab0700e21a709c7a",
+      "bytes": 5504,
+      "width": 390,
+      "height": 260
     }
   ]
 }
