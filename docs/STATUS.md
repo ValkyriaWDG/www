@@ -51,8 +51,8 @@ separate from this deployment.
 
 ## Unified platform / HLL implementation
 
-Branch `feat/hll-platform-handoff`, draft PR [#37](https://github.com/ValkyriaWDG/www/pull/37),
-issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
+Branch `feat/hll-platform-handoff`, PR [#37](https://github.com/ValkyriaWDG/www/pull/37)
+(merged as `40da3df`), issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
 [handoff](handoff/hll-claude-code-cloud.md); nothing is deployed and no DNS changed.
 
 - **Routes:** `/cs` and `/en` are the community hub; `/{locale}/hll/...` (news, matches,
@@ -90,8 +90,9 @@ text/images and match history (host blocked in this environment; reuse of extern
 illustrations unrecorded), FAQ/events/tournaments/rankings destinations, tactical map,
 legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
 Legacy parity for servers, matches and game statistics:
-[hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (466 unit, 269
-integration, 144 browser tests at `288e621`/`1a14ce0`).
+[hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (466 unit, 277
+integration, 144 browser tests at `f5e56bc`/`65b47be`).
+PR #37 before its merge:
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
 browser tests passed (98 opt-in capture cases skipped); 33 captioned captures; after
