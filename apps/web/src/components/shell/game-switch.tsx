@@ -16,7 +16,7 @@ import styles from './game-switch.module.css';
  */
 export function GameSwitch({ variant = 'bar' }: { variant?: 'bar' | 'stack' }) {
   return (
-    <Suspense fallback={<GameSwitchView search="" variant={variant} />}>
+    <Suspense fallback={<GameSwitchView search={null} variant={variant} />}>
       <GameSwitchWithQuery variant={variant} />
     </Suspense>
   );
@@ -27,12 +27,12 @@ function GameSwitchWithQuery({ variant }: { variant: 'bar' | 'stack' }) {
   return <GameSwitchView search={searchParams.toString()} variant={variant} />;
 }
 
-function GameSwitchView({ search, variant }: { search: string; variant: 'bar' | 'stack' }) {
+function GameSwitchView({ search, variant }: { search: string | null; variant: 'bar' | 'stack' }) {
   const t = useTranslations('common.gameSwitch');
   const pathname = usePathname() ?? '/';
   const current = gameOfPath(pathname);
   return (
-    <div className={styles.switch} role="group" aria-label={t('label')} data-variant={variant} data-game-switch="">
+    <div className={styles.switch} role="group" aria-label={t('label')} aria-busy={search === null || undefined} data-variant={variant} data-game-switch="">
       <ul className={styles.list}>
         {GAME_ROUTES.map((game: GameRoute) => (
           <li key={game} className={styles.item}>
@@ -40,6 +40,16 @@ function GameSwitchView({ search, variant }: { search: string; variant: 'bar' | 
               <span className={styles.option} aria-current="true" data-game-option={game}>
                 <span className={styles.name}>{t(`games.${game}`)}</span>
                 <span className="visually-hidden"> {t('current')}</span>
+              </span>
+            ) : search === null ? (
+              <span
+                className={styles.option}
+                role="link"
+                aria-disabled="true"
+                aria-label={t('switchTo', { game: t(`games.${game}`) })}
+                data-game-option={game}
+              >
+                <span className={styles.name}>{t(`games.${game}`)}</span>
               </span>
             ) : (
               <GuardedLink

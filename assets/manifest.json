@@ -2266,6 +2266,39 @@
       "bytes": 57416,
       "width": 1440,
       "height": 1200
+    },
+    {
+      "id": "switch-query-hydration-publisher-before",
+      "path": "docs/evidence/switch-query-hydration-2026-09-28/publisher-query-loss-before.png",
+      "source": "Original synthetic Playwright screenshot from failed publication run 36469751788, source 40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9",
+      "usage": "verification-evidence",
+      "rights": "Repository-rendered UI; synthetic fixtures; underlying approved asset attribution unchanged",
+      "sha256": "be9fde00ef538e81d76b8a404947f2a3115e984a6a443f783d8b4e5068dcf0ba",
+      "bytes": 164150,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "switch-query-hydration-game-switch-results-retained",
+      "path": "docs/evidence/switch-query-hydration-2026-09-28/game-switch-results-retained.png",
+      "source": "Actual local Playwright regression capture; synthetic data; source hashes and build in sibling local-red-green.json",
+      "usage": "verification-evidence",
+      "rights": "Repository-rendered UI; synthetic fixtures; underlying approved asset attribution unchanged",
+      "sha256": "866808f33e4547b685cad8da06aa02ae32227573e53251618942e9ecbb35b86a",
+      "bytes": 243931,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "switch-query-hydration-language-switch-results-retained",
+      "path": "docs/evidence/switch-query-hydration-2026-09-28/language-switch-results-retained.png",
+      "source": "Actual local Playwright regression capture; synthetic data; source hashes and build in sibling local-red-green.json",
+      "usage": "verification-evidence",
+      "rights": "Repository-rendered UI; synthetic fixtures; underlying approved asset attribution unchanged",
+      "sha256": "78a740381ec820201f2841ea7ed01406e1ef99847f0715f26e154d4143d88bbc",
+      "bytes": 244380,
+      "width": 1280,
+      "height": 720
     }
   ]
 }

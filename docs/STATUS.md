@@ -2,6 +2,18 @@
 
 Updated: 2026-09-28. Stage: **WDG production refresh accepted; unified HLL/WDG deployment to valkyria.cz authorized and being qualified. Live authentication remains deferred.**
 
+## Unified cutover qualification
+
+PR #37 merged as `40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9`; its PR and exact-main
+CI passed. The separate [publisher 36469751788](https://github.com/ValkyriaWDG/www/actions/runs/36469751788)
+then caught a real query-loss defect before registry access: the game switch exposed
+a query-less link while its query-aware segment was still hidden. The language switch
+used the same fallback pattern. Issue #49 tracks the repair; the original
+[trace observations and screenshot](evidence/switch-query-hydration-2026-09-28/README.md)
+are preserved. No image was published, no production data was migrated and no domain
+route was changed by that failed run. The previous WDG image below remains current
+until a separately qualified image is actually promoted.
+
 ## Latest production refresh
 
 PR #44 merged as `9a872918ad4d89935eb26118d853d40776af7d66`. Its final PR CI and
@@ -51,9 +63,10 @@ separate from this deployment.
 
 ## Unified platform / HLL implementation
 
-Branch `feat/hll-platform-handoff`, PR [#37](https://github.com/ValkyriaWDG/www/pull/37)
-(merged as `40da3df`), issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
-[handoff](handoff/hll-claude-code-cloud.md); nothing is deployed and no DNS changed.
+Merged PR [#37](https://github.com/ValkyriaWDG/www/pull/37) (`40da3df`),
+issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on the
+[handoff](handoff/hll-claude-code-cloud.md); unified source is implemented, while
+its production promotion and DNS cutover remain unaccepted as described above.
 
 - **Routes:** `/cs` and `/en` are the community hub; `/{locale}/hll/...` (news, matches,
   servers, members, field-manual, clan, community) and `/{locale}/wardogs/...` (the
