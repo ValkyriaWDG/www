@@ -114,6 +114,22 @@ test.describe('HLL servers (labelled synthetic snapshots)', () => {
     await page.goto('/cs/hll/servers?server=removed-server');
     await expect(page.locator('[data-server-detail="missing"]')).toBeVisible();
   });
+
+  test('round details and live statistics link only for a fresh observation', async ({ page }) => {
+    await page.goto('/cs/hll/servers?server=synthetic-alpha');
+    const detail = page.locator('section[aria-labelledby="server-detail-title"]');
+    await expect(detail.getByText('Synthetic Map East')).toBeVisible();
+    await expect(detail.getByText('54 min')).toBeVisible();
+    await expect(page.locator('[data-server-score]')).toHaveText('Spojenci 3 : 2 Osa');
+    await expect(detail.getByText('Spojenci 33 · Osa 31')).toBeVisible();
+    await expect(page.locator('[data-server-stats]')).toHaveAttribute('href', 'https://stats.synthetic-alpha.invalid/');
+
+    // A stale observation keeps the map but not round progress.
+    await page.goto('/en/hll/servers?server=synthetic-bravo');
+    await expect(page.locator('#server-detail-title')).toContainText('Bravo');
+    await expect(page.locator('[data-server-score]')).toHaveCount(0);
+    await expect(page.locator('[data-server-stats]')).toHaveCount(0);
+  });
 });
 
 test.describe('HLL field manual (synthetic articles)', () => {

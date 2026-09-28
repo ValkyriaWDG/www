@@ -68,7 +68,10 @@ issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on
   `games`; content, manual, matches and members check the resource game on every private
   read and mutation (denials audited). Media/settings/audit/access stay platform-only.
 - **Servers:** server-only status boundary with fresh/stale/unavailable read models;
-  `SERVER_STATUS_SOURCE=none` by default, labelled synthetic snapshots for tests.
+  `SERVER_STATUS_SOURCE=none` by default, `crcon` reads CRCON's public
+  `get_public_info` for the servers in `HLL_SERVER_SOURCES_JSON` (map, mode, players,
+  next map, time left, score, teams, stats link; per-server outage), labelled synthetic
+  snapshots for tests. Real hosts are configured at deployment and are not yet verified.
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.

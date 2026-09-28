@@ -162,7 +162,20 @@
       "copyFailed": "Copying failed – please copy the address manually.",
       "noConnect": "Connection instructions are not published yet. Ask on Discord.",
       "pingNote": "Latency (ping) is not shown: it would be measured from the website server, not from your computer.",
-      "back": "Back to the server list"
+      "back": "Back to the server list",
+      "nextMap": "Next map",
+      "timeRemaining": "Time left in the round",
+      "timeValueHours": "{hours} h {minutes} min",
+      "timeValueMinutes": "{minutes} min",
+      "score": "Score (sectors held)",
+      "scoreValue": "Allies {allied} : {axis} Axis",
+      "teams": "Players per team",
+      "teamsValue": "Allies {allied} · Axis {axis}",
+      "liveStats": "Live server statistics"
+    },
+    "partial": {
+      "title": "Some servers are not responding right now.",
+      "body": "For those we show the last known state as outdated, or an unknown state. This does not mean they are offline."
     }
   },
   "manual": {
