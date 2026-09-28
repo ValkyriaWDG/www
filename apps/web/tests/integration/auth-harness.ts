@@ -1,5 +1,5 @@
 import { createHmac, randomInt, randomUUID } from 'node:crypto';
-import { authAccount, authSession, authUser, guildMembership, localAdminGrant, type Database, type LocalGrantRole } from '@valkyria/db';
+import { authAccount, authSession, authUser, guildMembership, localAdminGrant, type Database, type Game, type LocalGrantRole } from '@valkyria/db';
 import { hashPassword } from 'better-auth/crypto';
 import { eq } from 'drizzle-orm';
 import type { AccessEnv } from '@/modules/access/config';
@@ -163,7 +163,7 @@ export async function insertDiscordUser(db: Database, options: { name?: string; 
 
 export async function insertLocalAdmin(
   db: Database,
-  options: { password?: string; roles?: LocalGrantRole[]; twoFactorEnabled?: boolean; email?: string; expiresAt?: Date | null } = {},
+  options: { password?: string; roles?: LocalGrantRole[]; twoFactorEnabled?: boolean; email?: string; expiresAt?: Date | null; games?: Game[] | null } = {},
 ) {
   const userId = randomUUID();
   const email = options.email ?? `recovery-${userId.slice(0, 8)}@example.test`;
@@ -178,7 +178,7 @@ export async function insertLocalAdmin(
   });
   const [grant] = await db
     .insert(localAdminGrant)
-    .values({ userId, roles: options.roles ?? ['administrator'], version: 1, provisionedBy: 'test-operator', expiresAt: options.expiresAt ?? null })
+    .values({ userId, roles: options.roles ?? ['administrator'], games: options.games ?? null, version: 1, provisionedBy: 'test-operator', expiresAt: options.expiresAt ?? null })
     .returning();
   return { userId, email, password, grantId: grant!.id };
 }
