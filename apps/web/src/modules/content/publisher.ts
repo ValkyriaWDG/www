@@ -1,4 +1,4 @@
-import { publicationSchedule, siteSetting, type Executor } from '@valkyria/db';
+import { contentDocument, contentTranslation, publicationSchedule, siteSetting, type Executor, type Game } from '@valkyria/db';
 import { eq, sql } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
 import type { Capability } from '@/modules/access/capabilities';
@@ -297,6 +297,17 @@ async function writeHeartbeat(db: Executor, now: Date, summary: PublisherRunSumm
  * Runs one publisher pass. Throws only on infrastructure failure (e.g. the claim query
  * cannot run); individual intent failures are recorded on the intent and in the audit log.
  */
+/** Current game of the scheduled translation's document (authority is re-checked for it). */
+async function claimGame(db: Executor, translationId: string): Promise<Game | null> {
+  const [row] = await db
+    .select({ game: contentDocument.game })
+    .from(contentTranslation)
+    .innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
+    .where(eq(contentTranslation.id, translationId))
+    .limit(1);
+  return row?.game ?? null;
+}
+
 export async function runPublisher(db: Executor, options: PublisherOptions = {}): Promise<PublisherRunSummary> {
   const now = options.now?.() ?? new Date();
   const limit = Math.min(Math.max(options.limit ?? 25, 1), 200);
@@ -326,6 +337,7 @@ export async function runPublisher(db: Executor, options: PublisherOptions = {})
             grantId: claim.issuerGrantId,
             grantVersion: claim.issuerGrantVersion,
             capability: SCHEDULE_CAPABILITY,
+            game: await claimGame(db, claim.translationId),
           });
         } catch {
           verdict = 'unknown';

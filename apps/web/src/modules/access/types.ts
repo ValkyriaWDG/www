@@ -1,5 +1,5 @@
 import type { AppRole } from '@valkyria/db';
-import type { Capability } from './capabilities';
+import type { Capability, GameScope } from './capabilities';
 
 /** How the current session was established (stored on the session by the auth module). */
 export type SessionAssurance = 'discord' | 'password' | 'mfa' | 'unknown';
@@ -27,6 +27,12 @@ export type Principal = {
   status: AuthorizationStatus;
   roles: readonly AppRole[];
   capabilities: ReadonlySet<Capability>;
+  /**
+   * Game scope of every held capability. Shared identity is not shared authority: an
+   * HLL-scoped editor holds `content.edit` only for `hell-let-loose` resources; community
+   * (no-game) resources require a platform-wide (`all`) grant.
+   */
+  gameScopes: ReadonlyMap<Capability, GameScope>;
   /** Present only for a verified local-admin grant used from an MFA-assured session. */
   localGrant: { id: string; version: number } | null;
   /** When the authorization inputs (snapshot or grant) were verified. */

@@ -47,8 +47,8 @@ export default async function AdminOverviewPage({ params }: PageProps<'/[locale]
       editorial = { error: true };
     }
   }
-  const editPath = (item: { kind: 'news' | 'page'; documentId: string; locale: 'cs' | 'en' }) =>
-    `${item.kind === 'news' ? '/admin/news' : '/admin/content'}/${item.documentId}?lang=${item.locale}`;
+  const editPath = (item: { kind: 'news' | 'page' | 'manual'; documentId: string; locale: 'cs' | 'en' }) =>
+    `${item.kind === 'news' ? '/admin/news' : item.kind === 'manual' ? '/admin/manual' : '/admin/content'}/${item.documentId}?lang=${item.locale}`;
 
   return (
     <section aria-labelledby="admin-overview-title" className={styles.stack}>

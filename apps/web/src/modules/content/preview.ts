@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { DomainError } from '@/lib/result';
 import type { Actor } from '@/modules/access/types';
 import { buildArticle } from './article';
-import { authorize } from './guard';
+import { authorize, authorizeGameScope } from './guard';
 import { parseInput, uuidSchema } from './inputs';
 import { readDocument, readRevision, readTranslation } from './store';
 import type { ArticleDTO } from './types';
@@ -21,6 +21,8 @@ export async function getPreview(db: Executor, actor: Actor, rawInput: PreviewIn
   await authorize(db, actor, 'content.read_private', 'read', { action: 'content.preview', entityType: 'content_translation' });
   const input = parseInput(previewSchema, rawInput);
   const translation = await readTranslation(db, input.translationId);
+  const owner = await readDocument(db, translation.documentId);
+  await authorizeGameScope(db, actor, 'content.read_private', [owner.game], { action: 'content.preview', entityType: 'content_document', entityId: owner.id });
   const revisionId = input.revisionId ?? translation.draftRevisionId ?? translation.publishedRevisionId;
   if (!revisionId) throw new DomainError('not_found', 'Nothing to preview.');
   const revision = await readRevision(db, translation.id, revisionId);

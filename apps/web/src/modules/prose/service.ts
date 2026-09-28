@@ -16,7 +16,7 @@ import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { parseRichTextDocument, RICH_TEXT_SCHEMA_VERSION } from '@/modules/content/rich-text/schema';
 import { assertUsableAssets } from './assets';
-import { assertVersion, authorize, isUniqueViolation, parseInput } from './domain';
+import { assertVersion, authorize, authorizeGames, isUniqueViolation, parseInput } from './domain';
 import { ownerCondition } from './queries';
 import {
   MAX_PROSE_BODY_BYTES,
@@ -55,6 +55,14 @@ async function guard(db: Executor, actor: Actor, input: unknown, capability: 'ed
   const rawLocale = (input as { locale?: unknown }).locale;
   const locale = rawLocale === 'cs' || rawLocale === 'en' ? rawLocale : null;
   await authorize(db, actor, policy[capability], { intent, action, entityType: policy.entityType, entityId, locale });
+  if (entityId) {
+    // Recaps/biographies follow their owner's game scope (a member: every affiliation).
+    const games =
+      kind === 'member'
+        ? (await db.select({ games: memberProfile.games }).from(memberProfile).where(eq(memberProfile.id, entityId)).limit(1))[0]?.games
+        : (await db.select({ game: match.game }).from(match).where(eq(match.id, entityId)).limit(1)).map((row) => row.game);
+    if (games) await authorizeGames(db, actor, policy[capability], games, { action, entityType: policy.entityType, entityId, locale });
+  }
   return policy;
 }
 

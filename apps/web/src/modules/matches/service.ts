@@ -7,7 +7,7 @@ import { actorUserId } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { assertUsableAssets } from '@/modules/prose/assets';
-import { assertVersion, authorize, isUniqueViolation, parseInput } from '@/modules/prose/domain';
+import { assertVersion, authorize, authorizeGames, isUniqueViolation, parseInput } from '@/modules/prose/domain';
 import { firstFreeSlug, slugify } from '@/modules/prose/slug';
 import {
   createMatchSchema,
@@ -111,6 +111,7 @@ function roundsHaveScores(rounds: NormalizedRound[]) {
 export async function createMatch(db: Executor, actor: Actor, input: CreateMatchInput): Promise<MatchMutationResult> {
   await guard(db, actor, 'matches.edit', 'match.create', null);
   const data = parseInput(createMatchSchema, input);
+  await authorizeGames(db, actor, 'matches.edit', [data.game], { action: 'match.create', entityType: 'match' });
   const start = resolveStartsAt(data.startsAt);
   const timeZone = data.timeZone ?? start.zone ?? DEFAULT_MATCH_TIME_ZONE;
   await assertUsableAssets(
@@ -183,6 +184,9 @@ export async function updateMatch(db: Executor, actor: Actor, input: UpdateMatch
   try {
     return await db.transaction(async (tx) => {
       const current = await lockMatch(tx, data.id, data.expectedVersion);
+      // Moving a match to another game needs the capability in both games.
+      const games = data.game !== undefined && data.game !== current.game ? [current.game, data.game] : [current.game];
+      await authorizeGames(db, actor, 'matches.edit', games, { action: 'match.update', entityType: 'match', entityId: current.id });
       if (data.rounds && current.status !== 'completed' && roundsHaveScores(data.rounds)) {
         throw new DomainError('validation', 'Round scores require a completed match.', { rounds: 'scores_require_completed' });
       }
@@ -247,6 +251,7 @@ type Transition = {
 async function transition(db: Executor, target: { id: string; expectedVersion: number }, actor: Actor, spec: Transition) {
   return db.transaction(async (tx) => {
     const current = await lockMatch(tx, target.id, target.expectedVersion);
+    await authorizeGames(db, actor, spec.capability, [current.game], { action: spec.action, entityType: 'match', entityId: current.id });
     const now = new Date();
     const { patch, summary } = spec.apply(current, now);
     const [row] = await tx
@@ -393,6 +398,7 @@ export async function recordResult(db: Executor, actor: Actor, input: RecordResu
   const data = parseInput(recordResultSchema, input);
   return db.transaction(async (tx) => {
     const current = await lockMatch(tx, data.id, data.expectedVersion);
+    await authorizeGames(db, actor, 'matches.edit', [current.game], { action: 'match.result', entityType: 'match', entityId: current.id });
     if (current.status === 'cancelled') throw new DomainError('invalid_state', 'A cancelled match has no result.', { status: 'cancelled' });
     const now = new Date();
     requireNotFarFuture(current, now);
@@ -445,6 +451,7 @@ export async function deleteMatch(db: Executor, actor: Actor, input: MatchTarget
   const target = parseInput(matchTargetSchema, input);
   return db.transaction(async (tx) => {
     const current = await lockMatch(tx, target.id, target.expectedVersion);
+    await authorizeGames(db, actor, 'matches.edit', [current.game], { action: 'match.delete', entityType: 'match', entityId: current.id });
     if (current.publication === 'published') throw new DomainError('invalid_state', 'Unpublish the match before deleting it.');
     await tx.delete(match).where(and(eq(match.id, current.id), eq(match.version, current.version)));
     await recordAudit(tx, {

@@ -16,7 +16,8 @@ import {
 import { authUser } from './auth.ts';
 import { GAMES, LOCALES, createdAt, sqlList, tz, updatedAt, type Game, type Locale } from './common.ts';
 
-export const DOCUMENT_KINDS = ['news', 'page'] as const;
+/** `manual` is a game-scoped Field Manual article (always has a game). */
+export const DOCUMENT_KINDS = ['news', 'page', 'manual'] as const;
 export type DocumentKind = (typeof DOCUMENT_KINDS)[number];
 
 /** Fixed keys for core static pages rendered at `/clan`, `/community`, `/privacy`. */
@@ -70,9 +71,10 @@ export const contentDocument = pgTable(
     check('content_document_kind_ck', sql`${t.kind} in (${sqlList(DOCUMENT_KINDS)})`),
     check(
       'content_document_page_key_ck',
-      sql`(${t.kind} = 'page' and ${t.pageKey} in (${sqlList(PAGE_KEYS)})) or (${t.kind} = 'news' and ${t.pageKey} is null)`,
+      sql`(${t.kind} = 'page' and ${t.pageKey} in (${sqlList(PAGE_KEYS)})) or (${t.kind} in ('news', 'manual') and ${t.pageKey} is null)`,
     ),
     check('content_document_game_ck', sql`${t.game} is null or ${t.game} in (${sqlList(GAMES)})`),
+    check('content_document_manual_game_ck', sql`${t.kind} <> 'manual' or ${t.game} is not null`),
   ],
 );
 

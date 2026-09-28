@@ -123,6 +123,8 @@ export const listDocumentsSchema = z.object({
   kind: z.enum(DOCUMENT_KINDS).optional(),
   state: z.enum(ADMIN_STATES).optional(),
   locale: localeSchema.optional(),
+  /** Scope filter inside the actor's permitted games (`community` = no game). */
+  game: z.enum([...GAMES, 'community']).optional(),
   page: z.number().int().min(1).max(10_000).default(1),
   pageSize: z.number().int().min(1).max(50).default(20),
 });

@@ -1,11 +1,11 @@
-import { authUser, type Executor } from '@valkyria/db';
+import { authUser, type Executor, type Game } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
-import { capabilitiesForRoles, type Capability } from './capabilities';
+import { scopesForGrants, type Capability, type RoleGrant } from './capabilities';
 import { accessEnvFromProcess, discordClientConfig, isDiscordMembershipConfigured, WRITE_SNAPSHOT_MAX_AGE_MS, type AccessEnv } from './config';
 import type { DiscordClientDeps } from './discord-client';
 import { findLocalGrantById, isGrantActive, summarizeAccounts } from './local-grant';
 import { readMembership, refreshMembership, snapshotAgeMs } from './membership';
-import { loadRoleMapping, rolesForRoleIds } from './role-mapping';
+import { grantsForRoleIds, loadRoleMapping } from './role-mapping';
 import { isSnowflake } from './snowflake';
 
 export type IssuerCheck = {
@@ -15,7 +15,17 @@ export type IssuerCheck = {
   grantId: string | null;
   grantVersion: number | null;
   capability: Capability;
+  /** Game of the resource at execution time (`null` = community): authority is game-scoped. */
+  game: Game | null;
 };
+
+/** Whether role grants carry `capability` for a resource of `game` (community needs `all`). */
+function grantsCover(grants: readonly RoleGrant[], capability: Capability, game: Game | null): boolean {
+  const scope = scopesForGrants(grants).gameScopes.get(capability);
+  if (!scope) return false;
+  if (scope === 'all') return true;
+  return game !== null && scope.has(game);
+}
 
 /**
  * `authorized`: the issuer currently holds the capability (fresh Discord snapshot or the
@@ -41,6 +51,8 @@ export type IssuerDeps = {
  *   role mapping. Discord failure → `unknown`; departed/removed role/unknown user → `revoked`.
  * - `local_admin`: the recorded grant ID and version must be unchanged, active, still grant
  *   the capability, belong to an existing user without any linked social account.
+ * - Either way the capability must cover the resource's current game (a scoped grant
+ *   never covers another game or community content).
  *   Discord availability is irrelevant and no Discord snapshot is fabricated.
  */
 export async function verifyIssuerAuthority(db: Executor, input: IssuerCheck, deps: IssuerDeps = {}): Promise<IssuerVerdict> {
@@ -56,7 +68,8 @@ export async function verifyIssuerAuthority(db: Executor, input: IssuerCheck, de
     if (!grant || grant.userId !== user.id || grant.version !== input.grantVersion) return 'revoked';
     if (!isGrantActive(grant, now())) return 'revoked';
     if (!accounts.hasCredential || accounts.socialProviders.length > 0) return 'revoked';
-    return capabilitiesForRoles(grant.roles).has(input.capability) ? 'authorized' : 'revoked';
+    const grants = grant.roles.map((role) => ({ role, games: grant.games ?? ('all' as const) }));
+    return grantsCover(grants, input.capability, input.game) ? 'authorized' : 'revoked';
   }
 
   // Discord issuer: a local recovery account can never act as a Discord issuer.
@@ -81,5 +94,5 @@ export async function verifyIssuerAuthority(db: Executor, input: IssuerCheck, de
   if (snapshot.state !== 'present') return 'revoked';
   const mapping = loadRoleMapping(env.DISCORD_ROLE_MAPPING_JSON);
   if (!mapping.ok) return 'unknown';
-  return capabilitiesForRoles(rolesForRoleIds(mapping.mapping, snapshot.roleIds)).has(input.capability) ? 'authorized' : 'revoked';
+  return grantsCover(grantsForRoleIds(mapping.mapping, snapshot.roleIds), input.capability, input.game) ? 'authorized' : 'revoked';
 }

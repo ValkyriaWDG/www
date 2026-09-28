@@ -14,9 +14,10 @@ import {
   type ResultVerification,
 } from '@valkyria/db';
 import { and, asc, count, desc, eq, gte, inArray, lte, or, type SQL } from 'drizzle-orm';
+import { capabilityScope } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { loadAssetDefaults, loadPublicImages } from '@/modules/prose/assets';
-import { authorize, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
+import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { adminMatchListSchema, publicMatchListSchema, type AdminMatchListInput, type PublicMatchListInput } from './schemas';
@@ -296,7 +297,11 @@ function adminItem(row: typeof match.$inferSelect, result: typeof matchResult.$i
 export async function listMatchesForAdmin(db: Executor, actor: Actor, input: AdminMatchListInput = {}): Promise<AdminMatchPage> {
   await authorize(db, actor, 'matches.edit', { intent: 'read', action: 'match.list', entityType: 'match' });
   const query = parseInput(adminMatchListSchema, input);
+  const scope = capabilityScope(actor, 'matches.edit');
+  if (scope === null || (scope !== 'all' && scope.size === 0)) return { items: [], total: 0, page: query.page, pageCount: 0 };
   const conditions: (SQL | undefined)[] = [
+    // Only matches of games in the actor's scope; the game filter never widens it.
+    scope === 'all' ? undefined : inArray(match.game, [...scope]),
     query.game ? eq(match.game, query.game) : undefined,
     query.status ? eq(match.status, query.status) : undefined,
     query.publication ? eq(match.publication, query.publication) : undefined,
@@ -334,6 +339,7 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
   if (typeof id !== 'string' || !/^[0-9a-f-]{36}$/i.test(id)) return null;
   const [row] = await db.select({ match, result: matchResult }).from(match).leftJoin(matchResult, eq(matchResult.matchId, match.id)).where(eq(match.id, id)).limit(1);
   if (!row) return null;
+  await authorizeGames(db, actor, 'matches.edit', [row.match.game], { action: 'match.read', entityType: 'match', entityId: id });
   const [rounds, recapDetail] = await Promise.all([loadRounds(db, id), loadProseAdminDetail(db, { kind: 'match', id })]);
   const recap = { cs: recapDetail.cs.status, en: recapDetail.en.status };
   return {

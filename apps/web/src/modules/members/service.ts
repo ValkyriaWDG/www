@@ -6,7 +6,7 @@ import type { Capability } from '@/modules/access/capabilities';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { assertUsableAssets } from '@/modules/prose/assets';
-import { assertVersion, authorize, isUniqueViolation, parseInput } from '@/modules/prose/domain';
+import { assertVersion, authorize, authorizeGames, isUniqueViolation, parseInput } from '@/modules/prose/domain';
 import { firstFreeSlug, slugify } from '@/modules/prose/slug';
 import {
   createMemberSchema,
@@ -56,6 +56,8 @@ async function audit(db: Executor, actor: Actor, capability: Capability, action:
 export async function createMemberProfile(db: Executor, actor: Actor, input: CreateMemberInput): Promise<MemberMutationResult> {
   await guard(db, actor, 'members.edit', 'member.create', null);
   const data = parseInput(createMemberSchema, input);
+  // A profile is managed by whoever holds the capability for every affiliated game.
+  await authorizeGames(db, actor, 'members.edit', data.games ?? [], { action: 'member.create', entityType: 'member_profile' });
   await assertUsableAssets(db, [{ field: 'avatarAssetId', id: data.avatarAssetId }], AVATAR_SCOPES);
   try {
     return await db.transaction(async (tx) => {
@@ -93,6 +95,8 @@ export async function updateMemberProfile(db: Executor, actor: Actor, input: Upd
   try {
     return await db.transaction(async (tx) => {
       const current = await lockProfile(tx, data.id, data.expectedVersion);
+      const games = [...new Set([...current.games, ...(data.games ?? [])])];
+      await authorizeGames(db, actor, 'members.edit', games, { action: 'member.update', entityType: 'member_profile', entityId: current.id });
       if (data.slug && data.slug !== current.slug && (await slugsTaken(tx, [data.slug])).size > 0) {
         throw new DomainError('slug_taken', 'Slug already in use.', { slug: 'slug_taken' });
       }
@@ -123,6 +127,7 @@ async function change(db: Executor, actor: Actor, input: MemberTargetInput, spec
   const target = parseInput(memberTargetSchema, input);
   return db.transaction(async (tx) => {
     const current = await lockProfile(tx, target.id, target.expectedVersion);
+    await authorizeGames(db, actor, spec.capability, current.games, { action: spec.action, entityType: 'member_profile', entityId: current.id });
     const now = new Date();
     const patch = spec.apply(current, now);
     const [row] = await tx

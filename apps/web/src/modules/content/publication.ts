@@ -5,7 +5,7 @@ import { DomainError } from '@/lib/result';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { isUniqueViolation } from './db-errors';
-import { authorize } from './guard';
+import { authorize, authorizeGameScope } from './guard';
 import { parseInput, translationVersionSchema, type TranslationVersionInput } from './inputs';
 import { isRichTextEmpty, parseRichTextDocument } from './rich-text/schema';
 import { isValidSlug } from './slug';
@@ -185,6 +185,7 @@ export async function publishTranslation(
       const translation = await lockTranslation(tx, input.translationId);
       assertVersion(translation.version, input.expectedVersion);
       const document = await readDocument(tx, translation.documentId, 'share');
+      await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.publish', entityType: 'content_document', entityId: document.id });
       assertNotArchived(document);
       if (!translation.draftRevisionId) throw new DomainError('invalid_state', 'Nothing to publish.');
       const revision = await readRevision(tx, translation.id, translation.draftRevisionId);
@@ -262,6 +263,7 @@ export async function unpublishTranslation(
     assertVersion(translation.version, input.expectedVersion);
     if (!translation.publishedRevisionId) throw new DomainError('invalid_state', 'The translation is not published.');
     const document = await readDocument(tx, translation.documentId, 'share');
+    await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.unpublish', entityType: 'content_document', entityId: document.id });
     const [updated] = await tx
       .update(contentTranslation)
       .set({ publishedRevisionId: null, liveSlug: null, publishedAt: null, version: translation.version + 1, updatedAt: now })

@@ -27,6 +27,7 @@ export function auditActor(input: {
     status: 'unavailable',
     roles: [],
     capabilities: NONE,
+    gameScopes: new Map(),
     localGrant: null,
     verifiedAt: null,
   };

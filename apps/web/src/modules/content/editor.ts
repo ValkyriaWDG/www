@@ -13,10 +13,11 @@ import {
 } from '@valkyria/db';
 import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 import { DomainError } from '@/lib/result';
+import { capabilityScope } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
 import { isUniqueViolation } from './db-errors';
-import { actorUserIdOrNull, authorize } from './guard';
+import { actorUserIdOrNull, authorize, authorizeGameScope } from './guard';
 import {
   addTranslationSchema,
   createDocumentSchema,
@@ -124,6 +125,7 @@ export async function createDocument(
 ): Promise<CreateDocumentResult> {
   await authorize(db, actor, 'content.edit', 'write', { action: 'content.create', entityType: 'content_document' });
   const input = parseInput(createDocumentSchema, rawInput);
+  await authorizeGameScope(db, actor, 'content.edit', [input.game ?? null], { action: 'content.create', entityType: 'content_document' });
   const now = deps.now?.() ?? new Date();
   const body = input.fields?.body !== undefined ? requireValidBody(input.fields.body) : { doc: emptyDocument(), assetIds: [] };
   const cover = normalizeCover(input.fields?.cover);
@@ -217,6 +219,7 @@ export async function addTranslation(
     return await mapSlugRace(
       inTransaction(db, async (tx) => {
         const document = await readDocument(tx, input.documentId, 'share');
+        await authorizeGameScope(db, actor, 'content.edit', [document.game], { action: 'content.translation.create', entityType: 'content_document', entityId: document.id });
         assertNotArchived(document);
         const [existing] = await tx
           .select({ id: contentTranslation.id })
@@ -292,6 +295,9 @@ export async function saveDraft(db: Executor, actor: Actor, rawInput: SaveDraftI
       const translation = await lockTranslation(tx, input.translationId);
       assertVersion(translation.version, input.expectedVersion);
       let document = await readDocument(tx, translation.documentId, input.shared ? 'update' : 'share');
+      // Moving a document to another game needs the capability in both games.
+      const targetGames = input.shared?.game !== undefined && input.shared.game !== document.game ? [document.game, input.shared.game] : [document.game];
+      await authorizeGameScope(db, actor, 'content.edit', targetGames, { action: 'content.save', entityType: 'content_document', entityId: document.id });
       assertNotArchived(document);
       const current = translation.draftRevisionId ? await readRevision(tx, translation.id, translation.draftRevisionId) : null;
       const base = current ? fieldsOf(current) : emptyFields(translation.draftSlug);
@@ -382,6 +388,7 @@ export async function restoreRevision(
       const translation = await lockTranslation(tx, input.translationId);
       assertVersion(translation.version, input.expectedVersion);
       const document = await readDocument(tx, translation.documentId, 'share');
+      await authorizeGameScope(db, actor, 'content.edit', [document.game], { action: 'content.revision.restore', entityType: 'content_document', entityId: document.id });
       assertNotArchived(document);
       const source = await readRevision(tx, translation.id, input.revisionId);
       const fields = fieldsOf(source);
@@ -444,6 +451,7 @@ export async function getEditorState(db: Executor, actor: Actor, rawInput: Edito
   const now = deps.now?.() ?? new Date();
   const documentId = 'documentId' in input ? input.documentId : (await readTranslation(db, input.translationId)).documentId;
   const document = await readDocument(db, documentId);
+  await authorizeGameScope(db, actor, 'content.read_private', [document.game], { action: 'content.read_private', entityType: 'content_document', entityId: document.id });
   const translations = await db.select().from(contentTranslation).where(eq(contentTranslation.documentId, document.id));
   const revisionIds = translations.flatMap((t) => [t.draftRevisionId, t.publishedRevisionId]).filter((id): id is string => Boolean(id));
   const revisions = revisionIds.length > 0 ? await db.select().from(contentRevision).where(inArray(contentRevision.id, revisionIds)) : [];
@@ -498,6 +506,8 @@ export async function listRevisions(db: Executor, actor: Actor, rawInput: ListRe
   await authorize(db, actor, 'content.read_private', 'read', { action: 'content.read_private', entityType: 'content_translation' });
   const input = parseInput(listRevisionsSchema, rawInput);
   const translation = await readTranslation(db, input.translationId);
+  const owner = await readDocument(db, translation.documentId);
+  await authorizeGameScope(db, actor, 'content.read_private', [owner.game], { action: 'content.read_private', entityType: 'content_document', entityId: owner.id });
   const rows = await db
     .select({
       id: contentRevision.id,
@@ -560,6 +570,13 @@ export async function listDocumentsForAdmin(
   const input = parseInput(listDocumentsSchema, rawInput);
   const now = deps.now?.() ?? new Date();
   const q = input.q ? `%${escapeLike(input.q)}%` : null;
+  // Private lists contain only documents within the actor's game scope (community
+  // documents only for platform-wide grants); a UI filter never widens this.
+  const scope = capabilityScope(actor, 'content.read_private');
+  if (scope === null || (scope !== 'all' && scope.size === 0)) return { items: [], total: 0, page: input.page, pageSize: input.pageSize, pageCount: 0 };
+  const scopeSql = scope === 'all' ? sql`true` : sql`d.game in (${sql.join([...scope].map((game) => sql`${game}`), sql`, `)})`;
+  const gameFilterSql =
+    input.game === undefined ? sql`true` : input.game === 'community' ? sql`d.game is null` : sql`d.game = ${input.game}`;
 
   const stateSql = sql`
     with tstate as (
@@ -584,6 +601,8 @@ export async function listDocumentsForAdmin(
       from content_document d
       left join tstate ts on ts.document_id = d.id
       where (${input.kind ?? null}::text is null or d.kind = ${input.kind ?? null})
+        and ${scopeSql}
+        and ${gameFilterSql}
         and (${q}::text is null or exists (
           select 1 from tstate x where x.document_id = d.id and (x.title ilike ${q} escape '\\' or x.draft_slug ilike ${q} escape '\\' or x.live_slug ilike ${q} escape '\\')
         ))
@@ -664,6 +683,7 @@ export async function duplicateDocument(
   return mapSlugRace(
     inTransaction(db, async (tx) => {
       const source = await readDocument(tx, input.documentId, 'share');
+      await authorizeGameScope(db, actor, 'content.edit', [source.game], { action: 'content.duplicate', entityType: 'content_document', entityId: source.id });
       if (source.kind !== 'news') throw new DomainError('invalid_state', 'Core pages cannot be duplicated.');
       const [document] = await tx
         .insert(contentDocument)
@@ -754,8 +774,9 @@ export async function archiveDocument(
   const now = deps.now?.() ?? new Date();
   return inTransaction(db, async (tx) => {
     const { schedules, document } = await lockDocumentTree(tx, input.documentId);
+    await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.archive', entityType: 'content_document', entityId: document.id });
     assertVersion(document.version, input.expectedDocumentVersion);
-    if (document.kind !== 'news') throw new DomainError('invalid_state', 'Core pages cannot be archived.');
+    if (document.kind === 'page') throw new DomainError('invalid_state', 'Core pages cannot be archived.');
     assertNotArchived(document);
     if (schedules.length > 0) {
       await tx
@@ -793,6 +814,7 @@ export async function unarchiveDocument(
   const now = deps.now?.() ?? new Date();
   return inTransaction(db, async (tx) => {
     const document = await readDocument(tx, input.documentId, 'update');
+    await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.unarchive', entityType: 'content_document', entityId: document.id });
     assertVersion(document.version, input.expectedDocumentVersion);
     if (!document.archivedAt) throw new DomainError('invalid_state', 'The document is not archived.');
     const [updated] = await tx
@@ -821,8 +843,9 @@ export async function deleteDocument(db: Executor, actor: Actor, rawInput: Docum
   const input = parseInput(documentVersionSchema, rawInput);
   return inTransaction(db, async (tx) => {
     const { translations, document } = await lockDocumentTree(tx, input.documentId);
+    await authorizeGameScope(db, actor, 'content.publish', [document.game], { action: 'content.delete', entityType: 'content_document', entityId: document.id });
     assertVersion(document.version, input.expectedDocumentVersion);
-    if (document.kind !== 'news') throw new DomainError('invalid_state', 'Core pages cannot be deleted.');
+    if (document.kind === 'page') throw new DomainError('invalid_state', 'Core pages cannot be deleted.');
     if (!document.archivedAt && translations.some((row) => row.publishedRevisionId)) {
       throw new DomainError('invalid_state', 'Unpublish or archive the document before deleting it.');
     }
