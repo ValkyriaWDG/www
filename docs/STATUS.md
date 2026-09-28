@@ -37,13 +37,36 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 ## Checkpoint (resume here)
 
-Issues #29 and #31 candidate: [SEO and sharing](engineering/seo-and-sharing.md)
-adds bilingual homepage canonicals, branded publication-aware PNG templates for
-site/news/matches, editorial sharing previews and published-article JSON-LD.
-[Local evidence](evidence/seo-social-2026-09-26/README.md) includes actual images,
-CS/EN desktop/mobile editor captures, long-title stress coverage and regression
-results. This candidate is not deployed; #29 still requires a new production HTTP
-check after an authorized release. Historical deployment evidence remains intact.
+Issue #26 candidate: [release hardening](operations/release-hardening.md) adds cold
+mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
+disposable previous-image/database rollback rehearsals. [CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812)
+passed for PR source `677c07f8e284ec6de936094102e0f6858b1e3a81`, tested as merge
+revision `499558cbd9e0fc1260356274c40e318c28514e86`. All 12 rehearsal steps and
+cleanup passed; all 25 restored table fingerprints matched, runtime scans found no
+fixable HIGH/CRITICAL advisories, and all nine cold-mobile samples passed. The
+[acceptance evidence](evidence/release-hardening-2026-09-26/README.md) preserves the
+remaining advisories, larger candidate image, dirty-tree provenance and earlier failures.
+
+PR #33 was merged as `b37931393cd9b836415724d9572765f8615c31e8` on 2026-09-28.
+Its [SEO and sharing](engineering/seo-and-sharing.md) adds bilingual homepage
+canonicals, branded publication-aware PNG templates for site/news/matches, editorial
+sharing previews and published-article JSON-LD. [Feature evidence](evidence/seo-social-2026-09-26/README.md)
+includes actual images, CS/EN desktop/mobile editor captures, long-title stress
+coverage and regression results. Issue #29 still requires production HTTP verification
+after an authorized release; source merge does not prove deployment.
+
+PR #32 merged as `eaf9f911f13c0b929c8f7d90529c0ccab5dd0701` after
+[CI 36435186950](https://github.com/ValkyriaWDG/www/actions/runs/36435186950) passed
+on head `cfececb5fa5e48c013f1593a3ac2f9855df17588` / tested merge
+`07a58689f7ca8051200f128eca14b43fc9f7c1ad`: 39 tooling, 374 unit, 229 database
+and 119 browser tests, both runtime variants' CS/EN social PNGs, all 12 rollback
+steps and all nine page-budget samples. Issue #26 is closed with acceptance proof.
+The narrowed authorization candidate now incorporates that accepted main; its own
+changed source still requires fresh CI. Hosted Logi is the selected integration
+direction; #34 was closed unmerged as superseded and #35 retains only independent
+website authorization fixes. Follow the updated
+[integration handoff](engineering/follow-up-integration-2026-09-26.md). No candidate
+image has been published or deployed; the recorded live deployment remains unchanged.
 
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
@@ -88,7 +111,9 @@ Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
 - Live SSO/admin configuration and acceptance remain deferred. Production host, DNS,
   proxy/TLS, registry publication, media delivery and `publish-due` timer were subsequently
   verified in the first-deployment evidence linked above.
-- Rollback rehearsal (1.0.0 is the first release) and page-weight/Web Vitals budgets.
+- The initial 1.0.0 validation did not include rollback rehearsal or page-weight/Web
+  Vitals budgets. Issue #26's accepted historical Linux qualification and the separate
+  pending combined-source qualification are recorded in the checkpoint above.
 
 ## Media
 

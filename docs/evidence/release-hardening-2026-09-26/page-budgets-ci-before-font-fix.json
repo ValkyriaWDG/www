@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "startedAt": "2026-09-26T18:55:14.617Z",
+  "sourceRevision": "2d312e4c773dc6cb16bdf52fc7cba0154227ad43",
+  "sourceDirty": false,
+  "environment": {
+    "platform": "linux",
+    "node": "v24.21.0",
+    "build": "Next.js standalone production",
+    "data": "Dedicated loopback PostgreSQL synthetic fixtures; never production",
+    "background": "CSS fallback; delivered game binaries are excluded from CI. No video is fetched.",
+    "profile": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "cpuSlowdown": 4,
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 200000,
+      "uploadBytesPerSecond": 93750,
+      "observationMs": 10000,
+      "reducedMotion": "reduce",
+      "cache": "disabled",
+      "serviceWorkers": "blocked"
+    },
+    "browser": "153.0.8010.12"
+  },
+  "policy": {
+    "schemaVersion": 1,
+    "runs": 3,
+    "routes": [
+      "/cs",
+      "/cs/news",
+      "/cs/news/ukazka-obrazky-tabulka-a-odkazy"
+    ],
+    "profile": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "cpuSlowdown": 4,
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 200000,
+      "uploadBytesPerSecond": 93750,
+      "observationMs": 10000,
+      "reducedMotion": "reduce",
+      "cache": "disabled",
+      "serviceWorkers": "blocked"
+    },
+    "limits": {
+      "javascriptBytes": 358400,
+      "cssBytes": 61440,
+      "fontBytes": 184320,
+      "totalBytes": 1048576,
+      "lcpMs": 2500,
+      "cls": 0.1
+    }
+  },
+  "samples": [
+    {
+      "route": "/cs",
+      "run": 1,
+      "status": 200,
+      "javascriptBytes": 177385,
+      "cssBytes": 21096,
+      "fontBytes": 143631,
+      "totalBytes": 500833,
+      "lcpMs": 2124,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": true,
+        "imagePath": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp"
+      },
+      "cls": 0.04939995730776214,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10010
+    },
+    {
+      "route": "/cs",
+      "run": 2,
+      "status": 200,
+      "javascriptBytes": 177385,
+      "cssBytes": 21096,
+      "fontBytes": 143631,
+      "totalBytes": 500836,
+      "lcpMs": 1964,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": true,
+        "imagePath": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp"
+      },
+      "cls": 0.04939995730776214,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10006
+    },
+    {
+      "route": "/cs",
+      "run": 3,
+      "status": 200,
+      "javascriptBytes": 177385,
+      "cssBytes": 21096,
+      "fontBytes": 143631,
+      "totalBytes": 505393,
+      "lcpMs": 1948,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": true,
+        "imagePath": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp"
+      },
+      "cls": 0.04939995730776214,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10007
+    },
+    {
+      "route": "/cs/news",
+      "run": 1,
+      "status": 200,
+      "javascriptBytes": 178746,
+      "cssBytes": 21096,
+      "fontBytes": 120330,
+      "totalBytes": 490549,
+      "lcpMs": 828,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/thumb"
+      },
+      "cls": 0.11814349017591239,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10007
+    },
+    {
+      "route": "/cs/news",
+      "run": 2,
+      "status": 200,
+      "javascriptBytes": 178746,
+      "cssBytes": 21096,
+      "fontBytes": 120330,
+      "totalBytes": 490227,
+      "lcpMs": 840,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/thumb"
+      },
+      "cls": 0.11814349017591239,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10009
+    },
+    {
+      "route": "/cs/news",
+      "run": 3,
+      "status": 200,
+      "javascriptBytes": 178746,
+      "cssBytes": 21096,
+      "fontBytes": 120330,
+      "totalBytes": 492544,
+      "lcpMs": 840,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/thumb"
+      },
+      "cls": 0.11814349017591239,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10008
+    },
+    {
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "run": 1,
+      "status": 200,
+      "javascriptBytes": 177385,
+      "cssBytes": 21096,
+      "fontBytes": 184141,
+      "totalBytes": 585652,
+      "lcpMs": 964,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full"
+      },
+      "cls": 0.005070962307689428,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10006
+    },
+    {
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "run": 2,
+      "status": 200,
+      "javascriptBytes": 177385,
+      "cssBytes": 21096,
+      "fontBytes": 184141,
+      "totalBytes": 585653,
+      "lcpMs": 964,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full"
+      },
+      "cls": 0.005068884906445762,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10006
+    },
+    {
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "run": 3,
+      "status": 200,
+      "javascriptBytes": 177385,
+      "cssBytes": 21096,
+      "fontBytes": 184141,
+      "totalBytes": 585656,
+      "lcpMs": 972,
+      "lcpElement": {
+        "tag": "IMG",
+        "id": null,
+        "emblem": false,
+        "imagePath": "/api/media/f1c7a0e0-0000-4000-8000-00000000a001/full"
+      },
+      "cls": 0.005070962307689428,
+      "videoRequests": 0,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "observationMs": 10006
+    }
+  ],
+  "captures": [
+    {
+      "file": "page-1.png",
+      "route": "/cs",
+      "sha256": "38589b3ccc156bfb609e479ba23e0f684ef5e9918163106f41d0084c25f8d070",
+      "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website."
+    },
+    {
+      "file": "page-2.png",
+      "route": "/cs/news",
+      "sha256": "430d43119fed02ca78141951c8ba6f3d670c8ea5ddda434c918ec5841dd4095a",
+      "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website."
+    },
+    {
+      "file": "page-3.png",
+      "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+      "sha256": "1d1db97870a61b725f202a4f8b2a4a838c942c560551c9165807a044f88447ba",
+      "caption": "Synthetic local/CI article fixtures, production build, throttled mobile Chromium; not the production website."
+    }
+  ],
+  "errors": [
+    "/cs/news: cls exceeds 0.1",
+    "/cs/news: cls exceeds 0.1",
+    "/cs/news: cls exceeds 0.1"
+  ],
+  "limits": [
+    "Lab cold-navigation measurements, not field Core Web Vitals or INP.",
+    "Optional delivered background poster/video is not bundled; its real playback is a separate media gate.",
+    "LCP median of three runs; every transfer/CLS sample must meet limits; observer window is bounded."
+  ],
+  "assessment": {
+    "errors": [
+      "/cs/news: cls exceeds 0.1",
+      "/cs/news: cls exceeds 0.1",
+      "/cs/news: cls exceeds 0.1"
+    ],
+    "routes": [
+      {
+        "route": "/cs",
+        "medianLcpMs": 1964,
+        "maximumCls": 0.04939995730776214,
+        "maximumTransferBytes": 505393
+      },
+      {
+        "route": "/cs/news",
+        "medianLcpMs": 840,
+        "maximumCls": 0.11814349017591239,
+        "maximumTransferBytes": 492544
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "medianLcpMs": 964,
+        "maximumCls": 0.005070962307689428,
+        "maximumTransferBytes": 585656
+      }
+    ]
+  },
+  "finishedAt": "2026-09-26T18:56:47.615Z"
+}

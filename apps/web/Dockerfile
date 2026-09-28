@@ -7,6 +7,9 @@
 # that mirror Docker Hub (e.g. mirror.gcr.io/library/node) serve the same digest and
 # can be selected with --build-arg NODE_IMAGE=... without changing the content.
 ARG NODE_IMAGE=docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+# Keep build inputs stable while evaluating the supported Debian 13 runtime candidate.
+# Native sharp/glibc, UID, read-only storage and health are checked in release CI.
+ARG RUNTIME_IMAGE=docker.io/library/node:24-trixie-slim@sha256:8ec5d7557396cfe32d21c3f9c13072355ceab22b584578ca4bb28af31120cffe
 
 FROM ${NODE_IMAGE} AS base
 ENV PNPM_HOME=/pnpm \
@@ -34,7 +37,7 @@ RUN --mount=type=secret,id=build_ca,required=false \
     if [ -s /run/secrets/build_ca ]; then export NODE_EXTRA_CA_CERTS=/run/secrets/build_ca; fi; \
     pnpm --filter @valkyria/web build
 
-FROM ${NODE_IMAGE} AS runtime
+FROM ${RUNTIME_IMAGE} AS runtime
 ARG SOURCE_REVISION=unknown
 LABEL org.opencontainers.image.title="valkyria-web" \
       org.opencontainers.image.source="https://github.com/ValkyriaWDG/www" \
@@ -51,6 +54,7 @@ WORKDIR /app
 # bundled dependencies) so they are neither an attack surface nor scan findings.
 RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
       /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+      /usr/local/bin/yarn /usr/local/bin/yarnpkg /opt/yarn-v* \
  && groupadd --system --gid 10001 valkyria \
  && useradd --system --uid 10001 --gid valkyria --home-dir /app --shell /usr/sbin/nologin valkyria
 # Application files are owned by root and read-only for the runtime user.
@@ -59,6 +63,10 @@ COPY --from=build /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build /repo/apps/web/public ./apps/web/public
 COPY --from=build /repo/apps/web/dist/cli ./scripts
 COPY --from=build /repo/apps/web/dist/migrations ./migrations
+# External CLIs use a bare sharp import; expose the exact package already traced
+# by Next instead of copying host dependencies or installing anything at runtime.
+COPY --from=build /repo/apps/web/scripts/link-standalone-sharp.mjs /tmp/link-standalone-sharp.mjs
+RUN node /tmp/link-standalone-sharp.mjs /app && rm /tmp/link-standalone-sharp.mjs
 # Only the media volume and Next.js cache are writable by the non-root user.
 RUN mkdir -p /app/storage/editorial /app/apps/web/.next/cache \
  && chown -R valkyria:valkyria /app/storage /app/apps/web/.next/cache \

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "runs": 3,
+  "routes": ["/cs", "/cs/news", "/cs/news/ukazka-obrazky-tabulka-a-odkazy"],
+  "profile": {
+    "viewport": { "width": 390, "height": 844 },
+    "deviceScaleFactor": 1,
+    "cpuSlowdown": 4,
+    "latencyMs": 150,
+    "downloadBytesPerSecond": 200000,
+    "uploadBytesPerSecond": 93750,
+    "observationMs": 10000,
+    "reducedMotion": "reduce",
+    "cache": "disabled",
+    "serviceWorkers": "blocked"
+  },
+  "limits": {
+    "javascriptBytes": 358400,
+    "cssBytes": 61440,
+    "fontBytes": 184320,
+    "totalBytes": 1048576,
+    "lcpMs": 2500,
+    "cls": 0.1
+  }
+}
