@@ -73,6 +73,20 @@ foundation. The opt-in Wardogs capture `visual.spec.ts` "keyboard focus on the p
 CTA" fails on a fresh e2e database because no Discord invite is configured there; it is
 not part of the default suite and is unrelated to the FAQ.
 
+### Integration with PR #55 (`c8fc2d7`)
+
+PR [#55](https://github.com/ValkyriaWDG/www/pull/55) (fullscreen HLL scene, editorial
+artwork, sharing cards) and main `048c179` (production records) are merged into this branch;
+its own evidence is [hll-graphics-2026-09-28](../hll-graphics-2026-09-28/README.md). This
+branch's earlier full-bleed attempt was dropped in favour of #55. Conflicts: the e2e server
+environment (CRCON mock beside #55's `E2E_HLL_EMPTY_MEDIA` switch), the asset manifest and
+`docs/STATUS.md`. #55's corrected HLL news placeholder test replaces this branch's version.
+Checks on the merge (application source identical to `a7853d9`): foundation (1228 files),
+126 tooling, lint, types, 493 unit (50 files), 283 integration (30 files), standalone
+build, 156 browser passed (106 opt-in skipped), the CI artwork step
+(`E2E_HLL_EMPTY_MEDIA=1 … e2e/hll-artwork.spec.ts`, 4 passed) and all 15 cold-mobile
+page-budget samples (`scripts/release/measure-pages.mjs`).
+
 Behaviour covered: CRCON config accepts HTTPS (loopback HTTP only for a mock), rejects
 credentials/queries/duplicates; real-HTTP requests without redirects, with body limits and
 timeouts; current and older response shapes; one failing server marked unknown with a
@@ -151,6 +165,29 @@ the switch row on phones.
   after, it is the full-width row under the header in both games.
 
   ![Wardogs phone header before](header/header-before-wardogs-cs-390.webp) ![Wardogs phone header after](header/header-after-wardogs-cs-390.webp) ![HLL phone header](header/header-after-hll-cs-390.webp)
+
+### Fullscreen scene with the unified header (`c8fc2d7`)
+
+Standalone build of the merge with an empty clip playlist (the shipped HLL still, no video
+request), synthetic fixtures and the synthetic server-status fixture. Reduced motion.
+
+- **`integration/hll-landing-cs-1920x1080.webp`** — HLL main menu: the scene fills the whole
+  viewport behind the menu; logo top left; community link, game switch, language and sign-in
+  top right.
+
+  ![HLL main menu over the fullscreen scene](integration/hll-landing-cs-1920x1080.webp)
+- **`integration/wardogs-landing-cs-1920x1080.webp`** — Wardogs main menu at the same size:
+  the same controls in the same left-to-right order at the top right.
+
+  ![Wardogs main menu with the same controls](integration/wardogs-landing-cs-1920x1080.webp)
+- **`integration/hll-servers-cs-1440x900.webp`** — HLL servers (synthetic, mixed freshness)
+  as a reading page over the dimmed scene; masthead and section bar on top.
+
+  ![HLL servers over the dimmed scene](integration/hll-servers-cs-1440x900.webp)
+- **`integration/hll-landing-cs-390x844.webp`** — phone: scene behind the menu, full-width
+  game switch row under the header, no horizontal overflow.
+
+  ![HLL phone main menu](integration/hll-landing-cs-390x844.webp)
 
 ### Administration
 

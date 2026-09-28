@@ -200,7 +200,10 @@ illustrations unrecorded), events/tournaments/rankings destinations, FAQ answers
 legacy match-ID aliases and scoped media library for game-scoped editors.
 Legacy parity for servers, matches and game statistics:
 [hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (468 unit, 281
-integration, 144 browser tests at `59b3e38`, after the review fixes).
+integration, 144 browser tests at `59b3e38`, after the review fixes). After merging PR #55
+and main `048c179` (`c8fc2d7`): foundation, 126 tooling, lint, types, 493 unit, 283
+integration, build, 156 browser (106 opt-in skipped), the 4 empty-playlist artwork tests
+and all 15 page-budget samples passed.
 PR #37 before its merge:
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136

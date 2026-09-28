@@ -2712,6 +2712,50 @@
       "bytes": 289168,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "hll-parity-2026-09-28-integration-hll-landing-cs-1920x1080",
+      "path": "docs/evidence/hll-parity-2026-09-28/integration/hll-landing-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still with an empty clip playlist) at c8fc2d7; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4c5ba66a98916c125f5271ec243ea0ff9d0f1e0a0112b7b996c7c7a1e94c2efa",
+      "bytes": 40062,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-parity-2026-09-28-integration-wardogs-landing-cs-1920x1080",
+      "path": "docs/evidence/hll-parity-2026-09-28/integration/wardogs-landing-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still with an empty clip playlist) at c8fc2d7; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f1fa8f2929e93bdff7f2e83b0f059db8337fc4a361a02c6ccd4cbdd7f85f3f28",
+      "bytes": 39512,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-parity-2026-09-28-integration-hll-servers-cs-1440x900",
+      "path": "docs/evidence/hll-parity-2026-09-28/integration/hll-servers-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still with an empty clip playlist) at c8fc2d7; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "89a40335daac4ce0ef8c9a89b564074b571a8ca2ac581e301e5c17b17629859b",
+      "bytes": 47256,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-parity-2026-09-28-integration-hll-landing-cs-390x844",
+      "path": "docs/evidence/hll-parity-2026-09-28/integration/hll-landing-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still with an empty clip playlist) at c8fc2d7; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ca98af24bd8c8b9fea7e266e2b46d08232b2bacb9a8a952773e1c4a85c9b07f5",
+      "bytes": 17656,
+      "width": 390,
+      "height": 844
     }
   ]
 }
