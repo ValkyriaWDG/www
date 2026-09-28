@@ -478,6 +478,13 @@ PostgreSQL 18.4 with Unicode locale and a temporary Windows Sharp cache mitigati
 CI independently uses PostgreSQL 17. Full lint, types, build and 126 foundation
 tests passed. Final PR-head CI is tracked on PR #55.
 
+After CI exposed a legacy expectation that HLL news had no images, the test now
+requires both decoded HLL assets and rejects Wardogs art. The complete local
+browser suite then passed **150 tests**, with 102 opt-in capture cases skipped;
+the separate four-test actual-artwork proof remains above. Main `048c179`'s
+production documentation is incorporated without altering its deployed-source
+statements. Runtime implementation and the inspected captures remain unchanged.
+
 The final clan recording is still absent. Empty HLL clip configuration deliberately
 shows the real still; synthetic test playback is separate proof. Issue #36 remains
 open for the broader HLL acceptance scope. This branch performs no deployment;

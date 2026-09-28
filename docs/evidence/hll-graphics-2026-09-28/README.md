@@ -40,6 +40,7 @@ pnpm test:unit
 pnpm build
 pnpm test:integration
 pnpm --filter @valkyria/web test:e2e e2e/hll-stage.spec.ts e2e/platform.spec.ts e2e/public-news.spec.ts e2e/social-seo.spec.ts --project=chromium
+pnpm --filter @valkyria/web test:e2e
 E2E_HLL_EMPTY_MEDIA=1 CAPTURE_EVIDENCE=1 pnpm --filter @valkyria/web test:e2e e2e/hll-artwork.spec.ts --project=chromium
 pnpm check:foundation
 pnpm test:foundation
@@ -63,6 +64,7 @@ is linked in the PR; this report does not claim an unobserved CI or container pa
 | Unit | 48 files, **464 passed** |
 | PostgreSQL integration | 28 files, **273 passed**, no skips, with the local Windows qualifications above |
 | HLL stage + platform/manual + public news + social SEO | **37 passed** in Chromium; initially one stale `v=1` test expectation, corrected to new template `v=2` and rerun |
+| Full default browser suite after updating the legacy artwork assertion | **150 passed**, 102 opt-in capture cases skipped; includes public and administrative journeys |
 | Empty playlist / actual delivered graphics | **4 passed**; ten WebPs and three real social PNG endpoints fully decoded |
 | Foundation tooling tests | **126 passed** |
 | Foundation, manifest digests, local links and `git diff --check` | Passed |
@@ -74,6 +76,24 @@ Integration report SHA-256:
 The CI application job separately runs the normal PostgreSQL 17 suite and a fresh
 empty-playlist HLL artwork run. Its `hll-artwork-<revision>` artifact retains
 screenshots/report for 14 days. Essential captures below are durable in Git.
+
+The first complete [CI run 36488388618](https://github.com/ValkyriaWDG/www/actions/runs/36488388618)
+passed lint, types, unit, PostgreSQL 17 integration, build and image checks before
+an older public-pages browser case failed: it still required coverless HLL cards
+to contain no images. The requested artwork intentionally supplies a scene and
+crest. That conditional assertion was replaced with a deterministic fixture that
+requires both exact, decoded HLL assets and rejects Wardogs art; the unchanged
+Wardogs wordmark checks also reject HLL art. This is a changed acceptance contract,
+not a waived browser failure. The final run is linked on the PR.
+The complete default suite was rerun locally against the unchanged standalone
+application after that test-only correction: **150 passed**, 102 opt-in capture
+cases skipped. The separate four-test actual-artwork run above supplies its own
+explicit evidence. The targeted test file also passed ESLint.
+
+The branch also incorporates documentation-only main `048c179e628fc123d43c2471c8eb73a02aa5b92d`.
+The asset manifest retains both the production cutover captures and this local
+graphics evidence. Deployment statements continue to identify the actual deployed
+source `e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a`; the graphics branch is not deployed.
 
 The browser assertions prove: one decoded video layer; viewport coverage at
 1920 × 1200, 1366 × 768, 390 × 844 and 320 × 640; accessible visible controls;
