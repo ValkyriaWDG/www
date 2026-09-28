@@ -137,6 +137,56 @@ describe('CRCON server status source', () => {
     ]);
   });
 
+  it('downgrades a failure within the fresh window to stale without round details', async () => {
+    let failing: string[] = [];
+    const source = crconSource(servers, async (url) => (failing.includes(url.hostname) ? new Response('down', { status: 503 }) : json(syntheticPublicInfo())));
+    await getServerOverview('hll', now, source);
+    // After the 15-second cache, well inside the 2-minute fresh window.
+    failing = ['two.example.org'];
+    const partial = await getServerOverview('hll', new Date(now.getTime() + 20_000), source);
+    expect(partial).toMatchObject({ state: 'ok', partial: true });
+    if (partial.state !== 'ok') return;
+    expect(partial.servers[0]).toMatchObject({ publicId: 'valkyria-1', freshness: 'fresh', reachability: 'online', score: { allied: 3, axis: 2 } });
+    expect(partial.servers[1]).toMatchObject({
+      publicId: 'valkyria-2',
+      freshness: 'stale',
+      reachability: 'unknown',
+      map: 'Synthetic Map North',
+      observedAt: now.toISOString(),
+      nextMap: null,
+      timeRemainingSeconds: null,
+      score: null,
+      teams: null,
+    });
+
+    failing = ['one.example.org', 'two.example.org'];
+    const outage = await getServerOverview('hll', new Date(now.getTime() + 40_000), source);
+    expect(outage.state).toBe('unavailable');
+    if (outage.state !== 'unavailable') return;
+    expect(outage.servers.map((server) => [server.publicId, server.freshness, server.reachability, server.score, server.teams, server.timeRemainingSeconds])).toEqual([
+      ['valkyria-1', 'stale', 'unknown', null, null, null],
+      ['valkyria-2', 'stale', 'unknown', null, null, null],
+    ]);
+  });
+
+  it('downgrades recent last known rows to stale when the whole source throws', async () => {
+    let down = false;
+    const source = {
+      synthetic: false,
+      async list() {
+        if (down) throw new Error('synthetic source timeout');
+        return [{ kind: 'ok' as const, observation: { id: 'valkyria-1', publicId: 'valkyria-1', name: 'Valkyria #1', reachability: 'online' as const, map: 'Synthetic Map North', mode: 'Warfare', players: 64, capacity: 100, nextMap: 'Synthetic Map East', timeRemainingSeconds: 1200, score: { allied: 3, axis: 2 }, teams: { allied: 32, axis: 32 }, address: null, statsUrl: null, observedAt: now } }];
+      },
+    };
+    await getServerOverview('hll', now, source);
+    down = true;
+    const overview = await getServerOverview('hll', new Date(now.getTime() + 20_000), source);
+    expect(overview.state).toBe('unavailable');
+    if (overview.state !== 'unavailable') return;
+    expect(overview.servers).toHaveLength(1);
+    expect(overview.servers[0]).toMatchObject({ freshness: 'stale', reachability: 'unknown', map: 'Synthetic Map North', nextMap: null, timeRemainingSeconds: null, score: null, teams: null });
+  });
+
   it('serves HLL only and treats an empty configuration as not configured', async () => {
     const source = crconSource(servers, async () => json(syntheticPublicInfo()));
     expect(await getServerOverview('wardogs', now, source)).toEqual({ state: 'not_configured' });

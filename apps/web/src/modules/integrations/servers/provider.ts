@@ -117,7 +117,10 @@ function configuredSource(): ServerStatusSource | null {
 const lastKnown = new Map<string, Observation>();
 
 function toSnapshot(game: GameRoute, row: Observation, now: Date, synthetic: boolean, answered: boolean): ServerSnapshot {
-  const freshness = classifyFreshness(row.observedAt, now, SERVER_FRESHNESS);
+  const observed = classifyFreshness(row.observedAt, now, SERVER_FRESHNESS);
+  // A server that did not answer now is never presented as current, however recent its
+  // last observation: that observation is at most stale.
+  const freshness = !answered && observed === 'fresh' ? 'stale' : observed;
   // Values older than the stale window are no longer presented as current facts; round
   // progress (time, score, teams) is shown only for a fresh observation.
   const expired = freshness === 'unavailable';
