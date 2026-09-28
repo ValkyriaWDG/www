@@ -109,8 +109,10 @@ Only after the candidate's required evidence is complete, perform separately aut
 version publication at that same accepted SHA. The annotated version tag, release notes
 and container evidence must identify one revision. Do not publish a successful release
 record when its container step was skipped or failed; describe the narrower source-only
-result if that is what the task explicitly requested. Tag/release automation beyond the
-current manual publisher is future implementation work, not a feature supplied by this guide.
+result if that is what the task explicitly requested. The committed `Release` workflow
+validates `vX.Y.Z` tags against the package version, reruns CI and creates a GitHub release.
+It does not publish or deploy an image; container publication remains separately gated
+and manual. An image promotion alone does not create a version tag.
 
 ## Deployment handover and rollback
 

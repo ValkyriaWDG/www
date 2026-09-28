@@ -1582,6 +1582,94 @@
       "bytes": 395639,
       "width": 1280,
       "height": 844
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-home-cs-desktop",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-home-cs-desktop.png",
+      "source": "Actual anonymous production browser capture at deployed source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Original browser run passed the pictured UI scenarios but failed its separate network gate; see adjacent report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "fe4ef4be57229b3eff8342670b29f34110729aa7f7c37f1dd7e892fdff2946b1",
+      "bytes": 1346747,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-home-en-desktop",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-home-en-desktop.png",
+      "source": "Actual anonymous production browser capture at deployed source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Original browser run passed the pictured UI scenarios but failed its separate network gate; see adjacent report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "7d7af24aa2eae79001686af93360111319d2a3e2c918cb13f269e7b5d6627a9b",
+      "bytes": 1343181,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-home-cs-mobile",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-home-cs-mobile.png",
+      "source": "Actual anonymous production browser capture at deployed source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Original browser run passed the pictured UI scenarios but failed its separate network gate; see adjacent report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "f246a46bb89c98af30a7beea3b222c902931fe5177c3adc4fdcd7ed9aab90884",
+      "bytes": 321449,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-home-en-mobile",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-home-en-mobile.png",
+      "source": "Actual anonymous production browser capture at deployed source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Original browser run passed the pictured UI scenarios but failed its separate network gate; see adjacent report.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "c83f5c4782a91e19dcb3d8afce845f719091f7bce1e845388348d80e4a0f8015",
+      "bytes": 319393,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-reviewed-home-cs-desktop",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-reviewed-home-cs-desktop.png",
+      "source": "Actual anonymous production capture at source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Reviewed browser run passed six UI/navigation checks but failed its network gate on two non-prefetch RSC cancellations; see adjacent browser-after-reviewed.json. Visually inspected by capture worker and integrator.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "783135860a1c8180467b0e9745fe217c38dba1354b0b2582d2b09c381bbbe2c7",
+      "bytes": 1346679,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-reviewed-home-cs-mobile",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-reviewed-home-cs-mobile.png",
+      "source": "Actual anonymous production capture at source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Reviewed browser run passed six UI/navigation checks but failed its network gate on two non-prefetch RSC cancellations; see adjacent browser-after-reviewed.json. Visually inspected by capture worker and integrator.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "f246a46bb89c98af30a7beea3b222c902931fe5177c3adc4fdcd7ed9aab90884",
+      "bytes": 321449,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-reviewed-home-en-desktop",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-reviewed-home-en-desktop.png",
+      "source": "Actual anonymous production capture at source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Reviewed browser run passed six UI/navigation checks but failed its network gate on two non-prefetch RSC cancellations; see adjacent browser-after-reviewed.json. Visually inspected by capture worker and integrator.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "7d7af24aa2eae79001686af93360111319d2a3e2c918cb13f269e7b5d6627a9b",
+      "bytes": 1343181,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "production-refresh-2026-09-28-browser-after-reviewed-home-en-mobile",
+      "path": "docs/evidence/production-refresh-2026-09-28/browser-after-reviewed-home-en-mobile.png",
+      "source": "Actual anonymous production capture at source 9a872918ad4d89935eb26118d853d40776af7d66; 2026-09-28. Reviewed browser run passed six UI/navigation checks but failed its network gate on two non-prefetch RSC cancellations; see adjacent browser-after-reviewed.json. Visually inspected by capture worker and integrator.",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI, clan branding and third-party Wardogs background imagery; verification evidence only; clan mark and game imagery excluded from Apache code license",
+      "sha256": "7abf0b5cb0116cb4a5a5f98ce9da28378c9cba4d451f72ffb26fda4632f764c1",
+      "bytes": 318978,
+      "width": 390,
+      "height": 844
     }
   ]
 }

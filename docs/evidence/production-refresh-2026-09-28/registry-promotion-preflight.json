@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-28T17:07:03.9712130Z",
+  "repository": "majorluk/valkyria-www",
+  "exists": true,
+  "isPrivate": false,
+  "candidateTag": "sha-9a872918ad4d89935eb26118d853d40776af7d66",
+  "candidateTagExists": false,
+  "expectedRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+  "method": "Authenticated Docker Hub metadata; credentials omitted"
+}

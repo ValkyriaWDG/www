@@ -27,7 +27,7 @@ foundation check alone is not a container build or live deployment.
 
 | Item | Value / source |
 |---|---|
-| Repository variable `CONTAINER_PUBLISH_ENABLED` | `false` until first release readiness review |
+| Repository variable `CONTAINER_PUBLISH_ENABLED` | Bootstrap default: `false` until first release readiness review; read the current repository value before each publication |
 | Workflow input `expected_sha` | Full accepted main revision; must equal the immutable workflow SHA |
 | Repository/environment variable `DOCKERHUB_IMAGE` | Operator-selected existing `namespace/repository` with explicitly approved public/private visibility |
 | Environment secret `DOCKERHUB_USERNAME` | Registry username; no live value in source |

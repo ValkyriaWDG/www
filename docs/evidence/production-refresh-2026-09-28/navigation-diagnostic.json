@@ -1,0 +1,865 @@
+{
+  "startedAt": "2026-09-28T17:43:08.363Z",
+  "harnessSha256": "439d905204f0c541d03a5a8537b324c722259d04faa9e560035d05df365d4bbc",
+  "browserExecutableSha256": "6b5da320179b656aefdb74ff10bc0bd33ba8d5ea869347e04e0a6b2bdd815e96",
+  "identityReference": "deployment-record.json",
+  "events": [
+    {
+      "atMs": 1469,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 1,
+      "path": "/en/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 1469,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 2,
+      "path": "/en/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 1470,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 3,
+      "path": "/en/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 1471,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 4,
+      "path": "/en/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 1551,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 4,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1575,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 4,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1576,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 5,
+      "path": "/en/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 1576,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 2,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1577,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 1,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1578,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 2,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1578,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 6,
+      "path": "/en/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 1580,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 1,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1581,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 7,
+      "path": "/en",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1581,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 3,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1582,
+      "phase": "initial-en-home",
+      "type": "fetch-finished",
+      "id": 3
+    },
+    {
+      "atMs": 1582,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 8,
+      "path": "/en/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1644,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 5,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1672,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 5,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1672,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 9,
+      "path": "/en/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1674,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 6,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1674,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 7,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1679,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 6,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1679,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 10,
+      "path": "/en/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1680,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 8,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1682,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 7,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1683,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 11,
+      "path": "/en/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1683,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 8,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1683,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 12,
+      "path": "/en/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1735,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 9,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1761,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 10,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1777,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 11,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1788,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 12,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1791,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 9,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1792,
+      "phase": "initial-en-home",
+      "type": "fetch-start",
+      "id": 13,
+      "path": "/en/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 1792,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 10,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1792,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 11,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1792,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 12,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 1847,
+      "phase": "initial-en-home",
+      "type": "fetch-response",
+      "id": 13,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 1870,
+      "phase": "initial-en-home",
+      "type": "fetch-failed",
+      "id": 13,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 4011,
+      "phase": "en-news-navigation",
+      "type": "action-menu-news"
+    },
+    {
+      "atMs": 4047,
+      "phase": "en-news-navigation",
+      "type": "fetch-start",
+      "id": 14,
+      "path": "/en/news",
+      "rsc": true,
+      "prefetch": false,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 4110,
+      "phase": "en-news-navigation",
+      "type": "fetch-response",
+      "id": 14,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 4151,
+      "phase": "en-news-navigation",
+      "type": "fetch-failed",
+      "id": 14,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 4185,
+      "phase": "en-news-navigation",
+      "type": "render-news",
+      "route": "/en/news",
+      "sameDocument": true
+    },
+    {
+      "atMs": 10192,
+      "phase": "en-news-settled",
+      "type": "six-seconds-after-news-render"
+    },
+    {
+      "atMs": 10192,
+      "phase": "en-home-navigation",
+      "type": "action-menu-home"
+    },
+    {
+      "atMs": 10202,
+      "phase": "en-home-navigation",
+      "type": "fetch-start",
+      "id": 15,
+      "path": "/en",
+      "rsc": true,
+      "prefetch": false,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 10279,
+      "phase": "en-home-navigation",
+      "type": "fetch-response",
+      "id": 15,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 10284,
+      "phase": "en-home-navigation",
+      "type": "fetch-failed",
+      "id": 15,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 10289,
+      "phase": "en-home-navigation",
+      "type": "render-home",
+      "route": "/en",
+      "sameDocument": true
+    },
+    {
+      "atMs": 16302,
+      "phase": "en-home-settled",
+      "type": "six-seconds-after-home-render"
+    },
+    {
+      "atMs": 16302,
+      "phase": "switch-to-cs",
+      "type": "action-language"
+    },
+    {
+      "atMs": 16679,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 16,
+      "path": "/cs/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 16679,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 17,
+      "path": "/cs/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 16680,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 18,
+      "path": "/cs/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 16680,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 19,
+      "path": "/cs/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 16797,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 17,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16799,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 18,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16817,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 16,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16822,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 17,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16823,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 20,
+      "path": "/cs/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 16823,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 16,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16824,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 18,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16824,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 19,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16825,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 21,
+      "path": "/cs/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": true
+    },
+    {
+      "atMs": 16825,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 22,
+      "path": "/cs",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16825,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 19,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16826,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 23,
+      "path": "/cs/news",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16879,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 20,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16892,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 22,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16897,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 20,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16898,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 24,
+      "path": "/cs/clan",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16900,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 21,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16905,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 21,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16905,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 25,
+      "path": "/cs/members",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16907,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 22,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16907,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 26,
+      "path": "/cs/matches",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16908,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 23,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16908,
+      "phase": "switch-to-cs",
+      "type": "fetch-finished",
+      "id": 23
+    },
+    {
+      "atMs": 16908,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 27,
+      "path": "/cs/login",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16953,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 24,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16981,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 27,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16982,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 26,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16987,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 24,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16987,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 26,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16988,
+      "phase": "switch-to-cs",
+      "type": "fetch-start",
+      "id": 28,
+      "path": "/cs/privacy",
+      "rsc": true,
+      "prefetch": true,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 16989,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 27,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 16989,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 25,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 16989,
+      "phase": "switch-to-cs",
+      "type": "fetch-finished",
+      "id": 25
+    },
+    {
+      "atMs": 17050,
+      "phase": "switch-to-cs",
+      "type": "fetch-response",
+      "id": 28,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 17057,
+      "phase": "switch-to-cs",
+      "type": "fetch-failed",
+      "id": 28,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 18681,
+      "phase": "cs-news-navigation",
+      "type": "action-menu-news"
+    },
+    {
+      "atMs": 18705,
+      "phase": "cs-news-navigation",
+      "type": "fetch-start",
+      "id": 29,
+      "path": "/cs/news",
+      "rsc": true,
+      "prefetch": false,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 18773,
+      "phase": "cs-news-navigation",
+      "type": "fetch-response",
+      "id": 29,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 18787,
+      "phase": "cs-news-navigation",
+      "type": "fetch-failed",
+      "id": 29,
+      "errorCode": "net::ERR_ABORTED",
+      "duringContextClose": false
+    },
+    {
+      "atMs": 18822,
+      "phase": "cs-news-navigation",
+      "type": "render-news",
+      "route": "/cs/news",
+      "sameDocument": true
+    },
+    {
+      "atMs": 24823,
+      "phase": "cs-news-settled",
+      "type": "six-seconds-after-news-render"
+    },
+    {
+      "atMs": 24823,
+      "phase": "cs-home-navigation",
+      "type": "action-menu-home"
+    },
+    {
+      "atMs": 24834,
+      "phase": "cs-home-navigation",
+      "type": "fetch-start",
+      "id": 30,
+      "path": "/cs",
+      "rsc": true,
+      "prefetch": false,
+      "segmentPrefetch": false
+    },
+    {
+      "atMs": 24905,
+      "phase": "cs-home-navigation",
+      "type": "fetch-response",
+      "id": 30,
+      "status": 200,
+      "contentType": "text/x-component"
+    },
+    {
+      "atMs": 24906,
+      "phase": "cs-home-navigation",
+      "type": "fetch-finished",
+      "id": 30
+    },
+    {
+      "atMs": 24915,
+      "phase": "cs-home-navigation",
+      "type": "render-home",
+      "route": "/cs",
+      "sameDocument": true
+    },
+    {
+      "atMs": 30919,
+      "phase": "cs-home-settled",
+      "type": "six-seconds-after-home-render"
+    },
+    {
+      "atMs": 30919,
+      "phase": "context-disposal",
+      "type": "action-dispose"
+    }
+  ],
+  "pageErrors": [],
+  "unexpectedOrigins": [],
+  "writeAttempts": [],
+  "webSocketAttempts": [],
+  "browserVersion": "154.0.8037.57",
+  "scenarioCompleted": true,
+  "completedAt": "2026-09-28T17:43:39.555Z"
+}

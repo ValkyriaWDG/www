@@ -1,6 +1,53 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **SEO, release qualification, authorization fixes, browser evidence and encrypted recovery tools merged; mobile article layout repair verified locally, awaiting current CI before promotion; live authentication deferred.**
+Updated: 2026-09-28. Stage: **Public SEO/social updates and the mobile article repair deployed; live authentication and hosted Logi acceptance remain deferred.**
+
+## Latest production refresh
+
+PR #44 merged as `9a872918ad4d89935eb26118d853d40776af7d66`. Its final PR CI and
+[exact-main CI 36455739949](https://github.com/ValkyriaWDG/www/actions/runs/36455739949)
+passed: 53 tooling, 13 encrypted-recovery, 379 unit, 240 database and 124 browser
+tests; 67 opt-in browser cases were skipped. All nine unchanged cold-mobile samples
+passed; the article's maximum CLS was 0.005100. The original failed run is preserved
+below. Issue #43 is closed with red/green measurements and inspected screenshots.
+
+[Publication 36457009482](https://github.com/ValkyriaWDG/www/actions/runs/36457009482)
+passed its separate verification and protected environment gate. The public image
+`majorluk/valkyria-www@sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93`
+is now running at that exact source revision. No version tag or mutable image alias
+was created. [Runtime readback](evidence/production-refresh-2026-09-28/runtime-after.json)
+confirms healthy configuration/database/schema/media, uid 10001, a read-only root,
+dropped capabilities, no published host ports, unchanged approved media hashes and
+disabled authentication. Watchtower remains off for the digest-pinned service.
+
+The web and publication timer were quiesced for a paired database/editorial backup.
+Both checksums and archive readability passed; no new semantic restore was performed
+on this production backup. Migration reported **0 applied, 1 already applied**.
+Configuration and persistent media were preserved; the previous image/configuration
+remain available. The timer resumed and a subsequent natural publication pass exited
+successfully. This does not establish overdue-content monitoring or alert delivery.
+
+[Public HTTP verification](evidence/production-refresh-2026-09-28/http-after.json)
+passed **37/37**, including both homepage canonicals/alternates and six fully decoded
+1200×630 social PNGs. The original browser run remains failed at 5/6. A reviewed run
+passed all six UI/playback/navigation checks but failed its seventh network gate on
+two non-prefetch RSC aborts. A bounded diagnostic reproduced aborts after HTTP 200
+and before successful same-document rendering, with six seconds before each next
+action; their exact cause remains unresolved. #46 tracks that investigation. Both
+failed reports and eight inspected captures are preserved. See the [refresh evidence](evidence/production-refresh-2026-09-28/README.md)
+for exact source/digest, CI artifacts, observed results and verification limits.
+
+Remaining launch work stays in #23: hosted Logi membership/SSO and role removal (#8),
+recovery administrator/MFA, owner privacy decisions, encrypted off-host recovery and
+actual monitoring/alert delivery. #25 retains Safari/device/retail-Firefox and media
+performance qualification. #45 is accepted through PR #47, merged as
+`0b843e5458aae485b33e3d5f5f4e11348a994ee4`: restore tooling refuses existing or
+ambiguous targets without DROP or directory deletion. Its [Linux CI qualification](evidence/production-refresh-2026-09-28/restore-boundaries-ci-qualification.json)
+passed six real PostgreSQL 17.11 restore tests, 126 tooling tests and the complete
+application/image/browser gates at PR head `19a30dd1b110d11c63a97a1755a352989579eb9d`.
+Do not use the earlier unsafe script against operator targets. This tooling merge
+did not deploy another image or prove off-host recovery. HLL and Logi workstreams remain
+separate from this deployment.
 
 ## Publication authorization hardening
 
@@ -18,8 +65,8 @@ for head `9faefd03ea53c838a9d731690c813c3be1562589`, tested merge
 `f807ff95ff08e76c09fbb7cb5d3d7512f2541766`: 39 tooling, 374 unit, 240 database
 and 119 browser tests; 67 opt-in browser cases were skipped. Image/release and page
 budget checks also passed. Hosted membership/SSO acceptance stays in #8/#23; this does not close those
-issues. The deployment observations below are historical and were not refreshed by
-this local work. Continue the shared platform and hosted Logi workstreams against
+issues. The first-deployment observations below remain historical; the latest runtime
+is recorded above. Continue the shared platform and hosted Logi workstreams against
 their agreed contracts rather than restoring the custom bot protocol.
 
 ## First public deployment
@@ -42,7 +89,7 @@ was loaded. Discord/local recovery login remain disabled. Public HTTP checks exp
 existing homepage canonical-metadata omissions ([#29](https://github.com/ValkyriaWDG/www/issues/29)).
 Issue #23 remains open for authentication and the remaining launch/operational inputs.
 
-## Checkpoint (resume here)
+## Earlier qualification checkpoints
 
 PR #42 merged as `df48609e384aca679fb5b72073ea9188ee4785b5` after
 [PR CI 36445523409](https://github.com/ValkyriaWDG/www/actions/runs/36445523409)
@@ -59,7 +106,7 @@ metadata wrapping moved the article twice; [#43](https://github.com/ValkyriaWDG/
 tracks a deterministic reproduction and repair. A passing PR run does not override
 this later failure. Do not publish this main revision or average away the failed sample.
 The 2026-09-28 host preflight still observed the original `d0f98b0` image below,
-healthy with authentication disabled; no production promotion has taken place.
+healthy with authentication disabled; no production promotion had taken place at that preflight.
 
 The [#43 repair evidence](evidence/article-layout-2026-09-28/README.md) keeps compact
 metadata in explicit rows while preserving desktop wrapping. A staged-font red/green
@@ -67,9 +114,9 @@ reproduction reduced the 391 px Czech shift sum from 0.292901 to 0.004595; all n
 unchanged cold-page samples passed, with article CLS 0.002693 in each sample.
 Local production build and 17 focused browser cases passed. The integrating checkout
 also passed full lint, typecheck, 379 unit and 53 tooling tests. Final PR and merged-main
-CI remain required. [Public refresh evidence](evidence/production-refresh-2026-09-28/README.md)
-preserves 24/37 passing before-state HTTP checks and prepares the same read-only
-harness for after deployment; its missing SEO/social behavior is not accepted as fixed.
+CI subsequently passed, as recorded in the latest refresh above.
+[Public refresh evidence](evidence/production-refresh-2026-09-28/README.md) preserves
+the original 24/37 passing before-state HTTP checks alongside the separate after run.
 
 Issue #26 is accepted: [release hardening](operations/release-hardening.md) adds cold
 mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
@@ -86,8 +133,8 @@ Its [SEO and sharing](engineering/seo-and-sharing.md) adds bilingual homepage
 canonicals, branded publication-aware PNG templates for site/news/matches, editorial
 sharing previews and published-article JSON-LD. [Feature evidence](evidence/seo-social-2026-09-26/README.md)
 includes actual images, CS/EN desktop/mobile editor captures, long-title stress
-coverage and regression results. Issue #29 still requires production HTTP verification
-after an authorized release; source merge does not prove deployment.
+coverage and regression results. The latest refresh supplies the separate deployed
+HTTP acceptance for #29; the earlier source merge alone did not prove deployment.
 
 PR #32 merged as `eaf9f911f13c0b929c8f7d90529c0ccab5dd0701` after
 [CI 36435186950](https://github.com/ValkyriaWDG/www/actions/runs/36435186950) passed
@@ -98,8 +145,8 @@ steps and all nine page-budget samples. Issue #26 is closed with acceptance proo
 The authorization qualification above includes that accepted main. Hosted Logi is the selected integration
 direction; #34 was closed unmerged as superseded and #35 retains only independent
 website authorization fixes. Follow the updated
-[integration handoff](engineering/follow-up-integration-2026-09-26.md). No candidate
-image has been published or deployed; the recorded live deployment remains unchanged.
+[integration handoff](engineering/follow-up-integration-2026-09-26.md). At that earlier
+checkpoint no candidate image had been published; the latest promotion is recorded above.
 
 Maintenance [PR #39](https://github.com/ValkyriaWDG/www/pull/39) / issue #38 consolidates action updates #10–#14, the scoped
 [esbuild advisory repair](engineering/esbuild-advisory-2026-09-28.md), portable
@@ -158,8 +205,9 @@ Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-le
 Evidence: docs/evidence/app-1.0.0/README.md (captioned captures + measurements.json)
 Migrations: packages/db/drizzle/0000_initial_schema.sql (applied; repeated runs no-op)
 Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
-Next checkpoint: repair #43 and qualify its exact merged main before publication;
-  then verify production SEO #29 and remaining #23 operator acceptance and #25
+Next checkpoint: preserve the production refresh proof and close SEO #29 against
+  its HTTP acceptance; resolve the separate browser network-gate failures and
+  continue #23 operator acceptance and #25
   device/performance coverage. Hosted Logi contracts
   must be established before enabling #7/#8/#22 integration.
 ```
