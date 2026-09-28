@@ -12,14 +12,14 @@ test.describe('menu shell: navigation and language', () => {
   });
 
   test('desktop header shows all primary sections including NOVINKY with the current one marked', async ({ page }) => {
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     const nav = page.getByRole('navigation', { name: 'Hlavní navigace' });
     for (const [label, href] of [
-      ['HLAVNÍ MENU', '/cs'],
-      ['NOVINKY', '/cs/news'],
-      ['KLAN', '/cs/clan'],
-      ['ČLENOVÉ', '/cs/members'],
-      ['ZÁPASY', '/cs/matches'],
+      ['HLAVNÍ MENU', '/cs/wardogs'],
+      ['NOVINKY', '/cs/wardogs/news'],
+      ['KLAN', '/cs/wardogs/clan'],
+      ['ČLENOVÉ', '/cs/wardogs/members'],
+      ['ZÁPASY', '/cs/wardogs/matches'],
     ] as const) {
       const link = nav.getByRole('link', { name: label, exact: true });
       await expect(link).toBeVisible();
@@ -29,7 +29,7 @@ test.describe('menu shell: navigation and language', () => {
     await expect(nav.getByRole('link', { name: 'NOVINKY' })).not.toHaveAttribute('aria-current', /.+/);
     await expect(page.getByRole('tab')).toHaveCount(0);
 
-    await page.goto('/en/news/any-article');
+    await page.goto('/en/wardogs/news/any-article');
     const enNav = page.getByRole('navigation', { name: 'Main navigation' });
     await expect(enNav.getByRole('link', { name: 'NEWS', exact: true })).toHaveAttribute('aria-current', 'page');
     await expect(enNav.getByRole('link', { name: 'MAIN MENU' })).not.toHaveAttribute('aria-current', /.+/);
@@ -92,23 +92,23 @@ test.describe('menu shell: navigation and language', () => {
   });
 
   test('primary Discord CTA and secondary actions are keyboard reachable', async ({ page }) => {
-    await page.goto('/cs');
-    await tabUntil(page, '[data-cta="discord"]');
+    await page.goto('/cs/wardogs');
+    await tabUntil(page, '[data-cta="discord"]', 60);
     const cta = page.locator('[data-cta="discord"]');
     await expect(cta).toBeFocused();
     await expect(cta).toHaveAttribute('href', /^https:\/\/(discord\.gg|discord\.com)\//);
     await expect(cta).toHaveAccessibleName(/PŘIPOJIT SE NA DISCORD/);
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'O KLANU' })).toBeFocused();
-    await expect(page.getByRole('link', { name: 'O KLANU' })).toHaveAttribute('href', '/cs/clan');
+    await expect(page.getByRole('link', { name: 'O KLANU' })).toHaveAttribute('href', '/cs/wardogs/clan');
     await page.keyboard.press('Tab');
     await expect(page.locator('[data-home-action="matches"]')).toBeFocused();
-    await expect(page.locator('[data-home-action="matches"]')).toHaveAttribute('href', '/cs/matches');
+    await expect(page.locator('[data-home-action="matches"]')).toHaveAttribute('href', '/cs/wardogs/matches');
   });
 
   test('utility buttons expose names and a tooltip on keyboard focus', async ({ page }) => {
-    await page.goto('/cs');
-    await tabUntil(page, '[data-utility="news"]');
+    await page.goto('/cs/wardogs');
+    await tabUntil(page, '[data-utility="news"]', 60);
     const news = page.locator('[data-utility="news"]');
     await expect(news).toHaveAccessibleName('Novinky');
     await expect(news.locator('[aria-hidden="true"]', { hasText: 'Novinky' })).toBeVisible();
@@ -122,7 +122,7 @@ test.describe('menu shell: mobile', () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 
   test('mobile menu lists NOVINKY, account and HLL links; Escape returns focus to the trigger', async ({ page }) => {
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.getByRole('navigation', { name: 'Hlavní navigace' })).toBeHidden();
     const switcher = page.getByRole('group', { name: 'Jazyk webu' });
     await expect(switcher).toBeVisible();
@@ -135,7 +135,7 @@ test.describe('menu shell: mobile', () => {
     const panel = page.locator('[data-mobile-menu-panel]');
     const nav = panel.getByRole('navigation', { name: 'Hlavní navigace' });
     await expect(nav.getByRole('link', { name: 'NOVINKY' })).toBeVisible();
-    await expect(nav.getByRole('link', { name: 'NOVINKY' })).toHaveAttribute('href', '/cs/news');
+    await expect(nav.getByRole('link', { name: 'NOVINKY' })).toHaveAttribute('href', '/cs/wardogs/news');
     await expect(panel.locator('[data-mobile-link="signIn"]')).toHaveAttribute('href', '/cs/login');
     await expect(panel.locator('[data-mobile-link="hll"]')).toHaveAttribute('href', HLL_URL);
 
@@ -161,7 +161,7 @@ test.describe('menu shell: mobile', () => {
     page.on('request', (request) => {
       if (request.url().includes(MISSING_VIDEO_PATH)) videoRequests.push(request.url());
     });
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-reason', 'narrow-coarse');
     await expect(page.getByRole('button', { name: 'Přehrát pozadí' })).toBeVisible();
     await page.waitForLoadState('networkidle');
@@ -174,7 +174,7 @@ test.describe('menu shell: no horizontal overflow', () => {
     for (const locale of ['cs', 'en']) {
       test(`${locale} at ${width}px`, async ({ page }) => {
         await page.setViewportSize({ width, height: width === 320 ? 568 : 844 });
-        await page.goto(`/${locale}`);
+        await page.goto(`/${locale}/wardogs`);
         await expectNoHorizontalOverflow(page);
         await page.locator('[data-mobile-menu-trigger]').click();
         await expectNoHorizontalOverflow(page);
@@ -193,14 +193,14 @@ test.describe('background media', () => {
     page.on('request', (request) => {
       if (request.url().includes(MISSING_VIDEO_PATH)) videoRequests.push(request);
     });
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-reason', 'reduced-motion');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'paused');
     await expect(page.locator('[data-background-video] source')).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Přehrát pozadí' })).toBeEnabled();
     await expect(page.locator('[data-scene-fallback]')).toBeVisible();
     await page.getByRole('link', { name: 'NOVINKY' }).first().click();
-    await expect(page).toHaveURL(/\/cs\/news$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs\/news$/);
     await page.waitForLoadState('networkidle');
     expect(videoRequests).toHaveLength(0);
     await context.close();
@@ -211,7 +211,7 @@ test.describe('background media', () => {
     page.on('request', (request) => {
       if (request.url().includes(MISSING_VIDEO_PATH)) videoRequests.push(request.url());
     });
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     const canPlayMp4 = await page.evaluate(() => document.createElement('video').canPlayType('video/mp4') !== '');
     expect(await settledBackgroundState(page)).toBe('unavailable');
     if (canPlayMp4) expect(videoRequests.length).toBeGreaterThan(0);
@@ -232,21 +232,21 @@ test.describe('background media', () => {
     await page.route(`**${MISSING_VIDEO_PATH}`, () => {
       requests += 1; // never answered: the element stays in its loading state
     });
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     await expect(page.locator('[data-background-video] source')).toHaveCount(1);
     await expect.poll(() => requests).toBe(1);
     const before = await page.locator('[data-background-video]').elementHandle();
     await page.getByRole('navigation', { name: 'Hlavní navigace' }).getByRole('link', { name: 'KLAN' }).click();
-    await expect(page).toHaveURL(/\/cs\/clan$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs\/clan$/);
     await page.getByRole('navigation', { name: 'Hlavní navigace' }).getByRole('link', { name: 'HLAVNÍ MENU' }).click();
-    await expect(page).toHaveURL(/\/cs$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs$/);
     expect(await page.evaluate((element) => element === document.querySelector('[data-background-video]'), before)).toBe(true);
     expect(requests).toBe(1);
   });
 
   test('a hidden tab pauses the video and a visible tab resumes it when allowed', async ({ page }) => {
     await page.route(`**${MISSING_VIDEO_PATH}`, () => undefined);
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     const video = page.locator('[data-background-video]');
     await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.paused)).toBe(false);
     const setHidden = (hidden: boolean) =>
@@ -270,7 +270,7 @@ test.describe('background media', () => {
       HTMLMediaElement.prototype.play = () => Promise.reject(new DOMException('Autoplay blocked', 'NotAllowedError'));
     });
     await page.route(`**${MISSING_VIDEO_PATH}`, () => undefined);
-    await page.goto('/en');
+    await page.goto('/en/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-state', 'blocked');
     await expect(page.getByRole('button', { name: 'Play background' })).toBeEnabled();
     await expect(page.locator('[data-background-video]')).toHaveCSS('opacity', '0');
@@ -280,7 +280,7 @@ test.describe('background media', () => {
   test('pause preference persists across navigation and reloads', async ({ page }) => {
     // Hold the video response so the element stays in its loading state (no error yet).
     await page.route(`**${MISSING_VIDEO_PATH}`, () => undefined);
-    await page.goto('/cs');
+    await page.goto('/cs/wardogs');
     const pause = page.getByRole('button', { name: 'Pozastavit pozadí' });
     await expect(pause).toBeVisible();
     await pause.click();
@@ -288,7 +288,7 @@ test.describe('background media', () => {
     expect(await page.evaluate(() => window.localStorage.getItem('valkyria.background'))).toBe('paused');
 
     await page.getByRole('navigation', { name: 'Hlavní navigace' }).getByRole('link', { name: 'NOVINKY' }).click();
-    await expect(page).toHaveURL(/\/cs\/news$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs\/news$/);
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-reason', 'user-paused');
     await expect(page.getByRole('button', { name: 'Přehrát pozadí' })).toBeVisible();
 
@@ -297,7 +297,7 @@ test.describe('background media', () => {
     page.on('request', (request) => {
       if (request.url().includes(MISSING_VIDEO_PATH)) afterReload.push(request.url());
     });
-    await page.goto('/en');
+    await page.goto('/en/wardogs');
     await expect(page.locator('[data-background-state]')).toHaveAttribute('data-background-reason', 'user-paused');
     await expect(page.getByRole('button', { name: 'Play background' })).toBeVisible();
     await page.waitForLoadState('networkidle');

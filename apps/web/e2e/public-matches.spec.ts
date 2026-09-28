@@ -112,7 +112,8 @@ test.describe('public matches: lists', () => {
     });
     expect(ring).toEqual({ style: 'solid', width: '2px', position: 'absolute' });
     const href = await focused.getAttribute('href');
-    expect(href).toMatch(/^\/cs\/matches\/[a-z0-9-]+$/);
+    // The shared list links each row to its canonical game section.
+    expect(href).toMatch(/^\/cs\/(wardogs|hll)\/matches\/[a-z0-9-]+$/);
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(new RegExp(`${href}$`));
   });
@@ -123,12 +124,12 @@ test.describe('public matches: detail', () => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/cs/matches?view=results');
     await rowOf(page, M.completedVerified).getByRole('link').click();
-    await expect(page).toHaveURL(new RegExp(`/cs/matches/${M.completedVerified}$`));
+    await expect(page).toHaveURL(new RegExp(`/cs/wardogs/matches/${M.completedVerified}$`));
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Valkyria vs. Synthetic Opponent Delta');
     const selected = page.locator('[data-match-table="results"] tbody tr[data-selected]');
     await expect(selected).toHaveCount(1);
     await expect(selected.getByRole('link')).toHaveAttribute('aria-current', 'page');
-    await expect(selected.getByRole('link')).toHaveAttribute('href', `/cs/matches/${M.completedVerified}`);
+    await expect(selected.getByRole('link')).toHaveAttribute('href', `/cs/wardogs/matches/${M.completedVerified}`);
     const outline = await selected.evaluate((row) => getComputedStyle(row).outlineColor);
     expect(outline).toBe('rgb(217, 173, 50)');
 
@@ -157,13 +158,13 @@ test.describe('public matches: detail', () => {
     await page.goto('/cs/matches');
     const preview = page.locator('[data-detail-mode="preview"]');
     await expect(preview).toBeVisible();
-    await expect(preview.locator('[data-match-detail-link]')).toHaveAttribute('href', `/cs/matches/${M.upcoming}`);
+    await expect(preview.locator('[data-match-detail-link]')).toHaveAttribute('href', `/cs/wardogs/matches/${M.upcoming}`);
     await expect(page.locator('[data-match-table] tbody tr[data-selected]')).toHaveCount(0);
   });
 
   test('narrow screens render the standalone detail with a back link', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`/cs/matches/${M.completedUnknown}`);
+    await page.goto(`/cs/wardogs/matches/${M.completedUnknown}`);
     await expect(page.locator('[data-match-table]')).toBeHidden();
     const detail = page.locator(`[data-match-detail="${M.completedUnknown}"]`);
     await expect(detail).toBeVisible();
@@ -171,26 +172,26 @@ test.describe('public matches: detail', () => {
     await expect(detail).not.toContainText(ZERO_ZERO);
     const back = page.locator('[data-back-link]');
     await expect(back).toBeVisible();
-    await expect(back).toHaveAttribute('href', '/cs/matches?view=results');
+    await expect(back).toHaveAttribute('href', '/cs/wardogs/matches?view=results');
     await expectNoHorizontalOverflow(page);
     await back.click();
-    await expect(page).toHaveURL(/\/cs\/matches\?view=results$/);
+    await expect(page).toHaveURL(/\/cs\/wardogs\/matches\?view=results$/);
     await expect(page.locator('[data-match-table="results"]')).toBeVisible();
     await expect(page.locator('[data-detail-mode="preview"]')).toBeHidden();
   });
 
   test('missing English recap is an explicit absence with a link to the Czech recap', async ({ page }) => {
-    await page.goto(`/en/matches/${M.completedUnknown}`);
+    await page.goto(`/en/wardogs/matches/${M.completedUnknown}`);
     const recap = page.locator('[data-match-recap]');
     await expect(recap.locator('[data-prose="missing"]')).toContainText('The recap is not available in English');
     const link = recap.locator('[data-prose-source="cs"]');
-    await expect(link).toHaveAttribute('href', `/cs/matches/${M.completedUnknown}`);
+    await expect(link).toHaveAttribute('href', `/cs/wardogs/matches/${M.completedUnknown}`);
     await expect(link).toHaveAttribute('hreflang', 'cs');
     await expect(recap).not.toContainText('Syntetická reportáž');
   });
 
   test('postponed detail shows the original date; English uses en-GB with an explicit zone', async ({ page }) => {
-    await page.goto(`/en/matches/${M.postponed}`);
+    await page.goto(`/en/wardogs/matches/${M.postponed}`);
     const detail = page.locator(`[data-match-detail="${M.postponed}"]`);
     await expect(detail.locator('[data-match-status="postponed"]')).toHaveText('Postponed');
     await expect(detail.locator('[data-match-start]')).toHaveText(/^\d{1,2}\s[A-Z][a-z]+\s\d{4}(,|\sat)\s\d{2}:\d{2}\sCES?T$/);
@@ -199,14 +200,19 @@ test.describe('public matches: detail', () => {
   });
 
   test('draft and unknown matches are 404 and alternates cover both locales', async ({ page }) => {
-    for (const path of [`/cs/matches/${M.draft}`, `/en/matches/${M.draft}`, '/cs/matches/neexistujici-zapas']) {
+    for (const path of [`/cs/matches/${M.draft}`, `/en/matches/${M.draft}`, `/cs/wardogs/matches/${M.draft}`, '/cs/matches/neexistujici-zapas']) {
       const response = await page.goto(path);
       expect(response?.status(), path).toBe(404);
     }
     await expect(page.getByText('Synthetic Opponent Golf')).toHaveCount(0);
+    // A shared-list URL permanently redirects to the canonical game section.
     await page.goto(`/en/matches/${M.upcoming}`);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`/en/matches/${M.upcoming}$`));
-    await expect(page.locator('link[rel="alternate"][hreflang="cs"]')).toHaveAttribute('href', new RegExp(`/cs/matches/${M.upcoming}$`));
-    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', new RegExp(`/en/matches/${M.upcoming}$`));
+    await expect(page).toHaveURL(new RegExp(`/en/wardogs/matches/${M.upcoming}$`));
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new RegExp(`/en/wardogs/matches/${M.upcoming}$`));
+    await expect(page.locator('link[rel="alternate"][hreflang="cs"]')).toHaveAttribute('href', new RegExp(`/cs/wardogs/matches/${M.upcoming}$`));
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', new RegExp(`/en/wardogs/matches/${M.upcoming}$`));
+    // A match is never shown under the other game's section.
+    await page.goto(`/cs/hll/matches/${M.upcoming}`);
+    await expect(page).toHaveURL(new RegExp(`/cs/wardogs/matches/${M.upcoming}$`));
   });
 });

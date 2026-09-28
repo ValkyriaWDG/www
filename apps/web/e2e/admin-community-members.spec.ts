@@ -25,7 +25,7 @@ test('editor creates a profile, is refused without consent, records consent, pub
   await expect(page.getByRole('heading', { level: 1, name: 'Profily členů' })).toBeVisible();
   await page.getByRole('link', { name: 'Nový profil' }).click();
   await page.getByLabel(/^Zobrazované jméno/).fill(`  ${displayName}  `);
-  await page.getByLabel('Wardogs').check();
+  await page.getByRole('checkbox', { name: 'Wardogs' }).check();
   await page.getByLabel('Nováček').check();
   await page.locator('[data-action="save"]').click();
   await expect(page).toHaveURL(/\/cs\/admin\/members\/[0-9a-f-]{36}\?created=1$/);

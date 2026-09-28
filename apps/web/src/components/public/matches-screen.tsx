@@ -102,8 +102,9 @@ export async function MatchesScreen({
       : []),
   ];
 
-  // No published fixtures at all in this view (independent of filters) vs. no filter matches.
-  const emptyView = counts ? (effectiveGame ? counts.byGame[effectiveGame][filters.view] : counts[filters.view]) === 0 : !filtered;
+  // No published fixtures at all in this view of the section (independent of filters) vs.
+  // no filter matches. A game section is its own scope; the shared list's game filter is a filter.
+  const emptyView = counts ? (scopedGame ? counts.byGame[scopedGame][filters.view] : counts[filters.view]) === 0 : !filtered;
   const otherView: MatchView = filters.view === 'upcoming' ? 'results' : 'upcoming';
 
   let listContent;

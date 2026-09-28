@@ -60,7 +60,8 @@ test('match manager creates, publishes, postpones, reschedules and records a ver
   expect(created).toMatchObject({ status: 'scheduled', publication: 'draft' });
   const stored = (await matchBySlug(created.slug))!;
   expect(stored.starts_at.toISOString()).toBe(expectedStart.toISOString());
-  const matchPath = `/cs/matches/${created.slug}`;
+  // Public URLs live in the match's own game section (the shared /cs/matches/<slug> redirects there).
+  const matchPath = `/cs/${created.game === 'hell-let-loose' ? 'hll' : 'wardogs'}/matches/${created.slug}`;
   expect(await sitemapHas(request, matchPath)).toBe(false);
 
   // ---- Edit a fact; capture the real server action request for the replay below ----

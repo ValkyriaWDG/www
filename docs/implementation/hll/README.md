@@ -1,6 +1,6 @@
 # Unified platform / HLL implementation order
 
-This handoff prepares source folders and specifications. Runtime UI, schema migrations, redirects and integrations are not implemented here. Continue the prepared task branch and update its single coherent PR rather than making separate PRs for each file or document.
+The handoff prepared source folders and specifications; steps 1–4 and the synthetic part of step 5 are now implemented on `feat/hll-platform-handoff` (see [status](../../STATUS.md#unified-platform--hll-implementation)). Hosted Logi, real footage and the domain cutover remain open. Continue the task branch and update its single coherent PR rather than making separate PRs for each file or document.
 
 1. **Baseline and scope:** read AGENTS/CLAUDE, current main/PRs and the HLL handoff. Preserve existing Wardogs behavior. Inspect PR33 SEO work; PR34/35 target the previous bot and are not Logi contracts.
 2. **Shared boundaries:** reuse existing game enum/content schema. Add typed locale/game routes, hub, scope-aware settings and resource permissions using additive migrations. Prove IDs/revisions/consent and old URLs remain intact. Do not create another application or DB.

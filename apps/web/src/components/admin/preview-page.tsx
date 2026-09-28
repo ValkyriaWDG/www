@@ -33,7 +33,8 @@ export async function PreviewPage({ locale, id, raw, mode }: { locale: AppLocale
   const basePath = mode === 'news' ? '/admin/news' : mode === 'manual' ? '/admin/manual' : '/admin/content';
   const access = await requireAdminPage({ locale, path: `${basePath}/${encodeURIComponent(id)}/preview`, capability: 'content.read_private' });
   if (!access.ok) return access.denied;
-  const state = await loadEditorState(access.principal, id);
+  const state = await loadEditorState(access.principal, id, locale);
+  if ('denied' in state) return state.denied;
   const contentLocale = oneOf(raw.lang, ['cs', 'en'] as const) ?? selectedContentLocale(state, raw);
   const translation = state.translations[contentLocale];
   if (!translation) notFound();

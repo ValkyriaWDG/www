@@ -38,16 +38,21 @@ test('administrator saves a Discord invite override that the home CTA uses immed
   expect((await storedSetting('community.discordInviteUrl'))?.value).toBe(invite);
   expect(await auditCount({ action: 'settings.update', outcome: 'success', entityId: 'community.discordInviteUrl' })).toBeGreaterThanOrEqual(1);
 
+  // One shared community setting: the Wardogs CTA, the HLL landing and the hub all use it.
   const home = await browser.newPage();
-  await home.goto('/cs');
+  await home.goto('/cs/wardogs');
   await expect(home.locator('[data-cta="discord"]')).toHaveAttribute('href', invite);
+  await home.goto('/cs/hll');
+  await expect(home.locator('[data-hll-discord]')).toHaveAttribute('href', invite);
+  await home.goto('/cs');
+  await expect(home.locator('[data-hub-shared="discord"]')).toHaveAttribute('href', invite);
 
   // Restore the operator default (an empty field removes the override deliberately).
   await field.fill('');
   await page.locator('[data-action="save-settings"]').click();
   await expect(page.locator('[data-live="discord"]')).not.toContainText(invite);
   await expect.poll(() => storedSetting('community.discordInviteUrl')).toBeNull();
-  await home.goto('/cs');
+  await home.goto('/cs/wardogs');
   await expect(home.locator('[data-cta="discord"]')).not.toHaveAttribute('href', invite);
   await home.close();
   await context.close();

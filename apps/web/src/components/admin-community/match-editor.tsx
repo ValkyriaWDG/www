@@ -27,6 +27,7 @@ import {
   unpublishMatchRecapAction,
   updateMatchAction,
 } from '@/modules/matches/actions';
+import { canonicalMatchPath } from '@/modules/games/routes';
 import { DEFAULT_MATCH_TIME_ZONE } from '@/modules/matches/time';
 import type { AdminMatch } from '@/modules/matches/types';
 import { ConfirmDialog } from './confirm-dialog';
@@ -333,7 +334,8 @@ export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEdi
 
   const statusText = pending === 'save' ? tc('saving') : anyDirty ? tc('unsaved') : isCreate ? t('createStatus') : tc('allSaved');
   const title = isCreate ? t('createTitle') : server.opponentName;
-  const publicHref = server && server.publication === 'published' ? `/matches/${server.slug}` : null;
+  // Canonical public URL in the match's own game section.
+  const publicHref = server && server.publication === 'published' ? canonicalMatchPath(server.game, server.slug) : null;
 
   const resultSummary = (() => {
     if (!server?.result) return t('noResult');

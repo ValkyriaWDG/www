@@ -22,7 +22,8 @@ export default async function EditPostPage({ params, searchParams }: PageProps<'
   setRequestLocale(locale);
   const access = await requireAdminPage({ locale, path: `/admin/news/${encodeURIComponent(id)}`, capability: 'content.edit' });
   if (!access.ok) return access.denied;
-  const state = await loadEditorState(access.principal, id);
+  const state = await loadEditorState(access.principal, id, locale);
+  if ('denied' in state) return state.denied;
   if (state.document.kind !== 'news') redirect(`/${locale}/admin/content/${state.document.id}`);
   const contentLocale = selectedContentLocale(state, await searchParams);
   return <EditorPage locale={locale} actor={access.principal} state={state} contentLocale={contentLocale} mode="news" />;
