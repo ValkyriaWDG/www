@@ -33,7 +33,7 @@ describe('legacy HLL redirects', () => {
   });
 
   it('keeps reviewed URLs without a built destination or imported content pending, never Home', () => {
-    expect(resolveLegacyHllPath('/faq')).toEqual({ kind: 'pending', proposed: '/cs/hll/faq', reason: 'destination_not_built' });
+    expect(resolveLegacyHllPath('/faq')).toEqual({ kind: 'redirect', target: '/cs/hll/faq' });
     expect(resolveLegacyHllPath('/tournaments')).toEqual({ kind: 'pending', proposed: '/cs/hll/tournaments', reason: 'destination_not_built' });
     expect(resolveLegacyHllPath('/turnaje/ecl-2024')).toEqual({ kind: 'pending', proposed: '/cs/hll/tournaments/ecl-2024', reason: 'destination_not_built' });
     expect(resolveLegacyHllPath('/zebricky/kd-pomer')).toEqual({ kind: 'pending', proposed: '/cs/hll/leaderboards/kd-ratio', reason: 'destination_not_built' });

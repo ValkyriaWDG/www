@@ -34,6 +34,7 @@ test.describe('platform routing', () => {
       ['servers', '/cs/hll/servers'],
       ['members', '/cs/hll/members'],
       ['field-manual', '/cs/hll/field-manual'],
+      ['faq', '/cs/hll/faq'],
       ['clan', '/cs/hll/clan'],
       ['community', '/cs/hll/community'],
     ] as const) {
@@ -48,9 +49,23 @@ test.describe('platform routing', () => {
     await expect(nav.getByRole('link', { name: 'HLAVNÍ MENU' })).toHaveAttribute('href', '/cs/wardogs');
     await expect(nav.getByRole('link', { name: 'NOVINKY', exact: true })).toHaveAttribute('href', '/cs/wardogs/news');
 
-    for (const path of ['/cs/wardogs/servers', '/cs/wardogs/field-manual', '/cs/unknown-game/news', '/de/hll']) {
+    for (const path of ['/cs/wardogs/servers', '/cs/wardogs/field-manual', '/cs/wardogs/faq', '/cs/unknown-game/news', '/de/hll']) {
       expect((await page.goto(path))?.status(), path).toBe(404);
     }
+  });
+
+  test('the FAQ is an HLL menu destination that stays honestly unpublished until editors publish it', async ({ page }) => {
+    await page.goto('/cs/hll/faq');
+    await expect(page.getByRole('heading', { level: 1, name: 'Časté dotazy' })).toBeVisible();
+    await expect(page.locator('[data-core-page="faq"]')).toHaveAttribute('data-published', 'false');
+    await expect(page.getByText('Tato stránka zatím není zveřejněná.')).toBeVisible();
+    // The seeded draft outline never leaks before publication.
+    await expect(page.getByText('Jak se přidat do Valkyrie?')).toHaveCount(0);
+    await expect(page.locator('[data-faq-index]')).toHaveCount(0);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/cs\/faq$/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    expect((await page.goto('/en/faq'))?.status()).toBe(200);
+    await expect(page.locator('[data-core-page="faq"]')).toHaveAttribute('data-published', 'false');
   });
 
   test('game switch keeps the locale and the page category, or explains the destination', async ({ page }) => {

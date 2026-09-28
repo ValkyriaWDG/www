@@ -350,7 +350,8 @@
     "keys": {
       "clan": "Clan",
       "community": "Community",
-      "privacy": "Privacy"
+      "privacy": "Privacy",
+      "faq": "FAQ"
     }
   },
   "fieldErrors": {

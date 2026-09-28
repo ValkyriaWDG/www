@@ -56,6 +56,17 @@
     },
     "frameTitle": "Data processing"
   },
+  "faq": {
+    "navLabel": "FAQ",
+    "meta": {
+      "title": "Frequently asked questions",
+      "description": "Answers to the most common questions about the Valkyria community, joining, VIP and playing Hell Let Loose."
+    },
+    "frameTitle": "Questions and answers",
+    "indexTitle": "Questions",
+    "actionsTitle": "Didn’t find your answer?",
+    "joinAction": "How to join"
+  },
   "hll": {
     "title": "Hell Let Loose",
     "body": "Our Hell Let Loose history, matches and archive stay on our original website.",

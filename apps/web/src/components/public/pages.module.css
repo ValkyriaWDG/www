@@ -1,4 +1,4 @@
-/* Core static pages (clan, community, privacy) over the darkened scene. */
+/* Core static pages (clan, community, privacy, faq) over the darkened scene. */
 .content {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -186,4 +186,37 @@ a.choice:focus-visible {
 .presskitCaption {
   color: var(--color-text-muted);
   font-size: var(--text-small);
+}
+
+/* FAQ question index: one link per question, in the editor's order. */
+.faqIndex {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-hairline) solid var(--color-chrome-line);
+  background: var(--color-panel);
+}
+
+.faqIndexList {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0 0 0 var(--space-5);
+}
+
+.faqIndexList a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.faqIndexList a:hover {
+  color: var(--color-accent);
+}
+
+/* An index link lands with the question heading clear of the viewport edge. */
+.body :is(h2, h3)[id] {
+  scroll-margin-top: var(--space-6);
 }

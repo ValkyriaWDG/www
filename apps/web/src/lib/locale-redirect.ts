@@ -10,6 +10,7 @@ export const UI_ROOT_SEGMENTS = [
   'matches',
   'community',
   'privacy',
+  'faq',
   'login',
   'account',
   'admin',

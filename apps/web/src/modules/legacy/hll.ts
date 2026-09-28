@@ -188,7 +188,7 @@ export function resolveLegacyHllPath(pathname: string, search: URLSearchParams =
       case 'about':
         return { kind: 'redirect', target: '/cs/clan' };
       case 'faq':
-        return pending('/cs/hll/faq', 'destination_not_built');
+        return { kind: 'redirect', target: '/cs/hll/faq' };
       case 'events':
         return pending('/cs/hll/events', 'destination_not_built');
       case 'turnaje':
