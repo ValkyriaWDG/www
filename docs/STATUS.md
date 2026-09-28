@@ -90,8 +90,8 @@ text/images and match history (host blocked in this environment; reuse of extern
 illustrations unrecorded), FAQ/events/tournaments/rankings destinations, tactical map,
 legacy match-ID aliases, scoped media library for game-scoped editors, domain cutover.
 Legacy parity for servers, matches and game statistics:
-[hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (466 unit, 277
-integration, 144 browser tests at `f5e56bc`/`65b47be`).
+[hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (468 unit, 281
+integration, 144 browser tests at `59b3e38`, after the review fixes).
 PR #37 before its merge:
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136
@@ -119,7 +119,9 @@ Follow-up after PR #37 (branch `feat/hll-platform-handoff`, new draft PR, not de
 CRCON server status, HLL rounds and imported match statistics (migration 0002). Next:
 configure the real CRCON hosts and decide player-statistics publication; choose the
 owners of events (Logi) and tournaments/FAQ (CMS) and a source for rankings before
-building them.
+building them. Release boundary: not part of the #37 + #51 cutover; it requires migration
+0002 even with `SERVER_STATUS_SOURCE=none`, so integrate accepted main and qualify the
+exact resulting head before a later release.
 
 ## Publication authorization hardening
 

@@ -49,6 +49,20 @@ Legacy features from the [inventory](../../product/hll/legacy-migration.md):
 
 `65b47be` changes only browser-test support (`e2e/`) on top of `f5e56bc`.
 
+### Review fixes (`722379e`, `59b3e38`)
+
+- Statistics import, settings and removal lock the match row inside their transaction,
+  reread its game and recheck `matches.edit`/HLL before writing; the CRCON fetch stays
+  outside the lock; a denial is audited outside the rollback.
+  `match-statistics-race.test.ts` holds the match and statistics rows, moves the match to
+  Wardogs and expects a denial, one durable denial audit and unchanged statistics
+  (upload import, CRCON import, settings, removal): 4 failed on `5530a8b`, 4 passed after.
+- A server whose request failed is at most stale and shows no round details, even within
+  the fresh window (partial and full-source failure): 2 new `provider.test.ts` cases
+  failed on `5530a8b`, passed after.
+- Checks on `59b3e38`: foundation (1129 files), lint, types, 468 unit (48 files), 281
+  integration (30 files), standalone build, 144 browser passed (101 opt-in skipped).
+
 Behaviour covered: CRCON config accepts HTTPS (loopback HTTP only for a mock), rejects
 credentials/queries/duplicates; real-HTTP requests without redirects, with body limits and
 timeouts; current and older response shapes; one failing server marked unknown with a
