@@ -29,7 +29,11 @@ describe('social image publication and presentation contract', () => {
     const result = { scoreValkyria: 2, scoreOpponent: 0, outcome: 'win', verification: 'provisional' } as const;
     expect(matchCard({ ...match, result }, 'cs')).toMatchObject({ score: '2 : 0', status: 'Dohráno · Předběžný výsledek' });
     expect(matchCard({ ...match, result, status: 'cancelled' }, 'en')).toMatchObject({ score: null, status: 'Cancelled' });
-    expect(articleCard({ ...article, game: 'hell-let-loose' })).toMatchObject({ artwork: 'brand', game: 'HELL LET LOOSE' });
+    expect(articleCard({ ...article, game: 'hell-let-loose' })).toMatchObject({ artwork: 'hll-scene', game: 'HELL LET LOOSE' });
+    expect(matchCard({ ...match, game: 'hell-let-loose' }, 'en')).toMatchObject({ artwork: 'hll-scene', score: null });
+    expect(siteCard('cs', 'site', 'hll')).toMatchObject({ artwork: 'hll-scene', game: 'HELL LET LOOSE' });
+    expect(siteCard('en', 'site', 'wardogs')).toMatchObject({ artwork: 'flying', game: 'WARDOGS' });
+    expect(siteCard('en')).toMatchObject({ artwork: 'brand' });
     expect(articleCard(article).title).toBe(article.title);
   });
 
@@ -39,8 +43,9 @@ describe('social image publication and presentation contract', () => {
     const metadata = sharingMetadata('en', 'news', 'news-title', 'r2', 'Public title');
     expect(metadata.twitter.card).toBe('summary_large_image');
     expect(metadata.twitter.images[0]).toEqual(metadata.images[0]);
-    expect(metadata.images[0]).toMatchObject({ width: 1200, height: 630, url: '/api/social/en/news/news-title?v=1-r2' });
-    expect(socialImagePath('cs')).toBe('/api/social/cs/site?v=1');
+    expect(metadata.images[0]).toMatchObject({ width: 1200, height: 630, url: '/api/social/en/news/news-title?v=2-r2' });
+    expect(socialImagePath('cs')).toBe('/api/social/cs/site?v=2');
+    expect(sharingMetadata('cs', 'site', undefined, undefined, 'HLL', undefined, 'hll').images[0]).toMatchObject({ url: '/api/social/cs/site?v=2&game=hll' });
   });
 
   it('outputs published JSON-LD only and cannot close its script element', () => {
@@ -62,5 +67,19 @@ describe('social image publication and presentation contract', () => {
       // Yoga may initialize its embedded WASM using a data: fetch. It is not network I/O.
       expect(fetch.mock.calls.map(([url]) => new URL(String(url)).protocol).filter((protocol) => protocol !== 'data:')).toEqual([]);
     } finally { fetch.mockRestore(); }
+  });
+
+  it('renders HLL news, fixture and result cards from local artwork with khaki theme', async () => {
+    const cards = [
+      articleCard({ ...article, game: 'hell-let-loose' }),
+      matchCard({ ...match, game: 'hell-let-loose', status: 'scheduled' }, 'en'),
+      matchCard({ ...match, game: 'hell-let-loose', result: { scoreValkyria: 3, scoreOpponent: 2, outcome: 'win', verification: 'verified' } }, 'cs'),
+    ];
+    for (const card of cards) {
+      const png = await renderSocialCard(card, null, 'valkyria.cz');
+      expect(await sharp(png).metadata()).toMatchObject({ width: 1200, height: 630, format: 'png' });
+      const { data } = await sharp(png).extract({ left: 600, top: 1, width: 1, height: 1 }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      expect([...data]).toEqual([197, 185, 103]);
+    }
   });
 });

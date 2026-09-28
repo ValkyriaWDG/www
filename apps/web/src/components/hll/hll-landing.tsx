@@ -7,7 +7,6 @@ import { formatDate } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
-import { getHllClipSet } from '@/lib/hll-media';
 import { getHeaderAccountState } from '@/modules/auth/header-state';
 import { getLatestNewsTeaser } from '@/modules/content/public';
 import type { NewsSummary } from '@/modules/content/types';
@@ -15,7 +14,6 @@ import { GAME_REGISTRY } from '@/modules/games/registry';
 import { canonicalMatchPath, canonicalNewsPath } from '@/modules/games/routes';
 import { getNextPublicMatch } from '@/modules/matches/queries';
 import type { PublicMatchSummary } from '@/modules/matches/types';
-import { CinematicStage } from './cinematic-stage';
 import { getHllMenuItems } from './hll-shell';
 import { HllMenu } from './hll-menu';
 import styles from './hll.module.css';
@@ -32,19 +30,18 @@ async function loadTeasers(locale: AppLocale): Promise<{ match: PublicMatchSumma
 
 /**
  * HLL main menu (reference 02 adapted): open left menu lane with the section links, the
- * Discord call to action and quiet utilities; the right stage holds the selected clan
- * footage (or its honest static fallback) with a compact strip of the next published
+ * Discord call to action and quiet utilities over the shell's fullscreen scene,
+ * with a compact strip of the next published
  * fixture and latest published news. Nothing is shown for records that do not exist.
  */
 export async function HllLanding({ locale, notice }: { locale: AppLocale; notice?: ReactNode }) {
-  const [t, nav, account, items, links, teasers, clips, external] = await Promise.all([
+  const [t, nav, account, items, links, teasers, external] = await Promise.all([
     getTranslations({ locale, namespace: 'games.hll' }),
     getTranslations({ locale, namespace: 'common.nav' }),
     getHeaderAccountState(),
     getHllMenuItems(),
     getShellLinks(),
     loadTeasers(locale),
-    getHllClipSet(),
     getTranslations({ locale, namespace: 'common.external' }),
   ]);
   const { match, news } = teasers;
@@ -71,16 +68,6 @@ export async function HllLanding({ locale, notice }: { locale: AppLocale; notice
             )}
           </div>
           <ul className={styles.utilities} aria-label={t('utilities.label')}>
-            <li>
-              <GuardedLink href="/" className={styles.utilityLink}>
-                {t('utilities.community')}
-              </GuardedLink>
-            </li>
-            <li>
-              <GuardedLink href="/privacy" className={styles.utilityLink}>
-                {t('utilities.privacy')}
-              </GuardedLink>
-            </li>
             {/* The masthead account control is hidden on phones; the landing keeps it reachable. */}
             <li className={styles.utilityCompactOnly}>
               <GuardedLink href={account.state === 'signed_out' ? '/login' : '/account'} className={styles.utilityLink} data-hll-account-utility="">
@@ -89,39 +76,26 @@ export async function HllLanding({ locale, notice }: { locale: AppLocale; notice
             </li>
           </ul>
         </div>
-        <div className={styles.stageColumn}>
-          <CinematicStage
-            clips={clips}
-            labels={{
-              region: t('stage.label'),
-              pending: t('stage.pending'),
-              play: t('stage.play'),
-              pause: t('stage.pause'),
-              unavailable: t('stage.unavailable'),
-              posterOnly: t('stage.posterOnly'),
-            }}
-          />
-          {match || news ? (
-            <section className={styles.strip} aria-label={t('strip.label')} data-hll-strip="">
-              {match ? (
-                <GuardedLink href={canonicalMatchPath(match.game, match.slug)} className={styles.stripItem} data-hll-strip-item="match">
-                  <span className={styles.stripLabel}>{t('strip.nextMatch')}</span>
-                  <span className={styles.stripTitle}>{t('strip.versus', { opponent: match.opponentName })}</span>
-                  <span className={styles.stripMeta}>
-                    {[match.competitionName, formatDate(match.startsAt, locale, 'dateTimeZone')].filter(Boolean).join(' · ')}
-                  </span>
-                </GuardedLink>
-              ) : null}
-              {news ? (
-                <GuardedLink href={canonicalNewsPath(news.game, news.slug)} className={styles.stripItem} data-hll-strip-item="news">
-                  <span className={styles.stripLabel}>{t('strip.latestNews')}</span>
-                  <span className={styles.stripTitle}>{news.title}</span>
-                  <span className={styles.stripMeta}>{formatDate(news.publishedAt, locale, 'date')}</span>
-                </GuardedLink>
-              ) : null}
-            </section>
-          ) : null}
-        </div>
+        {match || news ? (
+          <section className={styles.strip} aria-label={t('strip.label')} data-hll-strip="">
+            {match ? (
+              <GuardedLink href={canonicalMatchPath(match.game, match.slug)} className={styles.stripItem} data-hll-strip-item="match">
+                <span className={styles.stripLabel}>{t('strip.nextMatch')}</span>
+                <span className={styles.stripTitle}>{t('strip.versus', { opponent: match.opponentName })}</span>
+                <span className={styles.stripMeta}>
+                  {[match.competitionName, formatDate(match.startsAt, locale, 'dateTimeZone')].filter(Boolean).join(' · ')}
+                </span>
+              </GuardedLink>
+            ) : null}
+            {news ? (
+              <GuardedLink href={canonicalNewsPath(news.game, news.slug)} className={styles.stripItem} data-hll-strip-item="news">
+                <span className={styles.stripLabel}>{t('strip.latestNews')}</span>
+                <span className={styles.stripTitle}>{news.title}</span>
+                <span className={styles.stripMeta}>{formatDate(news.publishedAt, locale, 'date')}</span>
+              </GuardedLink>
+            ) : null}
+          </section>
+        ) : null}
       </div>
     </main>
   );

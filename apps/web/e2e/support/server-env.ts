@@ -49,7 +49,9 @@ export function e2eServerEnv(options: {
     // Labelled synthetic server snapshots (never real Valkyria server state).
     SERVER_STATUS_SOURCE: 'synthetic-fixture',
     SERVER_STATUS_FIXTURE_SCENARIO: 'mixed',
-    HLL_BACKGROUND_CLIPS_JSON: JSON.stringify(SYNTHETIC_HLL_CLIPS),
+    // Opt-in real-artwork acceptance: no synthetic clips/posters may cover shipped art.
+    // This switch belongs only to the test server; the default stage suite is unchanged.
+    HLL_BACKGROUND_CLIPS_JSON: process.env.E2E_HLL_EMPTY_MEDIA === '1' ? '[]' : JSON.stringify(SYNTHETIC_HLL_CLIPS),
     ...options.background,
   };
 }

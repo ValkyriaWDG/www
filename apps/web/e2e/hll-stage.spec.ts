@@ -26,13 +26,24 @@ test('plays exactly one clip from the enabled set and keeps it across navigation
   expect(log.video.every((path) => path.endsWith('-desktop.webm'))).toBe(true);
   await expect(page.locator('video')).toHaveCount(1);
 
-  // Internal navigation away and back: same clip, no second decoder on content pages.
+  // The persistent background keeps the same element/time, paused behind content.
+  await page.locator('video').evaluate((video: HTMLVideoElement) => { video.dataset.identity = 'persistent-hll'; });
   await page.locator('[data-hll-menu="landing"] [data-hll-menu-item="news"]').click();
   await expect(page).toHaveURL(/\/cs\/hll\/news$/);
-  await expect(page.locator('video')).toHaveCount(0);
+  await expect(page.locator('video')).toHaveCount(1);
+  await expect(page.locator('video')).toHaveAttribute('data-identity', 'persistent-hll');
+  await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'paused');
+  await expect(stage(page)).toHaveAttribute('data-hll-stage-reason', 'route');
+  expect(await selectedClip(page)).toBe(clip);
+  await expect.poll(() => page.locator('video').evaluate((video: HTMLVideoElement) => video.paused)).toBe(true);
+  const pausedAt = await page.locator('video').evaluate((video: HTMLVideoElement) => video.currentTime);
+  await page.waitForTimeout(350);
+  expect(await page.locator('video').evaluate((video: HTMLVideoElement) => video.currentTime)).toBe(pausedAt);
   await page.locator('[data-hll-identity]').click();
   await expect(page).toHaveURL(/\/cs\/hll$/);
   expect(await selectedClip(page)).toBe(clip);
+  await expect(page.locator('video')).toHaveAttribute('data-identity', 'persistent-hll');
+  await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'playing');
 
   // Language switch (a new document) hands the selection over.
   await page.getByRole('link', { name: 'Přepnout na angličtinu (English)' }).first().click();
@@ -49,6 +60,58 @@ test('plays exactly one clip from the enabled set and keeps it across navigation
   await page.locator('[data-game-switch] [data-game-option="wardogs"]').first().click();
   await expect(page).toHaveURL(/\/cs\/wardogs$/);
   await expect(page.locator('[data-hll-stage-video]')).toHaveCount(0);
+});
+
+test('background covers the viewport on desktop and mobile without a central media box', async ({ page }) => {
+  await serveSyntheticMedia(page);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const viewport of [{ width: 1920, height: 1200 }, { width: 1366, height: 768 }, { width: 390, height: 844 }, { width: 320, height: 640 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/cs/hll');
+    await selectedClip(page);
+    const visibleViewport = await page.evaluate(() => ({ width: document.documentElement.clientWidth, height: window.innerHeight }));
+    for (const selector of ['[data-hll-scene]', '[data-hll-default-poster]', '[data-hll-stage-poster]']) {
+      const bounds = await page.locator(selector).boundingBox();
+      expect(bounds, selector).toEqual({ x: 0, y: 0, ...visibleViewport });
+    }
+    await expect(page.locator('[data-hll-scene]')).toHaveAttribute('aria-hidden', 'true');
+    await expect(page.locator('[data-hll-scene] button')).toHaveCount(0);
+    await expect(page.locator('[data-hll-footer] [data-hll-stage-toggle]')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  }
+});
+
+test('a direct content page keeps a static poster and never attaches a video source', async ({ page }) => {
+  const log = await serveSyntheticMedia(page);
+  await page.goto('/cs/hll/news');
+  await selectedClip(page);
+  await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'paused');
+  await expect(stage(page)).toHaveAttribute('data-hll-stage-reason', 'route');
+  await expect(page.locator('[data-hll-stage-toggle]')).toBeDisabled();
+  await expect(page.locator('[data-hll-stage-video]')).not.toHaveAttribute('src');
+  await page.waitForTimeout(500);
+  expect(log.video).toEqual([]);
+  expect(log.poster.length).toBeGreaterThan(0);
+});
+
+test('a configured poster returning 404 reveals the default HLL poster without requesting video', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const log = await serveSyntheticMedia(page);
+  await page.route('**/e2e-media/*.png', (route) => route.fulfill({ status: 404, body: '' }));
+  const missingPoster = page.waitForResponse((response) => response.url().includes('/e2e-media/') && response.url().endsWith('.png') && response.status() === 404);
+  await page.goto('/cs/hll');
+  const clip = await selectedClip(page);
+  await missingPoster;
+  await expect(page.locator('[data-hll-stage-poster]')).toHaveCount(0);
+  const fallback = page.locator('[data-hll-default-poster]');
+  await expect(fallback).toBeVisible();
+  await expect(fallback).toHaveAttribute('src', '/images/hll/scene-poster.webp');
+  await expect.poll(() => fallback.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  await expect(stage(page)).toHaveAttribute('data-hll-clip', clip);
+  await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'paused');
+  await expect(page.locator('[data-hll-stage-video]')).not.toHaveAttribute('src');
+  expect(log.video).toEqual([]);
+  await expect(page.getByRole('navigation', { name: 'Menu Hell Let Loose' }).first()).toBeVisible();
 });
 
 test('a fresh load selects again within the enabled set', async ({ browser }) => {
@@ -106,6 +169,9 @@ test('an explicit pause is kept across navigation until the visitor resumes', as
   await page.goto('/cs/hll');
   await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'playing', { timeout: 15_000 });
   const toggle = page.locator('[data-hll-stage-toggle]');
+  await expect(page.locator('[data-hll-footer]')).toBeVisible();
+  await expect(toggle).toBeVisible();
+  await expect(toggle).toBeEnabled();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await toggle.click();
   await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'paused');

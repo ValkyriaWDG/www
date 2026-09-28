@@ -1,4 +1,5 @@
 import type { Game } from '@valkyria/db/schema';
+import { HLL_NEWS_ARTWORK } from '@/components/hll/artwork';
 import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
@@ -53,8 +54,14 @@ export function NewsCard({
             {item.game === 'wardogs' ? (
               // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; the eyebrow names the game
               <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
-            ) : item.game ? (
-              labels.games[item.game]
+            ) : item.game === 'hell-let-loose' ? (
+              <>
+                {/* Illustrative game scene and clan branding, never a photograph of this event. */}
+                {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; whole placeholder is decorative */}
+                <img className={publicStyles.placeholderHllScene} src={HLL_NEWS_ARTWORK.src} width={HLL_NEWS_ARTWORK.width} height={HLL_NEWS_ARTWORK.height} style={{ objectPosition: HLL_NEWS_ARTWORK.objectPosition }} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />
+                {/* eslint-disable-next-line @next/next/no-img-element -- unchanged clan emblem with intrinsic dimensions */}
+                <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
+              </>
             ) : (
               labels.placeholder
             )}
