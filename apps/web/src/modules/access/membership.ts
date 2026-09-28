@@ -4,6 +4,8 @@ import { fetchGuildMember, type DiscordClientConfig, type DiscordClientDeps, typ
 import { isSnowflake } from './snowflake';
 
 export type MembershipSnapshot = {
+  /** Ephemeral PostgreSQL row-version equality token; never a provider event sequence. */
+  rowVersion: string;
   guildId: string;
   discordUserId: string;
   userId: string | null;
@@ -16,6 +18,13 @@ export type MembershipSnapshot = {
   lastRefreshAttemptAt: Date | null;
   lastRefreshError: string | null;
 };
+
+/**
+ * Only compare within the current request / authority freshness window. Neither
+ * xmin nor ctid is a durable ID; including both also detects same-transaction
+ * same-value updates. This token must never leave the server or be persisted.
+ */
+export const membershipRowVersion = sql<string>`${guildMembership}.xmin::text || ':' || ${guildMembership}.ctid::text`;
 
 export type MembershipObservation = {
   guildId: string;
@@ -32,13 +41,15 @@ export type MembershipObservation = {
 
 /** Reads the snapshot for exactly the configured guild; other guilds are never consulted. */
 export async function readMembership(db: Executor, guildId: string, discordUserId: string): Promise<MembershipSnapshot | null> {
-  const [row] = await db
-    .select()
+  const [record] = await db
+    .select({ membership: guildMembership, rowVersion: membershipRowVersion })
     .from(guildMembership)
     .where(and(eq(guildMembership.guildId, guildId), eq(guildMembership.discordUserId, discordUserId)))
     .limit(1);
-  if (!row) return null;
+  if (!record) return null;
+  const row = record.membership;
   return {
+    rowVersion: record.rowVersion,
     guildId: row.guildId,
     discordUserId: row.discordUserId,
     userId: row.userId,
@@ -167,7 +178,7 @@ export function refreshMembership(
 }
 
 /** Age of the authoritative observation, never negative (future timestamps count as received time). */
-export function snapshotAgeMs(snapshot: MembershipSnapshot, now: Date): number {
+export function snapshotAgeMs(snapshot: Pick<MembershipSnapshot, 'observedAt' | 'receivedAt'>, now: Date): number {
   const reference = Math.min(snapshot.observedAt.getTime(), snapshot.receivedAt.getTime());
   return Math.max(0, now.getTime() - reference);
 }

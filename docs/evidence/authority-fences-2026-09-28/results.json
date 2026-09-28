@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-28T14:27:20.904Z",
+  "baseRevision": "b37931393cd9b836415724d9572765f8615c31e8",
+  "sourceState": "Local candidate; exact committed-head CI pending. Source fingerprints below identify the tested runtime/test files.",
+  "environment": {
+    "os": "Windows",
+    "node": "24.21.0",
+    "pnpm": "10.34.5",
+    "postgres": "18.4",
+    "database": "Disposable loopback only; synthetic identities/content; no provider network calls"
+  },
+  "fingerprintEncoding": "SHA-256 of UTF-8 source after CRLF to LF normalization",
+  "sourceFiles": {
+    "apps/web/src/modules/access/issuer.ts": "1fffe72628d2037282b1cfffd7ecc85bb6e9fe1ab1df04767971723c19219690",
+    "apps/web/src/modules/access/membership.ts": "5f4771c9f3e02821ca2240d7da916196072e2d09feaf223f7939c09405dff3df",
+    "apps/web/src/modules/access/resolve-actor.ts": "e0683bd04d04c9ca1f3cc12847f6dbec8cc7cb235dc35859a524b8105bb4f555",
+    "apps/web/src/modules/content/publisher.ts": "627e16dc30dc537b67929f47eb65801512d02de5a1c97bfc14cfc8ec202aa223",
+    "apps/web/tests/integration/auth-membership.test.ts": "b96ab42f7db201c6a619fd27162f3ea73ffb87c44a89ce127fff2217697a1964",
+    "apps/web/tests/integration/authority-fences.test.ts": "954a04b6b46d96474fedf1f6c036c1d1d1dbb1e5e77a0eb4257259e2c7cd0578"
+  },
+  "checks": [
+    {
+      "command": "pnpm --filter @valkyria/web exec vitest run --project integration tests/integration/authority-fences.test.ts",
+      "configuration": "main runtime files with candidate regression fixture; restored in finally",
+      "expected": "Reproduce missing authority fences",
+      "status": "expected_failure",
+      "total": 11,
+      "passed": 1,
+      "failed": 10,
+      "cases": [
+        {
+          "name": "authority after awaited database work denies cached interactive authority after departure commits during mapping work",
+          "status": "failed"
+        },
+        {
+          "name": "authority after awaited database work denies cached interactive authority after role-removal commits during mapping work",
+          "status": "failed"
+        },
+        {
+          "name": "authority after awaited database work denies cached interactive authority after same-timestamp-aba commits during mapping work",
+          "status": "failed"
+        },
+        {
+          "name": "authority after awaited database work denies cached interactive authority after session-revocation commits during mapping work",
+          "status": "failed"
+        },
+        {
+          "name": "authority after awaited database work changes the ephemeral row token for a same-value update within one transaction",
+          "status": "failed"
+        },
+        {
+          "name": "transactional scheduled-publication authority preserves local recovery and fences grant changes (changed=false)",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority preserves local recovery and fences grant changes (changed=true)",
+          "status": "failed"
+        },
+        {
+          "name": "transactional scheduled-publication authority blocks publication after departure commits while waiting for content",
+          "status": "failed"
+        },
+        {
+          "name": "transactional scheduled-publication authority blocks publication after role-removal commits while waiting for content",
+          "status": "failed"
+        },
+        {
+          "name": "transactional scheduled-publication authority blocks publication after same-timestamp-aba commits while waiting for content",
+          "status": "failed"
+        },
+        {
+          "name": "transactional scheduled-publication authority rolls back publication when the membership observation expires during its audit write",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "command": "pnpm --filter @valkyria/web exec vitest run --project integration tests/integration/authority-fences.test.ts",
+      "configuration": "Candidate runtime and final regression fixture",
+      "status": "passed",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "cases": [
+        {
+          "name": "authority after awaited database work denies cached interactive authority after departure commits during mapping work",
+          "status": "passed"
+        },
+        {
+          "name": "authority after awaited database work denies cached interactive authority after role-removal commits during mapping work",
+          "status": "passed"
+        },
+        {
+          "name": "authority after awaited database work denies cached interactive authority after same-timestamp-aba commits during mapping work",
+          "status": "passed"
+        },
+        {
+          "name": "authority after awaited database work denies cached interactive authority after session-revocation commits during mapping work",
+          "status": "passed"
+        },
+        {
+          "name": "authority after awaited database work changes the ephemeral row token for a same-value update within one transaction",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority preserves local recovery and fences grant changes (changed=false)",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority preserves local recovery and fences grant changes (changed=true)",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority blocks publication after departure commits while waiting for content",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority blocks publication after role-removal commits while waiting for content",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority blocks publication after same-timestamp-aba commits while waiting for content",
+          "status": "passed"
+        },
+        {
+          "name": "transactional scheduled-publication authority rolls back publication when the membership observation expires during its audit write",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "command": "pnpm --filter @valkyria/web exec vitest run --project integration tests/integration/authority-fences.test.ts tests/integration/auth-membership.test.ts tests/integration/auth-local-admin.test.ts tests/integration/auth-request.test.ts tests/integration/auth-http.test.ts tests/integration/publisher-schedule.test.ts tests/integration/migrations.test.ts",
+      "status": "passed",
+      "total": 117,
+      "passed": 117,
+      "failed": 0
+    },
+    {
+      "command": "pnpm lint",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm typecheck",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm test:unit",
+      "status": "failed",
+      "total": 374,
+      "passed": 370,
+      "failed": 4,
+      "limitations": [
+        "Three unchanged presskit manifest tests compare Windows path separators against slash-separated manifest paths.",
+        "One unchanged media test cannot create its symlink: Windows EPERM. No tests were skipped or weakened."
+      ]
+    },
+    {
+      "command": "node scripts/check-foundation.mjs",
+      "status": "passed",
+      "files": 713
+    },
+    {
+      "command": "node --test scripts/tests/*.test.mjs",
+      "status": "passed",
+      "total": 19,
+      "passed": 19,
+      "failed": 0
+    },
+    {
+      "command": "git diff --check; git diff --cached --check",
+      "status": "passed"
+    }
+  ],
+  "screenshots": {
+    "status": "not_applicable",
+    "reason": "Server authorization/transaction changes only; SQL state and denied-capability proof replaces screenshots. Historical custom-bot UI captures are not reused."
+  },
+  "schemaChanges": false,
+  "providerAcceptance": "not_run",
+  "productionOperations": "none"
+}
