@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **SEO, release qualification, authorization fixes and CI maintenance merged; browser and encrypted recovery tools qualified locally, pending integrated CI; unified HLL/WDG platform implemented on draft PR #37 (not deployed); live authentication deferred.**
+Updated: 2026-09-28. Stage: **SEO, release qualification, authorization fixes, browser evidence and encrypted recovery tools merged; mobile article layout repair verified locally, awaiting current CI before promotion; unified HLL/WDG platform implemented on draft PR #37 (not deployed); live authentication deferred.**
 
 ## Unified platform / HLL implementation
 
@@ -86,6 +86,33 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 ## Checkpoint (resume here)
 
+PR #42 merged as `df48609e384aca679fb5b72073ea9188ee4785b5` after
+[PR CI 36445523409](https://github.com/ValkyriaWDG/www/actions/runs/36445523409)
+passed for head `2fd922c9933d4286dd2602afcf2743ef9893ba2a` (tested merge
+`68037ab9b4e1eb41ff1cb56ec48199e7d562d945`). It passed 53 tooling, 13 real
+encrypted-backup integration, 379 unit, 240 database and 119 browser tests (67 opt-in
+browser cases skipped), image/rollback checks and nine cold-mobile page samples.
+Issue #41 is accepted for byte-integrity tooling only; off-host recovery remains #23.
+
+The subsequent [main CI 36447034783](https://github.com/ValkyriaWDG/www/actions/runs/36447034783)
+failed the article's first cold-mobile sample: CLS **0.2920**, above the unchanged
+0.1 limit. The other two article samples passed at 0.0051. Font-loading changes to
+metadata wrapping moved the article twice; [#43](https://github.com/ValkyriaWDG/www/issues/43)
+tracks a deterministic reproduction and repair. A passing PR run does not override
+this later failure. Do not publish this main revision or average away the failed sample.
+The 2026-09-28 host preflight still observed the original `d0f98b0` image below,
+healthy with authentication disabled; no production promotion has taken place.
+
+The [#43 repair evidence](evidence/article-layout-2026-09-28/README.md) keeps compact
+metadata in explicit rows while preserving desktop wrapping. A staged-font red/green
+reproduction reduced the 391 px Czech shift sum from 0.292901 to 0.004595; all nine
+unchanged cold-page samples passed, with article CLS 0.002693 in each sample.
+Local production build and 17 focused browser cases passed. The integrating checkout
+also passed full lint, typecheck, 379 unit and 53 tooling tests. Final PR and merged-main
+CI remain required. [Public refresh evidence](evidence/production-refresh-2026-09-28/README.md)
+preserves 24/37 passing before-state HTTP checks and prepares the same read-only
+harness for after deployment; its missing SEO/social behavior is not accepted as fixed.
+
 Issue #26 is accepted: [release hardening](operations/release-hardening.md) adds cold
 mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
 disposable previous-image/database rollback rehearsals. [CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812)
@@ -158,8 +185,8 @@ destination and retains plaintext explicitly for operator handling. Local Window
 verification passed 53 tooling and 13 real restic integration tests; independent
 review and the coordinating checkout repeated the recovery checks. The
 [durable evidence](evidence/encrypted-backup-2026-09-28/README.md) records exact source
-fingerprints. Integrated Linux/application CI must pass on the final PR head before
-merge. This does not prove SQL/media semantic restoration, off-host storage,
+fingerprints. The integrated Linux/application checks passed in PR #42 as recorded
+above. This does not prove SQL/media semantic restoration, off-host storage,
 scheduling, alert delivery or production recovery; those remain under #23.
 
 ```text
@@ -173,8 +200,9 @@ Delivered: Czech-first /cs + /en website with the Wardogs menu shell and full-le
 Evidence: docs/evidence/app-1.0.0/README.md (captioned captures + measurements.json)
 Migrations: packages/db/drizzle/0000_initial_schema.sql (applied; repeated runs no-op)
 Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
-Next checkpoint: final integrated CI for operational qualification; then remaining
-  #23 operator acceptance and #25 device/performance coverage. Hosted Logi contracts
+Next checkpoint: repair #43 and qualify its exact merged main before publication;
+  then verify production SEO #29 and remaining #23 operator acceptance and #25
+  device/performance coverage. Hosted Logi contracts
   must be established before enabling #7/#8/#22 integration.
 ```
 

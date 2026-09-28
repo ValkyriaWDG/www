@@ -47,9 +47,11 @@ commit SHAs and maintained by Dependabot.
 ## Docker image (implemented)
 
 `apps/web/Dockerfile` is a multi-stage build from the repository root using the committed
-lockfile (`pnpm install --frozen-lockfile`), Node 24 (`node:24-bookworm-slim` pinned by
-digest; a registry mirror serving the same digest may be selected with
-`--build-arg NODE_IMAGE=…`) and Next.js standalone output. The runtime stage runs as
+lockfile (`pnpm install --frozen-lockfile`) and Next.js standalone output. Build stages
+use digest-pinned Node 24 Bookworm (`NODE_IMAGE`); the accepted runtime uses
+digest-pinned Node 24 Trixie (`RUNTIME_IMAGE`). See the exact defaults in the Dockerfile
+and [runtime qualification](release-hardening.md); a mirror must serve the same digest.
+The runtime stage runs as
 `valkyria` (uid/gid 10001) in `/app`; application files are root-owned and read-only; only
 `/app/storage/editorial` (media volume) and `/app/apps/web/.next/cache` are writable.
 It contains the standalone server (`apps/web/server.js`), static assets, bundled CLIs in
