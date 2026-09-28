@@ -14,7 +14,7 @@ import { PageHeader } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
 import { routing, type AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
-import { mediaUrl } from '@/modules/content/rich-text/render';
+import { sharingMetadata } from '@/modules/social/metadata';
 import { getPublicMatch } from '@/modules/matches/queries';
 
 export const dynamicParams = true;
@@ -36,17 +36,19 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/matches/
   });
   const alternates = bilingualAlternates(locale, `/matches/${match.slug}`);
   const site = await getTranslations({ locale, namespace: 'common.site' });
+  const sharing = sharingMetadata(locale, 'matches', match.slug, match.updatedAt, title, description);
   return {
     title: seoTitle(title, site('name')),
     description,
     alternates,
+    twitter: sharing.twitter,
     openGraph: {
       type: 'website',
       title,
       description,
       url: alternates.canonical as string,
       locale: OG_LOCALE[locale],
-      ...(match.cover ? { images: [{ url: mediaUrl(match.cover.assetId, 'full'), width: match.cover.width, height: match.cover.height, alt: match.cover.alt }] } : {}),
+      images: sharing.images,
     },
   };
 }

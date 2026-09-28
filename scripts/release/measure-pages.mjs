@@ -7,6 +7,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assessPageBudgets, maximumLayoutShiftSession } from './page-budgets.mjs';
+import { readSourceProvenance } from './source-provenance.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const app = path.join(root, 'apps/web');
@@ -25,8 +26,7 @@ const output = path.join(root, '.local/release-hardening/pages');
 mkdirSync(output, { recursive: true });
 const report = {
   schemaVersion: 1, status: 'running', startedAt: new Date().toISOString(),
-  sourceRevision: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
-  sourceDirty: Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim()),
+  ...readSourceProvenance(root),
   environment: { platform: process.platform, node: process.version, build: 'Next.js standalone production', data: 'Dedicated loopback PostgreSQL synthetic fixtures; never production', background: 'CSS fallback; delivered game binaries are excluded from CI. No video is fetched.', profile: policy.profile },
   policy, samples: [], captures: [], errors: [],
   limits: ['Lab cold-navigation measurements, not field Core Web Vitals or INP.', 'Optional delivered background poster/video is not bundled; its real playback is a separate media gate.', 'LCP median of three runs; every transfer/CLS sample must meet limits; observer window is bounded.'],

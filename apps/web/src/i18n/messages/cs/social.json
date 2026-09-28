@@ -1,0 +1,20 @@
+{
+  "community": "ČESKO-SLOVENSKÁ HERNÍ KOMUNITA",
+  "introduction": "Společně ve Wardogs. S kořeny v Hell Let Loose.",
+  "news": "NOVINKY",
+  "matches": "ZÁPASY A VÝSLEDKY",
+  "match": "ZÁPAS",
+  "result": "VÝSLEDEK ZÁPASU",
+  "resultUnpublished": "Výsledek zatím nebyl zveřejněn",
+  "status": { "scheduled": "Naplánováno", "live": "Probíhá", "postponed": "Odloženo", "completed": "Dohráno", "cancelled": "Zrušeno" },
+  "outcome": { "win": "Výhra", "loss": "Prohra", "draw": "Remíza" },
+  "verification": { "verified": "Ověřený výsledek", "provisional": "Předběžný výsledek" },
+  "illustration": "WARDOGS • ILUSTRAČNÍ MATERIÁL Z PRESSKITU",
+  "sharing": "Grafika pro sdílení",
+  "publishedOnly": "Obrázek používá právě zveřejněnou verzi této jazykové varianty. Koncept ani neuložené změny se nesdílejí.",
+  "unpublished": "Náhled bude dostupný po zveřejnění této jazykové varianty.",
+  "unavailable": "Náhled teď nelze načíst. Ověřte, že je článek stále zveřejněný, a obnovte stránku.",
+  "open": "Otevřít PNG pro sdílení",
+  "previewAlt": "Náhled grafiky pro sdílení zveřejněného článku",
+  "cacheHint": "Po aktualizaci článku mohou Discord a sociální sítě ještě zobrazovat vlastní uložený náhled."
+}

@@ -14,6 +14,7 @@ import { PageHeader, SectionFrame } from '@/components/ui/panels';
 import { routing, type AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getPublicMember } from '@/modules/members/queries';
+import { sharingMetadata } from '@/modules/social/metadata';
 
 export const dynamicParams = true;
 
@@ -28,11 +29,13 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/members/
   const t = await getTranslations({ locale, namespace: 'members.meta' });
   const description = t('profileDescription', { name: member.displayName });
   const alternates = bilingualAlternates(locale, `/members/${member.slug}`);
+  const sharing = sharingMetadata(locale, 'site', undefined, undefined, member.displayName, description);
   return {
     title: member.displayName,
     description,
     alternates,
-    openGraph: { type: 'profile', title: member.displayName, description, url: alternates.canonical as string, locale: OG_LOCALE[locale] },
+    openGraph: { type: 'profile', title: member.displayName, description, url: alternates.canonical as string, locale: OG_LOCALE[locale], images: sharing.images },
+    twitter: sharing.twitter,
   };
 }
 

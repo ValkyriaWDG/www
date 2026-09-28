@@ -1,0 +1,20 @@
+{
+  "community": "CZECH & SLOVAK GAMING COMMUNITY",
+  "introduction": "Together in Wardogs. Rooted in Hell Let Loose.",
+  "news": "NEWS",
+  "matches": "MATCHES & RESULTS",
+  "match": "MATCH BRIEFING",
+  "result": "MATCH RESULT",
+  "resultUnpublished": "Result not published yet",
+  "status": { "scheduled": "Scheduled", "live": "Live", "postponed": "Postponed", "completed": "Completed", "cancelled": "Cancelled" },
+  "outcome": { "win": "Win", "loss": "Loss", "draw": "Draw" },
+  "verification": { "verified": "Verified result", "provisional": "Provisional result" },
+  "illustration": "WARDOGS • ILLUSTRATIVE PRESS-KIT ARTWORK",
+  "sharing": "Sharing artwork",
+  "publishedOnly": "The image uses the currently published version of this translation. Drafts and unsaved changes are not shared.",
+  "unpublished": "A preview will be available after this translation is published.",
+  "unavailable": "The preview is unavailable. Check that the article is still published, then reload the page.",
+  "open": "Open sharing PNG",
+  "previewAlt": "Sharing artwork preview for the published article",
+  "cacheHint": "After an article update, Discord and social networks may still display their own cached preview."
+}

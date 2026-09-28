@@ -62,6 +62,11 @@ CI uploads `page-budgets-<workflow SHA>` with raw samples and three synthetic fu
 captures. Local outputs stay in `.local/release-hardening/pages`. Review all raw runs;
 the median gate does not assert that every individual LCP met 2.5 seconds.
 Each sample includes layout-shift element identifiers and before/after rectangles.
+The report records the source revision, dirty flag and complete repository-relative
+`dirtyPaths`, including generated untracked files such as the workflow's SBOM.
+Review these paths before accepting the measurement; generated output is not silently
+ignored and a dirty checkout is never described as clean. Older reports retain their
+original provenance limits and are not retroactively populated with inferred paths.
 The separate `news-font-stability.spec.ts` browser regression delays actual font loads
 and substitutes a generic fallback to exercise mobile filter wrapping on hosts without
 a condensed system font. It does not replace the unmodified-page performance gate.

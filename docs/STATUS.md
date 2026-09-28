@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-26. Stage: **1.0.0 — public website deployed; live authentication deferred.**
+Updated: 2026-09-28. Stage: **1.0.0 — public website deployed; live authentication deferred.**
 
 ## First public deployment
 
@@ -23,14 +23,29 @@ Issue #23 remains open for authentication and the remaining launch/operational i
 
 Issue #26 candidate: [release hardening](operations/release-hardening.md) adds cold
 mobile budgets, a pinned Debian 13 runtime comparison, native image checks and
-disposable previous-image/database rollback rehearsals. [Evidence](evidence/release-hardening-2026-09-26/README.md)
-records nine passing Linux budget samples and both successful image builds in run
-36265109815 (merge checkout `5603528d928640211e088443e6aaba858842ecff`). Its rehearsal
-failed because an external fixture CLI could not resolve the already-traced `sharp`
-package; cleanup passed. The bounded package-link correction and 32 tooling tests pass
-locally. Corrected Linux native runtime, scan, rollback and restore acceptance remain
-pending a new exact-source CI run. This candidate has not been published or deployed.
-The live deployment and its recorded limitations above remain unchanged.
+disposable previous-image/database rollback rehearsals. [CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812)
+passed for PR source `677c07f8e284ec6de936094102e0f6858b1e3a81`, tested as merge
+revision `499558cbd9e0fc1260356274c40e318c28514e86`. All 12 rehearsal steps and
+cleanup passed; all 25 restored table fingerprints matched, runtime scans found no
+fixable HIGH/CRITICAL advisories, and all nine cold-mobile samples passed. The
+[acceptance evidence](evidence/release-hardening-2026-09-26/README.md) preserves the
+remaining advisories, larger candidate image, dirty-tree provenance and earlier failures.
+
+PR #33 was merged as `b37931393cd9b836415724d9572765f8615c31e8` on 2026-09-28.
+Its [SEO and sharing](engineering/seo-and-sharing.md) adds bilingual homepage
+canonicals, branded publication-aware PNG templates for site/news/matches, editorial
+sharing previews and published-article JSON-LD. [Feature evidence](evidence/seo-social-2026-09-26/README.md)
+includes actual images, CS/EN desktop/mobile editor captures, long-title stress
+coverage and regression results. Issue #29 still requires production HTTP verification
+after an authorized release; source merge does not prove deployment.
+
+The refreshed #32 combines that main revision with release hardening. **The new
+combined source still requires its own complete CI**, including both runtime variants'
+CS/EN social PNG probes. Historical green runs do not qualify this changed source.
+Hosted Logi is the selected integration direction; custom-bot PRs #34/#35 are not
+prerequisites and must not be merged automatically. Follow the updated
+[integration handoff](engineering/follow-up-integration-2026-09-26.md). No candidate
+image has been published or deployed; the recorded live deployment remains unchanged.
 
 ```text
 Release: 1.0.0 (CHANGELOG.md) from PR #19, branch claude/eager-mayer-0tk36i
@@ -76,8 +91,8 @@ Reviewed exceptions: Debian 12.15 base-image advisories without a fixed package
   proxy/TLS, registry publication, media delivery and `publish-due` timer were subsequently
   verified in the first-deployment evidence linked above.
 - The initial 1.0.0 validation did not include rollback rehearsal or page-weight/Web
-  Vitals budgets. Issue #26's subsequent Linux budget proof and pending runtime acceptance
-  are recorded in the checkpoint above.
+  Vitals budgets. Issue #26's accepted historical Linux qualification and the separate
+  pending combined-source qualification are recorded in the checkpoint above.
 
 ## Media
 

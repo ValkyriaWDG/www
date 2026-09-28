@@ -1,6 +1,46 @@
 # Release hardening evidence — 2026-09-26
 
-## Linux follow-up: budgets passed, runtime correction pending
+## Accepted historical CI and combined-source refresh — 2026-09-28
+
+[CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812) passed
+Foundation, Application and Quality gate for PR head
+`677c07f8e284ec6de936094102e0f6858b1e3a81`, tested as merge revision
+`499558cbd9e0fc1260356274c40e318c28514e86`. The actual artifacts were downloaded
+and re-inspected on 2026-09-28; the three recorded Linux capture hashes matched.
+[Issue #26 acceptance proof](https://github.com/ValkyriaWDG/www/issues/26#issuecomment-5849412715)
+contains measurements, captions and the source/operational limits.
+
+| Verification | Observed result for that historical source |
+|---|---|
+| Foundation / application | 714 files; 36 tooling, 369 unit, 227 PostgreSQL and 114 browser tests; lint, types and production build passed. |
+| Runtime and rollback | All 12 steps and cleanup passed. The immutable previous image served routes/media before and after candidate migrations and after restore; all 25 table fingerprints matched. |
+| Native image behavior | UID 10001, read-only root, writable media/cache, sharp WebP encoding and health passed in both variants; candidate database loss/recovery passed. |
+| Same-source comparison | Bookworm 281,795,388 bytes vs Trixie 286,027,086 bytes: candidate is 4,231,698 bytes larger (+1.50%). Package inventory decreases 121 to 112; HIGH/CRITICAL package findings decrease 56 to 43. |
+| Advisory limits | Candidate retains 43 unfixed HIGH findings, zero CRITICAL and zero fixable HIGH/CRITICAL; complete advisory reports remain available. |
+| Cold-mobile budgets | Home/news/article median LCP 1968/872/984 ms; maximum CLS 0.049400/0.002521/0.005100; maximum transfer 503137/492871/585733 bytes. All nine samples pass. |
+| SBOM | Candidate CycloneDX 1.6 with 113 components; image ID/source match the rehearsal. |
+
+Inspect the run's `release-rehearsal-*`, `runtime-scans-*`, `sbom-*` and
+`page-budgets-*` artifacts (90-day retention). The old budget report records
+`sourceDirty: true`; an SBOM was generated earlier, but the complete dirty-path
+list was not captured. This is not a clean-tree measurement and inferred paths
+must not be added retroactively. Future reports now include `dirtyPaths`.
+
+This qualifies only the recorded disposable image/schema pair. It applied zero
+real migrations plus a separate synthetic nullable-column expansion; media used
+an unchanged synthetic volume. It does not prove production deployment, a future
+migration, real-media restoration or enabled Discord integration. Social PNG
+checks were N/A because the route did not yet exist in that source.
+
+The refreshed PR #32 now incorporates PR #33 from main
+`b37931393cd9b836415724d9572765f8615c31e8`. **The combined source still needs its
+own full CI; none of the historical results above are relabeled as combined proof.**
+Both runtime variants must now render/decode the CS/EN 1200×630 social PNGs.
+Hosted Logi is the integration direction; legacy custom-bot PRs #34/#35 are not
+release prerequisites. See the [current integration handoff](../../engineering/follow-up-integration-2026-09-26.md).
+No registry publication, production migration, DNS change or deployment was made.
+
+## Historical failed run: budgets passed, runtime correction pending
 
 [CI run 36265109815](https://github.com/ValkyriaWDG/www/actions/runs/36265109815)
 tested PR head `6d48258926aed74b5e1b27bac93b1143f47520b3` through merge checkout
