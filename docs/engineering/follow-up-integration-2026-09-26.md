@@ -10,22 +10,28 @@ deployment are separate states. Follow the [GitHub workflow](github-workflow.md)
 
 - [PR #33](https://github.com/ValkyriaWDG/www/pull/33), public SEO/social images, was
   merged as `b37931393cd9b836415724d9572765f8615c31e8` on 2026-09-28.
-- [PR #32](https://github.com/ValkyriaWDG/www/pull/32) is being refreshed against that
-  main revision. Historical accepted head `677c07f8e284ec6de936094102e0f6858b1e3a81`
-  passed [CI 36267354812](https://github.com/ValkyriaWDG/www/actions/runs/36267354812).
-  The refreshed combined source requires new CI and artifact review.
+- [PR #32](https://github.com/ValkyriaWDG/www/pull/32) merged as
+  `eaf9f911f13c0b929c8f7d90529c0ccab5dd0701` after combined-source
+  [CI 36435186950](https://github.com/ValkyriaWDG/www/actions/runs/36435186950).
+  The [accepted evidence](../evidence/release-hardening-2026-09-26/accepted-2026-09-28.json)
+  records the source, tested merge, artifacts and limitations.
 - The owner selected [Ninjonik's hosted Logi](https://github.com/Ninjonik/logi) for
   both Hell Let Loose and Wardogs. Separate upstream integration work must establish
   capabilities and contracts before website integration is enabled.
-- [PR #34](https://github.com/ValkyriaWDG/www/pull/34) and
-  [PR #35](https://github.com/ValkyriaWDG/www/pull/35) target the former custom bot.
-  **Do not merge them automatically or require their jobs, settings or migration as
-  dependencies of #32.** Their old contract tests do not establish Logi compatibility.
-  Any reusable authorization behavior needs a separately scoped compatibility review.
+- [PR #34](https://github.com/ValkyriaWDG/www/pull/34) closed unmerged as superseded.
+  [PR #35](https://github.com/ValkyriaWDG/www/pull/35) was narrowed to provider-independent
+  authorization fixes, reviewed and merged as `df119f8df2fff5d84c579c0843dd5c1bf4942468`.
+  Its [evidence](../evidence/authority-fences-2026-09-28/README.md) covers role/session
+  freshness and publication races, not Logi compatibility. The retired receiver,
+  management API and transport migration are not integration prerequisites.
+- [PR #39](https://github.com/ValkyriaWDG/www/pull/39) merged as
+  `e8f19d7b3f664e82d545a58a97a9e215469e62c5`; [PR #40](https://github.com/ValkyriaWDG/www/pull/40)
+  merged as `425fb5f3ae058764723182b097ecaf7d5bd2119c`. Their maintenance checks and
+  acceptance proof are linked from each PR. Neither merge published or deployed an image.
 - Claude owns the ongoing unified HLL website implementation in PR #37. This refresh
   does not edit that branch or claim its runtime acceptance.
 
-## Scoped conflict resolutions
+## Preserve these integration boundaries
 
 | Shared area | Required resolution |
 |---|---|
@@ -64,6 +70,6 @@ compatibility of authenticated sessions or enabled provider integrations.
    require fresh main CI. Publication and live deployment follow their own scope;
    keep authentication/provider switches disabled until operational acceptance.
 
-The refresh's foundation/tooling checks do not substitute for combined application,
+Foundation/tooling checks do not substitute for combined application,
 container, database, browser or live-provider verification. Earlier green runs and
 screenshots remain evidence only for their recorded source and environment.

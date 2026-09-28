@@ -28,6 +28,30 @@ jobs:
           package-manager-cache: false
       - run: node scripts/check-foundation.mjs
       - run: node --test scripts/tests/*.test.mjs
+      - name: Verify encrypted backup recovery with pinned restic
+        shell: bash
+        env:
+          BACKUP_PROOF_REPORT_PATH: .local/encrypted-backup/report.json
+        run: |
+          set -euo pipefail
+          tool_dir="$(mktemp -d)"
+          trap 'rm -rf "$tool_dir"' EXIT
+          curl --fail --silent --show-error --location --retry 2 --max-time 60 \
+            https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_amd64.bz2 \
+            --output "$tool_dir/restic.bz2"
+          printf '%s  %s\n' f415415624dcc452f2a02b8c33641791a8c6d6d3b65bbb3543fcf9a25151585c "$tool_dir/restic.bz2" | sha256sum --check --strict
+          bunzip2 "$tool_dir/restic.bz2"
+          chmod +x "$tool_dir/restic"
+          RESTIC_TEST_BIN="$tool_dir/restic" node --test scripts/tests/encrypted-backup.integration.mjs
+      - name: Upload encrypted recovery evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: encrypted-recovery-${{ github.sha }}
+          path: .local/encrypted-backup/report.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
       - name: Check attribution
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}

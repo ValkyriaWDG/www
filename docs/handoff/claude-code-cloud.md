@@ -1,5 +1,11 @@
 # Claude Code Cloud implementation handoff
 
+**Resume note (2026-09-28):** M1–M3 are implemented. This initial brief remains the
+product baseline. Read [current status](../STATUS.md), the assigned issue and its
+handoff before making changes; do not recreate the scaffold or repeat completed
+milestones. Hosted Logi supersedes the initial custom-bot direction; see the
+[integration checkpoint](../engineering/follow-up-integration-2026-09-26.md).
+
 You are implementing the Valkyria clan website in `ValkyriaWDG/www`.
 The repository owner has already supplied the product direction, reference captures,
 clan logo and repository foundation. Your job is to turn this brief into a working,

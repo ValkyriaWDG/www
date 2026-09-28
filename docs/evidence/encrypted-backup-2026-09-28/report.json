@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "resticVersion": "0.19.1",
+  "platform": "win32",
+  "node": "v24.21.0",
+  "observedAt": "2026-09-28T15:28:14.625Z",
+  "environment": "disposable-local-repository",
+  "durationMs": 39234,
+  "binarySha256": "b0dd1fd21eea5d8fe1325f55f7118213c21f36de8a261e04c0624a5ab9fd7830",
+  "sourceHashes": {
+    "scripts/operations/backup-set.mjs": "2cb42d07427f827f50f862dc391b93505774e83684c76df0a6135fd17b03dd35",
+    "scripts/operations/verify-restic-backup.mjs": "ac8a958ebaf4cd7af30b051940002f590ecdf266107f7d9b80c463283fba4e94",
+    "scripts/tests/backup-set.test.mjs": "cfb44598d63ac8fde1b3c4cc4dd3bad40657aab42e0811295acaf37e947b053b",
+    "scripts/tests/backup-subprocess.test.mjs": "48d14857cfaa845d8d2c4f391e4724bba5030ef6af5207646f8b7c523de2f957",
+    "scripts/tests/encrypted-backup.integration.mjs": "8ab839f0cc415daed3c67ab737d75529ace5dbdc885338ef774b43cbeccc4d55"
+  },
+  "sourceData": "synthetic opaque bytes; not a PostgreSQL dump or tar validation",
+  "cases": [
+    {
+      "name": "recovered",
+      "exitCode": 0,
+      "status": "passed",
+      "code": null,
+      "plaintextOutput": "retained-at-requested-target"
+    },
+    {
+      "name": "recovered",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "target_exists",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "encrypted-repository/plaintext",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "unsafe_target",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "wrong-password",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "restic_failed",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "mutable-selector",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "invalid_snapshot_pin",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "missing-snapshot",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "snapshot_not_found",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "wrong-manifest",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "manifest_mismatch",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "tampered-output",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "file_mismatch",
+      "plaintextOutput": "partial-at-requested-target"
+    },
+    {
+      "name": "missing-output",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "unsafe_snapshot",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "extra-output",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "unsafe_snapshot",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "stale-output",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "stale_backup",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "future-capture",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "future_backup",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "future-snapshot",
+      "exitCode": 1,
+      "status": "failed",
+      "code": "future_backup",
+      "plaintextOutput": "not-created"
+    },
+    {
+      "name": "repository-integrity",
+      "exitCode": 0,
+      "status": "passed",
+      "code": null
+    },
+    {
+      "name": "completion-freshness",
+      "status": "passed",
+      "observedCode": "stale_backup",
+      "mechanism": "real-restic-with-injected-clock"
+    }
+  ]
+}

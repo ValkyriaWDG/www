@@ -4,8 +4,10 @@
 
 Read [the cloud implementation handoff](docs/handoff/claude-code-cloud.md) before
 coding. It defines the reading order, milestone boundaries, cloud setup, acceptance
-criteria and delivery format. The repository is initially a scaffold; there is no
-running website yet. Do not mistake the foundation CI for application verification.
+criteria and delivery format. A working application is already committed. Start from
+[current status](docs/STATUS.md), the assigned issue and the actual source; use the
+initial handoff as requirements, not an instruction to rebuild completed milestones.
+Foundation CI alone does not establish application or production verification.
 
 The website is Czech-first with Czech/English switching using Czech/UK flags and
 text labels. Code, technical documentation, GitHub descriptions and AI prompts stay

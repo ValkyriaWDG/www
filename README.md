@@ -5,15 +5,16 @@ game-menu experience and the clan's Hell Let Loose heritage.
 
 **Target domain:** `valkyriawdg.cz` · **Repository:** [ValkyriaWDG/www](https://github.com/ValkyriaWDG/www)
 
-> Current stage: application implementation (M1–M3) in progress on a task branch.
-> See [status](docs/STATUS.md) for what is implemented and verified; live Discord OAuth,
-> the final background video and production deployment remain operator inputs.
+> The working website, editorial administration and full-length background media are
+> implemented. See [status](docs/STATUS.md) for accepted source, historical deployment
+> evidence and remaining live authentication, Logi and operational checks. A merged
+> source revision is not automatically deployed.
 
 ## Start here
 
 | Audience | Entry point |
 |---|---|
-| Owner starting Claude Code Cloud | [Copy-ready prompt](docs/handoff/start-prompt.md) |
+| Owner resuming Claude Code Cloud | [Current status](docs/STATUS.md), assigned issue and [original requirements](docs/handoff/start-prompt.md) |
 | Implementation agent | [Detailed handoff](docs/handoff/claude-code-cloud.md) and [AGENTS.md](AGENTS.md) |
 | Product/design | [Brief](docs/product/brief.md), [visual specification](docs/design/visual-spec.md), [screen map](docs/design/screen-map.md) |
 | Engineering | [Architecture](docs/architecture/overview.md), [data model](docs/architecture/data-model.md), [auth/RBAC](docs/security/auth-rbac.md) |
@@ -46,7 +47,7 @@ also have a source catalog and an offline gallery for editorial/game-logo review
 
 ```text
 apps/web/             Next.js application (routes, components, domain modules, CLIs, tests)
-apps/discord-worker/  Reserved optional Discord role-event worker (M4)
+apps/discord-worker/  Historical placeholder; hosted Logi is the selected integration
 packages/db/          Drizzle schema, reviewed SQL migrations and migration runner
 packages/contracts/   Reserved for integration contracts with real multiple consumers
 assets/               Clan logo and provenance manifest
@@ -60,7 +61,7 @@ docs/implementation/  Milestones, backlog and verification requirements
 docs/engineering/     Agent, FE/BE, migration, GitHub and release procedures
 docs/operations/      Release and rollback contract
 infra/                Sanitized deployment examples
-scripts/              Executable foundation checks
+scripts/              Repository checks, release qualification and operator tooling
 .github/              CI, publication gate, ownership and contribution templates
 .claude/skills/       Eight repository-owned skills for Claude Cloud and other agents
 ```

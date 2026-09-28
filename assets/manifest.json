@@ -1461,6 +1461,50 @@
       "bytes": 1468409,
       "width": 1024,
       "height": 2216
+    },
+    {
+      "id": "browser-media-2026-09-28-chrome-mp4-playing",
+      "path": "docs/evidence/browser-media-2026-09-28/chrome-mp4-playing.png",
+      "source": "Actual local standalone application browser capture; tested main e8f19d7; 2026-09-28; exact browser and conditions in adjacent report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "802231f6f625975a3abb42b0a291858484d4852f906c7c113282085cb06e3509",
+      "bytes": 1457964,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "browser-media-2026-09-28-firefox-webm-playing",
+      "path": "docs/evidence/browser-media-2026-09-28/firefox-webm-playing.png",
+      "source": "Actual local standalone application browser capture; tested main e8f19d7; 2026-09-28; exact browser and conditions in adjacent report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "b2226fef7032b9785bc359c4e0c5d82c95bf1a25f4deec758b91d4b4c25e82c7",
+      "bytes": 1498655,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "browser-media-2026-09-28-firefox-poster",
+      "path": "docs/evidence/browser-media-2026-09-28/firefox-poster.png",
+      "source": "Actual local standalone application browser capture; tested main e8f19d7; 2026-09-28; exact browser and conditions in adjacent report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "1eee03ed4f9218274195b547dcf283abd869c21232aa6078f981f2a359e08144",
+      "bytes": 1597064,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "browser-media-2026-09-28-firefox-mp4-fallback",
+      "path": "docs/evidence/browser-media-2026-09-28/firefox-mp4-fallback.png",
+      "source": "Actual local standalone application browser capture; tested main e8f19d7; 2026-09-28; exact browser and conditions in adjacent report",
+      "usage": "verification-evidence-only",
+      "rights": "Application UI and third-party Wardogs imagery; imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "70c56ecb0d6e45011248ca05ba37abac2a44ef9d04dc8719a354644f615997e2",
+      "bytes": 1650708,
+      "width": 1440,
+      "height": 900
     }
   ]
 }
