@@ -119,7 +119,10 @@
     "invalid_content": "The text contains content that cannot be saved. Remove unusual formatting and try again.",
     "invalid": "Check this value.",
     "hll_side": "Choose Allies or Axis (or leave it empty).",
-    "hll_sector_score": "In HLL a round score is the number of sectors held: 0 to 5."
+    "hll_sector_score": "In HLL a round score is the number of sectors held: 0 to 5.",
+    "invalid_scoreboard": "Neither the file nor the server response contains a game scoreboard with player statistics.",
+    "unknown_server": "This server is not configured as a statistics source.",
+    "hll_only": "Game statistics can be imported for Hell Let Loose matches only."
   },
   "media": {
     "none": "No image",
@@ -261,7 +264,8 @@
         "schedule": "Schedule",
         "presentation": "Public presentation",
         "result": "Result and rounds",
-        "private": "Private administration"
+        "private": "Private administration",
+        "statistics": "Game statistics"
       },
       "fields": {
         "game": "Game",
@@ -618,5 +622,66 @@
     "redactionNote": "Secrets, tokens, session identifiers and e-mail addresses are never shown.",
     "detailMissingTitle": "Event not found",
     "detailMissingBody": "The selected event does not exist."
+  },
+  "statistics": {
+    "groupTitle": "Game statistics (CRCON)",
+    "intro": "Statistics of the played game from the game server (CRCON) add team totals, weapons and optionally players to the public match detail. They are stored separately from the match result, with their source and import time.",
+    "currentTitle": "Imported statistics",
+    "source": "Source",
+    "sourceCrcon": "CRCON: {server}, game {game}",
+    "sourceUpload": "Uploaded file: {file}",
+    "game": "Map and mode",
+    "gameTime": "Game start",
+    "importedAt": "Imported",
+    "players": "Players",
+    "playersPublic": "player rows are public",
+    "playersPrivate": "player rows are not public",
+    "teamsCaption": "Team totals in the imported game",
+    "metric": "Metric",
+    "valkyriaColumn": "Valkyria ({side})",
+    "opponentColumn": "Opponent ({side})",
+    "metrics": {
+      "players": "Players",
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "teamkills": "Team kills",
+      "combat": "Combat",
+      "offense": "Offense",
+      "defense": "Defense",
+      "support": "Support"
+    },
+    "sides": {
+      "allies": "Allies",
+      "axis": "Axis"
+    },
+    "side": "Valkyria side in this game",
+    "sideHint": "Assigns the teams in the statistics to Valkyria and the opponent.",
+    "publishPlayers": "Publish individual player statistics",
+    "publishPlayersHint": "In-game names and numbers of both teams. Unchecked, only team and weapon totals are public.",
+    "saveSettings": "Save settings",
+    "settingsSaved": "Statistics settings saved.",
+    "remove": "Remove statistics",
+    "removeConfirm": "Remove the imported statistics?",
+    "cancel": "Cancel",
+    "removed": "Statistics removed.",
+    "importTitle": "Import statistics",
+    "replaceTitle": "Replace statistics with a new import",
+    "sourceLabel": "Data source",
+    "sourceOptionCrcon": "From the game server (CRCON)",
+    "sourceOptionCrconHint": "The website downloads the game scoreboard from the configured server.",
+    "noSources": "No CRCON server is configured yet (HLL_SERVER_SOURCES_JSON).",
+    "noSourcesShort": "No server configured",
+    "sourceOptionUpload": "Upload a JSON file",
+    "sourceOptionUploadHint": "A CRCON game scoreboard export (get_map_scoreboard response).",
+    "server": "Server",
+    "gameId": "CRCON game ID",
+    "gameIdHint": "The game number from CRCON public statistics (e.g. …/games/1234).",
+    "file": "Scoreboard file",
+    "fileHint": "JSON file; per-kill details are left out before sending.",
+    "import": "Import statistics",
+    "replace": "Replace statistics",
+    "importNote": "An import replaces the statistics previously stored for this match.",
+    "imported": "Statistics imported.",
+    "working": "Working…"
   }
 }

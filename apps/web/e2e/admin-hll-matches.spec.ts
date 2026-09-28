@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { expectMatchState, fillNewMatch, matchByOpponent, pragueDate, uniqueSuffix } from './admin-community-support';
+import { syntheticScoreboard } from '../src/modules/matches/statistics-fixtures';
 import { signInAs } from './support/auth';
 
 /**
@@ -60,6 +61,52 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await expect(rounds).toContainText('4 : 1');
   await visitor.goto(`/en/hll/matches/${created.slug}`);
   await expect(visitor.locator('main table').filter({ hasText: 'Carentan' })).toContainText('Axis');
+  await expect(visitor.locator('[data-match-statistics]')).toHaveCount(0);
+
+  // Import the game statistics from an uploaded CRCON scoreboard (no CRCON server is configured here).
+  const panel = page.locator('[data-statistics-panel]');
+  await expect(panel).toHaveAttribute('data-statistics-state', 'none');
+  await expect(panel.getByText('Žádný server CRCON zatím není nastaven', { exact: false })).toBeVisible();
+  await panel.getByLabel(/^Soubor s tabulkou hry/).setInputFiles({
+    name: 'synthetic-scoreboard.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(syntheticScoreboard({ result: { allied: 1, axis: 4 } }))),
+  });
+  await panel.getByLabel(/^Strana Valkyrie/).selectOption('axis');
+  await panel.locator('[data-statistics-action="import"]').click();
+  await expect(panel.getByText('Statistiky importovány.')).toBeVisible();
+  await expect(panel).toHaveAttribute('data-statistics-state', 'imported');
+  await expect(panel.locator('[data-statistics-player-count]')).toContainText('12 · řádky hráčů nejsou veřejné');
+  await expect(panel.locator('[data-statistics-teams] thead')).toContainText('Valkyria (Osa)');
+
+  await visitor.goto(publicPath);
+  const statistics = visitor.locator('[data-match-statistics]');
+  await expect(statistics.locator('[data-statistics-provenance]')).toContainText('nahraný export tabulky hry');
+  await expect(statistics.locator('[data-statistics-summary]')).toContainText('Valkyria (Osa)');
+  await statistics.getByRole('tab', { name: 'Hráči' }).click();
+  await expect(statistics.locator('[data-statistics-players="private"]')).toContainText('nejsou zveřejněny');
+  await expect(statistics.getByText('[SYN] Allies Player 01')).toHaveCount(0);
+  await statistics.getByRole('tab', { name: 'Zbraně' }).click();
+  await expect(statistics.locator('[data-statistics-weapons]')).toContainText('KARABINER 98K');
+
+  // Publishing player rows is an explicit editor decision.
+  await panel.getByLabel(/^Zveřejnit statistiky jednotlivých hráčů/).first().check();
+  await panel.locator('[data-statistics-action="settings"]').click();
+  await expect(panel.getByText('Nastavení statistik uloženo.')).toBeVisible();
+  await visitor.goto(publicPath);
+  await visitor.locator('[data-match-statistics]').getByRole('tab', { name: 'Hráči' }).click();
+  await expect(visitor.locator('[data-statistics-players] tbody tr')).toHaveCount(12);
   await visitor.close();
   await context.close();
+});
+
+test('the published HLL fixture shows team summary, players and weapons', async ({ page }) => {
+  await page.goto('/cs/hll/matches/ukazka-hll-historicky');
+  const statistics = page.locator('[data-match-statistics]');
+  await expect(statistics.getByRole('heading', { name: 'Statistiky zápasu' })).toBeVisible();
+  await expect(statistics.locator('[data-statistics-summary]')).toContainText('Zabití podle typu zbraně');
+  await statistics.getByRole('tab', { name: 'Hráči' }).click();
+  await expect(statistics.getByRole('rowheader', { name: '[SYN] Allies Player 01' })).toBeVisible();
+  await statistics.getByRole('tab', { name: 'Zbraně' }).press('ArrowRight');
+  await expect(statistics.getByRole('tab', { name: 'Souhrn' })).toBeFocused();
 });

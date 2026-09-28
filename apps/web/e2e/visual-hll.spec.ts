@@ -303,6 +303,29 @@ const SHOTS: Shot[] = [
     width: 1366,
     height: 768,
   },
+  {
+    file: 'hll-match-statistics-cs-1440x900.png',
+    caption: `HLL match detail /cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical} at 1440×900 (full page): rounds with map, Warfare mode and Spojenci side, then the imported game statistics (source, game ID, import time) with the Souhrn tab: team totals and kills by weapon type. Synthetic scoreboard and player names.`,
+    locale: 'cs',
+    path: `/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`,
+    width: 1440,
+    height: 900,
+    fullPage: true,
+  },
+  {
+    file: 'hll-match-statistics-players-en-390x844.png',
+    caption: 'The same statistics in English on a 390×844 phone with the Players tab: published synthetic player rows in a horizontally scrollable table (visible only because an editor published them).',
+    locale: 'en',
+    path: `/en/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`,
+    width: 390,
+    height: 844,
+    prepare: async (page) => {
+      const statistics = page.locator('[data-match-statistics]');
+      await statistics.getByRole('tab', { name: 'Players' }).click();
+      await statistics.scrollIntoViewIfNeeded();
+      await page.evaluate(() => window.scrollBy(0, -60));
+    },
+  },
 ];
 
 for (const shot of SHOTS) {

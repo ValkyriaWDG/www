@@ -72,12 +72,17 @@ issue [#36](https://github.com/ValkyriaWDG/www/issues/36) (stays open). Built on
   `get_public_info` for the servers in `HLL_SERVER_SOURCES_JSON` (map, mode, players,
   next map, time left, score, teams, stats link; per-server outage), labelled synthetic
   snapshots for tests. Real hosts are configured at deployment and are not yet verified.
+- **HLL matches:** the shared match editor offers the official HLL maps, modes and
+  Allies/Axis sides with 0–5 sector scores. Game statistics (team totals, kills by weapon
+  type, weapons, optional player rows) import from a configured CRCON server by game ID
+  or from an uploaded scoreboard JSON into `match_statistics` (migration 0002), with
+  source/game ID/import time; player rows are public only when an editor publishes them.
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.
 - **Legacy:** reviewed redirect resolver, active only for `LEGACY_HLL_HOSTS` (empty).
-- **Migration:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
-  repeated run verified locally).
+- **Migrations:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
+  repeated run verified locally) and `0002_match_statistics.sql` (new table only).
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi and
 real server status, legacy guide text/images (host blocked in this environment; reuse of

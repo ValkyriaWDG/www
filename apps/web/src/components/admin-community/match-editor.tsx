@@ -68,6 +68,7 @@ import {
 } from './match-form';
 import { MediaField, type MediaRef } from './media-field';
 import { ProseTabs, type ProseActions } from './prose-tabs';
+import { MatchStatisticsPanel } from './match-statistics-panel';
 import { RoundsEditor } from './rounds-editor';
 import { MATCH_STATUS_KIND, PUBLICATION_KIND } from './status';
 import { useActionError, useFieldError } from './use-messages';
@@ -82,6 +83,8 @@ type MatchEditorProps = {
   canPublish: boolean;
   /** Show the "draft created" confirmation after the redirect from /new. */
   created?: boolean;
+  /** Configured CRCON servers offered for HLL statistics import (names only). */
+  statisticsSources?: { publicId: string; name: string }[];
 };
 
 type Notice = { kind: 'success' | 'error' | 'warning' | 'info'; title?: string; text: string; conflict?: boolean } | null;
@@ -104,7 +107,7 @@ function focusFirstInvalid() {
  * Every mutation is a server action; the returned admin snapshot updates only the saved
  * group, so unsaved values elsewhere are never lost (also on conflicts).
  */
-export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEditorProps) {
+export function MatchEditor({ uiLocale, initial, canPublish, created, statisticsSources = [] }: MatchEditorProps) {
   const t = useTranslations('adminCommunity.matches.editor');
   const tc = useTranslations('adminCommunity.common');
   const tGame = useTranslations('adminCommunity.common.game');
@@ -654,6 +657,22 @@ export function MatchEditor({ uiLocale, initial, canPublish, created }: MatchEdi
                   </GameButton>
                   <span className={styles.actionNote}>{!allowed?.result ? t('resultCancelled') : startsInFuture ? t('resultTooEarly') : t('resultHint')}</span>
                 </div>
+              </div>
+            </fieldset>
+          ) : null}
+
+          {/* ---- HLL game statistics (CRCON) ---- */}
+          {server && server.game === 'hell-let-loose' ? (
+            <fieldset className={styles.group} data-group="statistics">
+              <legend>{t('groups.statistics')}</legend>
+              <div className={styles.groupBody}>
+                <MatchStatisticsPanel
+                  uiLocale={uiLocale}
+                  matchId={server.id}
+                  initial={server.statistics}
+                  sources={statisticsSources}
+                  suggestedSide={rounds[0]?.side === 'allies' || rounds[0]?.side === 'axis' ? rounds[0].side : null}
+                />
               </div>
             </fieldset>
           ) : null}

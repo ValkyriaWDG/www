@@ -108,5 +108,6 @@ test('HLL match editor with map, mode, side and sector score', async ({ browser 
   const page = await open(browser, 'match_manager', `/cs/admin/matches/${id}`);
   await expect(page.locator('[data-hll-rounds]')).toBeVisible();
   await page.locator('[data-rounds-editor]').scrollIntoViewIfNeeded();
-  await shot(page, 'admin-hll-match-editor-cs-1440x900.png', 'Match editor for a completed synthetic HLL match (full page): the result, then the HLL round with a map field backed by the official HLL map list, Warfare/Offensive/Skirmish mode, Allies/Axis side and 0–5 sector scores.', 'match_manager', true);
+  await expect(page.locator('[data-statistics-panel]')).toHaveAttribute('data-statistics-state', 'imported');
+  await shot(page, 'admin-hll-match-editor-cs-1440x900.png', 'Match editor for a completed synthetic HLL match (full page): the result, the HLL round (official map list, Warfare/Offensive/Skirmish mode, Allies/Axis side, 0–5 sector scores) and the game statistics panel with the imported synthetic scoreboard, team totals, side and player-publication settings and the CRCON/upload import form.', 'match_manager', true);
 });

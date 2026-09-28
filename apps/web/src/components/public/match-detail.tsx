@@ -11,6 +11,7 @@ import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge } from './match-parts';
+import { MatchStatistics } from './match-statistics';
 import styles from './matches.module.css';
 
 /**
@@ -166,6 +167,9 @@ export async function MatchDetailPane({
                   </table>
                 </div>
               </section>
+            ) : null}
+            {match.statistics ? (
+              <MatchStatistics statistics={match.statistics} locale={locale} titleId={titleId} opponentLabel={match.opponentShortCode ?? match.opponentName} />
             ) : null}
             {eventUrl || vods.length > 0 ? (
               <section className={styles.block} aria-labelledby={`${titleId}-links`} data-match-links="">

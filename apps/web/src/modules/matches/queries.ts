@@ -21,6 +21,7 @@ import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { adminMatchListSchema, publicMatchListSchema, type AdminMatchListInput, type PublicMatchListInput } from './schemas';
+import { loadMatchStatistics } from './statistics-service';
 import type {
   AdminMatch,
   AdminMatchListItem,
@@ -226,10 +227,11 @@ export async function getPublicMatch(db: Executor, slug: string, locale: Locale)
     .limit(1);
   if (!row) return null;
   const [summary] = await toSummaries(db, [row]);
-  const [rounds, recap, covers] = await Promise.all([
+  const [rounds, recap, covers, statistics] = await Promise.all([
     loadRounds(db, row.id),
     publishedProseFor(db, { kind: 'match', id: row.id }, locale),
     loadPublicImages(db, [row.coverAssetId]),
+    loadMatchStatistics(db, row.id, { includePlayers: false }),
   ]);
   let cover: PublicMatchDetail['cover'] = null;
   const image = row.coverAssetId ? covers.get(row.coverAssetId) : undefined;
@@ -251,6 +253,7 @@ export async function getPublicMatch(db: Executor, slug: string, locale: Locale)
     vodLinks: row.vodLinks.map((link) => ({ url: link.url, label: link.label })),
     cover,
     rounds,
+    statistics,
     recap,
     publishedAt: (row.publishedAt ?? row.updatedAt).toISOString(),
     updatedAt: row.updatedAt.toISOString(),
@@ -340,7 +343,11 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
   const [row] = await db.select({ match, result: matchResult }).from(match).leftJoin(matchResult, eq(matchResult.matchId, match.id)).where(eq(match.id, id)).limit(1);
   if (!row) return null;
   await authorizeGames(db, actor, 'matches.edit', [row.match.game], { action: 'match.read', entityType: 'match', entityId: id });
-  const [rounds, recapDetail] = await Promise.all([loadRounds(db, id), loadProseAdminDetail(db, { kind: 'match', id })]);
+  const [rounds, recapDetail, statistics] = await Promise.all([
+    loadRounds(db, id),
+    loadProseAdminDetail(db, { kind: 'match', id }),
+    loadMatchStatistics(db, id, { includePlayers: true }),
+  ]);
   const recap = { cs: recapDetail.cs.status, en: recapDetail.en.status };
   return {
     ...adminItem(row.match, row.result, recap),
@@ -354,6 +361,7 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
     coverAssetId: row.match.coverAssetId,
     internalNotes: row.match.internalNotes,
     rounds,
+    statistics,
     recapDetail,
     createdAt: row.match.createdAt.toISOString(),
   };

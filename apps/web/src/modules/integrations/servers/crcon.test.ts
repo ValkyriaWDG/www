@@ -1,7 +1,7 @@
 import { createServer, type Server, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { CrconRequestError, fetchPublicInfo, parseCrconConfig, parsePublicInfo, type CrconServerConfig } from './crcon';
+import { CrconRequestError, fetchPublicInfo, fetchScoreboard, parseCrconConfig, parsePublicInfo, type CrconServerConfig } from './crcon';
 import { syntheticPublicInfo } from './crcon-fixtures';
 
 describe('CRCON configuration', () => {
@@ -12,8 +12,8 @@ describe('CRCON configuration', () => {
     ]);
     expect(parseCrconConfig(config)).toEqual({
       servers: [
-        { publicId: 'valkyria-1', name: 'Valkyria #1', baseUrl: 'https://crcon.example.org/', address: 'play.example.org:7777', statsUrl: 'https://stats.example.org/' },
-        { publicId: 'mock', name: null, baseUrl: 'http://127.0.0.1:4010', address: null, statsUrl: null },
+        { publicId: 'valkyria-1', name: 'Valkyria #1', baseUrl: 'https://crcon.example.org/', address: 'play.example.org:7777', statsUrl: 'https://stats.example.org/', statsApiKey: null },
+        { publicId: 'mock', name: null, baseUrl: 'http://127.0.0.1:4010', address: null, statsUrl: null, statsApiKey: null },
       ],
       error: null,
     });
@@ -160,5 +160,24 @@ describe('CRCON request', () => {
     const error = await fetchPublicInfo(config('/slow'), AbortSignal.timeout(100)).catch((caught: unknown) => caught);
     expect(error).toBeInstanceOf(CrconRequestError);
     expect(error).toMatchObject({ category: 'timeout' });
+  });
+
+  it('requests a scoreboard by numeric game ID and sends the statistics key only when configured', async () => {
+    const seen: { url: string; auth: string | undefined }[] = [];
+    routes.set('/stats/api/get_map_scoreboard?map_id=4242', (res) => {
+      res.setHeader('content-type', 'application/json');
+      res.end('{"result":{"player_stats":[]},"failed":false}');
+    });
+    const wrapped = async (url: URL, init: RequestInit) => {
+      seen.push({ url: url.toString(), auth: (init.headers as Record<string, string>).authorization });
+      return fetch(url, init);
+    };
+    await expect(fetchScoreboard(config('/stats'), 4242, signal(), wrapped)).resolves.toEqual({ result: { player_stats: [] }, failed: false });
+    await fetchScoreboard({ ...config('/stats'), statsApiKey: 'synthetic-key-0123456789' }, 4242, signal(), wrapped);
+    expect(seen).toEqual([
+      { url: `${base}/stats/api/get_map_scoreboard?map_id=4242`, auth: undefined },
+      { url: `${base}/stats/api/get_map_scoreboard?map_id=4242`, auth: 'Bearer synthetic-key-0123456789' },
+    ]);
+    await expect(fetchScoreboard(config('/stats'), 0, signal(), wrapped)).rejects.toMatchObject({ category: 'invalid' });
   });
 });

@@ -4,8 +4,12 @@ import type {
   Game,
   Locale,
   MatchOutcome,
+  MatchStatisticsPlayer,
+  MatchStatisticsSource,
+  MatchStatisticsTeam,
   MatchStatus,
   ResultVerification,
+  StatisticsSide,
 } from '@valkyria/db';
 import type { PublicImage } from '@/modules/prose/assets';
 import type { LocalizedProse, ProseAdminDetail, ProseStatus } from '@/modules/prose/types';
@@ -52,6 +56,27 @@ export type PublicMatchRound = {
 
 export type PublicMatchCover = PublicImage & { alt: string; caption: string };
 
+/**
+ * Imported game statistics of a match. `players` is `null` publicly unless an editor
+ * published the player rows; administration always receives them.
+ */
+export type MatchStatisticsView = {
+  source: MatchStatisticsSource;
+  sourceLabel: string;
+  externalGameId: string | null;
+  mapName: string | null;
+  mode: string | null;
+  gameStartedAt: string | null;
+  gameEndedAt: string | null;
+  result: { allied: number; axis: number } | null;
+  valkyriaSide: StatisticsSide;
+  teams: Record<StatisticsSide, MatchStatisticsTeam>;
+  players: MatchStatisticsPlayer[] | null;
+  playerCount: number;
+  publishPlayers: boolean;
+  observedAt: string;
+};
+
 export type PublicMatchDetail = PublicMatchSummary & {
   season: string | null;
   format: string | null;
@@ -62,6 +87,7 @@ export type PublicMatchDetail = PublicMatchSummary & {
   /** Shared cover image; alt/caption from the requested locale's published recap snapshot when it uses the same asset. */
   cover: PublicMatchCover | null;
   rounds: PublicMatchRound[];
+  statistics: MatchStatisticsView | null;
   /** Requested locale's published recap or explicit absence with source locales. */
   recap: LocalizedProse;
   publishedAt: string;
@@ -113,6 +139,7 @@ export type AdminMatch = AdminMatchListItem & {
   /** Private administration text; never part of any public DTO. */
   internalNotes: string;
   rounds: PublicMatchRound[];
+  statistics: MatchStatisticsView | null;
   recapDetail: Record<Locale, ProseAdminDetail>;
   createdAt: string;
 };

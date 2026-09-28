@@ -15,6 +15,13 @@
       "when": 1790606794099,
       "tag": "0001_unified_platform_scope",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790621112797,
+      "tag": "0002_match_statistics",
+      "breakpoints": true
     }
   ]
 }

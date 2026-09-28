@@ -783,3 +783,31 @@ h3.repeatHeading {
     border-color: CanvasText;
   }
 }
+
+/* Imported game statistics (team totals) */
+.statTable {
+  width: 100%;
+  margin: var(--space-3) 0;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.statTable th,
+.statTable td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--border-hairline) solid var(--color-border);
+  text-align: start;
+}
+
+.statTable thead th {
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.statTable td[data-numeric] {
+  text-align: end;
+}

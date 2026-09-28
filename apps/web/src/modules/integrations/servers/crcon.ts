@@ -37,6 +37,8 @@ const crconConfigSchema = z
       address: z.string().trim().regex(ADDRESS).optional(),
       /** Public live statistics page for this server. */
       statsUrl: z.url({ protocol: /^https$/ }).optional(),
+      /** CRCON API key, only when the server locks its statistics API; never logged or sent to browsers. */
+      statsApiKey: z.string().trim().min(16).max(256).regex(/^[\x21-\x7e]+$/).optional(),
     }),
   )
   .max(12)
@@ -48,6 +50,7 @@ export type CrconServerConfig = {
   baseUrl: string;
   address: string | null;
   statsUrl: string | null;
+  statsApiKey?: string | null;
 };
 
 /**
@@ -70,6 +73,7 @@ export function parseCrconConfig(json: string): { servers: CrconServerConfig[]; 
       baseUrl: server.baseUrl,
       address: server.address ?? null,
       statsUrl: server.statsUrl ?? null,
+      statsApiKey: server.statsApiKey ?? null,
     })),
     error: null,
   };
@@ -223,4 +227,36 @@ export async function fetchPublicInfo(server: CrconServerConfig, signal: AbortSi
   const info = parsePublicInfo(body);
   if (!info) throw new CrconRequestError('invalid');
   return info;
+}
+
+/** A scoreboard includes every kill encounter; bounded well above a full 100-player game. */
+export const CRCON_SCOREBOARD_LIMIT_BYTES = 16 * 1024 * 1024;
+
+/**
+ * Requests one finished game's scoreboard (`<base>/api/get_map_scoreboard?map_id=N`).
+ * The game ID is CRCON's numeric map-history ID; the configured statistics API key is
+ * sent as a bearer token only when present.
+ */
+export async function fetchScoreboard(server: CrconServerConfig, gameId: number, signal: AbortSignal, fetchImpl: FetchLike = fetch): Promise<unknown> {
+  if (!Number.isSafeInteger(gameId) || gameId <= 0) throw new CrconRequestError('invalid');
+  const base = server.baseUrl.endsWith('/') ? server.baseUrl : `${server.baseUrl}/`;
+  const url = new URL('api/get_map_scoreboard', base);
+  url.searchParams.set('map_id', String(gameId));
+  const headers: Record<string, string> = { accept: 'application/json' };
+  if (server.statsApiKey) headers.authorization = `Bearer ${server.statsApiKey}`;
+  let response: Response;
+  try {
+    response = await fetchImpl(url, { signal, redirect: 'error', cache: 'no-store', headers });
+  } catch {
+    throw new CrconRequestError(signal.aborted ? 'timeout' : 'upstream');
+  }
+  if (!response.ok) {
+    await response.body?.cancel().catch(() => undefined);
+    throw new CrconRequestError('upstream');
+  }
+  try {
+    return JSON.parse(await readBounded(response, CRCON_SCOREBOARD_LIMIT_BYTES));
+  } catch (error) {
+    throw error instanceof CrconRequestError ? error : new CrconRequestError('invalid');
+  }
 }

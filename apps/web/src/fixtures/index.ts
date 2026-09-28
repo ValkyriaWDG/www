@@ -5,6 +5,7 @@ import {
   contentTranslation,
   manualArticle,
   match,
+  matchStatistics,
   matchResult,
   matchRound,
   memberProfile,
@@ -19,6 +20,8 @@ import {
   type RichTextDocument,
 } from '@valkyria/db';
 import { and, eq, inArray, like, or, sql } from 'drizzle-orm';
+import { parseCrconScoreboard, summarizeTeams } from '../modules/matches/statistics';
+import { syntheticScoreboard } from '../modules/matches/statistics-fixtures';
 import { DEFAULT_MATCH_TIME_ZONE, zonedDate, zonedLocalToInstant } from '../modules/matches/time';
 import { ensureSeedTaxonomy } from '../seed/index';
 import { imageAssetIds, SEED_RICH_TEXT_SCHEMA_VERSION } from '../seed/rich-text';
@@ -30,6 +33,7 @@ import {
   FIXTURE_MEMBERS,
   FIXTURE_MANUAL,
   FIXTURE_NEWS,
+  FIXTURE_SLUGS,
   FIXTURE_TAGS,
   matchRecap,
   memberBio,
@@ -50,6 +54,8 @@ export type FixtureReport = {
   newsTranslations: number;
   manual: number;
   manualTranslations: number;
+  /** Matches with imported (synthetic) game statistics. */
+  statistics: number;
   schedules: number;
   prose: number;
   /** Fixture groups left out because the connected schema cannot store them. */
@@ -168,8 +174,31 @@ function matchStart(fixture: FixtureMatch, now: Date): Date {
   return 'instant' in fixture.start ? new Date(fixture.start.instant) : pragueAt(now, fixture.start.days, fixture.start.time);
 }
 
-async function insertMatches(tx: Executor, now: Date) {
+/** Synthetic imported statistics for the completed HLL fixture (Valkyria as Allies, 3 : 2). */
+async function insertStatistics(tx: Executor, matchId: string, now: Date) {
+  const parsed = parseCrconScoreboard(syntheticScoreboard({ gameId: 4242, result: { allied: 3, axis: 2 } }))!;
+  await tx.insert(matchStatistics).values({
+    matchId,
+    source: 'upload',
+    sourceLabel: 'synthetic-fixture-scoreboard.json',
+    externalGameId: parsed.externalGameId,
+    mapName: parsed.mapName,
+    mode: parsed.mode,
+    gameStartedAt: parsed.startedAt,
+    gameEndedAt: parsed.endedAt,
+    resultAllied: parsed.result?.allied ?? null,
+    resultAxis: parsed.result?.axis ?? null,
+    valkyriaSide: 'allies',
+    teams: summarizeTeams(parsed),
+    players: parsed.players,
+    publishPlayers: true,
+    observedAt: new Date(now.getTime() - DAY),
+  });
+}
+
+async function insertMatches(tx: Executor, now: Date, options: { statistics: boolean }) {
   let prose = 0;
+  let statistics = 0;
   for (const fixture of FIXTURE_MATCHES) {
     const [row] = await tx
       .insert(match)
@@ -200,6 +229,10 @@ async function insertMatches(tx: Executor, now: Date) {
     if (fixture.rounds?.length) {
       await tx.insert(matchRound).values(fixture.rounds.map((round, index) => ({ matchId: row!.id, ordinal: index + 1, ...round })));
     }
+    if (options.statistics && fixture.slug === FIXTURE_SLUGS.matches.hllHistorical) {
+      await insertStatistics(tx, row!.id, now);
+      statistics += 1;
+    }
     for (const [locale, recap] of Object.entries(fixture.recap) as [Locale, { published: boolean }][]) {
       const cover: CoverSnapshot | null = fixture.cover
         ? {
@@ -213,7 +246,7 @@ async function insertMatches(tx: Executor, now: Date) {
       prose += 1;
     }
   }
-  return prose;
+  return { prose, statistics };
 }
 
 function taxonomyLabel(key: string, kind: 'category' | 'tag', locale: Locale): string {
@@ -368,17 +401,19 @@ async function insertManual(tx: Executor, fixture: FixtureManual, now: Date): Pr
   return translations;
 }
 
-async function hasFieldManualSchema(db: Executor): Promise<boolean> {
-  const result = await db.execute<{ present: boolean }>(
-    sql`select to_regclass('public.manual_category') is not null and to_regclass('public.manual_article') is not null as present`,
+/** Which optional fixture groups the connected schema can store. */
+async function schemaSupport(db: Executor): Promise<{ manual: boolean; statistics: boolean }> {
+  const result = await db.execute<{ manual: boolean; statistics: boolean }>(
+    sql`select to_regclass('public.manual_category') is not null and to_regclass('public.manual_article') is not null as manual,
+               to_regclass('public.match_statistics') is not null as statistics`,
   );
-  return result.rows[0]?.present === true;
+  return { manual: result.rows[0]?.manual === true, statistics: result.rows[0]?.statistics === true };
 }
 
 /**
  * Replaces the synthetic fixture set (reset first, so repeated loads are idempotent and
  * relative dates are refreshed). Requires the caller to have passed `assertFixturesAllowed`.
- * A schema without the field manual tables fails, unless `schemaCompatible` is set: the
+ * A schema without the field manual or match statistics tables fails, unless `schemaCompatible` is set: the
  * release rollback rehearsal loads an older image's schema that way, and the groups the
  * schema cannot store are left out and named in `skipped`.
  */
@@ -388,9 +423,10 @@ export async function loadFixtures(
 ): Promise<FixtureReport> {
   const now = options.now ?? new Date();
   const mediaRoot = options.mediaRoot ?? resolveMediaRoot();
-  const manualSchema = await hasFieldManualSchema(db);
-  if (!manualSchema && !options.schemaCompatible)
-    throw new FixtureSchemaError('The field manual tables are missing; apply the database migrations first.');
+  const support = await schemaSupport(db);
+  const manualSchema = support.manual;
+  if ((!support.manual || !support.statistics) && !options.schemaCompatible)
+    throw new FixtureSchemaError('The field manual or match statistics tables are missing; apply the database migrations first.');
   await resetFixtures(db, { mediaRoot });
   await db.transaction(async (tx) => {
     await ensureSeedTaxonomy(tx, undefined, { manual: manualSchema });
@@ -405,7 +441,7 @@ export async function loadFixtures(
   });
   return db.transaction(async (tx) => {
     const memberProse = await insertMembers(tx, now);
-    const matchProse = await insertMatches(tx, now);
+    const matchRows = await insertMatches(tx, now, { statistics: support.statistics });
     let newsTranslations = 0;
     let schedules = 0;
     for (const fixture of FIXTURE_NEWS) {
@@ -419,14 +455,15 @@ export async function loadFixtures(
     return {
       manual: manualFixtures.length,
       manualTranslations,
-      skipped: manualSchema ? [] : ['field manual'],
+      statistics: matchRows.statistics,
+      skipped: [...(manualSchema ? [] : ['field manual']), ...(support.statistics ? [] : ['match statistics'])],
       assets: FIXTURE_IMAGES.length,
       members: FIXTURE_MEMBERS.length,
       matches: FIXTURE_MATCHES.length,
       news: FIXTURE_NEWS.length,
       newsTranslations,
       schedules,
-      prose: memberProse + matchProse,
+      prose: memberProse + matchRows.prose,
     };
   });
 }

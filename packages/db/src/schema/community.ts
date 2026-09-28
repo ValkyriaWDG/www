@@ -185,6 +185,88 @@ export const matchRound = pgTable(
   ],
 );
 
+export const MATCH_STATISTICS_SOURCES = ['crcon', 'upload'] as const;
+export type MatchStatisticsSource = (typeof MATCH_STATISTICS_SOURCES)[number];
+export const STATISTICS_SIDES = ['allies', 'axis'] as const;
+export type StatisticsSide = (typeof STATISTICS_SIDES)[number];
+
+/** Totals of one side in an imported game. */
+export type MatchStatisticsTeam = {
+  players: number;
+  kills: number;
+  deaths: number;
+  teamkills: number;
+  combat: number;
+  offense: number;
+  defense: number;
+  support: number;
+  /** Kills per weapon category (infantry, machine_gun, armor, …). */
+  killsByType: Record<string, number>;
+  /** Most used weapons by kills, descending. */
+  weapons: { weapon: string; kills: number }[];
+};
+
+/** Allowlisted per-player row: in-game name and numbers only, never platform IDs. */
+export type MatchStatisticsPlayer = {
+  name: string;
+  side: StatisticsSide | 'unknown';
+  kills: number;
+  deaths: number;
+  teamkills: number;
+  combat: number;
+  offense: number;
+  defense: number;
+  support: number;
+  killsPerMinute: number;
+  killDeathRatio: number;
+  timeSeconds: number;
+  topWeapon: string | null;
+};
+
+/**
+ * Performance statistics of the game behind one match, imported from a game-server
+ * scoreboard (CRCON) or an uploaded scoreboard export. Kept apart from the editorial
+ * result with its source, external game ID and observation time; player rows are public
+ * only when an editor explicitly publishes them.
+ */
+export const matchStatistics = pgTable(
+  'match_statistics',
+  {
+    matchId: uuid('match_id')
+      .primaryKey()
+      .references(() => match.id, { onDelete: 'cascade' }),
+    source: text('source').$type<MatchStatisticsSource>().notNull(),
+    sourceLabel: text('source_label').notNull().default(''),
+    externalGameId: text('external_game_id'),
+    mapName: text('map_name'),
+    mode: text('mode'),
+    gameStartedAt: tz('game_started_at'),
+    gameEndedAt: tz('game_ended_at'),
+    resultAllied: integer('result_allied'),
+    resultAxis: integer('result_axis'),
+    /** Side Valkyria played in this game. */
+    valkyriaSide: text('valkyria_side').$type<StatisticsSide>().notNull(),
+    teams: jsonb('teams').$type<Record<StatisticsSide, MatchStatisticsTeam>>().notNull(),
+    players: jsonb('players').$type<MatchStatisticsPlayer[]>().notNull().default(sql`'[]'::jsonb`),
+    publishPlayers: boolean('publish_players').notNull().default(false),
+    importedBy: uuid('imported_by').references(() => authUser.id, { onDelete: 'set null' }),
+    observedAt: tz('observed_at').notNull(),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check('match_statistics_source_ck', sql`${t.source} in (${sqlList(MATCH_STATISTICS_SOURCES)})`),
+    check('match_statistics_side_ck', sql`${t.valkyriaSide} in (${sqlList(STATISTICS_SIDES)})`),
+    check('match_statistics_external_id_ck', sql`${t.externalGameId} is null or ${t.externalGameId} ~ '^[A-Za-z0-9_.:-]{1,64}$'`),
+    check('match_statistics_label_ck', sql`length(${t.sourceLabel}) <= 120`),
+    check(
+      'match_statistics_result_ck',
+      sql`(${t.resultAllied} is null and ${t.resultAxis} is null) or (${t.resultAllied} between 0 and 5 and ${t.resultAxis} between 0 and 5)`,
+    ),
+    check('match_statistics_players_ck', sql`jsonb_typeof(${t.players}) = 'array' and jsonb_array_length(${t.players}) <= 200`),
+  ],
+);
+
 /**
  * Optional localized prose owned by exactly one member profile (biography) or match
  * (preview/recap). Independent draft/live revisions per locale; always subject to the
