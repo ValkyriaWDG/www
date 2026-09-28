@@ -165,3 +165,12 @@ Keep raw videos, archives, local diagnostic previews and personal/account captur
 out of the public repository. Installed files and public image URLs remain source
 candidates until their intended use and provenance are recorded under the existing
 asset policy. The code license does not relicense third-party imagery.
+
+## Additional internet sources and custom graphics
+
+The [web graphics expansion](hll-web-graphics-expansion.md) adds official developer
+article imagery, community map/role sources, licensed UI illustration resources and
+a concrete brief for original Valkyria covers, social templates and teaching diagrams.
+Its [separate image catalog](hll-web-image-candidates.json) preserves downloaded-source
+metadata without changing the initial 39-image research snapshot above. Read each
+candidate's source version and usage notes before selecting it for implementation.

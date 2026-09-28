@@ -358,6 +358,18 @@ guide batch, preserve instructional diagrams without cropping, and deliver the
 owner's clan battle recordings through the existing media pipeline. Deployment
 acceptance is maintained separately from this documentation-only research.
 
+Follow-up internet research adds a [web graphics brief](assets/hll-web-graphics-expansion.md)
+and a [separate 20-image catalog](assets/hll-web-image-candidates.json): ten official
+developer-article sources and ten community map/role/overlay sources, all decoded,
+visually reviewed and independently matched by byte count and SHA-256 (37,641,864
+bytes). The original 39-image catalog remains unchanged. Source release/playtest
+context, pinned repository revisions, overlay alignment requirements and individual
+artwork provenance are recorded. The brief also specifies eight custom covers,
+three editorial templates and four teaching diagrams for a future production pass;
+none of those custom deliverables is claimed as implemented. Foundation and whitespace
+checks passed for this documentation extension; full application checks remain CI's
+separate responsibility. No runtime assets, deployment or issue closure changed.
+
 ## GitHub
 
 Main requires a pull request, the **Quality gate** and linear history. CI runs foundation,
