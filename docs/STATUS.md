@@ -203,7 +203,12 @@ Legacy parity for servers, matches and game statistics:
 integration, 144 browser tests at `59b3e38`, after the review fixes). After merging PR #55
 and main `048c179` (`c8fc2d7`): foundation, 126 tooling, lint, types, 493 unit, 283
 integration, build, 156 browser (106 opt-in skipped), the 4 empty-playlist artwork tests
-and all 15 page-budget samples passed.
+and all 15 page-budget samples passed. PR #50 merged as `52a9897`; its exact-main
+[CI 36493298550](https://github.com/ValkyriaWDG/www/actions/runs/36493298550) failed in the
+header-position browser test (`TypeError` reading `x` of a `null` box): the query-aware game
+switch replaces its server fallback during hydration, and the test measured the replaced
+element. The test now waits for both switches to finish hydrating and polls the box
+(`platform.spec.ts`, 120/120 repeated passes); the application is unchanged.
 PR #37 before its merge:
 Verified locally on `ad0ea20` (after merging main `425fb5f`): foundation + 39 tooling
 tests, lint, types, 439 unit, 261 PostgreSQL integration, standalone build and 136

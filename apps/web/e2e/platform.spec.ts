@@ -1,4 +1,4 @@
-import { expect, type Page, test } from '@playwright/test';
+import { expect, type Locator, type Page, test } from '@playwright/test';
 import { expectNoHorizontalOverflow } from './support/shell-helpers';
 
 /** The visible game switch (a second copy lives in the closed mobile menu drawer). */
@@ -56,9 +56,18 @@ test.describe('platform routing', () => {
 
   test('logo, game switch, language and account sit in the same places in both games', async ({ page }) => {
     type Box = { x: number; y: number; width: number; height: number };
+    // Measure only hydrated controls: until the query-aware switches replace their
+    // server fallbacks (aria-busy), a resolved element can be detached before it is measured.
+    const hydrated = () => expect(page.locator('[data-game-switch][aria-busy="true"], [role="group"][aria-busy="true"]')).toHaveCount(0);
+    const boxOf = async (target: Locator) => {
+      let box: Box | null = null;
+      await expect.poll(async () => (box = await target.boundingBox())).not.toBeNull();
+      return box as unknown as Box;
+    };
     const top = async () => {
+      await hydrated();
       const header = page.locator('[data-shell-header], [data-hll-masthead]').first();
-      const box = async (selector: string) => (await header.locator(selector).first().boundingBox()) as Box;
+      const box = (selector: string) => boxOf(header.locator(selector).first());
       return {
         brand: await box('[data-brand], [data-hll-identity]'),
         game: await box('[data-game-switch]'),
@@ -86,9 +95,10 @@ test.describe('platform routing', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     for (const path of ['/cs/wardogs/news', '/cs/hll/news']) {
       await page.goto(path);
+      await hydrated();
       const row = page.locator('[data-game-switch][data-variant="stack"]').first();
       await expect(row).toBeVisible();
-      const box = (await row.boundingBox())!;
+      const box = await boxOf(row);
       expect(box.width, path).toBeGreaterThan(340);
       expect(box.y, path).toBeLessThan(200);
       await expectNoHorizontalOverflow(page);
