@@ -40,9 +40,13 @@ for exact source/digest, CI artifacts, observed results and verification limits.
 Remaining launch work stays in #23: hosted Logi membership/SSO and role removal (#8),
 recovery administrator/MFA, owner privacy decisions, encrypted off-host recovery and
 actual monitoring/alert delivery. #25 retains Safari/device/retail-Firefox and media
-performance qualification. #45 tracks unsafe directory/database boundaries in the
-existing disposable restore tool; do not use that tool against existing operator
-targets until its repair is accepted. HLL and Logi implementation workstreams remain
+performance qualification. #45 is accepted through PR #47, merged as
+`0b843e5458aae485b33e3d5f5f4e11348a994ee4`: restore tooling refuses existing or
+ambiguous targets without DROP or directory deletion. Its [Linux CI qualification](evidence/production-refresh-2026-09-28/restore-boundaries-ci-qualification.json)
+passed six real PostgreSQL 17.11 restore tests, 126 tooling tests and the complete
+application/image/browser gates at PR head `19a30dd1b110d11c63a97a1755a352989579eb9d`.
+Do not use the earlier unsafe script against operator targets. This tooling merge
+did not deploy another image or prove off-host recovery. HLL and Logi workstreams remain
 separate from this deployment.
 
 ## Publication authorization hardening
@@ -203,7 +207,7 @@ Migrations: packages/db/drizzle/0000_initial_schema.sql (applied; repeated runs 
 Open: operator launch inputs and follow-ups listed below; M4 (#7, #8) and #22.
 Next checkpoint: preserve the production refresh proof and close SEO #29 against
   its HTTP acceptance; resolve the separate browser network-gate failures and
-  complete #45 tool safety CI. Continue #23 operator acceptance and #25
+  continue #23 operator acceptance and #25
   device/performance coverage. Hosted Logi contracts
   must be established before enabling #7/#8/#22 integration.
 ```

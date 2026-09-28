@@ -18,6 +18,14 @@ backup timers are active; the first natural publisher run after promotion succee
 checksums/readability passed, but **no new semantic restore was performed**. Complete host media hashes
 were checked separately by the operator; HTTP proof below checks delivery without downloading full videos.
 
+The subsequent operator-tool repair [PR #47](https://github.com/ValkyriaWDG/www/pull/47)
+merged separately as `0b843e5458aae485b33e3d5f5f4e11348a994ee4`; it did not change
+the deployed image. Its [independent Linux CI qualification](restore-boundaries-ci-qualification.json)
+preserves the actual PostgreSQL 17.11 result (6/6), source fingerprints and all six
+artifact ZIP digests. It closes #45's disposable-target safety scope, not production
+or off-host recovery. The initial unexplained Windows HTTP failure remains preserved
+in the [tool evidence](../restore-boundaries-2026-09-28/README.md).
+
 ## Before-state
 
 [Reviewed HTTP observations](http-before-reviewed.json): **24 of 37 checks passed, 13 failed** against the accepted target

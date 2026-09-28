@@ -1,0 +1,642 @@
+{
+  "schemaVersion": 1,
+  "kind": "independent-pr-ci-qualification",
+  "observedAt": "2026-09-28T18:01:03.163414+00:00",
+  "repository": "ValkyriaWDG/www",
+  "run": {
+    "id": 36460806484,
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484",
+    "event": "pull_request",
+    "conclusion": "success",
+    "pullRequest": 47,
+    "headSha": "19a30dd1b110d11c63a97a1755a352989579eb9d",
+    "baseSha": "9a872918ad4d89935eb26118d853d40776af7d66",
+    "testedRevision": "4d99312903c7ae50967eb73c945189b38ff10cd8",
+    "mergeParents": [
+      "9a872918ad4d89935eb26118d853d40776af7d66",
+      "19a30dd1b110d11c63a97a1755a352989579eb9d"
+    ],
+    "checkoutProof": "Foundation and Application checkout logs print the same synthetic merge SHA; GitHub Git commit API verifies ordered base/head parents.",
+    "createdAt": "2026-09-28T17:48:59Z",
+    "completedAt": "2026-09-28T17:59:52Z",
+    "jobs": [
+      {
+        "name": "Foundation",
+        "conclusion": "success",
+        "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/job/109058557754"
+      },
+      {
+        "name": "Application",
+        "conclusion": "success",
+        "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/job/109058906292"
+      },
+      {
+        "name": "Quality gate",
+        "conclusion": "success",
+        "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/job/109062824712"
+      }
+    ]
+  },
+  "tests": {
+    "tooling": {
+      "passed": 126,
+      "failed": 0,
+      "skipped": 0
+    },
+    "encryptedRecovery": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    "restoreBoundaries": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "unit": {
+      "files": 39,
+      "passed": 379,
+      "failed": 0
+    },
+    "database": {
+      "files": 23,
+      "passed": 240,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 124,
+      "skipped": 67,
+      "failed": 0
+    }
+  },
+  "pageBudgets": {
+    "status": "passed",
+    "sourceRevision": "4d99312903c7ae50967eb73c945189b38ff10cd8",
+    "sourceDirty": true,
+    "dirtyPaths": [
+      "sbom/valkyria-web.cdx.json"
+    ],
+    "dirtyExplanation": "Generated untracked SBOM only, disclosed by runner; not a clean-tree claim.",
+    "samples": [
+      {
+        "route": "/cs",
+        "run": 1,
+        "status": 200,
+        "lcpMs": 2208,
+        "cls": 0.04939995730776214,
+        "totalBytes": 501937,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs",
+        "run": 2,
+        "status": 200,
+        "lcpMs": 1988,
+        "cls": 0.04939995730776214,
+        "totalBytes": 501943,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs",
+        "run": 3,
+        "status": 200,
+        "lcpMs": 2012,
+        "cls": 0.04939995730776214,
+        "totalBytes": 501940,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs/news",
+        "run": 1,
+        "status": 200,
+        "lcpMs": 884,
+        "cls": 0.00252080976065602,
+        "totalBytes": 491463,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs/news",
+        "run": 2,
+        "status": 200,
+        "lcpMs": 884,
+        "cls": 0.00252080976065602,
+        "totalBytes": 491089,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs/news",
+        "run": 3,
+        "status": 200,
+        "lcpMs": 876,
+        "cls": 0.00252080976065602,
+        "totalBytes": 491086,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "run": 1,
+        "status": 200,
+        "lcpMs": 984,
+        "cls": 0.005070962307689428,
+        "totalBytes": 586841,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "run": 2,
+        "status": 200,
+        "lcpMs": 980,
+        "cls": 0.005070962307689428,
+        "totalBytes": 586836,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      },
+      {
+        "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+        "run": 3,
+        "status": 200,
+        "lcpMs": 984,
+        "cls": 0.005100045925100745,
+        "totalBytes": 586834,
+        "pageErrors": 0,
+        "failedResources": 0,
+        "videoRequests": 0
+      }
+    ],
+    "assessment": {
+      "errors": [],
+      "routes": [
+        {
+          "route": "/cs",
+          "medianLcpMs": 2012,
+          "maximumCls": 0.04939995730776214,
+          "maximumTransferBytes": 501943
+        },
+        {
+          "route": "/cs/news",
+          "medianLcpMs": 884,
+          "maximumCls": 0.00252080976065602,
+          "maximumTransferBytes": 491463
+        },
+        {
+          "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+          "medianLcpMs": 984,
+          "maximumCls": 0.005100045925100745,
+          "maximumTransferBytes": 586841
+        }
+      ]
+    },
+    "policyMatchesHead": true,
+    "assessmentIndependentlyRecomputed": true,
+    "clsIndependentlyRecomputedFromShifts": true,
+    "captureDigestsVerified": 3
+  },
+  "imageRehearsal": {
+    "status": "passed",
+    "passedSteps": 12,
+    "cleanup": "passed",
+    "restoredTableFingerprints": 25,
+    "allRestoredTableContentsMatch": true,
+    "migrations": {
+      "appliedProductionMigrations": 0,
+      "repeatApplied": 0,
+      "syntheticExpansion": "Nullable text column on content_document; test-only, outside migration journal."
+    },
+    "runtimes": [
+      {
+        "id": "runtime-bookworm",
+        "imageId": "sha256:36b4101801c1a9929c2ecd7ebfe539a69f69eead1c3a060cea043b2a0289a8bd",
+        "imageBytes": 285596410,
+        "sourceRevision": "4d99312903c7ae50967eb73c945189b38ff10cd8",
+        "native": {
+          "uid": 10001,
+          "node": "v24.21.0",
+          "protectedRoot": true,
+          "writableMediaAndCache": true,
+          "packageManagersAbsent": true,
+          "sharp": {
+            "format": "webp",
+            "width": 8,
+            "height": 8
+          },
+          "socialImages": {
+            "status": "passed",
+            "renders": [
+              {
+                "locale": "cs",
+                "status": 200,
+                "format": "png",
+                "width": 1200,
+                "height": 630,
+                "bytes": 218260,
+                "sha256": "fe5f747d32483878abd0d9f199f38199f9a439ee1e7eb26c38f14580884edeb7",
+                "decoded": true
+              },
+              {
+                "locale": "en",
+                "status": 200,
+                "format": "png",
+                "width": 1200,
+                "height": 630,
+                "bytes": 217653,
+                "sha256": "399eb39f3627995c60fd8082e7c50afe6526a2801c0f8eb0e34956ba3d98598d",
+                "decoded": true
+              }
+            ]
+          }
+        },
+        "proof": {
+          "pages": [
+            {
+              "route": "/cs",
+              "status": 200
+            },
+            {
+              "route": "/en",
+              "status": 200
+            },
+            {
+              "route": "/cs/news",
+              "status": 200
+            },
+            {
+              "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+              "status": 200
+            }
+          ],
+          "media": {
+            "bytes": 23370,
+            "sha256": "9571a3f1bdffc69f218a6d8dfbfb1307797dfdb8255850ad4f3afcfe65d713d0"
+          }
+        },
+        "healthCommandPassed": true,
+        "databaseFailureRecovery": "not-run"
+      },
+      {
+        "id": "runtime-trixie",
+        "imageId": "sha256:6cc8c705c06cdaa0ff49f104ac2b47bbcf29ec82d01c074bd60590b90baf8d34",
+        "imageBytes": 289828076,
+        "sourceRevision": "4d99312903c7ae50967eb73c945189b38ff10cd8",
+        "native": {
+          "uid": 10001,
+          "node": "v24.21.0",
+          "protectedRoot": true,
+          "writableMediaAndCache": true,
+          "packageManagersAbsent": true,
+          "sharp": {
+            "format": "webp",
+            "width": 8,
+            "height": 8
+          },
+          "socialImages": {
+            "status": "passed",
+            "renders": [
+              {
+                "locale": "cs",
+                "status": 200,
+                "format": "png",
+                "width": 1200,
+                "height": 630,
+                "bytes": 218260,
+                "sha256": "fe5f747d32483878abd0d9f199f38199f9a439ee1e7eb26c38f14580884edeb7",
+                "decoded": true
+              },
+              {
+                "locale": "en",
+                "status": 200,
+                "format": "png",
+                "width": 1200,
+                "height": 630,
+                "bytes": 217653,
+                "sha256": "399eb39f3627995c60fd8082e7c50afe6526a2801c0f8eb0e34956ba3d98598d",
+                "decoded": true
+              }
+            ]
+          }
+        },
+        "proof": {
+          "pages": [
+            {
+              "route": "/cs",
+              "status": 200
+            },
+            {
+              "route": "/en",
+              "status": 200
+            },
+            {
+              "route": "/cs/news",
+              "status": 200
+            },
+            {
+              "route": "/cs/news/ukazka-obrazky-tabulka-a-odkazy",
+              "status": 200
+            }
+          ],
+          "media": {
+            "bytes": 23370,
+            "sha256": "9571a3f1bdffc69f218a6d8dfbfb1307797dfdb8255850ad4f3afcfe65d713d0"
+          }
+        },
+        "healthCommandPassed": true,
+        "databaseFailureRecovery": "passed"
+      }
+    ],
+    "mediaRestoreLimit": "Unchanged retained fixture volume; no media-write migration was exercised."
+  },
+  "imageScan": {
+    "baseline": {
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "packages": 122,
+      "highCritical": 56,
+      "fixableHighCritical": 0,
+      "unfixedHighCritical": 56
+    },
+    "candidate": {
+      "os": {
+        "Family": "debian",
+        "Name": "13.7"
+      },
+      "packages": 113,
+      "highCritical": 43,
+      "fixableHighCritical": 0,
+      "unfixedHighCritical": 43
+    },
+    "status": "passed",
+    "countsRecomputedFromRawScans": true
+  },
+  "sbom": {
+    "format": "CycloneDX",
+    "specVersion": "1.6",
+    "components": 114,
+    "sourceRevision": "4d99312903c7ae50967eb73c945189b38ff10cd8",
+    "imageId": "sha256:6cc8c705c06cdaa0ff49f104ac2b47bbcf29ec82d01c074bd60590b90baf8d34",
+    "matchesRehearsal": true
+  },
+  "encryptedRecovery": {
+    "resticVersion": "0.19.1",
+    "platform": "linux",
+    "durationMs": 31187,
+    "sourceFilesMatchedGitBlobs": 5,
+    "sourceDataLimit": "synthetic opaque bytes; not a PostgreSQL dump or tar validation"
+  },
+  "artifacts": [
+    {
+      "id": 10987641296,
+      "name": "encrypted-recovery-4d99312903c7ae50967eb73c945189b38ff10cd8",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/artifacts/10987641296",
+      "archiveSha256": "aed09649d1aeb7d49f9adae96d3e1758f3d4b8139c6f7d506a9f3b7b7476652a",
+      "archiveBytes": 1098,
+      "archiveMatchesGitHub": true,
+      "reportFile": "report.json",
+      "reportSha256": "72c8fdfd8862c89424a1ddb1784c51c012399b74cbbe4a2f32f5914c76e033d3"
+    },
+    {
+      "id": 10987708039,
+      "name": "page-budgets-4d99312903c7ae50967eb73c945189b38ff10cd8",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/artifacts/10987708039",
+      "archiveSha256": "425d03f7baf9b6529acacbc7af897eb95cbe7f38ea8152e85dcfc71bf2550420",
+      "archiveBytes": 1176940,
+      "archiveMatchesGitHub": true,
+      "reportFile": "report.json",
+      "reportSha256": "711300605c433b95d5d23e3565ca32582bca111b99fdc7978f35358962c8c0d3"
+    },
+    {
+      "id": 10988041856,
+      "name": "release-rehearsal-4d99312903c7ae50967eb73c945189b38ff10cd8",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/artifacts/10988041856",
+      "archiveSha256": "bd6a8877a22a2d56c55e234467b0424baef78b0166dab9936d2e6710e6bdbc4f",
+      "archiveBytes": 2777,
+      "archiveMatchesGitHub": true,
+      "reportFile": "report.json",
+      "reportSha256": "5410e82fdbb7e8fc42c75d3d5756e3cc474fccf03aa26b0bd837d0c2f68c169a"
+    },
+    {
+      "id": 10988071909,
+      "name": "runtime-scans-4d99312903c7ae50967eb73c945189b38ff10cd8",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/artifacts/10988071909",
+      "archiveSha256": "721d848ce6d0f82d49580b51907484aa66c58229a9a8a805fd7cc6df9d8d404a",
+      "archiveBytes": 99387,
+      "archiveMatchesGitHub": true,
+      "reportFile": "comparison.json",
+      "reportSha256": "5e895f0c0874550972efc8280b5325131179f694e3624adbb854f9be9b303b07"
+    },
+    {
+      "id": 10987917087,
+      "name": "sbom-4d99312903c7ae50967eb73c945189b38ff10cd8",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/artifacts/10987917087",
+      "archiveSha256": "f18b8228323e4d6e2f606b5943af4aa7fd00907590971310f7f07e05dc61f12d",
+      "archiveBytes": 13374,
+      "archiveMatchesGitHub": true,
+      "reportFile": "valkyria-web.cdx.json",
+      "reportSha256": "dac2f7990f706da7c143fa45ee940d8abb57ed791d7631c9dc94cc5b52cf3d4a"
+    },
+    {
+      "id": 10988246202,
+      "name": "restore-boundaries-4d99312903c7ae50967eb73c945189b38ff10cd8-36460806484-1",
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36460806484/artifacts/10988246202",
+      "archiveSha256": "1aaf8e1326ce9db781cebd04d2c995fc53b17585654d5278edb0e7d99200925e",
+      "archiveBytes": 1529,
+      "archiveMatchesGitHub": true,
+      "reportFile": "report-4d99312903c7ae50967eb73c945189b38ff10cd8-36460806484-1.json",
+      "reportSha256": "bec7cd65d926630f4da48e1e61406a051647952cb7e704d10ef175bf4300a73e"
+    }
+  ],
+  "logSha256": "278b734045e0aa63893c6bc03e6373feb146b7fc49212a85252855e49522ce8b",
+  "limits": [
+    "Exact PR head qualified in the stated synthetic merge; current production and a later merged-main run remain separate.",
+    "Images were built without publishing. No production deployment is established here.",
+    "Budget profile used CSS fallback without delivered game video bytes; not real media playback evidence.",
+    "67 optional browser scenarios were skipped; not claimed passed.",
+    "43 unfixed HIGH/CRITICAL package findings remain. Zero fixable findings is not zero vulnerabilities.",
+    "Rehearsal uses synthetic disposable PostgreSQL/media and retained media volume for rollback; no live provider/authentication or production recovery.",
+    "Encrypted backup tests validate synthetic opaque bytes, not SQL/tar semantics or off-host operation.",
+    "Downloaded screenshot hashes were checked; this record does not claim separate visual inspection.",
+    "The prior local empty-database HTTP failure remains unexplained; this independent Linux pass is not a root-cause diagnosis of that earlier failure."
+  ],
+  "restoreBoundaries": {
+    "report": {
+      "result": "passed",
+      "context": {
+        "scope": "Synthetic loopback PostgreSQL and standalone HTTP only",
+        "node": "v24.21.0",
+        "postgresql": "17.11 (Debian 17.11-1.pgdg13+2)",
+        "pg_dump": "pg_dump (PostgreSQL) 17.11 (Ubuntu 17.11-1.pgdg24.04+2)",
+        "pg_restore": "pg_restore (PostgreSQL) 17.11 (Ubuntu 17.11-1.pgdg24.04+2)"
+      },
+      "sourceFiles": {
+        "apps/web/scripts/restore-rehearsal.mjs": {
+          "sha256Lf": "453881665f2eeaea503aa98d21ee70329103353581ef291853aaa47aa061bef0"
+        },
+        "scripts/tests/restore-rehearsal.test.mjs": {
+          "sha256Lf": "899a009ba3a1f562843d09a16a687b6d89c560efd9a539ed59896114335e31cc"
+        },
+        "scripts/tests/restore-rehearsal.integration.mjs": {
+          "sha256Lf": "d42a82b24480050d7c78b8ae495e017667672bf3d3ab07d328ba349987eeef1f"
+        }
+      },
+      "existing": {
+        "schemaVersion": 1,
+        "startedAt": "2026-09-28T17:52:05.121Z",
+        "status": "failed",
+        "steps": {},
+        "ownership": {
+          "workDirectory": "not-created",
+          "database": "not-created",
+          "appProcess": "not-started"
+        },
+        "code": "target_database_exists",
+        "finishedAt": "2026-09-28T17:52:05.164Z",
+        "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+      },
+      "race": {
+        "schemaVersion": 1,
+        "startedAt": "2026-09-28T17:52:05.179Z",
+        "status": "failed",
+        "steps": {},
+        "ownership": {
+          "workDirectory": "created-retained",
+          "database": "not-created",
+          "appProcess": "not-started"
+        },
+        "code": "target_database_collision",
+        "finishedAt": "2026-09-28T17:52:05.244Z",
+        "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+      },
+      "denied": {
+        "schemaVersion": 1,
+        "startedAt": "2026-09-28T17:52:05.301Z",
+        "status": "failed",
+        "steps": {},
+        "ownership": {
+          "workDirectory": "created-retained",
+          "database": "not-created",
+          "appProcess": "not-started"
+        },
+        "code": "target_database_creation_failed",
+        "finishedAt": "2026-09-28T17:52:05.348Z",
+        "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+      },
+      "empty": {
+        "schemaVersion": 1,
+        "startedAt": "2026-09-28T17:52:05.400Z",
+        "status": "passed",
+        "steps": {
+          "backup": {
+            "database": {
+              "bytes": 73450,
+              "sha256": "683f7875a29dc9ec5ea2f56d3a7d0af052f16f1564ba2df1e806a88c83f26153"
+            },
+            "media": {
+              "bytes": 109,
+              "sha256": "042550d7f78befa79157c4fa9e94290946327876bc38224e75794fec2da9b9b7"
+            }
+          },
+          "migrate": {
+            "applied": 0
+          },
+          "rows": {
+            "tables": 25,
+            "contentMatches": true
+          },
+          "media": {
+            "files": 0,
+            "assets": 0,
+            "variants": 0,
+            "byteHashesMatch": true
+          },
+          "serve": {
+            "ready": 200,
+            "home": 200,
+            "mediaDelivery": "not-applicable-empty",
+            "delivered": 0,
+            "privateDenied": 0
+          }
+        },
+        "ownership": {
+          "workDirectory": "created-retained",
+          "database": "created-retained",
+          "appProcess": "stopped"
+        },
+        "finishedAt": "2026-09-28T17:52:06.925Z",
+        "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+      },
+      "media": {
+        "schemaVersion": 1,
+        "startedAt": "2026-09-28T17:52:10.041Z",
+        "status": "passed",
+        "steps": {
+          "backup": {
+            "database": {
+              "bytes": 92266,
+              "sha256": "a6f83fa1a7d3e08edab496627e7cd988229056a62e6ca0af2d26db0a6638a3f1"
+            },
+            "media": {
+              "bytes": 105211,
+              "sha256": "48ec4e9513d65856372a684cbbe29de5c012cbac5419c95175a85cdeff982ba3"
+            }
+          },
+          "migrate": {
+            "applied": 0
+          },
+          "rows": {
+            "tables": 25,
+            "contentMatches": true
+          },
+          "media": {
+            "files": 12,
+            "assets": 6,
+            "variants": 12,
+            "byteHashesMatch": true
+          },
+          "serve": {
+            "ready": 200,
+            "home": 200,
+            "mediaDelivery": "verified",
+            "delivered": 5,
+            "privateDenied": 1
+          }
+        },
+        "ownership": {
+          "workDirectory": "created-retained",
+          "database": "created-retained",
+          "appProcess": "stopped"
+        },
+        "finishedAt": "2026-09-28T17:52:11.665Z",
+        "cleanup": "Retain owned work directory/database for inspection; remove only after confirming ownership. No automatic database or directory deletion."
+      },
+      "acceptedCases": [
+        "existing",
+        "race",
+        "denied",
+        "empty",
+        "media"
+      ],
+      "cleanup": {
+        "databases": 5,
+        "roles": 1,
+        "method": "Only successful test-owned CREATE names; DROP without FORCE; no backend termination"
+      }
+    },
+    "sourceHashesMatchedTestedMerge": true,
+    "interpretation": "Three expected refusal cases preserve foreign targets; two successful disposable restores verify 25 table contents and media bytes/delivery; suite cleanup owns 5 databases and 1 role."
+  }
+}
