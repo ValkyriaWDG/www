@@ -119,5 +119,16 @@ test('HLL match editor: rounds and game statistics', async ({ browser }) => {
   });
   await page.locator('[data-group="statistics"]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
   await page.evaluate(() => window.scrollBy(0, -80));
-  await shot(page, 'admin-hll-match-statistics-cs-1440x1200.png', 'Game statistics panel of the same match: the imported synthetic scoreboard (source, game time, import time, 12 players, player rows public), team totals for Valkyria (Spojenci) and the opponent (Osa), side and publication settings, and the import form (configured CRCON server by game ID, or an uploaded scoreboard JSON; no server is configured in this environment).', 'match_manager');
+  await page.screenshot({ path: path.join(outDir, 'admin-hll-match-statistics-cs-1440x1200.png'), animations: 'disabled', caret: 'hide' });
+  captures.push({
+    file: 'admin-hll-match-statistics-cs-1440x1200.png',
+    caption: 'Game statistics panel of the same match: the imported synthetic scoreboard (source, game time, import time, 12 players, player rows public), team totals for Valkyria (Spojenci) and the opponent (Osa), side and publication settings, and the start of the replacement import form (the configured synthetic CRCON server by game ID, or an uploaded scoreboard JSON).',
+    viewport: '1440x1200',
+    uiLocale: 'cs',
+    role: 'match_manager',
+  });
+  await page.locator('[data-statistics-import]').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await page.evaluate(() => window.scrollBy(0, -80));
+  await page.getByLabel(/^ID hry v CRCON/).fill('1234');
+  await shot(page, 'admin-hll-match-statistics-import-cs-1440x1200.png', 'Replacement import in the same panel: the configured synthetic CRCON server is selected, game ID 1234 entered, with the Valkyria side and the player-publication choice; submitting downloads get_map_scoreboard from that server (exercised end to end in admin-hll-matches.spec.ts against the loopback CRCON mock). Not submitted here.', 'match_manager');
 });

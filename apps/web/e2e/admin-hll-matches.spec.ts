@@ -63,10 +63,13 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await expect(visitor.locator('main table').filter({ hasText: 'Carentan' })).toContainText('Axis');
   await expect(visitor.locator('[data-match-statistics]')).toHaveCount(0);
 
-  // Import the game statistics from an uploaded CRCON scoreboard (no CRCON server is configured here).
+  // Game statistics: the configured synthetic CRCON server is offered first; this game is
+  // imported from an exported scoreboard file instead.
   const panel = page.locator('[data-statistics-panel]');
   await expect(panel).toHaveAttribute('data-statistics-state', 'none');
-  await expect(panel.getByText('Žádný server CRCON zatím není nastaven', { exact: false })).toBeVisible();
+  await expect(panel.getByRole('radio', { name: /^Z herního serveru \(CRCON\)/ })).toBeChecked();
+  await expect(panel.getByRole('combobox', { name: /^Server/ })).toHaveValue('synthetic-crcon');
+  await panel.getByRole('radio', { name: /^Nahrát soubor JSON/ }).check();
   await panel.getByLabel(/^Soubor s tabulkou hry/).setInputFiles({
     name: 'synthetic-scoreboard.json',
     mimeType: 'application/json',
@@ -96,6 +99,31 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await visitor.goto(publicPath);
   await visitor.locator('[data-match-statistics]').getByRole('tab', { name: 'Hráči' }).click();
   await expect(visitor.locator('[data-statistics-players] tbody tr')).toHaveCount(12);
+
+  // Replace them with the scoreboard the web downloads itself from the CRCON server by game ID.
+  await panel.getByRole('radio', { name: /^Z herního serveru \(CRCON\)/ }).check();
+  await panel.getByLabel(/^ID hry v CRCON/).fill('abc');
+  await panel.locator('[data-statistics-action="import"]').click();
+  await expect(panel.getByLabel(/^ID hry v CRCON/)).toHaveAttribute('aria-invalid', 'true');
+  await panel.getByLabel(/^ID hry v CRCON/).fill('99999');
+  await panel.locator('[data-statistics-action="import"]').click();
+  // A game the server does not know leaves the previous import in place.
+  await expect(panel.getByRole('alert')).toContainText('Služba je dočasně nedostupná');
+  await expect(panel.locator('[data-statistics-player-count]')).toContainText('12');
+  await panel.getByLabel(/^ID hry v CRCON/).fill('1234');
+  await panel.getByLabel(/^Strana Valkyrie v této hře/).last().selectOption('axis');
+  await panel.locator('[data-statistics-action="import"]').click();
+  await expect(panel.getByText('Statistiky importovány.')).toBeVisible();
+  await expect(panel.locator('[data-statistics-current]')).toContainText('CRCON: [SYNTHETIC] CRCON Mock Alpha, hra č. 1234');
+  await expect(panel.locator('[data-statistics-player-count]')).toContainText('10 · řádky hráčů nejsou veřejné');
+  await visitor.goto(publicPath);
+  const downloaded = visitor.locator('[data-match-statistics]');
+  await expect(downloaded.locator('[data-statistics-provenance]')).toContainText('herní server (CRCON), hra č. 1234');
+  await expect(downloaded.locator('[data-statistics-provenance]')).toContainText('Synthetic Map North');
+  await expect(downloaded.locator('[data-statistics-summary]')).toContainText('Valkyria (Osa)');
+  await downloaded.getByRole('tab', { name: 'Zbraně' }).click();
+  await expect(downloaded.locator('[data-statistics-weapons]')).toContainText('MG42');
+  await expect(visitor.getByText('must not be imported')).toHaveCount(0);
   await visitor.close();
   await context.close();
 });

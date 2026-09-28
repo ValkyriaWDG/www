@@ -15,6 +15,7 @@ export function e2eServerEnv(options: {
   editorialMediaRoot?: string;
 }): Record<string, string> {
   const baseURL = `http://127.0.0.1:${options.port}`;
+  const crconMockPort = options.discordMockPort + 1;
   return {
     NODE_ENV: 'production',
     PORT: String(options.port),
@@ -49,6 +50,10 @@ export function e2eServerEnv(options: {
     // Labelled synthetic server snapshots (never real Valkyria server state).
     SERVER_STATUS_SOURCE: 'synthetic-fixture',
     SERVER_STATUS_FIXTURE_SCENARIO: 'mixed',
+    // Scoreboard imports by game ID use the loopback CRCON mock (e2e/support/crcon-mock.mjs)
+    // started next to the Discord mock; the servers page keeps the fixture scenario above.
+    E2E_CRCON_MOCK_PORT: String(crconMockPort),
+    HLL_SERVER_SOURCES_JSON: JSON.stringify([{ publicId: 'synthetic-crcon', name: '[SYNTHETIC] CRCON Mock Alpha', baseUrl: `http://127.0.0.1:${crconMockPort}/alpha` }]),
     HLL_BACKGROUND_CLIPS_JSON: JSON.stringify(SYNTHETIC_HLL_CLIPS),
     ...options.background,
   };
