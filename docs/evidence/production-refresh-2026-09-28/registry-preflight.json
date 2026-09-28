@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "operator-supplied-registry-preflight",
+  "observedAt": "2026-09-28T16:26:35.1229636Z",
+  "repository": "majorluk/valkyria-www",
+  "exists": true,
+  "isPrivate": false,
+  "lastUpdated": "2026-09-26T17:21:21.776484Z",
+  "provenance": "The deployment operator supplied this sanitized result from an authenticated registry preflight. No credentials or registry response body were shared with the public verification harness.",
+  "limitations": [
+    "Repository existence and visibility only; no new image publication or deployment is established.",
+    "No revision, image digest or live runtime identity is inferred from this preflight."
+  ]
+}

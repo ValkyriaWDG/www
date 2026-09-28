@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "appSource": "df48609e384aca679fb5b72073ea9188ee4785b5",
+  "browser": "154.0.8037.57",
+  "viewport": {
+    "width": 391,
+    "height": 844
+  },
+  "fixtureMutation": false,
+  "fallbackOverride": "Barlow/Barlow Condensed with Arial,sans-serif to reproduce Linux sans fallback on Windows",
+  "measurements": {
+    "before": {
+      "height": 57.59375,
+      "rows": [
+        {
+          "text": "Zveřejněno27. září 2026",
+          "top": 226.671875,
+          "width": 210.34375
+        },
+        {
+          "text": "AutorSyntetický autor",
+          "top": 259.46875,
+          "width": 178.21875
+        }
+      ],
+      "coverTop": 443.484375
+    },
+    "displayOnly": {
+      "height": 57.59375,
+      "rows": [
+        {
+          "text": "Zveřejněno27. září 2026",
+          "top": 226.671875,
+          "width": 181.640625
+        },
+        {
+          "text": "AutorSyntetický autor",
+          "top": 259.46875,
+          "width": 162
+        }
+      ],
+      "coverTop": 443.484375
+    },
+    "bodyLatin": {
+      "height": 24.796875,
+      "rows": [
+        {
+          "text": "Zveřejněno27. září 2026",
+          "top": 226.671875,
+          "width": 173.6875
+        },
+        {
+          "text": "AutorSyntetický autor",
+          "top": 226.671875,
+          "width": 161.21875
+        }
+      ],
+      "coverTop": 410.6875
+    },
+    "after": {
+      "height": 57.59375,
+      "rows": [
+        {
+          "text": "Zveřejněno27. září 2026",
+          "top": 226.671875,
+          "width": 174.171875
+        },
+        {
+          "text": "AutorSyntetický autor",
+          "top": 259.46875,
+          "width": 161.21875
+        }
+      ],
+      "coverTop": 443.484375
+    },
+    "shifts": [
+      0.0009370456754768044,
+      0.0035266003130739014,
+      0.000055753848107887365,
+      0.14467523140678865,
+      0.14467239232731402
+    ]
+  },
+  "rawLocalLogSha256": "eb0e1d2bab2845d8cb84f689a2b85a640528b4d42b3c39ee51fa0ff82c412153"
+}

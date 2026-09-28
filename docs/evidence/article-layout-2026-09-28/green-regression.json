@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "phase": "green",
+  "rawPlaywrightReportSha256": "8a101676ae7a2790e8a7af0ff510266e128634d905286e9917e54df64a582b0f",
+  "stats": {
+    "startTime": "2026-09-28T16:38:04.352Z",
+    "duration": 23636.239999999998,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "name": "mobile cs 390px article metadata keeps its rows as fonts arrive separately",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1481,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "mobile cs 391px article metadata keeps its rows as fonts arrive separately",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 897,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "mobile en 390px article metadata keeps its rows as fonts arrive separately",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 839,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "cs article metadata stays readable with a long author on narrow and desktop screens",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 888,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "en article metadata stays readable with a long author on narrow and desktop screens",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 991,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "mobile cs filters keep their rows when condensed fonts arrive",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 702,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "mobile en filters keep their rows when condensed fonts arrive",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 601,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "shows only published Czech posts with pagination",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 785,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "filters and search live in the URL and back/forward restore them",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1820,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "English list contains only English translations",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 614,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "switching a Czech-only article to English lands on the English list with a notice and source link",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1225,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "the endpoint redirect and the notice ignore unverifiable sources",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1405,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "unpublished or foreign translations are 404 under a locale URL",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1317,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "renders the feature article: cover, table region, inline image, caption and related posts",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 847,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "English article uses en-GB date conventions",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 726,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "hreflang alternates list only published counterparts",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1120,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "name": "long article and table stay within a 390 px viewport",
+      "expectedStatus": "passed",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 1116,
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "locale": "cs",
+      "width": 390,
+      "browser": "154.0.8037.57",
+      "before": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 358
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 358
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "displayOnly": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 358
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 358
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "bodyLatin": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 358
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 358
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "after": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 358
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 358
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "shifts": [
+        0.003535642877979219,
+        0.000055896806692779384,
+        0.0010293340934183176
+      ],
+      "fontSwapShiftSum": 0.004620873778090316
+    },
+    {
+      "locale": "cs",
+      "width": 391,
+      "browser": "154.0.8037.57",
+      "before": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 359
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 359
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "displayOnly": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 359
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 359
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "bodyLatin": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 359
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 359
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "after": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Zveřejněno27. září 2026",
+            "top": 226.671875,
+            "width": 359
+          },
+          {
+            "text": "AutorSyntetický autor",
+            "top": 259.46875,
+            "width": 359
+          }
+        ],
+        "coverTop": 443.484375
+      },
+      "shifts": [
+        0.0035266003130739014,
+        0.000055753848107887365,
+        0.0010129872366619597
+      ],
+      "fontSwapShiftSum": 0.004595341397843749
+    },
+    {
+      "locale": "en",
+      "width": 390,
+      "browser": "154.0.8037.57",
+      "before": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Published27 September 2026",
+            "top": 197.28125,
+            "width": 358
+          },
+          {
+            "text": "AuthorSynthetic author",
+            "top": 230.078125,
+            "width": 358
+          }
+        ],
+        "coverTop": 414.09375
+      },
+      "displayOnly": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Published27 September 2026",
+            "top": 197.28125,
+            "width": 358
+          },
+          {
+            "text": "AuthorSynthetic author",
+            "top": 230.078125,
+            "width": 358
+          }
+        ],
+        "coverTop": 414.09375
+      },
+      "bodyLatin": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Published27 September 2026",
+            "top": 197.28125,
+            "width": 358
+          },
+          {
+            "text": "AuthorSynthetic author",
+            "top": 230.078125,
+            "width": 358
+          }
+        ],
+        "coverTop": 414.09375
+      },
+      "after": {
+        "height": 57.59375,
+        "rows": [
+          {
+            "text": "Published27 September 2026",
+            "top": 197.28125,
+            "width": 358
+          },
+          {
+            "text": "AuthorSynthetic author",
+            "top": 230.078125,
+            "width": 358
+          }
+        ],
+        "coverTop": 414.09375
+      },
+      "shifts": [
+        0.0037083681951588384,
+        0.0010693957775220165
+      ],
+      "fontSwapShiftSum": 0.004777763972680855
+    }
+  ],
+  "scope": "Standalone production app, synthetic fixtures, Chrome for Testing on Windows. Display publication date fixed before baseline; Linux-like sans fallback; actual font responses gated by subset. Shift sum covers staged swaps after baseline, not full-navigation CLS."
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "baseRevision": "df48609e384aca679fb5b72073ea9188ee4785b5",
+  "candidate": "Uncommitted local candidate on fix/article-layout-stability; candidate acceptance commit is recorded by the integrating PR.",
+  "checks": [
+    "pnpm build: passed",
+    "pnpm --filter @valkyria/web exec eslint e2e/article-font-stability.spec.ts --max-warnings=0: passed"
+  ],
+  "redTest": {
+    "sha256Lf": "116ce8991bbf6ff787c3afc711674770b08aa0b77891a36a7af3659cdd9d639b",
+    "differenceFromFinal": "Final test adds three screenshot attachment calls for English mobile and Czech/English desktop. Assertions, fixture normalization and font-gate behavior are unchanged."
+  },
+  "files": [
+    {
+      "path": "apps/web/src/components/content/article-view.module.css",
+      "sha256Lf": "e4317f1959e9312c97c37c8e0517fb23a28dc99b936beef2eaf600218146d930"
+    },
+    {
+      "path": "apps/web/e2e/article-font-stability.spec.ts",
+      "sha256Lf": "e39f5d698c519c71dcda48a58cfebd3cdf58c06efefe87468b31a7fe7f3ad6aa"
+    },
+    {
+      "path": "scripts/release/measure-pages.mjs",
+      "sha256Lf": "c0f545d9c0e67d94f78e733ae4a9bf886cd04ba8a2e4422299b521310a1c1f3b"
+    },
+    {
+      "path": "scripts/release/page-budgets.json",
+      "sha256Lf": "d89cbb4ba00982b8a76ff8fa8048661de201c0a0c2d331c35f3988b938cb5444"
+    }
+  ],
+  "hashNormalization": "UTF-8 with CRLF normalized to LF, equivalent to repository text blobs."
+}
