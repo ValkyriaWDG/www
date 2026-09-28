@@ -105,8 +105,10 @@ belong in a Git commit, CI artifact or Docker build context.
 
 ### Unified origin cutover
 
-The owner authorized the shared platform at `https://valkyria.cz` on 2026-09-28.
-This is an operating contract; completed deployment evidence belongs in `docs/STATUS.md`.
+The shared platform was deployed at `https://valkyria.cz` on 2026-09-28; see the
+[cutover evidence](../evidence/unified-cutover-2026-09-28/README.md) for the two attempts,
+actual restore and routing observations, and retained public-check failures.
+The following is the operating contract, not permission to repeat the cutover.
 Set both `APP_URL` and `BETTER_AUTH_URL` to that origin in the protected runtime file
 **and** any explicit Compose `environment` overrides. Check the effective container
 configuration and the stored `background.media` setting, which takes precedence over
@@ -130,10 +132,14 @@ Migration `0001_unified_platform_scope` is additive. Before it runs, pair a fres
 database backup with editorial media and prove restoration into a separate, newly
 created disposable database. Expect the migration runner to report one applied and
 one already applied migration (two total), then zero applied/two already applied on
-retry. Never remove migration journal rows for an image rollback. The previous image
-does not enforce the new game scope on local grants: keep both login methods disabled
-and do not create scoped administrator grants during this rollback window. Once scoped
-administration is enabled, this older image is no longer an authorization-safe fallback.
+retry. The accepted production database already has both migrations: subsequent runs
+must report zero applied/two already applied and preserve the complete data/journal/
+sequence fingerprints. Never remove migration journal rows for an image rollback.
+The pre-unified `9a8729 / cab323` fallback does not enforce the new game scope on
+local grants: keep both login methods disabled and do not create scoped administrator
+grants while that image remains a rollback target. Once scoped administration is
+enabled, that pre-unified image is no longer an authorization-safe fallback. The
+unified `5e83abc / 79bf4ea` image includes the new scope enforcement.
 
 Target pattern: outbound HTTPS tunnel → existing reverse proxy → isolated web container.
 Connect only to the existing proxy and database networks. Do not open a public application
@@ -141,11 +147,14 @@ or database host port. Supply runtime configuration through a host-protected env
 the source contains only [variable names](../../.env.example). Use a dedicated PostgreSQL
 database/user and constrained schema privileges. No Docker socket or host filesystem access.
 
-Serve `https://valkyriawdg.cz`; decide `www` redirect/canonical behavior before DNS setup.
+Serve `https://valkyria.cz`; `www.valkyria.cz` redirects to the apex with path/query
+preserved. Both legacy WDG hosts use the 308 mapping above. These routes are deployed;
+preserve them when maintaining the proxy or tunnel.
 The reverse proxy must overwrite (not append to) `X-Forwarded-For` with the single client
 IP: authentication rate limits key on it, so a forwarded chain would merge clients into
 one bucket and a client-supplied value could evade limits.
-Register the precise Discord callback origin. Apply production cookie/origin checks,
+Register and verify the precise canonical Discord callback before enabling login;
+the cutover left authentication disabled and did not register a callback. Apply production cookie/origin checks,
 CSP, trusted-proxy handling and no-store policies for login/admin traffic. The old
 `valkyriahll.cz` domain must not be changed as a side effect.
 

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-28T20:19:38.549512+00:00",
+  "finishedAt": "2026-09-28T20:22:19.628240+00:00",
+  "sourceRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+  "candidateImage": "majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+  "result": "failed",
+  "failureCode": "JSONDecodeError",
+  "routingObservation": {
+    "pendingAttempts": 14,
+    "accepted": true
+  },
+  "pairedBackupTables": 25,
+  "semanticRestorePerformed": true,
+  "restoreOwnership": "created-verified-dropped",
+  "rollback": "old_image_and_config_ready_database_not_downgraded",
+  "migrationRuns": [
+    {
+      "applied": 1,
+      "alreadyApplied": 1,
+      "total": 2
+    },
+    {
+      "applied": 0,
+      "alreadyApplied": 2,
+      "total": 2
+    }
+  ],
+  "timersRestored": {
+    "valkyria-web-publish.timer": true,
+    "valkyria-web-backup.timer": true
+  },
+  "routingRecovery": {
+    "recordedAt": "2026-09-28T20:24:40.578Z",
+    "reason": "First candidate public health JSON validation failed; application automatically rolled back",
+    "dnsRestored": true,
+    "tunnelCanonicalEntriesRemoved": true,
+    "otherTunnelConfigurationPreserved": true,
+    "canonicalProxyRemoved": true,
+    "oldWdgProxyUnchanged": true,
+    "legacyHllChanged": false
+  },
+  "limitations": [
+    "Original failing health response headers and body were not retained. JSONDecodeError alone does not establish its root cause.",
+    "Retained proxy log confirms the original live request reached the proxy and application with upstream and downstream status 200; no readiness request followed.",
+    "Subsequent same-host legacy-origin probes returned valid JSON; they do not retroactively validate the failed request.",
+    "The additive migration remains applied; no live database restore or downgrade was performed."
+  ]
+}

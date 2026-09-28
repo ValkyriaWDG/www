@@ -1,0 +1,569 @@
+{
+  "schemaVersion": 1,
+  "status": "accepted",
+  "verifiedAt": "2026-09-28T20:18:58.546Z",
+  "scope": "Exact source publication and public registry candidate qualification; no production deployment performed by reviewer",
+  "repository": "ValkyriaWDG/www",
+  "headRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+  "run": {
+    "id": 36476285050,
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36476285050",
+    "event": "workflow_dispatch",
+    "attempt": 1,
+    "conclusion": "success"
+  },
+  "inputGuard": {
+    "expectedSha": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "actualSha": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "status": "passed",
+    "beforeRegistryAccess": true
+  },
+  "environment": {
+    "id": 6719581178,
+    "sha": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "environment": "container-publish",
+    "createdAt": "2026-09-28T20:14:54Z",
+    "statuses": [
+      {
+        "id": 18966490424,
+        "state": "success",
+        "logUrl": "https://github.com/ValkyriaWDG/www/actions/runs/36476285050/job/109115879477",
+        "environment": "container-publish",
+        "createdAt": "2026-09-28T20:17:28Z"
+      },
+      {
+        "id": 18966418930,
+        "state": "in_progress",
+        "logUrl": "https://github.com/ValkyriaWDG/www/actions/runs/36476285050/job/109115879477",
+        "environment": "container-publish",
+        "createdAt": "2026-09-28T20:15:50Z"
+      },
+      {
+        "id": 18966417235,
+        "state": "queued",
+        "logUrl": "https://github.com/ValkyriaWDG/www/actions/runs/36476285050/job/109115879477",
+        "environment": "container-publish",
+        "createdAt": "2026-09-28T20:15:47Z"
+      },
+      {
+        "id": 18966380446,
+        "state": "waiting",
+        "logUrl": "https://github.com/ValkyriaWDG/www/actions/runs/36476285050/job/109115879477",
+        "environment": "container-publish",
+        "createdAt": "2026-09-28T20:14:56Z"
+      }
+    ]
+  },
+  "publication": {
+    "image": "majorluk/valkyria-www",
+    "immutableTag": "sha-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "digest": "sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+    "reference": "majorluk/valkyria-www@sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+    "platform": "linux/amd64",
+    "pullByDigestPassed": true,
+    "ociRevisionCheckPassed": true,
+    "ociRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "provenance": "mode=min",
+    "sbom": true,
+    "mutableProductionTagPublished": false
+  },
+  "registryVerification": {
+    "schemaVersion": 1,
+    "status": "passed",
+    "checkedAt": "2026-09-28T20:18:33.186Z",
+    "repository": "majorluk/valkyria-www",
+    "sourceRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "immutableTag": "sha-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "tagDigest": "sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+    "publishedDigest": "sha256:79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48",
+    "linuxAmd64ManifestDigest": "sha256:1a7d781887ec396c9f351d1f3c2fcfd804e4b57c9e69934036092c6874863526",
+    "configDigest": "sha256:042afbaeaefe3c66497289545403a206382da2241afb01a758e4eb2d6cf1127b",
+    "ociRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "architecture": "amd64",
+    "os": "linux",
+    "method": "Anonymous registry pull metadata; raw manifest/config byte hashes independently matched their digests",
+    "files": [
+      "registry-index.json",
+      "registry-linux-amd64-manifest.json",
+      "registry-linux-amd64-config.json"
+    ]
+  },
+  "reusedCi": {
+    "schemaVersion": 1,
+    "status": "accepted",
+    "scope": "Exact source reused CI qualification inside immutable container publication; registry result and production promotion separately assessed",
+    "verifiedAt": "2026-09-28T20:18:31.384Z",
+    "repository": "ValkyriaWDG/www",
+    "pullRequest": 51,
+    "sourceTree": "a78b13cd88c37010b8e3fb2db2f246260d753510",
+    "headRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "baseRevision": "40da3df1d2bee5ad4e99f8d09d590c7b9ada42a9",
+    "testedMergeRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+    "run": {
+      "id": 36476285050,
+      "url": "https://github.com/ValkyriaWDG/www/actions/runs/36476285050",
+      "attempt": 1,
+      "event": "workflow_dispatch",
+      "conclusion": "success"
+    },
+    "jobs": [
+      {
+        "name": "verify / Foundation",
+        "conclusion": "success"
+      },
+      {
+        "name": "verify / Application",
+        "conclusion": "success"
+      },
+      {
+        "name": "verify / Quality gate",
+        "conclusion": "success"
+      },
+      {
+        "name": "publish",
+        "conclusion": "success"
+      }
+    ],
+    "tests": {
+      "unit": {
+        "passed": 439,
+        "failed": 0
+      },
+      "integration": {
+        "passed": 272,
+        "failed": 0
+      },
+      "browser": {
+        "passed": 143,
+        "skipped": 98,
+        "failed": 0,
+        "skipReason": "Opt-in visual capture cases"
+      },
+      "tooling": {
+        "passed": 126,
+        "failed": 0,
+        "skipped": 0
+      },
+      "encryptedRecovery": {
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      "realRestore": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "restore": {
+      "context": {
+        "scope": "Synthetic loopback PostgreSQL and standalone HTTP only",
+        "node": "v24.21.0",
+        "postgresql": "17.11 (Debian 17.11-1.pgdg13+2)",
+        "pg_dump": "pg_dump (PostgreSQL) 17.11 (Ubuntu 17.11-1.pgdg24.04+2)",
+        "pg_restore": "pg_restore (PostgreSQL) 17.11 (Ubuntu 17.11-1.pgdg24.04+2)"
+      },
+      "empty": {
+        "backup": {
+          "database": {
+            "bytes": 78018,
+            "sha256": "59e2e6e86d8c98eec9e7cdc65559f11060ed2f1463e065b30067c956a2a0dadd"
+          },
+          "media": {
+            "bytes": 109,
+            "sha256": "b10906b112eba593807dd50c96dcd89d356995b602dde3a484d6bed85a4805ed"
+          }
+        },
+        "migrate": {
+          "applied": 0
+        },
+        "rows": {
+          "tables": 27,
+          "contentMatches": true
+        },
+        "media": {
+          "files": 0,
+          "assets": 0,
+          "variants": 0,
+          "byteHashesMatch": true
+        },
+        "serve": {
+          "ready": 200,
+          "home": 200,
+          "mediaDelivery": "not-applicable-empty",
+          "delivered": 0,
+          "privateDenied": 0
+        }
+      },
+      "populated": {
+        "backup": {
+          "database": {
+            "bytes": 100200,
+            "sha256": "7d8bb4f24e936eaaf0d0b342f1192eceff9a85e781cc4d51251ec3d174460f25"
+          },
+          "media": {
+            "bytes": 105214,
+            "sha256": "aba4cecf9394c4eb1b868b792fe67ec63170bf3ec3ae3ad6ebb52009159f0844"
+          }
+        },
+        "migrate": {
+          "applied": 0
+        },
+        "rows": {
+          "tables": 27,
+          "contentMatches": true
+        },
+        "media": {
+          "files": 12,
+          "assets": 6,
+          "variants": 12,
+          "byteHashesMatch": true
+        },
+        "serve": {
+          "ready": 200,
+          "home": 200,
+          "mediaDelivery": "verified",
+          "delivered": 5,
+          "privateDenied": 1
+        }
+      },
+      "acceptedCases": [
+        "existing",
+        "race",
+        "denied",
+        "empty",
+        "media"
+      ],
+      "cleanup": {
+        "databases": 5,
+        "roles": 1,
+        "method": "Only successful test-owned CREATE names; DROP without FORCE; no backend termination"
+      }
+    },
+    "rehearsal": {
+      "status": "passed",
+      "steps": [
+        {
+          "id": "local-docker-only",
+          "status": "passed"
+        },
+        {
+          "id": "immutable-previous-image",
+          "status": "passed"
+        },
+        {
+          "id": "matching-candidate-source-revisions",
+          "status": "passed"
+        },
+        {
+          "id": "create-disposable-internal-fixture",
+          "status": "passed"
+        },
+        {
+          "id": "previous-schema-and-synthetic-fixtures",
+          "status": "passed"
+        },
+        {
+          "id": "previous-image-before-upgrade",
+          "status": "passed"
+        },
+        {
+          "id": "pre-upgrade-backup",
+          "status": "passed"
+        },
+        {
+          "id": "candidate-migrations-and-expansion-probe",
+          "status": "passed"
+        },
+        {
+          "id": "runtime-bookworm",
+          "status": "passed"
+        },
+        {
+          "id": "runtime-trixie",
+          "status": "passed"
+        },
+        {
+          "id": "previous-image-after-candidate-migrations",
+          "status": "passed"
+        },
+        {
+          "id": "restore-based-rollback",
+          "status": "passed"
+        }
+      ],
+      "previousImage": "majorluk/valkyria-www@sha256:cab3230e760ced4e10a52c00327d863ca5c704093cd81ef61ea000b38d368e93",
+      "previousRevision": "9a872918ad4d89935eb26118d853d40776af7d66",
+      "migrations": {
+        "appliedProductionMigrations": 1,
+        "repeatApplied": 0,
+        "syntheticExpansion": "Nullable text column on content_document; test-only, outside migration journal."
+      },
+      "candidateImageId": "sha256:0ba4f2cfb3b1cde508bde26906c84801fe42d0885b811e2723ddffc8a588f410",
+      "rollbackDataUnchanged": true,
+      "restoreContentMatches": true,
+      "cleanup": {
+        "status": "passed"
+      }
+    },
+    "scan": {
+      "status": "passed",
+      "candidate": {
+        "os": {
+          "Family": "debian",
+          "Name": "13.7"
+        },
+        "packages": 113,
+        "highCritical": 43,
+        "fixableHighCritical": 0,
+        "unfixedHighCritical": 43
+      },
+      "baseline": {
+        "os": {
+          "Family": "debian",
+          "Name": "12.15"
+        },
+        "packages": 122,
+        "highCritical": 56,
+        "fixableHighCritical": 0,
+        "unfixedHighCritical": 56
+      }
+    },
+    "sbom": {
+      "format": "CycloneDX",
+      "specVersion": "1.6",
+      "components": 114,
+      "imageId": "sha256:0ba4f2cfb3b1cde508bde26906c84801fe42d0885b811e2723ddffc8a588f410",
+      "sourceRevision": "5e83abc91560480e21b60c4a2638c0b52b0e1720"
+    },
+    "pageBudgets": {
+      "status": "passed",
+      "samples": 15,
+      "routes": [
+        {
+          "route": "/cs",
+          "medianLcpMs": 1940,
+          "maximumCls": 0.040294152591992025,
+          "maximumTransferBytes": 495561
+        },
+        {
+          "route": "/cs/wardogs",
+          "medianLcpMs": 1980,
+          "maximumCls": 0.04000998861267356,
+          "maximumTransferBytes": 541429
+        },
+        {
+          "route": "/cs/hll",
+          "medianLcpMs": 1916,
+          "maximumCls": 0.0045516928745884255,
+          "maximumTransferBytes": 504157
+        },
+        {
+          "route": "/cs/news",
+          "medianLcpMs": 924,
+          "maximumCls": 0.0038126950651421196,
+          "maximumTransferBytes": 529425
+        },
+        {
+          "route": "/cs/wardogs/news/ukazka-obrazky-tabulka-a-odkazy",
+          "medianLcpMs": 1008,
+          "maximumCls": 0.005427787355030959,
+          "maximumTransferBytes": 628015
+        }
+      ],
+      "sourceDirty": true,
+      "dirtyPaths": [
+        "sbom/valkyria-web.cdx.json"
+      ],
+      "dirtyPathExplanation": "Generated CI SBOM only; no application source path modified",
+      "maximumCls": 0.040294152591992025,
+      "limits": {
+        "javascriptBytes": 358400,
+        "cssBytes": 61440,
+        "fontBytes": 184320,
+        "totalBytes": 1048576,
+        "lcpMs": 2500,
+        "cls": 0.1
+      },
+      "errors": [],
+      "screenshotHashesVerified": 5
+    },
+    "sourceHashChecks": [
+      {
+        "head": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "files": 5,
+        "allMatched": true
+      },
+      {
+        "head": "5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "files": 3,
+        "allMatched": true
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 10994790229,
+        "name": "page-budgets-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "bytes": 1556069,
+        "sha256": "5c16bda48e33f2a0b934cecd0e66cd496133f99dd0f2250201de9305e8f86da1",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10994745338,
+        "name": "playwright-report-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "bytes": 2717514,
+        "sha256": "8b1c12fbf6bece8aaa1cfa4b0f7862055b1b8a224b2d02daad73388be6561bbb",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10994635391,
+        "name": "ValkyriaWDG~www~VRHWFD.dockerbuild",
+        "bytes": 56121,
+        "sha256": "a43f4cf5a2de6ef4d96d98c0223cca37c00ee1c80b2e9208d513c68175a67c42",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10994157058,
+        "name": "restore-boundaries-5e83abc91560480e21b60c4a2638c0b52b0e1720-36476285050-1",
+        "bytes": 1529,
+        "sha256": "786955b28d31a6ac376692b37f12b7f3510c4429e43532eeaf3949b7e4c47b9e",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10993882753,
+        "name": "release-rehearsal-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "bytes": 2868,
+        "sha256": "3f1b0b69fbeda6dfe9390f0b9238b5882e458ea4ac49b164ba185c532075a301",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10993619457,
+        "name": "ValkyriaWDG~www~IZBMEG.dockerbuild",
+        "bytes": 78782,
+        "sha256": "c2607c5cf91d136f91a804b17d1d82a425ca46d7bd1345b796a89c0c3cdce1b9",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10993613168,
+        "name": "sbom-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "bytes": 13342,
+        "sha256": "880256d7f0a44f8385142f089a009234f67476320333ab035eb8f4a02fd97f0f",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10993374204,
+        "name": "runtime-scans-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "bytes": 99380,
+        "sha256": "27b27634c3b1a4ce6beea45e42017f1dbcb7629e99ff733f90ee9368bb5163ab",
+        "downloadedArchiveVerified": true
+      },
+      {
+        "id": 10993108567,
+        "name": "encrypted-recovery-5e83abc91560480e21b60c4a2638c0b52b0e1720",
+        "bytes": 1098,
+        "sha256": "d72155428931d916f6e1dfaf8e1f619f5e65e58af522f53b7903c7d6060207de",
+        "downloadedArchiveVerified": true
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "path": "foundation.log",
+        "sha256": "541f82fdc23fa8e5a594c03c407472b6df5ad76fe34998d34d7251d216205024"
+      },
+      {
+        "path": "application.log",
+        "sha256": "2d460fc7c4b15fb49a052577595a3cfc134bf5a8a0190938aad5138c7ca0b8fd"
+      },
+      {
+        "path": "encrypted/report.json",
+        "sha256": "4eb093db7978dfa53a77f2c49efd344ca81017443e7386a7af55f9bef2245af0"
+      },
+      {
+        "path": "restore/report-5e83abc91560480e21b60c4a2638c0b52b0e1720-36476285050-1.json",
+        "sha256": "91b013fc9d68f94ae60f312192b018d62afe8e2b056d04fb1203f1d48f5d7eb5"
+      },
+      {
+        "path": "rehearsal/report.json",
+        "sha256": "a08e16158ad8c4cdbee4e1dd608960e93247ef841b36eb38eae0caaf8736155d"
+      },
+      {
+        "path": "scans/comparison.json",
+        "sha256": "5e895f0c0874550972efc8280b5325131179f694e3624adbb854f9be9b303b07"
+      },
+      {
+        "path": "scans/ci.json",
+        "sha256": "bfdcf66cf7d9a74c426198517b9f6e88dcc2614f2535c2c195bfc1629bfd4245"
+      },
+      {
+        "path": "scans/bookworm.json",
+        "sha256": "24f6187c9a313a3fcc4ae0abcdba824d3643d5b3ce6f5bdae48cd06a66a32220"
+      },
+      {
+        "path": "sbom/valkyria-web.cdx.json",
+        "sha256": "97c50538a9f8a3dc016b0a7effe81c01d7628e012743a6bac5e273ec99fdc27f"
+      },
+      {
+        "path": "pages/report.json",
+        "sha256": "b185b66c7dbb1e6227c2f5e5684dcb0ce4110137d2445976ea615dc04c7045b0"
+      }
+    ],
+    "limitations": [
+      "Synthetic Linux CI; no production data, provider credentials or deployment exercised",
+      "Delivered game video/poster excluded; CSS fallback only in page-budget test",
+      "43 unfixed HIGH/CRITICAL candidate findings remain visible; acceptance is zero fixable findings, not zero advisories",
+      "Public rollback compatibility does not cover enabling game-scoped local grants on older images"
+    ]
+  },
+  "registryBefore": {
+    "checkedAt": "2026-09-28T20:03:27.080Z",
+    "repository": "majorluk/valkyria-www",
+    "authenticated": false,
+    "exists": true,
+    "visibility": "public",
+    "ownerApproval": "Standing owner authorization for public website image",
+    "source": "https://hub.docker.com/v2/repositories/majorluk/valkyria-www/"
+  },
+  "proofFiles": [
+    {
+      "path": "workflow.yml",
+      "sha256": "17dceb193e7745a5d93967145180044f51ff461f53864157372dd86209662edc"
+    },
+    {
+      "path": "revision-guard.mjs",
+      "sha256": "6a5dc69c8d4ecc3804b48fa6512797a3d1a19cda6d359308a9b9cceeec121231"
+    },
+    {
+      "path": "publish.log",
+      "sha256": "6503fc7094fca26ce6698c67a3145fc8b73fe1b8e79b758c8f3c1b93f7be8cbb"
+    },
+    {
+      "path": "jobs-final.json",
+      "sha256": "20b9f8a6cd554cacdcbd37c04280901eaac77889bbced4e975fa5b1922560d4b"
+    },
+    {
+      "path": "environment-result.json",
+      "sha256": "48bb15228e04fa8beab718090c235f9e3370c6bc99c83261eba705adc699f97e"
+    },
+    {
+      "path": "public-registry-verification.json",
+      "sha256": "c0c0614882894b9d36d456223f6d329c9951510b74da362de859986373a97519"
+    },
+    {
+      "path": "registry-index.json",
+      "sha256": "79bf4ea15dd185f0618775fee2a794f2e5d024a116943224a1a4a1dcb7afef48"
+    },
+    {
+      "path": "registry-linux-amd64-manifest.json",
+      "sha256": "1a7d781887ec396c9f351d1f3c2fcfd804e4b57c9e69934036092c6874863526"
+    },
+    {
+      "path": "registry-linux-amd64-config.json",
+      "sha256": "042afbaeaefe3c66497289545403a206382da2241afb01a758e4eb2d6cf1127b"
+    }
+  ],
+  "limitations": [
+    "CI and publication used synthetic data; no production migration or promotion exercised",
+    "Publication rebuilt the image from the same source; final publish gate pulled by digest and verified the OCI revision, while runtime/rollback tests ran on CI-built candidate",
+    "No production/scoped-admin authorization or provider integration acceptance implied"
+  ]
+}

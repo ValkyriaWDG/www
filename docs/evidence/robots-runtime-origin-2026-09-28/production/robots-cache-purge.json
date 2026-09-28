@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-28T21:34:40.439Z",
+  "sourceRevision": "e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a",
+  "image": "majorluk/valkyria-www@sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25",
+  "files": [
+    "https://valkyria.cz/robots.txt"
+  ],
+  "purgeEverything": false,
+  "result": "accepted",
+  "purgeHttpStatus": 200,
+  "purgeAcceptedAt": "2026-09-28T21:34:41.063Z",
+  "observedAt": "2026-09-28T21:34:41.260Z",
+  "status": 200,
+  "headers": {
+    "content-type": "text/plain",
+    "cache-control": "public, max-age=14400, must-revalidate",
+    "cf-cache-status": "MISS",
+    "age": null
+  },
+  "bodySha256": "77478aa67ae98857f2e62a3c41328fc6f8e6de04ac7a0c9d8acfb1e4227e4d66",
+  "bodyBytes": 251,
+  "directives": [
+    "User-Agent: *",
+    "Allow: /",
+    "Allow: /api/social/",
+    "Disallow: /api/",
+    "Disallow: /cs/admin",
+    "Disallow: /en/admin",
+    "Disallow: /cs/account",
+    "Disallow: /en/account",
+    "Disallow: /cs/login",
+    "Disallow: /en/login",
+    "Host: https://valkyria.cz",
+    "Sitemap: https://valkyria.cz/sitemap.xml"
+  ],
+  "assertions": [
+    {
+      "expected": "Host: https://valkyria.cz",
+      "passed": true
+    },
+    {
+      "expected": "Sitemap: https://valkyria.cz/sitemap.xml",
+      "passed": true
+    },
+    {
+      "expected": "Allow: /api/social/",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /api/",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /cs/admin",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /en/admin",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /cs/account",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /en/account",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /cs/login",
+      "passed": true
+    },
+    {
+      "expected": "Disallow: /en/login",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

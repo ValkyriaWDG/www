@@ -5,6 +5,8 @@ was moved to `https://valkyria.cz`, but its statically generated `/robots.txt`
 retained the old build-time Host and Sitemap. HTML metadata and the dynamic sitemap
 already used the running origin. The production cutover's failed HTTP report is
 retained separately; these observations are local regression proof, not deployment.
+The subsequent [production acceptance](production/README.md) records the actual
+`e03d3c5` promotion, immutable image and separate 55/55 public HTTP result.
 
 Application fix: `73737b9824331d5b144534cbc81cebdc339e6491`, based on
 `5e83abc91560480e21b60c4a2638c0b52b0e1720`. Only the metadata route rendering policy,
@@ -46,5 +48,6 @@ image was published or deployed by this local check.
 
 Screenshots: **N/A** for the machine-readable text endpoint; the actual built HTTP
 response is the relevant proof. Issue #46's browser cancellation investigation is
-unaffected. Publication, current-image readiness and public canonical recovery must
-be recorded after their respective operations, before closing #53.
+unaffected. Publication, current-image readiness and public canonical recovery are
+recorded separately in the production acceptance linked above; the original failed
+cutover report is preserved.
