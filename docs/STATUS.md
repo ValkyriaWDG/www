@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **SEO, release qualification and authorization fixes merged; delivery maintenance in review; live authentication deferred.**
+Updated: 2026-09-28. Stage: **SEO, release qualification and authorization fixes merged; delivery maintenance tracked in #39; live authentication deferred.**
 
 ## Publication authorization hardening
 
@@ -71,11 +71,12 @@ website authorization fixes. Follow the updated
 [integration handoff](engineering/follow-up-integration-2026-09-26.md). No candidate
 image has been published or deployed; the recorded live deployment remains unchanged.
 
-Maintenance issue #38 consolidates action updates #10–#14, the scoped
+Maintenance [PR #39](https://github.com/ValkyriaWDG/www/pull/39) / issue #38 consolidates action updates #10–#14, the scoped
 [esbuild advisory repair](engineering/esbuild-advisory-2026-09-28.md), portable
-media tests and stricter storage path validation. [Action compatibility](engineering/ci-action-refresh-2026-09-28.md)
-records preserved publication gates. Complete CI on this combined maintenance source
-is required before merge; local success does not replace it.
+[media tests and storage path validation](evidence/portable-media-2026-09-28/README.md).
+[Action compatibility](engineering/ci-action-refresh-2026-09-28.md) records preserved
+publication gates. The PR records its current reviewed head, complete CI and merge
+status; verify those before release. Local success does not replace current-head CI.
 
 Issue #25 now has [native Edge H.264 evidence](evidence/native-media-2026-09-28/README.md):
 11 MP4-only and two dual-source scenarios passed, including a natural 192.4723-second
