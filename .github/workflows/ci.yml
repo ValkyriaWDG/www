@@ -53,7 +53,7 @@ jobs:
     needs: foundation
     if: needs.foundation.outputs.app_present == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     services:
       postgres:
         image: postgres:17
@@ -86,33 +86,34 @@ jobs:
       - run: pnpm test:unit
       - run: pnpm test:integration
       - run: pnpm build
-      - run: pnpm --filter @valkyria/web exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
-      - name: Upload browser report and screenshots
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: playwright-report-${{ github.sha }}
-          path: |
-            apps/web/playwright-report
-            apps/web/test-results
-          if-no-files-found: ignore
-          retention-days: 14
-      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-      - name: Build and load image without publishing
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Build image without publishing
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: apps/web/Dockerfile
+          platforms: linux/amd64
           push: false
           load: true
-          platforms: linux/amd64
           tags: valkyria-web:ci
           build-args: SOURCE_REVISION=${{ github.sha }}
-          # Loaded local images feed the existing smoke/scan; registry attestations
-          # remain enabled in the separately gated publication workflow.
           provenance: false
           sbom: false
+      - name: Build comparison runtime from identical application inputs
+        run: |
+          BASELINE_RUNTIME=$(node -p "JSON.parse(require('fs').readFileSync('scripts/release/runtime-policy.json')).baselineRuntime")
+          docker build --file apps/web/Dockerfile --build-arg SOURCE_REVISION=${{ github.sha }} --build-arg RUNTIME_IMAGE="$BASELINE_RUNTIME" --tag valkyria-web:bookworm .
+      - name: Disposable runtime, native sharp and previous-image rollback rehearsal
+        run: node scripts/release/rehearse-images.mjs
+      - name: Upload image and rollback rehearsal
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-rehearsal-${{ github.sha }}
+          path: .local/release-hardening/images/report.json
+          if-no-files-found: warn
+          retention-days: 90
       - name: Container startup, migration and health smoke test
         env:
           SMOKE_DATABASE_URL: postgresql://test:test-only-ephemeral@localhost:5432/valkyria_container
@@ -133,9 +134,23 @@ jobs:
           docker rm -f smoke
       - name: Image vulnerability scan (fixable HIGH/CRITICAL findings fail)
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-            mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
-            image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress valkyria-web:ci
+          set -euo pipefail
+          mkdir -p .local/release-hardening/scans
+          TRIVY_IMAGE=$(node -p "JSON.parse(require('fs').readFileSync('scripts/release/runtime-policy.json')).trivyImage")
+          for variant in bookworm ci; do
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD/.local/release-hardening/scans:/out" \
+              -v release-trivy-cache:/root/.cache/trivy "$TRIVY_IMAGE" \
+              image --scanners vuln --severity HIGH,CRITICAL --list-all-pkgs --format json --output "/out/$variant.json" --no-progress "valkyria-web:$variant"
+          done
+          node scripts/release/runtime-scan.mjs .local/release-hardening/scans/bookworm.json .local/release-hardening/scans/ci.json .local/release-hardening/scans/comparison.json
+      - name: Upload complete runtime advisory comparison
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: runtime-scans-${{ github.sha }}
+          path: .local/release-hardening/scans/*.json
+          if-no-files-found: warn
+          retention-days: 90
       - name: Image SBOM (CycloneDX)
         run: |
           mkdir -p sbom
@@ -148,6 +163,30 @@ jobs:
           name: sbom-${{ github.sha }}
           path: sbom/valkyria-web.cdx.json
           retention-days: 90
+      - run: pnpm --filter @valkyria/web exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Cold mobile page-weight and Web Vitals budgets
+        run: node scripts/release/measure-pages.mjs
+      - name: Upload page budget samples and synthetic screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: page-budgets-${{ github.sha }}
+          path: |
+            .local/release-hardening/pages/report.json
+            .local/release-hardening/pages/page-*.png
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Upload browser report and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report-${{ github.sha }}
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+          if-no-files-found: ignore
+          retention-days: 14
 
   quality:
     name: Quality gate
