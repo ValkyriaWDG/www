@@ -182,7 +182,7 @@ Card titles may wrap to three lines in grids; detail titles remain complete. Dis
 
 ## 9. Video selection and playback lifecycle
 
-**No HLL clan video has been supplied yet.** Keep the configured clip set empty until real recordings arrive; do not substitute Wardogs video, tutorial footage, an animated screenshot or a generated soldier. The default fullscreen poster is `/images/hll/scene-poster.webp`, with provenance in the asset manifest; the CSS underlay and subtle clan crest remain fallback layers. Do not show a production placeholder announcing missing footage. The final footage asset acceptance remains open until real media is supplied and inspected.
+**No HLL clan video has been supplied yet.** Keep the configured clip set empty until real recordings arrive; do not substitute Wardogs video, tutorial footage, an animated screenshot or a generated soldier. The default fullscreen poster is `/images/hll/scene-poster.webp`, with provenance in the asset manifest; the CSS underlay and subtle clan crest remain fallback layers. Owner decision (2026-09-29): the landing's ghosted crest is the Wardogs landing emblem, with the same size, position, colour and opacity above the scene veil, and it is hidden on content pages. Do not show a production placeholder announcing missing footage. The final footage asset acceptance remains open until real media is supplied and inspected.
 
 The owner wants multiple clips later, randomly selected on a fresh opening and stable while browsing. Use the following precise contract:
 
