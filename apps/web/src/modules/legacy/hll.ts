@@ -193,7 +193,7 @@ export function resolveLegacyHllPath(pathname: string, search: URLSearchParams =
         return pending('/cs/hll/events', 'destination_not_built');
       case 'turnaje':
       case 'tournaments':
-        return pending('/cs/hll/tournaments', 'destination_not_built');
+        return { kind: 'redirect', target: '/cs/hll/tournaments' };
       case 'zebricky':
         return pending('/cs/hll/leaderboards/kills', 'destination_not_built');
       default:
@@ -210,7 +210,8 @@ export function resolveLegacyHllPath(pathname: string, search: URLSearchParams =
     case 'matches':
       return /^\d{1,9}$/.test(second) ? pending(`/cs/hll/matches/${second}`, 'needs_id_alias') : null;
     case 'turnaje':
-      return (LEGACY_TOURNAMENTS as readonly string[]).includes(second) ? pending(`/cs/hll/tournaments/${second}`, 'destination_not_built') : null;
+      // The collection exists; each record is redirected once it is imported under its legacy slug.
+      return (LEGACY_TOURNAMENTS as readonly string[]).includes(second) ? pending(`/cs/hll/tournaments/${second}`, 'content_not_imported') : null;
     case 'zebricky':
       return LEGACY_RANKINGS[second] ? pending(`/cs/hll/leaderboards/${LEGACY_RANKINGS[second]}`, 'destination_not_built') : null;
     case 'stats':

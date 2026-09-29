@@ -100,6 +100,11 @@ export const FIXTURE_SLUGS = {
     hllHistorical: 'ukazka-hll-historicky',
     draft: 'ukazka-wardogs-koncept',
   },
+  tournaments: {
+    current: 'ukazka-hll-liga-podzim-2026',
+    finished: 'ukazka-hll-pohar-jaro-2026',
+    draft: 'ukazka-hll-turnaj-koncept',
+  },
   news: {
     featureCs: 'ukazka-obrazky-tabulka-a-odkazy',
     featureEn: 'sample-images-table-and-links',
@@ -415,6 +420,99 @@ export function matchRecap(fixture: FixtureMatch, locale: Locale) {
         h2('Summary'),
         ul('Synthetic point one', 'Synthetic point two'),
         ...(withImage ? [image(FIXTURE_ASSET_IDS.matchCover, 'Synthetic match image', 'Synthetic caption')] : []),
+      );
+}
+
+/* -------------------------------------------------------------- tournaments */
+
+export type FixtureTournament = {
+  slug: string;
+  game: Game;
+  name: string;
+  season: string | null;
+  organizer: string | null;
+  /** Calendar days relative to "now" (Europe/Prague); `null` leaves the day unknown. */
+  startDays: number | null;
+  endDays: number | null;
+  links: { url: string; label: string }[];
+  published: boolean;
+  description: Partial<Record<Locale, { published: boolean }>>;
+  /** Fixture matches linked to the tournament. */
+  matchSlugs: string[];
+};
+
+export const FIXTURE_TOURNAMENTS: FixtureTournament[] = [
+  {
+    slug: FIXTURE_SLUGS.tournaments.current,
+    game: 'hell-let-loose',
+    name: '[SYNTHETIC] Valkyria Test League',
+    season: 'Podzim 2026',
+    organizer: '[SYNTHETIC] League Organizer',
+    startDays: -30,
+    endDays: 60,
+    links: [{ url: 'https://example.org/synthetic-fixture/league', label: 'Web soutěže (ukázka)' }],
+    published: true,
+    // The English description stays a private draft: the English page shows the explicit absence.
+    description: { cs: { published: true }, en: { published: false } },
+    matchSlugs: [FIXTURE_SLUGS.matches.hllHistorical],
+  },
+  {
+    slug: FIXTURE_SLUGS.tournaments.finished,
+    game: 'hell-let-loose',
+    name: '[SYNTHETIC] Valkyria Spring Cup',
+    season: 'Jaro 2026',
+    organizer: null,
+    startDays: -200,
+    endDays: -150,
+    links: [],
+    published: true,
+    description: { cs: { published: true }, en: { published: true } },
+    matchSlugs: [],
+  },
+  {
+    slug: FIXTURE_SLUGS.tournaments.draft,
+    game: 'hell-let-loose',
+    name: '[SYNTHETIC] Draft Cup',
+    season: null,
+    organizer: null,
+    startDays: null,
+    endDays: null,
+    links: [],
+    published: false,
+    description: { cs: { published: false } },
+    matchSlugs: [],
+  },
+];
+
+export function tournamentDescription(fixture: FixtureTournament, locale: Locale) {
+  return locale === 'cs'
+    ? doc(
+        p(bold('[Ukázka] '), `Syntetický popis soutěže ${fixture.name}. Nejde o skutečný turnaj.`),
+        h2('Pravidla'),
+        ul('Syntetické pravidlo jedna', 'Syntetické pravidlo dva'),
+        h2('Tabulka (stav k ukázkovému datu)'),
+        table(
+          ['Pořadí', 'Tým', 'Body'],
+          [
+            ['1', '[SYN] Tým Alfa', '9'],
+            ['2', 'Valkyria', '6'],
+            ['3', '[SYN] Tým Bravo', '3'],
+          ],
+        ),
+      )
+    : doc(
+        p(bold('[Sample] '), `Synthetic description of the ${fixture.name} competition. Not a real tournament.`),
+        h2('Rules'),
+        ul('Synthetic rule one', 'Synthetic rule two'),
+        h2('Standings (as of a sample date)'),
+        table(
+          ['Rank', 'Team', 'Points'],
+          [
+            ['1', '[SYN] Team Alpha', '9'],
+            ['2', 'Valkyria', '6'],
+            ['3', '[SYN] Team Bravo', '3'],
+          ],
+        ),
       );
 }
 

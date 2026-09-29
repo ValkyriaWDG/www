@@ -5,9 +5,10 @@ import { getSiteOrigin } from '@/lib/site';
 import { listPublishedNewsForSitemap, listPublishedPagesForSitemap } from '@/modules/content/public';
 import { listPublishedManualForSitemap } from '@/modules/field-manual/public';
 import { GAME_REGISTRY, GAME_ROUTES } from '@/modules/games/registry';
-import { canonicalMatchPath, gamePath } from '@/modules/games/routes';
+import { canonicalMatchPath, canonicalTournamentPath, gamePath } from '@/modules/games/routes';
 import { listPublicMatchesForSitemap } from '@/modules/matches/queries';
 import { listPublicMembersForSitemap } from '@/modules/members/queries';
+import { listPublicTournamentsForSitemap } from '@/modules/tournaments/queries';
 
 // Rendered per request from published data only; never cached across publication changes.
 export const dynamic = 'force-dynamic';
@@ -31,18 +32,19 @@ function localizedPair(origin: string, suffix: string, lastModified?: Date): Ent
 
 /**
  * Published public URLs only, each at its canonical address. CMS alternates list a locale
- * only when that translation is published; shared entities (matches, members) exist
+ * only when that translation is published; shared entities (matches, tournaments, members) exist
  * identically in both locales.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const origin = getSiteOrigin();
   const db = getDb();
-  const [news, pages, manual, matches, members] = await Promise.all([
+  const [news, pages, manual, matches, members, tournaments] = await Promise.all([
     listPublishedNewsForSitemap(db),
     listPublishedPagesForSitemap(db),
     listPublishedManualForSitemap(db),
     listPublicMatchesForSitemap(db),
     listPublicMembersForSitemap(db),
+    listPublicTournamentsForSitemap(db),
   ]);
 
   const cms: Entry[] = [...pages, ...news, ...manual].map((entry) => {
@@ -59,5 +61,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...cms,
     ...matches.flatMap((row) => localizedPair(origin, canonicalMatchPath(row.game, row.slug), row.updatedAt)),
     ...members.flatMap((row) => localizedPair(origin, `/members/${row.slug}`, row.updatedAt)),
+    ...tournaments.flatMap((row) => localizedPair(origin, canonicalTournamentPath(row.game, row.slug), row.updatedAt)),
   ];
 }

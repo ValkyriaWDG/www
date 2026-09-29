@@ -122,7 +122,11 @@
     "hll_sector_score": "V HLL je skóre kola počet držených sektorů: 0 až 5.",
     "invalid_scoreboard": "Soubor ani odpověď serveru neobsahují tabulku hry se statistikami hráčů.",
     "unknown_server": "Tento server není nastaven jako zdroj statistik.",
-    "hll_only": "Statistiky ze hry lze importovat jen u zápasů Hell Let Loose."
+    "hll_only": "Statistiky ze hry lze importovat jen u zápasů Hell Let Loose.",
+    "ends_before_start": "Konec nemůže být před začátkem.",
+    "has_matches": "K turnaji jsou připojené zápasy; hru nelze změnit, dokud je neodpojíte.",
+    "game_mismatch": "Turnaj patří k jiné hře než zápas.",
+    "tournament_missing": "Vybraný turnaj už neexistuje."
   },
   "media": {
     "none": "Bez obrázku",
@@ -136,6 +140,7 @@
   "prose": {
     "tabsLabelRecap": "Jazyk reportáže",
     "tabsLabelBiography": "Jazyk medailonku",
+    "tabsLabelDescription": "Jazyk popisu turnaje",
     "unsavedShort": "neuloženo",
     "unsaved": "Neuložené změny",
     "saving": "Ukládání…",
@@ -147,8 +152,10 @@
     "absentWithOther": "Návštěvníci {lang, select, cs {české verze webu} other {anglické verze webu}} uvidí upozornění „v tomto jazyce není k dispozici“ s odkazem na zveřejněnou {lang, select, cs {anglickou verzi} other {českou verzi}}. Nic se automaticky nepřekládá.",
     "editingRecap": "Reportáž · {lang, select, cs {český obsah} other {anglický obsah}} ({code})",
     "editingBiography": "Medailonek · {lang, select, cs {český obsah} other {anglický obsah}} ({code})",
+    "editingDescription": "Popis turnaje · {lang, select, cs {český obsah} other {anglický obsah}} ({code})",
     "canvasRecap": "Text reportáže ({lang, select, cs {český obsah} other {anglický obsah}})",
     "canvasBiography": "Text medailonku ({lang, select, cs {český obsah} other {anglický obsah}})",
+    "canvasDescription": "Text popisu turnaje ({lang, select, cs {český obsah} other {anglický obsah}})",
     "liveLabel": "Veřejná verze",
     "liveSince": "Zveřejněno {date}",
     "notLive": "{lang, select, cs {Česká verze není zveřejněna} other {Anglická verze není zveřejněna}}",
@@ -294,7 +301,8 @@
         "source": "Zdroj výsledku",
         "internalNotes": "Interní poznámky",
         "newDate": "Nové datum",
-        "newTime": "Nový čas"
+        "newTime": "Nový čas",
+        "tournament": "Turnaj"
       },
       "hints": {
         "opponentShortCode": "Např. tag klanu. Písmena, číslice, tečky a pomlčky.",
@@ -310,7 +318,8 @@
         "provisional": "Zatím nepotvrzený; zobrazí se jako předběžný.",
         "verified": "Potvrzený oficiálním zdrojem.",
         "source": "Odkud výsledek pochází, např. web ligy.",
-        "internalNotes": "Nikdy se nezobrazí na veřejném webu, v reportážích ani v náhledech."
+        "internalNotes": "Nikdy se nezobrazí na veřejném webu, v reportážích ani v náhledech.",
+        "tournament": "Soutěž z přehledu turnajů stejné hry; veřejně se zobrazí až po zveřejnění turnaje."
       },
       "scheduleIntro": "Kdy se zápas hraje. Nejde o čas zveřejnění stránky zápasu.",
       "currentStart": "Plánovaný začátek",
@@ -368,7 +377,118 @@
         "unpublishBody": "Zápas zmizí ze všech veřejných seznamů i ze své stránky, včetně reportáží v obou jazycích.",
         "deleteTitle": "Smazat tento koncept?",
         "deleteBody": "Koncept zápasu proti soupeři {opponent} bude trvale smazán včetně reportáží a kol."
-      }
+      },
+      "noTournament": "Bez turnaje",
+      "tournamentDraft": "koncept"
+    }
+  },
+  "tournaments": {
+    "list": {
+      "metaTitle": "Turnaje · Administrace",
+      "eyebrow": "Administrace",
+      "title": "Turnaje",
+      "description": "Soutěže, ve kterých Valkyria hraje. Popis, pravidla a tabulky se píší zvlášť pro češtinu a angličtinu; zápasy se k turnaji připojují v editoru zápasu.",
+      "newTournament": "Nový turnaj",
+      "deletedNotice": "Koncept turnaje byl smazán.",
+      "searchLabel": "Hledat turnaje",
+      "searchPlaceholder": "Název, sezóna nebo pořadatel",
+      "count": "{count, plural, =0 {Žádné turnaje} one {# turnaj} few {# turnaje} other {# turnajů}}",
+      "filters": {
+        "label": "Filtry turnajů",
+        "game": "Hra",
+        "publication": "Zveřejnění"
+      },
+      "filteredEmptyTitle": "Filtrům neodpovídá žádný turnaj",
+      "filteredEmptyBody": "Změňte nebo zrušte filtry.",
+      "emptyTitle": "Zatím žádné turnaje",
+      "emptyBody": "Založte první turnaj. Zůstane soukromým konceptem, dokud ho nezveřejníte.",
+      "caption": "Turnaje",
+      "columns": {
+        "name": "Název",
+        "game": "Hra",
+        "dates": "Termín",
+        "matches": "Zápasy",
+        "publication": "Zveřejnění",
+        "description": "Popis",
+        "actions": "Akce"
+      },
+      "editRow": "– upravit",
+      "edit": "Upravit",
+      "noDates": "Termín neuveden"
+    },
+    "editor": {
+      "eyebrow": "Turnaj",
+      "createTitle": "Nový turnaj",
+      "editMetaTitle": "Úprava turnaje · Administrace",
+      "backToList": "Zpět na turnaje",
+      "createIntro": "Založí se jako soukromý koncept. Popis, pravidla a tabulky doplníte po uložení.",
+      "viewPublic": "Zobrazit na webu",
+      "createdNotice": "Koncept turnaje byl založen.",
+      "savedNotice": "Změny byly uloženy.",
+      "publishedNotice": "Turnaj je zveřejněný.",
+      "unpublishedNotice": "Turnaj byl skryt z webu.",
+      "reloadedNotice": "Načtena nejnovější verze; vaše neuložené změny zůstaly.",
+      "conflictTitle": "Turnaj mezitím změnil někdo jiný",
+      "conflictBody": "Načtěte nejnovější verzi. Vaše neuložené změny zůstanou zachované.",
+      "reloadLatest": "Načíst nejnovější verzi",
+      "groups": {
+        "identity": "Údaje o turnaji",
+        "description": "Popis, pravidla a tabulky",
+        "matches": "Zápasy v turnaji",
+        "private": "Interní správa"
+      },
+      "fields": {
+        "game": "Hra",
+        "name": "Název",
+        "season": "Sezóna",
+        "organizer": "Pořadatel",
+        "startsOn": "Začátek",
+        "endsOn": "Konec",
+        "slug": "Adresa (slug)",
+        "publicAddress": "Veřejná adresa",
+        "linkLabel": "Popisek odkazu",
+        "linkUrl": "Adresa odkazu",
+        "internalNotes": "Interní poznámky"
+      },
+      "hints": {
+        "name": "Vlastní název soutěže, stejný pro oba jazyky (např. ECL 2026 Fall).",
+        "gameLocked": "Hru nelze změnit, dokud jsou k turnaji připojené zápasy.",
+        "slug": "Nechte prázdné a adresa se vytvoří z názvu a sezóny.",
+        "httpsOnly": "Jen adresy https://.",
+        "internalNotes": "Nikdy se nezobrazí na veřejném webu."
+      },
+      "linksTitle": "Odkazy",
+      "linksIntro": "Web soutěže, pravidla, Discord nebo pavouk (nejvýše {max}).",
+      "linkItem": "Odkaz {number}",
+      "linkRemove": "Odebrat odkaz {number}",
+      "linkAdd": "Přidat odkaz",
+      "removeShort": "Odebrat",
+      "descriptionIntro": "Popis, pravidla a tabulky s datem stavu. Česká a anglická verze se zveřejňují zvlášť.",
+      "descriptionPrivateUntilPublished": "Popis zůstane neveřejný, dokud nebude zveřejněn samotný turnaj.",
+      "descriptionAfterCreate": "Popis můžete psát po založení turnaje.",
+      "matchesIntro": "Zápasy se k turnaji připojují v editoru zápasu (pole Turnaj). Veřejně se ukazují jen zveřejněné zápasy.",
+      "noMatches": "K turnaji zatím není připojený žádný zápas.",
+      "privateTag": "Soukromé",
+      "actions": {
+        "createDraft": "Založit koncept",
+        "save": "Uložit změny",
+        "publish": "Zveřejnit",
+        "unpublish": "Skrýt z webu",
+        "delete": "Smazat koncept"
+      },
+      "statusPanel": "Stav a zveřejnění",
+      "statusExplainer": "Zveřejnění rozhoduje, zda web turnaj zobrazí. Připojené zápasy mají vlastní zveřejnění.",
+      "linkedMatches": "Připojené zápasy",
+      "updatedAt": "Poslední změna",
+      "noPublishPermission": "Zveřejňovat turnaje nemáte oprávnění.",
+      "createAside": "Po založení zde uvidíte stav zveřejnění.",
+      "dialogs": {
+        "unpublishTitle": "Skrýt turnaj z webu?",
+        "unpublishBody": "Turnaj zmizí z přehledu i ze své stránky; zveřejněné zápasy zůstanou, jen bez odkazu na turnaj.",
+        "deleteTitle": "Smazat tento koncept?",
+        "deleteBody": "Koncept turnaje {name} bude trvale smazán včetně popisů. Připojené zápasy zůstanou, jen se odpojí."
+      },
+      "createStatus": "Nový koncept, zatím neuložený"
     }
   },
   "members": {

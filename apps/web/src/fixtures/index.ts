@@ -13,13 +13,15 @@ import {
   proseTranslation,
   publicationSchedule,
   taxonomyTerm,
+  tournament,
   type CoverSnapshot,
   type Database,
   type Executor,
   type Locale,
   type RichTextDocument,
 } from '@valkyria/db';
-import { and, eq, inArray, like, or, sql } from 'drizzle-orm';
+import { and, eq, getTableColumns, getTableName, inArray, like, or, sql } from 'drizzle-orm';
+import type { PgTable } from 'drizzle-orm/pg-core';
 import { parseCrconScoreboard, summarizeTeams } from '../modules/matches/statistics';
 import { syntheticScoreboard } from '../modules/matches/statistics-fixtures';
 import { DEFAULT_MATCH_TIME_ZONE, zonedDate, zonedLocalToInstant } from '../modules/matches/time';
@@ -35,8 +37,10 @@ import {
   FIXTURE_NEWS,
   FIXTURE_SLUGS,
   FIXTURE_TAGS,
+  FIXTURE_TOURNAMENTS,
   matchRecap,
   memberBio,
+  tournamentDescription,
   type FixtureManual,
   type FixtureMatch,
   type FixtureNews,
@@ -56,6 +60,7 @@ export type FixtureReport = {
   manualTranslations: number;
   /** Matches with imported (synthetic) game statistics. */
   statistics: number;
+  tournaments: number;
   schedules: number;
   prose: number;
   /** Fixture groups left out because the connected schema cannot store them. */
@@ -65,7 +70,7 @@ export type FixtureReport = {
 /** Loading needs tables that the connected database schema does not have. */
 export class FixtureSchemaError extends Error {}
 
-export type ResetReport = { documents: number; matches: number; members: number; tags: number; assets: number };
+export type ResetReport = { documents: number; matches: number; members: number; tournaments: number; tags: number; assets: number };
 
 const DAY = 24 * 60 * 60 * 1000;
 const FIXTURE_LABEL = 'fixtures';
@@ -98,6 +103,10 @@ export async function resetFixtures(db: Database, options: { mediaRoot?: string 
   const report = await db.transaction(async (tx) => {
     const documents = await tx.delete(contentDocument).where(eq(contentDocument.isFixture, true)).returning({ id: contentDocument.id });
     const matches = await tx.delete(match).where(eq(match.isFixture, true)).returning({ id: match.id });
+    // An older schema (release rollback rehearsal) has no tournament table yet.
+    const tournaments = (await schemaSupport(tx)).tournaments
+      ? await tx.delete(tournament).where(eq(tournament.isFixture, true)).returning({ id: tournament.id })
+      : [];
     const members = await tx.delete(memberProfile).where(eq(memberProfile.isFixture, true)).returning({ id: memberProfile.id });
     const tags = await tx
       .delete(taxonomyTerm)
@@ -105,30 +114,63 @@ export async function resetFixtures(db: Database, options: { mediaRoot?: string 
       .returning({ id: taxonomyTerm.id });
     const assetIds = await fixtureAssetIds(tx);
     if (assetIds.length > 0) await tx.delete(asset).where(inArray(asset.id, assetIds));
-    return { documents: documents.length, matches: matches.length, members: members.length, tags: tags.length, assets: assetIds };
+    return { documents: documents.length, matches: matches.length, members: members.length, tournaments: tournaments.length, tags: tags.length, assets: assetIds };
   });
   await removeFixtureFiles(mediaRoot, [...new Set([...report.assets, ...Object.values(FIXTURE_ASSET_IDS)])]);
   return { ...report, assets: report.assets.length };
 }
 
+/** Columns per table of the connected schema, for tables whose newer columns an older schema lacks. */
+type KnownColumns = ReadonlyMap<string, ReadonlySet<string>>;
+
+async function knownColumns(db: Executor, tables: string[]): Promise<KnownColumns> {
+  const result = await db.execute<{ table_name: string; column_name: string }>(
+    sql`select table_name, column_name from information_schema.columns where table_schema = 'public' and table_name in (${sql.join(tables.map((table) => sql`${table}`), sql`, `)})`,
+  );
+  const map = new Map<string, Set<string>>();
+  for (const row of result.rows) map.set(row.table_name, (map.get(row.table_name) ?? new Set()).add(row.column_name));
+  return map;
+}
+
+/**
+ * Inserts one row with only the columns the connected schema has, so the candidate
+ * fixture CLI can load into the previous image's schema before newer nullable columns
+ * (for example `match.tournament_id`) exist. Values are encoded by the column mappers.
+ */
+async function insertKnown(tx: Executor, table: PgTable, values: Record<string, unknown>, known: KnownColumns): Promise<string> {
+  const columns = known.get(getTableName(table));
+  const entries = Object.entries(getTableColumns(table)).filter(([key, column]) => values[key] !== undefined && (!columns || columns.has(column.name)));
+  const result = await tx.execute<{ id: string }>(
+    sql`insert into ${table} (${sql.join(entries.map(([, column]) => sql.identifier(column.name)), sql`, `)}) values (${sql.join(
+      entries.map(([key, column]) => sql.param(values[key], column)),
+      sql`, `,
+    )}) returning id`,
+  );
+  return result.rows[0]!.id;
+}
+
 async function insertProse(
   tx: Executor,
-  owner: { memberProfileId?: string; matchId?: string },
+  known: KnownColumns,
+  owner: { memberProfileId?: string; matchId?: string; tournamentId?: string },
   locale: Locale,
   body: RichTextDocument,
   published: boolean,
   now: Date,
   cover: CoverSnapshot | null = null,
 ) {
-  const [translation] = await tx
-    .insert(proseTranslation)
-    .values({ memberProfileId: owner.memberProfileId ?? null, matchId: owner.matchId ?? null, locale })
-    .returning({ id: proseTranslation.id });
+  const translationId = await insertKnown(
+    tx,
+    proseTranslation,
+    { memberProfileId: owner.memberProfileId ?? null, matchId: owner.matchId ?? null, tournamentId: owner.tournamentId, locale },
+    known,
+  );
+  const translation = { id: translationId };
   const assetIds = [...new Set([...imageAssetIds(body), ...(cover ? [cover.assetId] : [])])];
   const [revision] = await tx
     .insert(proseRevision)
     .values({
-      proseTranslationId: translation!.id,
+      proseTranslationId: translation.id,
       locale,
       kind: 'save',
       schemaVersion: SEED_RICH_TEXT_SCHEMA_VERSION,
@@ -141,10 +183,10 @@ async function insertProse(
   await tx
     .update(proseTranslation)
     .set({ draftRevisionId: revision!.id, ...(published ? { publishedRevisionId: revision!.id, publishedAt: now } : {}) })
-    .where(eq(proseTranslation.id, translation!.id));
+    .where(eq(proseTranslation.id, translation.id));
 }
 
-async function insertMembers(tx: Executor, now: Date) {
+async function insertMembers(tx: Executor, now: Date, known: KnownColumns) {
   let prose = 0;
   for (const fixture of FIXTURE_MEMBERS) {
     const [row] = await tx
@@ -163,7 +205,7 @@ async function insertMembers(tx: Executor, now: Date) {
       })
       .returning({ id: memberProfile.id });
     for (const [locale, bio] of Object.entries(fixture.bio) as [Locale, { published: boolean }][]) {
-      await insertProse(tx, { memberProfileId: row!.id }, locale, memberBio(fixture, locale), bio.published, now);
+      await insertProse(tx, known, { memberProfileId: row!.id }, locale, memberBio(fixture, locale), bio.published, now);
       prose += 1;
     }
   }
@@ -196,13 +238,15 @@ async function insertStatistics(tx: Executor, matchId: string, now: Date) {
   });
 }
 
-async function insertMatches(tx: Executor, now: Date, options: { statistics: boolean }) {
+async function insertMatches(tx: Executor, now: Date, options: { statistics: boolean }, known: KnownColumns) {
   let prose = 0;
   let statistics = 0;
+  const ids = new Map<string, string>();
   for (const fixture of FIXTURE_MATCHES) {
-    const [row] = await tx
-      .insert(match)
-      .values({
+    const id = await insertKnown(
+      tx,
+      match,
+      {
         slug: fixture.slug,
         game: fixture.game,
         opponentName: fixture.opponentName,
@@ -223,14 +267,17 @@ async function insertMatches(tx: Executor, now: Date, options: { statistics: boo
         coverAssetId: fixture.cover ? FIXTURE_ASSET_IDS.matchCover : null,
         internalNotes: fixture.internalNotes,
         isFixture: true,
-      })
-      .returning({ id: match.id });
-    if (fixture.result) await tx.insert(matchResult).values({ matchId: row!.id, ...fixture.result });
+      },
+      known,
+    );
+    const row = { id };
+    ids.set(fixture.slug, id);
+    if (fixture.result) await tx.insert(matchResult).values({ matchId: row.id, ...fixture.result });
     if (fixture.rounds?.length) {
-      await tx.insert(matchRound).values(fixture.rounds.map((round, index) => ({ matchId: row!.id, ordinal: index + 1, ...round })));
+      await tx.insert(matchRound).values(fixture.rounds.map((round, index) => ({ matchId: row.id, ordinal: index + 1, ...round })));
     }
     if (options.statistics && fixture.slug === FIXTURE_SLUGS.matches.hllHistorical) {
-      await insertStatistics(tx, row!.id, now);
+      await insertStatistics(tx, row.id, now);
       statistics += 1;
     }
     for (const [locale, recap] of Object.entries(fixture.recap) as [Locale, { published: boolean }][]) {
@@ -242,11 +289,42 @@ async function insertMatches(tx: Executor, now: Date, options: { statistics: boo
             decorative: false,
           }
         : null;
-      await insertProse(tx, { matchId: row!.id }, locale, matchRecap(fixture, locale), recap.published, now, cover);
+      await insertProse(tx, known, { matchId: row.id }, locale, matchRecap(fixture, locale), recap.published, now, cover);
       prose += 1;
     }
   }
-  return { prose, statistics };
+  return { prose, statistics, ids };
+}
+
+/** Synthetic tournaments (published current and finished, one draft) with linked fixture matches. */
+async function insertTournaments(tx: Executor, now: Date, known: KnownColumns, matchIds: ReadonlyMap<string, string>) {
+  let prose = 0;
+  const day = (days: number | null) => (days === null ? null : zonedDate(new Date(now.getTime() + days * DAY), DEFAULT_MATCH_TIME_ZONE));
+  for (const fixture of FIXTURE_TOURNAMENTS) {
+    const [row] = await tx
+      .insert(tournament)
+      .values({
+        slug: fixture.slug,
+        game: fixture.game,
+        name: fixture.name,
+        season: fixture.season,
+        organizer: fixture.organizer,
+        startsOn: day(fixture.startDays),
+        endsOn: day(fixture.endDays),
+        links: fixture.links,
+        publication: fixture.published ? 'published' : 'draft',
+        publishedAt: fixture.published ? new Date(now.getTime() - DAY) : null,
+        isFixture: true,
+      })
+      .returning({ id: tournament.id });
+    const linked = fixture.matchSlugs.map((slug) => matchIds.get(slug)).filter((id): id is string => Boolean(id));
+    if (linked.length > 0) await tx.update(match).set({ tournamentId: row!.id }).where(inArray(match.id, linked));
+    for (const [locale, description] of Object.entries(fixture.description) as [Locale, { published: boolean }][]) {
+      await insertProse(tx, known, { tournamentId: row!.id }, locale, tournamentDescription(fixture, locale), description.published, now);
+      prose += 1;
+    }
+  }
+  return prose;
 }
 
 function taxonomyLabel(key: string, kind: 'category' | 'tag', locale: Locale): string {
@@ -402,18 +480,20 @@ async function insertManual(tx: Executor, fixture: FixtureManual, now: Date): Pr
 }
 
 /** Which optional fixture groups the connected schema can store. */
-async function schemaSupport(db: Executor): Promise<{ manual: boolean; statistics: boolean }> {
-  const result = await db.execute<{ manual: boolean; statistics: boolean }>(
+async function schemaSupport(db: Executor): Promise<{ manual: boolean; statistics: boolean; tournaments: boolean }> {
+  const result = await db.execute<{ manual: boolean; statistics: boolean; tournaments: boolean }>(
     sql`select to_regclass('public.manual_category') is not null and to_regclass('public.manual_article') is not null as manual,
-               to_regclass('public.match_statistics') is not null as statistics`,
+               to_regclass('public.match_statistics') is not null as statistics,
+               to_regclass('public.tournament') is not null as tournaments`,
   );
-  return { manual: result.rows[0]?.manual === true, statistics: result.rows[0]?.statistics === true };
+  const row = result.rows[0];
+  return { manual: row?.manual === true, statistics: row?.statistics === true, tournaments: row?.tournaments === true };
 }
 
 /**
  * Replaces the synthetic fixture set (reset first, so repeated loads are idempotent and
  * relative dates are refreshed). Requires the caller to have passed `assertFixturesAllowed`.
- * A schema without the field manual or match statistics tables fails, unless `schemaCompatible` is set: the
+ * A schema without the field manual, match statistics or tournament tables fails, unless `schemaCompatible` is set: the
  * release rollback rehearsal loads an older image's schema that way, and the groups the
  * schema cannot store are left out and named in `skipped`.
  */
@@ -425,8 +505,8 @@ export async function loadFixtures(
   const mediaRoot = options.mediaRoot ?? resolveMediaRoot();
   const support = await schemaSupport(db);
   const manualSchema = support.manual;
-  if ((!support.manual || !support.statistics) && !options.schemaCompatible)
-    throw new FixtureSchemaError('The field manual or match statistics tables are missing; apply the database migrations first.');
+  if ((!support.manual || !support.statistics || !support.tournaments) && !options.schemaCompatible)
+    throw new FixtureSchemaError('The field manual, match statistics or tournament tables are missing; apply the database migrations first.');
   await resetFixtures(db, { mediaRoot });
   await db.transaction(async (tx) => {
     await ensureSeedTaxonomy(tx, undefined, { manual: manualSchema });
@@ -440,8 +520,10 @@ export async function loadFixtures(
     for (const spec of FIXTURE_IMAGES) await createFixtureAsset(tx, spec, mediaRoot);
   });
   return db.transaction(async (tx) => {
-    const memberProse = await insertMembers(tx, now);
-    const matchRows = await insertMatches(tx, now, { statistics: support.statistics });
+    const known = await knownColumns(tx, ['match', 'prose_translation']);
+    const memberProse = await insertMembers(tx, now, known);
+    const matchRows = await insertMatches(tx, now, { statistics: support.statistics }, known);
+    const tournamentProse = support.tournaments ? await insertTournaments(tx, now, known, matchRows.ids) : 0;
     let newsTranslations = 0;
     let schedules = 0;
     for (const fixture of FIXTURE_NEWS) {
@@ -456,14 +538,15 @@ export async function loadFixtures(
       manual: manualFixtures.length,
       manualTranslations,
       statistics: matchRows.statistics,
-      skipped: [...(manualSchema ? [] : ['field manual']), ...(support.statistics ? [] : ['match statistics'])],
+      tournaments: support.tournaments ? FIXTURE_TOURNAMENTS.length : 0,
+      skipped: [...(manualSchema ? [] : ['field manual']), ...(support.statistics ? [] : ['match statistics']), ...(support.tournaments ? [] : ['tournaments'])],
       assets: FIXTURE_IMAGES.length,
       members: FIXTURE_MEMBERS.length,
       matches: FIXTURE_MATCHES.length,
       news: FIXTURE_NEWS.length,
       newsTranslations,
       schedules,
-      prose: memberProse + matchRows.prose,
+      prose: memberProse + matchRows.prose + tournamentProse,
     };
   });
 }

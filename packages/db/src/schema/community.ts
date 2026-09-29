@@ -2,6 +2,7 @@ import { sql } from 'drizzle-orm';
 import {
   boolean,
   check,
+  date,
   foreignKey,
   index,
   integer,
@@ -78,6 +79,48 @@ export type ResultVerification = (typeof RESULT_VERIFICATION)[number];
 export type ExternalLink = { url: string; label: string };
 
 /**
+ * A competition Valkyria takes part in (league season, cup, tournament). Shared facts
+ * only; the localized description, rules and dated standings snapshots are prose owned
+ * by the tournament. Dates are calendar days in Europe/Prague; `publication` is the
+ * global public gate. Matches reference it through `match.tournament_id`.
+ */
+export const tournament = pgTable(
+  'tournament',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    slug: text('slug').notNull().unique(),
+    game: text('game').$type<Game>().notNull(),
+    /** Proper name shared by every locale (for example `ECL 2026 Fall`). */
+    name: text('name').notNull(),
+    season: text('season'),
+    organizer: text('organizer'),
+    /** Calendar days (`YYYY-MM-DD`); either may be unknown. */
+    startsOn: date('starts_on', { mode: 'string' }),
+    endsOn: date('ends_on', { mode: 'string' }),
+    links: jsonb('links').$type<ExternalLink[]>().notNull().default(sql`'[]'::jsonb`),
+    publication: text('publication').$type<'draft' | 'published'>().notNull().default('draft'),
+    publishedAt: tz('published_at'),
+    /** Private administration only; never selected into public DTOs. */
+    internalNotes: text('internal_notes').notNull().default(''),
+    isFixture: boolean('is_fixture').notNull().default(false),
+    version: integer('version').notNull().default(1),
+    createdBy: uuid('created_by').references(() => authUser.id, { onDelete: 'set null' }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    index('tournament_public_idx').on(t.game, t.publication, t.startsOn),
+    check('tournament_game_ck', sql`${t.game} in (${sqlList(GAMES)})`),
+    check('tournament_publication_ck', sql`${t.publication} in ('draft', 'published')`),
+    check('tournament_published_at_ck', sql`${t.publication} <> 'published' or ${t.publishedAt} is not null`),
+    check('tournament_slug_ck', sql`${t.slug} ~ '^[a-z0-9]+(-[a-z0-9]+)*$' and length(${t.slug}) <= 120`),
+    check('tournament_name_ck', sql`length(btrim(${t.name})) between 1 and 160`),
+    check('tournament_dates_ck', sql`${t.startsOn} is null or ${t.endsOn} is null or ${t.endsOn} >= ${t.startsOn}`),
+    check('tournament_links_ck', sql`jsonb_typeof(${t.links}) = 'array' and jsonb_array_length(${t.links}) <= 10`),
+  ],
+);
+
+/**
  * One shared fixture. Facts (opponent, instant, status, result) are never duplicated
  * per locale. `publication` is the global public gate, independent of match status.
  */
@@ -92,6 +135,8 @@ export const match = pgTable(
     opponentLogoAssetId: uuid('opponent_logo_asset_id').references(() => asset.id, { onDelete: 'set null' }),
     competitionType: text('competition_type').$type<CompetitionType>().notNull(),
     competitionName: text('competition_name'),
+    /** Optional competition record of the same game (`null` when unlinked or deleted). */
+    tournamentId: uuid('tournament_id').references(() => tournament.id, { onDelete: 'set null' }),
     season: text('season'),
     format: text('format'),
     bestOf: integer('best_of'),
@@ -117,6 +162,7 @@ export const match = pgTable(
   },
   (t) => [
     index('match_public_idx').on(t.publication, t.startsAt),
+    index('match_tournament_idx').on(t.tournamentId, t.startsAt),
     check('match_game_ck', sql`${t.game} in (${sqlList(GAMES)})`),
     check('match_status_ck', sql`${t.status} in (${sqlList(MATCH_STATUSES)})`),
     check('match_publication_ck', sql`${t.publication} in ('draft', 'published')`),
@@ -268,8 +314,8 @@ export const matchStatistics = pgTable(
 );
 
 /**
- * Optional localized prose owned by exactly one member profile (biography) or match
- * (preview/recap). Independent draft/live revisions per locale; always subject to the
+ * Optional localized prose owned by exactly one member profile (biography), match
+ * (preview/recap) or tournament (description, rules, standings snapshots). Independent draft/live revisions per locale; always subject to the
  * owner's global publication/consent gate.
  */
 export const proseTranslation = pgTable(
@@ -278,6 +324,7 @@ export const proseTranslation = pgTable(
     id: uuid('id').primaryKey().defaultRandom(),
     memberProfileId: uuid('member_profile_id').references(() => memberProfile.id, { onDelete: 'cascade' }),
     matchId: uuid('match_id').references(() => match.id, { onDelete: 'cascade' }),
+    tournamentId: uuid('tournament_id').references(() => tournament.id, { onDelete: 'cascade' }),
     locale: text('locale').$type<Locale>().notNull(),
     draftRevisionId: uuid('draft_revision_id'),
     publishedRevisionId: uuid('published_revision_id'),
@@ -292,8 +339,11 @@ export const proseTranslation = pgTable(
       .on(t.memberProfileId, t.locale)
       .where(sql`${t.memberProfileId} is not null`),
     uniqueIndex('prose_translation_match_locale_uq').on(t.matchId, t.locale).where(sql`${t.matchId} is not null`),
+    uniqueIndex('prose_translation_tournament_locale_uq')
+      .on(t.tournamentId, t.locale)
+      .where(sql`${t.tournamentId} is not null`),
     check('prose_translation_locale_ck', sql`${t.locale} in (${sqlList(LOCALES)})`),
-    check('prose_translation_owner_ck', sql`num_nonnulls(${t.memberProfileId}, ${t.matchId}) = 1`),
+    check('prose_translation_owner_ck', sql`num_nonnulls(${t.memberProfileId}, ${t.matchId}, ${t.tournamentId}) = 1`),
     check(
       'prose_translation_live_ck',
       sql`(${t.publishedRevisionId} is null) = (${t.publishedAt} is null)`,

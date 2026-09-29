@@ -40,7 +40,7 @@ describe('game registry', () => {
   });
 
   it('exposes the HLL menu order and keeps the Wardogs order', () => {
-    expect(gameMenu('hll').map((item) => item.section)).toEqual(['news', 'matches', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community']);
+    expect(gameMenu('hll').map((item) => item.section)).toEqual(['news', 'matches', 'tournaments', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community']);
     expect(gameMenu('wardogs').map((item) => item.href)).toEqual([
       '/wardogs/news',
       '/wardogs/clan',
@@ -48,6 +48,7 @@ describe('game registry', () => {
       '/wardogs/matches',
     ]);
     expect(gameHasSection('wardogs', 'field-manual')).toBe(false);
+    expect(gameHasSection('wardogs', 'tournaments')).toBe(false);
   });
 });
 
@@ -104,11 +105,12 @@ describe('game routes', () => {
 
 describe('canonical entity paths', () => {
   it('derives news and match URLs from the published game', async () => {
-    const { canonicalMatchPath, canonicalNewsPath } = await import('./routes');
+    const { canonicalMatchPath, canonicalNewsPath, canonicalTournamentPath } = await import('./routes');
     expect(canonicalNewsPath(null, 'charity')).toBe('/news/charity');
     expect(canonicalNewsPath('hell-let-loose', 'ecl-report')).toBe('/hll/news/ecl-report');
     expect(canonicalNewsPath('wardogs', 'launch')).toBe('/wardogs/news/launch');
     expect(canonicalMatchPath('hell-let-loose', 'vlk-vs-yoko')).toBe('/hll/matches/vlk-vs-yoko');
+    expect(canonicalTournamentPath('hell-let-loose', 'ecl-2026-fall')).toBe('/hll/tournaments/ecl-2026-fall');
     expect(() => canonicalNewsPath('hell-let-loose', 'bad/slug')).toThrow();
   });
 });

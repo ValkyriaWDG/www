@@ -55,7 +55,7 @@ export async function loadAssetDefaults(db: Executor, id: string) {
 /**
  * True when an asset is referenced by currently public community data: a published
  * match (opponent logo/cover), a published consented member avatar, or the published
- * recap/biography revision of such a public owner. Media delivery combines this with
+ * recap/biography/tournament description revision of such a public owner. Media delivery combines this with
  * the content module's own published references; draft-only references never count.
  */
 export async function communityAssetIsPublic(db: Executor, assetId: string): Promise<boolean> {
@@ -76,9 +76,11 @@ export async function communityAssetIsPublic(db: Executor, assetId: string): Pro
         join prose_revision r on r.id = t.published_revision_id and r.prose_translation_id = t.id
         left join match m on m.id = t.match_id
         left join member_profile p on p.id = t.member_profile_id
+        left join tournament tn on tn.id = t.tournament_id
         where r.asset_ids @> array[${assetId}::uuid]
           and (
             (m.id is not null and m.publication = 'published')
+            or (tn.id is not null and tn.publication = 'published')
             or (p.id is not null and p.state = 'published' and p.consent_confirmed_at is not null)
           )
       )

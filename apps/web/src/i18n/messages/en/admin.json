@@ -34,6 +34,10 @@
         "title": "Matches",
         "description": "Create, schedule and publish matches and results."
       },
+      "tournaments": {
+        "title": "Tournaments",
+        "description": "Competitions with their description and rules, publication and the matches in them."
+      },
       "members": {
         "title": "Members",
         "description": "Review and publish member profiles."

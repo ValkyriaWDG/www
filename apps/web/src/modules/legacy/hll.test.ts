@@ -34,8 +34,9 @@ describe('legacy HLL redirects', () => {
 
   it('keeps reviewed URLs without a built destination or imported content pending, never Home', () => {
     expect(resolveLegacyHllPath('/faq')).toEqual({ kind: 'redirect', target: '/cs/hll/faq' });
-    expect(resolveLegacyHllPath('/tournaments')).toEqual({ kind: 'pending', proposed: '/cs/hll/tournaments', reason: 'destination_not_built' });
-    expect(resolveLegacyHllPath('/turnaje/ecl-2024')).toEqual({ kind: 'pending', proposed: '/cs/hll/tournaments/ecl-2024', reason: 'destination_not_built' });
+    expect(resolveLegacyHllPath('/tournaments')).toEqual({ kind: 'redirect', target: '/cs/hll/tournaments' });
+    expect(resolveLegacyHllPath('/turnaje')).toEqual({ kind: 'redirect', target: '/cs/hll/tournaments' });
+    expect(resolveLegacyHllPath('/turnaje/ecl-2024')).toEqual({ kind: 'pending', proposed: '/cs/hll/tournaments/ecl-2024', reason: 'content_not_imported' });
     expect(resolveLegacyHllPath('/zebricky/kd-pomer')).toEqual({ kind: 'pending', proposed: '/cs/hll/leaderboards/kd-ratio', reason: 'destination_not_built' });
     expect(resolveLegacyHllPath('/stats/6')).toEqual({ kind: 'pending', proposed: '/cs/hll/servers/6/stats', reason: 'destination_not_built' });
     expect(resolveLegacyHllPath('/matches/211')).toEqual({ kind: 'pending', proposed: '/cs/hll/matches/211', reason: 'needs_id_alias' });

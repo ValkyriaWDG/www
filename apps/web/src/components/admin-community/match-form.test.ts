@@ -40,6 +40,7 @@ const baseMatch = {
   isFixture: false,
   updatedAt: '2026-09-26T10:00:00.000Z',
   opponentLogoAssetId: null,
+  tournamentId: null,
   season: null,
   format: null,
   bestOf: 3,

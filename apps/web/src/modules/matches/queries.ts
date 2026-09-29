@@ -5,6 +5,7 @@ import {
   match,
   matchResult,
   matchRound,
+  tournament,
   type CompetitionType,
   type Executor,
   type Game,
@@ -218,6 +219,7 @@ export async function getPublicMatch(db: Executor, slug: string, locale: Locale)
       eventUrl: match.eventUrl,
       vodLinks: match.vodLinks,
       coverAssetId: match.coverAssetId,
+      tournamentId: match.tournamentId,
       publishedAt: match.publishedAt,
       updatedAt: match.updatedAt,
     })
@@ -227,11 +229,18 @@ export async function getPublicMatch(db: Executor, slug: string, locale: Locale)
     .limit(1);
   if (!row) return null;
   const [summary] = await toSummaries(db, [row]);
-  const [rounds, recap, covers, statistics] = await Promise.all([
+  const [rounds, recap, covers, statistics, linked] = await Promise.all([
     loadRounds(db, row.id),
     publishedProseFor(db, { kind: 'match', id: row.id }, locale),
     loadPublicImages(db, [row.coverAssetId]),
     loadMatchStatistics(db, row.id, { includePlayers: false }),
+    row.tournamentId
+      ? db
+          .select({ slug: tournament.slug, game: tournament.game, name: tournament.name, season: tournament.season })
+          .from(tournament)
+          .where(and(eq(tournament.id, row.tournamentId), eq(tournament.publication, 'published')))
+          .limit(1)
+      : Promise.resolve([]),
   ]);
   let cover: PublicMatchDetail['cover'] = null;
   const image = row.coverAssetId ? covers.get(row.coverAssetId) : undefined;
@@ -255,6 +264,7 @@ export async function getPublicMatch(db: Executor, slug: string, locale: Locale)
     rounds,
     statistics,
     recap,
+    tournament: linked[0] ?? null,
     publishedAt: (row.publishedAt ?? row.updatedAt).toISOString(),
     updatedAt: row.updatedAt.toISOString(),
   };
@@ -352,6 +362,7 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
   return {
     ...adminItem(row.match, row.result, recap),
     opponentLogoAssetId: row.match.opponentLogoAssetId,
+    tournamentId: row.match.tournamentId,
     season: row.match.season,
     format: row.match.format,
     bestOf: row.match.bestOf,
@@ -367,6 +378,18 @@ export async function getMatchForAdmin(db: Executor, actor: Actor, id: string): 
   };
 }
 
+
+/** Published matches linked to a tournament, in playing order (at most 200). */
+export async function listPublicTournamentMatches(db: Executor, tournamentId: string): Promise<PublicMatchSummary[]> {
+  const rows = await db
+    .select(summaryColumns)
+    .from(match)
+    .leftJoin(matchResult, eq(matchResult.matchId, match.id))
+    .where(and(isPublished, eq(match.tournamentId, tournamentId)))
+    .orderBy(asc(match.startsAt), asc(match.id))
+    .limit(200);
+  return toSummaries(db, rows);
+}
 
 /** Game, slug and last-modified time of every published match (sitemap; shared across locales). */
 export async function listPublicMatchesForSitemap(db: Executor): Promise<{ game: Game; slug: string; updatedAt: Date }[]> {

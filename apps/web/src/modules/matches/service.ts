@@ -8,6 +8,7 @@ import type { Actor } from '@/modules/access/types';
 import { roundIssuesForGame } from '@/modules/games/hll-catalog';
 import { recordAudit } from '@/modules/audit/audit';
 import { assertUsableAssets } from '@/modules/prose/assets';
+import { assertTournamentForMatch } from '@/modules/tournaments/service';
 import { assertVersion, authorize, authorizeGames, isUniqueViolation, parseInput } from '@/modules/prose/domain';
 import { firstFreeSlug, slugify } from '@/modules/prose/slug';
 import {
@@ -135,6 +136,7 @@ export async function createMatch(db: Executor, actor: Actor, input: CreateMatch
       if (slug) {
         if ((await slugTaken(tx, [slug])).size > 0) throw new DomainError('slug_taken', 'Slug already in use.', { slug: 'slug_taken' });
       } else slug = await generateSlug(tx, start.instant, timeZone, data.opponentName);
+      await assertTournamentForMatch(tx, data.tournamentId ?? null, data.game);
       const [row] = await tx
         .insert(match)
         .values({
@@ -145,6 +147,7 @@ export async function createMatch(db: Executor, actor: Actor, input: CreateMatch
           opponentLogoAssetId: data.opponentLogoAssetId ?? null,
           competitionType: data.competitionType,
           competitionName: data.competitionName ?? null,
+          tournamentId: data.tournamentId ?? null,
           season: data.season ?? null,
           format: data.format ?? null,
           bestOf: data.bestOf ?? null,
@@ -201,6 +204,10 @@ export async function updateMatch(db: Executor, actor: Actor, input: UpdateMatch
       if (data.slug && data.slug !== current.slug && (await slugTaken(tx, [data.slug])).size > 0) {
         throw new DomainError('slug_taken', 'Slug already in use.', { slug: 'slug_taken' });
       }
+      // The linked tournament must belong to the (possibly new) game of the match.
+      if (data.tournamentId !== undefined || (data.game !== undefined && data.game !== current.game)) {
+        await assertTournamentForMatch(tx, data.tournamentId !== undefined ? data.tournamentId : current.tournamentId, data.game ?? current.game);
+      }
       const patch: Partial<typeof match.$inferInsert> = {};
       const fields = [
         'game',
@@ -209,6 +216,7 @@ export async function updateMatch(db: Executor, actor: Actor, input: UpdateMatch
         'opponentLogoAssetId',
         'competitionType',
         'competitionName',
+        'tournamentId',
         'season',
         'format',
         'bestOf',

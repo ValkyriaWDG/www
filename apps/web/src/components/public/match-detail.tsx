@@ -3,10 +3,11 @@ import { parseExternalHttpsUrl } from '@/components/shell/external-links';
 import { GameButton } from '@/components/ui/game-button';
 import { DetailPane } from '@/components/ui/panels';
 import { formatDate, formatNumber } from '@/i18n/date-format';
+import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
 import { isHllSide } from '@/modules/games/hll-catalog';
-import { canonicalMatchPath } from '@/modules/games/routes';
+import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
@@ -40,6 +41,18 @@ export async function MatchDetailPane({
 
   const metadata = [
     { label: t('detail.competition'), value: competition },
+    ...(match.tournament
+      ? [
+          {
+            label: t('tournaments.matchTournament'),
+            value: (
+              <Link href={canonicalTournamentPath(match.tournament.game, match.tournament.slug)} data-match-tournament={match.tournament.slug}>
+                {[match.tournament.name, match.tournament.season].filter(Boolean).join(' · ')}
+              </Link>
+            ),
+          },
+        ]
+      : []),
     {
       label: t('detail.start'),
       value: (

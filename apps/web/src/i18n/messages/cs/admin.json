@@ -34,6 +34,10 @@
         "title": "Zápasy",
         "description": "Zakládání, plánování a zveřejňování zápasů a výsledků."
       },
+      "tournaments": {
+        "title": "Turnaje",
+        "description": "Soutěže, jejich popis a pravidla, zveřejňování a zápasy v nich."
+      },
       "members": {
         "title": "Členové",
         "description": "Kontrola a zveřejňování profilů členů."

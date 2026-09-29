@@ -9,6 +9,7 @@ import { can } from '@/modules/access/policy';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { getMatchForAdmin } from '@/modules/matches/queries';
 import { statisticsSources } from '@/modules/matches/statistics-service';
+import { listTournamentOptionsByGame } from '@/modules/tournaments/queries';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +29,7 @@ export default async function EditMatchPage({ params, searchParams }: PageProps<
   if (!access.ok) return access.denied;
   const match = await getMatchForAdmin(getDb(), access.principal, id);
   if (!match) notFound();
+  const tournaments = await listTournamentOptionsByGame(getDb(), access.principal);
   const created = (await searchParams).created === '1';
   return (
     <MatchEditor
@@ -37,6 +39,7 @@ export default async function EditMatchPage({ params, searchParams }: PageProps<
       canPublish={can(access.principal, 'matches.publish')}
       created={created}
       statisticsSources={match.game === 'hell-let-loose' ? statisticsSources() : []}
+      tournaments={tournaments}
     />
   );
 }
