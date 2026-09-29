@@ -9,6 +9,7 @@ import type {
   TaxonomySnapshot,
 } from '@valkyria/db';
 import type { RichTextDocument } from './rich-text/schema';
+import type { PublicArchiveEditorial } from '@/modules/legacy/editorial-details';
 
 /**
  * Explicit DTOs returned by the content module. Public DTOs contain only published
@@ -204,6 +205,8 @@ export type NewsSummary = {
 export type CounterpartSlugs = Partial<Record<Locale, string>>;
 
 export type ArticleDTO = {
+  /** Identified historical source metadata; does not override the current revision. */
+  archiveEditorial?: PublicArchiveEditorial | null;
   documentId: string;
   translationId: string;
   revisionId: string;

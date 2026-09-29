@@ -14,6 +14,7 @@ import type {
 import type { PublicImage } from '@/modules/prose/assets';
 import type { LocalizedProse, ProseAdminDetail, ProseStatus } from '@/modules/prose/types';
 import type { PublicTournamentLink } from '@/modules/tournaments/types';
+import type { LegacyMatchDetails } from '@/modules/legacy/match-details';
 
 export type MatchPublication = 'draft' | 'published';
 
@@ -27,6 +28,8 @@ export type PublicMatchResult = {
 
 /** Public list row; contains only published shared facts (no notes, no IDs of people). */
 export type PublicMatchSummary = {
+  /** Validated historical public facts only; absent for non-imported matches. */
+  legacyDetails?: LegacyMatchDetails | null;
   slug: string;
   game: Game;
   opponentName: string;

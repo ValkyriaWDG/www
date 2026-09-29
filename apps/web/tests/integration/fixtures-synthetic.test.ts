@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
@@ -66,7 +66,8 @@ describe('synthetic fixture set', () => {
         const variant = row.variants![name];
         expect(variant.key).toBe(`${row.id}/${name}.webp`);
         const file = path.join(mediaRoot, variant.key);
-        const meta = await sharp(file).metadata();
+        // Buffer input avoids libvips retaining a Windows file handle across fixture reset.
+        const meta = await sharp(await readFile(file)).metadata();
         expect(meta.format).toBe('webp');
         expect([meta.width, meta.height]).toEqual([variant.width, variant.height]);
         expect(Math.max(variant.width, variant.height)).toBeLessThanOrEqual(limit);

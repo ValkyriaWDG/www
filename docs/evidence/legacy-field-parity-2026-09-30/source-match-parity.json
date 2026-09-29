@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "state": "passed",
+  "checkedAt": "2026-09-29T22:04:32.401Z",
+  "scope": "Read-only normalization of the frozen source bundle; no database or public runtime verification",
+  "bundleSha256": "7d3151b895607f4c3ec8e8d7c91acf9b101cf0a067d2df3277e0f451d4ee48fe",
+  "matches": 205,
+  "originalHashAlgorithmUnchanged": true,
+  "homeCountries": 205,
+  "awayCountries": 205,
+  "firstCapture": 17,
+  "alternateCapture": 1,
+  "legacyPoint": 3,
+  "separateTime": 70,
+  "timeConflict": 3,
+  "captureConflict": 0,
+  "sourceLinks": 26
+}

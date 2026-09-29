@@ -22,6 +22,7 @@ import { getTournamentTranslations, PHASE_KIND, tournamentDates } from './tourna
 import matchStyles from './matches.module.css';
 import { TagList } from './tags';
 import styles from './tournaments.module.css';
+import { ArchiveEditorial } from '@/components/content/archive-editorial';
 
 /** Published tournament of `game` only; unknown, draft and other-game slugs are indistinguishable. */
 const loadPublicTournament = cache(async (game: GameRoute, slug: string, locale: AppLocale) =>
@@ -120,6 +121,7 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
           <h2 className={styles.groupTitle} id="tournament-description">
             {t('detail.description')}
           </h2>
+          {tournament.archiveEditorial ? <ArchiveEditorial details={tournament.archiveEditorial} locale={locale} /> : null}
           <LocalizedProseView
             prose={tournament.description}
             locale={locale}

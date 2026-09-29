@@ -1,0 +1,62 @@
+{
+  "capturedAt": "2026-09-29T22:05:00.561Z",
+  "synthetic": true,
+  "captures": [
+    {
+      "file": "legacy-list-cs-1920.png",
+      "locale": "cs",
+      "route": "/cs/hll/matches?view=results",
+      "viewport": "1920x1080",
+      "caption": "Synthetic HLL result with original coalition name, Czech and US vector flags and localized accessible country labels."
+    },
+    {
+      "file": "legacy-detail-cs-1920.png",
+      "locale": "cs",
+      "route": "/cs/hll/matches/ukazka-hll-historicky",
+      "viewport": "1920x1080",
+      "caption": "Synthetic HLL historical facts: countries, sides, capture points, duration, recorded points and preserved conflicting source time/first-capture fields. Published start remains unchanged."
+    },
+    {
+      "file": "legacy-list-cs-390.png",
+      "locale": "cs",
+      "route": "/cs/hll/matches?view=results",
+      "viewport": "390x844",
+      "caption": "Synthetic HLL result with original coalition name, Czech and US vector flags and localized accessible country labels."
+    },
+    {
+      "file": "legacy-detail-cs-390.png",
+      "locale": "cs",
+      "route": "/cs/hll/matches/ukazka-hll-historicky",
+      "viewport": "390x844",
+      "caption": "Synthetic HLL historical facts: countries, sides, capture points, duration, recorded points and preserved conflicting source time/first-capture fields. Published start remains unchanged."
+    },
+    {
+      "file": "legacy-list-en-1920.png",
+      "locale": "en",
+      "route": "/en/hll/matches?view=results",
+      "viewport": "1920x1080",
+      "caption": "Synthetic HLL result with original coalition name, Czech and US vector flags and localized accessible country labels."
+    },
+    {
+      "file": "legacy-detail-en-1920.png",
+      "locale": "en",
+      "route": "/en/hll/matches/ukazka-hll-historicky",
+      "viewport": "1920x1080",
+      "caption": "Synthetic HLL historical facts: countries, sides, capture points, duration, recorded points and preserved conflicting source time/first-capture fields. Published start remains unchanged."
+    },
+    {
+      "file": "legacy-list-en-390.png",
+      "locale": "en",
+      "route": "/en/hll/matches?view=results",
+      "viewport": "390x844",
+      "caption": "Synthetic HLL result with original coalition name, Czech and US vector flags and localized accessible country labels."
+    },
+    {
+      "file": "legacy-detail-en-390.png",
+      "locale": "en",
+      "route": "/en/hll/matches/ukazka-hll-historicky",
+      "viewport": "390x844",
+      "caption": "Synthetic HLL historical facts: countries, sides, capture points, duration, recorded points and preserved conflicting source time/first-capture fields. Published start remains unchanged."
+    }
+  ]
+}
