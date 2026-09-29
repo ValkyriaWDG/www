@@ -480,18 +480,19 @@
   overflow: hidden;
 }
 
-.stageFallback {
+/* Ghosted clan crest, identical to the Wardogs landing emblem (shell.module.css); landing only. */
+.stageCrest {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+  top: calc(var(--header-height) + (100% - var(--header-height)) * 0.47);
+  left: 50%;
+  width: clamp(240px, 22vw, 560px);
+  height: auto;
+  opacity: 0.12;
+  transform: translate(-50%, -50%);
 }
 
-.stageCrest {
-  width: clamp(120px, 18%, 220px);
-  height: auto;
-  opacity: 0.16;
-  filter: grayscale(1);
+[data-hll-mode='content'] .stageCrest {
+  display: none;
 }
 
 .stagePoster,
@@ -700,6 +701,12 @@
 
   .crest {
     height: 44px;
+  }
+
+  .stageCrest {
+    top: calc(var(--header-height) + (100% - var(--header-height)) * 0.34);
+    width: min(62vw, 280px);
+    opacity: 0.11;
   }
 
   .division {

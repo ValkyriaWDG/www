@@ -1,5 +1,6 @@
 import { Node, type AnyExtension, type NodeConfig } from '@tiptap/core';
 import type { DOMOutputSpec } from '@tiptap/pm/model';
+import { NodeSelection, Selection, TextSelection, type Transaction } from '@tiptap/pm/state';
 import { TableKit } from '@tiptap/extension-table';
 import { CharacterCount, Placeholder } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
@@ -74,12 +75,32 @@ export function createImageNode(nodeView?: NodeConfig['addNodeView']) {
       return {
         insertLibraryImage:
           (attributes) =>
-          ({ commands }) =>
-            commands.insertContent({ type: this.name, attrs: attributes }),
+          ({ commands, tr, dispatch }) => {
+            if (!commands.insertContent({ type: this.name, attrs: attributes })) return false;
+            // Insertion leaves the new image node-selected, so the next keystroke or toolbar
+            // action (e.g. a table) would replace it; continue after the image instead.
+            const { selection } = tr;
+            if (dispatch && selection instanceof NodeSelection && selection.node.type.name === this.name) placeCaretAfterBlock(tr, selection.from);
+            return true;
+          },
       };
     },
     ...(nodeView ? { addNodeView: nodeView } : {}),
   });
+}
+
+/**
+ * Puts a text caret after the block node at `pos`: in the next text position that follows
+ * it, or in a new empty paragraph when the node ends the document.
+ */
+export function placeCaretAfterBlock(tr: Transaction, pos: number): Transaction {
+  const node = tr.doc.nodeAt(pos);
+  if (!node) return tr;
+  const after = pos + node.nodeSize;
+  const following = tr.doc.resolve(after).nodeAfter ? Selection.findFrom(tr.doc.resolve(after), 1, true) : null;
+  if (following) return tr.setSelection(following);
+  tr.insert(after, tr.doc.type.schema.nodes.paragraph!.create());
+  return tr.setSelection(TextSelection.create(tr.doc, after + 1));
 }
 
 export type EditorExtensionOptions = {
