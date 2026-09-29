@@ -21,8 +21,16 @@ individually verified; other bare historical IDs have no inferred provider URL.
 
 Local full build and 602 unit tests passed. All 267 HTTP checks against the populated
 standalone rehearsal passed; five rendered routes had no broken images or browser
-page errors. Full browser/CI and production PostgreSQL restore/release acceptance
-are still pending at this checkpoint. Credentials were saved only to protected local
+page errors. Full CI for implementation `516ba3e` passed in run
+[36564384910](https://github.com/ValkyriaWDG/www/actions/runs/36564384910), including
+164 browser cases (107 opt-in captures skipped), image checks and page budgets.
+Subsequent mobile editor fixes passed 21 affected admin and 25 public browser cases,
+then two final scoped-address/mobile regressions. Eleven inspected, synthetic
+[screenshots and reproducible evidence](evidence/hll-legacy-crcon-2026-09-29/README.md)
+cover both locales and viewport sizes. An intermediate test-helper type error failed
+run 36565873993; its two fixture references are corrected and full local typecheck
+passes. Latest-head CI and production PostgreSQL restore/release acceptance remain
+pending at this checkpoint. Credentials were saved only to protected local
 and runtime environment files; public CRCON reads do not require them. No production
 schema/import, provider activation or legacy-domain cutover is established here.
 

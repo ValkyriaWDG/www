@@ -26,25 +26,26 @@ test('capture localized desktop and mobile player snapshots and CRCON URL import
       if (editorOnly && viewport.width !== 390) continue;
       const name = `${locale}-${viewport.width}x${viewport.height}`;
       if (!editorOnly) {
-      const context = await browser.newContext({ viewport, reducedMotion: 'reduce', locale: locale === 'cs' ? 'cs-CZ' : 'en-GB' });
-      try {
-        const page = await context.newPage();
-        const target = `/${locale}/hll/servers?server=synthetic-alpha`;
-        await page.goto(target);
-        await expect(page.locator('[data-live-players="fresh"]')).toContainText('[SYN] Alpha Player');
-        await page.evaluate(() => document.fonts.ready);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-        const file = `server-round-players-${name}.png`;
-        await page.screenshot({ path: path.join(output, file), fullPage: true, animations: 'disabled', caret: 'hide' });
-        captures.push({ file, locale, viewport: `${viewport.width}x${viewport.height}`, path: target, caption: 'Rendered synthetic server selection and round-participant table, including source timestamp, differing connected/round counts, nullable defense and visible refresh controls. Player names are synthetic; the background is the shipped HLL poster.' });
-      } finally { await context.close(); }
+        const context = await browser.newContext({ viewport, reducedMotion: 'reduce', locale: locale === 'cs' ? 'cs-CZ' : 'en-GB' });
+        try {
+          const page = await context.newPage();
+          const target = `/${locale}/hll/servers?server=synthetic-alpha`;
+          await page.goto(target);
+          await expect(page.locator('[data-live-players="fresh"]')).toContainText('[SYN] Alpha Player');
+          await page.evaluate(() => document.fonts.ready);
+          expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+          const file = `server-round-players-${name}.png`;
+          await page.screenshot({ path: path.join(output, file), fullPage: true, animations: 'disabled', caret: 'hide' });
+          captures.push({ file, locale, viewport: `${viewport.width}x${viewport.height}`, path: target, caption: 'Rendered synthetic server selection and round-participant table, including source timestamp, differing connected/round counts, nullable defense and visible refresh controls. Player names are synthetic; the background is the shipped HLL poster.' });
+        } finally { await context.close(); }
       }
 
       const admin = await browser.newContext({ viewport, reducedMotion: 'reduce', locale: locale === 'cs' ? 'cs-CZ' : 'en-GB' });
       try {
         await signInAs(admin, { roles: ['match_manager'], name: 'Synthetic integration reviewer' });
         const page = await admin.newPage();
-        const fixture = await matchBySlug('ukazka-hll-historicky');
+        const fixtureSlug = 'ukazka-hll-historicky';
+        const fixture = await matchBySlug(fixtureSlug);
         expect(fixture).not.toBeNull();
         const target = `/${locale}/admin/matches/${fixture!.id}`;
         await page.goto(target);
@@ -79,7 +80,7 @@ test('capture localized desktop and mobile player snapshots and CRCON URL import
           captures.push({ file, locale, viewport: `${viewport.width}x${viewport.height}`, path: target, caption: 'Successful finished-game URL import via the configured loopback CRCON adapter. Visible provenance link points to synthetic stats.example.org; scores and players are synthetic. Match-manager panel crop, no live external import.' });
         }
         if (viewport.width === 390) {
-          await expect(page.locator('[data-public-path]')).toHaveText(`/${locale}/hll/matches/${fixture!.slug}`);
+          await expect(page.locator('[data-public-path]')).toHaveText(`/${locale}/hll/matches/${fixtureSlug}`);
           const file = `match-editor-mobile-${name}.png`;
           await page.locator('[data-group="presentation"]').screenshot({ path: path.join(output, file), animations: 'disabled', caret: 'hide' });
           captures.push({ file, locale, viewport: `${viewport.width}x${viewport.height}`, path: target, caption: 'Synthetic match editor public-presentation group fits the mobile viewport. Rich-text controls use their own horizontal toolbar scroll area; the page has no horizontal overflow. Actual application panel crop after the bounded grid-track fix.' });

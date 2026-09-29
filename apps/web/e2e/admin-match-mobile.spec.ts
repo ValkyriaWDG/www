@@ -7,7 +7,8 @@ for (const locale of ['cs', 'en'] as const) {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
     try {
       await signInAs(context, { roles: ['match_manager'], name: 'Synthetic mobile editor' });
-      const fixture = await matchBySlug('ukazka-hll-historicky');
+      const fixtureSlug = 'ukazka-hll-historicky';
+      const fixture = await matchBySlug(fixtureSlug);
       expect(fixture).not.toBeNull();
       const page = await context.newPage();
       await page.goto(`/${locale}/admin/matches/${fixture!.id}`);
@@ -16,7 +17,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(toolbar).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(391);
-      await expect(presentation.locator('[data-public-path]')).toHaveText(`/${locale}/hll/matches/${fixture!.slug}`);
+      await expect(presentation.locator('[data-public-path]')).toHaveText(`/${locale}/hll/matches/${fixtureSlug}`);
 
       // Controls remain available through the toolbar's own horizontal scroll area.
       const geometry = await toolbar.evaluate((element) => ({
