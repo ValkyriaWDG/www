@@ -1,59 +1,60 @@
 # Current status
 
-Updated: 2026-09-29. Stage: **Source 571475f (including crest/editor PR #61 and shared top strip PR #66) deployed to valkyria.cz through Watchtower. Latest focused proof: HTTP/media 16/16 and browser 33/33. Broader client-navigation issue #46 stays open; live authentication/providers remain disabled.**
+Updated: 2026-09-29. Stage: **Legacy HLL migration and live CRCON accepted on valkyria.cz at 14:58:22 UTC. Running source 1b38314, immutable image 6623125c; dedicated Watchtower and publisher timer restored. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
-## Legacy HLL migration and CRCON implementation (not yet deployed)
+## Current production: legacy HLL migration and CRCON
 
-Issue #65 adds the operator-only extraction/import pipeline, source identity ledger,
-publication-gated old URLs, historical multi-round statistics, configured CRCON game
-URL imports, and public live round-player snapshots. See the
-[import runbook](operations/legacy-hll-import.md) and
-[source inventory](operations/legacy-hll-extraction.md).
+Source `1b38314ff6faf5182166fe15dff3172e4cf752ef` runs from
+`majorluk/valkyria-www@sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b`
+through the verified `production` channel. PR #67 implements issue #65; PR #68
+fixes standalone importer dependency resolution and exercises the actual image
+importer. [Production acceptance and screenshots](evidence/hll-legacy-production-2026-09-29/README.md)
+record exact-source CI/publisher, the initial failed image rehearsal, its correction,
+and the successful PostgreSQL 15 rehearsal and production import.
 
-The reviewed private bundle was applied to an isolated PostgreSQL 18.4 database:
-205 matches, 30 documents/competitions/pages, 219 media assets and 134 statistical
-rounds. Three expired announcements remain archived; 27 external/unsupported media
-references stay links. Repeated apply created nothing and preserved all 13 audited
-table fingerprints. All 438 WebP variants were verified. The source ID199 typo is
-explicitly repaired; map-conflicting statistics101/199 and four empty exports remain
-excluded, with retained provenance. Only match211's CRCON origin/game link is
-individually verified; other bare historical IDs have no inferred provider URL.
+Imported: **205 public matches** (202 completed, three upcoming), **12 news records**
+(nine articles plus three archived expired announcements), **eight manuals, eight
+tournaments, FAQ/about pages and 219 media assets** with 438 stored WebP variants.
+There are **131 primary scoreboards and three additional rounds**. Twenty-one
+historical sides remain unknown; editorial results are preserved without claiming
+new verification. Only match211's origin/game link is individually verified; other
+historical game IDs do not acquire guessed provider links. Hidden matches and private
+player/account fields are excluded. Twenty-seven external/unsupported image references
+remain readable source links. Original fixed GMT+1 instants and credits are preserved.
 
-Local full build and 602 unit tests passed. All 267 HTTP checks against the populated
-standalone rehearsal passed; five rendered routes had no broken images or browser
-page errors. Full CI for implementation `516ba3e` passed in run
-[36564384910](https://github.com/ValkyriaWDG/www/actions/runs/36564384910), including
-164 browser cases (107 opt-in captures skipped), image checks and page budgets.
-Subsequent mobile editor fixes passed 21 affected admin and 25 public browser cases,
-then two final scoped-address/mobile regressions. Eleven inspected, synthetic
-[screenshots and reproducible evidence](evidence/hll-legacy-crcon-2026-09-29/README.md)
-cover both locales and viewport sizes. An intermediate test-helper type error failed
-run 36565873993; its two fixture references are corrected and full local typecheck
-passes. Full CI for `0efebe7` then passed in run
-[36566410659](https://github.com/ValkyriaWDG/www/actions/runs/36566410659): 602 unit,
-325 PostgreSQL and 166 browser tests (107 opt-in skips), plus image and performance
-checks. Independent review subsequently found that deferred owner publication also
-needed to guard independently published English prose. Four real-database failures
-reproduced the issue; the all-locale guard passes all 16 focused cases, including
-preservation of unpublished English drafts. Final implementation `f154a59` passed
-[CI 36568326780](https://github.com/ValkyriaWDG/www/actions/runs/36568326780):
-602 unit, 331 PostgreSQL and 166 browser cases, with 107 optional captures skipped.
-PR #67 merged as `338ee2f`; exact-main CI and publisher verification also passed.
-The published immutable image then failed the real PostgreSQL 15 restore/import
-rehearsal: its bundled importer could not resolve `sharp` from `/app/scripts`.
-Restore, four migrations, a zero-change migration rerun and seed passed before that
-failure; production schema/content were unchanged. See the
-[failed rehearsal and pending acceptance record](evidence/hll-legacy-production-2026-09-29/README.md).
-PR #68 corrects the standalone dependency link and adds an actual image importer
-dry-run/apply/replay regression. A new candidate and complete production-major
-rehearsal are required before import. The old web remains ready while its dedicated
-updater and publisher timer are held for this maintenance. Credentials were saved only to protected local
-and runtime environment files; public CRCON reads do not require them. No production
-schema/import, provider activation or legacy-domain cutover is established here.
+The actual immutable image passed an isolated PostgreSQL **15.17** restore from the
+held production capture, **680 HTTP/media checks**, and five previous-image checks
+against its matching restored baseline. Production's fresh frozen baseline matched
+that restored source exactly. The fresh paired backup was hashed, its database dump
+TOC checked and its media archive restored; **that new database dump was not itself
+restored again**. Four migrations advanced the journal from five to nine; the second
+migration run applied zero. Production now has 31 application tables. Dry-run and
+repeated import preserved full database/sequence/journal/media fingerprints; all nine
+identity/grant tables remained unchanged. Recovery after this populated import requires
+the matching pre-import database/media backup and old image, or a reviewed forward fix.
 
-Migrations0005–0008 require operator maintenance. After nullable historical sides
-are inserted, rollback to the previous reader requires the matching pre-import
-database/media backup; image-only rollback is incompatible with populated imports.
+Public verification passed **929 HTTP cases, 371 decoded images, two independent
+health checks and both live CRCON projections**. Five private application captures
+were inspected; eight further Czech editorial captures passed desktop/mobile overflow,
+image and browser-error checks, with six safe captures published as evidence. After
+promotion/recreation, all eight final public smoke checks passed. The final runtime
+readback confirms the exact image, healthy web/updater and active publisher timer;
+all 26 unrelated containers were unchanged and all 24 owned maintenance containers
+were stopped. Publication itself ran full CI: 603 unit, 331 database, 167 standard
+browser and four separate artwork cases. The standard suite skipped 107 cases:
+103 optional visual captures and four artwork cases subsequently exercised separately.
+
+The public HLL server adapter is enabled for the reviewed primary and event servers.
+It distinguishes current occupancy from round participants, refreshes while visible,
+and retains bounded stale/error handling and allowlisted public fields. `admin2` DNS
+was unavailable; the existing event origin was separately verified. Admin CRCON URL
+import and player-publication controls are implemented and covered by real database
+and synthetic authenticated browser tests; **live admin login/Discord SSO/Logi remain
+disabled** and are not established by anonymous production checks. Credentials exist
+only in protected local/runtime environment files. The old `valkyriahll.cz` domain
+still serves the legacy site; no DNS/legacy-domain cutover or Wardogs API activation
+occurred. See the [import runbook](operations/legacy-hll-import.md),
+[source inventory](operations/legacy-hll-extraction.md), and open auth work #36.
 
 ## Automatic image updates
 
@@ -70,9 +71,9 @@ now establishes two actual replacements of the selected application container.
 The publisher remains manual/main-only with full CI and accepted `expected_sha`.
 With `WATCHTOWER_PROMOTION_ENABLED=true`, it promotes only byte-identical migration
 bundles/runners and unchanged image runtime defaults. Changed or unknown contracts
-stay outside automatic deployment. Authentication/providers and #46 remain open.
+stay outside automatic deployment. Authentication/Logi and #46 remain open; the reviewed HLL CRCON adapter is now enabled as recorded above.
 
-## Current production: crest and shared top strip
+## Historical production: crest and shared top strip
 
 At **12:19:48 UTC / 14:19:48 CEST** on 2026-09-29, Watchtower replaced the web
 container with source `571475f3f60fb38c7cf14cd6afb4702982ba4681`, image
@@ -313,7 +314,8 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   `SERVER_STATUS_SOURCE=none` by default, `crcon` reads CRCON's public
   `get_public_info` for the servers in `HLL_SERVER_SOURCES_JSON` (map, mode, players,
   next map, time left, score, teams, stats link; per-server outage), labelled synthetic
-  snapshots for tests. Real hosts are configured at deployment and are not yet verified.
+  snapshots for tests. The approved primary and event sources are now enabled and
+  verified in the production migration acceptance above.
 - **HLL matches:** the shared match editor offers the official HLL maps, modes and
   Allies/Axis sides with 0–5 sector scores. Game statistics (team totals, kills by weapon
   type, weapons, optional player rows) import from a configured CRCON server by game ID
@@ -322,18 +324,20 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   decision 2026-09-28) and an editor can hide them; a replacement import keeps that choice.
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
-  search with abbreviations, table of contents; legacy guides import only as draft shells.
+  search with abbreviations and table of contents. Initial legacy draft shells have
+  now been populated by the reviewed archive import recorded above.
 - **Tournaments:** `tournament` records (game, name, season, organizer, start/end day,
   HTTPS links, publication, internal notes) managed in the administration by match
   managers within their game scope; a per-locale description (rules, dated standings)
   on the shared prose model; matches link to a tournament of their own game from the
   match editor. HLL shows `/cs/hll/tournaments` (current/upcoming, then finished) and a
   detail with the published linked matches; drafts and other games are 404. Legacy
-  `/turnaje` redirects there; the legacy records await import.
+  `/turnaje` redirects there; the eight legacy tournament records are now imported.
 - **Legacy:** reviewed redirect resolver, active only for `LEGACY_HLL_HOSTS` (empty).
 - **FAQ:** shared core page `faq` (`/cs/hll/faq`, `/cs/faq`) with a question index; the
-  seed creates only an unpublished Czech/English outline of the legacy questions, so the
-  page stays unpublished until editors write and publish the answers.
+  seed creates an unpublished Czech/English outline. The reviewed migration has now
+  populated and published the legacy FAQ with 11 answers; it did not generate English
+  translations.
 - **Migrations:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
   repeated run verified locally), `0002_match_statistics.sql` (new table only),
   `0003_faq_page.sql` (widens the page-key check) and `0004_tournaments.sql` (new table,
@@ -358,16 +362,17 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
 - **Hub cover:** the community hub uses the owner-supplied cover (HLL left, Wardogs right)
   on the hub route only, with 960/1672 px derivatives, a centred heading and the game
   cards as windows onto their half ([evidence](evidence/hll-hub-cover-2026-09-29/README.md)).
-  PR #69 merged as `d61c38f`; included in the next corrected migration candidate.
+  PR #69 merged as `d61c38f`; included in accepted production source `1b38314`.
   No additional migration. Its earlier publisher was cancelled before publication
   because that source still contains the importer packaging defect recorded above.
 
-Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
-acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
-text/images and match history (host blocked in this environment; reuse of external
-illustrations unrecorded), legacy tournament records, events/rankings destinations, FAQ answers, tactical map,
-legacy match-ID aliases and scoped media library for game-scoped editors.
-Legacy parity for servers, matches and game statistics:
+Remaining work: approved clan footage (stage shows its fallback), live authentication
+and hosted Logi (events), events/rankings destinations, tactical map and a scoped media
+library for game-scoped editors. Legacy content, tournaments, FAQ, match-ID aliases and
+the two approved public CRCON sources are accepted above. Broader client navigation
+remains tracked separately in #46.
+
+Historical implementation qualification for servers, matches and game statistics:
 [hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (468 unit, 281
 integration, 144 browser tests at `59b3e38`, after the review fixes). After merging PR #55
 and main `048c179` (`c8fc2d7`): foundation, 126 tooling, lint, types, 493 unit, 283
@@ -399,19 +404,19 @@ retaken; CI for the pushed head is linked from PR #37. Details:
 [hll-platform-2026-09-28](evidence/hll-platform-2026-09-28/README.md). Earlier preparation
 evidence: [hll-handoff-2026-09-28](evidence/hll-handoff-2026-09-28/README.md).
 
-Next task: retain the accepted robots metadata #53 production proof and investigate
-the separate network gate #46. Keep legacy `valkyriahll.cz` unchanged
-until its content migration is accepted. Clan footage and hosted Logi remain pending;
-preserve the static stage and unavailable-provider states without synthetic production data.
+Next task: resolve live authentication/hosted Logi acceptance and the separate client
+navigation issue #46. Keep legacy `valkyriahll.cz` unchanged until its domain cutover
+is explicitly scheduled. Clan footage remains pending; preserve the static stage
+and truthful provider-unavailable states without synthetic production data.
 
 Follow-up after PR #37 (PR #50, which also delivered the HLL graphics of PR #55; #55 was
 closed as delivered): CRCON server status, HLL rounds, imported match statistics (migration
 0002), the FAQ page (migration 0003) and tournaments (migration 0004, administration-managed
-per the owner) were deployed in `e5d7276`. Current production `571475f` also includes
-PR #61 (`1efdf09`, crest and editor caret) and PR #66 (shared top strip), with no new
-migration. Next: configure the
-real CRCON hosts; write and publish the FAQ answers; import the legacy content once
-`valkyriahll.cz` is reachable; choose the owner of events (Logi) and a source for rankings.
+per the owner) were deployed in `e5d7276`. The later `571475f` deployment added PR #61
+(`1efdf09`, crest and editor caret) and PR #66 (shared top strip), without a migration.
+Current source `1b38314` additionally contains the hub cover, legacy archive and CRCON
+changes; migrations 0005–0008 and the real import are accepted at the top of this file.
+The hosted events contract (Logi) and a rankings source remain separate decisions.
 
 ## Publication authorization hardening
 

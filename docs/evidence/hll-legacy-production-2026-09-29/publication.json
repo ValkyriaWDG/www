@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "status": "published",
+  "scope": "Immutable exact-source publication and automatic-channel compatibility decision only",
+  "source": {
+    "repository": "https://github.com/ValkyriaWDG/www",
+    "revision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+    "url": "https://github.com/ValkyriaWDG/www/commit/1b38314ff6faf5182166fe15dff3172e4cf752ef",
+    "packagingFixPullRequest": "https://github.com/ValkyriaWDG/www/pull/68"
+  },
+  "workflow": {
+    "runId": "36580018846",
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36580018846",
+    "name": "Publish container",
+    "status": "completed",
+    "conclusion": "success",
+    "createdAt": "2026-09-29T14:05:26Z",
+    "updatedAt": "2026-09-29T14:23:17Z",
+    "jobs": [
+      {
+        "name": "verify / Foundation",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-09-29T14:05:30Z",
+        "completedAt": "2026-09-29T14:06:23Z"
+      },
+      {
+        "name": "verify / Application",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-09-29T14:06:27Z",
+        "completedAt": "2026-09-29T14:20:11Z"
+      },
+      {
+        "name": "verify / Quality gate",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-09-29T14:20:14Z",
+        "completedAt": "2026-09-29T14:20:17Z"
+      },
+      {
+        "name": "publish",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-09-29T14:21:16Z",
+        "completedAt": "2026-09-29T14:23:16Z"
+      }
+    ],
+    "buildPublishCompletedAt": "2026-09-29T14:22:47Z",
+    "digestRevisionVerificationCompletedAt": "2026-09-29T14:22:53Z",
+    "publishJobCompletedAt": "2026-09-29T14:23:16Z"
+  },
+  "evidence": {
+    "workflowReportSha256": "36ac81a7fc77a554d458b1dbb03272f2b93ac15a1f1ce0d4bff4ae5a68ef1cbc",
+    "workflowReportBytes": 14070,
+    "publisherLogSha256": "3bbeea6a307a1f075150d32c785fe56abe970c7d8c20f084841bd6e71a8d031a",
+    "publisherLogBytes": 841590,
+    "normalizedPublisherLogSha256": "4606651ec9ac4207d61ff4b51dee496657d65b62a4c1a106798c9db3cea00c7a",
+    "registryVisibilityReportSha256": "20ca82016c7cf8294bfac32e475f8efb90fe473cf9fa6e273d31f2d48daa96f7",
+    "registryVisibilityReportBytes": 191,
+    "normalization": "ANSI terminal sequences and BOM characters removed only in memory. Original protected bytes are preserved.",
+    "lineNumbers": "One-based original publisher log lines. Reusable workflow rows are labelled UNKNOWN STEP in that log; counts are matched by job and exact runner summary."
+  },
+  "registry": {
+    "repository": "majorluk/valkyria-www",
+    "verifiedAtUtc": "2026-09-29T14:17:36.0120877Z",
+    "visibility": "public",
+    "authenticatedRead": true,
+    "ownerApprovedVisibilityMatches": true
+  },
+  "image": {
+    "reference": "majorluk/valkyria-www@sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+    "ociIndexDigest": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+    "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+    "immutableDigestPulledAndRevisionVerifiedByPublisher": true,
+    "identityLimit": "This is the published OCI index identity. It is not a production container image/config ID or evidence that the production runtime was replaced."
+  },
+  "exactSourceQualification": {
+    "foundation": {
+      "status": "passed",
+      "files": 1447,
+      "sourceLines": [
+        174
+      ]
+    },
+    "tooling": {
+      "passed": 169,
+      "failed": 0,
+      "skipped": 0,
+      "sourceLines": [
+        350,
+        352,
+        353,
+        355
+      ]
+    },
+    "encryptedRecovery": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "sourceLines": [
+        388,
+        390,
+        391,
+        393
+      ]
+    },
+    "unit": {
+      "passed": 603,
+      "failed": 0,
+      "skipped": 0,
+      "files": 62,
+      "sourceLines": [
+        948,
+        949
+      ]
+    },
+    "databaseIntegration": {
+      "passed": 331,
+      "failed": 0,
+      "skipped": 0,
+      "files": 34,
+      "sourceLines": [
+        1069,
+        1070
+      ]
+    },
+    "realRestoreBoundary": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "sourceLines": [
+        1431,
+        1433,
+        1434,
+        1436
+      ]
+    },
+    "standardBrowser": {
+      "passed": 167,
+      "failed": 0,
+      "skipped": 107,
+      "total": 274,
+      "sourceLines": [
+        4049,
+        4050
+      ]
+    },
+    "shippedHllArtwork": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "sourceLines": [
+        4205
+      ]
+    },
+    "skipInterpretation": {
+      "optionalVisualCaptures": 103,
+      "artworkSkippedInStandardRunThenPassedSeparately": 4,
+      "skipsAreNotPasses": true
+    },
+    "imageRehearsal": {
+      "status": "passed",
+      "steps": 13,
+      "cleanup": "passed",
+      "sourceLines": [
+        2926
+      ]
+    },
+    "imageVulnerabilityScan": {
+      "status": "passed",
+      "baseline": 56,
+      "candidate": 43,
+      "fixable": 0,
+      "delta": {
+        "highCritical": -13,
+        "packages": -9
+      },
+      "sourceLines": [
+        3063
+      ],
+      "interpretation": "43 candidate HIGH/CRITICAL findings remain; zero are reported fixable. No zero-vulnerability claim."
+    },
+    "coldMobileBudgets": {
+      "status": "passed",
+      "samples": 15,
+      "routes": 5,
+      "allStatus200": true,
+      "pageErrors": 0,
+      "failedResources": 0,
+      "videoRequests": 0,
+      "sourceLines": [
+        4062,
+        4063,
+        4064,
+        4065,
+        4066,
+        4067,
+        4068,
+        4069,
+        4070,
+        4071,
+        4072,
+        4073,
+        4074,
+        4075,
+        4076
+      ]
+    }
+  },
+  "automaticProductionChannel": {
+    "status": "held",
+    "reasons": [
+      "migration-bundle-changed"
+    ],
+    "observedAt": "2026-09-29T14:23:01.1418401Z",
+    "candidateDigest": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+    "previousDigest": "sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b",
+    "previousRevision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+    "previousMigrationFingerprint": "45fe4a4446d66705c6d6dbbdda8b5f67c6ed200471dfae288c620bf94bd0b570",
+    "candidateMigrationFingerprint": "fde0abefcdbcb5056eb4331af016e87646c4a6f9ecd3ff35b9cacdacf26c9b24",
+    "previousRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+    "candidateRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+    "sourceLines": [
+      6134
+    ],
+    "meaning": "The compatibility step completed successfully by holding promotion. No automatic promotion is established; the changed migration bundle requires explicit maintenance acceptance."
+  },
+  "productionBoundary": {
+    "publicationIsDeployment": false,
+    "productionMajor15FullRehearsalResult": "not-established-by-this-publication-record",
+    "productionMigration": "not-asserted",
+    "productionAcceptance": "pending-at-publication-checkpoint"
+  },
+  "limitations": [
+    "Exact-source CI uses disposable synthetic PostgreSQL 17 data. It does not replace the complete production PostgreSQL 15 backup restore/import rehearsal.",
+    "The prior failed source338 rehearsal remains preserved separately; this publication does not rewrite its result.",
+    "This report does not assert production database changes, successful production import, public real-data HTTP verification, inspected production screenshots or resumed automation.",
+    "No protected log text, environment values, host or filesystem paths, database/player records or credentials are included."
+  ]
+}

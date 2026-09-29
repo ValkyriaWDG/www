@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "status": "accepted",
+  "scope": "Observed production archive migration, public acceptance, complete OCI-index promotion and automation recovery; sanitized aggregate evidence.",
+  "origin": "https://valkyria.cz",
+  "candidateRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+  "candidateOciIndexDigest": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+  "bundleSha256": "7d3151b895607f4c3ec8e8d7c91acf9b101cf0a067d2df3277e0f451d4ee48fe",
+  "previousProduction": {
+    "revision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+    "imageDigest": "sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b"
+  },
+  "timeline": {
+    "maintenanceStartedAt": "2026-09-29T14:46:41.997912Z",
+    "candidateReadyAt": "2026-09-29T14:51:24.034216Z",
+    "publicProofVerifiedAt": "2026-09-29T14:54:49.627Z",
+    "channelPromotedAt": "2026-09-29T14:57:28.046Z",
+    "acceptedAt": "2026-09-29T14:58:22.806902Z",
+    "runtimeObservedAt": "2026-09-29T14:59:05.069679Z",
+    "finalSmokeStartedAt": "2026-09-29T14:59:30.703Z",
+    "finalSmokeFinishedAt": "2026-09-29T14:59:32.265Z"
+  },
+  "evidence": {
+    "protectedArtifactFileByteSha256": {
+      "maintenance": "52681e4f65556a503f663a7d5655427991ecb8546c5df47533eec3bdc9878eaa",
+      "channel": "84ebdcf7e5eefb5258ef3554497bbb85c8de680521c5bfea3af225d5c7f0be13",
+      "runtime": "87e1545669c3da80f1243309a44f8da88a800600fd77728ed2800367f406c4ab",
+      "smoke": "b08026c74b59df2cfb6c3ac05120cdb145f19183e68d8ed2498682a3337713f8",
+      "scope": "11eb64ed9c2b3162f724c6e7339e72dcc34031f3f695ab967c705bca71d45c61",
+      "preflight": "24e231b4eadda1f461d9c647f84d9fb5df76f564f90dad151821226898cc10d4",
+      "proof": "b4f38747ed584d19d897780a3dbfa95d4e35d65712078a21417de1933478d9ae",
+      "rehearsal": "dc654f8ba5ec721192580f4b436ba2b4acfefe000e475f8788209c3c9b97efd6"
+    },
+    "priorAwaitingAcceptanceRecordSha256": "d90119a4e8df50bd390459213bca59ee4f4573ef2b3d62275ea5908b2b7af1fd",
+    "heldCaptureRecordSha256": "a00f3ed0d96b7f5d3c8770de826ba4fd32a4e6e2665fdb0e921409356338d76d",
+    "httpReportSha256": "17375fc25241fb523913df2c4cb65dc97e4e39bedde53ea8f5caad74b24d1fc7",
+    "healthReportSha256": "b6a99b649b8df299a4224a0ae4085172b652f85696b09e303ae5a4053861569c",
+    "browserReviewSha256": "039bf1a170e095367f0027bfdee5b4a6c7ef5634a4aa3afedf2fa88fdce97a70",
+    "publicReports": [
+      "publication.json",
+      "rehearsal-1b38314.json",
+      "deployment-http.json",
+      "editorial-reflow.json"
+    ],
+    "limits": "Hashes bind the retained operator artifacts by exact bytes; raw reports and private local/resource paths are not published."
+  },
+  "preflight": {
+    "stopsBeforeFreeze": 2,
+    "guardsBypassed": false,
+    "failureObservationTimes": "Not recorded precisely; no inferred timestamps.",
+    "resolutions": [
+      {
+        "code": "compose_resource_limits",
+        "cause": "The unchanged 805306368-byte Compose memory limit was represented as a canonical decimal string.",
+        "resolution": "Narrowly accept the exact integer or canonical decimal string; unchanged resource limits.",
+        "offlineRegressionTestsPassed": 35,
+        "originalHelperSha256": "0051ef24dc594eaa6b3603929e3ae7e6ddded78047fb47313787664540f1f06b",
+        "correctedHelperSha256": "e800a87d2332bb426c5f2ac2c7466cb8c21de8059073d127e57332693188dac3"
+      },
+      {
+        "code": "running_environment_differs_from_effective_compose",
+        "cause": "Two task-authorized provider credentials were in the existing environment file but absent from the previously running web process.",
+        "resolution": "Recreate only the exact previous web image with existing unchanged Compose/environment files, with pull, dependency recreation and build disabled. The runtime then matched the effective Compose configuration."
+      }
+    ],
+    "reconciliation": {
+      "startedAt": "2026-09-29T14:46:03.239524Z",
+      "finishedAt": "2026-09-29T14:46:12.145653Z",
+      "previousRevision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+      "runtimeMatchesEffectiveCompose": true,
+      "existingConfigurationFilesUnchanged": true,
+      "authorizationGuardExemptions": false
+    }
+  },
+  "maintenance": {
+    "automationBefore": {
+      "watchtowerRunning": true,
+      "publisherTimerActive": true
+    },
+    "automationAlreadyHeldAtApply": true,
+    "approvedProviderConfigurationExact": true,
+    "unrelatedEnvironmentUnchanged": true,
+    "stagedBundle": {
+      "files": 354,
+      "allDeclaredFilesHashVerified": true,
+      "readOnlyMount": true
+    },
+    "freshBackup": {
+      "databaseDumpSha256": "c93e3edd8ac9bc16ed966fdf1261c06f87270910218d42bb91c33e9fbf61691a",
+      "mediaArchiveSha256": "3fcf400eef619d173303f889273853e04e5283da0c5aef7e4a9dc7fb7853e0ad",
+      "freshDatabaseDumpRestored": false,
+      "sourceFingerprintMatchesAcceptedRestoration": true,
+      "dumpTocVerified": true,
+      "mediaArchiveRestoredAndVerified": true,
+      "acceptedPriorRestoreReportSha256": "dc654f8ba5ec721192580f4b436ba2b4acfefe000e475f8788209c3c9b97efd6",
+      "classification": "The fresh database dump was not restored. Its source fingerprint matched the independently restored accepted backup baseline, its archive table of contents was verified, and the fresh media archive was restored and verified. The earlier PostgreSQL 15 paired restore/rollback result remains a separate observation."
+    },
+    "snapshotFingerprintChecks": {
+      "sourceUnchangedAcrossFreshBackup": true,
+      "migrationReplayUnchanged": true,
+      "importDryRunUnchanged": true,
+      "importReplayUnchanged": true,
+      "fingerprintType": "Canonical JSON SHA-256 values asserted equal within the protected maintenance result; distinct from report file-byte hashes."
+    }
+  },
+  "archiveImport": {
+    "dryRunCounts": {
+      "media:create": 219,
+      "media:skipped": 27,
+      "tournament:create": 8,
+      "news:create": 12,
+      "manual:create": 8,
+      "page:adopt": 2,
+      "match:create": 205
+    },
+    "appliedCounts": {
+      "media:create": 219,
+      "media:skipped": 27,
+      "tournament:create": 8,
+      "news:create": 12,
+      "manual:create": 8,
+      "page:adopt": 2,
+      "match:create": 205
+    },
+    "repeatImportCounts": {
+      "media:unchanged": 219,
+      "media:skipped": 27,
+      "tournament:unchanged": 8,
+      "news:unchanged": 12,
+      "manual:unchanged": 8,
+      "page:unchanged": 2,
+      "match:unchanged": 205
+    },
+    "importReportsFileByteSha256": {
+      "dry": "105bd3cfe649065308bd3b7289ececc6bd99e3eec3f232e09c0d825747ac123a",
+      "apply": "a18fe16b567779b76a7a3c3a75f9355afec4c7f238a7b9665bedf2dc206e8f40",
+      "repeat": "34a396395eea4d9eecaaa31ccae3bd3974ee766d82b4bc55ceb0657888756ca1"
+    },
+    "observedData": {
+      "entities": {
+        "media": 219,
+        "page": 2,
+        "match": 205,
+        "news": 12,
+        "tournament": 8,
+        "manual": 8
+      },
+      "primaryScoreboards": 131,
+      "additionalRounds": 3,
+      "unknownSides": 21,
+      "verifiedGameLinks": 1,
+      "editorialResultsPreserved": 202,
+      "privatePlayerFieldsAbsent": true,
+      "identityTablesUnchanged": true
+    }
+  },
+  "channel": {
+    "status": "promoted-index-verified",
+    "manifestCount": 2,
+    "completeIndexVerified": true,
+    "automationResumedByPromotionHelper": false,
+    "acceptedPublicProofSha256": "b4f38747ed584d19d897780a3dbfa95d4e35d65712078a21417de1933478d9ae",
+    "priorAwaitingAcceptanceRecordSha256": "d90119a4e8df50bd390459213bca59ee4f4573ef2b3d62275ea5908b2b7af1fd",
+    "sequence": "Promote the complete index only after the real-data public proof; recreate the web using the production alias and verify its identity, then restore the previously recorded automation state. Final accepted maintenance record is separate from the earlier awaiting record."
+  },
+  "finalRuntime": {
+    "observedAt": "2026-09-29T14:59:05.069679Z",
+    "web": {
+      "running": true,
+      "health": "healthy",
+      "imageReference": "majorluk/valkyria-www:production",
+      "recordedImageId": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+      "revision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "startedAt": "2026-09-29T14:58:15.919692517Z"
+    },
+    "updater": {
+      "running": true,
+      "health": "healthy",
+      "startedAt": "2026-09-29T14:58:22.198648533Z"
+    },
+    "publisherTimer": "active",
+    "publisherServiceResult": "success",
+    "resumeRequired": false
+  },
+  "finalHttp": {
+    "status": "passed",
+    "total": 8,
+    "passed": 8,
+    "results": [
+      {
+        "path": "/cs/hll",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/en/hll",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/cs/wardogs",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/en/wardogs",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/cs/hll/matches/211",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/cs/hll/servers",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/api/health/ready",
+        "status": 200,
+        "pass": true
+      },
+      {
+        "path": "/api/health/live",
+        "status": 200,
+        "pass": true
+      }
+    ],
+    "limitation": "Post-alias-switch anonymous reachability; detailed media/privacy/semantic acceptance is bound in the preceding full verifier report."
+  },
+  "unrelatedRuntimeComparison": {
+    "status": "passed",
+    "baselineObservedAt": "2026-09-29T12:53:35.550319Z",
+    "currentObservedAt": "2026-09-29T14:58:44.663499Z",
+    "compared": 26,
+    "unchanged": 26,
+    "missing": 0,
+    "changed": 0,
+    "unexpectedAdded": 0,
+    "ownedMaintenanceContainersStopped": 24,
+    "ownedMaintenanceContainersRunning": 0,
+    "limitation": "Point-in-time Docker property comparison of unrelated containers, not a test of their application behavior, traffic, storage, host services or intervening history. Container identities are omitted."
+  },
+  "runtimeBoundaries": {
+    "authenticationEnabled": false,
+    "logiIntegrationEnabled": false,
+    "logiEvidence": "Coordinating operator confirmation at acceptance; no Logi enablement is claimed.",
+    "legacyDomainRoutingChanged": false,
+    "legacyDomain": "valkyriahll.cz remains the legacy site",
+    "unrelatedProviderOrServerControlPerformed": false
+  },
+  "limitations": [
+    "Full HTTP/image/privacy and inspected browser proof precede the final alias recreation; the later eight-request smoke proves anonymous reachability after that recreation.",
+    "No live SSO, Discord role synchronization, authenticated editorial workflow or Logi integration acceptance is included.",
+    "The fresh database dump was not restore-tested; do not relabel the accepted prior paired backup restoration as restoration of the later dump.",
+    "Rollback to the previous reader requires its matching pre-import database and media; image-only rollback is not established as safe.",
+    "Production editorial captures are real content and viewport emulation, not physical-device or complete accessibility verification."
+  ]
+}
