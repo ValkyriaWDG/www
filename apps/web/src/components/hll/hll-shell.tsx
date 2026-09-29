@@ -8,9 +8,10 @@ import { LanguageSwitcher } from '@/components/shell/language-switcher';
 import { MobileMenu } from '@/components/shell/mobile-menu';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { ExternalIcon } from '@/components/ui/icons';
+import strip from '@/components/shell/header.module.css';
 import { getHllClipSet } from '@/lib/hll-media';
 import { gameMenu, gamePath } from '@/modules/games/routes';
-import emblem from '../../../public/brand/valkyria-emblem-733.webp';
+import mark from '../../../public/brand/valkyria-mark-132.webp';
 import { HllFrame } from './hll-frame';
 import { CinematicStage, CinematicStageControls } from './cinematic-stage';
 import { HllMenu, type HllMenuItem } from './hll-menu';
@@ -23,9 +24,10 @@ export async function getHllMenuItems(): Promise<HllMenuItem[]> {
 }
 
 /**
- * HLL section frame (docs/design/hll/visual-spec.md §4): shared masthead with the
- * Valkyria crest and the `Hell Let Loose` division label on the left, community link,
- * game switch, language and account on the right; a persistent fullscreen media scene; a
+ * HLL section frame (docs/design/hll/visual-spec.md §4): the Wardogs top strip (same
+ * classes, height, crest, controls and breakpoints; HLL colours) with the Valkyria crest
+ * and the `Hell Let Loose` division label on the left, community link, game switch,
+ * language and account on the right; a persistent fullscreen media scene; a
  * compact section bar with `Main menu` on content pages (a disclosure below 768 px); page
  * content; and a quiet utility footer. One website session serves every section.
  */
@@ -48,47 +50,46 @@ export async function HllShell({ account, children }: { account: ShellAccount; c
         <a className="skip-link" href="#main-content">
           {common('a11y.skipToContent')}
         </a>
-        <header className={styles.masthead} data-hll-masthead="">
-          <GuardedLink href={gamePath('hll')} className={styles.identity} data-hll-identity="">
-            <Image src={emblem} alt="" className={styles.crest} sizes="64px" priority />
+        <header className={`${strip.header} ${styles.masthead}`} data-hll-masthead="">
+          <GuardedLink href={gamePath('hll')} className={`${strip.brand} ${styles.identity}`} data-hll-identity="">
+            <Image src={mark} alt="" className={strip.brandMark} sizes="44px" priority />
             <span className={styles.identityText}>
               <span className={styles.clanName}>{t('clanName')}</span>
               <span className={styles.division}>{t('division')}</span>
               <span className="visually-hidden"> – {t('mainMenu')}</span>
             </span>
           </GuardedLink>
-          <div className={styles.controls}>
-            <GuardedLink href="/" className={styles.communityLink} data-hll-community-link="">
+          <span className={strip.divider} aria-hidden="true" />
+          <div className={strip.tools}>
+            <GuardedLink href="/" className={strip.communityLink} data-hll-community-link="">
               {t('communityLink')}
             </GuardedLink>
-            <div className={styles.gameSlot}>
-              <GameSwitch />
+            <div className={strip.gameSlot}>
+              <GameSwitch variant="bar" />
             </div>
             <LanguageSwitcher />
-            <div className={styles.accountSlot}>
+            <div className={strip.accountSlot}>
               <AccountSlot account={account} />
             </div>
           </div>
-          <div className={styles.mobileTrigger}>
-            <MobileMenu label={common('nav.menu')}>
-              <HllMenu items={items} label={t('menuLabel')} variant="stack" mainMenu={mainMenu} />
-              <ul className={styles.mobileLinks}>
-                {mobileAccount.map((link) => (
-                  <li key={link.key}>
-                    <GuardedLink href={link.href} className={styles.mobileLink} data-mobile-link={link.key}>
-                      {link.label}
-                    </GuardedLink>
-                  </li>
-                ))}
-                <li>
-                  <GuardedLink href="/" className={styles.mobileLink} data-mobile-link="community">
-                    {t('communityLink')}
+          <MobileMenu label={common('nav.menu')}>
+            <HllMenu items={items} label={t('menuLabel')} variant="stack" mainMenu={mainMenu} />
+            <ul className={styles.mobileLinks}>
+              {mobileAccount.map((link) => (
+                <li key={link.key}>
+                  <GuardedLink href={link.href} className={styles.mobileLink} data-mobile-link={link.key}>
+                    {link.label}
                   </GuardedLink>
                 </li>
-              </ul>
-            </MobileMenu>
-          </div>
-          <div className={styles.mobileGame}>
+              ))}
+              <li>
+                <GuardedLink href="/" className={styles.mobileLink} data-mobile-link="community">
+                  {t('communityLink')}
+                </GuardedLink>
+              </li>
+            </ul>
+          </MobileMenu>
+          <div className={strip.mobileGame}>
             <GameSwitch variant="stack" />
           </div>
         </header>

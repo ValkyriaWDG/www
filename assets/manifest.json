@@ -3108,6 +3108,105 @@
       "bytes": 300186,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-before-hll-cs-1920",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/before-hll-cs-1920.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at main bca20bb (before the change); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9f9e91f00400096f2e50f94dcd2d3e74fe395c2d2a4ffc3932c820c68d862321",
+      "bytes": 8814,
+      "width": 1920,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-after-hll-cs-1920",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/after-hll-cs-1920.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at bd59ddd; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d11e5f8a91aef768574be07a394f80c5b891606da4af3bdf9fd601de1baf3399",
+      "bytes": 8910,
+      "width": 1920,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-wardogs-cs-1920",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/wardogs-cs-1920.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at bd59ddd; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "3b94f0c62954303379e1c3531acf9f31db04b6f1f02e71075828f3dd1d968fe4",
+      "bytes": 8774,
+      "width": 1920,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-before-hll-news-cs-1024",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/before-hll-news-cs-1024.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at main bca20bb (before the change); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4bb9303e383865275209ec1784c1e77c38f4a338a3ab210274d15df61b50f509",
+      "bytes": 9632,
+      "width": 1024,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-after-hll-news-cs-1024",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/after-hll-news-cs-1024.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at bd59ddd; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "29b6cf32b78652b85c1a5b2f056ff35103d92d755830dae5cafed3bd46707fa0",
+      "bytes": 8942,
+      "width": 1024,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-wardogs-news-cs-1024",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/wardogs-news-cs-1024.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at bd59ddd; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "69c373e2390dad2349fe96d1ce9a9c52b1c1f3b4a7c24b894ebea1b844a620eb",
+      "bytes": 7264,
+      "width": 1024,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-before-hll-news-cs-390",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/before-hll-news-cs-390.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at main bca20bb (before the change); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "e226bcacd04d72b413edb87c9a772e3aa7c5b0b13744ade481d1f0daaad488ba",
+      "bytes": 4408,
+      "width": 390,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-after-hll-news-cs-390",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/after-hll-news-cs-390.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at bd59ddd; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d4045a8bab6712995d0b4dafb30bd03812743478aa43e29a54380e33eb287c84",
+      "bytes": 5266,
+      "width": 390,
+      "height": 200
+    },
+    {
+      "id": "hll-strip-2026-09-29-strip-wardogs-news-cs-390",
+      "path": "docs/evidence/hll-strip-2026-09-29/strip/wardogs-news-cs-390.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, synthetic stage clip configured, not played; top 200 px) at bd59ddd; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "88bbf7a846004928a86e6167db211b2ef382c9144ac30bc4a07aac7264c0275f",
+      "bytes": 5072,
+      "width": 390,
+      "height": 200
     }
   ]
 }

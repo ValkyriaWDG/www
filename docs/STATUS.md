@@ -297,6 +297,11 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   replaces it ([evidence](evidence/hll-crest-2026-09-29/README.md)). PR #61 merged as
   `1efdf09`; exact-main [CI 36548677606](https://github.com/ValkyriaWDG/www/actions/runs/36548677606)
   passed. Not deployed; no migration.
+- **Top strip:** HLL renders the Wardogs strip classes (height, crest, game switch,
+  language, account, community link, breakpoints, phone layout) in HLL colours, so nothing
+  in the strip moves or resizes when switching games; `platform.spec.ts` requires equal
+  boxes on both games' landings, news pages and the hub at 1920/1366/1024/390 px
+  ([evidence](evidence/hll-strip-2026-09-29/README.md)). Not deployed; no migration.
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
