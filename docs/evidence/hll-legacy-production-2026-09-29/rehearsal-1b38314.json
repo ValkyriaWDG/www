@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Isolated PostgreSQL 15 production-backup restore, reviewed archive import and paired previous-image rollback rehearsal",
+  "startedAtUtc": "2026-09-29T14:26:29.554414Z",
+  "finishedAtUtc": "2026-09-29T14:33:18.980166Z",
+  "identity": {
+    "candidateRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+    "candidateReference": "majorluk/valkyria-www@sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+    "candidateOciIndexDigest": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+    "previousRevision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+    "previousReference": "majorluk/valkyria-www@sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b",
+    "postgresImageId": "sha256:fceb6f86328c36f2438fae3b851b0cc57c4a7e69a58c866d9ce24281f2cf0c9c",
+    "bundleSha256": "7d3151b895607f4c3ec8e8d7c91acf9b101cf0a067d2df3277e0f451d4ee48fe",
+    "identityNote": "Candidate and previous references identify immutable published digests; no rehearsal resource names or live production container identity are included."
+  },
+  "protectedEvidence": {
+    "resultReportSha256": "dc654f8ba5ec721192580f4b436ba2b4acfefe000e475f8788209c3c9b97efd6",
+    "resultReportBytes": 12805,
+    "heldCaptureReportSha256": "a00f3ed0d96b7f5d3c8770de826ba4fd32a4e6e2665fdb0e921409356338d76d",
+    "databaseBackupSha256": "e8eb37781e00de8b9b6787390d875f8581153cdc91c8dd9d2283ad09ebb6d68a",
+    "editorialBackupSha256": "3fcf400eef619d173303f889273853e04e5283da0c5aef7e4a9dc7fb7853e0ad",
+    "snapshotHashAlgorithm": "Canonical fingerprint: UTF-8 JSON with sorted keys, compact separators, ensure_ascii=false. File hashes identify the actual original bytes and are separate.",
+    "snapshots": {
+      "restored-candidate": {
+        "fileSha256": "3367671ed8ac8fa35c51c6d95640728ef4b36a3f521660c2e0a87f15419181ba",
+        "canonicalJsonSha256": "8b2f01632ccae5d5446a2be77c4ea01393226c7cde8bb59493a6c28ca2582f3c"
+      },
+      "restored-rollback": {
+        "fileSha256": "3367671ed8ac8fa35c51c6d95640728ef4b36a3f521660c2e0a87f15419181ba",
+        "canonicalJsonSha256": "8b2f01632ccae5d5446a2be77c4ea01393226c7cde8bb59493a6c28ca2582f3c"
+      },
+      "migrated": {
+        "fileSha256": "abf20369b809725b69fde73df1f0839b35b7a529ee8fd6834280bce16eae8c45",
+        "canonicalJsonSha256": "a59fbd7d6b134f2eefb430c117b36960783f685457ba7fd35e851ad72756840a"
+      },
+      "migration-noop": {
+        "fileSha256": "abf20369b809725b69fde73df1f0839b35b7a529ee8fd6834280bce16eae8c45",
+        "canonicalJsonSha256": "a59fbd7d6b134f2eefb430c117b36960783f685457ba7fd35e851ad72756840a"
+      },
+      "seeded": {
+        "fileSha256": "cc1e69c4f44e949814666fe5a67e838f6a74dce2181a9d844baa97fd2d225bd3",
+        "canonicalJsonSha256": "edb0584e593897c8b2025162dbac8cc037166a0b3c58fb927025d92f241b84f3"
+      },
+      "dry-noop": {
+        "fileSha256": "cc1e69c4f44e949814666fe5a67e838f6a74dce2181a9d844baa97fd2d225bd3",
+        "canonicalJsonSha256": "edb0584e593897c8b2025162dbac8cc037166a0b3c58fb927025d92f241b84f3"
+      },
+      "import-applied": {
+        "fileSha256": "d0089dae01a070f3c6c4af1979bcf2ef082b0a35ac77b64214008c7cff7ec5e8",
+        "canonicalJsonSha256": "a5f9521c9f26ae9aff928c7a65989a26168a511d23ad87c53aa283f905cdfea1"
+      },
+      "import-rerun": {
+        "fileSha256": "d0089dae01a070f3c6c4af1979bcf2ef082b0a35ac77b64214008c7cff7ec5e8",
+        "canonicalJsonSha256": "a5f9521c9f26ae9aff928c7a65989a26168a511d23ad87c53aa283f905cdfea1"
+      },
+      "candidate-after-http": {
+        "fileSha256": "d0089dae01a070f3c6c4af1979bcf2ef082b0a35ac77b64214008c7cff7ec5e8",
+        "canonicalJsonSha256": "a5f9521c9f26ae9aff928c7a65989a26168a511d23ad87c53aa283f905cdfea1"
+      },
+      "rollback-before-start": {
+        "fileSha256": "3367671ed8ac8fa35c51c6d95640728ef4b36a3f521660c2e0a87f15419181ba",
+        "canonicalJsonSha256": "8b2f01632ccae5d5446a2be77c4ea01393226c7cde8bb59493a6c28ca2582f3c"
+      },
+      "rollback-after-http": {
+        "fileSha256": "3367671ed8ac8fa35c51c6d95640728ef4b36a3f521660c2e0a87f15419181ba",
+        "canonicalJsonSha256": "8b2f01632ccae5d5446a2be77c4ea01393226c7cde8bb59493a6c28ca2582f3c"
+      }
+    }
+  },
+  "sourceCapture": {
+    "capturedAtUtc": "2026-09-29T13:21:04Z",
+    "tableCount": 29,
+    "mediaFileCount": 0,
+    "automationHeld": true,
+    "previousWebReadyAfterCapture": true
+  },
+  "databaseIsolation": {
+    "postgresVersionNum": 150017,
+    "applicationRole": {
+      "super": false,
+      "createdb": false,
+      "createrole": false,
+      "replication": false,
+      "bypassrls": false,
+      "inherit": true,
+      "canlogin": true
+    },
+    "internalNetwork": true,
+    "publishedPorts": 0
+  },
+  "verifiedStages": {
+    "bundleStaging": {
+      "files": 354,
+      "allDeclaredFilesHashVerified": true,
+      "readOnlyMount": true
+    },
+    "baselineRestore": {
+      "candidateAndPreviousCopiesMatchCapturedDatabaseAndMedia": true
+    },
+    "migrations": {
+      "baselineCount": 5,
+      "applied": 4,
+      "total": 9,
+      "repeatApplied": 0,
+      "repeatDatabaseAndMediaUnchanged": true
+    },
+    "seed": {
+      "completed": true
+    },
+    "dryRun": {
+      "counts": {
+        "media:create": 219,
+        "media:skipped": 27,
+        "tournament:create": 8,
+        "news:create": 12,
+        "manual:create": 8,
+        "page:adopt": 2,
+        "match:create": 205
+      },
+      "databaseAndMediaUnchanged": true
+    },
+    "apply": {
+      "counts": {
+        "media:create": 219,
+        "media:skipped": 27,
+        "tournament:create": 8,
+        "news:create": 12,
+        "manual:create": 8,
+        "page:adopt": 2,
+        "match:create": 205
+      }
+    },
+    "replay": {
+      "counts": {
+        "media:unchanged": 219,
+        "media:skipped": 27,
+        "tournament:unchanged": 8,
+        "news:unchanged": 12,
+        "manual:unchanged": 8,
+        "page:unchanged": 2,
+        "match:unchanged": 205
+      },
+      "databaseAndMediaUnchanged": true
+    },
+    "importedAudit": {
+      "entities": {
+        "media": 219,
+        "page": 2,
+        "match": 205,
+        "news": 12,
+        "tournament": 8,
+        "manual": 8
+      },
+      "primaryScoreboards": 131,
+      "additionalRounds": 3,
+      "unknownSides": 21,
+      "verifiedGameLinks": 1,
+      "editorialResultsPreserved": 202,
+      "privatePlayerFieldsAbsent": true,
+      "identityTablesUnchanged": true,
+      "storedWebpVariants": 438
+    },
+    "candidateHttp": {
+      "total": 680,
+      "passed": 680,
+      "statusCounts": {
+        "200": 647,
+        "404": 33
+      },
+      "protectedReportSha256": "1d355c46d6ed7f831fbc353f86a33890dba6f020f6a7b0e21adeb51bacb84049",
+      "media": {
+        "total": 438,
+        "public200": 408,
+        "expectedPrivateOrUnreferenced404": 30,
+        "allPublicResponsesNonemptyWebp": true
+      },
+      "databaseAndMediaUnchangedAfterRequests": true
+    },
+    "candidateReadiness": {
+      "total": 1,
+      "passed": 1,
+      "statusCounts": {
+        "200": 1
+      },
+      "protectedReportSha256": "c1f464300f8965761fac1fa54d175cd8749bc96a1ca27df6c74942f818dfc6d3"
+    },
+    "pairedRollback": {
+      "baselineDatabaseAndMediaRestored": true,
+      "beforeAndAfterRequestsMatchCapturedBaseline": true,
+      "http": {
+        "total": 5,
+        "passed": 5,
+        "statusCounts": {
+          "200": 5
+        },
+        "protectedReportSha256": "4a624839609a6cbfbc253f2637c06137ed753801cd652839a429163b49064bd4"
+      },
+      "readiness": {
+        "total": 1,
+        "passed": 1,
+        "statusCounts": {
+          "200": 1
+        },
+        "protectedReportSha256": "c1f464300f8965761fac1fa54d175cd8749bc96a1ca27df6c74942f818dfc6d3"
+      },
+      "scope": "Previous reader started against its matching restored pre-import database/media pair, not the migrated imported database."
+    }
+  },
+  "cleanup": {
+    "ownedContainers": 11,
+    "stoppedContainers": 11,
+    "resourcesDeleted": false
+  },
+  "productionBoundary": {
+    "productionOperationsPerformedByRehearsal": false,
+    "productionMigrationAcceptance": "pending",
+    "productionPublicHttpAndBrowserAcceptance": "pending",
+    "channelPromotionPerformed": false,
+    "legacyDnsCutoverPerformed": false
+  },
+  "limitations": [
+    "Rehearsal HTTP checks are private aggregate evidence; they are not browser screenshots, visual review or a live CRCON authorization test.",
+    "The source backup contained no editorial media files. Candidate import created 438 variants; expected anonymous visibility is 408 HTTP 200 and 30 HTTP 404, not 438 public responses.",
+    "Candidate totals include 33 expected HTTP 404 responses (30 media and 3 other cases); all matched their explicit expectations.",
+    "No raw source records, private provider addresses, host paths, resource names, player names/IDs or credentials are published.",
+    "This result qualifies the specified backup pair, candidate and reviewed bundle. Any later production maintenance backup and live acceptance require their own lineage and verification."
+  ]
+}

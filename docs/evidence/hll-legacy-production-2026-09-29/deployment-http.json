@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Production GET route, referenced image, approved-provider privacy and health verification",
+  "origin": "https://valkyria.cz",
+  "candidateRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+  "candidateOciIndexDigest": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+  "bundleSha256": "7d3151b895607f4c3ec8e8d7c91acf9b101cf0a067d2df3277e0f451d4ee48fe",
+  "observationWindow": {
+    "startedAt": "2026-09-29T14:52:08.369Z",
+    "finishedAt": "2026-09-29T14:53:58.961Z"
+  },
+  "evidence": {
+    "protectedDeploymentReportSha256": "17375fc25241fb523913df2c4cb65dc97e4e39bedde53ea8f5caad74b24d1fc7",
+    "protectedHealthReportSha256": "b6a99b649b8df299a4224a0ae4085172b652f85696b09e303ae5a4053861569c",
+    "protectedAcceptanceProofSha256": "b4f38747ed584d19d897780a3dbfa95d4e35d65712078a21417de1933478d9ae",
+    "maintenanceRecordSha256": "d90119a4e8df50bd390459213bca59ee4f4573ef2b3d62275ea5908b2b7af1fd",
+    "identityBinding": "Health report and reviewed proof bind the candidate revision/digest to the same maintenance record; the proof hashes match the exact deployment and health report bytes."
+  },
+  "policy": {
+    "readOnlyGet": true,
+    "concurrency": 3,
+    "timeoutMs": 20000,
+    "sameOriginOnly": true,
+    "redirectsFollowed": false,
+    "rawBodiesStored": false,
+    "playerNamesStored": false
+  },
+  "http": {
+    "total": 929,
+    "passed": 929,
+    "groups": {
+      "reviewed-267": {
+        "total": 267,
+        "passed": 267
+      },
+      "numeric-aliases": {
+        "total": 615,
+        "passed": 615
+      },
+      "surfaces": {
+        "total": 40,
+        "passed": 40
+      },
+      "redirects": {
+        "total": 3,
+        "passed": 3
+      },
+      "live-servers": {
+        "total": 4,
+        "passed": 4
+      }
+    }
+  },
+  "publishedReferencedImages": {
+    "discoveredUniqueUrls": 371,
+    "tested": 371,
+    "passed": 371,
+    "cmsVariantsTested": 362,
+    "allResponsesStatus200": true,
+    "allBodiesNonemptyImages": true,
+    "allDecodedDimensionsPositive": true,
+    "excludedReferenceCounts": {
+      "external": 0,
+      "inline": 0,
+      "unsupportedRoute": 565
+    },
+    "scope": "img references on the 929-case route set were inspected, including all imported details; unvisited existing pages, CSS backgrounds, unreferenced/archived-only assets and external images are not assumed public. This does not require all 438 stored variants to be anonymously public. Private-media denial is covered separately by the rehearsal SQL/HTTP checks."
+  },
+  "approvedLiveServerChecks": {
+    "queries": 2,
+    "passed": 2,
+    "distinctApprovedSelections": 2,
+    "configuredSourcesPerResponse": 2,
+    "privacyChecksPassed": true,
+    "zeroPlayersAcceptedAsValid": true
+  },
+  "health": {
+    "startedAt": "2026-09-29T14:53:27.535Z",
+    "finishedAt": "2026-09-29T14:53:27.781Z",
+    "total": 2,
+    "passed": 2,
+    "checks": [
+      {
+        "path": "/api/health/live",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "jsonPassed": true,
+        "noStorePassed": true,
+        "validatedStatus": "ok"
+      },
+      {
+        "path": "/api/health/ready",
+        "status": 200,
+        "expected": 200,
+        "pass": true,
+        "jsonPassed": true,
+        "noStorePassed": true,
+        "validatedStatus": "ready",
+        "validatedChecks": {
+          "config": "ok",
+          "database": "ok",
+          "schema": "ok",
+          "media": "ok"
+        }
+      }
+    ]
+  },
+  "privateBrowser": {
+    "status": "passed",
+    "captures": 5,
+    "pageErrors": 0,
+    "imagesPublished": 0,
+    "scope": "Private browser evidence was inspected by the task owner agent; only separate approved editorial captures are published."
+  },
+  "finalProductionAcceptance": "This report records the pre-channel candidate checks. Final production acceptance is recorded separately in production.json.",
+  "limitations": [
+    "929 checks are planned observations, not 929 unique pages; route groups include explicit legacy aliases and expected redirects/denials.",
+    "The 371 discovered image URLs include 362 CMS variants. This does not imply all 438 stored media variants are public; archived, unreferenced and CSS assets are outside this discovery contract.",
+    "Results reflect the recorded observation window; ongoing provider availability is not guaranteed by this snapshot.",
+    "No player names, provider addresses, selected server identifiers, raw response bodies or private artifact paths are published.",
+    "Successful public verification and private proof assembly do not by themselves prove channel promotion or resumed automation."
+  ]
+}
