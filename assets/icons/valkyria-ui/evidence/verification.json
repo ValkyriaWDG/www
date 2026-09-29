@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-29T15:18:29.458Z",
+  "scope": "Offline original SVG asset safety, geometry and actual contact-sheet rendering only.",
+  "source": {
+    "state": "working-tree-assets",
+    "baseRevision": "4f4f3896ce673d34021d3c905d126799befb21fb",
+    "catalogSha256": "a1338e644943e3ad48677f83cb0b3698b068d2526b827085b4bd52f54f0fe87a",
+    "contactSheetSha256": "89f578de87e7c8fdd79a001a6207172baa9e8eb50f17313d9c7c80e95de6b105",
+    "verifierSha256": "d8b9e65b7df16f5f234b3151391dba13385d32376123a27947d50c607343e913"
+  },
+  "browser": {
+    "name": "Chromium",
+    "version": "153.0.8010.12",
+    "playwrightVersion": "1.63.0",
+    "deviceScaleFactor": 1
+  },
+  "result": "passed",
+  "iconsValidated": 16,
+  "renderedSamples": 128,
+  "checks": [
+    "SHA-256 and bytes",
+    "Strict XML and permitted passive geometry",
+    "Exact preview/source geometry",
+    "Positive in-viewBox bounds",
+    "No page errors",
+    "No external HTTP requests",
+    "No horizontal overflow at both viewports",
+    "PNG capture under 5 MiB each"
+  ],
+  "geometry": [
+    {
+      "id": "members",
+      "bounds": {
+        "x": 2.5,
+        "y": 5,
+        "width": 19,
+        "height": 16
+      }
+    },
+    {
+      "id": "match",
+      "bounds": {
+        "x": 4,
+        "y": 3,
+        "width": 16,
+        "height": 18
+      }
+    },
+    {
+      "id": "trophy",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "server",
+      "bounds": {
+        "x": 3,
+        "y": 4,
+        "width": 18,
+        "height": 16
+      }
+    },
+    {
+      "id": "manual",
+      "bounds": {
+        "x": 3,
+        "y": 3.3431458473205566,
+        "width": 18,
+        "height": 16.6568546295166
+      }
+    },
+    {
+      "id": "calendar",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "filter",
+      "bounds": {
+        "x": 3,
+        "y": 4,
+        "width": 18,
+        "height": 17
+      }
+    },
+    {
+      "id": "refresh",
+      "bounds": {
+        "x": 3,
+        "y": 2.4808542728424072,
+        "width": 18,
+        "height": 19.038293838500977
+      }
+    },
+    {
+      "id": "copy",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "settings",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "upload",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "preview",
+      "bounds": {
+        "x": 2,
+        "y": 5,
+        "width": 20,
+        "height": 14
+      }
+    },
+    {
+      "id": "save",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "history",
+      "bounds": {
+        "x": 3,
+        "y": 3.6410434246063232,
+        "width": 17.230602264404297,
+        "height": 18.000001907348633
+      }
+    },
+    {
+      "id": "edit",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "id": "delete",
+      "bounds": {
+        "x": 3,
+        "y": 3,
+        "width": 18,
+        "height": 18
+      }
+    }
+  ],
+  "captures": [
+    {
+      "file": "evidence/contact-sheet-desktop.png",
+      "width": 1440,
+      "height": 1614,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "bytes": 153291,
+      "sha256": "f3849723ec56bf4db16c75bf50bdc56ee87d0886ce2ce42a2f0f8bf4c5bde2c8",
+      "caption": "Actual local Chromium capture of the offline icon contact sheet at 1440px viewport; original SVGs at 16/20/24/32px on dark/light surfaces. English labels and Czech glossary. Not an integrated website screenshot."
+    },
+    {
+      "file": "evidence/contact-sheet-mobile.png",
+      "width": 390,
+      "height": 5467,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bytes": 194105,
+      "sha256": "0efa3b260b4e4167f3e787256432e23c28a4988ad38bf87468716617bec02679",
+      "caption": "Actual local Chromium capture of the offline icon contact sheet at 390px viewport; original SVGs at 16/20/24/32px on dark/light surfaces. English labels and Czech glossary. Not an integrated website screenshot."
+    }
+  ],
+  "limitations": [
+    "Does not test website integration, locale routes, focus/authorization or live content.",
+    "Geometry bounds exclude stroke joins; visual review remains necessary.",
+    "The base revision excludes new working-tree assets; catalog/source digests identify the actual reviewed input."
+  ]
+}

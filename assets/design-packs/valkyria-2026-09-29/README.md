@@ -3,6 +3,22 @@
 Owner-supplied `VALKYRIA-GRAFIKA-KOMPLET.zip`, received 2026-09-29. This is a
 **design-source handoff**, not a runtime import or implementation acceptance.
 
+## Current selection uses corrected exports
+
+Start with [branded/README.md](branded/README.md) and
+[branded/catalog.json](branded/catalog.json). All 340 original branded compositions
+have separate corrected replacements using the actual Valkyria crest and official
+game marks. The catalog classifies every original visual as a replacement, retained
+clean source or archive-only reference. Its selection decisions supersede the old
+branded previews. The 497-file original archive below is unchanged.
+
+See the [brand-correction guide](../../../docs/assets/brand-correction-2026-09-29.md)
+and [interface icon handoff](../../../docs/assets/icon-handoff.md). Continue the
+existing PR #70 implementation without overwriting concurrent work. These source
+assets do not replace the owner-selected PR #69 hub cover or prove app integration.
+
+## Preserved original inventory
+
 - Original archive: **245,357,125 bytes**, SHA256
   `b4fe3e080cecf2cac9c3f10d26198d2b367d353a42187433344059d19465574b`.
 - **497 original files / 259,585,695 uncompressed bytes**, all accounted for.

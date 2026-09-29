@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "game": "Hell Let Loose",
+  "retrievedOn": "2026-09-29",
+  "source": {
+    "url": "https://www.hellletloose.com/game/hll",
+    "publisher": "Official Hell Let Loose website",
+    "location": "Main navigation logo link; .navbar .logo a > svg",
+    "delivery": "Inline SVG extracted from the public HTML response; the URL is the source page, not a standalone SVG download.",
+    "footerNotice": "Copyright Team17 Digital Limited 2026"
+  },
+  "rights": {
+    "classification": "Third-party game artwork and trademark",
+    "intendedUse": "Owner-requested identification of Hell Let Loose on the independent Valkyria community website.",
+    "licenseEvidence": "No explicit general redistribution or open-source artwork license established from the inspected source page.",
+    "codeLicenseApplies": false,
+    "endorsementClaimed": false
+  },
+  "assets": [
+    {
+      "path": "hell-let-loose-official-inline-source.svg",
+      "role": "provenance-source",
+      "mediaType": "image/svg+xml",
+      "bytes": 6515,
+      "sha256": "d3d817c150e30c7f9e762fa7c800c5dca1e3e1d15d9eb2514ab67bef311886cf",
+      "width": 424,
+      "height": 78,
+      "transparent": true,
+      "transformations": [
+        "Exact extracted inline svg element; no geometry or style changes."
+      ]
+    },
+    {
+      "path": "hell-let-loose-fullmark-white.svg",
+      "role": "runtime-source",
+      "mediaType": "image/svg+xml",
+      "bytes": 6515,
+      "sha256": "36f7d36f23ad3b5fd7b8d9fa7b6bb8590be5086a132580c31bb2bfe98f0810d2",
+      "width": 424,
+      "height": 78,
+      "transparent": true,
+      "derivedFrom": "hell-let-loose-official-inline-source.svg",
+      "transformations": [
+        "Normalize the root viewbox attribute to viewBox for standalone SVG rendering. No other byte changes."
+      ]
+    }
+  ],
+  "validation": {
+    "inspectedOn": "2026-09-29",
+    "elements": [
+      "svg",
+      "path"
+    ],
+    "pathCount": 34,
+    "externalReferences": false,
+    "activeContent": false,
+    "rasterAlphaRange": [
+      0,
+      255
+    ],
+    "visualInspection": "Rendered the normalized SVG at 1272 px wide and inspected the actual image. The white emblem and complete HELL LET LOOSE wordmark are present on a transparent background.",
+    "scope": "Asset inspection only. No website implementation, browser integration, deployment, or trademark permission verification is implied."
+  }
+}

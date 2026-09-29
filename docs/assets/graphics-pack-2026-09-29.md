@@ -1,13 +1,33 @@
 # Complete graphics pack: implementation catalog
 
-The owner supplied a complete graphics ZIP for Claude Code to integrate in a later
-implementation. This PR archives and verifies it; it does not alter public pages,
+The owner supplied a complete graphics ZIP for Claude Code to integrate. This
+handoff preserves the archive and adds a separate brand-corrected export tree;
+the asset delivery does not alter public pages,
 CMS records or production. All original files are recoverable from the repository
 without the owner's PC, a cloud conversation or a download token.
 
 Start with the [pack README](../../assets/design-packs/valkyria-2026-09-29/README.md),
 [complete inventory](../../assets/design-packs/valkyria-2026-09-29/inventory.json) and
 [Claude handoff](../handoff/graphics-claude-code-cloud.md).
+
+## Current selection: corrected branding
+
+The [brand correction](brand-correction-2026-09-29.md) and
+[branded/catalog.json](../../assets/design-packs/valkyria-2026-09-29/branded/catalog.json)
+are authoritative for asset selection. They replace all **340 branded exports**
+(240 HLL map compositions and 100 editorial/Discord compositions) with native SVG
+layouts/raster exports using the exact clan crest and official game marks.
+All **497 originals remain intact**. The catalog classifies all 458 original visual
+files: 340 replacements, 107 retained unbranded sources and 11 archive-only references.
+Use the action for each path; do not choose an outdated branded original because
+its old preview looks convenient. Clean scenes/tactical layers remain available
+for localized runtime templates.
+
+The [official logo provenance](../../assets/brand/game-logos/README.md),
+[interface icon handoff](icon-handoff.md) and
+[browser source-sheet evidence](../evidence/graphics-brand-correction-2026-09-29/README.md)
+support the correction. Source sheets are not screenshots of an integrated app.
+Preserve the accepted PR #69 hub cover and Claude's ongoing PR #70 work.
 
 ## What is supplied
 
@@ -49,8 +69,9 @@ two editable SVGs, two source images, one tactical preview and one source JSON.
 | `tactical-preview` | 1400x1400 | On-demand preview, including in the supplied editor |
 | `source-tactical` | 4096x4096 | Original map; load only for a requested full-map view/export |
 
-The 180 finished map WebPs are already exported. No renderer/editor needs to execute
-to use them. The archive's 1920x1080 composition does not turn its embedded 718x404
+The original 180 finished map WebPs remain archived. Select their corrected
+replacement when the coverage catalog specifies one; retained unbranded layers
+stay usable. No source editor needs to execute. A 1920x1080 composition does not turn its embedded 718x404
 scene into a native FHD screenshot. Day/night and other layers share base-map artwork;
 never imply separate authentic imagery for every variant.
 
@@ -113,7 +134,7 @@ They contain local export/upload scripts and system-font assumptions. Preserve t
 as tools/reference; implement required workflows inside existing authenticated CMS
 and social-rendering boundaries with escaped text and selected trusted images.
 
-## Integrity and verification
+## Original archive integrity and verification
 
 [Fresh verification](../../assets/design-packs/valkyria-2026-09-29/verification.json)
 records safe path/CRC extraction, **496/496 supplied checksums**, **404 fully decoded
@@ -128,7 +149,7 @@ to a fresh ignored directory and refuses overwrites. Original line endings/bytes
 preserved by `.gitattributes`; all 458 image/SVG files are registered in the root
 manifest. The entire design pack is excluded by `.dockerignore`.
 
-Repository foundation checks passed for 1,921 files and all 172 foundation tests
+At the original archive-import checkpoint, foundation passed for 1,921 files and all 172 foundation tests
 passed. Four new restore regressions cover byte recovery/no source execution,
 corrupt editor parts, overwrite refusal and both levels of linked output ancestors
 without external writes. Run `node --test scripts/tests/design-pack-restore.test.mjs`

@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "packId": "valkyria-ui-2026-09-29",
+  "status": "source-handoff-not-runtime-integration",
+  "source": "Original native SVG UI geometry authored for this repository; no extracted game glyphs or third-party brand marks.",
+  "license": "Apache-2.0 (repository code license); this does not apply to the separately supplied clan or game marks.",
+  "geometry": {
+    "width": 24,
+    "height": 24,
+    "viewBox": "0 0 24 24",
+    "stroke": "currentColor",
+    "strokeWidth": 1.75,
+    "linecap": "square",
+    "linejoin": "miter",
+    "fill": "none",
+    "recommendedCssSizes": [
+      20,
+      24
+    ],
+    "reviewCssSizes": [
+      16,
+      20,
+      24,
+      32
+    ]
+  },
+  "accessibility": "Decorative glyphs paired with existing localized text. Button/link owns its accessible name, focus, state and hit area.",
+  "icons": [
+    {
+      "id": "members",
+      "file": "members.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Members",
+        "cs": "Členové"
+      },
+      "meaning": "Member roster and community people; not a rank or team count.",
+      "bytes": 361,
+      "sha256": "df4d128ab1a21614c6dd8dae1bdd418ad85ab678be26df51545994c50bad882a"
+    },
+    {
+      "id": "match",
+      "file": "match.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Matches",
+        "cs": "Zápasy"
+      },
+      "meaning": "Scheduled fixture or match list; never implies a win.",
+      "bytes": 290,
+      "sha256": "fcfe1e1553ad7b960f602956eaa32132bae1bdaed9fa95641fc913905e4aa78a"
+    },
+    {
+      "id": "trophy",
+      "file": "trophy.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Tournaments",
+        "cs": "Turnaje"
+      },
+      "meaning": "Competition or tournament destination; not proof of a clan trophy.",
+      "bytes": 345,
+      "sha256": "49697d0379bf1fbde6a58699857c449b37256d0855e7e831ea30e2b7604949a1"
+    },
+    {
+      "id": "server",
+      "file": "server.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Servers",
+        "cs": "Servery"
+      },
+      "meaning": "Configured server list; not reachability or live population.",
+      "bytes": 362,
+      "sha256": "1748fdbaa7bddd9eb323f02b9dd667fcbb970387fdffe4c9b2701a99ce1de79b"
+    },
+    {
+      "id": "manual",
+      "file": "manual.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Field manual",
+        "cs": "Polní příručka"
+      },
+      "meaning": "Published field manual articles and categories.",
+      "bytes": 341,
+      "sha256": "65f61452d19ecd1d2ee9c508ef14b270221e36f4ebcabc55e41259a17f0ec1b1"
+    },
+    {
+      "id": "calendar",
+      "file": "calendar.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Schedule",
+        "cs": "Plánování"
+      },
+      "meaning": "Fixture date or publication schedule; does not encode a date or timezone.",
+      "bytes": 333,
+      "sha256": "23d415ed034d482730167698e1875fd39212faf67d658c1fa6032b9763a4d993"
+    },
+    {
+      "id": "filter",
+      "file": "filter.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Filter",
+        "cs": "Filtr"
+      },
+      "meaning": "Existing list filters; preserve filter state and visible labels.",
+      "bytes": 272,
+      "sha256": "b24e45d63e1b104e55f1720279c8f35a27747f7e2286d86a349f750cf14b5d16"
+    },
+    {
+      "id": "refresh",
+      "file": "refresh.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Refresh",
+        "cs": "Obnovit"
+      },
+      "meaning": "Refresh an existing observation or reload; not proof it succeeded.",
+      "bytes": 319,
+      "sha256": "a4981efaf735c30750c5282f96116c5774258229b10c8f2fe9df79ac0806cc87"
+    },
+    {
+      "id": "copy",
+      "file": "copy.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Copy",
+        "cs": "Kopírovat"
+      },
+      "meaning": "Copy the visible public server address; keep the existing status announcement.",
+      "bytes": 304,
+      "sha256": "9681719d573a146d5ef58846e2f82d46d70ddb435a6c625232522150a5bfa3c9"
+    },
+    {
+      "id": "settings",
+      "file": "settings.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Settings",
+        "cs": "Nastavení"
+      },
+      "meaning": "Existing authorized community settings; no permissions implied by the icon.",
+      "bytes": 336,
+      "sha256": "6e5d868b882ae4e1acd1864f8907d7c0e0471b4b37245527a4fefda9994b3b34"
+    },
+    {
+      "id": "upload",
+      "file": "upload.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Upload",
+        "cs": "Nahrát"
+      },
+      "meaning": "Choose existing supported image uploads; no new accepted MIME types.",
+      "bytes": 278,
+      "sha256": "53b5a1a6a6bfd0146b3c7e2de39263ab31979554c5248aef473c1d43ec7a802c"
+    },
+    {
+      "id": "preview",
+      "file": "preview.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Preview",
+        "cs": "Náhled"
+      },
+      "meaning": "Open the existing authorized preview; not a publication indicator.",
+      "bytes": 323,
+      "sha256": "fb0aa946199a24be9380606a0ed3ffd0dd5d6125cd216f537a4c7b18f966897e"
+    },
+    {
+      "id": "save",
+      "file": "save.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Save",
+        "cs": "Uložit"
+      },
+      "meaning": "Save the current edit through the existing action; not publish.",
+      "bytes": 295,
+      "sha256": "32427b4932a85d892f1d26aa7b3c70373d821b3d7f979e9a6da8a53031388342"
+    },
+    {
+      "id": "history",
+      "file": "history.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Revision history",
+        "cs": "Historie verzí"
+      },
+      "meaning": "Stored revision history and restore controls; not an undo shortcut.",
+      "bytes": 282,
+      "sha256": "e7a93c5ddb965d228d7725f83b59ea8faadf359533ceeb6597c02e1ec95f08e6"
+    },
+    {
+      "id": "edit",
+      "file": "edit.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Edit",
+        "cs": "Upravit"
+      },
+      "meaning": "Open the existing edit action for an authorized record.",
+      "bytes": 293,
+      "sha256": "8d51bc266596a3233eb35ca0654375431261fcd39da9c85ea0b3aa927d36a6e9"
+    },
+    {
+      "id": "delete",
+      "file": "delete.svg",
+      "width": 24,
+      "height": 24,
+      "label": {
+        "en": "Delete",
+        "cs": "Smazat"
+      },
+      "meaning": "Existing confirmed media deletion only; not archive, unpublish or cancel.",
+      "bytes": 295,
+      "sha256": "a2298eaefdfd6c784e5dd637e5f1606d7dd35274655fe24ee6c3a9e2bffa0fed"
+    }
+  ],
+  "preview": {
+    "file": "contact-sheet.html",
+    "bytes": 49276,
+    "sha256": "89f578de87e7c8fdd79a001a6207172baa9e8eb50f17313d9c7c80e95de6b105",
+    "purpose": "Offline source-asset review; not a website screenshot."
+  },
+  "captures": [
+    {
+      "file": "evidence/contact-sheet-desktop.png",
+      "width": 1440,
+      "height": 1614,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "bytes": 153291,
+      "sha256": "f3849723ec56bf4db16c75bf50bdc56ee87d0886ce2ce42a2f0f8bf4c5bde2c8",
+      "caption": "Actual local Chromium capture of the offline icon contact sheet at 1440px viewport; original SVGs at 16/20/24/32px on dark/light surfaces. English labels and Czech glossary. Not an integrated website screenshot."
+    },
+    {
+      "file": "evidence/contact-sheet-mobile.png",
+      "width": 390,
+      "height": 5467,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "bytes": 194105,
+      "sha256": "0efa3b260b4e4167f3e787256432e23c28a4988ad38bf87468716617bec02679",
+      "caption": "Actual local Chromium capture of the offline icon contact sheet at 390px viewport; original SVGs at 16/20/24/32px on dark/light surfaces. English labels and Czech glossary. Not an integrated website screenshot."
+    }
+  ]
+}

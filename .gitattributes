@@ -9,3 +9,5 @@ assets/presskit/**/*.svg binary
 # Preserve the supplied design archive byte-for-byte, including text and editor parts.
 assets/design-packs/valkyria-2026-09-29/source/** -text
 assets/design-packs/valkyria-2026-09-29/editor-parts/** -text
+# Exact official inline marks retain source digests across checkouts.
+assets/brand/game-logos/*.svg -text
