@@ -171,10 +171,10 @@ export async function getServerOverview(game: GameRoute, now: Date = new Date(),
   }
   if (results === null) return { state: 'not_configured' };
   if (results.length > 0 && results.every((result) => result.kind === 'failed')) {
-    const servers = results.flatMap((result) => {
+    const servers = results.map((result) => {
       const previous = result.kind === 'failed' ? known(result.id) : undefined;
-      const snapshot = previous ? toSnapshot(game, previous, now, source.synthetic, false) : null;
-      return snapshot && snapshot.freshness !== 'unavailable' ? [snapshot] : [];
+      // Keep configured choices selectable even before the first successful observation.
+      return previous ? toSnapshot(game, previous, now, source.synthetic, false) : unknownSnapshot(game, result);
     });
     return { state: 'unavailable', servers, attemptedAt };
   }

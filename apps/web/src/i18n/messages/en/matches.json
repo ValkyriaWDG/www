@@ -190,7 +190,11 @@
       "summary": "Summary",
       "players": "Players",
       "weapons": "Weapons"
-    }
+    },
+    "sourceLink": "Original game statistics (external site)",
+    "unassignedSide": "The historical source does not identify Valkyria’s side. Teams are shown as Allies and Axis until a verified side is selected.",
+    "roundsTitle": "Imported game rounds",
+    "round": "Round {number}"
   },
   "tournaments": {
     "meta": {

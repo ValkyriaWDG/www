@@ -178,6 +178,41 @@
     "partial": {
       "title": "Some servers are not responding right now.",
       "body": "For those we show the last known state as outdated, or an unknown state. This does not mean they are offline."
+    },
+    "refresh": {
+      "auto": "Update automatically every {seconds} seconds",
+      "now": "Refresh",
+      "loading": "Refreshing…",
+      "failed": "Refresh failed. Previous observations are marked as stale; this does not mean the game server is offline.",
+      "note": "Refreshes while this tab is visible. Manual refresh is available once every 30 seconds."
+    },
+    "livePlayers": {
+      "title": "Round player statistics",
+      "description": "A snapshot of participants in the round. It may include players who have left; it is not a connected-player roster.",
+      "observed": "Snapshot taken {time}",
+      "noTimestamp": "Snapshot time is unavailable.",
+      "synthetic": "Synthetic player data for demonstration only.",
+      "stale": "This snapshot is outdated. Values may have changed.",
+      "populationMismatch": "The status reports {connected} connected players; this round snapshot contains {rows} participants.",
+      "notConfigured": "Player statistics are not configured for this server.",
+      "unavailable": "Player statistics are unavailable. This does not mean there are no players.",
+      "empty": "This source snapshot contains no player statistics.",
+      "caption": "Round participants and scores",
+      "columns": {
+        "name": "Player",
+        "side": "Side",
+        "kills": "Kills",
+        "deaths": "Deaths",
+        "combat": "Combat",
+        "offense": "Offense",
+        "defense": "Defense",
+        "support": "Support"
+      },
+      "sides": {
+        "allies": "Allies",
+        "axis": "Axis",
+        "unknown": "Unknown"
+      }
     }
   },
   "manual": {

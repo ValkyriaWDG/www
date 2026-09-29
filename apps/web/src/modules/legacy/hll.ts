@@ -148,6 +148,8 @@ const LEGACY_SERVER_IDS = new Set(['1', '6']);
 /**
  * - `redirect`: permanent redirect to an implemented canonical route (Czech; the legacy
  *   site has no English URLs, and English is never an automatic Czech redirect).
+ * - `lookup`: an allowed detail shape; resolve its import identity against a currently
+ *   published target. A matching path alone does not prove that content is public.
  * - `pending`: a reviewed legacy URL whose destination is not built or whose content is
  *   not imported yet. It must not be redirected to Home; keep the legacy page until the
  *   destination exists.
@@ -155,6 +157,7 @@ const LEGACY_SERVER_IDS = new Set(['1', '6']);
  */
 export type LegacyResolution =
   | { kind: 'redirect'; target: string }
+  | { kind: 'lookup'; sourceKind: 'news' | 'manual' | 'page' | 'match' | 'tournament'; sourceKey: string }
   | { kind: 'pending'; proposed: string; reason: 'destination_not_built' | 'content_not_imported' | 'needs_id_alias' }
   | null;
 
@@ -169,9 +172,10 @@ function pending(proposed: string, reason: Extract<LegacyResolution, { kind: 'pe
  * articles derive their own heading anchors.
  */
 export function resolveLegacyHllPath(pathname: string, search: URLSearchParams = new URLSearchParams()): LegacyResolution {
-  const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  if (pathname.length > 160 || !pathname.startsWith('/') || pathname.includes('//') || /[\\?#%\s]/.test(pathname)) return null;
+  const path = pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname;
   const segments = path.split('/').filter(Boolean);
-  if (segments.some((segment) => !/^[a-z0-9-]+$/.test(segment)) || segments.length > 2) return null;
+  if (segments.some((segment) => segment.length > 120 || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(segment)) || segments.length > 2) return null;
   const [first, second] = segments;
 
   if (!first) return { kind: 'redirect', target: '/cs/hll' };
@@ -186,9 +190,9 @@ export function resolveLegacyHllPath(pathname: string, search: URLSearchParams =
       case 'clanky':
         return { kind: 'redirect', target: '/cs/hll/news' };
       case 'about':
-        return { kind: 'redirect', target: '/cs/clan' };
+        return { kind: 'lookup', sourceKind: 'page', sourceKey: 'about' };
       case 'faq':
-        return { kind: 'redirect', target: '/cs/hll/faq' };
+        return { kind: 'lookup', sourceKind: 'page', sourceKey: 'faq' };
       case 'events':
         return pending('/cs/hll/events', 'destination_not_built');
       case 'turnaje':
@@ -203,15 +207,14 @@ export function resolveLegacyHllPath(pathname: string, search: URLSearchParams =
 
   switch (first) {
     case 'guide':
-      // Draft shells keep the legacy slug; the redirect is enacted once each article is published.
-      return LEGACY_GUIDES.some((guide) => guide.slug === second) ? { kind: 'redirect', target: `/cs/hll/field-manual/${second}` } : null;
+      return { kind: 'lookup', sourceKind: 'manual', sourceKey: second };
     case 'clanky':
-      return LEGACY_NEWS[second] ? pending(LEGACY_NEWS[second], 'content_not_imported') : null;
+      return { kind: 'lookup', sourceKind: 'news', sourceKey: second };
     case 'matches':
-      return /^\d{1,9}$/.test(second) ? pending(`/cs/hll/matches/${second}`, 'needs_id_alias') : null;
+      return /^[1-9]\d{0,8}$/.test(second) ? { kind: 'lookup', sourceKind: 'match', sourceKey: second } : null;
     case 'turnaje':
-      // The collection exists; each record is redirected once it is imported under its legacy slug.
-      return (LEGACY_TOURNAMENTS as readonly string[]).includes(second) ? pending(`/cs/hll/tournaments/${second}`, 'content_not_imported') : null;
+    case 'tournaments':
+      return { kind: 'lookup', sourceKind: 'tournament', sourceKey: second };
     case 'zebricky':
       return LEGACY_RANKINGS[second] ? pending(`/cs/hll/leaderboards/${LEGACY_RANKINGS[second]}`, 'destination_not_built') : null;
     case 'stats':
@@ -220,4 +223,3 @@ export function resolveLegacyHllPath(pathname: string, search: URLSearchParams =
       return null;
   }
 }
-

@@ -1,7 +1,7 @@
 import { createServer, type Server, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { CrconRequestError, fetchPublicInfo, fetchScoreboard, parseCrconConfig, parsePublicInfo, type CrconServerConfig } from './crcon';
+import { CrconRequestError, crconGameUrl, fetchPublicInfo, fetchScoreboard, parseCrconConfig, parseCrconGameUrl, parsePublicInfo, type CrconServerConfig } from './crcon';
 import { syntheticPublicInfo } from './crcon-fixtures';
 
 describe('CRCON configuration', () => {
@@ -12,8 +12,8 @@ describe('CRCON configuration', () => {
     ]);
     expect(parseCrconConfig(config)).toEqual({
       servers: [
-        { publicId: 'valkyria-1', name: 'Valkyria #1', baseUrl: 'https://crcon.example.org/', address: 'play.example.org:7777', statsUrl: 'https://stats.example.org/', statsApiKey: null },
-        { publicId: 'mock', name: null, baseUrl: 'http://127.0.0.1:4010', address: null, statsUrl: null, statsApiKey: null },
+        { publicId: 'valkyria-1', name: 'Valkyria #1', baseUrl: 'https://crcon.example.org/', address: 'play.example.org:7777', statsUrl: 'https://stats.example.org/', statsApiKey: null, serverNumber: null },
+        { publicId: 'mock', name: null, baseUrl: 'http://127.0.0.1:4010', address: null, statsUrl: null, statsApiKey: null, serverNumber: null },
       ],
       error: null,
     });
@@ -33,6 +33,36 @@ describe('CRCON configuration', () => {
 
   it('reports malformed JSON without echoing it', () => {
     expect(parseCrconConfig('[{"baseUrl": "https://private.example"')).toEqual({ servers: [], error: 'invalid_json' });
+  });
+});
+
+describe('trusted CRCON game URLs', () => {
+  const server: CrconServerConfig = { publicId: 'event', name: 'Event', baseUrl: 'https://admin.example.org', address: null, statsUrl: 'https://event.example.org/', serverNumber: 6 };
+
+  it('maps a configured public game link to an ID without using that link as an API target', () => {
+    expect(parseCrconGameUrl('https://event.example.org/games/16551', server)).toEqual({ gameId: 16551, url: 'https://event.example.org/games/16551' });
+    expect(crconGameUrl(server, 16551)).toBe('https://event.example.org/games/16551');
+    expect(parseCrconGameUrl('https://event.example.org/stats/games/12', { ...server, statsUrl: 'https://event.example.org/stats' })).toEqual({ gameId: 12, url: 'https://event.example.org/stats/games/12' });
+  });
+
+  it.each([
+    'https://other.example.org/games/1', 'http://event.example.org/games/1', 'https://event.example.org.evil.example/games/1',
+    'https://user:secret@event.example.org/games/1', 'https://event.example.org/games/1?x=1', 'https://event.example.org/games/1#x',
+    'https://event.example.org/games/0', 'https://event.example.org/games/-1', 'https://event.example.org/games/01',
+    'https://event.example.org/games/2147483648', 'https://event.example.org/games/1/', 'https://event.example.org/games/%31',
+    'https://event.example.org/a/../games/1', 'https://event.example.org/games/1?', 'https://event.example.org/games/1#',
+    'https://event.example.org:8443/games/1', 'https://event.example.org/games/1\n',
+  ])('rejects an untrusted or noncanonical game URL: %s', (url) => {
+    expect(parseCrconGameUrl(url, server)).toBeNull();
+  });
+
+  it('requires an explicitly configured safe public base', () => {
+    expect(parseCrconGameUrl('https://admin.example.org/games/1', { ...server, statsUrl: null })).toBeNull();
+    for (const statsUrl of ['https://user:secret@event.example.org', 'https://event.example.org/?x=1', 'https://event.example.org/#x']) {
+      expect(parseCrconConfig(JSON.stringify([{ ...server, name: 'Event', address: undefined, statsUrl }])).error).toBe('invalid_config');
+      expect(crconGameUrl({ ...server, statsUrl }, 1)).toBeNull();
+    }
+    expect(parseCrconConfig(JSON.stringify([{ publicId: 'event', baseUrl: server.baseUrl, serverNumber: 6 }])).servers[0]?.serverNumber).toBe(6);
   });
 });
 

@@ -1,4 +1,4 @@
-import { auditEvent, matchStatistics } from '@valkyria/db';
+import { auditEvent, legacyMatchScoreboard, matchStatistics } from '@valkyria/db';
 import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { ensureTestActors, type TestActors } from '@/fixtures/test-actors';
@@ -61,6 +61,103 @@ async function expectError(promise: Promise<unknown>) {
 }
 
 describe('match statistics import', () => {
+  const eventServer: CrconServerConfig = { publicId: 'event', name: 'Event server', baseUrl: 'https://admin.example.org', statsUrl: 'https://event.example.org', address: null, serverNumber: 6 };
+  const linked = (id: string, gameUrl = 'https://event.example.org/games/16551') => ({ source: 'crcon-url' as const, matchId: id, serverPublicId: 'event', gameUrl, valkyriaSide: 'allies' as const, publishPlayers: true });
+
+  it('imports a trusted game URL through the configured API, stores provenance and preserves the editorial score', async () => {
+    const played = await playedMatch();
+    const before = (await getMatchForAdmin(t.db, actors.matchManager, played.id))!.result;
+    const requested: string[] = [];
+    const view = await importMatchStatistics(t.db, actors.matchManager, linked(played.id), {
+      servers: [eventServer],
+      fetchImpl: async (url) => {
+        requested.push(url.toString());
+        const body = syntheticScoreboard({ gameId: 16551 });
+        body.result.server_number = 6;
+        return Response.json(body);
+      },
+    });
+    expect(requested).toEqual(['https://admin.example.org/api/get_map_scoreboard?map_id=16551']);
+    expect(view).toMatchObject({ source: 'crcon', sourceServerPublicId: 'event', sourceGameUrl: 'https://event.example.org/games/16551', externalGameId: '16551', publishPlayers: true });
+    expect((await getPublicMatch(t.db, played.slug, 'cs'))?.statistics).toMatchObject({ sourceGameUrl: view.sourceGameUrl, sourceServerPublicId: 'event' });
+    expect((await getMatchForAdmin(t.db, actors.matchManager, played.id))!.result).toEqual(before);
+  });
+
+  it('rejects an untrusted URL before fetching and leaves an existing snapshot untouched', async () => {
+    const played = await playedMatch();
+    await importMatchStatistics(t.db, actors.matchManager, upload(played.id));
+    const before = await t.db.select().from(matchStatistics).where(eq(matchStatistics.matchId, played.id));
+    let fetched = false;
+    const error = await expectError(importMatchStatistics(t.db, actors.matchManager, linked(played.id, 'https://evil.example/games/16551'), {
+      servers: [eventServer], fetchImpl: async () => { fetched = true; return Response.json({}); },
+    }));
+    expect(error).toMatchObject({ code: 'validation', fieldErrors: { gameUrl: 'game_url_invalid' } });
+    expect(fetched).toBe(false);
+    expect(await t.db.select().from(matchStatistics).where(eq(matchStatistics.matchId, played.id))).toEqual(before);
+  });
+
+  it.each([
+    ['another game', { id: 16552 }, 'scoreboard_source_mismatch'],
+    ['another server in the shared history database', { server_number: 1 }, 'scoreboard_source_mismatch'],
+    ['missing server identity', { server_number: null }, 'scoreboard_source_mismatch'],
+    ['an unfinished game', { end: null }, 'scoreboard_unfinished'],
+    ['an end before the start', { end: '2024-05-12T17:00:00' }, 'scoreboard_unfinished'],
+    ['a future end', { end: '2099-01-01T12:00:00Z' }, 'scoreboard_unfinished'],
+    ['an unknown result', { result: {} }, 'scoreboard_unfinished'],
+  ])('rejects %s before replacing statistics', async (_label, overrides, code) => {
+    const played = await playedMatch();
+    await importMatchStatistics(t.db, actors.matchManager, upload(played.id));
+    const before = await t.db.select().from(matchStatistics).where(eq(matchStatistics.matchId, played.id));
+    const body = syntheticScoreboard({ gameId: 16551 });
+    Object.assign(body.result, { server_number: 6 }, overrides);
+    const deps = { servers: [eventServer], fetchImpl: async () => Response.json(body) };
+    const urlError = await expectError(importMatchStatistics(t.db, actors.matchManager, linked(played.id), deps));
+    expect(urlError).toMatchObject({ code: 'validation', fieldErrors: { gameUrl: code } });
+    const idError = await expectError(importMatchStatistics(t.db, actors.matchManager, { source: 'crcon', matchId: played.id, serverPublicId: 'event', gameId: 16551, valkyriaSide: 'allies', publishPlayers: false }, deps));
+    expect(idError).toMatchObject({ code: 'validation', fieldErrors: { gameId: code } });
+    expect(await t.db.select().from(matchStatistics).where(eq(matchStatistics.matchId, played.id))).toEqual(before);
+    const imports = await t.db.select().from(auditEvent).where(and(eq(auditEvent.entityId, played.id), eq(auditEvent.action, 'match.statistics.import')));
+    expect(imports).toHaveLength(1);
+  });
+
+  it('keeps an uploaded malformed result unknown and removes any old source link on replacement', async () => {
+    const played = await playedMatch();
+    const body = syntheticScoreboard({ gameId: 16551 });
+    body.result.server_number = 6;
+    await importMatchStatistics(t.db, actors.matchManager, linked(played.id), { servers: [eventServer], fetchImpl: async () => Response.json(body) });
+    Object.assign(body.result, { result: {} });
+    const view = await importMatchStatistics(t.db, actors.matchManager, upload(played.id, { content: JSON.stringify(body) }));
+    expect(view).toMatchObject({ source: 'upload', sourceServerPublicId: null, sourceGameUrl: null, result: null });
+  });
+
+  it('loads all historical rounds, preserves side swaps, gates players together and clears rounds on replacement or removal', async () => {
+    const played = await playedMatch();
+    const primary = await importMatchStatistics(t.db, actors.matchManager, upload(played.id));
+    const extra = { ...primary, externalGameId: '4243', sourceGameUrl: 'https://stats.example.org/games/4243', valkyriaSide: 'allies' as const, players: primary.players! };
+    const addRound = () => t.db.insert(legacyMatchScoreboard).values({ matchId: played.id, ordinal: 2, snapshot: extra });
+    await addRound();
+    expect((await getPublicMatch(t.db, played.slug, 'cs'))?.statistics?.rounds).toMatchObject([{ ordinal: 2, statistics: { externalGameId: '4243', players: null, valkyriaSide: 'allies' } }]);
+    expect((await getMatchForAdmin(t.db, actors.matchManager, played.id))?.statistics?.rounds?.[0]?.statistics.players).toHaveLength(12);
+    await updateMatchStatisticsSettings(t.db, actors.matchManager, { matchId: played.id, valkyriaSide: 'axis', publishPlayers: true });
+    const shown = (await getPublicMatch(t.db, played.slug, 'cs'))?.statistics;
+    expect(shown?.rounds?.[0]?.statistics.players).toHaveLength(12);
+    expect(shown?.rounds?.[0]?.statistics.valkyriaSide).toBe('allies');
+    await importMatchStatistics(t.db, actors.matchManager, upload(played.id));
+    expect(await t.db.select().from(legacyMatchScoreboard).where(eq(legacyMatchScoreboard.matchId, played.id))).toEqual([]);
+    await addRound();
+    await removeMatchStatistics(t.db, actors.matchManager, { matchId: played.id });
+    expect(await t.db.select().from(legacyMatchScoreboard).where(eq(legacyMatchScoreboard.matchId, played.id))).toEqual([]);
+  });
+
+  it('lets an editor change player visibility while keeping an unknown historical side unassigned', async () => {
+    const played = await playedMatch();
+    await importMatchStatistics(t.db, actors.matchManager, upload(played.id, { publishPlayers: true }));
+    await t.db.update(matchStatistics).set({ valkyriaSide: null }).where(eq(matchStatistics.matchId, played.id));
+    const view = await updateMatchStatisticsSettings(t.db, actors.matchManager, { matchId: played.id, valkyriaSide: null, publishPlayers: false });
+    expect(view.valkyriaSide).toBeNull();
+    expect((await getPublicMatch(t.db, played.slug, 'cs'))?.statistics).toMatchObject({ valkyriaSide: null, players: null, publishPlayers: false });
+  });
+
   it('imports an uploaded scoreboard, keeps player rows private until published, and audits it', async () => {
     const played = await playedMatch();
     const view = await importMatchStatistics(t.db, actors.matchManager, upload(played.id));

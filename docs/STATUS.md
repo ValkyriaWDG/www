@@ -2,6 +2,34 @@
 
 Updated: 2026-09-29. Stage: **HLL features deployed to valkyria.cz; schema upgrade and actual previous-image rollback rehearsal accepted. Public HTTP 85/85; browser 14/15 with #46 still open. Live authentication/providers remain disabled.**
 
+## Legacy HLL migration and CRCON implementation (not yet deployed)
+
+Issue #65 adds the operator-only extraction/import pipeline, source identity ledger,
+publication-gated old URLs, historical multi-round statistics, configured CRCON game
+URL imports, and public live round-player snapshots. See the
+[import runbook](operations/legacy-hll-import.md) and
+[source inventory](operations/legacy-hll-extraction.md).
+
+The reviewed private bundle was applied to an isolated PostgreSQL 18.4 database:
+205 matches, 30 documents/competitions/pages, 219 media assets and 134 statistical
+rounds. Three expired announcements remain archived; 27 external/unsupported media
+references stay links. Repeated apply created nothing and preserved all 13 audited
+table fingerprints. All 438 WebP variants were verified. The source ID199 typo is
+explicitly repaired; map-conflicting statistics101/199 and four empty exports remain
+excluded, with retained provenance. Only match211's CRCON origin/game link is
+individually verified; other bare historical IDs have no inferred provider URL.
+
+Local full build and 602 unit tests passed. All 267 HTTP checks against the populated
+standalone rehearsal passed; five rendered routes had no broken images or browser
+page errors. Full browser/CI and production PostgreSQL restore/release acceptance
+are still pending at this checkpoint. Credentials were saved only to protected local
+and runtime environment files; public CRCON reads do not require them. No production
+schema/import, provider activation or legacy-domain cutover is established here.
+
+Migrations0005–0008 require operator maintenance. After nullable historical sides
+are inserted, rollback to the previous reader requires the matching pre-import
+database/media backup; image-only rollback is incompatible with populated imports.
+
 ## Automatic image updates
 
 On 2026-09-29, a dedicated `valkyria-watchtower` was enabled for only

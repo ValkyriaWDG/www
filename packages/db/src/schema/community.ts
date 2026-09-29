@@ -283,6 +283,9 @@ export const matchStatistics = pgTable(
       .references(() => match.id, { onDelete: 'cascade' }),
     source: text('source').$type<MatchStatisticsSource>().notNull(),
     sourceLabel: text('source_label').notNull().default(''),
+    /** Configured source identity and public game permalink, never an administration URL. */
+    sourceServerPublicId: text('source_server_public_id'),
+    sourceGameUrl: text('source_game_url'),
     externalGameId: text('external_game_id'),
     mapName: text('map_name'),
     mode: text('mode'),
@@ -291,7 +294,7 @@ export const matchStatistics = pgTable(
     resultAllied: integer('result_allied'),
     resultAxis: integer('result_axis'),
     /** Side Valkyria played in this game. */
-    valkyriaSide: text('valkyria_side').$type<StatisticsSide>().notNull(),
+    valkyriaSide: text('valkyria_side').$type<StatisticsSide>(),
     teams: jsonb('teams').$type<Record<StatisticsSide, MatchStatisticsTeam>>().notNull(),
     players: jsonb('players').$type<MatchStatisticsPlayer[]>().notNull().default(sql`'[]'::jsonb`),
     publishPlayers: boolean('publish_players').notNull().default(false),

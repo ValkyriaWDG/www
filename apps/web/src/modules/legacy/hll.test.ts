@@ -27,26 +27,31 @@ describe('legacy HLL redirects', () => {
     expect(resolveLegacyHllPath('/matches')).toEqual({ kind: 'redirect', target: '/cs/hll/matches' });
     expect(resolveLegacyHllPath('/matches', params('page=7'))).toEqual({ kind: 'redirect', target: '/cs/hll/matches?view=results' });
     expect(resolveLegacyHllPath('/guide')).toEqual({ kind: 'redirect', target: '/cs/hll/field-manual' });
-    expect(resolveLegacyHllPath('/guide/prirucka-sl')).toEqual({ kind: 'redirect', target: '/cs/hll/field-manual/prirucka-sl' });
     expect(resolveLegacyHllPath('/clanky', params('page=2'))).toEqual({ kind: 'redirect', target: '/cs/hll/news' });
-    expect(resolveLegacyHllPath('/about')).toEqual({ kind: 'redirect', target: '/cs/clan' });
   });
 
   it('keeps reviewed URLs without a built destination or imported content pending, never Home', () => {
-    expect(resolveLegacyHllPath('/faq')).toEqual({ kind: 'redirect', target: '/cs/hll/faq' });
     expect(resolveLegacyHllPath('/tournaments')).toEqual({ kind: 'redirect', target: '/cs/hll/tournaments' });
     expect(resolveLegacyHllPath('/turnaje')).toEqual({ kind: 'redirect', target: '/cs/hll/tournaments' });
-    expect(resolveLegacyHllPath('/turnaje/ecl-2024')).toEqual({ kind: 'pending', proposed: '/cs/hll/tournaments/ecl-2024', reason: 'content_not_imported' });
     expect(resolveLegacyHllPath('/zebricky/kd-pomer')).toEqual({ kind: 'pending', proposed: '/cs/hll/leaderboards/kd-ratio', reason: 'destination_not_built' });
     expect(resolveLegacyHllPath('/stats/6')).toEqual({ kind: 'pending', proposed: '/cs/hll/servers/6/stats', reason: 'destination_not_built' });
-    expect(resolveLegacyHllPath('/matches/211')).toEqual({ kind: 'pending', proposed: '/cs/hll/matches/211', reason: 'needs_id_alias' });
-    // Each article keeps its own scope: the Wardogs announcement does not land in HLL news.
-    expect(resolveLegacyHllPath('/clanky/wardogs-oznameni')).toEqual({ kind: 'pending', proposed: '/cs/wardogs/news/wardogs-oznameni', reason: 'content_not_imported' });
     expect(LEGACY_NEWS['sbirka-2026']).toBe('/cs/news/sbirka-2026');
   });
 
+  it('requires a publication lookup for every article, page, match and tournament detail', () => {
+    expect(resolveLegacyHllPath('/guide/prirucka-sl')).toEqual({ kind: 'lookup', sourceKind: 'manual', sourceKey: 'prirucka-sl' });
+    expect(resolveLegacyHllPath('/clanky/wardogs-oznameni')).toEqual({ kind: 'lookup', sourceKind: 'news', sourceKey: 'wardogs-oznameni' });
+    expect(resolveLegacyHllPath('/about')).toEqual({ kind: 'lookup', sourceKind: 'page', sourceKey: 'about' });
+    expect(resolveLegacyHllPath('/faq')).toEqual({ kind: 'lookup', sourceKind: 'page', sourceKey: 'faq' });
+    expect(resolveLegacyHllPath('/matches/211')).toEqual({ kind: 'lookup', sourceKind: 'match', sourceKey: '211' });
+    expect(resolveLegacyHllPath('/turnaje/ecl-2024')).toEqual({ kind: 'lookup', sourceKind: 'tournament', sourceKey: 'ecl-2024' });
+    expect(resolveLegacyHllPath('/tournaments/ecl-2024/')).toEqual(resolveLegacyHllPath('/turnaje/ecl-2024'));
+    // A new import may be absent from the original manifest; only the ledger can authorize its target.
+    expect(resolveLegacyHllPath('/guide/synthetic-new-import')?.kind).toBe('lookup');
+  });
+
   it('does not guess unknown or malformed legacy paths', () => {
-    for (const path of ['/guide/unknown', '/clanky/unknown', '/turnaje/unknown', '/zebricky/unknown', '/stats/2', '/matches/abc', '/Guide', '/guide/a/b', '/wp-admin', '/guide/%2e%2e']) {
+    for (const path of ['/zebricky/unknown', '/stats/2', '/matches/abc', '/matches/0', '/matches/0211', '/Guide', '/guide/a/b', '/wp-admin', '/guide/%2e%2e', 'https://evil.invalid/guide/tanky', '//evil.invalid', '/guide//tanky', '/guide/tanky?next=elsewhere', '/guide/tanky#fragment', '/guide/../faq', '/guide/tanky\\elsewhere', `/guide/${'a'.repeat(121)}`]) {
       expect(resolveLegacyHllPath(path), path).toBeNull();
     }
   });

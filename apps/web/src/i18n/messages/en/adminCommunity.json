@@ -802,6 +802,19 @@
     "replace": "Replace statistics",
     "importNote": "An import replaces the statistics previously stored for this match.",
     "imported": "Statistics imported.",
-    "working": "Working…"
+    "working": "Working…",
+    "sourceLink": "Original game statistics (external site)",
+    "sourceOptionUrl": "Link to a finished game",
+    "sourceOptionUrlHint": "Paste the public game link for the selected server. Only configured statistics sites are accepted.",
+    "gameUrl": "Game URL",
+    "gameUrlHint": "An HTTPS link ending in /games/1234. The game and server identity are checked before import.",
+    "additionalRounds": "{count, plural, one {# additional historical round is available on the public match detail.} other {# additional historical rounds are available on the public match detail.}} Player visibility applies to all rounds; changing the side applies to the first round only. A new import replaces all rounds.",
+    "unassignedSide": "The historical source does not identify Valkyria’s side. Teams are shown as Allies and Axis until a verified side is selected.",
+    "selectSide": "Unknown — not assigned",
+    "errors": {
+      "game_url_invalid": "Use the exact public /games/number URL for the selected configured server, without a query or fragment.",
+      "scoreboard_source_mismatch": "The returned game or server does not match the requested source. No statistics were changed.",
+      "scoreboard_unfinished": "The source must contain a finished game with a valid start, end and result. No statistics were changed."
+    }
   }
 }

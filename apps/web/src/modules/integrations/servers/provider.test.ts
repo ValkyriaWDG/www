@@ -137,6 +137,18 @@ describe('CRCON server status source', () => {
     ]);
   });
 
+  it('keeps configured servers selectable when every first observation fails', async () => {
+    const source = crconSource(servers, async () => new Response('down', { status: 503 }));
+    const overview = await getServerOverview('hll', now, source);
+    expect(overview.state).toBe('unavailable');
+    if (overview.state !== 'unavailable') return;
+    expect(overview.servers.map((server) => [server.publicId, server.freshness, server.players, server.observedAt])).toEqual([
+      ['valkyria-1', 'unavailable', null, null],
+      ['valkyria-2', 'unavailable', null, null],
+    ]);
+    expect(overview.servers[0]?.name).toBe('Valkyria #1');
+  });
+
   it('downgrades a failure within the fresh window to stale without round details', async () => {
     let failing: string[] = [];
     const source = crconSource(servers, async (url) => (failing.includes(url.hostname) ? new Response('down', { status: 503 }) : json(syntheticPublicInfo())));
