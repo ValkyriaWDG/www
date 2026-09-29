@@ -266,7 +266,9 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
 - **Crest:** the HLL main menu shows the Wardogs ghosted crest (same size, position,
   colour and opacity; hidden on content pages), per the owner. Editors now continue after
   an inserted image instead of leaving it selected, so the next keystroke or table no longer
-  replaces it ([evidence](evidence/hll-crest-2026-09-29/README.md)).
+  replaces it ([evidence](evidence/hll-crest-2026-09-29/README.md)). PR #61 merged as
+  `1efdf09`; exact-main [CI 36548677606](https://github.com/ValkyriaWDG/www/actions/runs/36548677606)
+  passed. Not deployed; no migration.
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
@@ -310,14 +312,13 @@ the separate network gate #46. Keep legacy `valkyriahll.cz` unchanged
 until its content migration is accepted. Clan footage and hosted Logi remain pending;
 preserve the static stage and unavailable-provider states without synthetic production data.
 
-Follow-up after PR #37 (PR #50, which also incorporates the HLL graphics of PR #55; not deployed):
-CRCON server status, HLL rounds, imported match statistics (migration 0002) and the FAQ
-page (migration 0003), and tournaments (migration 0004, administration-managed per the
-owner). Next: configure the real CRCON hosts; write and publish the FAQ answers; import the
-legacy content once `valkyriahll.cz` is reachable; choose the owner of events (Logi) and a
-source for rankings. Release boundary: not part of the deployed `e03d3c5`; it requires
-migrations 0002–0004 even with `SERVER_STATUS_SOURCE=none`, so qualify the exact main
-revision before a later release.
+Follow-up after PR #37 (PR #50, which also delivered the HLL graphics of PR #55; #55 was
+closed as delivered): CRCON server status, HLL rounds, imported match statistics (migration
+0002), the FAQ page (migration 0003) and tournaments (migration 0004, administration-managed
+per the owner) are deployed in `e5d7276` (see Current production). PR #61 (`1efdf09`, crest
+and editor caret) is on main but not deployed; it adds no migration. Next: configure the
+real CRCON hosts; write and publish the FAQ answers; import the legacy content once
+`valkyriahll.cz` is reachable; choose the owner of events (Logi) and a source for rankings.
 
 ## Publication authorization hardening
 
