@@ -58,7 +58,15 @@ test('capture localized desktop and mobile player snapshots and CRCON URL import
         await expect(panel.getByText(locale === 'cs' ? 'Statistiky importovány.' : 'Statistics imported.', { exact: true })).toBeVisible();
         await expect(panel.locator('[data-statistics-current] [data-statistics-source-link]')).toHaveAttribute('href', 'https://stats.example.org/games/4321');
         await page.evaluate(() => document.fonts.ready);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+        const geometry = await page.evaluate(() => ({
+          viewport: innerWidth,
+          document: document.documentElement.scrollWidth,
+          overflow: [...document.querySelectorAll('body *')].filter((element) => {
+            const bounds = element.getBoundingClientRect();
+            return element instanceof HTMLElement && bounds.width > 0 && bounds.right > innerWidth + 1;
+          }).slice(0, 32).map((element) => ({ tag: element.tagName, className: element.className, right: element.getBoundingClientRect().right })),
+        }));
+        expect(geometry.document, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.viewport + 1);
         const file = `crcon-game-url-import-${name}.png`;
         await panel.screenshot({ path: path.join(output, file), animations: 'disabled', caret: 'hide' });
         captures.push({ file, locale, viewport: `${viewport.width}x${viewport.height}`, path: target, caption: 'Successful finished-game URL import via the configured loopback CRCON adapter. Visible provenance link points to synthetic stats.example.org; scores and players are synthetic. Match-manager panel crop, no live external import.' });
