@@ -1,10 +1,12 @@
 # HLL legacy production acceptance — pending
 
-**29 September 2026: the first published candidate failed its isolated restore/import
-rehearsal. Production acceptance is not complete.** No production schema migration
-or legacy import was performed. Production remains on source `571475f`; the old web
-was ready after the held backup capture. The failed attempt is preserved in the
-[sanitized rehearsal report](rehearsal-338ee2f-failed.json).
+**29 September 2026: the importer packaging correction is merged and its combined
+pull-request CI passed. Production acceptance is not complete.** No production
+schema migration or legacy import was performed at this checkpoint. The last
+confirmed production source is `571475f`; the old web was ready after the held backup
+capture. The first candidate's failed attempt remains preserved in the
+[sanitized rehearsal report](rehearsal-338ee2f-failed.json); the corrected code's
+[CI qualification](packaging-ci.json) is a separate result.
 
 The first published candidate uses merged application source
 [`338ee2ff39ac484b4fef6d9f9da8bc1238d68b5a`](https://github.com/ValkyriaWDG/www/commit/338ee2ff39ac484b4fef6d9f9da8bc1238d68b5a),
@@ -14,10 +16,11 @@ completed successfully after normal protected-environment approval. The publishe
 image is `majorluk/valkyria-www@sha256:8f048f6c9d2f0038d0a48ae66940ddb5bcb300d899615d56f0fbe4b1269cb18a`.
 Automatic channel promotion was held with `migration-bundle-changed`, as intended.
 **Publication is not production acceptance:** this image must not be promoted as the
-accepted migration candidate. A packaging correction, new image and complete new
-restore/import rehearsal are pending.
+accepted migration candidate. The packaging correction has since merged in
+[PR #68](https://github.com/ValkyriaWDG/www/pull/68). Its new image and complete
+production-backup restore/import rehearsal remain pending at this checkpoint.
 
-This work extends [deployment evidence PR #68](https://github.com/ValkyriaWDG/www/pull/68).
+This record continues the evidence introduced in merged PR #68.
 Do not replace the earlier records or use this failed attempt to close an acceptance item.
 The [report contract](REPORT-SCHEMA.md) defines what the later sanitized artifacts
 must contain; its field descriptions are not measured results.
@@ -30,6 +33,7 @@ must contain; its field descriptions are not measured results.
 | Local feature implementation | [Synthetic browser evidence](../hll-legacy-crcon-2026-09-29/README.md), with its own source revisions and test history | Does not prove real provider behavior or production recovery. |
 | Prepared migration input | [Reviewed source inventory](../../operations/legacy-hll-extraction.md) and [operator runbook](../../operations/legacy-hll-import.md) | Local extraction and PostgreSQL 18 rehearsal do not establish a restore/import on the production PostgreSQL major version. |
 | First published migration candidate | Source, digest and successful workflow above | Isolated rehearsal failed; no production migration or accepted channel promotion. |
+| Merged packaging correction | Combined [CI run 36577994736](https://github.com/ValkyriaWDG/www/actions/runs/36577994736) and [sanitized results](packaging-ci.json) | Synthetic CI qualification, distinct from exact-main publication and the production PostgreSQL 15 backup rehearsal. |
 
 The baseline database has five journal entries; the candidate's expected journal
 has nine, including migrations `0005`–`0008`. Capture the actual journals during
@@ -70,11 +74,42 @@ foundation validation passed across 1,434 files. Independent review found no blo
 
 The image rehearsal now runs both actual importer bundles using the candidate image
 ID, with a disposable database and synthetic PNG/article input. It checks dry-run
-database equality, apply, both decoded WebP derivatives and unchanged replay. This
-image test has not run locally because the Docker engine is unavailable; its CI
-execution and the complete production-backup rehearsal remain required. No runtime
-dependency installation or host `node_modules` mount is used. Screenshots are not
-applicable to this packaging correction; feature screenshots remain linked above.
+database equality, one media asset and one unpublished news draft created by apply,
+both WebP variants decoded to raw pixels, and unchanged replay. The test passed in
+the completed combined CI run; no runtime dependency installation or host
+`node_modules` mount is used. Local Docker execution was unavailable. Screenshots
+are not applicable to this packaging correction; feature screenshots remain linked
+above.
+
+[Combined CI run 36577994736](https://github.com/ValkyriaWDG/www/actions/runs/36577994736)
+tested PR head `857ba9301fe102ea5f5d47d3b34ceafea09d2d3b` through GitHub's temporary
+merge revision `9488b81240806b5d77447a329c53eca2c22a5c83`, including base
+`d61c38fcd217c36f6a06ca6d273bb4de371afc71`. The quality gate completed at
+**14:04:12.4597478 UTC** on 29 September 2026. The [sanitized CI report](packaging-ci.json)
+records the protected log hash and exact source-line references.
+
+| Completed combined CI gate | Actual result |
+|---|---|
+| Foundation | 1,447 files checked. |
+| Tooling / encrypted recovery | 169 / 13 tests passed; none skipped or failed. |
+| Unit / database integration | 603 tests across 62 files / 331 tests across 34 files passed; none skipped or failed. |
+| Real restore boundary | 6 tests passed using disposable CI data. |
+| Standard browser suite | 167 passed, 107 skipped, 0 failed; 274 total. |
+| Dedicated shipped HLL artwork | 4 passed, 0 skipped or failed. These four were skipped in the standard run and then exercised separately. |
+| Immutable image rehearsal | 13 steps passed, including actual importer execution; cleanup passed. |
+| Cold-mobile budgets | 15 samples across 5 routes passed; all HTTP 200, no page errors, failed resources or video requests. |
+| Image scan | Zero fixable HIGH/CRITICAL findings; 43 candidate findings remain. This is not a claim of zero vulnerabilities. |
+
+The other **103 skipped browser cases are optional visual captures**, not successful
+tests. CI used synthetic data on PostgreSQL 17; it does not establish migration of
+the real archive or restore/import acceptance on production PostgreSQL 15.
+
+PR #68 merged as source
+[`1b38314ff6faf5182166fe15dff3172e4cf752ef`](https://github.com/ValkyriaWDG/www/commit/1b38314ff6faf5182166fe15dff3172e4cf752ef).
+Its [exact-source publisher run 36580018846](https://github.com/ValkyriaWDG/www/actions/runs/36580018846)
+was still running at this documentation checkpoint. Its eventual image identity,
+the complete production-backup rehearsal and production acceptance require their
+own results; the pull-request CI revision is not the merged main revision.
 
 ## Reviewed import expectations
 
@@ -121,7 +156,7 @@ translations are not generated as a side effect of migration.
 
 | Criterion | Expected verification | Current result / artifact |
 |---|---|---|
-| Release identity | Successful exact-source run; immutable OCI index, runtime manifest/config, revision and attestations independently agree | First image published; automatic promotion held for `migration-bundle-changed`. **Corrected candidate pending.** |
+| Release identity | Successful exact-source run; immutable OCI index, runtime manifest/config, revision and attestations independently agree | First image published; automatic promotion held for `migration-bundle-changed`. Correction merged and combined PR CI passed; exact-main publisher result and corrected image identity **pending**. |
 | Paired restore and rollback rehearsal | Isolated production-major PostgreSQL 15, restricted application role, captured database plus media, exact candidate and previous images; import, rerun, public/private media and rollback reader checked | **Failed at import dry run** after successful baseline restores/migrations/seed; [actual failed attempt](rehearsal-338ee2f-failed.json). Full corrected rehearsal pending. |
 | Writer exclusion and fresh backup | Record updater/scheduler state, stop writes, capture and verify paired checksums and baseline fingerprints | Held capture for the rehearsal completed; old web ready afterward. Final production-apply capture and maintenance acceptance remain **pending**. |
 | Explicit migration and import | Verify journal delta, exact reviewed bundle hash, publication scope, provenance corrections, entity counts and repeat-import stability | **Not run in production**; aggregate audit pending. |
