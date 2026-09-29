@@ -94,6 +94,9 @@
   --safe-inset: clamp(16px, 2.5vw, 64px);
   /* Reference brand sits further in than the action stack (x≈135 at 2560). */
   --brand-inset: clamp(var(--safe-inset), calc(5.3vw - 8px), 136px);
+  /* Root values the top strip keeps in every theme, so it does not move between games. */
+  --strip-safe-inset: var(--safe-inset);
+  --strip-tracking-nav: var(--tracking-nav);
   --content-max: 1800px;
   --reading-max: 72ch;
   --control-height: 44px;

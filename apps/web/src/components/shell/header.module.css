@@ -1,5 +1,12 @@
-/* Narrow charcoal strip (reference 09: full width, ~64 px at 1920, thin bottom border). */
+/*
+ * Narrow charcoal strip (reference 09: full width, ~64 px at 1920, thin bottom border).
+ * The HLL masthead uses the same classes; theme insets and tracking are pinned to the
+ * root values so logo and controls keep their position and size between games.
+ */
 .header {
+  --safe-inset: var(--strip-safe-inset);
+  --tracking-nav: var(--strip-tracking-nav);
+
   position: relative;
   z-index: var(--layer-header);
   display: grid;

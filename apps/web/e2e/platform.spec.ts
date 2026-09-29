@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 import { expectNoHorizontalOverflow } from './support/shell-helpers';
 
 /** The visible game switch (a second copy lives in the closed mobile menu drawer). */
@@ -54,56 +54,67 @@ test.describe('platform routing', () => {
     }
   });
 
-  test('logo, game switch, language and account sit in the same places in both games', async ({ page }) => {
-    type Box = { x: number; y: number; width: number; height: number };
+  test('the top strip is identical in both games: height, logo, game switch, language and account', async ({ page }) => {
     // Measure only hydrated controls: until the query-aware switches replace their
     // server fallbacks (aria-busy), a resolved element can be detached before it is measured.
     const hydrated = () => expect(page.locator('[data-game-switch][aria-busy="true"], [role="group"][aria-busy="true"]')).toHaveCount(0);
-    const boxOf = async (target: Locator) => {
-      let box: Box | null = null;
-      await expect.poll(async () => (box = await target.boundingBox())).not.toBeNull();
-      return box as unknown as Box;
-    };
-    const top = async () => {
+    const strip = async () => {
       await hydrated();
-      const header = page.locator('[data-shell-header], [data-hll-masthead]').first();
-      const box = (selector: string) => boxOf(header.locator(selector).first());
-      return {
-        brand: await box('[data-brand], [data-hll-identity]'),
-        game: await box('[data-game-switch]'),
-        language: await box('[role="group"]:has([data-locale])'),
-        account: await box('[data-account]'),
-      };
+      return page.evaluate(() => {
+        const header = document.querySelector('[data-shell-header], [data-hll-masthead]')!;
+        const round = (rect: DOMRect): [number, number, number, number] => [Math.round(rect.x), Math.round(rect.y), Math.round(rect.width), Math.round(rect.height)];
+        const box = (selector: string) => {
+          const element = Array.from(header.querySelectorAll(selector)).find((candidate) => candidate.getBoundingClientRect().width > 0);
+          return element ? round(element.getBoundingClientRect()) : null;
+        };
+        return {
+          strip: round(header.getBoundingClientRect()),
+          crest: box('[data-brand] img, [data-hll-identity] img'),
+          game: box('[data-game-switch]'),
+          language: box('[role="group"]:has([data-locale])'),
+          account: box('[data-account]'),
+          community: box('[data-platform-home], [data-hll-community-link]'),
+          menu: box('button[aria-expanded]'),
+        };
+      });
     };
-    for (const width of [1920, 1366]) {
-      await page.setViewportSize({ width, height: 900 });
-      const rows: Record<string, number> = {};
-      for (const path of ['/cs/wardogs', '/cs/hll', '/cs/wardogs/news', '/cs/hll/news', '/cs']) {
+    for (const [width, height] of [
+      [1920, 1080],
+      [1366, 768],
+      [1024, 768],
+      [390, 844],
+    ] as const) {
+      await page.setViewportSize({ width, height });
+      await page.goto('/cs/wardogs');
+      const reference = await strip();
+      if (width >= 1152) {
+        // Logo top left; game switch, language and account in that order on one row at the right.
+        const [crestX] = reference.crest!;
+        const [gameX, gameY, gameWidth, gameHeight] = reference.game!;
+        const [languageX, languageY, languageWidth, languageHeight] = reference.language!;
+        const [accountX, , accountWidth] = reference.account!;
+        expect(crestX, `@${width}`).toBeLessThan(width * 0.1);
+        expect(gameX + gameWidth).toBeLessThanOrEqual(languageX);
+        expect(languageX - (gameX + gameWidth)).toBeLessThan(24);
+        expect(languageX + languageWidth).toBeLessThanOrEqual(accountX);
+        expect(Math.abs(gameY + gameHeight / 2 - (languageY + languageHeight / 2))).toBeLessThan(4);
+        expect(accountX + accountWidth).toBeGreaterThan(width * 0.9);
+      }
+      // Switching games or opening a section never moves or resizes anything in the strip.
+      for (const path of ['/cs/hll', '/cs/wardogs/news', '/cs/hll/news', '/cs']) {
         await page.goto(path);
         await expect(page.locator('[data-platform-bar]')).toHaveCount(0);
-        const { brand, game, language, account } = await top();
-        rows[path] = game.y + game.height / 2;
-        // Logo top left; game switch, language and account in that order on one row at the top right.
-        expect(brand.x, `${path} @${width}`).toBeLessThan(width * 0.1);
-        expect(game.x + game.width, `${path} @${width}`).toBeLessThanOrEqual(language.x);
-        expect(language.x - (game.x + game.width), `${path} @${width}`).toBeLessThan(24);
-        expect(language.x + language.width, `${path} @${width}`).toBeLessThanOrEqual(account.x);
-        expect(Math.abs(game.y + game.height / 2 - (language.y + language.height / 2)), `${path} @${width}`).toBeLessThan(4);
-        expect(account.x + account.width, `${path} @${width}`).toBeGreaterThan(width * 0.9);
-        expect(game.y, `${path} @${width}`).toBeLessThan(140);
+        expect(await strip(), `${path} @${width}`).toEqual(reference);
       }
-      // The control row sits at the same height on both main menus and content pages.
-      const centers = Object.values(rows);
-      expect(Math.max(...centers) - Math.min(...centers), `${JSON.stringify(rows)} @${width}`).toBeLessThan(12);
     }
-    // Phones: the full-width game switch row sits directly under the header in both games.
+    // Phones: the full-width game switch row sits directly under the strip in both games.
     await page.setViewportSize({ width: 390, height: 844 });
     for (const path of ['/cs/wardogs/news', '/cs/hll/news']) {
       await page.goto(path);
       await hydrated();
       const row = page.locator('[data-game-switch][data-variant="stack"]').first();
       await expect(row).toBeVisible();
-      const box = await boxOf(row);
+      const box = (await row.boundingBox())!;
       expect(box.width, path).toBeGreaterThan(340);
       expect(box.y, path).toBeLessThan(200);
       await expectNoHorizontalOverflow(page);
