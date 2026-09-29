@@ -13866,6 +13866,72 @@
       "bytes": 6515,
       "width": 424,
       "height": 78
+    },
+    {
+      "id": "hll-legacy-production-2026-09-29-manual-index-mobile",
+      "path": "docs/evidence/hll-legacy-production-2026-09-29/manual-index-mobile.png",
+      "source": "Unmodified full-page Playwright production capture of https://valkyria.cz/cs/hll/field-manual, source 1b38314ff6faf5182166fe15dff3172e4cf752ef, Chromium 153.0.8010.12, observed 2026-09-29T14:53:01.422Z to 2026-09-29T14:53:13.505Z; inspected and approved for this public evidence by the task owner agent.",
+      "usage": "verification-evidence-only",
+      "rights": "Actual application screenshot with published community content, Valkyria branding and third-party game imagery; excluded from the Apache code license",
+      "sha256": "6821bafc046120b4b46dbe55d9059dab33abad3cf91a3959ff767a8c11eac9f1",
+      "bytes": 608980,
+      "width": 390,
+      "height": 1915
+    },
+    {
+      "id": "hll-legacy-production-2026-09-29-manual-index-desktop",
+      "path": "docs/evidence/hll-legacy-production-2026-09-29/manual-index-desktop.png",
+      "source": "Unmodified full-page Playwright production capture of https://valkyria.cz/cs/hll/field-manual, source 1b38314ff6faf5182166fe15dff3172e4cf752ef, Chromium 153.0.8010.12, observed 2026-09-29T14:53:01.422Z to 2026-09-29T14:53:13.505Z; inspected and approved for this public evidence by the task owner agent.",
+      "usage": "verification-evidence-only",
+      "rights": "Actual application screenshot with published community content, Valkyria branding and third-party game imagery; excluded from the Apache code license",
+      "sha256": "1d2ac83796415afe56ff4dedf4882f1a611cda6e49b6ed551f49b98ce74c259a",
+      "bytes": 751137,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "id": "hll-legacy-production-2026-09-29-news-list-mobile",
+      "path": "docs/evidence/hll-legacy-production-2026-09-29/news-list-mobile.png",
+      "source": "Unmodified full-page Playwright production capture of https://valkyria.cz/cs/hll/news, source 1b38314ff6faf5182166fe15dff3172e4cf752ef, Chromium 153.0.8010.12, observed 2026-09-29T14:53:01.422Z to 2026-09-29T14:53:13.505Z; inspected and approved for this public evidence by the task owner agent.",
+      "usage": "verification-evidence-only",
+      "rights": "Actual application screenshot with published community content, Valkyria branding and third-party game imagery; excluded from the Apache code license",
+      "sha256": "a45c3175c210e5648edcc7240bad8e9ffbfa2b95bc0b2cdc9b4a911819c32177",
+      "bytes": 689678,
+      "width": 390,
+      "height": 4286
+    },
+    {
+      "id": "hll-legacy-production-2026-09-29-news-list-desktop",
+      "path": "docs/evidence/hll-legacy-production-2026-09-29/news-list-desktop.png",
+      "source": "Unmodified full-page Playwright production capture of https://valkyria.cz/cs/hll/news, source 1b38314ff6faf5182166fe15dff3172e4cf752ef, Chromium 153.0.8010.12, observed 2026-09-29T14:53:01.422Z to 2026-09-29T14:53:13.505Z; inspected and approved for this public evidence by the task owner agent.",
+      "usage": "verification-evidence-only",
+      "rights": "Actual application screenshot with published community content, Valkyria branding and third-party game imagery; excluded from the Apache code license",
+      "sha256": "ec9d2ffa0b130c1ac5318d008b4006d13ef18b639f4660160d0ba016445ddbdd",
+      "bytes": 998343,
+      "width": 1440,
+      "height": 2099
+    },
+    {
+      "id": "hll-legacy-production-2026-09-29-match-list-mobile",
+      "path": "docs/evidence/hll-legacy-production-2026-09-29/match-list-mobile.png",
+      "source": "Unmodified full-page Playwright production capture of https://valkyria.cz/cs/hll/matches, source 1b38314ff6faf5182166fe15dff3172e4cf752ef, Chromium 153.0.8010.12, observed 2026-09-29T14:53:01.422Z to 2026-09-29T14:53:13.505Z; inspected and approved for this public evidence by the task owner agent.",
+      "usage": "verification-evidence-only",
+      "rights": "Actual application screenshot with published community content, Valkyria branding and third-party game imagery; excluded from the Apache code license",
+      "sha256": "9cb2239942e7ec157b7859aab2f36fc45bdfb7548f55ba319b0d9d2bafbb2463",
+      "bytes": 153893,
+      "width": 390,
+      "height": 1224
+    },
+    {
+      "id": "hll-legacy-production-2026-09-29-match-list-desktop",
+      "path": "docs/evidence/hll-legacy-production-2026-09-29/match-list-desktop.png",
+      "source": "Unmodified full-page Playwright production capture of https://valkyria.cz/cs/hll/matches, source 1b38314ff6faf5182166fe15dff3172e4cf752ef, Chromium 153.0.8010.12, observed 2026-09-29T14:53:01.422Z to 2026-09-29T14:53:13.505Z; inspected and approved for this public evidence by the task owner agent.",
+      "usage": "verification-evidence-only",
+      "rights": "Actual application screenshot with published community content, Valkyria branding and third-party game imagery; excluded from the Apache code license",
+      "sha256": "3907ca17d8e4ad179e73ec84e0b07b0671a521f8b45d6732936fff4d3a3ee937",
+      "bytes": 623103,
+      "width": 1440,
+      "height": 1481
     }
   ]
 }

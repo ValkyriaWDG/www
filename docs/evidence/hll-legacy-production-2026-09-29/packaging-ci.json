@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Completed combined PR #68 CI qualification only",
+  "workflow": {
+    "runId": "36577994736",
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36577994736",
+    "pullRequest": "https://github.com/ValkyriaWDG/www/pull/68",
+    "pullRequestHeadRevision": "857ba9301fe102ea5f5d47d3b34ceafea09d2d3b",
+    "testedMergeRevision": "9488b81240806b5d77447a329c53eca2c22a5c83",
+    "testedBaseRevision": "d61c38fcd217c36f6a06ca6d273bb4de371afc71",
+    "qualityGateCompletedAt": "2026-09-29T14:04:12.4597478Z",
+    "mergedMainRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+    "identityNote": "PR CI tested the temporary merge revision above. The resulting main commit has a distinct revision and requires its own exact-source publisher qualification."
+  },
+  "evidence": {
+    "protectedLogSha256": "968019f044313496447e628cf9853ed28bb1d9df2c688a9afe5ad1bb0578a9e1",
+    "protectedLogBytes": 771819,
+    "normalizedLogSha256": "6fd080bca65e57248f4ea87ab280d672e780e35e197d9496ed9079aa46fd260b",
+    "normalization": "ANSI terminal sequences and BOM characters removed in memory; original downloaded log preserved.",
+    "sourceLineNumbers": "One-based downloaded log lines; raw logs and environment values excluded."
+  },
+  "checks": {
+    "foundation": {
+      "status": "passed",
+      "files": 1447,
+      "sourceLines": [
+        183
+      ]
+    },
+    "tooling": {
+      "passed": 169,
+      "failed": 0,
+      "skipped": 0,
+      "total": 169,
+      "sourceLines": [
+        359,
+        361,
+        362,
+        364,
+        363,
+        365
+      ]
+    },
+    "encryptedRecovery": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "total": 13,
+      "sourceLines": [
+        397,
+        399,
+        400,
+        402,
+        401,
+        403
+      ]
+    },
+    "unit": {
+      "passed": 603,
+      "failed": 0,
+      "skipped": 0,
+      "total": 603,
+      "files": 62,
+      "sourceLines": [
+        963,
+        964
+      ]
+    },
+    "databaseIntegration": {
+      "passed": 331,
+      "failed": 0,
+      "skipped": 0,
+      "total": 331,
+      "files": 34,
+      "sourceLines": [
+        1086,
+        1087
+      ]
+    },
+    "realRestoreBoundary": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "total": 6,
+      "sourceLines": [
+        1448,
+        1450,
+        1451,
+        1453,
+        1452,
+        1454
+      ]
+    },
+    "browser": {
+      "passed": 167,
+      "failed": 0,
+      "skipped": 107,
+      "total": 274,
+      "sourceLines": [
+        3836,
+        4425,
+        4426
+      ]
+    },
+    "shippedHllArtwork": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "total": 4,
+      "sourceLines": [
+        4574,
+        4581
+      ]
+    },
+    "imageRehearsal": {
+      "status": "passed",
+      "steps": 13,
+      "cleanup": "passed",
+      "sourceLines": [
+        3322
+      ]
+    },
+    "immutableImageImporterGate": {
+      "status": "passed",
+      "completedAt": "2026-09-29T13:56:01.5158717Z",
+      "sourceLines": [
+        3313
+      ],
+      "implementation": "https://github.com/ValkyriaWDG/www/blob/857ba9301fe102ea5f5d47d3b34ceafea09d2d3b/scripts/release/rehearse-images.mjs",
+      "enforcedAssertions": [
+        "Both actual production importer bundles execute from the immutable candidate local image ID.",
+        "Manual and legacy HLL dry runs preserve database table fingerprints.",
+        "Synthetic apply creates one media asset and one unpublished news draft.",
+        "Full and thumbnail WebP variants pass native metadata validation and raw pixel decoding.",
+        "Replay reports both records unchanged and preserves all database table fingerprints."
+      ],
+      "detailLimit": "This summary derives the combined gate result from its PASS log row and versioned assertions. It does not substitute a local image/config ID for the eventual published OCI index digest."
+    },
+    "imageVulnerabilityScan": {
+      "status": "passed",
+      "baseline": 56,
+      "candidate": 43,
+      "fixable": 0,
+      "delta": {
+        "highCritical": -13,
+        "packages": -9
+      },
+      "sourceLines": [
+        3459
+      ],
+      "interpretation": "43 candidate HIGH/CRITICAL findings were recorded, zero fixable. This is not a zero-vulnerability claim."
+    },
+    "qualityGate": {
+      "foundation": "success",
+      "application": "success",
+      "applicationApplicable": true,
+      "sourceLines": [
+        5086,
+        5087,
+        5088,
+        5090
+      ]
+    }
+  },
+  "skips": {
+    "standardBrowser": 107,
+    "optionalVisualCaptures": 103,
+    "hllArtworkSkippedInStandardRun": 4,
+    "hllArtworkPassedInDedicatedRun": 4,
+    "meaning": "Skipped captures are not passes. The four artwork cases are subsequently exercised once by the dedicated empty-playlist gate."
+  },
+  "performance": {
+    "status": "passed",
+    "samples": 15,
+    "routes": 5,
+    "allStatus200": true,
+    "videoRequests": 0,
+    "pageErrors": 0,
+    "failedResources": 0,
+    "sourceLines": [
+      4438,
+      4439,
+      4440,
+      4441,
+      4442,
+      4443,
+      4444,
+      4445,
+      4446,
+      4447,
+      4448,
+      4449,
+      4450,
+      4451,
+      4452
+    ],
+    "scope": "Synthetic cold-mobile CI measurements; not production field Web Vitals."
+  },
+  "productionBoundary": {
+    "publisherRunId": "36580018846",
+    "publisherUrl": "https://github.com/ValkyriaWDG/www/actions/runs/36580018846",
+    "publisherResult": "pending-at-this-checkpoint",
+    "exactMainSource": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+    "productionMajor15FullRestoreImportRehearsal": "pending",
+    "productionMigration": "not-run-at-this-checkpoint",
+    "productionAcceptance": "pending"
+  },
+  "limitations": [
+    "Synthetic CI PostgreSQL 17 fixtures are separate from the protected production database/media backup and reviewed real migration bundle.",
+    "The failed first PostgreSQL 15 rehearsal remains preserved independently and is not marked passed by this CI result.",
+    "No image publication, promotion, deployment, production import or screenshot inspection is asserted by this report.",
+    "Counts follow individual runner summaries; no total across unlike or nested suites is claimed.",
+    "Source/player data, private paths, raw database fingerprints and environment credentials are intentionally excluded."
+  ]
+}

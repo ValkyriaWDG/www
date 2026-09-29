@@ -2,8 +2,9 @@
 
 This is a **prospective report schema in prose**, not an executable verifier or a
 populated evidence report. No success value or example digest here represents a
-production observation. The [acceptance README](README.md) remains pending until
-real artifacts are inspected and attached.
+production observation. The [acceptance README](README.md) links the subsequently
+inspected actual reports and distinguishes their failed, intermediate and accepted
+checkpoints.
 
 ## Common envelope and identity
 
@@ -12,7 +13,7 @@ Every later machine report must contain:
 | Field | Required meaning |
 |---|---|
 | `schemaVersion` | Positive integer identifying the actual report format. |
-| `status` | Explicit `pending`, `not-run`, `blocked`, `failed` or `passed`; a missing observation must not become zero failures or a pass. |
+| `status` | Explicit `pending`, `not-run`, `blocked`, `failed`, `passed` or final `accepted`; a missing observation must not become zero failures or a pass. |
 | `observedAt` / `finishedAt` | Actual timezone-aware UTC observation window. Unknown values remain null with a reason. |
 | `environment` | Distinguish `ci`, `local-rehearsal`, `production-backup-rehearsal` and `production`. |
 | `candidateRevision` | Full accepted application source SHA; distinct from the documentation branch's merge SHA. |

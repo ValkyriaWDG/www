@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Read-only actual-production editorial content reflow",
+  "origin": "https://valkyria.cz",
+  "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+  "candidateOciIndexDigest": "sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b",
+  "identityLimit": "Operator-declared deployed candidate revision; this capture does not independently resolve the running OCI digest.",
+  "locale": "cs",
+  "browser": {
+    "engine": "Chromium",
+    "version": "153.0.8010.12"
+  },
+  "observationWindow": {
+    "startedAt": "2026-09-29T14:53:01.422Z",
+    "finishedAt": "2026-09-29T14:53:13.505Z",
+    "individualCaptureTimestampsRecorded": false
+  },
+  "evidence": {
+    "protectedReportSha256": "15f67199ea956a1f8a029df0d60180b1b4fb75af65ecc7d5ad248b61223cf2ae",
+    "protectedReportBytes": 7463,
+    "publishedScreenshots": 6,
+    "originalScreenshotsInspectedByTaskOwnerAgent": 8,
+    "sourceBytesUnmodified": true,
+    "transforms": "none",
+    "privateDeploymentBrowserScreenshotsPublished": 0
+  },
+  "totals": {
+    "cases": 8,
+    "passed": 8,
+    "http200": 8,
+    "pageErrors": 0,
+    "bodyOverflowCases": 0,
+    "brokenImages": 0
+  },
+  "cases": [
+    {
+      "id": "manual-tanky-mobile",
+      "route": "/cs/hll/field-manual/tanky",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 3,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "pageErrors": 0,
+      "screenshotPublished": false
+    },
+    {
+      "id": "manual-index-mobile",
+      "route": "/cs/hll/field-manual",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 9,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "pageErrors": 0,
+      "screenshotPublished": true
+    },
+    {
+      "id": "news-list-mobile",
+      "route": "/cs/hll/news",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 10,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "pageErrors": 0,
+      "screenshotPublished": true
+    },
+    {
+      "id": "match-list-mobile",
+      "route": "/cs/hll/matches",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 7,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "pageErrors": 0,
+      "screenshotPublished": true
+    },
+    {
+      "id": "manual-tanky-desktop",
+      "route": "/cs/hll/field-manual/tanky",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 3,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 1440,
+      "bodyWidth": 1440,
+      "pageErrors": 0,
+      "screenshotPublished": false
+    },
+    {
+      "id": "manual-index-desktop",
+      "route": "/cs/hll/field-manual",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 9,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 1440,
+      "bodyWidth": 1440,
+      "pageErrors": 0,
+      "screenshotPublished": true
+    },
+    {
+      "id": "news-list-desktop",
+      "route": "/cs/hll/news",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 10,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 1440,
+      "bodyWidth": 1440,
+      "pageErrors": 0,
+      "screenshotPublished": true
+    },
+    {
+      "id": "match-list-desktop",
+      "route": "/cs/hll/matches",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "locale": "cs",
+      "status": 200,
+      "pass": true,
+      "imageCount": 7,
+      "brokenImages": 0,
+      "bodyOverflow": false,
+      "documentWidth": 1440,
+      "bodyWidth": 1440,
+      "pageErrors": 0,
+      "screenshotPublished": true
+    }
+  ],
+  "captures": [
+    {
+      "file": "manual-index-mobile.png",
+      "route": "/cs/hll/field-manual",
+      "locale": "cs",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "image": {
+        "width": 390,
+        "height": 1915,
+        "format": "png",
+        "fullPage": true,
+        "bytes": 608980,
+        "sha256": "6821bafc046120b4b46dbe55d9059dab33abad3cf91a3959ff767a8c11eac9f1"
+      },
+      "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "browserVersion": "153.0.8010.12",
+      "observationWindow": {
+        "startedAt": "2026-09-29T14:53:01.422Z",
+        "finishedAt": "2026-09-29T14:53:13.505Z"
+      },
+      "expected": "The imported manual categories remain readable, their cover artwork loads, and the page fits the viewport without horizontal overflow.",
+      "observed": "HTTP 200, readable layout confirmed by visual inspection, zero measured body overflow, broken images and page errors.",
+      "inspection": {
+        "reviewed": true,
+        "basis": "Task owner agent inspected the original capture and explicitly selected it for publication."
+      }
+    },
+    {
+      "file": "manual-index-desktop.png",
+      "route": "/cs/hll/field-manual",
+      "locale": "cs",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "image": {
+        "width": 1440,
+        "height": 1000,
+        "format": "png",
+        "fullPage": true,
+        "bytes": 751137,
+        "sha256": "1d2ac83796415afe56ff4dedf4882f1a611cda6e49b6ed551f49b98ce74c259a"
+      },
+      "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "browserVersion": "153.0.8010.12",
+      "observationWindow": {
+        "startedAt": "2026-09-29T14:53:01.422Z",
+        "finishedAt": "2026-09-29T14:53:13.505Z"
+      },
+      "expected": "The imported manual categories remain readable, their cover artwork loads, and the page fits the viewport without horizontal overflow.",
+      "observed": "HTTP 200, readable layout confirmed by visual inspection, zero measured body overflow, broken images and page errors.",
+      "inspection": {
+        "reviewed": true,
+        "basis": "Task owner agent inspected the original capture and explicitly selected it for publication."
+      }
+    },
+    {
+      "file": "news-list-mobile.png",
+      "route": "/cs/hll/news",
+      "locale": "cs",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "image": {
+        "width": 390,
+        "height": 4286,
+        "format": "png",
+        "fullPage": true,
+        "bytes": 689678,
+        "sha256": "a45c3175c210e5648edcc7240bad8e9ffbfa2b95bc0b2cdc9b4a911819c32177"
+      },
+      "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "browserVersion": "153.0.8010.12",
+      "observationWindow": {
+        "startedAt": "2026-09-29T14:53:01.422Z",
+        "finishedAt": "2026-09-29T14:53:13.505Z"
+      },
+      "expected": "Published HLL news cards and artwork remain readable in the responsive list without broken images or horizontal overflow.",
+      "observed": "HTTP 200, readable layout confirmed by visual inspection, zero measured body overflow, broken images and page errors.",
+      "inspection": {
+        "reviewed": true,
+        "basis": "Task owner agent inspected the original capture and explicitly selected it for publication."
+      }
+    },
+    {
+      "file": "news-list-desktop.png",
+      "route": "/cs/hll/news",
+      "locale": "cs",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "image": {
+        "width": 1440,
+        "height": 2099,
+        "format": "png",
+        "fullPage": true,
+        "bytes": 998343,
+        "sha256": "ec9d2ffa0b130c1ac5318d008b4006d13ef18b639f4660160d0ba016445ddbdd"
+      },
+      "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "browserVersion": "153.0.8010.12",
+      "observationWindow": {
+        "startedAt": "2026-09-29T14:53:01.422Z",
+        "finishedAt": "2026-09-29T14:53:13.505Z"
+      },
+      "expected": "Published HLL news cards and artwork remain readable in the responsive list without broken images or horizontal overflow.",
+      "observed": "HTTP 200, readable layout confirmed by visual inspection, zero measured body overflow, broken images and page errors.",
+      "inspection": {
+        "reviewed": true,
+        "basis": "Task owner agent inspected the original capture and explicitly selected it for publication."
+      }
+    },
+    {
+      "file": "match-list-mobile.png",
+      "route": "/cs/hll/matches",
+      "locale": "cs",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "image": {
+        "width": 390,
+        "height": 1224,
+        "format": "png",
+        "fullPage": true,
+        "bytes": 153893,
+        "sha256": "9cb2239942e7ec157b7859aab2f36fc45bdfb7548f55ba319b0d9d2bafbb2463"
+      },
+      "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "browserVersion": "153.0.8010.12",
+      "observationWindow": {
+        "startedAt": "2026-09-29T14:53:01.422Z",
+        "finishedAt": "2026-09-29T14:53:13.505Z"
+      },
+      "expected": "The public HLL match list and results remain readable; the table stays contained without document overflow or broken images.",
+      "observed": "HTTP 200, readable layout confirmed by visual inspection, zero measured body overflow, broken images and page errors.",
+      "inspection": {
+        "reviewed": true,
+        "basis": "Task owner agent inspected the original capture and explicitly selected it for publication."
+      }
+    },
+    {
+      "file": "match-list-desktop.png",
+      "route": "/cs/hll/matches",
+      "locale": "cs",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "image": {
+        "width": 1440,
+        "height": 1481,
+        "format": "png",
+        "fullPage": true,
+        "bytes": 623103,
+        "sha256": "3907ca17d8e4ad179e73ec84e0b07b0671a521f8b45d6732936fff4d3a3ee937"
+      },
+      "sourceRevision": "1b38314ff6faf5182166fe15dff3172e4cf752ef",
+      "browserVersion": "153.0.8010.12",
+      "observationWindow": {
+        "startedAt": "2026-09-29T14:53:01.422Z",
+        "finishedAt": "2026-09-29T14:53:13.505Z"
+      },
+      "expected": "The public HLL match list and results remain readable; the table stays contained without document overflow or broken images.",
+      "observed": "HTTP 200, readable layout confirmed by visual inspection, zero measured body overflow, broken images and page errors.",
+      "inspection": {
+        "reviewed": true,
+        "basis": "Task owner agent inspected the original capture and explicitly selected it for publication."
+      }
+    }
+  ],
+  "boundaries": {
+    "navigationMethods": "GET/HEAD only",
+    "mutationsPerformed": false,
+    "playerStatisticsRoutes": false,
+    "authenticationOrEditorMutationTested": false,
+    "providerControlTested": false,
+    "channelPromotionOrAutomationResumeProven": false,
+    "finalProductionAcceptance": "This report records the pre-channel editorial capture checkpoint. Final production acceptance is recorded separately in production.json."
+  },
+  "limitations": [
+    "Eight cases cover four editorial/list routes at two viewports; the six published captures cover only the manual index, news list and match list. The tank guide images remain private.",
+    "Full-page PNG dimensions may exceed the browser viewport height; both values are recorded and the images are not cropped or resized.",
+    "The report records a shared observation interval, not an exact individual frame timestamp.",
+    "The capture harness does not independently resolve the running OCI identity; separate deployment/health lineage binds the operator-declared source.",
+    "No filtering, pagination, authenticated editing, physical mobile device behavior or all-pages accessibility audit is claimed.",
+    "The separate five-image private deployment/browser set and real player-statistics captures are not copied or published."
+  ]
+}
