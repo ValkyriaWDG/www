@@ -80,6 +80,8 @@ Target canonical origin is `https://valkyria.cz` after a separately approved cut
 | `/{locale}/hll/community` | Přidej se | Join us | Recruitment and verified Discord/Logi links |
 | `/{locale}/account`, `/{locale}/admin/...` | Účet, Administrace | Account, Administration | Shared neutral frame with explicit scope |
 
+Owner decision (2026-09-29): the hub `/{locale}` uses the owner-supplied community cover as its full-viewport background (Hell Let Loose soldier left, Wardogs operator right, dark centre; [asset record](../assets/policy.md)). The heading sits centred in the dark gap from 768 px up; the game cards' top panels are windows onto their own game's half; the scene's ghosted crest is not repeated there. Shared pages keep the drawn landscape.
+
 The landing menu order is News, Matches, Servers, Members, Field manual, Clan, Join us. News stays a primary destination, not a small footer icon. Account/sign-in, preferences, game and language controls are utilities. On content pages retain a clear `Main menu` link and compact access to the same destinations; use an accessible navigation drawer when they do not fit.
 
 Persistent shared masthead: Valkyria identity and community link on the left; active game, language and account on the right. At 1920 px the proposed safe horizontal inset is 80 px; use `clamp(20px, 4.2vw, 80px)`, maximum working width 1760 px. Shared controls occupy a minimum 64 px high row. Use a full game-name control (`Hell Let Loose` / `Wardogs`); avoid an unexplained icon or an unlabeled abbreviation.

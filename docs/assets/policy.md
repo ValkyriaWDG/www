@@ -9,6 +9,7 @@ without turning it into a game asset mirror.
 | Supplied HLL captures | `docs/design/references/hll/`; unchanged originals, design-only, excluded from runtime |
 | Supplied Wardogs captures | `docs/design/references/`; reference-only, never copy into app public output |
 | Selected Wardogs presskit originals | `assets/presskit/wardogs-january-2026/`; editorial/game-identification candidates with separate provenance, never the clan identity |
+| Owner-supplied community hub cover | Original `assets/community/hub-cover-original.webp`; runtime derivatives `apps/web/public/images/community/hub-cover-{1672,960}.webp` (hub route only), recorded in the manifest |
 | Selected HLL runtime artwork | `apps/web/public/images/hll/`; ten small WebP derivatives, [source and transform catalog](../../assets/hll-runtime-artwork.json), decorative/editorial use |
 | Legacy site graphics | URL inventory in research; review individual use and provenance before copying |
 | Raw game archives/Bink/AVI | Local-only, excluded from Git and build context |
