@@ -29,7 +29,7 @@ export type ProseActions = {
 };
 
 type ProseTabsProps = {
-  kind: 'recap' | 'biography';
+  kind: ProseKind;
   uiLocale: ContentLocale;
   details: Record<ContentLocale, ProseAdminDetail>;
   canPublish: boolean;
@@ -42,6 +42,11 @@ type ProseTabsProps = {
   ownerNotPublicNote?: string | null;
 };
 
+/** Match recap, member biography or tournament description; selects the editor's labels. */
+export type ProseKind = 'recap' | 'biography' | 'description';
+
+const LABEL_SUFFIX: Record<ProseKind, 'Recap' | 'Biography' | 'Description'> = { recap: 'Recap', biography: 'Biography', description: 'Description' };
+
 const EMPTY_DOC: JSONContent = { type: 'doc', content: [{ type: 'paragraph' }] };
 
 export const STATUS_KIND: Record<ProseStatus, StatusKind> = {
@@ -52,7 +57,7 @@ export const STATUS_KIND: Record<ProseStatus, StatusKind> = {
 };
 
 /**
- * Czech/English prose tabs (match recap or member biography). Each locale has its own
+ * Czech/English prose tabs (match recap, member biography or tournament description). Each locale has its own
  * editor, dirty state, draft revision, live revision and version: saving or publishing
  * one locale never changes the other, and absence is an explicit, honest state.
  */
@@ -111,13 +116,13 @@ export function ProseTabs({ kind, uiLocale, details, canPublish, coverAssetId, m
           {ownerNotPublicNote}
         </FeedbackNotice>
       ) : null}
-      <Tabs label={t(kind === 'recap' ? 'tabsLabelRecap' : 'tabsLabelBiography')} tabs={tabs} defaultTab={uiLocale} />
+      <Tabs label={t(`tabsLabel${LABEL_SUFFIX[kind]}`)} tabs={tabs} defaultTab={uiLocale} />
     </div>
   );
 }
 
 type LocaleEditorProps = {
-  kind: 'recap' | 'biography';
+  kind: ProseKind;
   uiLocale: ContentLocale;
   locale: ContentLocale;
   initial: ProseAdminDetail;
@@ -226,10 +231,10 @@ function ProseLocaleEditor({ kind, uiLocale, locale, initial, otherStatus, canPu
       : null;
 
   return (
-    <section aria-labelledby={headingId} data-prose-locale={locale} data-prose-status={detail.status}>
+    <section aria-labelledby={headingId} data-prose-locale={locale} data-prose-status={detail.status} data-prose-dirty={dirty || undefined}>
       <div className={styles.proseHeader}>
         <h3 id={headingId} className={styles.proseTitle}>
-          {t(kind === 'recap' ? 'editingRecap' : 'editingBiography', { lang: locale, code: locale.toUpperCase() })}
+          {t(`editing${LABEL_SUFFIX[kind]}`, { lang: locale, code: locale.toUpperCase() })}
         </h3>
         <div className={styles.badges}>
           <StatusBadge kind={STATUS_KIND[detail.status]}>{tStatus(detail.status)}</StatusBadge>
@@ -256,7 +261,7 @@ function ProseLocaleEditor({ kind, uiLocale, locale, initial, otherStatus, canPu
         </div>
       ) : null}
       <p id={`${headingId}-canvas`} className="visually-hidden">
-        {t(kind === 'recap' ? 'canvasRecap' : 'canvasBiography', { lang: locale })}
+        {t(`canvas${LABEL_SUFFIX[kind]}`, { lang: locale })}
       </p>
       <RichTextEditor
         key={editorKey}

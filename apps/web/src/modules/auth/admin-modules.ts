@@ -2,7 +2,7 @@ import { can } from '@/modules/access/policy';
 import type { Capability } from '@/modules/access/capabilities';
 import type { Actor } from '@/modules/access/types';
 
-export type AdminModuleKey = 'news' | 'manual' | 'content' | 'media' | 'matches' | 'members' | 'settings' | 'audit';
+export type AdminModuleKey = 'news' | 'manual' | 'content' | 'media' | 'matches' | 'tournaments' | 'members' | 'settings' | 'audit';
 
 export type AdminModule = {
   key: AdminModuleKey;
@@ -24,6 +24,8 @@ export const ADMIN_MODULES: readonly AdminModule[] = [
   { key: 'content', path: '/admin/content', anyOf: ['content.edit'] },
   { key: 'media', path: '/admin/media', anyOf: ['media.editorial.manage', 'media.match.manage'] },
   { key: 'matches', path: '/admin/matches', anyOf: ['matches.edit'] },
+  // Competitions that matches link to; the same match-manager capabilities and game scope.
+  { key: 'tournaments', path: '/admin/tournaments', anyOf: ['matches.edit'] },
   { key: 'members', path: '/admin/members', anyOf: ['members.edit'] },
   { key: 'settings', path: '/admin/settings', anyOf: ['settings.manage'] },
   { key: 'audit', path: '/admin/audit', anyOf: ['audit.read'] },

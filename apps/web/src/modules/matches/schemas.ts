@@ -133,6 +133,8 @@ const matchFacts = {
   opponentLogoAssetId: z.uuid().nullable().optional(),
   competitionType: z.enum(COMPETITION_TYPES),
   competitionName: optionalLine(120),
+  /** Linked tournament of the same game; `null` unlinks. */
+  tournamentId: z.uuid().nullable().optional(),
   season: optionalLine(60),
   format: optionalLine(60),
   bestOf: z.number().int().min(1).max(99).nullable().optional(),
@@ -158,6 +160,7 @@ export const updateMatchSchema = z.object({
   opponentLogoAssetId: matchFacts.opponentLogoAssetId,
   competitionType: matchFacts.competitionType.optional(),
   competitionName: matchFacts.competitionName,
+  tournamentId: matchFacts.tournamentId,
   season: matchFacts.season,
   format: matchFacts.format,
   bestOf: matchFacts.bestOf,

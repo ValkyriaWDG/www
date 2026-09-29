@@ -62,7 +62,7 @@ describe('fixtures on the schema that predates the field manual', () => {
 
   it('loads every group the older schema stores and names the skipped field manual', async () => {
     const report = await loadFixtures(handle.db, { mediaRoot: mediaRoot(), schemaCompatible: true });
-    expect(report).toMatchObject({ manual: 0, manualTranslations: 0, statistics: 0, skipped: ['field manual', 'match statistics'] });
+    expect(report).toMatchObject({ manual: 0, manualTranslations: 0, statistics: 0, tournaments: 0, skipped: ['field manual', 'match statistics', 'tournaments'] });
     expect(report.news).toBeGreaterThan(0);
     expect(await handle.db.select().from(contentDocument).where(eq(contentDocument.kind, 'news'))).toHaveLength(report.news);
   });
@@ -73,6 +73,7 @@ describe('fixtures on the schema that predates the field manual', () => {
     expect(report.skipped).toEqual([]);
     expect(report.manual).toBeGreaterThan(0);
     expect(report.statistics).toBe(1);
+    expect(report.tournaments).toBeGreaterThan(0);
     rmSync(mediaRoot(), { recursive: true, force: true });
   });
 });

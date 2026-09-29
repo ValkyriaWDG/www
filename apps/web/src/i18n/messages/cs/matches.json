@@ -191,5 +191,51 @@
       "players": "Hráči",
       "weapons": "Zbraně"
     }
+  },
+  "tournaments": {
+    "meta": {
+      "title": "Turnaje",
+      "description": "Soutěže, ve kterých hraje Valkyria: termíny, pravidla, tabulky a zápasy."
+    },
+    "list": {
+      "title": "Turnaje",
+      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Tabulky jsou uvedené se dnem stavu; živé pořadí najdete na webu soutěže.",
+      "current": "Probíhající a nadcházející",
+      "finished": "Ukončené",
+      "emptyTitle": "Zatím žádné zveřejněné turnaje",
+      "emptyBody": "Turnaje se tu objeví, jakmile je správci zveřejní.",
+      "matchCount": "{count, plural, =0 {Žádný zápas} one {# zápas} few {# zápasy} other {# zápasů}}",
+      "noDates": "Termín neuveden",
+      "dates": "{start} – {end}",
+      "from": "od {start}",
+      "until": "do {end}",
+      "organizer": "Pořadatel: {name}",
+      "loadError": "Turnaje se nepodařilo načíst. Zkuste to prosím později.",
+      "retry": "Zkusit znovu"
+    },
+    "phase": {
+      "upcoming": "Nadcházející",
+      "ongoing": "Probíhá",
+      "finished": "Ukončeno",
+      "undated": "Bez termínu"
+    },
+    "detail": {
+      "facts": "Údaje o turnaji",
+      "season": "Sezóna",
+      "organizer": "Pořadatel",
+      "dates": "Termín",
+      "phase": "Stav",
+      "links": "Odkazy",
+      "description": "Popis a pravidla",
+      "matches": "Zápasy Valkyrie",
+      "noMatches": "Zatím nejsou zveřejněné žádné zápasy tohoto turnaje.",
+      "descriptionMissingTitle": "Popis v češtině zatím není",
+      "descriptionMissingBody": "Popis tohoto turnaje je zveřejněný jen v jiném jazyce.",
+      "descriptionNone": "Popis turnaje zatím není zveřejněný.",
+      "otherCs": "Číst popis v češtině",
+      "otherEn": "Číst popis v angličtině",
+      "back": "Všechny turnaje"
+    },
+    "matchTournament": "Turnaj"
   }
 }

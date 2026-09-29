@@ -186,18 +186,30 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
 - **Field manual:** `manual` documents on the shared CMS (drafts, revisions, preview,
   scheduling, publication), manual categories, provenance metadata, diacritic-insensitive
   search with abbreviations, table of contents; legacy guides import only as draft shells.
+- **Tournaments:** `tournament` records (game, name, season, organizer, start/end day,
+  HTTPS links, publication, internal notes) managed in the administration by match
+  managers within their game scope; a per-locale description (rules, dated standings)
+  on the shared prose model; matches link to a tournament of their own game from the
+  match editor. HLL shows `/cs/hll/tournaments` (current/upcoming, then finished) and a
+  detail with the published linked matches; drafts and other games are 404. Legacy
+  `/turnaje` redirects there; the legacy records await import.
 - **Legacy:** reviewed redirect resolver, active only for `LEGACY_HLL_HOSTS` (empty).
 - **FAQ:** shared core page `faq` (`/cs/hll/faq`, `/cs/faq`) with a question index; the
   seed creates only an unpublished Czech/English outline of the legacy questions, so the
   page stays unpublished until editors write and publish the answers.
 - **Migrations:** additive `0001_unified_platform_scope.sql` (upgrade from 0000 data and
-  repeated run verified locally), `0002_match_statistics.sql` (new table only) and
-  `0003_faq_page.sql` (widens the page-key check).
+  repeated run verified locally), `0002_match_statistics.sql` (new table only),
+  `0003_faq_page.sql` (widens the page-key check) and `0004_tournaments.sql` (new table,
+  nullable `match.tournament_id` and `prose_translation.tournament_id`, widened prose
+  owner check). The fixture loader inserts only existing columns, so the release rollback
+  rehearsal can still load candidate fixtures into the previous schema. Tournaments:
+  [evidence](evidence/hll-tournaments-2026-09-29/README.md) (497 unit, 291 integration,
+  160 browser tests at `c3e65a6`).
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
 text/images and match history (host blocked in this environment; reuse of external
-illustrations unrecorded), events/tournaments/rankings destinations, FAQ answers, tactical map,
+illustrations unrecorded), legacy tournament records, events/rankings destinations, FAQ answers, tactical map,
 legacy match-ID aliases and scoped media library for game-scoped editors.
 Legacy parity for servers, matches and game statistics:
 [hll-parity-2026-09-28](evidence/hll-parity-2026-09-28/README.md) (468 unit, 281
@@ -238,11 +250,12 @@ preserve the static stage and unavailable-provider states without synthetic prod
 
 Follow-up after PR #37 (PR #50, which also incorporates the HLL graphics of PR #55; not deployed):
 CRCON server status, HLL rounds, imported match statistics (migration 0002) and the FAQ
-page (migration 0003). Next: configure the real CRCON hosts and decide player-statistics
-publication; write and publish the FAQ answers; choose the owners of events (Logi) and
-tournaments (CMS) and a source for rankings before building them. Release boundary: not part of the deployed `e03d3c5`; it requires migrations
-0002 and 0003 even with `SERVER_STATUS_SOURCE=none`, so integrate accepted main and qualify the
-exact resulting head before a later release.
+page (migration 0003), and tournaments (migration 0004, administration-managed per the
+owner). Next: configure the real CRCON hosts; write and publish the FAQ answers; import the
+legacy content once `valkyriahll.cz` is reachable; choose the owner of events (Logi) and a
+source for rankings. Release boundary: not part of the deployed `e03d3c5`; it requires
+migrations 0002–0004 even with `SERVER_STATUS_SOURCE=none`, so qualify the exact main
+revision before a later release.
 
 ## Publication authorization hardening
 

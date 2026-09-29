@@ -7,6 +7,7 @@ export const MAX_PROSE_BODY_BYTES = 200_000;
 export const proseOwnerSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('member'), id: z.uuid() }),
   z.object({ kind: z.literal('match'), id: z.uuid() }),
+  z.object({ kind: z.literal('tournament'), id: z.uuid() }),
 ]);
 
 export const localeSchema = z.enum(LOCALES);

@@ -122,7 +122,11 @@
     "hll_sector_score": "In HLL a round score is the number of sectors held: 0 to 5.",
     "invalid_scoreboard": "Neither the file nor the server response contains a game scoreboard with player statistics.",
     "unknown_server": "This server is not configured as a statistics source.",
-    "hll_only": "Game statistics can be imported for Hell Let Loose matches only."
+    "hll_only": "Game statistics can be imported for Hell Let Loose matches only.",
+    "ends_before_start": "The end cannot be before the start.",
+    "has_matches": "Matches are linked to this tournament; unlink them before changing the game.",
+    "game_mismatch": "The tournament belongs to a different game than the match.",
+    "tournament_missing": "The selected tournament no longer exists."
   },
   "media": {
     "none": "No image",
@@ -136,6 +140,7 @@
   "prose": {
     "tabsLabelRecap": "Recap language",
     "tabsLabelBiography": "Biography language",
+    "tabsLabelDescription": "Tournament description language",
     "unsavedShort": "unsaved",
     "unsaved": "Unsaved changes",
     "saving": "Saving…",
@@ -147,8 +152,10 @@
     "absentWithOther": "Visitors of the {lang, select, cs {Czech website} other {English website}} see a “not available in this language” notice with a link to the published {lang, select, cs {English version} other {Czech version}}. Nothing is translated automatically.",
     "editingRecap": "Recap · {lang, select, cs {Czech content} other {English content}} ({code})",
     "editingBiography": "Biography · {lang, select, cs {Czech content} other {English content}} ({code})",
+    "editingDescription": "Tournament description · {lang, select, cs {Czech content} other {English content}} ({code})",
     "canvasRecap": "Recap text ({lang, select, cs {Czech content} other {English content}})",
     "canvasBiography": "Biography text ({lang, select, cs {Czech content} other {English content}})",
+    "canvasDescription": "Tournament description text ({lang, select, cs {Czech content} other {English content}})",
     "liveLabel": "Live version",
     "liveSince": "Published {date}",
     "notLive": "{lang, select, cs {The Czech version is not published} other {The English version is not published}}",
@@ -294,7 +301,8 @@
         "source": "Result source",
         "internalNotes": "Internal notes",
         "newDate": "New date",
-        "newTime": "New time"
+        "newTime": "New time",
+        "tournament": "Tournament"
       },
       "hints": {
         "opponentShortCode": "E.g. a clan tag. Letters, digits, dots and hyphens.",
@@ -310,7 +318,8 @@
         "provisional": "Not yet confirmed; shown as provisional.",
         "verified": "Confirmed by an official source.",
         "source": "Where the result comes from, e.g. the league website.",
-        "internalNotes": "Never shown on the public website, in recaps or in previews."
+        "internalNotes": "Never shown on the public website, in recaps or in previews.",
+        "tournament": "A competition of the same game from the tournaments list; shown publicly once the tournament is published."
       },
       "scheduleIntro": "When the match is played. This is not the time the match page is published.",
       "currentStart": "Scheduled start",
@@ -368,7 +377,118 @@
         "unpublishBody": "The match disappears from all public lists and its page, including recaps in both languages.",
         "deleteTitle": "Delete this draft?",
         "deleteBody": "The draft match against {opponent} will be deleted permanently, including its recaps and rounds."
-      }
+      },
+      "noTournament": "No tournament",
+      "tournamentDraft": "draft"
+    }
+  },
+  "tournaments": {
+    "list": {
+      "metaTitle": "Tournaments · Administration",
+      "eyebrow": "Administration",
+      "title": "Tournaments",
+      "description": "Competitions Valkyria plays in. Description, rules and standings are written separately in Czech and English; matches are linked to a tournament in the match editor.",
+      "newTournament": "New tournament",
+      "deletedNotice": "The draft tournament was deleted.",
+      "searchLabel": "Search tournaments",
+      "searchPlaceholder": "Name, season or organizer",
+      "count": "{count, plural, =0 {No tournaments} one {# tournament} other {# tournaments}}",
+      "filters": {
+        "label": "Tournament filters",
+        "game": "Game",
+        "publication": "Publication"
+      },
+      "filteredEmptyTitle": "No tournaments match these filters",
+      "filteredEmptyBody": "Change or clear the filters.",
+      "emptyTitle": "No tournaments yet",
+      "emptyBody": "Create the first tournament. It stays a private draft until you publish it.",
+      "caption": "Tournaments",
+      "columns": {
+        "name": "Name",
+        "game": "Game",
+        "dates": "Dates",
+        "matches": "Matches",
+        "publication": "Publication",
+        "description": "Description",
+        "actions": "Actions"
+      },
+      "editRow": "– edit",
+      "edit": "Edit",
+      "noDates": "Dates not set"
+    },
+    "editor": {
+      "eyebrow": "Tournament",
+      "createTitle": "New tournament",
+      "editMetaTitle": "Edit tournament · Administration",
+      "backToList": "Back to tournaments",
+      "createIntro": "Created as a private draft. Add the description, rules and standings after saving.",
+      "viewPublic": "View on the website",
+      "createdNotice": "The draft tournament was created.",
+      "savedNotice": "Changes saved.",
+      "publishedNotice": "The tournament is published.",
+      "unpublishedNotice": "The tournament was hidden from the website.",
+      "reloadedNotice": "Loaded the latest version; your unsaved changes were kept.",
+      "conflictTitle": "Someone else changed this tournament",
+      "conflictBody": "Load the latest version. Your unsaved changes are kept.",
+      "reloadLatest": "Load latest version",
+      "groups": {
+        "identity": "Tournament details",
+        "description": "Description, rules and standings",
+        "matches": "Matches in the tournament",
+        "private": "Internal administration"
+      },
+      "fields": {
+        "game": "Game",
+        "name": "Name",
+        "season": "Season",
+        "organizer": "Organizer",
+        "startsOn": "Start",
+        "endsOn": "End",
+        "slug": "Address (slug)",
+        "publicAddress": "Public address",
+        "linkLabel": "Link label",
+        "linkUrl": "Link address",
+        "internalNotes": "Internal notes"
+      },
+      "hints": {
+        "name": "The competition’s own name, the same in both languages (e.g. ECL 2026 Fall).",
+        "gameLocked": "The game cannot change while matches are linked to the tournament.",
+        "slug": "Leave empty to derive the address from the name and season.",
+        "httpsOnly": "https:// addresses only.",
+        "internalNotes": "Never shown on the public website."
+      },
+      "linksTitle": "Links",
+      "linksIntro": "Competition website, rules, Discord or bracket (at most {max}).",
+      "linkItem": "Link {number}",
+      "linkRemove": "Remove link {number}",
+      "linkAdd": "Add link",
+      "removeShort": "Remove",
+      "descriptionIntro": "Description, rules and dated standings. The Czech and English versions are published separately.",
+      "descriptionPrivateUntilPublished": "The description stays private until the tournament itself is published.",
+      "descriptionAfterCreate": "You can write the description after creating the tournament.",
+      "matchesIntro": "Matches are linked in the match editor (Tournament field). Only published matches appear publicly.",
+      "noMatches": "No match is linked to this tournament yet.",
+      "privateTag": "Private",
+      "actions": {
+        "createDraft": "Create draft",
+        "save": "Save changes",
+        "publish": "Publish",
+        "unpublish": "Hide from website",
+        "delete": "Delete draft"
+      },
+      "statusPanel": "Status and publication",
+      "statusExplainer": "Publication decides whether the website shows the tournament. Linked matches keep their own publication.",
+      "linkedMatches": "Linked matches",
+      "updatedAt": "Last change",
+      "noPublishPermission": "You are not allowed to publish tournaments.",
+      "createAside": "The publication state appears here after the tournament is created.",
+      "dialogs": {
+        "unpublishTitle": "Hide the tournament from the website?",
+        "unpublishBody": "The tournament disappears from the overview and its page; published matches stay, without the tournament link.",
+        "deleteTitle": "Delete this draft?",
+        "deleteBody": "The draft tournament {name} will be permanently deleted with its descriptions. Linked matches stay and are unlinked."
+      },
+      "createStatus": "New draft, not saved yet"
     }
   },
   "members": {

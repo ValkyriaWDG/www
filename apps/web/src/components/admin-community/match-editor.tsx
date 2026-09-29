@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSONContent } from '@tiptap/core';
-import { COMPETITION_TYPES, GAMES, type MatchOutcome } from '@valkyria/db/schema';
+import { COMPETITION_TYPES, GAMES, type Game, type MatchOutcome } from '@valkyria/db/schema';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useUnsavedChangesGuard } from '@/components/shell/unsaved-changes';
@@ -30,6 +30,7 @@ import {
 import { canonicalMatchPath } from '@/modules/games/routes';
 import { DEFAULT_MATCH_TIME_ZONE } from '@/modules/matches/time';
 import type { AdminMatch } from '@/modules/matches/types';
+import type { TournamentOption } from '@/modules/tournaments/types';
 import { ConfirmDialog } from './confirm-dialog';
 import { errorFor, type FieldErrors } from './errors';
 import { formatDate, formatNumber } from './format';
@@ -85,6 +86,8 @@ type MatchEditorProps = {
   created?: boolean;
   /** Configured CRCON servers offered for HLL statistics import (names only). */
   statisticsSources?: { publicId: string; name: string }[];
+  /** Tournaments per game within the editor's scope (the select offers the match's game). */
+  tournaments?: Partial<Record<Game, TournamentOption[]>>;
 };
 
 type Notice = { kind: 'success' | 'error' | 'warning' | 'info'; title?: string; text: string; conflict?: boolean } | null;
@@ -107,7 +110,7 @@ function focusFirstInvalid() {
  * Every mutation is a server action; the returned admin snapshot updates only the saved
  * group, so unsaved values elsewhere are never lost (also on conflicts).
  */
-export function MatchEditor({ uiLocale, initial, canPublish, created, statisticsSources = [] }: MatchEditorProps) {
+export function MatchEditor({ uiLocale, initial, canPublish, created, statisticsSources = [], tournaments = {} }: MatchEditorProps) {
   const t = useTranslations('adminCommunity.matches.editor');
   const tc = useTranslations('adminCommunity.common');
   const tGame = useTranslations('adminCommunity.common.game');
@@ -395,7 +398,15 @@ export function MatchEditor({ uiLocale, initial, canPublish, created, statistics
                   label={t('fields.game')}
                   required
                   value={facts.game}
-                  onChange={(event) => setFact('game', event.target.value as FactsValues['game'])}
+                  onChange={(event) => {
+                    const game = event.target.value as FactsValues['game'];
+                    // A tournament belongs to one game; switching the game unlinks another game's tournament.
+                    setFacts((current) => ({
+                      ...current,
+                      game,
+                      tournamentId: (tournaments[game] ?? []).some((option) => option.id === current.tournamentId) ? current.tournamentId : '',
+                    }));
+                  }}
                   options={GAMES.map((game) => ({ value: game, label: tGame(game) }))}
                   error={err('game')}
                 />
@@ -440,6 +451,21 @@ export function MatchEditor({ uiLocale, initial, canPublish, created, statistics
                   error={err('competitionType')}
                 />
                 <TextField name="competitionName" label={t('fields.competitionName')} markOptional value={facts.competitionName} maxLength={120} onChange={(event) => setFact('competitionName', event.target.value)} error={err('competitionName')} />
+                <Select
+                  name="tournamentId"
+                  label={t('fields.tournament')}
+                  hint={t('hints.tournament')}
+                  value={facts.tournamentId}
+                  onChange={(event) => setFact('tournamentId', event.target.value)}
+                  options={[
+                    { value: '', label: t('noTournament') },
+                    ...(tournaments[facts.game] ?? []).map((option) => ({
+                      value: option.id,
+                      label: [option.name, option.season, option.publication === 'draft' ? t('tournamentDraft') : null].filter(Boolean).join(' · '),
+                    })),
+                  ]}
+                  error={err('tournamentId')}
+                />
                 <TextField name="season" label={t('fields.season')} markOptional value={facts.season} maxLength={60} onChange={(event) => setFact('season', event.target.value)} error={err('season')} />
                 <TextField name="format" label={t('fields.format')} markOptional hint={t('hints.format')} value={facts.format} maxLength={60} onChange={(event) => setFact('format', event.target.value)} error={err('format')} />
                 <TextField name="bestOf" label={t('fields.bestOf')} markOptional inputMode="numeric" value={facts.bestOf} onChange={(event) => setFact('bestOf', event.target.value)} error={err('bestOf')} />

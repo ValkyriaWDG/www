@@ -2833,6 +2833,94 @@
       "bytes": 50722,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-hll-tournaments-cs-1440x900",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/hll-tournaments-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "65396ed9461746f0e3e9d8aa112aa9edb279b46cb0f589e25369296947711c09",
+      "bytes": 37674,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-hll-tournament-detail-cs-1440x900",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/hll-tournament-detail-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "b61f96ab1f5a11a245639bce5750158c3d3f910481416ac5cbf72a2b8a77e9aa",
+      "bytes": 54500,
+      "width": 1440,
+      "height": 1230
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-hll-tournament-detail-en-390x844",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/hll-tournament-detail-en-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "bc0fda6b830039acf639833c248390cfb5f2edc92688ea0681043d750419c913",
+      "bytes": 34288,
+      "width": 390,
+      "height": 1542
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-hll-landing-cs-1366x768",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/hll-landing-cs-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ba85afd8ab62f677e7627b4f4c3945623f127ee472c65a8fe040c598231ce649",
+      "bytes": 29394,
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-admin-tournaments-cs-1440x900",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/admin-tournaments-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "41ad36f1117354e193d48dc3fabfc7500f0288c892c5c660ccb20aea2652f155",
+      "bytes": 37262,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-admin-tournament-editor-cs-1440x1200",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/admin-tournament-editor-cs-1440x1200.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4b9e22fc5166172cdb1bd81b8b9c422831ec03c307878fa107baaf6b0e794dd5",
+      "bytes": 56408,
+      "width": 1440,
+      "height": 1200
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-admin-tournament-description-cs-1440x1200",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/admin-tournament-description-cs-1440x1200.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "fdec62b35ddc0808ed3881c3b16c1f819fc26072eef12cd57d194677620e5ce3",
+      "bytes": 37604,
+      "width": 1440,
+      "height": 1200
+    },
+    {
+      "id": "hll-tournaments-2026-09-29-tournaments-admin-match-tournament-cs-1440x1200",
+      "path": "docs/evidence/hll-tournaments-2026-09-29/tournaments/admin-match-tournament-cs-1440x1200.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still, empty clip playlist) at c3e65a6; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "3f9689490528dc1b573dcf8cbc596a780debe63fba1d19ca7c44778f361ae6e6",
+      "bytes": 55292,
+      "width": 1440,
+      "height": 1200
     }
   ]
 }

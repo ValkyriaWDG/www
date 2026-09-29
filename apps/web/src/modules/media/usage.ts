@@ -13,7 +13,7 @@ const revisionRefs = (alias: string, id: SQL) =>
 /**
  * True when at least one CURRENTLY PUBLISHED reference permits anonymous delivery:
  * a live content translation of a non-archived document; a published prose revision
- * whose owner is public (published match, or published member with consent); a
+ * whose owner is public (published match or tournament, or published member with consent); a
  * published member's avatar; a published match's opponent logo or cover.
  */
 export function publishedReferenceSql(id: SQL): SQL {
@@ -29,8 +29,10 @@ export function publishedReferenceSql(id: SQL): SQL {
       join prose_revision pr on pr.id = p.published_revision_id and pr.prose_translation_id = p.id
       left join "match" m on m.id = p.match_id
       left join member_profile mp on mp.id = p.member_profile_id
+      left join tournament tn on tn.id = p.tournament_id
       where ${revisionRefs('pr', id)}
         and ((p.match_id is not null and m.publication = 'published')
+          or (p.tournament_id is not null and tn.publication = 'published')
           or (p.member_profile_id is not null and mp.state = 'published' and mp.consent_confirmed_at is not null))
     )
     or exists (

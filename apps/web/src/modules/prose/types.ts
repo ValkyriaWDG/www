@@ -1,8 +1,8 @@
 import type { CoverSnapshot, Locale, RevisionKind, RichTextDocument } from '@valkyria/db';
 import type { PublicImage } from './assets';
 
-/** The single owner of a localized prose record (member biography or match recap). */
-export type ProseOwner = { kind: 'member'; id: string } | { kind: 'match'; id: string };
+/** The single owner of a localized prose record (member biography, match recap or tournament description). */
+export type ProseOwner = { kind: 'member'; id: string } | { kind: 'match'; id: string } | { kind: 'tournament'; id: string };
 export type ProseOwnerKind = ProseOwner['kind'];
 
 /**

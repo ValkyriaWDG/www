@@ -1,0 +1,160 @@
+/* Tournaments (HLL browser/manual vocabulary): framed text panels over the dimmed scene. */
+.group {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.groupTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 0.6vw, 1.625rem);
+  font-weight: 700;
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  border: var(--border-hairline) solid var(--color-border);
+  background: rgb(20 21 19 / 0.82);
+}
+
+.card article {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: var(--color-accent);
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+/* The whole panel is the link target; the title keeps the accessible name. */
+.cardLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.cardLink:focus-visible {
+  outline: none;
+}
+
+.card:has(.cardLink:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.cardFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.facts,
+.body {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: var(--border-hairline) solid var(--color-border);
+  background: rgb(20 21 19 / 0.82);
+}
+
+.body {
+  min-width: 0;
+}
+
+.factList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.factList div {
+  display: grid;
+  gap: 2px;
+}
+
+.factList dt {
+  color: var(--color-text-muted);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+}
+
+.factList dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.subTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  text-transform: uppercase;
+}
+
+.links {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.muted {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 1023px) {
+  .detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

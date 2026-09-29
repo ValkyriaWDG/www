@@ -41,6 +41,8 @@ export type FactsValues = {
   opponentLogo: MediaRef | null;
   competitionType: CompetitionType;
   competitionName: string;
+  /** Linked tournament id of the same game, or '' for none. */
+  tournamentId: string;
   season: string;
   format: string;
   bestOf: string;
@@ -88,6 +90,7 @@ export function emptyFacts(): FactsValues {
     opponentLogo: null,
     competitionType: 'friendly',
     competitionName: '',
+    tournamentId: '',
     season: '',
     format: '',
     bestOf: '',
@@ -108,6 +111,7 @@ export function factsFrom(match: AdminMatch): FactsValues {
     opponentLogo: match.opponentLogoAssetId ? { assetId: match.opponentLogoAssetId, filename: null } : null,
     competitionType: match.competitionType,
     competitionName: text(match.competitionName),
+    tournamentId: text(match.tournamentId),
     season: text(match.season),
     format: text(match.format),
     bestOf: numberText(match.bestOf),
@@ -170,6 +174,7 @@ export function factsEqual(a: FactsValues, b: FactsValues): boolean {
     mediaId(a.opponentLogo) === mediaId(b.opponentLogo) &&
     a.competitionType === b.competitionType &&
     a.competitionName === b.competitionName &&
+    a.tournamentId === b.tournamentId &&
     a.season === b.season &&
     a.format === b.format &&
     a.bestOf === b.bestOf &&
@@ -345,6 +350,7 @@ function factsPayload(values: FactsValues) {
     opponentLogoAssetId: values.opponentLogo?.assetId ?? null,
     competitionType: values.competitionType,
     competitionName: optionalText(values.competitionName),
+    tournamentId: values.tournamentId || null,
     season: optionalText(values.season),
     format: optionalText(values.format),
     bestOf: parseCount(values.bestOf),

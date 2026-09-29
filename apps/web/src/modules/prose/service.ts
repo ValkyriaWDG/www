@@ -4,8 +4,10 @@ import {
   memberProfile,
   proseRevision,
   proseTranslation,
+  tournament,
   type AssetScope,
   type Executor,
+  type Game,
   type Locale,
 } from '@valkyria/db';
 import { and, desc, eq, notInArray, sql } from 'drizzle-orm';
@@ -40,7 +42,20 @@ export const MAX_PROSE_REVISIONS = 50;
 const OWNER_POLICY: Record<ProseOwnerKind, { edit: Capability; publish: Capability; scopes: readonly AssetScope[]; entityType: string }> = {
   member: { edit: 'members.edit', publish: 'members.publish', scopes: ['editorial'], entityType: 'member_profile' },
   match: { edit: 'matches.edit', publish: 'matches.publish', scopes: ['match', 'editorial'], entityType: 'match' },
+  tournament: { edit: 'matches.edit', publish: 'matches.publish', scopes: ['match', 'editorial'], entityType: 'tournament' },
 };
+
+/** Games of the owner (a member: every affiliation); `undefined` when it does not exist. */
+async function ownerGames(db: Executor, owner: ProseOwner, lock?: 'share'): Promise<readonly Game[] | undefined> {
+  if (owner.kind === 'member') {
+    const query = db.select({ games: memberProfile.games }).from(memberProfile).where(eq(memberProfile.id, owner.id));
+    return (await (lock ? query.for(lock) : query.limit(1)))[0]?.games;
+  }
+  const table = owner.kind === 'match' ? match : tournament;
+  const query = db.select({ game: table.game }).from(table).where(eq(table.id, owner.id));
+  const rows = await (lock ? query.for(lock) : query.limit(1));
+  return rows.length > 0 ? rows.map((row) => row.game) : undefined;
+}
 
 /**
  * Authorizes against the owner domain named in the raw input before the input is fully
@@ -49,18 +64,15 @@ const OWNER_POLICY: Record<ProseOwnerKind, { edit: Capability; publish: Capabili
 async function guard(db: Executor, actor: Actor, input: unknown, capability: 'edit' | 'publish', action: string, intent: 'read' | 'write' = 'write') {
   const owner = typeof input === 'object' && input !== null ? (input as { owner?: { kind?: unknown; id?: unknown }; locale?: unknown }).owner : undefined;
   const kind = owner?.kind;
-  if (kind !== 'member' && kind !== 'match') throw new DomainError('validation', 'Invalid input.', { 'owner.kind': 'invalid_value' });
+  if (kind !== 'member' && kind !== 'match' && kind !== 'tournament') throw new DomainError('validation', 'Invalid input.', { 'owner.kind': 'invalid_value' });
   const policy = OWNER_POLICY[kind];
   const entityId = typeof owner?.id === 'string' && /^[0-9a-f-]{36}$/i.test(owner.id) ? owner.id : null;
   const rawLocale = (input as { locale?: unknown }).locale;
   const locale = rawLocale === 'cs' || rawLocale === 'en' ? rawLocale : null;
   await authorize(db, actor, policy[capability], { intent, action, entityType: policy.entityType, entityId, locale });
   if (entityId) {
-    // Recaps/biographies follow their owner's game scope (a member: every affiliation).
-    const games =
-      kind === 'member'
-        ? (await db.select({ games: memberProfile.games }).from(memberProfile).where(eq(memberProfile.id, entityId)).limit(1))[0]?.games
-        : (await db.select({ game: match.game }).from(match).where(eq(match.id, entityId)).limit(1)).map((row) => row.game);
+    // Prose follows its owner's game scope (a member: every affiliation).
+    const games = await ownerGames(db, { kind, id: entityId });
     if (games) await authorizeGames(db, actor, policy[capability], games, { action, entityType: policy.entityType, entityId, locale });
   }
   return policy;
@@ -80,10 +92,8 @@ async function lockOwnerScope(
   capability: Capability,
   action: string,
 ) {
-  const games = owner.kind === 'member'
-    ? (await tx.select({ games: memberProfile.games }).from(memberProfile).where(eq(memberProfile.id, owner.id)).for('share'))[0]?.games
-    : (await tx.select({ game: match.game }).from(match).where(eq(match.id, owner.id)).for('share')).map((row) => row.game);
-  if (!games || (owner.kind === 'match' && games.length === 0)) throw new DomainError('not_found');
+  const games = await ownerGames(tx, owner, 'share');
+  if (!games) throw new DomainError('not_found');
   // A denial must survive the mutation rollback; use the outer audit connection.
   await authorizeGames(auditDb, actor, capability, games, {
     action, entityType: OWNER_POLICY[owner.kind].entityType, entityId: owner.id, locale,
@@ -145,6 +155,7 @@ export async function saveProseDraft(db: Executor, actor: Actor, input: SavePros
           .values({
             memberProfileId: data.owner.kind === 'member' ? data.owner.id : null,
             matchId: data.owner.kind === 'match' ? data.owner.id : null,
+            tournamentId: data.owner.kind === 'tournament' ? data.owner.id : null,
             locale: data.locale,
           })
           .returning();

@@ -13,6 +13,7 @@ import type {
 } from '@valkyria/db';
 import type { PublicImage } from '@/modules/prose/assets';
 import type { LocalizedProse, ProseAdminDetail, ProseStatus } from '@/modules/prose/types';
+import type { PublicTournamentLink } from '@/modules/tournaments/types';
 
 export type MatchPublication = 'draft' | 'published';
 
@@ -90,6 +91,8 @@ export type PublicMatchDetail = PublicMatchSummary & {
   statistics: MatchStatisticsView | null;
   /** Requested locale's published recap or explicit absence with source locales. */
   recap: LocalizedProse;
+  /** Published tournament the match belongs to (hidden while the tournament is a draft). */
+  tournament: PublicTournamentLink | null;
   publishedAt: string;
   updatedAt: string;
 };
@@ -129,6 +132,7 @@ export type AdminMatchListItem = {
 
 export type AdminMatch = AdminMatchListItem & {
   opponentLogoAssetId: string | null;
+  tournamentId: string | null;
   season: string | null;
   format: string | null;
   bestOf: number | null;

@@ -6,6 +6,8 @@ import { MatchEditor } from '@/components/admin-community/match-editor';
 import { routing } from '@/i18n/routing';
 import { can } from '@/modules/access/policy';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { getDb } from '@/lib/db';
+import { listTournamentOptionsByGame } from '@/modules/tournaments/queries';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,5 +25,6 @@ export default async function NewMatchPage({ params }: PageProps<'/[locale]/admi
   setRequestLocale(locale);
   const access = await requireAdminPage({ locale, path: '/admin/matches/new', capability: 'matches.edit' });
   if (!access.ok) return access.denied;
-  return <MatchEditor uiLocale={locale} initial={null} canPublish={can(access.principal, 'matches.publish')} />;
+  const tournaments = await listTournamentOptionsByGame(getDb(), access.principal);
+  return <MatchEditor uiLocale={locale} initial={null} canPublish={can(access.principal, 'matches.publish')} tournaments={tournaments} />;
 }

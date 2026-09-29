@@ -5,6 +5,7 @@ import {
   memberProfile,
   proseRevision,
   proseTranslation,
+  tournament,
   type Executor,
   type Locale,
 } from '@valkyria/db';
@@ -13,7 +14,8 @@ import { loadPublicImages } from './assets';
 import type { LocalizedProse, ProseAdminDetail, ProseOwner, ProseOwnerKind, ProseStatus } from './types';
 
 export function ownerColumn(kind: ProseOwnerKind) {
-  return kind === 'member' ? proseTranslation.memberProfileId : proseTranslation.matchId;
+  if (kind === 'member') return proseTranslation.memberProfileId;
+  return kind === 'match' ? proseTranslation.matchId : proseTranslation.tournamentId;
 }
 
 export function ownerCondition(owner: ProseOwner) {
@@ -58,8 +60,16 @@ export async function publishedProseFor(db: Executor, owner: ProseOwner, locale:
   };
 }
 
-/** True when the owner passes its global public gate (published match / published + consented profile). */
+/** True when the owner passes its global public gate (published match or tournament / published + consented profile). */
 export async function ownerIsPublic(db: Executor, owner: ProseOwner): Promise<boolean> {
+  if (owner.kind === 'tournament') {
+    const [row] = await db
+      .select({ id: tournament.id })
+      .from(tournament)
+      .where(and(eq(tournament.id, owner.id), eq(tournament.publication, 'published')))
+      .limit(1);
+    return Boolean(row);
+  }
   if (owner.kind === 'match') {
     const [row] = await db
       .select({ id: match.id })

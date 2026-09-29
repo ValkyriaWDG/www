@@ -112,6 +112,11 @@ export function canonicalNewsPath(game: Game | null, slug: string): string {
   return game ? gamePath(gameRouteFromDb(game), 'news', slug) : `/news/${slug}`;
 }
 
+/** Canonical logical URL of a published tournament (every tournament belongs to exactly one game). */
+export function canonicalTournamentPath(game: Game, slug: string): string {
+  return gamePath(gameRouteFromDb(game), 'tournaments', slug);
+}
+
 /** Canonical logical URL of a published match (every match belongs to exactly one game). */
 export function canonicalMatchPath(game: Game, slug: string): string {
   return gamePath(gameRouteFromDb(game), 'matches', slug);

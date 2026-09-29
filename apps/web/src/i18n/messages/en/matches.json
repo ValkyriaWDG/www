@@ -191,5 +191,51 @@
       "players": "Players",
       "weapons": "Weapons"
     }
+  },
+  "tournaments": {
+    "meta": {
+      "title": "Tournaments",
+      "description": "Competitions Valkyria plays in: dates, rules, standings and matches."
+    },
+    "list": {
+      "title": "Tournaments",
+      "intro": "{game} competitions Valkyria plays in. Standings carry the date they reflect; live rankings are on the competition website.",
+      "current": "Current and upcoming",
+      "finished": "Finished",
+      "emptyTitle": "No published tournaments yet",
+      "emptyBody": "Tournaments appear here once the administrators publish them.",
+      "matchCount": "{count, plural, =0 {No matches} one {# match} other {# matches}}",
+      "noDates": "Dates not set",
+      "dates": "{start} – {end}",
+      "from": "from {start}",
+      "until": "until {end}",
+      "organizer": "Organizer: {name}",
+      "loadError": "The tournaments could not be loaded. Please try again later.",
+      "retry": "Try again"
+    },
+    "phase": {
+      "upcoming": "Upcoming",
+      "ongoing": "In progress",
+      "finished": "Finished",
+      "undated": "No dates"
+    },
+    "detail": {
+      "facts": "Tournament details",
+      "season": "Season",
+      "organizer": "Organizer",
+      "dates": "Dates",
+      "phase": "Status",
+      "links": "Links",
+      "description": "Description and rules",
+      "matches": "Valkyria matches",
+      "noMatches": "No matches of this tournament are published yet.",
+      "descriptionMissingTitle": "No English description yet",
+      "descriptionMissingBody": "This tournament’s description is only published in another language.",
+      "descriptionNone": "The tournament description is not published yet.",
+      "otherCs": "Read the Czech description",
+      "otherEn": "Read the English description",
+      "back": "All tournaments"
+    },
+    "matchTournament": "Tournament"
   }
 }
