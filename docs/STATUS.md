@@ -38,6 +38,14 @@ Checks on the `797f7d4` build: lint/types passed; unit 707/707; full browser sui
 182 passed, 0 failed (99 skipped) before the icon case was added, then
 `public-layout.spec.ts` 4/4 with it; integration 340/340; foundation and `derive-graphics-pack.mjs --check` passed.
 Tournaments have no logo field (a logo upload needs a migration).
+
+Match statistics and FAQ on `e4598c5` ([captures](evidence/match-stats-faq-2026-09-29/README.md)):
+per-metric split bars comparing the teams (validated palette), team marks beside team
+names and player rows, original glyphs for kills/deaths/combat/offense/defense/support
+(game class/score icons are not licensed; stored statistics have no class), numbered
+FAQ questions with a two-column index. Checks: lint/types passed, unit 708/708, browser
+183 passed (99 skipped). The imported manual/FAQ content on production was not visible
+from this environment; its reported formatting problems remain open.
 Not changed: the published clan/community CMS pages still contain the owner's older
 sentence about HLL matches on the original website (an editor must update that content);
 production was not re-audited because `valkyria.cz` is blocked by this environment's
