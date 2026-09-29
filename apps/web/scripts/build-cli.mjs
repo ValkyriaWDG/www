@@ -13,8 +13,11 @@ mkdirSync(outdir, { recursive: true });
 
 // Development/test-only CLIs are bundled separately so the production image never ships them.
 const DEV_ONLY = new Set(['fixtures.ts']);
+// Extraction runs from a trusted operator checkout with Playwright and private source
+// files. The reviewed bundle importer is production-ready; the scraper is not shipped.
+const SOURCE_ONLY = new Set(['extract-legacy-hll.ts']);
 const sources = readdirSync(path.join(root, 'src', 'cli')).filter(
-  (file) => file.endsWith('.ts') && !file.endsWith('.test.ts') && file !== 'paths.ts',
+  (file) => file.endsWith('.ts') && !file.endsWith('.test.ts') && file !== 'paths.ts' && !SOURCE_ONLY.has(file),
 );
 const entries = sources.filter((file) => !DEV_ONLY.has(file)).map((file) => path.join(root, 'src', 'cli', file));
 const devEntries = sources.filter((file) => DEV_ONLY.has(file)).map((file) => path.join(root, 'src', 'cli', file));

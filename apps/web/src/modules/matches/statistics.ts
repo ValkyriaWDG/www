@@ -12,6 +12,7 @@ const MAX_WEAPONS_PER_TEAM = 12;
 
 export type ParsedScoreboard = {
   externalGameId: string | null;
+  serverNumber: number | null;
   mapName: string | null;
   mode: string | null;
   startedAt: Date | null;
@@ -57,10 +58,18 @@ function counts(value: unknown, maxEntries = 200): Record<string, number> {
 }
 
 function date(value: unknown): Date | null {
-  if (typeof value === 'number' && Number.isFinite(value)) return new Date(value * (value < 1e12 ? 1000 : 1));
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    const parsed = new Date(value * (value < 1e12 ? 1000 : 1));
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
   if (typeof value !== 'string') return null;
   const parsed = new Date(/[zZ]|[+-]\d{2}:?\d{2}$/.test(value) ? value : `${value}Z`);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+/** Scores and source identity are facts: malformed values must never become zero. */
+function integer(value: unknown, max: number, min = 0): number | null {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= min && value <= max ? value : null;
 }
 
 function side(value: unknown): StatisticsSide | 'unknown' {
@@ -119,12 +128,13 @@ export function parseCrconScoreboard(body: unknown): ParsedScoreboard | null {
     killsByTypeByPlayer.push(counts(row.kills_by_type, 40));
   }
   const result = record(game.result);
-  const allied = result ? counter(result.allied ?? result.Allied, 5) : null;
-  const axis = result ? counter(result.axis ?? result.Axis, 5) : null;
+  const allied = result ? integer(result.allied ?? result.Allied, 5) : null;
+  const axis = result ? integer(result.axis ?? result.Axis, 5) : null;
   const externalId = game.id;
   const { mapName, mode } = layer(game.map);
   return {
     externalGameId: typeof externalId === 'number' || typeof externalId === 'string' ? (text(String(externalId), 64)?.match(/^[A-Za-z0-9_.:-]+$/)?.[0] ?? null) : null,
+    serverNumber: integer(game.server_number, 2_147_483_647, 1),
     mapName: mapName ?? text(game.map_name, 80),
     mode,
     startedAt: date(game.start),

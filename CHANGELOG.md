@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Import the legacy HLL archive through a resumable, provenance-preserving operator
+  pipeline: articles, manuals, FAQ/history, tournaments, matches, images and individual
+  statistical rounds. Preserve unknown sides and quarantine conflicting source exports.
+- Resolve historical HLL detail URLs only to published canonical content, and allow
+  match administrators to import a completed result from a configured CRCON game link.
+- Show bounded live HLL round-player statistics with visible refresh/pause and stale
+  states; keep provider credentials and private account fields off the public API.
+- Keep the mobile match editor within its viewport while retaining toolbar scrolling
+  and show its correct game-specific public address.
 - Add localized homepage canonicals and branded news, match and site sharing images,
   editorial sharing previews and published-article structured data.
 - Revalidate durable authorization for Discord sessions and scheduled publishing;
@@ -11,8 +20,12 @@
 - Qualify the pinned Trixie runtime, cold-mobile page budgets, previous-image rollback
   and encrypted paired-backup byte verification; refresh CI action pins and media tests.
 
-No new schema migration or runtime credential is required. These source changes are
-not a deployment claim; see [current status](docs/STATUS.md) for the accepted revision,
+The legacy import requires migrations `0005`–`0008`, a reviewed private source bundle,
+and an explicit paired database/media migration. Once unknown historical sides are
+imported, the previous reader requires the pre-import database/media snapshot for
+rollback; an image-only rollback is unsafe. Live HLL reads require approved CRCON
+source configuration. These source changes are not a deployment claim; see
+[current status](docs/STATUS.md) for the accepted revision,
 publication, production checks and remaining browser/authentication/operational limits.
 
 ## 1.0.0 — 2026-09-26

@@ -61,21 +61,29 @@ export type PublicMatchCover = PublicImage & { alt: string; caption: string };
  * Imported game statistics of a match. `players` is `null` publicly unless an editor
  * published the player rows; administration always receives them.
  */
-export type MatchStatisticsView = {
+export type MatchStatisticsSnapshotView = {
   source: MatchStatisticsSource;
   sourceLabel: string;
   externalGameId: string | null;
+  /** Stable configured source identifier and validated public game link; absent for uploads. */
+  sourceServerPublicId: string | null;
+  sourceGameUrl: string | null;
   mapName: string | null;
   mode: string | null;
   gameStartedAt: string | null;
   gameEndedAt: string | null;
   result: { allied: number; axis: number } | null;
-  valkyriaSide: StatisticsSide;
+  valkyriaSide: StatisticsSide | null;
   teams: Record<StatisticsSide, MatchStatisticsTeam>;
   players: MatchStatisticsPlayer[] | null;
   playerCount: number;
   publishPlayers: boolean;
   observedAt: string;
+};
+
+export type MatchStatisticsView = MatchStatisticsSnapshotView & {
+  /** Additional historical rounds; the primary snapshot above is round 1. */
+  rounds?: { ordinal: number; statistics: MatchStatisticsSnapshotView }[];
 };
 
 export type PublicMatchDetail = PublicMatchSummary & {

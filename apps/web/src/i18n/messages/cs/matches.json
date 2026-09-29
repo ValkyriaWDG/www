@@ -190,7 +190,11 @@
       "summary": "Souhrn",
       "players": "Hráči",
       "weapons": "Zbraně"
-    }
+    },
+    "sourceLink": "Původní statistiky hry (externí web)",
+    "unassignedSide": "Historický zdroj neuvádí stranu Valkyrie. Dokud není vybrána ověřená strana, týmy se zobrazují jako Spojenci a Osa.",
+    "roundsTitle": "Importovaná kola zápasu",
+    "round": "Kolo {number}"
   },
   "tournaments": {
     "meta": {

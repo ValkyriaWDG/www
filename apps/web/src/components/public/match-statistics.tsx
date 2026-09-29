@@ -17,10 +17,23 @@ const KNOWN_TYPES = ['infantry', 'machine_gun', 'sniper', 'grenade', 'bazooka', 
  */
 export async function MatchStatistics({ statistics, locale, titleId, opponentLabel }: { statistics: MatchStatisticsView; locale: AppLocale; titleId: string; opponentLabel: string }) {
   const t = await getTranslations({ locale, namespace: 'matches.statistics' });
-  const valkyria = statistics.valkyriaSide;
+  if (statistics.rounds?.length) {
+    const { rounds, ...primary } = statistics;
+    const snapshots = [{ ordinal: 1, statistics: primary }, ...rounds];
+    return (
+      <div data-match-statistics-rounds="">
+        <Tabs label={t('roundsTitle')} tabs={await Promise.all(snapshots.map(async (round) => ({
+          id: `round-${round.ordinal}`,
+          label: t('round', { number: round.ordinal }),
+          content: await MatchStatistics({ statistics: round.statistics, locale, titleId: `${titleId}-round-${round.ordinal}`, opponentLabel }),
+        })))} />
+      </div>
+    );
+  }
+  const valkyria = statistics.valkyriaSide ?? 'allies';
   const opponent: StatisticsSide = valkyria === 'allies' ? 'axis' : 'allies';
   const sideName = (side: StatisticsSide) => t(`sides.${side}`);
-  const teamName = (side: StatisticsSide) => (side === valkyria ? t('valkyria', { side: sideName(side) }) : t('opponent', { name: opponentLabel, side: sideName(side) }));
+  const teamName = (side: StatisticsSide) => statistics.valkyriaSide === null ? sideName(side) : (side === valkyria ? t('valkyria', { side: sideName(side) }) : t('opponent', { name: opponentLabel, side: sideName(side) }));
   const number = (value: number) => formatNumber(value, locale);
   const scrollable = (label: string, table: ReactNode) => (
     <div className={styles.rounds} role="region" aria-label={label} tabIndex={0}>
@@ -112,7 +125,7 @@ export async function MatchStatistics({ statistics, locale, titleId, opponentLab
                 <th scope="row" className={styles.playerName}>
                   {player.name}
                 </th>
-                <td>{player.side === 'unknown' ? t('unknownSide') : player.side === valkyria ? t('valkyriaShort') : opponentLabel}</td>
+                <td>{player.side === 'unknown' ? t('unknownSide') : statistics.valkyriaSide === null ? sideName(player.side) : player.side === valkyria ? t('valkyriaShort') : opponentLabel}</td>
                 <td data-numeric="">{number(player.kills)}</td>
                 <td data-numeric="">{number(player.deaths)}</td>
                 <td data-numeric="">{formatNumber(player.killDeathRatio, locale, { maximumFractionDigits: 2 })}</td>
@@ -169,7 +182,9 @@ export async function MatchStatistics({ statistics, locale, titleId, opponentLab
         {[sourceText, game || null, statistics.gameStartedAt ? formatDate(statistics.gameStartedAt, locale, 'dateTimeZone') : null].filter(Boolean).join(' · ')}
         <br />
         {t('importedAt', { time: formatDate(statistics.observedAt, locale, 'dateTimeZone') })}
+        {statistics.sourceGameUrl ? <><br /><a href={statistics.sourceGameUrl} rel="noopener noreferrer" data-statistics-source-link="">{t('sourceLink')}</a></> : null}
       </p>
+      {statistics.valkyriaSide === null ? <p className={styles.statsNote}>{t('unassignedSide')}</p> : null}
       <Tabs
         label={t('title')}
         tabs={[

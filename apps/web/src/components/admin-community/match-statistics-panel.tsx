@@ -33,27 +33,32 @@ type Props = {
  * Imports CRCON game statistics for an HLL match: from a configured server by CRCON game
  * ID, or from an uploaded scoreboard JSON (per-kill encounters are removed in the browser
  * to fit the request limit; the server parses and validates everything again). Editors
- * choose Valkyria's side and whether player rows are public (off by default).
+ * choose Valkyria's side and whether player rows are public.
  */
 export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, suggestedSide, onChanged }: Props) {
   const t = useTranslations('adminCommunity.statistics');
   const fieldError = useFieldError();
   const actionError = useActionError();
   const [current, setCurrent] = useState<MatchStatisticsView | null>(initial);
-  const [source, setSource] = useState<'crcon' | 'upload'>(sources.length > 0 ? 'crcon' : 'upload');
+  const [source, setSource] = useState<'crcon' | 'crcon-url' | 'upload'>(sources.length > 0 ? 'crcon' : 'upload');
   const [serverId, setServerId] = useState(sources[0]?.publicId ?? '');
   const [gameId, setGameId] = useState('');
+  const [gameUrl, setGameUrl] = useState('');
   const [file, setFile] = useState<{ name: string; content: string } | null>(null);
   const [side, setSide] = useState<StatisticsSide>(initial?.valkyriaSide ?? suggestedSide ?? 'allies');
   // Owner decision: player rows are public by default; the editor's saved choice carries over to a replacement import.
   const [publishPlayers, setPublishPlayers] = useState(initial?.publishPlayers ?? true);
-  const [settings, setSettings] = useState({ side: initial?.valkyriaSide ?? 'allies', publishPlayers: initial?.publishPlayers ?? true });
+  const [settings, setSettings] = useState<{ side: StatisticsSide | ''; publishPlayers: boolean }>({ side: initial?.valkyriaSide ?? '', publishPlayers: initial?.publishPlayers ?? true });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [notice, setNotice] = useState<{ kind: 'success' | 'error'; text: string } | null>(null);
   const [pending, setPending] = useState<string | null>(null);
   const [confirmRemove, setConfirmRemove] = useState(false);
 
   const sideLabel = (value: StatisticsSide) => t(`sides.${value}`);
+  const statisticsError = (code: string | undefined) => {
+    if (code === 'game_url_invalid' || code === 'scoreboard_source_mismatch' || code === 'scoreboard_unfinished') return t(`errors.${code}`);
+    return fieldError(code);
+  };
 
   const finish = <T,>(result: ActionResult<T>, success: string, apply: (data: T) => void) => {
     setPending(null);
@@ -97,6 +102,16 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
 
   const runImport = async () => {
     setNotice(null);
+    if (source === 'crcon-url') {
+      if (!gameUrl.trim()) return setErrors({ gameUrl: 'required' });
+      setPending('import');
+      const result = await importMatchStatisticsAction({ source: 'crcon-url', matchId, serverPublicId: serverId, gameUrl: gameUrl.trim(), valkyriaSide: side, publishPlayers });
+      finish(result, t('imported'), (data) => {
+        setCurrent(data);
+        setSettings({ side: data.valkyriaSide ?? '', publishPlayers: data.publishPlayers });
+      });
+      return;
+    }
     if (source === 'crcon') {
       const id = Number(gameId.trim());
       if (!/^\d{1,10}$/.test(gameId.trim()) || !Number.isSafeInteger(id) || id <= 0) return setErrors({ gameId: 'invalid_number' });
@@ -104,7 +119,7 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
       const result = await importMatchStatisticsAction({ source: 'crcon', matchId, serverPublicId: serverId, gameId: id, valkyriaSide: side, publishPlayers });
       finish(result, t('imported'), (data) => {
         setCurrent(data);
-        setSettings({ side: data.valkyriaSide, publishPlayers: data.publishPlayers });
+        setSettings({ side: data.valkyriaSide ?? '', publishPlayers: data.publishPlayers });
       });
       return;
     }
@@ -113,14 +128,14 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
     const result = await importMatchStatisticsAction({ source: 'upload', matchId, fileName: file.name, content: file.content, valkyriaSide: side, publishPlayers });
     finish(result, t('imported'), (data) => {
       setCurrent(data);
-      setSettings({ side: data.valkyriaSide, publishPlayers: data.publishPlayers });
+      setSettings({ side: data.valkyriaSide ?? '', publishPlayers: data.publishPlayers });
     });
   };
 
   const saveSettings = async () => {
     setNotice(null);
     setPending('settings');
-    const result = await updateMatchStatisticsSettingsAction({ matchId, valkyriaSide: settings.side, publishPlayers: settings.publishPlayers });
+    const result = await updateMatchStatisticsSettingsAction({ matchId, valkyriaSide: settings.side || null, publishPlayers: settings.publishPlayers });
     finish(result, t('settingsSaved'), (data) => {
       setCurrent(data);
       setPublishPlayers(data.publishPlayers);
@@ -155,6 +170,7 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
                 {current.source === 'crcon'
                   ? t('sourceCrcon', { server: current.sourceLabel, game: current.externalGameId ?? '—' })
                   : t('sourceUpload', { file: current.sourceLabel || '—' })}
+                {current.sourceGameUrl ? <><br /><a href={current.sourceGameUrl} rel="noopener noreferrer" data-statistics-source-link="">{t('sourceLink')}</a></> : null}
               </dd>
             </div>
             <div className={styles.summaryRow}>
@@ -176,13 +192,15 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
               </dd>
             </div>
           </dl>
+          {current.rounds?.length ? <p className={styles.groupIntro}>{t('additionalRounds', { count: current.rounds.length })}</p> : null}
+          {current.valkyriaSide === null ? <p className={styles.groupIntro}>{t('unassignedSide')}</p> : null}
           <table className={styles.statTable} data-statistics-teams="">
             <caption className="visually-hidden">{t('teamsCaption')}</caption>
             <thead>
               <tr>
                 <th scope="col">{t('metric')}</th>
-                <th scope="col">{t('valkyriaColumn', { side: sideLabel(valkyria) })}</th>
-                <th scope="col">{t('opponentColumn', { side: sideLabel(opponent) })}</th>
+                <th scope="col">{current.valkyriaSide === null ? sideLabel(valkyria) : t('valkyriaColumn', { side: sideLabel(valkyria) })}</th>
+                <th scope="col">{current.valkyriaSide === null ? sideLabel(opponent) : t('opponentColumn', { side: sideLabel(opponent) })}</th>
               </tr>
             </thead>
             <tbody>
@@ -202,7 +220,7 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
               value={settings.side}
               disabled={busy}
               onChange={(event) => setSettings({ ...settings, side: event.target.value as StatisticsSide })}
-              options={(['allies', 'axis'] as const).map((value) => ({ value, label: sideLabel(value) }))}
+              options={[...(current.valkyriaSide === null ? [{ value: '', label: t('selectSide') }] : []), ...(['allies', 'axis'] as const).map((value) => ({ value, label: sideLabel(value) }))]}
             />
             <Checkbox
               name="statistics-settings-publish"
@@ -218,7 +236,7 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
               size="sm"
               intent="secondary"
               onClick={saveSettings}
-              disabled={busy || (settings.side === current.valkyriaSide && settings.publishPlayers === current.publishPlayers)}
+              disabled={busy || ((settings.side || null) === current.valkyriaSide && settings.publishPlayers === current.publishPlayers)}
               pending={pending === 'settings'}
               pendingLabel={t('working')}
               data-statistics-action="settings"
@@ -253,13 +271,14 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
           label={t('sourceLabel')}
           value={source}
           disabled={busy}
-          onChange={(event) => setSource(event.target.value as 'crcon' | 'upload')}
+          onChange={(event) => { setSource(event.target.value as 'crcon' | 'crcon-url' | 'upload'); setErrors({}); }}
           options={[
             { value: 'crcon', label: t('sourceOptionCrcon'), hint: sources.length > 0 ? t('sourceOptionCrconHint') : t('noSources') },
+            { value: 'crcon-url', label: t('sourceOptionUrl'), hint: t('sourceOptionUrlHint') },
             { value: 'upload', label: t('sourceOptionUpload'), hint: t('sourceOptionUploadHint') },
           ]}
         />
-        {source === 'crcon' ? (
+        {source !== 'upload' ? (
           <div className={styles.grid}>
             <Select
               name="statistics-server"
@@ -270,7 +289,16 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
               options={sources.length > 0 ? sources.map((entry) => ({ value: entry.publicId, label: entry.name })) : [{ value: '', label: t('noSourcesShort') }]}
               error={fieldError(errors.serverPublicId)}
             />
-            <TextField
+            {source === 'crcon-url' ? <TextField
+              name="statistics-game-url"
+              type="url"
+              label={t('gameUrl')}
+              hint={t('gameUrlHint')}
+              value={gameUrl}
+              disabled={busy || sources.length === 0}
+              onChange={(event) => setGameUrl(event.target.value)}
+              error={statisticsError(errors.gameUrl)}
+            /> : <TextField
               name="statistics-game-id"
               label={t('gameId')}
               hint={t('gameIdHint')}
@@ -278,8 +306,8 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
               value={gameId}
               disabled={busy || sources.length === 0}
               onChange={(event) => setGameId(event.target.value)}
-              error={fieldError(errors.gameId)}
-            />
+              error={statisticsError(errors.gameId)}
+            />}
           </div>
         ) : (
           <TextField name="statistics-file" type="file" accept="application/json,.json" label={t('file')} hint={t('fileHint')} disabled={busy} onChange={onFile} error={fieldError(errors.file)} />
@@ -309,7 +337,7 @@ export function MatchStatisticsPanel({ uiLocale, matchId, initial, sources, sugg
             size="sm"
             intent="primary"
             onClick={runImport}
-            disabled={busy || (source === 'crcon' && sources.length === 0)}
+            disabled={busy || (source !== 'upload' && sources.length === 0)}
             pending={pending === 'import'}
             pendingLabel={t('working')}
             data-statistics-action="import"
