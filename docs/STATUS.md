@@ -204,7 +204,11 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   owner check). The fixture loader inserts only existing columns, so the release rollback
   rehearsal can still load candidate fixtures into the previous schema. Tournaments:
   [evidence](evidence/hll-tournaments-2026-09-29/README.md) (497 unit, 291 integration,
-  160 browser tests at `c3e65a6`).
+  160 browser tests at `c3e65a6`). PR #59 merged as `e5d7276`; exact-main
+  [CI 36503155902](https://github.com/ValkyriaWDG/www/actions/runs/36503155902) passed.
+- **Crest:** the HLL main menu shows the Wardogs ghosted crest (same size, position,
+  colour and opacity; hidden on content pages), per the owner
+  ([evidence](evidence/hll-crest-2026-09-29/README.md)).
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide

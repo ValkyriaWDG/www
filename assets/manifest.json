@@ -2921,6 +2921,72 @@
       "bytes": 55292,
       "width": 1440,
       "height": 1200
+    },
+    {
+      "id": "hll-crest-2026-09-29-crest-before-hll-cs-1920x1080",
+      "path": "docs/evidence/hll-crest-2026-09-29/crest/before-hll-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still; the E2E synthetic clip is configured but not played) at main e5d7276 (before the fix); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d080e9211551df637cad1481afdabde7a0139edc76082fb97b754dff69844efb",
+      "bytes": 41228,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-crest-2026-09-29-crest-after-hll-cs-1920x1080",
+      "path": "docs/evidence/hll-crest-2026-09-29/crest/after-hll-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still; the E2E synthetic clip is configured but not played) at 07c49fb; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "990493544e6085f67f80b626b573880c618f0d6da6215350a5fb16c57c52f022",
+      "bytes": 43976,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-crest-2026-09-29-crest-after-wardogs-cs-1920x1080",
+      "path": "docs/evidence/hll-crest-2026-09-29/crest/after-wardogs-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still; the E2E synthetic clip is configured but not played) at 07c49fb; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "7b8116533f15456d1b56d770ad404f3e319388d821693d65f890223c826bac7c",
+      "bytes": 39882,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-crest-2026-09-29-crest-before-hll-cs-390x844",
+      "path": "docs/evidence/hll-crest-2026-09-29/crest/before-hll-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still; the E2E synthetic clip is configured but not played) at main e5d7276 (before the fix); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ea3b347e5fd116c1de7888e21dde7081f3f2bd31361c84b54d8a227e4c215b8c",
+      "bytes": 18740,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-crest-2026-09-29-crest-after-hll-cs-390x844",
+      "path": "docs/evidence/hll-crest-2026-09-29/crest/after-hll-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still; the E2E synthetic clip is configured but not played) at 07c49fb; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "39496567ed8bb98ddb4681233eaba8dead8050f90f20b2406c7e5a54f0516278",
+      "bytes": 19844,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-crest-2026-09-29-crest-after-wardogs-cs-390x844",
+      "path": "docs/evidence/hll-crest-2026-09-29/crest/after-wardogs-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, shipped HLL still; the E2E synthetic clip is configured but not played) at 07c49fb; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "800caaf93cb1ac5e0971ab8bf8b975af3b30b64b9781c1ba5b46cde23432b662",
+      "bytes": 16944,
+      "width": 390,
+      "height": 844
     }
   ]
 }
