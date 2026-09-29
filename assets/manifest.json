@@ -3365,6 +3365,94 @@
       "bytes": 37996,
       "width": 960,
       "height": 540
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-before-hub-cs-1920x1080",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/before-hub-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at main 338ee2f (before the change); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9d78c63867bc0a16d916850fe5030541857b138ffce8d97a5e988db5a0e6688a",
+      "bytes": 48530,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-after-hub-cs-1920x1080",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/after-hub-cs-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at 6a0b0d1; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4368ca53fe103e4fbc64b0231c59d7a73703cb1851d14675a387876c70b1a607",
+      "bytes": 80218,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-after-hub-en-1920x1080",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/after-hub-en-1920x1080.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at 6a0b0d1; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "b6999b058dc9fabad5ebff079e126895b5128af6a605567a8eeef684fb3e6bbf",
+      "bytes": 79266,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-before-hub-cs-1366x768",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/before-hub-cs-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at main 338ee2f (before the change); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "470796c16df48304c5101e24f71ee56b31513e42ad691655f90a6bc29b259b08",
+      "bytes": 35260,
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-after-hub-cs-1366x768",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/after-hub-cs-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at 6a0b0d1; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a47a105f1abbbf4e1e35f46a553cf3e3050ef6144faf67833ab505ff02f57bab",
+      "bytes": 56786,
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-before-hub-cs-390x844",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/before-hub-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at main 338ee2f (before the change); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9d6ef8d03e0ef5bbe92189c2c1422f0118f75a9c52f0f1e1d17d1fd9a7fceee8",
+      "bytes": 20830,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-after-hub-cs-390x844",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/after-hub-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at 6a0b0d1; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "c1a5e5438d722abffde550e49f472f1fdb98dfd3cbff1ede2b0c8b619743e893",
+      "bytes": 21548,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-hub-cover-2026-09-29-hub-after-news-cs-1366x768",
+      "path": "docs/evidence/hll-hub-cover-2026-09-29/hub/after-news-cs-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application (synthetic fixtures, local Discord mock, owner hub cover) at 6a0b0d1; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "04405e7eac2519ec5c055c7d3106dd1c085c0795e4b16b577abcbde39b358dbc",
+      "bytes": 43842,
+      "width": 1366,
+      "height": 768
     }
   ]
 }

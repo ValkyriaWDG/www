@@ -315,7 +315,12 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   language, account, community link, breakpoints, phone layout) in HLL colours, so nothing
   in the strip moves or resizes when switching games; `platform.spec.ts` requires equal
   boxes on both games' landings, news pages and the hub at 1920/1366/1024/390 px
-  ([evidence](evidence/hll-strip-2026-09-29/README.md)). Not deployed; no migration.
+  ([evidence](evidence/hll-strip-2026-09-29/README.md)). Merged as `571475f` and promoted to
+  the Watchtower production channel by publisher run 36565208081.
+- **Hub cover:** the community hub uses the owner-supplied cover (HLL left, Wardogs right)
+  on the hub route only, with 960/1672 px derivatives, a centred heading and the game
+  cards as windows onto their half ([evidence](evidence/hll-hub-cover-2026-09-29/README.md)).
+  No migration.
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
