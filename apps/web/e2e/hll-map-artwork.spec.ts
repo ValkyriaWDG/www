@@ -61,9 +61,13 @@ test.describe('HLL map artwork', () => {
     const alpha = page.getByRole('row').filter({ hasText: 'Test Server Alpha' });
     await expect(alpha).toContainText('Sainte-Mère-Église');
     await expect.poll(() => decoded(page, 'img[data-map-thumb]')).toEqual([0]);
+    // The failed images are hidden: no broken-image icon, the neutral boxes remain.
+    await expect(page.locator('img[data-map-thumb]')).toHaveAttribute('data-failed', '');
+    await expect(page.locator('img[data-map-thumb]')).toBeHidden();
+    await expect(page.locator('[data-map-scene] img')).toBeHidden();
     const box = await alpha.locator('[aria-hidden="true"]').first().boundingBox();
     expect([Math.round(box!.width), Math.round(box!.height)]).toEqual([72, 40]);
-    // The detail scene keeps its reserved 3:1 box and localized alternative text.
+    // The detail scene keeps its reserved 3:1 box (hidden image) and its alternative text in the DOM.
     const scene = page.locator('[data-map-scene] img');
     const sceneBox = await scene.boundingBox();
     expect(Math.abs(sceneBox!.width / sceneBox!.height - 3)).toBeLessThan(0.03);

@@ -112,7 +112,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'servers-failed-decode-cs-1366x768.png',
-    caption: 'Failed image decode (map images answered with invalid bytes by a test route): the row keeps its 72×40 neutral box and the map name; the detail keeps the reserved 3:1 box with the Czech alt text; no layout shift or overflow.',
+    caption: 'Failed image decode (map images answered with invalid bytes by a test route): the failed images are hidden (no broken-image icon): the row keeps its 72×40 striped neutral box and the map name, the detail keeps its reserved 3:1 box and the tactical-map link; no layout shift or overflow.',
     locale: 'cs',
     path: '/cs/hll/servers?server=synthetic-alpha',
     width: 1366,

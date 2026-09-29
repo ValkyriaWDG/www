@@ -54,3 +54,8 @@
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
+
+/* Failed decode: keep the reserved box, never a broken-image icon. */
+.failed {
+  visibility: hidden;
+}
