@@ -29,8 +29,14 @@ then two final scoped-address/mobile regressions. Eleven inspected, synthetic
 [screenshots and reproducible evidence](evidence/hll-legacy-crcon-2026-09-29/README.md)
 cover both locales and viewport sizes. An intermediate test-helper type error failed
 run 36565873993; its two fixture references are corrected and full local typecheck
-passes. Latest-head CI and production PostgreSQL restore/release acceptance remain
-pending at this checkpoint. Credentials were saved only to protected local
+passes. Full CI for `0efebe7` then passed in run
+[36566410659](https://github.com/ValkyriaWDG/www/actions/runs/36566410659): 602 unit,
+325 PostgreSQL and 166 browser tests (107 opt-in skips), plus image and performance
+checks. Independent review subsequently found that deferred owner publication also
+needed to guard independently published English prose. Four real-database failures
+reproduced the issue; the all-locale guard passes all 16 focused cases, including
+preservation of unpublished English drafts. The next-head CI and production
+PostgreSQL restore/release acceptance remain pending. Credentials were saved only to protected local
 and runtime environment files; public CRCON reads do not require them. No production
 schema/import, provider activation or legacy-domain cutover is established here.
 

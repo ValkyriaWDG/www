@@ -4,6 +4,7 @@ import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { importLegacyBundle } from '@/modules/legacy/import-bundle';
 import { IMPORT_ACTOR } from '@/modules/legacy/import-shared';
+import { getPublicProse } from '@/modules/prose/queries';
 import { publishProse, saveProseDraft } from '@/modules/prose/service';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
 
@@ -102,5 +103,36 @@ describe.each(['match', 'tournament'] as const)('legacy %s prose publication gua
     await t.db.delete(proseTranslation).where(eq(proseTranslation.id, fixture.translation.id));
     const report = await importLegacyBundle(t.db, fixture.input, os.tmpdir(), { apply: true, publish: true });
     expect(report.items[0]).toMatchObject({ action: 'conflict', reason: 'edited_draft_not_published_by_migration' });
+  });
+
+  it.each([false, true])('does not expose independently published English prose behind a draft owner (apply=%s)', async (apply) => {
+    const fixture = await importedDraft(kind);
+    const english = await saveProseDraft(t.db, IMPORT_ACTOR, {
+      owner: fixture.owner, locale: 'en', expectedVersion: 0, body: body('English editorial content behind a draft owner'),
+    });
+    const published = await publishProse(t.db, IMPORT_ACTOR, { owner: fixture.owner, locale: 'en', expectedVersion: english.version });
+    expect(await getPublicProse(t.db, fixture.owner, 'en')).toBeNull();
+
+    const report = await importLegacyBundle(t.db, fixture.input, os.tmpdir(), { apply, publish: true });
+    expect.soft(report.items[0]).toMatchObject({ action: 'conflict', reason: 'edited_draft_not_published_by_migration' });
+    const table = kind === 'match' ? match : tournament;
+    const [owner] = await t.db.select({ version: table.version, publication: table.publication }).from(table).where(eq(table.id, fixture.owner.id));
+    expect.soft(owner).toEqual(fixture.original);
+    expect(await getPublicProse(t.db, fixture.owner, 'en')).toBeNull();
+    const [translation] = await t.db.select().from(proseTranslation).where(eq(proseTranslation.id, english.translationId));
+    expect(translation).toMatchObject({ draftRevisionId: english.revisionId, publishedRevisionId: english.revisionId, version: published.version });
+  });
+
+  it('preserves an unpublished English draft while publishing unchanged imported Czech prose', async () => {
+    const fixture = await importedDraft(kind);
+    const english = await saveProseDraft(t.db, IMPORT_ACTOR, {
+      owner: fixture.owner, locale: 'en', expectedVersion: 0, body: body('Unpublished English editorial draft'),
+    });
+    const report = await importLegacyBundle(t.db, fixture.input, os.tmpdir(), { apply: true, publish: true });
+    expect(report.items[0]).toMatchObject({ action: 'publish' });
+    expect(await getPublicProse(t.db, fixture.owner, 'en')).toMatchObject({ state: 'missing' });
+    expect(await getPublicProse(t.db, fixture.owner, 'cs')).toMatchObject({ state: 'published' });
+    const [translation] = await t.db.select().from(proseTranslation).where(eq(proseTranslation.id, english.translationId));
+    expect(translation).toMatchObject({ draftRevisionId: english.revisionId, publishedRevisionId: null, version: english.version });
   });
 });

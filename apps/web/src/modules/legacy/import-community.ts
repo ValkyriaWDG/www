@@ -21,10 +21,13 @@ function importedProse(body: unknown, cover: CoverSnapshot | null = null) {
 
 /** Caller holds the owner lock; keep the domain's owner -> translation lock order. */
 async function lockUnchangedProse(tx: Executor, kind: 'match' | 'tournament', id: string, expected: ReturnType<typeof importedProse>) {
-  const [prose] = await tx.select().from(proseTranslation).where(and(
+  const translations = await tx.select().from(proseTranslation).where(
     kind === 'match' ? eq(proseTranslation.matchId, id) : eq(proseTranslation.tournamentId, id),
-    eq(proseTranslation.locale, 'cs'),
-  )).for('update');
+  ).orderBy(proseTranslation.locale).for('update');
+  // The bundle imports Czech only. Publishing the owner would also expose any
+  // independently published locale, which this migration has never reviewed.
+  if (translations.some((translation) => translation.locale !== 'cs' && translation.publishedRevisionId !== null)) return undefined;
+  const prose = translations.find((translation) => translation.locale === 'cs');
   if (!prose?.draftRevisionId) return undefined;
   // Publishing the owner also exposes any already-published prose behind its gate.
   const revisionIds = [...new Set([prose.draftRevisionId, ...(prose.publishedRevisionId ? [prose.publishedRevisionId] : [])])];

@@ -59,6 +59,9 @@ Concurrent import writers serialize. Matching source identities are reused; chan
 source hashes and occupied non-seed slugs conflict instead of overwriting content.
 After editorial changes, reruns preserve existing data. Deferred publication checks
 both the owner's version and match/tournament prose snapshots before publishing.
+An independently published non-imported locale also blocks this step: publishing
+the owner would otherwise expose that editor-authored revision. Unpublished drafts
+in other locales stay private and are preserved.
 
 `legacy_import` retains source URL/date/language, selected provenance, checksum and
 target identity. Repairs, expired-announcement dates, source tags and association
