@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
@@ -31,6 +32,18 @@ test('exposes the exact traced package to a standalone external CLI', () => {
     assert.equal(requireApp('sharp'), 'traced-package');
     assert(requireApp.resolve('sharp').startsWith(f.root));
     assert.doesNotThrow(() => linkStandaloneSharp(f.root));
+  } finally { f.cleanup(); }
+});
+
+test('resolves a real ESM external import from the final image scripts directory', () => {
+  const f = fixture();
+  try {
+    f.add('sharp@0.35.4_peer-version');
+    mkdirSync(path.join(f.root, 'scripts'));
+    const entry = path.join(f.root, 'scripts/import-legacy-hll.mjs');
+    writeFileSync(entry, 'import sharp from "sharp"; console.log(sharp);');
+    linkStandaloneSharp(f.root);
+    assert.equal(execFileSync(process.execPath, [entry], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim(), 'traced-package');
   } finally { f.cleanup(); }
 });
 

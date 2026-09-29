@@ -3209,6 +3209,116 @@
       "height": 200
     },
     {
+      "id": "channel-initial-2026-09-29-browser-after-01-wardogs-cs-desktop",
+      "path": "docs/evidence/channel-deployment-2026-09-29/initial/browser-after-01-wardogs-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 6c5f5c7e6e4602091b5494e16cc1bd03a927a53a, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "ed40d2d21f77db8e02bd654724728acdf21deab6b5fcc14370e68a05c7c38c0a",
+      "bytes": 1481165,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "channel-initial-2026-09-29-browser-after-01-hll-cs-desktop",
+      "path": "docs/evidence/channel-deployment-2026-09-29/initial/browser-after-01-hll-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 6c5f5c7e6e4602091b5494e16cc1bd03a927a53a, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "93cfeba1be5a892b447f46cd2fcd1c1746ac2da1458ce54ec6bd808012a6ce68",
+      "bytes": 1377821,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "channel-initial-2026-09-29-browser-after-01-wardogs-cs-mobile",
+      "path": "docs/evidence/channel-deployment-2026-09-29/initial/browser-after-01-wardogs-cs-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 6c5f5c7e6e4602091b5494e16cc1bd03a927a53a, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "894eba18d265d72b00c384f052fc110b0fd39852ed1636925f93c1187739eb3c",
+      "bytes": 302510,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "channel-initial-2026-09-29-browser-after-01-hll-cs-mobile",
+      "path": "docs/evidence/channel-deployment-2026-09-29/initial/browser-after-01-hll-cs-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 6c5f5c7e6e4602091b5494e16cc1bd03a927a53a, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "72bdb73ecb430840a1030ab4764889127c8cc9d24d7d30b2beb5c3af3a4d7a16",
+      "bytes": 284599,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "channel-final-2026-09-29-browser-after-01-wardogs-cs-desktop",
+      "path": "docs/evidence/channel-deployment-2026-09-29/browser-after-01-wardogs-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 571475f3f60fb38c7cf14cd6afb4702982ba4681, Chrome for Testing 154.0.8037.57; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "ed40d2d21f77db8e02bd654724728acdf21deab6b5fcc14370e68a05c7c38c0a",
+      "bytes": 1481165,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "channel-final-2026-09-29-browser-after-01-hll-cs-desktop",
+      "path": "docs/evidence/channel-deployment-2026-09-29/browser-after-01-hll-cs-desktop.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 571475f3f60fb38c7cf14cd6afb4702982ba4681, Chrome for Testing 154.0.8037.57; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "3c49e415c08b249d5bd9648740a82231cd75c8e48d05904857628cc49121e46b",
+      "bytes": 1322668,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "channel-final-2026-09-29-browser-after-01-hll-news-cs-compact-1024",
+      "path": "docs/evidence/channel-deployment-2026-09-29/browser-after-01-hll-news-cs-compact-1024.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 571475f3f60fb38c7cf14cd6afb4702982ba4681, Chrome for Testing 154.0.8037.57; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "45842d78f26c35a71c734b353b91be26d135ddfa50a8f9001f40f358eeccbd12",
+      "bytes": 256088,
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "id": "channel-final-2026-09-29-browser-after-01-wardogs-cs-mobile",
+      "path": "docs/evidence/channel-deployment-2026-09-29/browser-after-01-wardogs-cs-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 571475f3f60fb38c7cf14cd6afb4702982ba4681, Chrome for Testing 154.0.8037.57; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "41cb30a09d6db3308a91b5a5bdfd9a3a2aa64caadb70d896afd466a8a754cc3f",
+      "bytes": 302981,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "channel-final-2026-09-29-browser-after-01-hll-cs-mobile",
+      "path": "docs/evidence/channel-deployment-2026-09-29/browser-after-01-hll-cs-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 571475f3f60fb38c7cf14cd6afb4702982ba4681, Chrome for Testing 154.0.8037.57; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "3bb041ed1d4a430cda8147835265e242517d0038398572e692867892f4aa98f6",
+      "bytes": 259392,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "channel-final-2026-09-29-browser-after-01-hll-news-cs-mobile",
+      "path": "docs/evidence/channel-deployment-2026-09-29/browser-after-01-hll-news-cs-mobile.png",
+      "source": "Actual anonymous production capture at https://valkyria.cz, source 571475f3f60fb38c7cf14cd6afb4702982ba4681, Chrome for Testing 154.0.8037.57; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "726ea3ebdaa31e3c817b27066441f97f06d1cc0cb261f6c2849b1dd4f68d1f27",
+      "bytes": 134087,
+      "width": 390,
+      "height": 844
+    },
+    {
       "id": "hll-legacy-crcon-2026-09-29-server-round-players-cs-1920x1200",
       "path": "docs/evidence/hll-legacy-crcon-2026-09-29/server-round-players-cs-1920x1200.png",
       "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",

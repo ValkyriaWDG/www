@@ -1,0 +1,303 @@
+{
+  "runId": 36558406801,
+  "source": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/ValkyriaWDG/www/actions/runs/36558406801",
+  "createdAt": "2026-09-29T10:54:00Z",
+  "updatedAt": "2026-09-29T11:08:16Z",
+  "jobs": [
+    {
+      "name": "Foundation",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-09-29T10:54:03Z",
+      "completedAt": "2026-09-29T10:54:58Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node scripts/check-foundation.mjs",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run node --test scripts/tests/*.test.mjs",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify encrypted backup recovery with pinned restic",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload encrypted recovery evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check attribution",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Detect implementation stage",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Application",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-09-29T10:55:00Z",
+      "completedAt": "2026-09-29T11:08:09Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm test:unit",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm test:integration",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Select PostgreSQL 17 clients for restore verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify fresh restore ownership and real PostgreSQL/media recovery",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload real restore boundary evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set up Docker Buildx",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build image without publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build comparison runtime from identical application inputs",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Disposable runtime, native sharp and previous-image rollback rehearsal",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload image and rollback rehearsal",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Container startup, migration and health smoke test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Image vulnerability scan (fixable HIGH/CRITICAL findings fail)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload complete runtime advisory comparison",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Image SBOM (CycloneDX)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload image SBOM",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm --filter @valkyria/web exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm test:e2e",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Cold mobile page-weight and Web Vitals budgets",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload page budget samples and synthetic screenshots",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload browser report and screenshots",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify shipped HLL artwork with an empty video playlist",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload HLL artwork verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Build image without publishing",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Set up Docker Buildx",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Quality gate",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-09-29T11:08:12Z",
+      "completedAt": "2026-09-29T11:08:15Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Require all applicable checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

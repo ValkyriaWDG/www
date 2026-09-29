@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-09-29T12:17:25.233Z",
+  "repository": "majorluk/valkyria-www",
+  "revision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+  "publisherDigest": "sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b",
+  "immutableTagDigest": "sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b",
+  "productionChannelDigest": "sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b",
+  "linuxAmd64Manifest": "sha256:5d8d18ba669f65dc447a089c856318705daee97d39c9e73545690605ba4be610",
+  "configDigest": "sha256:074879105755efee353509995e3c12864dc06f49fd4e3e6cdbaeb0f6ebaba672",
+  "ociRevision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+  "manifestBytesVerified": true,
+  "attestationManifests": 1
+}
