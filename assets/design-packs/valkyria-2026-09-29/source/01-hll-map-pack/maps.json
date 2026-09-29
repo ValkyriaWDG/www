@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "created": "2026-09-29",
+  "game": "Hell Let Loose (WWII)",
+  "source_commit": "28f520ae2d64f74466b720056804979d75c5c328",
+  "formats": {
+    "server-card": {
+      "label": "Karta serveru",
+      "width": 640,
+      "height": 360
+    },
+    "server-strip": {
+      "label": "Řádek seznamu serverů",
+      "width": 960,
+      "height": 240
+    },
+    "article": {
+      "label": "Článek / Open Graph",
+      "width": 1200,
+      "height": 630
+    },
+    "match-result": {
+      "label": "Výsledek zápasu",
+      "width": 1920,
+      "height": 1080
+    },
+    "match-preview": {
+      "label": "Pozvánka na zápas",
+      "width": 1200,
+      "height": 630
+    },
+    "wide": {
+      "label": "Široké záhlaví",
+      "width": 1920,
+      "height": 480
+    },
+    "social": {
+      "label": "Čtverec pro sociální sítě",
+      "width": 1080,
+      "height": 1080
+    },
+    "tactical-poster": {
+      "label": "Plakát s taktickou mapou",
+      "width": 1080,
+      "height": 1350
+    },
+    "tactical-background": {
+      "label": "Čisté taktické pozadí FHD",
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "maps": [
+    {
+      "id": "carentan",
+      "name": "Carentan",
+      "code": "CAR",
+      "index": 1,
+      "aliases": [
+        "carentan",
+        "CT",
+        "CAR"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Carentan",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/CAR.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_carentan.webp"
+      },
+      "sha256": {
+        "scene": "66c15e749e0c0f182e76d975347b1dddbb4ab32bfd37fa5299dcc26d0cda006e",
+        "tactical": "2bc822cd358a8dd1566775d1e88fa57a8acaf8954b923ce349adb7752a1bba7d"
+      }
+    },
+    {
+      "id": "driel",
+      "name": "Driel",
+      "code": "DRI",
+      "index": 2,
+      "aliases": [
+        "driel",
+        "DRL",
+        "DRI"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Driel",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/DRI.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_driel.webp"
+      },
+      "sha256": {
+        "scene": "114b9ab2a32284fa62940155c2cd667b98101cd004dfa8afd05c28c5af401ac0",
+        "tactical": "d4d878dce823f461e4093edd20078f08770978a681955e6a60f4d01d97d3f399"
+      }
+    },
+    {
+      "id": "el-alamein",
+      "name": "El Alamein",
+      "code": "ELA",
+      "index": 3,
+      "aliases": [
+        "elalamein",
+        "ELA"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/El_Alamein",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/ELA.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_elalamein.webp"
+      },
+      "sha256": {
+        "scene": "7898eaec432b060b89e4f7ae469b992b878597bb2dc62457f915b8ba7cd3174e",
+        "tactical": "faab4c5e89a418cdd62a5bedb7087b0771af1ef082a3dd0ddc751931cc55c9de"
+      }
+    },
+    {
+      "id": "elsenborn-ridge",
+      "name": "Elsenborn Ridge",
+      "code": "EBR",
+      "index": 4,
+      "aliases": [
+        "elsenbornridge",
+        "elsenborn",
+        "EBR"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Elsenborn_Ridge",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/EBR.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_elsenborn.webp"
+      },
+      "sha256": {
+        "scene": "8879c9b195811b5e60269aa5e776b4193d77b8080b492fe9cccf326464e5990f",
+        "tactical": "d669f0c504cd8517c35d880adb5b67fdb325050eafc10858327a98bc707b1992"
+      }
+    },
+    {
+      "id": "foy",
+      "name": "Foy",
+      "code": "FOY",
+      "index": 5,
+      "aliases": [
+        "foy"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Foy",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/FOY.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_foy.webp"
+      },
+      "sha256": {
+        "scene": "9fa4adc15d417bcd9f3831bc7077f5c2a92a87455f075fac1187a20e1c459620",
+        "tactical": "45bfa4f4d1e602d6f55bb7a5fb09bbf06baaca75277d4d554e13581e408e2d6c"
+      }
+    },
+    {
+      "id": "hill-400",
+      "name": "Hill 400",
+      "code": "H4",
+      "index": 6,
+      "aliases": [
+        "hill400",
+        "H4"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Hill_400",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/H4.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_hill400.webp"
+      },
+      "sha256": {
+        "scene": "a2ae55bad247ed0554fb3210a5fd176d12738267a206e17f51c81d760f7f5c40",
+        "tactical": "f6a8350389b7e2b67f14de9f293285a1fd4a105e685ac0a7afb4d673aea62d3a"
+      }
+    },
+    {
+      "id": "hurtgen-forest",
+      "name": "Hürtgen Forest",
+      "code": "HUR",
+      "index": 7,
+      "aliases": [
+        "hurtgenforest",
+        "hurtgen",
+        "HUR"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Hürtgen_Forest",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/HUR.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_hurtgen.webp"
+      },
+      "sha256": {
+        "scene": "5dbfdba4cb2c9ee8688caaafae8fd3b435beb512941036977e954054a5c17f7b",
+        "tactical": "0c76999781991552ac5498a1464f35a9854172daba75587c43331ed3c0d532a2"
+      }
+    },
+    {
+      "id": "juno-beach",
+      "name": "Juno Beach",
+      "code": "JUN",
+      "index": 8,
+      "aliases": [
+        "junobeach",
+        "juno",
+        "JUN"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": null,
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/JUN.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_juno_beach.webp"
+      },
+      "sha256": {
+        "scene": "1b40931cf051ad47e35b166295ff0134bdf517650186ba6f8be3989615248523",
+        "tactical": "be6d71d513d8d87d5737c13d9cf1bf18577b41f61413bf2376139b1f8db89c4b"
+      },
+      "wiki_note": "Mapu doplňuje aktuální komunitní katalog; odpovídající stránka Fandom nebyla ověřena."
+    },
+    {
+      "id": "kharkov",
+      "name": "Kharkov",
+      "code": "KHA",
+      "index": 9,
+      "aliases": [
+        "kharkov",
+        "KHA"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Kharkov",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/KHA.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_kharkov.webp"
+      },
+      "sha256": {
+        "scene": "95ef936c4a982a30ee358b58106b4e13ecb04c148f1c7e3990e8c5904cdeb799",
+        "tactical": "219a55cdaab6e7fe11e39cb99bcefcc76d3fea715decee5b41f624960cf0c1b8"
+      }
+    },
+    {
+      "id": "kursk",
+      "name": "Kursk",
+      "code": "KUR",
+      "index": 10,
+      "aliases": [
+        "kursk",
+        "KUR"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Kursk",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/KUR.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_kursk.webp"
+      },
+      "sha256": {
+        "scene": "74454e7e78aa00107398a23b6c4bd98a2e5b90adc2e8fd19fd701160e63be81b",
+        "tactical": "73d1495f9a8996c849bf34ba28a845985778a599b731c4ef1a9f7dff19ef5d75"
+      }
+    },
+    {
+      "id": "mortain",
+      "name": "Mortain",
+      "code": "MOR",
+      "index": 11,
+      "aliases": [
+        "mortain",
+        "MOR"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Mortain",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/MOR.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_mortain.webp"
+      },
+      "sha256": {
+        "scene": "bce240187fb583829c79471a9dc668d632fa3e6538b3c96d3316fcd028ec0c34",
+        "tactical": "b70bf85585ce8c103234ee33de72b16e60c9d9972ae97c4633443be6fc7b7774"
+      }
+    },
+    {
+      "id": "omaha-beach",
+      "name": "Omaha Beach",
+      "code": "OMA",
+      "index": 12,
+      "aliases": [
+        "omahabeach",
+        "omaha",
+        "OMA"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Omaha_Beach",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/OMA.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_omaha.webp"
+      },
+      "sha256": {
+        "scene": "0cbad7ccabec33e1f09f9736a40e4f6dc7f5b572d5e7ede6ffe36af2daaad99c",
+        "tactical": "67eb4c320d9d6b2c67fe8bfa62dcb7e711e30a6dfd7cb73913f46ae37e5d3b4b"
+      }
+    },
+    {
+      "id": "purple-heart-lane",
+      "name": "Purple Heart Lane",
+      "code": "PHL",
+      "index": 13,
+      "aliases": [
+        "purpleheartlane",
+        "PHL"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Purple_Heart_Lane",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/PHL.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_purpleheartlane.webp"
+      },
+      "sha256": {
+        "scene": "913da54c7966319e1b4c23cb301077ad5558fd657081e0836cf9e64e5b001058",
+        "tactical": "f86dc137b7bf52223360e847267eaf5320e54a2254a2ecf966bc8158bf245621"
+      }
+    },
+    {
+      "id": "remagen",
+      "name": "Remagen",
+      "code": "REM",
+      "index": 14,
+      "aliases": [
+        "remagen",
+        "REM"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Remagen",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/REM.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_remagen.webp"
+      },
+      "sha256": {
+        "scene": "b448587df07b3743289a7dee3898212417d7e08d17370fb563e31f4671a19a98",
+        "tactical": "8e7e6b23cb6d4e7bfa744bfe64cfb0226de8913e0994b2600af20a1d8c29f184"
+      }
+    },
+    {
+      "id": "sainte-marie-du-mont",
+      "name": "Sainte-Marie-du-Mont",
+      "code": "SMM",
+      "index": 15,
+      "aliases": [
+        "saintemariedumont",
+        "stmariedumont",
+        "smariedumont",
+        "smdm",
+        "SMM"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Sainte-Marie-du-Mont",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/SMM.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_smdmv2.webp"
+      },
+      "sha256": {
+        "scene": "59c6cc5848b9ed080c17e84b986e2f6f3c2ad73e5788a18c760046e5cb121601",
+        "tactical": "a6d9ec5776466fe4039c7f75962c381b499d11d5c0a963f88c034ecfb4945f6c"
+      }
+    },
+    {
+      "id": "sainte-mere-eglise",
+      "name": "Sainte-Mère-Église",
+      "code": "SME",
+      "index": 16,
+      "aliases": [
+        "saintemereeglise",
+        "stmereeglise",
+        "smereeglise",
+        "SME"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Sainte-Mère-Église",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/SME.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_stmereeglise.webp"
+      },
+      "sha256": {
+        "scene": "b709d3885c578ac6e9fc18eebcce25d7f34c98f663f7a69f06030b47ac04c00b",
+        "tactical": "5a9c3cc529e578093b3398df1e1852d54b3ef42221cfc0c0629e9d2881b00ce1"
+      }
+    },
+    {
+      "id": "smolensk",
+      "name": "Smolensk",
+      "code": "SMO",
+      "index": 17,
+      "aliases": [
+        "smolensk",
+        "SMO"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": null,
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/SMO.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_smolensk.webp"
+      },
+      "sha256": {
+        "scene": "3b0c3632d68e1e30670eb01b033815d0769d1adebfc300e14f6ff52ef9e50182",
+        "tactical": "43a14eba5ef4c524a9aa3f54b0180c0f350b4d04a6b9427b96cb921eb7327abe"
+      },
+      "wiki_note": "Mapu doplňuje aktuální komunitní katalog; odpovídající stránka Fandom nebyla ověřena."
+    },
+    {
+      "id": "stalingrad",
+      "name": "Stalingrad",
+      "code": "STA",
+      "index": 18,
+      "aliases": [
+        "stalingrad",
+        "STA"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Stalingrad",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/STA.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_stalingrad.webp"
+      },
+      "sha256": {
+        "scene": "093e1eb550d0ec13cafbce8a3095cbc8ae5b9c2af2e7eb6869072047ba990d89",
+        "tactical": "141c66647d929341f4fffeae19e80b68812531ac3c1ba2ea8e7edf55389b55a7"
+      }
+    },
+    {
+      "id": "tobruk",
+      "name": "Tobruk",
+      "code": "TOB",
+      "index": 19,
+      "aliases": [
+        "tobruk",
+        "TOB"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Tobruk",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/TOB.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_tobruk.webp"
+      },
+      "sha256": {
+        "scene": "42445e361408f17e9604d440de179a69e4468f11d15ec97d1fcfcc857e50bc74",
+        "tactical": "68ae953e5e3212c68636bd00d408bd30645372e497b47b4a202c70295b426fe6"
+      }
+    },
+    {
+      "id": "utah-beach",
+      "name": "Utah Beach",
+      "code": "UTA",
+      "index": 20,
+      "aliases": [
+        "utahbeach",
+        "utah",
+        "UTA"
+      ],
+      "assets": {
+        "server-card": "server-card-640x360.webp",
+        "server-strip": "server-strip-960x240.webp",
+        "article": "article-1200x630.webp",
+        "match-result": "match-result-1920x1080.webp",
+        "match-preview": "match-preview-1200x630.webp",
+        "wide": "wide-1920x480.webp",
+        "social": "social-1080x1080.webp",
+        "tactical-poster": "tactical-poster-1080x1350.webp",
+        "tactical-background": "tactical-background-1920x1080.webp",
+        "scene": "source-scene-718x404.webp",
+        "tactical": "source-tactical-4096x4096.webp",
+        "tacticalPreview": "tactical-preview-1400x1400.webp",
+        "articleJpg": "article-1200x630.jpg",
+        "matchPreviewJpg": "match-preview-1200x630.jpg",
+        "articleSvg": "article-1200x630.svg",
+        "matchResultSvg": "match-result-1920x1080.svg"
+      },
+      "scene_dimensions": [
+        718,
+        404
+      ],
+      "tactical_dimensions": [
+        4096,
+        4096
+      ],
+      "sources": {
+        "wiki": "https://hellletloose.fandom.com/wiki/Utah_Beach",
+        "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/UTA.webp",
+        "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_utahbeach.webp"
+      },
+      "sha256": {
+        "scene": "7069f099a0c569b038b382c96733d9bf3529abcd0e002d1303276f10f41a57ba",
+        "tactical": "ec0da98fab3273b9cc464359c9db067604bff5b9d7b4e4cf8e15add1270309a1"
+      }
+    }
+  ],
+  "note": "Katalog základních map. Režimy a denní/noční varianty používají společnou kartu základní mapy; náhled nepředstavuje každou variantu počasí."
+}

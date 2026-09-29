@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { GameButton } from '@/components/ui/game-button';
+import { EditIcon } from '@/components/ui/icons';
 import { ModalDialog } from '@/components/ui/modal-dialog';
 import { useRouter } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
@@ -127,7 +128,7 @@ export function PostRowActions({
 
   return (
     <div className={styles.rowActions}>
-      <GameButton href={`${basePath}/${documentId}?lang=${firstLocale}`} size="sm" intent="secondary" data-testid="row-edit">
+      <GameButton href={`${basePath}/${documentId}?lang=${firstLocale}`} size="sm" intent="secondary" icon={<EditIcon />} data-testid="row-edit">
         {t('edit')}
       </GameButton>
       <GameButton size="sm" intent="secondary" onClick={() => setOpen(true)} aria-haspopup="dialog" data-testid="row-actions">

@@ -1,0 +1,47 @@
+{
+  "id": "sainte-mere-eglise",
+  "name": "Sainte-Mère-Église",
+  "code": "SME",
+  "index": 16,
+  "aliases": [
+    "saintemereeglise",
+    "stmereeglise",
+    "smereeglise",
+    "SME"
+  ],
+  "assets": {
+    "server-card": "server-card-640x360.webp",
+    "server-strip": "server-strip-960x240.webp",
+    "article": "article-1200x630.webp",
+    "match-result": "match-result-1920x1080.webp",
+    "match-preview": "match-preview-1200x630.webp",
+    "wide": "wide-1920x480.webp",
+    "social": "social-1080x1080.webp",
+    "tactical-poster": "tactical-poster-1080x1350.webp",
+    "tactical-background": "tactical-background-1920x1080.webp",
+    "scene": "source-scene-718x404.webp",
+    "tactical": "source-tactical-4096x4096.webp",
+    "tacticalPreview": "tactical-preview-1400x1400.webp",
+    "articleJpg": "article-1200x630.jpg",
+    "matchPreviewJpg": "match-preview-1200x630.jpg",
+    "articleSvg": "article-1200x630.svg",
+    "matchResultSvg": "match-result-1920x1080.svg"
+  },
+  "scene_dimensions": [
+    718,
+    404
+  ],
+  "tactical_dimensions": [
+    4096,
+    4096
+  ],
+  "sources": {
+    "wiki": "https://hellletloose.fandom.com/wiki/Sainte-Mère-Église",
+    "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/SME.webp",
+    "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_stmereeglise.webp"
+  },
+  "sha256": {
+    "scene": "b709d3885c578ac6e9fc18eebcce25d7f34c98f663f7a69f06030b47ac04c00b",
+    "tactical": "5a9c3cc529e578093b3398df1e1852d54b3ef42221cfc0c0629e9d2881b00ce1"
+  }
+}

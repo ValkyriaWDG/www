@@ -1,6 +1,7 @@
 # Notices and asset scope
 
-The root Apache-2.0 license covers original repository code and documentation.
+The root Apache-2.0 license covers original repository code and documentation,
+including the separately authored UI glyphs in assets/icons/valkyria-ui/.
 It does not grant rights to Valkyria branding, third-party game imagery, screenshots,
 video, fonts or trademarks. See [asset policy](docs/assets/policy.md) and
 [asset manifest](assets/manifest.json) for provenance and intended use.
@@ -36,3 +37,34 @@ hashes, transformations and intended placements are recorded in
 [the runtime artwork catalog](assets/hll-runtime-artwork.json). They retain their
 respective rights holders' rights and are excluded from the Apache-2.0 license.
 They illustrate the game, not actual Valkyria matches or verified game mechanics.
+
+The [owner-supplied 2026-09-29 graphics pack](assets/design-packs/valkyria-2026-09-29/README.md)
+is archived reference material, including its original code/documents, game-derived
+map imagery and AI illustrations. It is excluded from the root Apache-2.0 grant.
+Its bundled source/rights notices remain intact; the included upstream MIT notice
+does not license game imagery. New original catalog documentation and archive
+reconstruction tooling follow the repository code/documentation license.
+Adapted map-rendering code and reconstructed SVG composition templates retain
+their supplied-source provenance and applicable upstream conditions; do not treat
+them as wholly original Apache-licensed work. Derived branded compositions also
+retain the underlying clan/game-image rights. A bounded runtime selection (map
+thumbnails/scenes/tactical maps/sharing backgrounds and eight text-free editorial
+scenes under `apps/web/public/images/`) is recorded per file in
+[the asset manifest](assets/manifest.json) with its pack source hash; it keeps the
+same rights boundaries: HLL map imagery remains its rights holders' game content and
+the editorial scenes are owner-supplied AI illustrations, neither licensed under
+Apache-2.0.
+
+The [official HLL mark delivery](assets/brand/game-logos/README.md) contains the
+extracted navigation SVG from the official Hell Let Loose website and a standalone
+variant with only the root viewBox spelling normalized. The source page identifies
+Team17 Digital Limited in its copyright footer. The full emblem/wordmark and its
+derivatives are third-party game artwork/trademarks, excluded from the Apache grant.
+The catalog establishes source provenance, not a general redistribution license,
+trademark permission or publisher endorsement.
+
+The [brand-corrected export layer](assets/design-packs/valkyria-2026-09-29/branded/README.md)
+uses the exact supplied Valkyria crest, that official HLL mark and the existing
+Wardogs presskit mark. Native SVG reconstruction and raster encoding do not change
+those rights boundaries. The separate original interface-icon pack contains no
+game logos or extracted game glyphs and remains under the repository code license.

@@ -1,0 +1,46 @@
+{
+  "id": "elsenborn-ridge",
+  "name": "Elsenborn Ridge",
+  "code": "EBR",
+  "index": 4,
+  "aliases": [
+    "elsenbornridge",
+    "elsenborn",
+    "EBR"
+  ],
+  "assets": {
+    "server-card": "server-card-640x360.webp",
+    "server-strip": "server-strip-960x240.webp",
+    "article": "article-1200x630.webp",
+    "match-result": "match-result-1920x1080.webp",
+    "match-preview": "match-preview-1200x630.webp",
+    "wide": "wide-1920x480.webp",
+    "social": "social-1080x1080.webp",
+    "tactical-poster": "tactical-poster-1080x1350.webp",
+    "tactical-background": "tactical-background-1920x1080.webp",
+    "scene": "source-scene-718x404.webp",
+    "tactical": "source-tactical-4096x4096.webp",
+    "tacticalPreview": "tactical-preview-1400x1400.webp",
+    "articleJpg": "article-1200x630.jpg",
+    "matchPreviewJpg": "match-preview-1200x630.jpg",
+    "articleSvg": "article-1200x630.svg",
+    "matchResultSvg": "match-result-1920x1080.svg"
+  },
+  "scene_dimensions": [
+    718,
+    404
+  ],
+  "tactical_dimensions": [
+    4096,
+    4096
+  ],
+  "sources": {
+    "wiki": "https://hellletloose.fandom.com/wiki/Elsenborn_Ridge",
+    "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/EBR.webp",
+    "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_elsenborn.webp"
+  },
+  "sha256": {
+    "scene": "8879c9b195811b5e60269aa5e776b4193d77b8080b492fe9cccf326464e5990f",
+    "tactical": "d669f0c504cd8517c35d880adb5b67fdb325050eafc10858327a98bc707b1992"
+  }
+}

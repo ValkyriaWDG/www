@@ -4,7 +4,9 @@ import type { GameRoute } from '@/modules/games/registry';
  * Unmistakably synthetic server observations for development, automated tests and
  * labelled review screenshots. No real server name, address, map rotation or
  * population is represented; ages are relative to the request time so freshness states
- * are reproducible. Enabled only by `SERVER_STATUS_SOURCE=synthetic-fixture`.
+ * are reproducible. Alpha uses a public HLL map name (accented) so map artwork can be
+ * tested; Bravo's synthetic map stays unknown. Enabled only by
+ * `SERVER_STATUS_SOURCE=synthetic-fixture`.
  */
 export type SyntheticServer = {
   id: string;
@@ -32,7 +34,7 @@ export const SYNTHETIC_SERVERS: Readonly<Partial<Record<GameRoute, SyntheticServ
       publicId: 'synthetic-alpha',
       name: '[SYNTHETIC] Valkyria Test Server Alpha – Warfare',
       reachability: 'online',
-      map: 'Synthetic Map North',
+      map: 'Sainte-Mère-Église',
       mode: 'Warfare',
       players: 64,
       capacity: 100,

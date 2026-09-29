@@ -6,9 +6,12 @@ import { ExternalLink } from '@/components/public/external-link';
 import { firstParam, type RawSearchParams } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
 import { DetailPane, EmptyState, FeedbackNotice, GameButton, PageHeader, SelectionTable, StatusBadge, type SelectionColumn, type StatusKind } from '@/components/ui';
+import { RefreshIcon, ServerIcon } from '@/components/ui/icons';
+import { MapScene, MapThumb } from '@/components/hll/map-artwork';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import type { GameRoute } from '@/modules/games/registry';
+import { hllMapArtwork } from '@/modules/games/hll-maps';
 import { gamePath } from '@/modules/games/routes';
 import type { Freshness, ServerSnapshot } from '@/modules/integrations/contract';
 import type { ServerBrowserData } from '@/modules/integrations/servers/browser';
@@ -67,6 +70,8 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
   };
   const observed = (server: ServerSnapshot) =>
     server.observedAt ? t('observed', { time: formatDate(server.observedAt, locale, 'dateTimeZone') }) : t('neverObserved');
+  // Map pack artwork is HLL-only; an unknown map keeps the neutral placeholder.
+  const artwork = (server: ServerSnapshot) => (game === 'hll' ? hllMapArtwork(server.map) : null);
   const freshness = (server: ServerSnapshot) => (
     <StatusBadge kind={FRESHNESS_KIND[server.freshness]}>{t(`freshness.${server.freshness}`)}</StatusBadge>
   );
@@ -76,17 +81,22 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
       key: 'server',
       header: t('columns.server'),
       rowHeader: true,
-      cell: (server) => (
-        <span className={styles.serverCell}>
-          <span className={styles.thumb} aria-hidden="true" />
-          <span className={styles.serverText}>
-            <span className={styles.serverName} data-server-name="">
-              {server.name}
+      cell: (server) => {
+        const map = artwork(server);
+        return (
+          <span className={styles.serverCell}>
+            <span className={styles.thumb} aria-hidden="true">
+              {map ? <MapThumb artwork={map} /> : <ServerIcon size={20} />}
             </span>
-            <span className={styles.serverMap}>{server.map ?? t('mapUnknown')}</span>
+            <span className={styles.serverText}>
+              <span className={styles.serverName} data-server-name="">
+                {server.name}
+              </span>
+              <span className={styles.serverMap}>{server.map ?? t('mapUnknown')}</span>
+            </span>
           </span>
-        </span>
-      ),
+        );
+      },
     },
     { key: 'players', header: t('columns.players'), numeric: true, align: 'end', cell: population },
     { key: 'mode', header: t('columns.mode'), cell: (server) => server.mode ?? dash },
@@ -138,11 +148,24 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
   let detail: ReactNode = null;
   if (overview.state !== 'not_configured' && servers.length > 0) {
     if (selected) {
+      const map = artwork(selected);
       detail = (
         <DetailPane
           titleId="server-detail-title"
           eyebrow={t('detail.eyebrow')}
           title={<span className={styles.detailName}>{selected.name}</span>}
+          media={
+            map && selected.map ? (
+              <MapScene
+                key={map.slug}
+                artwork={map}
+                priority
+                wide
+                alt={t('detail.mapImageAlt', { map: selected.map })}
+                tacticalLabel={t('detail.tacticalMap', { map: selected.map, size: formatNumber(Math.round(map.tactical.bytes / 1024), locale) })}
+              />
+            ) : undefined
+          }
           metadata={[
             { label: t('detail.map'), value: selected.map ?? dash },
             { label: t('detail.mode'), value: selected.mode ?? dash },
@@ -211,7 +234,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
       {overview.state !== 'not_configured' ? (
         <div className={styles.refresh} data-server-refresh="">
           <label><input type="checkbox" checked={poll.automatic} onChange={(event) => poll.setAutomatic(event.target.checked)} /> {t('refresh.auto', { seconds: poll.interval })}</label>
-          <button type="button" className={styles.copyButton} disabled={poll.refreshing || poll.coolingDown} onClick={poll.refresh}>{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
+          <button type="button" className={styles.copyButton} disabled={poll.refreshing || poll.coolingDown} onClick={poll.refresh}><RefreshIcon size={20} />{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
           <span role="status">{t(poll.failed ? 'refresh.failed' : 'refresh.note')}</span>
         </div>
       ) : null}

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useUnsavedChangesGuard } from '@/components/shell/unsaved-changes';
 import { TextArea, TextField } from '@/components/ui/form-fields';
 import { GameButton } from '@/components/ui/game-button';
+import { DeleteIcon, SaveIcon } from '@/components/ui/icons';
 import { FeedbackNotice, StatusBadge } from '@/components/ui/panels';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -169,10 +170,10 @@ export function MediaDetail({ asset, uiLocale, closeHref }: { asset: AssetDetail
           <FeedbackNotice kind={notice.kind === 'success' ? 'success' : 'error'} title={notice.text} />
         ) : null}
         <div className={styles.buttonRow} style={{ justifyContent: 'space-between' }}>
-          <GameButton intent="danger" size="sm" onClick={() => setConfirmDelete(true)} disabled={pending !== null} data-testid="media-delete">
+          <GameButton intent="danger" size="sm" onClick={() => setConfirmDelete(true)} disabled={pending !== null} icon={<DeleteIcon />} data-testid="media-delete">
             {t('delete')}
           </GameButton>
-          <GameButton type="submit" intent="primary" disabled={!dirty} pending={pending === 'save'} pendingLabel={t('saving')} data-testid="media-save">
+          <GameButton type="submit" intent="primary" disabled={!dirty} pending={pending === 'save'} pendingLabel={t('saving')} icon={<SaveIcon />} data-testid="media-save">
             {t('save')}
           </GameButton>
         </div>

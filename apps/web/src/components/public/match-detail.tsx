@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { MapScene } from '@/components/hll/map-artwork';
 import { parseExternalHttpsUrl } from '@/components/shell/external-links';
 import { GameButton } from '@/components/ui/game-button';
 import { DetailPane } from '@/components/ui/panels';
@@ -7,6 +8,7 @@ import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import { mediaUrl } from '@/modules/content/rich-text/render';
 import { isHllSide } from '@/modules/games/hll-catalog';
+import { hllMapArtwork, type HllMapArtwork } from '@/modules/games/hll-maps';
 import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
@@ -88,6 +90,16 @@ export async function MatchDetailPane({
     side: match.rounds.some((round) => round.side),
   };
 
+  // Map pack artwork for HLL rounds with a recognised map, in round order, each map once.
+  // A published cover always wins; unknown maps stay text-only.
+  const maps: { artwork: HllMapArtwork; name: string }[] = [];
+  if (match.game === 'hell-let-loose') {
+    for (const round of match.rounds) {
+      const artwork = hllMapArtwork(round.mapName);
+      if (artwork && round.mapName && !maps.some((entry) => entry.artwork.slug === artwork.slug)) maps.push({ artwork, name: round.mapName });
+    }
+  }
+
   const media = match.cover ? (
     <figure className={styles.coverFigure}>
       {/* eslint-disable-next-line @next/next/no-img-element -- publication-aware media route, not the optimizer */}
@@ -95,7 +107,7 @@ export async function MatchDetailPane({
       {mode === 'detail' && match.cover.caption ? <figcaption>{match.cover.caption}</figcaption> : null}
     </figure>
   ) : (
-    <MatchBanner match={match} t={t} />
+    <MatchBanner match={match} t={t} scene={maps[0]?.artwork.scene.src} />
   );
 
   return (
@@ -143,6 +155,20 @@ export async function MatchDetailPane({
                 <h3 id={`${titleId}-rounds`} className={styles.blockTitle}>
                   {t('detail.rounds')}
                 </h3>
+                {maps.length > 0 ? (
+                  <ul className={styles.mapBriefing} data-match-maps="">
+                    {maps.map(({ artwork, name }) => (
+                      <li key={artwork.slug}>
+                        <MapScene
+                          artwork={artwork}
+                          caption={name}
+                          alt={t('detail.mapImageAlt', { map: name })}
+                          tacticalLabel={t('detail.tacticalMap', { map: name, size: formatNumber(Math.round(artwork.tactical.bytes / 1024), locale) })}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
                 <div className={styles.rounds} role="region" aria-labelledby={`${titleId}-rounds`} tabIndex={0}>
                   <table>
                     <thead>

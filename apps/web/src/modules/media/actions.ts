@@ -19,6 +19,7 @@ import {
   type ListAssetsInput,
   type UpdateAssetMetadataInput,
 } from './library';
+import { importEditorialTemplate } from './templates';
 
 /**
  * Server actions of the media library/picker. Media authority is per scope
@@ -64,4 +65,15 @@ export async function updateAssetMetadataAction(input: UpdateAssetMetadataInput)
 /** Deletes an unreferenced asset; referenced assets fail with `in_use`. */
 export async function deleteAssetAction(input: { assetId: string }): Promise<ActionResult<{ assetId: string }>> {
   return run('media.delete', 'write', (actor) => deleteAsset(getDb(), actor, parseInput(assetIdSchema, input)));
+}
+
+/**
+ * Adds a shipped editorial template background to the editorial library (or returns the
+ * asset with identical bytes). `media.editorial.manage` is enforced by the use case.
+ */
+export async function importEditorialTemplateAction(input: { templateId: string }): Promise<ActionResult<{ assetId: string; created: boolean }>> {
+  return run('media.template_import', 'write', async (actor) => {
+    const result = await importEditorialTemplate(getDb(), actor, input);
+    return { assetId: result.asset.id, created: result.created };
+  });
 }

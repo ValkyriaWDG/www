@@ -1,0 +1,34 @@
+{
+  "package": "VALKYRIA-GRAFIKA-KOMPLET",
+  "created": "2026-09-29",
+  "files_including_this_report_and_checksums": 496,
+  "bytes_excluding_report_and_checksums": 259523388,
+  "extensions": {
+    ".html": 4,
+    ".jpg": 58,
+    ".js": 1,
+    ".json": 22,
+    ".md": 6,
+    ".mjs": 2,
+    ".png": 37,
+    ".svg": 54,
+    ".txt": 1,
+    ".webp": 309
+  },
+  "map_qa": {
+    "maps": 20,
+    "finished_webp_variants": 180,
+    "additional_jpg": 40,
+    "editable_svg_validated": 40,
+    "original_source_sha256_verified": 40,
+    "local_links_validated": 113,
+    "editor_load": true,
+    "editor_custom_data": true,
+    "editor_png_download": true,
+    "editor_reset": true,
+    "resolver_tests": "OK: 20 maps + all aliases + sample layer identifiers",
+    "font_files": [],
+    "errors": [],
+    "old_archive_entries_verified": 120
+  }
+}

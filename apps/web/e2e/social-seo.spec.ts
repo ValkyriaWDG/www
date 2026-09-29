@@ -33,14 +33,14 @@ test.describe('public sharing and homepage SEO', () => {
       await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute('href', `${baseURL}/cs`);
       await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', locale === 'cs' ? 'cs_CZ' : 'en_GB');
       await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
-      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `${baseURL}/api/social/${locale}/site?v=2`);
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `${baseURL}/api/social/${locale}/site?v=3`);
     });
   }
 
   test('published article shares the same branded PNG through OG/Twitter/JSON-LD', async ({ page, request }) => {
     await page.goto(`/cs/news/${FIXTURE_SLUGS.news.featureCs}`);
     const og = await page.locator('meta[property="og:image"]').getAttribute('content');
-    expect(og).toContain(`/api/social/cs/news/${FIXTURE_SLUGS.news.featureCs}?v=2-`);
+    expect(og).toContain(`/api/social/cs/news/${FIXTURE_SLUGS.news.featureCs}?v=3-`);
     await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', og!);
     const data = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent() ?? '{}');
     expect(data['@type']).toBe('BlogPosting');
@@ -80,7 +80,7 @@ test.describe('public sharing and homepage SEO', () => {
   test('game landing pages advertise their own sharing artwork', async ({ page, request, baseURL }) => {
     for (const game of ['hll', 'wardogs']) {
       await page.goto(`/cs/${game}`);
-      const url = `${baseURL}/api/social/cs/site?v=2&game=${game}`;
+      const url = `${baseURL}/api/social/cs/site?v=3&game=${game}`;
       await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', url);
       await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', url);
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `${baseURL}/cs/${game}`);
@@ -95,7 +95,7 @@ test.describe('public sharing and homepage SEO', () => {
       for (const game of ['hll', 'wardogs']) {
         for (const section of ['news', 'matches']) {
           await page.goto(`/${locale}/${game}/${section}`);
-          const url = `${baseURL}/api/social/${locale}/${section}?v=2&game=${game}`;
+          const url = `${baseURL}/api/social/${locale}/${section}?v=3&game=${game}`;
           await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', url);
           await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', url);
         }

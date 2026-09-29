@@ -23,7 +23,7 @@ No runtime hotlink, game archive, extracted font or tutorial video is required.
 | `roles-and-equipment.webp` | Roles / equipment |
 | `communication.webp` | Communication |
 | `logistics-and-vehicles.webp` | Vehicles / logistics |
-| `armor-and-artillery.webp` | Armor / artillery; default HLL sharing illustration |
+| `armor-and-artillery.webp` | Armor / artillery (the default HLL sharing background is now the graphics-pack scene; see [graphics pack integration](graphics-pack-2026-09-29.md#implemented-integration)) |
 | `spawns-and-engineering.webp` | Spawns / engineering |
 | `squad-leader-fieldcraft.webp` | Leadership |
 | `news.webp` | Coverless HLL news with the existing faded clan emblem |
@@ -55,8 +55,9 @@ gameplay. The emblem and label overlays are application presentation.
 - Sharing uses the existing 1200 × 630 server-rendered template with HLL khaki,
   slate, local artwork and localized news/fixture/result labels. Published entity
   game scope overrides query parameters. Generic game landing/list metadata
-  carries `game=hll` or `game=wardogs`; shared pages stay neutral. Version `v=2`
-  invalidates the previous template URL. Match results are never fabricated.
+  carries `game=hll` or `game=wardogs`; shared pages stay neutral. Version `v=3`
+  (graphics pack backgrounds and map briefing) invalidates earlier template URLs.
+  Match results are never fabricated.
 
 ## Background behavior
 

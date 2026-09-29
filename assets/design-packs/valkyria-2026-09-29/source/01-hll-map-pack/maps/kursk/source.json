@@ -1,0 +1,45 @@
+{
+  "id": "kursk",
+  "name": "Kursk",
+  "code": "KUR",
+  "index": 10,
+  "aliases": [
+    "kursk",
+    "KUR"
+  ],
+  "assets": {
+    "server-card": "server-card-640x360.webp",
+    "server-strip": "server-strip-960x240.webp",
+    "article": "article-1200x630.webp",
+    "match-result": "match-result-1920x1080.webp",
+    "match-preview": "match-preview-1200x630.webp",
+    "wide": "wide-1920x480.webp",
+    "social": "social-1080x1080.webp",
+    "tactical-poster": "tactical-poster-1080x1350.webp",
+    "tactical-background": "tactical-background-1920x1080.webp",
+    "scene": "source-scene-718x404.webp",
+    "tactical": "source-tactical-4096x4096.webp",
+    "tacticalPreview": "tactical-preview-1400x1400.webp",
+    "articleJpg": "article-1200x630.jpg",
+    "matchPreviewJpg": "match-preview-1200x630.jpg",
+    "articleSvg": "article-1200x630.svg",
+    "matchResultSvg": "match-result-1920x1080.svg"
+  },
+  "scene_dimensions": [
+    718,
+    404
+  ],
+  "tactical_dimensions": [
+    4096,
+    4096
+  ],
+  "sources": {
+    "wiki": "https://hellletloose.fandom.com/wiki/Kursk",
+    "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/KUR.webp",
+    "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_kursk.webp"
+  },
+  "sha256": {
+    "scene": "74454e7e78aa00107398a23b6c4bd98a2e5b90adc2e8fd19fd701160e63be81b",
+    "tactical": "73d1495f9a8996c849bf34ba28a845985778a599b731c4ef1a9f7dff19ef5d75"
+  }
+}

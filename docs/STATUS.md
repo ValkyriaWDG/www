@@ -2,6 +2,37 @@
 
 Updated: 2026-09-29. Stage: **Legacy HLL migration and live CRCON accepted on valkyria.cz at 14:58:22 UTC. Running source 1b38314, immutable image 6623125c; dedicated Watchtower and publisher timer restored. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
+## Graphics pack integration (PR #70, open, not deployed)
+
+Branch `assets/graphics-pack-handoff` integrates the owner's graphics pack with the
+brand correction (`5aa60ff`) on application source `7f4dc44`; head also merges main
+`264bea6` (#71, docs only). See the [catalog's implemented integration](assets/graphics-pack-2026-09-29.md#implemented-integration)
+and [evidence](evidence/graphics-pack-2026-09-29/README.md). The PR #69 hub cover,
+strip geometry, crest and HLL/WDG media contracts are unchanged.
+
+- 97 runtime files from `scripts/media/derive-graphics-pack.mjs` (only
+  `retain-unbranded-source` clean layers per `branded/catalog.json`, plus the official
+  HLL mark); map resolver for all 20 maps with alias/layer grammar and near-match rejection.
+- Server list thumbnails, selected-server scene and on-demand tactical map; match map
+  briefing and coverless banner scene; sharing template v3 (pack scenes, map briefing,
+  official marks, framed covers, `0 : 0` vs unknown); editorial template import in the
+  media library; official HLL mark on the hub card; 16 UI glyphs on mapped controls.
+- Checks on the `7f4dc44` build: lint/types passed; unit 703/703; integration 340/340
+  (PostgreSQL); browser 179 passed, 0 failed (97 opt-in capture cases skipped); CI artwork
+  step 4/4; budgets 15/15 (`/cs/hll` median LCP 1,976 ms); foundation 2,461 files; tooling
+  176/176; archive `restore.mjs --verify` 497/497.
+
+Not included: corrected ready-made compositions with baked Czech copy, a map-guide page,
+square/Discord export downloads, icons on the remaining mapped targets. No merge,
+deployment, production import or Discord message. Next: review PR #70; operator-run
+release per `docs/operations/` after merge.
+
+The archived pack itself: **497 original files** with exact hashes and a reversible
+representation of the oversized editor ([pack README](../assets/design-packs/valkyria-2026-09-29/README.md));
+340 corrected exports embed the actual crest and official marks
+([brand correction](assets/brand-correction-2026-09-29.md)); 16 original
+[UI icons](assets/icon-handoff.md). Source galleries are asset proof, not app screenshots.
+
 ## Current production: legacy HLL migration and CRCON
 
 Source `1b38314ff6faf5182166fe15dff3172e4cf752ef` runs from

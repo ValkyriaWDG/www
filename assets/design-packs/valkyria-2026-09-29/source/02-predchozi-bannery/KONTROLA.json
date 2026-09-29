@@ -1,0 +1,10 @@
+{
+  "raster_files_decoded": 101,
+  "declared_dimensions_verified": true,
+  "svg_xml_files_verified": 14,
+  "editor_preset_format_combinations_tested": 56,
+  "editor_canvas_export_tested": "PNG 1200x630",
+  "browser_console_errors": 0,
+  "contains_font_files": false,
+  "live_websites_modified": false
+}

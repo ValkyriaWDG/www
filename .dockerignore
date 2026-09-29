@@ -22,6 +22,8 @@
 docs
 assets/incoming
 assets/private
+# Archival design inputs and offline editors are never application build inputs.
+assets/design-packs
 *.avi
 *.bk2
 *.bik

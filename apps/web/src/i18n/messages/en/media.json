@@ -123,5 +123,19 @@
     "deleteBody": "{name} will be removed from the library. This cannot be undone.",
     "deleteInUseBody": "{count, plural, one {The image is used in # place and cannot be deleted until it is removed there.} other {The image is used in # places and cannot be deleted until it is removed there.}}",
     "inUseError": "The image is still used by an article, page, member or match and was not deleted."
+  },
+  "templates": {
+    "title": "Valkyria background templates ({count})",
+    "lead": "Text-free backgrounds from the Valkyria graphics pack. Adding one creates an ordinary library image: edit its alt text, caption and rights in the detail panel and pick it as a cover like any other image. Article headlines stay text in the CMS.",
+    "listLabel": "Background templates",
+    "games": {
+      "hll": "Hell Let Loose",
+      "wardogs": "Wardogs",
+      "community": "Community"
+    },
+    "add": "Add to library",
+    "adding": "Adding…",
+    "inLibrary": "Already in the library – open",
+    "rights": "AI illustrations supplied by the Valkyria owner for this website; not game screenshots or a record of a clan event."
   }
 }

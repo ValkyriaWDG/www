@@ -4,6 +4,7 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import styles from '@/components/admin/admin.module.css';
+import { EditorialTemplates } from '@/components/admin/editorial-templates';
 import { MediaDetail } from '@/components/admin/media-detail';
 import { MediaUploadPanel } from '@/components/admin/media-upload-panel';
 import { definedParams, hrefWith, oneOf, pageParam, searchText, single } from '@/components/admin/search-params';
@@ -21,6 +22,7 @@ import { AccessDeniedError } from '@/modules/access/types';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { uuidSchema } from '@/modules/content/inputs';
 import { getAsset, listAssets, scopeCapability, type AssetDetailDTO } from '@/modules/media/library';
+import { importedEditorialTemplates, listEditorialTemplates } from '@/modules/media/templates';
 
 export const dynamic = 'force-dynamic';
 
@@ -81,6 +83,11 @@ export default async function AdminMediaPage({ params, searchParams }: PageProps
     }
   }
   const uploadScope: AssetScope = filters.scope ?? scopes[0] ?? 'editorial';
+  // Template backgrounds are editorial assets: shown only to editorial media managers.
+  const imported = scopes.includes('editorial') ? await importedEditorialTemplates(db, actor) : null;
+  const templates = imported
+    ? listEditorialTemplates().map((template) => ({ id: template.id, game: template.game, alt: template.alt[locale], preview: template.preview, assetId: imported[template.id] ?? null }))
+    : null;
   const filtered = Boolean(filters.q || filters.scope || filters.use);
 
   const groups: FilterGroup[] = [];
@@ -127,6 +134,7 @@ export default async function AdminMediaPage({ params, searchParams }: PageProps
         </div>
       </div>
       <MediaUploadPanel scope={uploadScope} locale={locale} />
+      {templates ? <EditorialTemplates templates={templates} /> : null}
       <FilterBar
         action="/admin/media"
         searchLabel={t('library.searchLabel')}

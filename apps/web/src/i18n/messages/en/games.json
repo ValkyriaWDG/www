@@ -173,7 +173,9 @@
       "scoreValue": "Allies {allied} : {axis} Axis",
       "teams": "Players per team",
       "teamsValue": "Allies {allied} · Axis {axis}",
-      "liveStats": "Live server statistics"
+      "liveStats": "Live server statistics",
+      "mapImageAlt": "{map} — in-game scene of the map (illustrative, not the live game state)",
+      "tacticalMap": "Tactical map of {map} (WebP, {size} kB)"
     },
     "partial": {
       "title": "Some servers are not responding right now.",
