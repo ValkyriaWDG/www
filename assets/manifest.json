@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-28",
+  "recordedAt": "2026-09-29",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -2921,6 +2921,127 @@
       "bytes": 55292,
       "width": 1440,
       "height": 1200
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-cs-desktop",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-cs-desktop.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "799478e0fad82bdbb383c958b49c606d653bc5215abd014297464e614a396ad8",
+      "bytes": 921174,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-cs-mobile",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-cs-mobile.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "fcc3fc5e5f3add2f82dd3f11e3e7bfdb484bb05b8b00dafa2fe656e21255581b",
+      "bytes": 273990,
+      "width": 390,
+      "height": 872
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-en-desktop",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-en-desktop.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "f765527d076a83ae9e16c86b80ea2fbeb71c2ab3f25ddb9bf015b318f367c444",
+      "bytes": 918342,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-en-mobile",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-en-mobile.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "8911afb1de7f794906c171d788f0372c3dc188bce75c7a8d18a249462df384e7",
+      "bytes": 272420,
+      "width": 390,
+      "height": 872
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-faq-en-mobile",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-faq-en-mobile.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "61f669c08390b2a337045089e6b75e5c6ac4bc4f4707e7bc1720a7c9d971e7b5",
+      "bytes": 136139,
+      "width": 390,
+      "height": 1085
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-tournaments-cs-desktop",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-tournaments-cs-desktop.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "8fe6c4ab48b932de9016c7a483d6ab9d1322f5e5ed9168242c569ae59fbd8895",
+      "bytes": 409255,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hll-tournaments-en-mobile",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hll-tournaments-en-mobile.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "2fbcd1beb286640bb278948ed301406b69bec26973d202620bcbdcc10bbe4363",
+      "bytes": 146372,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hub-cs-desktop",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hub-cs-desktop.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "501847e1a5425e5689f359ea9200ea46ee7bdb8ce958096c861d563b0963568b",
+      "bytes": 414671,
+      "width": 1440,
+      "height": 1041
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-hub-en-mobile",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-hub-en-mobile.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "bfc24eb52fad6eadbfc683d44467a12eef96e55b3cf8a2862bd346a72b3ea609",
+      "bytes": 211208,
+      "width": 390,
+      "height": 1478
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-wardogs-cs-desktop",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-wardogs-cs-desktop.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "3e2ca26bf92d5d511ef500fa4487c670a78f5fb7f8b726d7fd9c5fe83b19eba8",
+      "bytes": 1347944,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "hll-production-2026-09-29-browser-after-02-wardogs-en-mobile",
+      "path": "docs/evidence/hll-features-production-2026-09-29/browser-after-02-wardogs-en-mobile.png",
+      "source": "Actual anonymous production browser capture at https://valkyria.cz, source e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e, Chrome for Testing 154; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "7732aae47419e17ec4031e049c450c4acc2c8c65e79c878a768487e9f94927d6",
+      "bytes": 300186,
+      "width": 390,
+      "height": 844
     }
   ]
 }

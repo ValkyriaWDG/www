@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-29T08:17:13.5604112Z",
+  "service": "valkyria-web-publish.service",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "observed": {
+    "ExecMainStatus": "0",
+    "Result": "success",
+    "ExecMainStartTimestamp": "Tue 2026-09-29 08:16:20 UTC",
+    "SubState": "dead",
+    "ExecMainExitTimestamp": "Tue 2026-09-29 08:16:21 UTC",
+    "ActiveState": "inactive"
+  },
+  "limitation": "Read-only service observation; successful timer execution does not prove authenticated editorial publication or monitoring alert delivery."
+}

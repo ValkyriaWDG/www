@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "origin": "https://valkyria.cz",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "image": "majorluk/valkyria-www@sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+  "previousSourceRevision": "e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a",
+  "previousImage": "majorluk/valkyria-www@sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25",
+  "result": "promoted",
+  "startedAt": "2026-09-29T08:11:20.921574+00:00",
+  "quiescedAt": "2026-09-29T08:11:22.874199+00:00",
+  "readyAt": "2026-09-29T08:15:19.452523+00:00",
+  "finishedAt": "2026-09-29T08:15:19.875598+00:00",
+  "pairedBackupRestore": {
+    "semanticRestorePerformed": true,
+    "tables": 27,
+    "sequences": 1,
+    "rowCountsAndHashesMatch": true,
+    "mediaFiles": 0,
+    "mediaHashesMatch": true,
+    "sourceUnchanged": true,
+    "completedAt": "2026-09-29T08:14:03.929204+00:00"
+  },
+  "disposableDatabaseCleanup": "created-verified-dropped",
+  "actualImageRehearsal": {
+    "databaseMajorVersion": "15",
+    "migrationRuns": [
+      {
+        "applied": 3,
+        "alreadyApplied": 2,
+        "total": 5
+      },
+      {
+        "applied": 0,
+        "alreadyApplied": 5,
+        "total": 5
+      }
+    ],
+    "images": [
+      {
+        "image": "majorluk/valkyria-www@sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+        "revision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+        "health": "healthy",
+        "httpChecks": [
+          {
+            "path": "/api/health/ready",
+            "status": 200
+          },
+          {
+            "path": "/cs",
+            "status": 200
+          },
+          {
+            "path": "/en",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll",
+            "status": 200
+          },
+          {
+            "path": "/en/hll",
+            "status": 200
+          },
+          {
+            "path": "/cs/wardogs",
+            "status": 200
+          },
+          {
+            "path": "/en/wardogs",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/field-manual",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/matches",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/servers",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/tournaments",
+            "status": 200
+          },
+          {
+            "path": "/en/hll/tournaments",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/faq",
+            "status": 200
+          }
+        ]
+      },
+      {
+        "image": "majorluk/valkyria-www@sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25",
+        "revision": "e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a",
+        "health": "healthy",
+        "httpChecks": [
+          {
+            "path": "/api/health/ready",
+            "status": 200
+          },
+          {
+            "path": "/cs",
+            "status": 200
+          },
+          {
+            "path": "/en",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll",
+            "status": 200
+          },
+          {
+            "path": "/en/hll",
+            "status": 200
+          },
+          {
+            "path": "/cs/wardogs",
+            "status": 200
+          },
+          {
+            "path": "/en/wardogs",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/field-manual",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/matches",
+            "status": 200
+          },
+          {
+            "path": "/cs/hll/servers",
+            "status": 200
+          }
+        ]
+      }
+    ],
+    "upgradedTables": 29,
+    "existingRowsPreserved": true,
+    "imageRollbackPassed": true,
+    "startedAt": "2026-09-29T08:12:14.740522+00:00",
+    "finishedAt": "2026-09-29T08:13:49.893058+00:00",
+    "isolation": "Dedicated restored database URL and private media; shared database role/network, not a credential sandbox."
+  },
+  "productionMigrationRuns": [
+    {
+      "applied": 3,
+      "alreadyApplied": 2,
+      "total": 5
+    },
+    {
+      "applied": 0,
+      "alreadyApplied": 5,
+      "total": 5
+    }
+  ],
+  "schemaChanged": true,
+  "publicSmoke": [
+    {
+      "path": "/api/health/live",
+      "status": 200
+    },
+    {
+      "path": "/api/health/ready",
+      "status": 200
+    },
+    {
+      "path": "/cs",
+      "status": 200
+    },
+    {
+      "path": "/en",
+      "status": 200
+    },
+    {
+      "path": "/cs/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/en/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll",
+      "status": 200
+    },
+    {
+      "path": "/en/hll",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/field-manual",
+      "status": 200
+    },
+    {
+      "path": "/en/hll/field-manual",
+      "status": 200
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-poster-f31f6824f259.webp",
+      "status": 206
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "status": 206
+    },
+    {
+      "path": "/media/background/wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "status": 206
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    }
+  ],
+  "timersRestored": true,
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "watchtowerEnabled": false,
+  "authenticationDisabled": true,
+  "hllBackgroundClips": 0,
+  "serverStatusSource": "none",
+  "legacyHllHosts": [],
+  "limitations": [
+    "CI image rollback used 5e83abc; the separate on-host rehearsal above uses the actual prior e03d3c5 image and PostgreSQL15.",
+    "No authenticated login, real provider data, editorial publication or clan HLL video was enabled or tested in production.",
+    "The known browser network acceptance issue is evaluated separately; HTTP results do not imply its resolution.",
+    "No DNS/proxy change, live database restore, migration downgrade or production fixture import was performed."
+  ]
+}

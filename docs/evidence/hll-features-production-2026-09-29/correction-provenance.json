@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-29T08:26:48.8295492Z",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "initialHttp": {
+    "total": 85,
+    "passed": 69
+  },
+  "initialBrowser": {
+    "failed": 1,
+    "notRun": 14,
+    "captures": 0,
+    "run": 1,
+    "passed": 0
+  },
+  "correctedHttp": {
+    "total": 85,
+    "passed": 85
+  },
+  "correctedBrowser": {
+    "failed": 1,
+    "nonPrefetchRscFailures": 5,
+    "captures": 11,
+    "total": 15,
+    "passed": 14
+  },
+  "testCommand": "node --test .local/latest-deploy-2026-09-29/verification/correction.test.cjs .local/latest-deploy-2026-09-29/verification/harness.test.cjs .local/latest-deploy-2026-09-29/verification/request-classification.test.cjs",
+  "localTests": {
+    "failed": 0,
+    "skipped": 0,
+    "total": 42,
+    "passed": 42
+  },
+  "sourceEvidence": [
+    "apps/web/src/modules/social/model.ts: SOCIAL_TEMPLATE_VERSION=2 and game query format",
+    "apps/web/src/components/public/list-load-error.tsx: explicit data-list-error marker",
+    "apps/web/src/components/public/tournaments-screen.tsx: cards, mutually exclusive query-error and empty states",
+    "apps/web/src/components/ui/panels.tsx: EmptyState emits localized h2",
+    "apps/web/src/app/[locale]/layout.tsx: NextIntlClientProvider serializes messages"
+  ],
+  "visualInspection": {
+    "capturesOpened": 11,
+    "limits": "Not a comprehensive accessibility audit or physical-device qualification.",
+    "result": "All actual captures inspected; expected localized UI, full HLL artwork, honest unpublished/empty content, and no visible horizontal clipping."
+  },
+  "independentReview": "Read-only release reviewer accepted correction, independently ran 42/42 tests and verified original hash bindings and unchanged classifier.",
+  "files": [
+    {
+      "file": "http-after-01.json",
+      "sha256": "a11d4b60f2274645ab8ee2ee346f4a1255ddeedbfb3fed2dc21e7e2c23bbdd57"
+    },
+    {
+      "file": "browser-after-01.json",
+      "sha256": "fcc8df245ddf36c5339b88ea759b6134813d429f0f9e64e13b16734e79a35716"
+    },
+    {
+      "file": "http-after-02.json",
+      "sha256": "e9cbad4c7f2db348005e00f02ec8b2304d470db59a89b5ce667bc7897201d807"
+    },
+    {
+      "file": "browser-after-02.json",
+      "sha256": "df548847e99d4fdb88c89d46a35b7e5fb0e88e743d190bfee86ca41968b0564a"
+    },
+    {
+      "file": "initial-harness/http-smoke.mjs",
+      "sha256": "ec021bf25ba757a78c8ebfedb86ddb41a59fce104d959feb7f7c800adc57f2d3"
+    },
+    {
+      "file": "initial-harness/browser-smoke.cjs",
+      "sha256": "3462d707812e04cf1ec70e0043a5ae02b21906c97a192eff0dcf18e19b432aeb"
+    },
+    {
+      "file": "http-smoke.mjs",
+      "sha256": "b8d0de7a0239f30a2e0760229da5a759d99a3faefba843fb6234adbb28bb0dd2"
+    },
+    {
+      "file": "browser-smoke.cjs",
+      "sha256": "1bd8c5fd6e2b2187dfdf54fb5f6a406c85000b03d3cefd006ba792ede869ee6f"
+    },
+    {
+      "file": "request-classification.cjs",
+      "sha256": "5fe236dbe035f6540f18edfad270f71ddce7ed35823698146bd5251cda517eac"
+    },
+    {
+      "file": "tournament-markup.cjs",
+      "sha256": "170da7308b87b450300a85e5981bc4b258a6a9d1b12125f138b6839e4d3cfcca"
+    },
+    {
+      "file": "correction.test.cjs",
+      "sha256": "2f3f9799b9fd5a258ee99fb49990ee889cef3bba482b8ab245365db73d501568"
+    }
+  ]
+}

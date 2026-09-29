@@ -1,0 +1,33 @@
+✔ metadata parser preserves CS/EN reciprocal URLs and query escaping (1.2027ms)
+✔ index policy googlebot: noindex (0.1251ms)
+✔ index policy NONE (0.0864ms)
+✔ index policy index, follow (0.0593ms)
+✔ index policy noimageindex (0.0515ms)
+✔ actual complete PNG decoder accepts expected dimensions (17.2961ms)
+✔ actual complete PNG decoder rejects truncated body (12.3167ms)
+✔ actual complete PNG decoder rejects oversized image (5.6113ms)
+✔ reports and captures use exclusive creation (0.333ms)
+✔ only the exact optional RSC prefetch abort is a cancellation (0.5872ms)
+✔ external origin remains a failure (0.5252ms)
+✔ unknown origin remains a failure (0.0625ms)
+✔ write request remains a failure (0.0569ms)
+✔ HEAD request remains a failure (0.0636ms)
+✔ document navigation remains a failure (0.0489ms)
+✔ XHR request remains a failure (0.0601ms)
+✔ generic network failure remains a failure (0.0433ms)
+✔ connection reset remains a failure (0.0521ms)
+✔ similar but nonexact abort error remains a failure (0.0861ms)
+✔ unknown error remains a failure (0.0476ms)
+✔ ordinary fetch remains a failure (0.0365ms)
+✔ RSC navigation without prefetch remains a failure (0.0442ms)
+✔ missing prefetch header remains a failure (0.04ms)
+✔ prefetch without RSC remains a failure (0.0299ms)
+✔ missing RSC header remains a failure (0.0695ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 825.5524

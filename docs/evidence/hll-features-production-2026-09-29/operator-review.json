@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scope": "Local mock boundary and collector privacy tests; operator helpers remain private",
+  "reviewedAt": "2026-09-29T10:01:58.480746+02:00",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "tests": {
+    "promotion": 18,
+    "collector": 6,
+    "failures": 0
+  },
+  "reviewedUnpinnedHashes": {
+    "promotion": "2e1d8f0285707ed202d8ae8ebe145cdcf482402717a19e6fb9508f28c632bf55",
+    "runtimeVerifier": "1f1c27e44258707ada3dd8785d9896659f52352a51be37188a3dd67ed626223b",
+    "collector": "c7a7bf1b8e3f48b725356e38ea5a22c2bf2971e6168c3d2fe81349b3eea3f297"
+  },
+  "pinnedRecord": "pinned-operator-bundle.json",
+  "limits": [
+    "Mocked local execution only, not Linux fsync or actual database/image verification.",
+    "Collector validates a protected report, not independent attestation.",
+    "Actual PG15 candidate and previous-image rehearsal is recorded separately in deployment-record.json."
+  ]
+}
