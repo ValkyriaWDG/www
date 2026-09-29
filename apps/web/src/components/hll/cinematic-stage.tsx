@@ -206,8 +206,9 @@ export function CinematicStage({ clips, labels, children }: { clips: HllClip[]; 
             />
           ) : null}
           <div className={styles.sceneVeil} />
-          {/* The ghosted clan crest matches the Wardogs landing: size, position, opacity (owner). */}
-          <Image src={emblem} alt="" className={styles.stageCrest} sizes="(max-width: 767px) 60vw, 22vw" data-hll-crest="" />
+          {/* The ghosted clan crest matches the Wardogs landing: size, position, opacity and
+              loading (it is the landing's largest image) (owner). */}
+          <Image src={emblem} alt="" className={styles.stageCrest} sizes="(max-width: 767px) 60vw, 22vw" loading="eager" fetchPriority="high" data-hll-crest="" />
         </div>
       </div>
       {children}

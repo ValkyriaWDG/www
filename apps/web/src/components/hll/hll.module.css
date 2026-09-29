@@ -2,8 +2,8 @@
  * HLL section presentation (docs/design/hll/visual-spec.md). Colors come from the
  * `[data-theme='hll']` tokens in styles/tokens.css; layout values follow §4–§6 and §10.
  * Reference 02 composition at 1920 × 1200: 80 px inset, a 340 px menu lane and a
- * fullscreen scene behind every foreground surface. The masthead is the same compact top
- * row on every HLL page, so identity and controls sit where Wardogs has them (owner).
+ * fullscreen scene behind every foreground surface. The masthead is the Wardogs top strip
+ * on every HLL page, so logo and controls do not move when switching games (owner).
  */
 
 .shell {
@@ -48,43 +48,20 @@
   background: rgb(14 16 19 / 0.72);
 }
 
-/* ---- Masthead ---- */
-.masthead {
-  position: relative;
-  z-index: var(--layer-header);
-  display: grid;
-  grid-template-areas: 'identity controls';
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-4) var(--space-5);
-  padding: calc(clamp(8px, 1.1vh, 14px) + env(safe-area-inset-top)) var(--safe-inset) clamp(8px, 1.2vh, 16px);
-}
-
-[data-hll-mode='content'] .masthead {
-  border-bottom: var(--border-hairline) solid var(--color-chrome-line);
-  background: rgb(23 26 31 / 0.9);
+/* ---- Masthead: the Wardogs strip (shell/header.module.css) in HLL colours ---- */
+[data-theme='hll'] .masthead {
+  background: rgb(29 32 37 / 0.97);
 }
 
 .identity {
-  grid-area: identity;
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(12px, 1vw, 20px);
-  justify-self: start;
-  min-height: 48px;
+  gap: clamp(10px, 0.8vw, 16px);
   color: var(--hll-text);
   text-decoration: none;
 }
 
 .identity:focus-visible {
   outline: 2px solid var(--hll-focus);
-  outline-offset: 3px;
-}
-
-.crest {
-  flex: none;
-  width: auto;
-  height: 48px;
+  outline-offset: -2px;
 }
 
 .identityText {
@@ -94,60 +71,20 @@
 
 .clanName {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 0.8vw + 1.3rem, 2.5rem);
+  font-size: clamp(1.375rem, 0.5vw + 1rem, 1.75rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .division {
-  margin-top: 6px;
+  margin-top: 4px;
   color: var(--hll-accent);
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-}
-
-.controls {
-  grid-area: controls;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-2);
-  min-width: 0;
-}
-
-.communityLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 var(--space-3);
-  color: var(--hll-text-muted);
-  font-family: var(--font-display);
-  font-size: var(--text-small);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.communityLink:hover {
-  color: var(--hll-text);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.gameSlot,
-.accountSlot {
-  display: flex;
-}
-
-.mobileTrigger,
-.mobileGame {
-  display: none;
 }
 
 .mobileLinks {
@@ -632,10 +569,6 @@
     grid-template-columns: minmax(250px, 290px) minmax(0, 1fr);
     column-gap: 32px;
   }
-
-  .communityLink {
-    display: none;
-  }
 }
 
 /* ---- 768–1023: stacked foreground content; background stays fullscreen ---- */
@@ -656,78 +589,24 @@
     column-gap: var(--space-5);
   }
 
-  .communityLink {
-    display: none;
-  }
-
-  .masthead {
-    grid-template-areas:
-      'identity controls'
-      'game game';
-  }
-
-  .gameSlot {
-    display: none;
-  }
-
-  .mobileGame {
-    grid-area: game;
-    display: block;
-  }
 }
 
 /* ---- Below 768: one column; disclosure for content-page navigation ---- */
 @media (max-width: 767px) {
-  .masthead {
-    grid-template-areas:
-      'identity menu'
-      'controls controls'
-      'game game'
-      'panel panel';
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-2);
-    padding-top: calc(14px + env(safe-area-inset-top));
-  }
-
-  [data-hll-mode='landing'] .masthead {
-    grid-template-areas:
-      'identity controls'
-      'game game';
-  }
-
-  .clanName {
-    font-size: 1.875rem;
-  }
-
-  .crest {
-    height: 44px;
+  /* Phones show the crest only, as Wardogs does; the name stays the link's accessible text. */
+  .identityText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .stageCrest {
     top: calc(var(--header-height) + (100% - var(--header-height)) * 0.34);
     width: min(62vw, 280px);
     opacity: 0.11;
-  }
-
-  .division {
-    font-size: 0.8125rem;
-  }
-
-  .controls {
-    justify-content: flex-start;
-  }
-
-  [data-hll-mode='content'] .controls {
-    grid-area: controls;
-  }
-
-  .accountSlot {
-    display: none;
-  }
-
-  /* The disclosure button/panel become grid items (areas `menu` and `panel`). */
-  [data-hll-mode='content'] .mobileTrigger {
-    display: contents;
   }
 
   .sectionBar {
