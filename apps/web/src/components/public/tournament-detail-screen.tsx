@@ -10,6 +10,7 @@ import { isSlug } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
 import { PageHeader, StatusBadge } from '@/components/ui/panels';
 import { SelectionTable } from '@/components/ui';
+import { TrophyIcon } from '@/components/ui/icons';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { GAME_REGISTRY, gameRouteFromDb, type GameRoute } from '@/modules/games/registry';
@@ -74,6 +75,9 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
       />
       <div className={styles.detail} data-tournament-detail={tournament.slug}>
         <section className={styles.facts} aria-labelledby="tournament-facts">
+          <span className={styles.cardEmblem} aria-hidden="true" data-tournament-emblem="">
+            <TrophyIcon size={36} />
+          </span>
           <h2 className={styles.groupTitle} id="tournament-facts">
             {t('detail.facts')}
           </h2>

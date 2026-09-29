@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import type { ReactNode } from 'react';
+import emblem from '../../../../public/brand/valkyria-emblem-733.webp';
 import styles from './auth.module.css';
 
 /** Page landmark for sign-in/account screens (target of the skip link). */
@@ -18,9 +20,11 @@ export function Panel({ labelledBy, wide = false, children }: { labelledBy: stri
   );
 }
 
-export function PanelHeading({ id, eyebrow, title }: { id: string; eyebrow?: string; title: string }) {
+/** `crest` shows the clan emblem above the heading (decorative; the eyebrow names the account). */
+export function PanelHeading({ id, eyebrow, title, crest = false }: { id: string; eyebrow?: string; title: string; crest?: boolean }) {
   return (
-    <header>
+    <header className={crest ? styles.crestHeader : undefined}>
+      {crest ? <Image src={emblem} alt="" className={styles.crest} sizes="72px" priority /> : null}
       {eyebrow ? <p className={styles.eyebrow}>{eyebrow}</p> : null}
       <h1 id={id} className={styles.title}>
         {title}

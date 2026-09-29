@@ -30,7 +30,7 @@ export default async function RecoveryPage({ params, searchParams }: PageProps<'
   return (
     <AuthScene>
       <Panel labelledBy="recovery-title">
-        <PanelHeading id="recovery-title" eyebrow={t('eyebrow')} title={t('title')} />
+        <PanelHeading id="recovery-title" eyebrow={t('eyebrow')} title={t('title')} crest />
         <p className={styles.muted}>{t('intro')}</p>
         <RecoveryForm locale={locale} returnTo={returnTo} />
         <hr className={styles.divider} />

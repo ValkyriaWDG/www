@@ -31,8 +31,35 @@
 
 .card article {
   display: grid;
-  gap: var(--space-2);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
   padding: var(--space-4) var(--space-5);
+}
+
+.card article > * {
+  grid-column: 2;
+}
+
+/* Competition emblem (trophy glyph) until tournaments carry their own logos. */
+.cardEmblem {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: var(--border-hairline) solid rgb(217 173 50 / 0.45);
+  background: rgb(0 0 0 / 0.3);
+  color: var(--color-accent-strong);
+}
+
+.card article > .cardEmblem {
+  grid-row: 1 / span 3;
+  grid-column: 1;
+  align-self: start;
+}
+
+.card[data-phase='finished'] .cardEmblem {
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
 }
 
 .card:hover,

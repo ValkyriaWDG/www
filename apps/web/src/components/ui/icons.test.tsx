@@ -26,3 +26,17 @@ describe('Valkyria UI icon pack in the shared Icon wrapper', () => {
     expect(markup).toMatch(/width="20" height="20"/);
   });
 });
+
+describe('Discord mark', () => {
+  it('keeps the Simple Icons geometry as a filled, decorative glyph', () => {
+    const markup = renderToStaticMarkup(<icons.DiscordIcon size={20} />);
+    const source = readFileSync(path.join(process.cwd(), '../../assets/icons/simple-icons/discord.svg'), 'utf8');
+    expect(geometry(markup)).toEqual(geometry(source));
+    expect(markup).toContain('viewBox="0 0 24 24"');
+    expect(markup).toContain('fill="currentColor"');
+    expect(markup).toContain('stroke="none"');
+    expect(markup).toContain('aria-hidden="true"');
+    expect(markup).toContain('data-icon="discord"');
+    expect(markup).not.toContain('<title');
+  });
+});

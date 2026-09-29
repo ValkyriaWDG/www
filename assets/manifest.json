@@ -14504,6 +14504,17 @@
       "bytes": 26110,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "simple-icons-discord",
+      "path": "assets/icons/simple-icons/discord.svg",
+      "source": "simple-icons 16.33.0 (npm package simple-icons, icons/discord.svg), unchanged",
+      "usage": "geometry source of DiscordIcon in apps/web/src/components/ui/icons.tsx: the Discord mark beside visible text on links and buttons that open the Valkyria Discord invitation or Discord sign-in",
+      "rights": "Icon SVG released under CC0-1.0 by the Simple Icons project (assets/icons/simple-icons/LICENSE.md); the Discord name and logo are trademarks of Discord Inc., used only to identify links to Discord; no endorsement implied",
+      "sha256": "1d364b72c9eaf1fe37d17ca88cd8fb541308dc0f3b09e2ab3b824f380b3493d5",
+      "bytes": 1374,
+      "width": 24,
+      "height": 24
     }
   ]
 }

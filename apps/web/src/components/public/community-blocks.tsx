@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { DiscordCta } from '@/components/shell/home/discord-cta';
 import { GameButton } from '@/components/ui/game-button';
-import { CommunityIcon, ExternalIcon, ShieldIcon } from '@/components/ui/icons';
+import { DiscordIcon, ExternalIcon, ShieldIcon } from '@/components/ui/icons';
 import { FeedbackNotice } from '@/components/ui/panels';
 import type { AppLocale } from '@/i18n/routing';
 import type { GameRoute } from '@/modules/games/registry';
@@ -83,7 +83,7 @@ export async function CommunityChoices({ locale, discordUrl, guideAnchor }: { lo
         <li>
           {discordUrl ? (
             <a href={discordUrl} className={styles.choice} data-choice="discord">
-              <CommunityIcon className={styles.choiceIcon} size={96} strokeWidth={1.25} />
+              <DiscordIcon className={styles.choiceIcon} size={88} />
               <span className={styles.choiceTitle}>{t('discordChoice.title')}</span>
               <span className={styles.choiceBody}>{t('discordChoice.body')}</span>
               <span className={styles.choiceMarker} aria-hidden="true">
@@ -94,7 +94,7 @@ export async function CommunityChoices({ locale, discordUrl, guideAnchor }: { lo
             </a>
           ) : (
             <div className={`${styles.choice} ${styles.choiceUnavailable}`} data-choice="discord-unavailable">
-              <CommunityIcon className={styles.choiceIcon} size={96} strokeWidth={1.25} />
+              <DiscordIcon className={styles.choiceIcon} size={88} />
               <span className={styles.choiceTitle}>{t('discordChoice.title')}</span>
               <span className={styles.choiceBody}>{t('discordChoice.unavailableBody')}</span>
             </div>

@@ -60,4 +60,26 @@ test.describe('public layout', () => {
     const panel = (await page.locator('[data-tournament-detail] section').last().boundingBox())!;
     expect(panel.x + panel.width).toBeLessThanOrEqual(390);
   });
+
+  test('Discord links carry the Discord mark and shared destinations and tournaments their glyphs', async ({ page }) => {
+    const discordMark = 'svg[data-icon="discord"][aria-hidden="true"]';
+    await page.goto('/cs');
+    for (const key of ['news', 'matches', 'members', 'clan', 'community']) {
+      await expect(page.locator(`[data-hub-shared="${key}"] svg[aria-hidden="true"]`)).toHaveCount(1);
+    }
+    await expect(page.locator(`[data-hub-shared="discord"] ${discordMark}`)).toHaveCount(1);
+    await expect(page.locator(`[data-utility="discord"] ${discordMark}`)).toHaveCount(1);
+    await page.goto('/cs/hll');
+    await expect(page.locator(`[data-hll-discord] ${discordMark}`)).toHaveCount(1);
+    await page.goto('/cs/community');
+    await expect(page.locator(`[data-choice="discord"] ${discordMark}`)).toHaveCount(1);
+    await expect(page.locator('[data-choice="discord"]')).toHaveAccessibleName(/Discord.*\(externí odkaz\)/);
+    await page.goto('/cs/clan');
+    await expect(page.locator(`[data-discord-panel] [data-cta="discord"] ${discordMark}`)).toHaveCount(1);
+    await page.goto('/en/login');
+    await expect(page.getByTestId('login-discord').locator(discordMark)).toHaveCount(1);
+    await expect(page.getByTestId('login-discord')).toHaveAccessibleName('CONTINUE WITH DISCORD');
+    await page.goto('/cs/hll/tournaments');
+    await expect(page.locator('[data-tournament-card] svg[data-icon="trophy"]')).toHaveCount(2);
+  });
 });
