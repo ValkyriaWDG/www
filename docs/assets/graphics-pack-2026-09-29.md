@@ -137,9 +137,12 @@ and social-rendering boundaries with escaped text and selected trusted images.
 ## Implemented integration
 
 `node scripts/media/derive-graphics-pack.mjs` verifies each source against the pack
-inventory, writes the derivatives below and upserts their manifest records (source path
-and hash, transformation, bytes, dimensions, rights); `--check` proves they are current.
-The 259 MB archive stays out of `public/` and the container.
+inventory, requires it to be a `retain-unbranded-source` clean layer in
+[branded/catalog.json](../../assets/design-packs/valkyria-2026-09-29/branded/catalog.json),
+writes the derivatives below and upserts their manifest records (source path and hash,
+transformation, bytes, dimensions, rights); `--check` proves they are current. No old or
+corrected branded composition is served. The archive stays out of `public/` and the container.
+[Evidence](../evidence/graphics-pack-2026-09-29/README.md) records checks and CS/EN captures.
 
 | Runtime file | Per | Bytes (total) | Use |
 |---|---|---|---|
@@ -149,6 +152,7 @@ The 259 MB archive stays out of `public/` and the container.
 | `images/hll/maps/<map>/sharing-1200x630.webp` | 20 maps | 284,682 | Background of the sharing card for an HLL match on that map |
 | `images/editorial/<scene>-1920x1080.webp` | 8 scenes | 1,540,126 | Template import source; HLL (`hll-infantry`) and Wardogs (`wdg-blue`) default sharing backgrounds |
 | `images/editorial/<scene>-480x270.webp` | 8 scenes | 76,166 | Previews in the authenticated template library |
+| `brand/hell-let-loose-fullmark-white.svg` | 1 | 6,515 | Official HLL mark (byte-identical catalog runtime source): hub card and sharing headers |
 
 - **Map identity** (`apps/web/src/modules/games/hll-maps.ts`): explicit mapping of all 20
   `HLL_MAPS` names to pack folders; case/diacritics/punctuation-insensitive names,
@@ -168,6 +172,12 @@ The 259 MB archive stays out of `public/` and the container.
   `MAP <name>` label; everything else gets a full-bleed scene (HLL `hll-infantry`,
   Wardogs `wdg-blue`, community: the PR #69 hub cover) labelled as an illustration. Text
   is localized and escaped; zero scores render as `0 : 0`, unknown scores never do.
+- **Brand correction:** the HLL hub card shows the official full mark instead of styled
+  text; sharing-card headers draw the official HLL/Wardogs marks (text remains only for
+  community articles). Game switch, strip labels and headings stay localized text.
+- **UI icons** ([handoff](icon-handoff.md)): all 16 glyphs are `Icon` exports with the
+  source geometry (unit-tested); used on server refresh/copy and the neutral server
+  placeholder, editor save/preview, media upload/save/delete and the post-list edit action.
 - **Editorial templates:** `Media library → Valkyria background templates` lists the
   eight text-free scenes for holders of platform-wide `media.editorial.manage`. Adding
   one creates an ordinary private editorial asset (default CS/EN alt, provenance with
@@ -175,10 +185,12 @@ The 259 MB archive stays out of `public/` and the container.
   stay editable; it becomes public only when published content uses it. Match managers
   and game-scoped editors do not get the library.
 
-Not implemented, deliberately: the 14 text-bearing banner exports, Discord banners,
-square/poster/wide map exports and match-result templates (baked Czech copy, legacy
-domains or placeholder results); the offline editors; a new hub cover or map guide
-page; admin downloads of square/Discord exports. They remain in the archive.
+Not implemented, deliberately: the corrected ready-made compositions (14 editorial
+themes, Discord banners, map article/preview/result/poster/square/wide exports) because
+they bake Czech copy, dated examples or placeholder results — localized text over clean
+layers is used instead; the offline editors; a new hub cover or map guide page; admin
+downloads of square/Discord exports; icons on the remaining mapped targets. All remain
+in the archive or handoff.
 
 ## Original archive integrity and verification
 

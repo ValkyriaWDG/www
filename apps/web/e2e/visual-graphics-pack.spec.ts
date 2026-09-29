@@ -87,6 +87,23 @@ const brokenMaps = async (page: Page) => {
 
 const SHOTS: Shot[] = [
   {
+    file: 'hub-cs-1920x1080.png',
+    caption: 'Community hub /cs: both game cards now carry the official marks — Hell Let Loose (official full mark, replacing the former styled text) and Wardogs (presskit mark) — over the accepted PR #69 cover; the localized game name remains the card text and link name.',
+    locale: 'cs',
+    path: '/cs',
+    width: 1920,
+    height: 1080,
+  },
+  {
+    file: 'hub-en-390x844.png',
+    caption: 'Community hub /en on a 390×844 phone (full page): official marks keep their aspect ratio inside the stacked game cards; English names and copy; no horizontal overflow.',
+    locale: 'en',
+    path: '/en',
+    width: 390,
+    height: 844,
+    fullPage: true,
+  },
+  {
     file: 'servers-alpha-cs-1920x1080.png',
     caption: 'Server browser /cs/hll/servers?server=synthetic-alpha: the recognised map (accented "Sainte-Mère-Église") gets a 160×90 scene thumbnail in its row and a 3:1 crop of the 718×404 scene at the top of the selected-server detail with a Czech alt text and an on-demand tactical-map link with its size; map, mode, score, teams and freshness stay HTML. Bravo (synthetic map, stale) and Charlie (no map) keep the neutral placeholder.',
     locale: 'cs',

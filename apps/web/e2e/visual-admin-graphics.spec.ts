@@ -93,6 +93,8 @@ test('template as a cover of a published article (cs)', async ({ browser }) => {
   await picker.locator(`[data-asset-id="${state.assetId}"]`).click();
   await shot(page, 'template-picker-cs-1440x1000.png', 'Cover picker in the news editor: the imported template is picked like any library image; its default Czech alt text pre-fills the per-language alt field.', 'cs');
   await picker.getByTestId('media-picker-confirm').click();
+  await page.getByTestId('editor-actions').scrollIntoViewIfNeeded();
+  await shot(page, 'template-editor-actions-cs-1440x1000.png', 'News editor with the template as its cover: the action bar shows the pack glyphs on "Uložit" (save) and "Náhled" (preview) next to the unchanged publish action; labels and states unchanged.', 'cs');
   await fillPublishable(page, 'Syntetický článek, jehož titulní obrázek je šablona pozadí z grafického balíku.', 'Syntetický perex článku se šablonou pozadí.');
   await expectSaved(page);
   await publish(page);

@@ -2,43 +2,36 @@
 
 Updated: 2026-09-29. Stage: **Legacy HLL migration and live CRCON accepted on valkyria.cz at 14:58:22 UTC. Running source 1b38314, immutable image 6623125c; dedicated Watchtower and publisher timer restored. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
-## Graphics source handoff (implementation pending)
+## Graphics pack integration (PR #70, open, not deployed)
 
-The owner's follow-up replaces typographic brand stand-ins with the actual clan
-crest and official game marks in **340 corrected exports** (240 HLL map + 100
-editorial/Discord). Use the [brand-correction guide](assets/brand-correction-2026-09-29.md)
-and its one-to-one catalog, not the superseded branded originals. All 458 original
-images are classified: 340 replacements, 107 clean retained sources and 11 historical
-references. The official HLL full mark has separate source provenance. Sixteen
-[original UI icons](assets/icon-handoff.md) include mappings to existing controls.
+Branch `assets/graphics-pack-handoff` integrates the owner's graphics pack with the
+brand correction (`5aa60ff`) on application source `7f4dc44`; head also merges main
+`264bea6` (#71, docs only). See the [catalog's implemented integration](assets/graphics-pack-2026-09-29.md#implemented-integration)
+and [evidence](evidence/graphics-pack-2026-09-29/README.md). The PR #69 hub cover,
+strip geometry, crest and HLL/WDG media contracts are unchanged.
 
-Follow-up verification: 175/175 tooling tests; foundation passed (2,304 files);
-all 497 original hashes still match. The exporter decoded all 286 corrected rasters;
-tests verify 54 editable SVGs embed exact approved logo bytes. Four inspected
-[actual gallery captures](evidence/graphics-brand-correction-2026-09-29/README.md)
-cover 44 representative exports, and two icon captures cover desktop/mobile.
-These are source-asset proof, not application screenshots. No app, database,
-production, deployment or PR #69 cover changes are included. Claude should fetch
-and reconcile PR70's latest branch before integration; preserve concurrent #71
-migration-acceptance documentation and manifest additions when syncing main.
+- 97 runtime files from `scripts/media/derive-graphics-pack.mjs` (only
+  `retain-unbranded-source` clean layers per `branded/catalog.json`, plus the official
+  HLL mark); map resolver for all 20 maps with alias/layer grammar and near-match rejection.
+- Server list thumbnails, selected-server scene and on-demand tactical map; match map
+  briefing and coverless banner scene; sharing template v3 (pack scenes, map briefing,
+  official marks, framed covers, `0 : 0` vs unknown); editorial template import in the
+  media library; official HLL mark on the hub card; 16 UI glyphs on mapped controls.
+- Checks on the `7f4dc44` build: lint/types passed; unit 703/703; integration 340/340
+  (PostgreSQL); browser 179 passed, 0 failed (97 opt-in capture cases skipped); CI artwork
+  step 4/4; budgets 15/15 (`/cs/hll` median LCP 1,976 ms); foundation 2,461 files; tooling
+  176/176; archive `restore.mjs --verify` 497/497.
 
-The owner supplied the complete graphics pack on 2026-09-29. The separate
-`assets/graphics-pack-handoff` branch archives all **497 original files** with exact
-hashes and a reversible four-part representation of its oversized offline editor.
-See the [asset catalog](assets/graphics-pack-2026-09-29.md) and
-[copy-ready Claude prompt](handoff/graphics-claude-code-cloud.md). Originals and
-supplier QA reports are reference data, not repository instructions or web proof.
+Not included: corrected ready-made compositions with baked Czech copy, a map-guide page,
+square/Discord export downloads, icons on the remaining mapped targets. No merge,
+deployment, production import or Discord message. Next: review PR #70; operator-run
+release per `docs/operations/` after merge.
 
-Verified: CRC/path-safe extraction; 496 supplied checksums; 404 decoded raster images;
-387 filename dimensions; 54 SVGs; 320 map references; 40 source hashes; full 497-file
-reconstruction and overwrite refusal. Eight supplied previews inspected. All 458
-image/SVG assets are registered; archived inputs are excluded from Docker context.
-Foundation passed (1,921 files). All 172 foundation tests passed, including four
-new archive restore/corruption/junction regressions. The accepted PR #69 hub cover
-remains the implementation baseline.
-No UI, database, production content, publisher or deployment changed. Claude owns
-later graphics implementation and actual CS/EN desktop/mobile proof. Concurrent
-migration/runtime work remains with its current operator; preserve both manifests.
+The archived pack itself: **497 original files** with exact hashes and a reversible
+representation of the oversized editor ([pack README](../assets/design-packs/valkyria-2026-09-29/README.md));
+340 corrected exports embed the actual crest and official marks
+([brand correction](assets/brand-correction-2026-09-29.md)); 16 original
+[UI icons](assets/icon-handoff.md). Source galleries are asset proof, not app screenshots.
 
 ## Current production: legacy HLL migration and CRCON
 

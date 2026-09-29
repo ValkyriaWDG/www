@@ -114,3 +114,10 @@ and editor save/preview/upload. Include focus and relevant pending/error states.
 Confirm labels, accessible names, routes and action behavior survive; check for
 hydration errors. Register runtime copies/derivatives in the root manifest.
 Application integration, exact-head CI and deployment remain separate evidence.
+
+**Integration (PR #70):** all 16 glyphs are exported from `components/ui/icons.tsx`
+with unchanged geometry (`icons.test.tsx` compares them with these SVGs). Applied to
+server refresh/copy, the neutral server-row placeholder, editor save/preview, media
+upload/save/delete and the post-list edit action; see the
+[integration evidence](../evidence/graphics-pack-2026-09-29/README.md). The other
+mapped targets remain available for later use.
