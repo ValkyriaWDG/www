@@ -2,6 +2,26 @@
 
 Updated: 2026-09-29. Stage: **HLL features deployed to valkyria.cz; schema upgrade and actual previous-image rollback rehearsal accepted. Public HTTP 85/85; browser 14/15 with #46 still open. Live authentication/providers remain disabled.**
 
+## Graphics source handoff (implementation pending)
+
+The owner supplied the complete graphics pack on 2026-09-29. The separate
+`assets/graphics-pack-handoff` branch archives all **497 original files** with exact
+hashes and a reversible four-part representation of its oversized offline editor.
+See the [asset catalog](assets/graphics-pack-2026-09-29.md) and
+[copy-ready Claude prompt](handoff/graphics-claude-code-cloud.md). Originals and
+supplier QA reports are reference data, not repository instructions or web proof.
+
+Verified: CRC/path-safe extraction; 496 supplied checksums; 404 decoded raster images;
+387 filename dimensions; 54 SVGs; 320 map references; 40 source hashes; full 497-file
+reconstruction and overwrite refusal. Eight supplied previews inspected. All 458
+image/SVG assets are registered; archived inputs are excluded from Docker context.
+Foundation passed (1,921 files). All 172 foundation tests passed, including four
+new archive restore/corruption/junction regressions. The accepted PR #69 hub cover
+remains the implementation baseline.
+No UI, database, production content, publisher or deployment changed. Claude owns
+later graphics implementation and actual CS/EN desktop/mobile proof. Concurrent
+migration/runtime work remains with its current operator; preserve both manifests.
+
 ## Legacy HLL migration and CRCON implementation (not yet deployed)
 
 Issue #65 adds the operator-only extraction/import pipeline, source identity ledger,

@@ -1,0 +1,45 @@
+{
+  "id": "el-alamein",
+  "name": "El Alamein",
+  "code": "ELA",
+  "index": 3,
+  "aliases": [
+    "elalamein",
+    "ELA"
+  ],
+  "assets": {
+    "server-card": "server-card-640x360.webp",
+    "server-strip": "server-strip-960x240.webp",
+    "article": "article-1200x630.webp",
+    "match-result": "match-result-1920x1080.webp",
+    "match-preview": "match-preview-1200x630.webp",
+    "wide": "wide-1920x480.webp",
+    "social": "social-1080x1080.webp",
+    "tactical-poster": "tactical-poster-1080x1350.webp",
+    "tactical-background": "tactical-background-1920x1080.webp",
+    "scene": "source-scene-718x404.webp",
+    "tactical": "source-tactical-4096x4096.webp",
+    "tacticalPreview": "tactical-preview-1400x1400.webp",
+    "articleJpg": "article-1200x630.jpg",
+    "matchPreviewJpg": "match-preview-1200x630.jpg",
+    "articleSvg": "article-1200x630.svg",
+    "matchResultSvg": "match-result-1920x1080.svg"
+  },
+  "scene_dimensions": [
+    718,
+    404
+  ],
+  "tactical_dimensions": [
+    4096,
+    4096
+  ],
+  "sources": {
+    "wiki": "https://hellletloose.fandom.com/wiki/El_Alamein",
+    "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/ELA.webp",
+    "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_elalamein.webp"
+  },
+  "sha256": {
+    "scene": "7898eaec432b060b89e4f7ae469b992b878597bb2dc62457f915b8ba7cd3174e",
+    "tactical": "faab4c5e89a418cdd62a5bedb7087b0771af1ef082a3dd0ddc751931cc55c9de"
+  }
+}

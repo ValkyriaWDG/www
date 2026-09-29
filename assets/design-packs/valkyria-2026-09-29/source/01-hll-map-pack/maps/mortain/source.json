@@ -1,0 +1,45 @@
+{
+  "id": "mortain",
+  "name": "Mortain",
+  "code": "MOR",
+  "index": 11,
+  "aliases": [
+    "mortain",
+    "MOR"
+  ],
+  "assets": {
+    "server-card": "server-card-640x360.webp",
+    "server-strip": "server-strip-960x240.webp",
+    "article": "article-1200x630.webp",
+    "match-result": "match-result-1920x1080.webp",
+    "match-preview": "match-preview-1200x630.webp",
+    "wide": "wide-1920x480.webp",
+    "social": "social-1080x1080.webp",
+    "tactical-poster": "tactical-poster-1080x1350.webp",
+    "tactical-background": "tactical-background-1920x1080.webp",
+    "scene": "source-scene-718x404.webp",
+    "tactical": "source-tactical-4096x4096.webp",
+    "tacticalPreview": "tactical-preview-1400x1400.webp",
+    "articleJpg": "article-1200x630.jpg",
+    "matchPreviewJpg": "match-preview-1200x630.jpg",
+    "articleSvg": "article-1200x630.svg",
+    "matchResultSvg": "match-result-1920x1080.svg"
+  },
+  "scene_dimensions": [
+    718,
+    404
+  ],
+  "tactical_dimensions": [
+    4096,
+    4096
+  ],
+  "sources": {
+    "wiki": "https://hellletloose.fandom.com/wiki/Mortain",
+    "scene": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/thumbnail/MOR.webp",
+    "tactical": "https://github.com/l1tku/hll-arty-map-calculator/blob/28f520ae2d64f74466b720056804979d75c5c328/images/maps/map_mortain.webp"
+  },
+  "sha256": {
+    "scene": "bce240187fb583829c79471a9dc668d632fa3e6538b3c96d3316fcd028ec0c34",
+    "tactical": "b70bf85585ce8c103234ee33de72b16e60c9d9972ae97c4633443be6fc7b7774"
+  }
+}

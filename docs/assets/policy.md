@@ -76,3 +76,12 @@ remain a still image, without a fake play button or unrelated tutorial video.
 See [reference index](../design/references/README.md). Static captures establish visual
 geometry and styling; motion timings in the design spec are proposed targets because
 the screenshots cannot prove the original animation curves.
+
+## Owner-supplied graphics source pack
+
+The [2026-09-29 catalog](graphics-pack-2026-09-29.md) indexes the complete owner-supplied
+HLL map/editorial/banner/background pack under `assets/design-packs/`. It preserves
+all original bytes and separate source notices, with a verified local reconstruction
+for the oversized offline editor. The archive is excluded from Docker build context;
+its inclusion is a source handoff, not an application import or deployment. Future
+runtime selections follow the same provenance, publication and localization rules.

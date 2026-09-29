@@ -36,3 +36,11 @@ hashes, transformations and intended placements are recorded in
 [the runtime artwork catalog](assets/hll-runtime-artwork.json). They retain their
 respective rights holders' rights and are excluded from the Apache-2.0 license.
 They illustrate the game, not actual Valkyria matches or verified game mechanics.
+
+The [owner-supplied 2026-09-29 graphics pack](assets/design-packs/valkyria-2026-09-29/README.md)
+is archived reference material, including its original code/documents, game-derived
+map imagery and AI illustrations. It is excluded from the root Apache-2.0 grant.
+Its bundled source/rights notices remain intact; the included upstream MIT notice
+does not license game imagery. New repository-authored catalog and reconstruction
+tooling follow the repository code/documentation license. No pack asset is added to
+runtime by this handoff.

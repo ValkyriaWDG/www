@@ -1,0 +1,32 @@
+{
+  "verifiedAt": "2026-09-29T13:45:06.874360+00:00",
+  "archiveSha256": "b4fe3e080cecf2cac9c3f10d26198d2b367d353a42187433344059d19465574b",
+  "archiveCrcAndSafePathsPassed": true,
+  "originalFilesAccountedFor": 497,
+  "unchangedFilesStoredDirectly": 496,
+  "largeEditorParts": 4,
+  "uncompressedBytes": 259585695,
+  "suppliedChecksumEntriesVerified": 496,
+  "rastersFullyDecoded": 404,
+  "filenameDimensionsVerified": 387,
+  "svgXmlParsed": 54,
+  "mapCount": 20,
+  "declaredMapAssetsExist": 320,
+  "mapSourceHashesVerified": 40,
+  "editorExecuted": false,
+  "bundledScriptsExecuted": false,
+  "applicationChanged": false,
+  "repositoryChecks": {
+    "environment": "Windows, Node.js 24; source validation and synthetic filesystem fixtures only",
+    "foundation": { "command": "node scripts/check-foundation.mjs", "passed": true, "files": 1921 },
+    "foundationTests": { "command": "node --test scripts/tests/*.test.mjs", "passed": 172, "failed": 0, "skipped": 0 },
+    "archiveVerify": { "command": "node assets/design-packs/valkyria-2026-09-29/restore.mjs --verify", "passed": true },
+    "originalRoundtrip": { "restoredFilesIndependentlyHashed": 497, "overwriteRefused": true },
+    "restoreRegressionTests": ["exact bytes and no code execution", "corrupt chunk rejected before writes", "root output junction rejected before external writes", "nested output junction rejected before external writes"],
+    "appTests": "Not run: no application code or runtime asset changes"
+  },
+  "limits": [
+    "Static/asset validation only; no browser editor execution, no UI implementation, no new third-party license grant.",
+    "Supplied KONTROLA.json reports are preserved historical package-author claims; independently observed original count is 497, not 496."
+  ]
+}
