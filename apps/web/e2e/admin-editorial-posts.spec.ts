@@ -88,10 +88,12 @@ test('an editor creates a formatted post with cover and inline image, saves, rel
   await picker.getByTestId('media-picker-confirm').click();
   await expect(picker).toBeHidden();
   await expect(body.locator('figure img')).toHaveCount(1);
-  // Basic table with a header row after the image (keyboard typing into the first header cell).
-  await body.press('Control+End');
+  // The caret continues after the inserted image, so the next toolbar action goes after it:
+  // a basic table with a header row (typing into the first header cell) keeps the image.
   await page.getByRole('button', { name: 'Vložit tabulku' }).click();
   await page.keyboard.type('Mapa');
+  await expect(body.locator('figure img')).toHaveCount(1);
+  expect(await body.evaluate((element) => Boolean(element.querySelector('figure')!.compareDocumentPosition(element.querySelector('table')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
 
   // Cover image through the same library.
   await page.getByTestId('cover-choose').click();
