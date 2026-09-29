@@ -76,7 +76,7 @@ blocked, keep that state visible and finish unrelated preparation.
 
 The committed [publisher](../../.github/workflows/container-publish.yml) currently uses
 manual dispatch on main with required `expected_sha`, `CONTAINER_PUBLISH_ENABLED=true`, configured DockerHub variables/
-secrets and the `container-publish` environment. It reruns CI and produces only a
+secrets and the `container-publish` environment. It reruns CI and publishes an immutable
 `sha-<full commit>` image tag. A version tag or GitHub release does not trigger it.
 Enable publication only within an authorized publication task; do not enable the gate
 merely to make a release-preparation task look complete.
@@ -102,8 +102,8 @@ For a completed authorized run, verify the run SHA, image source/revision metada
 registry and verify the built artifact's checks, rather than deriving a digest from a
 tag name. The workflow passes `SOURCE_REVISION` to the Docker build, pulls the resulting
 registry digest and fails if its OCI revision differs from the accepted workflow SHA.
-Never overwrite a revision tag with a different artifact; deployment pins
-the accepted digest. Do not add `latest` or a production alias as an incidental step.
+Never overwrite a revision tag with a different artifact. The authorized Watchtower
+policy below is the only automated promotion path; do not add `latest` or other aliases.
 
 Only after the candidate's required evidence is complete, perform separately authorized
 version publication at that same accepted SHA. The annotated version tag, release notes
@@ -140,10 +140,15 @@ For an explicitly authorized deployment, follow the canonical runbook in this or
    promotion and use the documented compatible image rollback or planned roll-forward.
    A backup's existence does not authorize blindly restoring over newer live writes.
 
-The [Compose example](../../infra/compose.production.example.yaml) has Watchtower disabled.
-Keep it that way unless the task explicitly authorizes a compatible promoted-tag update
-policy after migration orchestration is solved. Do not change unrelated services or the
-old HLL site during this operation.
+The base [Compose example](../../infra/compose.production.example.yaml) keeps
+updates opt-in. Production uses the explicitly authorized
+[Watchtower policy](../operations/watchtower.md): a dedicated updater tracks
+`production` every five minutes. With `WATCHTOWER_PROMOTION_ENABLED=true`, the
+qualified publisher advances that tag only when the actual migration bundle,
+runner and image runtime contract match its current image. Changed contracts are
+held for operator migration/configuration review. Unknown state fails closed.
+The workflow verifies alias promotion; runtime readiness and rollback are separate
+observations. No source push alone triggers image publication.
 
 ## Final evidence
 

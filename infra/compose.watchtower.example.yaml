@@ -1,0 +1,31 @@
+# Dedicated updater; pair with the web labels in the Watchtower runbook.
+name: valkyria-watchtower
+services:
+  watchtower:
+    image: nickfedor/watchtower:1.22.3@sha256:2f8f2a9bd21a195b3b650409532a20f6aada8ef5834f00d0d7a999dee0779a81
+    container_name: valkyria-watchtower
+    restart: unless-stopped
+    command:
+      - --interval
+      - '300'
+      - --label-enable
+      - --scope
+      - valkyria-web
+      - --use-compose-depends-on=false
+      - valkyria-web
+    network_mode: bridge
+    read_only: true
+    tmpfs: ['/tmp:rw,noexec,nosuid,size=16m']
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 64
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      com.centurylinklabs.watchtower.enable: 'false'
+      com.centurylinklabs.watchtower.scope: valkyria-web
+    logging:
+      driver: json-file
+      options: {max-size: 5m, max-file: '3'}

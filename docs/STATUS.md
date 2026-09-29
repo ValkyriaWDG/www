@@ -2,6 +2,21 @@
 
 Updated: 2026-09-29. Stage: **HLL features deployed to valkyria.cz; schema upgrade and actual previous-image rollback rehearsal accepted. Public HTTP 85/85; browser 14/15 with #46 still open. Live authentication/providers remain disabled.**
 
+## Automatic image updates
+
+On 2026-09-29, a dedicated `valkyria-watchtower` was enabled for only
+`valkyria-web`, polling `majorluk/valkyria-www:production` every 300 seconds. The
+channel initially points to the already accepted `e5d7276 / c4b53776` image below;
+this setup does not deploy a new application revision or run migrations.
+The [operating guide](operations/watchtower.md) describes selection, compatible
+channel promotion and rollback. [Verification](evidence/watchtower-2026-09-29/README.md)
+distinguishes natural polling from an actual future image replacement.
+
+The publisher remains manual/main-only with full CI and accepted `expected_sha`.
+With `WATCHTOWER_PROMOTION_ENABLED=true`, it promotes only byte-identical migration
+bundles/runners and unchanged image runtime defaults. Changed or unknown contracts
+stay outside automatic deployment. Authentication/providers and #46 remain open.
+
 ## Current production: HLL features and tournaments
 
 **https://valkyria.cz** now serves source `e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e`
