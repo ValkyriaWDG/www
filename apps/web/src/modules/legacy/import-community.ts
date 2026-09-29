@@ -9,7 +9,8 @@ import { coverSnapshotSchema } from '@/modules/prose/schemas';
 import { createTournament, publishTournament } from '@/modules/tournaments/service';
 import { importCover, remapBodyAssets } from './import-content';
 import { readBundleFile, sourceHash, type ImportDocument } from './import-contract';
-import { normalizeLegacyMatch } from './import-match';
+import type { normalizeLegacyMatch } from './import-match';
+import { legacyMatchIdentity, matchMetadataState } from './import-match-identity';
 import { findIdentity, IMPORT_ACTOR, recordIdentity, type ImportContext, type ImportReportItem } from './import-shared';
 
 function importedProse(body: unknown, cover: CoverSnapshot | null = null) {
@@ -120,11 +121,8 @@ async function readMatchScoreboards(context: ImportContext, legacyId: number): P
 }
 
 export async function importMatchRecord(db: Executor, context: ImportContext, input: unknown): Promise<ImportReportItem> {
-  const normalized = normalizeLegacyMatch(input, context.options.matchClock);
+  const { normalized, media, identity } = legacyMatchIdentity(context, input);
   const { row, facts } = normalized;
-  const sources = context.bundle.scoreboardSources.filter((item) => item.legacyMatchId === row.id);
-  const media = context.bundle.matchMedia?.find((item) => item.legacyMatchId === row.id);
-  const identity = { kind: 'match' as const, key: String(row.id), sourceUrl: normalized.sourceUrl, hash: sourceHash({ row, clock: context.options.matchClock ?? 'legacy-fixed-offset', sources, media }), sourceMetadata: { identityRepair: row._legacyIdentity ?? null, sourceDate: row.date, clock: context.options.matchClock ?? 'legacy-fixed-offset', scoreboardSources: sources.map(({ ordinal, providerGameId, sha256, sourceGameUrl, notes }) => ({ ordinal, providerGameId, sha256, sourceGameUrl: sourceGameUrl ?? null, notes: notes ?? [] })), warnings: context.bundle.warnings.filter((note) => new RegExp(`\\b${row.id}\\b`).test(note)) } };
   const base = { kind: identity.kind, key: identity.key };
   // Validate every file even in a dry run; a corrupt later round cannot partially import a match.
   const snapshots = await readMatchScoreboards(context, row.id);
@@ -132,6 +130,7 @@ export async function importMatchRecord(db: Executor, context: ImportContext, in
     const imported = await findIdentity(tx, context, identity);
     if (imported) {
       if (imported.sourceSha256 !== identity.hash) return { ...base, action: 'conflict', reason: 'source_changed_since_import' };
+      if (matchMetadataState(imported.sourceMetadata, identity.sourceMetadata.matchDetailsSha256) === 'conflict') return { ...base, action: 'conflict', reason: 'match_metadata_changed_since_import' };
       const [target] = await tx.select().from(match).where(eq(match.id, imported.matchId!)).for('update');
       if (!target) return { ...base, action: 'conflict', reason: 'imported_target_missing' };
       if (context.options.publish && target.publication === 'draft') {

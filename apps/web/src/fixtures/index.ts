@@ -4,6 +4,7 @@ import {
   contentRevision,
   contentTranslation,
   manualArticle,
+  legacyImport,
   match,
   matchStatistics,
   matchResult,
@@ -46,6 +47,8 @@ import {
   type FixtureNews,
 } from './data';
 import { createFixtureAsset, FIXTURE_FILENAME_PREFIX, FIXTURE_PROVENANCE, removeFixtureFiles, resolveMediaRoot } from './images';
+import { FIXTURE_LEGACY_MATCH_DETAILS } from './legacy';
+import { sourceHash } from '../modules/legacy/import-contract';
 
 export { FIXTURE_ASSET_IDS, FIXTURE_MANUAL_SLUGS, FIXTURE_SLUGS } from './data';
 export { resolveMediaRoot } from './images';
@@ -272,6 +275,14 @@ async function insertMatches(tx: Executor, now: Date, options: { statistics: boo
     );
     const row = { id };
     ids.set(fixture.slug, id);
+    if (fixture.slug === FIXTURE_SLUGS.matches.hllHistorical && known.has('legacy_import')) {
+      await tx.insert(legacyImport).values({
+        sourceOrigin: 'https://valkyriahll.cz', sourceKind: 'match', sourceKey: 'synthetic-fixture',
+        sourceUrl: 'https://valkyriahll.cz/matches/900001', sourceSha256: '0'.repeat(64),
+        sourceMetadata: { matchDetails: FIXTURE_LEGACY_MATCH_DETAILS, matchDetailsSha256: sourceHash(FIXTURE_LEGACY_MATCH_DETAILS), privateOperatorNote: 'SYNTHETIC-NOT-PUBLIC' },
+        matchId: id, observedAt: now,
+      });
+    }
     if (fixture.result) await tx.insert(matchResult).values({ matchId: row.id, ...fixture.result });
     if (fixture.rounds?.length) {
       await tx.insert(matchRound).values(fixture.rounds.map((round, index) => ({ matchId: row.id, ordinal: index + 1, ...round })));
@@ -520,7 +531,7 @@ export async function loadFixtures(
     for (const spec of FIXTURE_IMAGES) await createFixtureAsset(tx, spec, mediaRoot);
   });
   return db.transaction(async (tx) => {
-    const known = await knownColumns(tx, ['match', 'prose_translation']);
+    const known = await knownColumns(tx, ['match', 'prose_translation', 'legacy_import']);
     const memberProse = await insertMembers(tx, now, known);
     const matchRows = await insertMatches(tx, now, { statistics: support.statistics }, known);
     const tournamentProse = support.tournaments ? await insertTournaments(tx, now, known, matchRows.ids) : 0;

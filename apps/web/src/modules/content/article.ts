@@ -3,6 +3,7 @@ import { and, eq, inArray, isNotNull, isNull } from 'drizzle-orm';
 import { parseRichTextDocument, emptyDocument } from './rich-text/schema';
 import type { DocumentRow, RevisionRow, TranslationRow } from './store';
 import type { ArticleDTO, CounterpartSlugs } from './types';
+import { publishedEditorialArchives } from '@/modules/legacy/editorial-public';
 
 /** Dimensions of the delivered `full` variant for renderable (ready, not deleted) assets. */
 export async function loadAssetDimensions(db: Executor, ids: readonly string[]): Promise<Map<string, { width: number; height: number }>> {
@@ -54,6 +55,7 @@ export async function buildArticle(
   const coverAsset = revision.cover ? assets.get(revision.cover.assetId) : undefined;
   const taxonomy = revision.taxonomy ?? { category: null, tags: [] };
   return {
+    archiveEditorial: isPreview ? null : (await publishedEditorialArchives(db, { kind: 'translation', ids: [translation.id] }, translation.locale)).get(translation.id) ?? null,
     documentId: document.id,
     translationId: translation.id,
     revisionId: revision.id,

@@ -7,9 +7,9 @@ import { ZodError } from 'zod';
 
 /** Operator-only service identity. This module is used by the CLI, never a request action. */
 export const IMPORT_ACTOR: Actor = { kind: 'system', label: 'legacy-hll-migration', capabilities: new Set(['content.edit', 'content.publish', 'media.editorial.manage', 'media.match.manage', 'matches.edit', 'matches.publish']) };
-export type ImportAction = 'create' | 'adopt' | 'unchanged' | 'publish' | 'conflict' | 'invalid' | 'skipped';
+export type ImportAction = 'create' | 'adopt' | 'unchanged' | 'publish' | 'repair' | 'conflict' | 'invalid' | 'skipped';
 export type ImportReportItem = { kind: string; key: string; action: ImportAction; reason?: string; targetId?: string };
-export type ImportOptions = { apply?: boolean; publish?: boolean; adoptSeed?: boolean; mediaRoot?: string; matchClock?: 'legacy-fixed-offset' | 'europe-prague' };
+export type ImportOptions = { apply?: boolean; publish?: boolean; adoptSeed?: boolean; repairMatchMetadata?: boolean; repairEditorialMetadata?: boolean; editorialSupplement?: unknown; editorialSupplementRoot?: string; mediaRoot?: string; matchClock?: 'legacy-fixed-offset' | 'europe-prague' };
 export type ImportContext = { bundle: ImportBundle; root: string; options: ImportOptions; media: Map<string, string>; report: ImportReportItem[] };
 export type ImportIdentity = { kind: 'news' | 'manual' | 'page' | 'tournament' | 'match' | 'media'; key: string; hash: string; sourceUrl: string; sourcePublishedOn?: string | null; sourceLanguage?: 'cs' | 'sk'; credits?: string; sourceMetadata?: Record<string, unknown> };
 

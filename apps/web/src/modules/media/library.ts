@@ -14,7 +14,7 @@ import { inTransaction } from '@/modules/content/store';
 import { processImage } from './image';
 import { scopeCapability } from './scope';
 import { removeAssetFiles, resolveMediaRoot, variantKey, writeVariants } from './storage';
-import { listAssetReferences, publishedReferenceSql, usageCountSql, type AssetReference } from './usage';
+import { hasPublishedReference, listAssetReferences, publishedReferenceSql, usageCountSql, type AssetReference } from './usage';
 
 /**
  * Scoped media library. Editors manage `editorial` assets, match managers `match`
@@ -262,7 +262,7 @@ export async function listAssets(
     .offset((input.page - 1) * input.pageSize);
   const totalCount = total?.total ?? 0;
   return {
-    items: rows.map((row) => toDTO(row.asset, { ownerName: row.ownerName, usageCount: Number(row.usageCount), publishedUse: Boolean(row.publishedUse) })),
+    items: await Promise.all(rows.map(async (row) => toDTO(row.asset, { ownerName: row.ownerName, usageCount: Number(row.usageCount), publishedUse: Boolean(row.publishedUse) || (Number(row.usageCount) > 0 && await hasPublishedReference(db, row.asset.id)) }))),
     total: totalCount,
     page: input.page,
     pageSize: input.pageSize,
@@ -289,7 +289,7 @@ export async function getAsset(db: Executor, actor: Actor, rawInput: { assetId: 
     ...toDTO(row, {
       ownerName: owner?.name ?? null,
       usageCount: new Set(references.map((ref) => `${ref.kind}:${ref.translationId ?? ref.entityId}`)).size,
-      publishedUse: references.some((ref) => ref.published),
+      publishedUse: await hasPublishedReference(db, row.id),
     }),
     references,
   };
@@ -327,7 +327,7 @@ export async function updateAssetMetadata(db: Executor, actor: Actor, rawInput: 
     return toDTO(updated!, {
       ownerName: null,
       usageCount: Number(usage.rows[0]?.usage ?? 0),
-      publishedUse: usage.rows[0]?.published === true,
+      publishedUse: usage.rows[0]?.published === true || await hasPublishedReference(tx, row.id),
     });
   });
 }

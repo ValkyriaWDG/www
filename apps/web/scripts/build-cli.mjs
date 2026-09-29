@@ -15,7 +15,7 @@ mkdirSync(outdir, { recursive: true });
 const DEV_ONLY = new Set(['fixtures.ts']);
 // Extraction runs from a trusted operator checkout with Playwright and private source
 // files. The reviewed bundle importer is production-ready; the scraper is not shipped.
-const SOURCE_ONLY = new Set(['extract-legacy-hll.ts']);
+const SOURCE_ONLY = new Set(['extract-legacy-hll.ts', 'extract-legacy-editorial-supplement.ts']);
 const sources = readdirSync(path.join(root, 'src', 'cli')).filter(
   (file) => file.endsWith('.ts') && !file.endsWith('.test.ts') && file !== 'paths.ts' && !SOURCE_ONLY.has(file),
 );

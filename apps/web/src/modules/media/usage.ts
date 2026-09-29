@@ -1,5 +1,6 @@
 import type { Executor, Locale } from '@valkyria/db';
 import { sql, type SQL } from 'drizzle-orm';
+import { readArchiveEditorial } from '@/modules/legacy/editorial-details';
 
 /**
  * Asset reference rules shared by the library (usage/deletion) and delivery.
@@ -9,6 +10,18 @@ import { sql, type SQL } from 'drizzle-orm';
 
 const revisionRefs = (alias: string, id: SQL) =>
   sql`(${sql.raw(alias)}.asset_ids @> array[${id}]::uuid[] or ${sql.raw(alias)}.cover->>'assetId' = (${id})::text)`;
+
+// Only the operator's typed, source-bound editorial supplement grants this reference.
+const archiveRefs = (id: SQL) => sql`(li.source_origin = 'https://valkyriahll.cz' and li.locale = 'cs'
+  and li.source_kind in ('news', 'manual', 'page', 'tournament')
+  and li.source_metadata->'archiveEditorial'->>'schemaVersion' = '1'
+  and li.source_metadata->>'archiveEditorialSha256' ~ '^[a-f0-9]{64}$'
+  and (li.source_metadata->'archiveEditorial'->>'logoAssetId' = (${id})::text
+    or li.source_metadata->'archiveEditorial'->>'authorImageAssetId' = (${id})::text))`;
+
+const archivePublished = sql`((li.translation_id is not null and t.locale = 'cs' and d.archived_at is null
+  and t.archived_at is null and t.published_revision_id is not null and t.live_slug is not null)
+  or (li.tournament_id is not null and tn.publication = 'published'))`;
 
 /**
  * True when at least one CURRENTLY PUBLISHED reference permits anonymous delivery:
@@ -69,12 +82,29 @@ export function usageCountSql(id: SQL): SQL<number> {
           and ${revisionRefs('pr', id)}))
     + (select count(*) from member_profile mp where mp.avatar_asset_id = ${id})
     + (select count(*) from "match" m where m.opponent_logo_asset_id = ${id} or m.cover_asset_id = ${id})
+    + (select count(*) from legacy_import li where ${archiveRefs(id)})
   )::int`;
 }
 
 export async function hasPublishedReference(db: Executor, assetId: string): Promise<boolean> {
   const result = await db.execute<{ published: boolean }>(sql`select ${publishedReferenceSql(sql`${assetId}::uuid`)} as published`);
-  return result.rows[0]?.published === true;
+  if (result.rows[0]?.published === true) return true;
+  // SQL only narrows candidates. An archive grant requires the same typed, digest-
+  // checked, source-bound projection as the public page; malformed JSON fails closed.
+  const candidates = await db.execute<{ source_kind: string; source_url: string; target_kind: string | null; source_metadata: Record<string, unknown> }>(sql`
+    select li.source_kind, li.source_url, d.kind as target_kind, li.source_metadata
+    from legacy_import li
+    left join content_translation t on t.id = li.translation_id
+    left join content_document d on d.id = t.document_id
+    left join tournament tn on tn.id = li.tournament_id
+    where ${archiveRefs(sql`${assetId}::uuid`)} and ${archivePublished}
+  `);
+  return candidates.rows.some((row) => {
+    const details = readArchiveEditorial(row.source_metadata);
+    return details !== null && details.kind === row.source_kind && details.sourceUrl === row.source_url
+      && (details.kind === 'tournament' || details.kind === row.target_kind)
+      && (details.logoAssetId === assetId || details.authorImageAssetId === assetId);
+  });
 }
 
 export async function usageCount(db: Executor, assetId: string): Promise<number> {
@@ -117,6 +147,14 @@ export async function listAssetReferences(db: Executor, assetId: string): Promis
     union all
     select 'match', m.id, null, null, m.publication = 'published'
     from "match" m where m.opponent_logo_asset_id = ${id} or m.cover_asset_id = ${id}
+    union all
+    select case when li.translation_id is not null then 'content' else 'prose' end,
+      coalesce(t.document_id, li.tournament_id), li.translation_id, li.locale, ${archivePublished}
+    from legacy_import li
+    left join content_translation t on t.id = li.translation_id
+    left join content_document d on d.id = t.document_id
+    left join tournament tn on tn.id = li.tournament_id
+    where ${archiveRefs(id)}
     limit 200
   `);
   return result.rows.map((row) => ({

@@ -15,6 +15,7 @@ import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge } from './match-parts';
 import { MatchStatistics } from './match-statistics';
+import { MatchLegacyDetails } from './match-legacy-details';
 import styles from './matches.module.css';
 
 /**
@@ -134,6 +135,7 @@ export async function MatchDetailPane({
         </section>
         {mode === 'detail' ? (
           <>
+            {match.legacyDetails ? <MatchLegacyDetails details={match.legacyDetails} t={t} titleId={titleId} externalLabel={external} /> : null}
             <section className={styles.block} aria-labelledby={`${titleId}-recap`} data-match-recap="">
               <h3 id={`${titleId}-recap`} className={styles.blockTitle}>
                 {t('detail.recap')}

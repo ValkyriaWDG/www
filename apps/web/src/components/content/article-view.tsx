@@ -11,6 +11,7 @@ import { mediaUrl, RichText, type RichTextLabels } from '@/modules/content/rich-
 import type { ArticleDTO, NewsSummary } from '@/modules/content/types';
 import { canonicalNewsPath } from '@/modules/games/routes';
 import styles from './article-view.module.css';
+import { ArchiveEditorial } from './archive-editorial';
 
 /** Localized strings for {@link ArticleView}; load them with {@link getArticleViewLabels}. */
 export type ArticleViewLabels = {
@@ -157,6 +158,7 @@ export function ArticleView({ article, labels, preview = false, related = [], ba
       <div className={styles.body} lang={contentLang} data-article-body="">
         <RichText doc={article.body} assets={article.assets} labels={labels.richText} siteOrigin={siteOrigin} className={styles.bodyText} />
       </div>
+      {article.archiveEditorial ? <ArchiveEditorial details={article.archiveEditorial} locale={locale} /> : null}
       {related.length > 0 ? (
         <section className={styles.related} aria-labelledby={`${titleId}-related`} data-related="">
           <h2 id={`${titleId}-related`} className={styles.relatedTitle}>

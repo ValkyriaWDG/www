@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-29",
+  "recordedAt": "2026-09-30",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -14328,6 +14328,94 @@
       "bytes": 29440,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "legacy-parity-legacy-detail-cs-1920",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-detail-cs-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "89f6f6aa0ca2436bfd1979612bb9a6ada7ab3c1d74f0b412dda3963705cf520e",
+      "bytes": 1138032,
+      "width": 1920,
+      "height": 3198
+    },
+    {
+      "id": "legacy-parity-legacy-detail-cs-390",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-detail-cs-390.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "4957fe4ebad26b499caf8264d7b678f3ad791d1c26c639bedc2d47ed221b91c5",
+      "bytes": 568324,
+      "width": 390,
+      "height": 4190
+    },
+    {
+      "id": "legacy-parity-legacy-detail-en-1920",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-detail-en-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "bceee91a88bca50fa542ebe8300ce09904179c5cc4449f3f109a3ff0ce851c57",
+      "bytes": 1120142,
+      "width": 1920,
+      "height": 3198
+    },
+    {
+      "id": "legacy-parity-legacy-detail-en-390",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-detail-en-390.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "7d93eb3b712372c743aaa19c306d5956f4855fd0e9dbf4b268b05122a9207510",
+      "bytes": 563923,
+      "width": 390,
+      "height": 4233
+    },
+    {
+      "id": "legacy-parity-legacy-list-cs-1920",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-list-cs-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "3993146308f6f4a2c9c14604df43c9a4697f9d0c3eddeb6dee2f5667119b77c5",
+      "bytes": 784053,
+      "width": 1920,
+      "height": 1294
+    },
+    {
+      "id": "legacy-parity-legacy-list-cs-390",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-list-cs-390.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "8eb0621691145a44d88dc204704d8061f9db72153d79b25f40e07493215e06b2",
+      "bytes": 157636,
+      "width": 390,
+      "height": 1012
+    },
+    {
+      "id": "legacy-parity-legacy-list-en-1920",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-list-en-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "b83272ee9db8f52c162e73d71a39a2e4800f9e88530863c497b049669c53cb9e",
+      "bytes": 777092,
+      "width": 1920,
+      "height": 1294
+    },
+    {
+      "id": "legacy-parity-legacy-list-en-390",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/legacy-list-en-390.png",
+      "source": "Local Playwright Chromium capture of synthetic legacy parity fixtures",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "2bbd962478b3cc857d781c35d3b7c646f36854a7762cb803a414ffddac6af99e",
+      "bytes": 153362,
+      "width": 390,
+      "height": 993
     }
   ]
 }

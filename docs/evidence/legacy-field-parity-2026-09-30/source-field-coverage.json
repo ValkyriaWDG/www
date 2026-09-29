@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-09-29T22:13:05.970Z",
+  "sourceRevision": "1f0396517f90527f5aa44d7c66ac8f1c1117c425",
+  "rawBundleSha256": "7d3151b895607f4c3ec8e8d7c91acf9b101cf0a067d2df3277e0f451d4ee48fe",
+  "canonicalBundleSha256": "3b1854b994e667426dbe0214e998f1bad4a9839c1ecd1adc76443cc570285256",
+  "scriptSha256": "50b0228e992cfa672a90346db5190fb37a28150df6c5089566949959c589d18c",
+  "sourceTotals": {
+    "matches": 205,
+    "documents": 30,
+    "mediaDescriptors": 246,
+    "approvedLocalMedia": 219,
+    "unsupportedReferences": 27,
+    "scoreboardSnapshots": 134
+  },
+  "asideValues": {
+    "18vs18": 17,
+    "24vs24": 4,
+    "30vs30": 4,
+    "35vs35": 4,
+    "37vs37": 1,
+    "40vs40": 3,
+    "45vs45": 1,
+    "47vs47": 1,
+    "49vs49": 163,
+    "50vs50": 7
+  },
+  "matchFields": {
+    "_legacyIdentity": {
+      "occurrences": 1,
+      "disposition": "source ingestion correction provenance, retained in original source digest"
+    },
+    "_legacyIdentity.originalEmbeddedId": {
+      "occurrences": 1,
+      "disposition": "legacy source identity collision correction"
+    },
+    "_legacyIdentity.sourceFile": {
+      "occurrences": 1,
+      "disposition": "legacy source identity collision correction"
+    },
+    "_legacyIdentity.sourceUrl": {
+      "occurrences": 1,
+      "disposition": "canonical legacy URL ledger"
+    },
+    "aside": {
+      "occurrences": 205,
+      "disposition": "match.teamSize derived from NxN string; original accepted snapshot remains frozen"
+    },
+    "capPoint": {
+      "occurrences": 71,
+      "disposition": "matchDetails.capturePoint"
+    },
+    "completed": {
+      "occurrences": 205,
+      "disposition": "match status/result derived from completed flag"
+    },
+    "date": {
+      "occurrences": 205,
+      "disposition": "match.startsAt (documented fixed legacy GMT+1 policy) + matchDetails.sourceDate"
+    },
+    "first_capture": {
+      "occurrences": 17,
+      "disposition": "matchDetails.firstCapture"
+    },
+    "first_captured": {
+      "occurrences": 1,
+      "disposition": "matchDetails.legacyFirstCaptured + firstCaptureConflict"
+    },
+    "format": {
+      "occurrences": 205,
+      "disposition": "match.format + parsed bestOf"
+    },
+    "id": {
+      "occurrences": 205,
+      "disposition": "legacy_import.source_key + match.slug"
+    },
+    "league": {
+      "occurrences": 205,
+      "disposition": "match competition + mapped tournament where known"
+    },
+    "league.img": {
+      "occurrences": 205,
+      "disposition": "reviewed media source ledger + bundle.matchMedia.leagueLogoAssetId; current match UI intentionally uses competition text"
+    },
+    "league.name": {
+      "occurrences": 205,
+      "disposition": "match.competitionName"
+    },
+    "length": {
+      "occurrences": 205,
+      "disposition": "matchDetails.durationMinutes (source mm:ss becomes fractional minutes)"
+    },
+    "links": {
+      "occurrences": 21,
+      "disposition": "matchDetails.sourceLinks + public source link list"
+    },
+    "links[].author": {
+      "occurrences": 26,
+      "disposition": "sourceLinks.author"
+    },
+    "links[].date": {
+      "occurrences": 26,
+      "disposition": "sourceLinks.date"
+    },
+    "links[].description": {
+      "occurrences": 26,
+      "disposition": "sourceLinks.description"
+    },
+    "links[].title": {
+      "occurrences": 26,
+      "disposition": "sourceLinks.title"
+    },
+    "links[].type": {
+      "occurrences": 26,
+      "disposition": "sourceLinks.type"
+    },
+    "links[].url": {
+      "occurrences": 26,
+      "disposition": "sourceLinks.url"
+    },
+    "map": {
+      "occurrences": 204,
+      "disposition": "match round ordinal1 mapName + source prose + reviewed map cover"
+    },
+    "point": {
+      "occurrences": 3,
+      "disposition": "matchDetails.legacyPoint"
+    },
+    "points": {
+      "occurrences": 105,
+      "disposition": "matchDetails.points"
+    },
+    "teams": {
+      "occurrences": 205,
+      "disposition": "structured matchDetails + match opponent/current result"
+    },
+    "teams.away": {
+      "occurrences": 205,
+      "disposition": "matchDetails away fields"
+    },
+    "teams.away.country": {
+      "occurrences": 205,
+      "disposition": "matchDetails.awayCountry"
+    },
+    "teams.away.img": {
+      "occurrences": 205,
+      "disposition": "match.opponentLogoAssetId resolved through reviewed media source ledger"
+    },
+    "teams.away.name": {
+      "occurrences": 205,
+      "disposition": "match.opponentName + matchDetails.awayTeamName"
+    },
+    "teams.away.score": {
+      "occurrences": 205,
+      "disposition": "match scoreOpponent"
+    },
+    "teams.away.side": {
+      "occurrences": 205,
+      "disposition": "matchDetails.awaySideLabel preserves raw source label + awaySide recognized allies/axis or null"
+    },
+    "teams.home": {
+      "occurrences": 205,
+      "disposition": "matchDetails home fields"
+    },
+    "teams.home.country": {
+      "occurrences": 205,
+      "disposition": "matchDetails.homeCountry"
+    },
+    "teams.home.img": {
+      "occurrences": 205,
+      "disposition": "reviewed media source ledger + bundle.matchMedia.homeLogoAssetId; current UI intentionally uses current Valkyria branding"
+    },
+    "teams.home.name": {
+      "occurrences": 205,
+      "disposition": "matchDetails.homeTeamName"
+    },
+    "teams.home.score": {
+      "occurrences": 205,
+      "disposition": "match scoreValkyria (source home is validated Valkyria)"
+    },
+    "teams.home.side": {
+      "occurrences": 205,
+      "disposition": "matchDetails.homeSideLabel preserves raw source label + homeSide recognized allies/axis or null"
+    },
+    "time": {
+      "occurrences": 70,
+      "disposition": "matchDetails.separateTime + timeConflict (never replace the authoritative source date)"
+    }
+  },
+  "frontmatter": {
+    "articles": {
+      "keys": {
+        "title": 9,
+        "description": 9,
+        "publishDate": 9,
+        "lastModified": 9,
+        "author": 9,
+        "authorImage": 9,
+        "bannerUrl": 9,
+        "thumbnail": 9,
+        "tags": 9
+      },
+      "unknown": [],
+      "dispositions": {
+        "title": "content revision title",
+        "description": "content revision excerpt + archiveEditorial.excerpt",
+        "publishDate": "firstPublishedAt + sourcePublishedOn",
+        "lastModified": "archiveEditorial.sourceModifiedOn + chronology warning",
+        "author": "revision.authorLabel + archiveEditorial.sourceAuthorLabel",
+        "authorImage": "supplemented reviewed local asset + archiveEditorial.authorImageAssetId",
+        "bannerUrl": "revision cover or source cover readable link for unsupported GIF",
+        "thumbnail": "archiveEditorial.thumbnailSourceUrl (all 9 equal banner)",
+        "tags": "taxonomy tags + ledger source tags"
+      }
+    },
+    "guide": {
+      "keys": {
+        "title": 8,
+        "publishDate": 8,
+        "lastModified": 8,
+        "description": 8,
+        "index": 8,
+        "authors": 2,
+        "editors": 1,
+        "contributors": 1
+      },
+      "unknown": [],
+      "dispositions": {
+        "title": "content revision title",
+        "description": "content revision excerpt",
+        "publishDate": "firstPublishedAt + sourcePublishedOn",
+        "lastModified": "archiveEditorial.sourceModifiedOn",
+        "index": "archiveEditorial.sourceIndex; current category ordering intentionally distinct",
+        "authors": "manual credits",
+        "editors": "manual credits",
+        "contributors": "manual credits"
+      }
+    },
+    "tournaments": {
+      "keys": {
+        "tag": 8,
+        "title": 8,
+        "series": 8,
+        "description": 8,
+        "logoUrl": 8,
+        "bannerUrl": 8,
+        "season": 8,
+        "webUrl": 6,
+        "discordUrl": 8,
+        "rulesUrl": 8,
+        "startDate": 8,
+        "endDate": 8,
+        "publishDate": 8
+      },
+      "unknown": [],
+      "dispositions": {
+        "title": "tournament.name + prose title",
+        "description": "archiveEditorial.excerpt",
+        "publishDate": "archiveEditorial.sourcePublishedOn",
+        "tag": "archiveEditorial.tag",
+        "series": "archiveEditorial.series",
+        "logoUrl": "reviewed local asset + archiveEditorial.logoAssetId",
+        "bannerUrl": "prose revision cover",
+        "season": "tournament.season",
+        "discordUrl": "tournament.links",
+        "rulesUrl": "tournament.links",
+        "webUrl": "tournament.links",
+        "startDate": "tournament.startsOn",
+        "endDate": "tournament.endsOn"
+      }
+    },
+    "news": {
+      "keys": {
+        "title": 3,
+        "publishDate": 3,
+        "endDate": 3
+      },
+      "unknown": [],
+      "dispositions": {
+        "title": "archived revision.title",
+        "publishDate": "firstPublishedAt + sourcePublishedOn",
+        "endDate": "ledger expiresOn + archived status"
+      }
+    }
+  },
+  "documentCases": [
+    {
+      "kind": "news",
+      "legacyId": "ecl-2025-a-ghc-2025-aktualne",
+      "sourceSha256": "b8a3a6b84db7b0b79535b9e1bb29db7d49524fbb05aaee858b540df94a894643",
+      "sourceHtmlSha256": "b952144f96d9465dc5149fde64d20a1373df4a4046dbd8be1c09c2077f2b7943",
+      "sourceWordTokens": 866,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "jak-ziskat-vip",
+      "sourceSha256": "24309bceed40f941bc790e6880e93b84e83c216342fb8829fea14dfa7522d0f2",
+      "sourceHtmlSha256": "d77906b749ebc94ce40027afde2f760ba81ac3f54841ea79fe31705d57e7e57c",
+      "sourceWordTokens": 431,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "oznameni-23-04-2025",
+      "sourceSha256": "c78981c122a24dfbbd4fd880942149e8410a8e43d35db9f2ba12f6cdc1f51f32",
+      "sourceHtmlSha256": "9f66c9a4f04128d9bd37533be5a149f11264f7678939b8903be862b0cfda7bde",
+      "sourceWordTokens": 357,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "sbirka-2026",
+      "sourceSha256": "46cbcf3b8fba8986414030a3a5e8e36f29e4a683ba57eb1aeffe08d079006a44",
+      "sourceHtmlSha256": "68396ec30b30dcdc41f1b8cca2eab5c3af92c9cd33bca55177e23d40255b5381",
+      "sourceWordTokens": 198,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "sobotni-verejna-akce",
+      "sourceSha256": "73af03a1ebd76e113be02e00b6ec94a7245277e6fa443a88da0d8e1ad5d24155",
+      "sourceHtmlSha256": "bf3e7f92840c8fcf4eebf4fd52cef8502b7f79504382a1a2d0cd678f90435460",
+      "sourceWordTokens": 343,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "uvod-ecl-2025-jaro",
+      "sourceSha256": "e96c579e55281b6308d8e14b034389167e35f09948245b319564097bd12f7e75",
+      "sourceHtmlSha256": "a328d24a90d7efefd8c4eef464c3940f9fd69358c907cf58719eb6a978ada4fa",
+      "sourceWordTokens": 321,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "vlk-fll-ecl-2025-jaro-1",
+      "sourceSha256": "cea3c334253eb9563a9de3a989fb7d85cb5b218567ba816683d47315afca10ce",
+      "sourceHtmlSha256": "9446b39b174bf7043b0fa9800fbdd2b76d70cda2e259c78d105d7b7916466d88",
+      "sourceWordTokens": 526,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "vlk-push-ecl-2025-jaro-1",
+      "sourceSha256": "f78c26aa16e9c8a9f2ab6c828cb5625578799e8dd611195927a2b9d17a7074b7",
+      "sourceHtmlSha256": "3745596f31ad1e2b575af309a80d1356221685d49d939260d908de8df8047467",
+      "sourceWordTokens": 527,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "wardogs-oznameni",
+      "sourceSha256": "17d062bc8dc415c7e7738a70d536ad2a11de3b4268d9ca490ad9d1f7affa050c",
+      "sourceHtmlSha256": "b30a71ab83fd902b52cc55360e9c938ba1911cce8fc142301e1a51fc5ec0092f",
+      "sourceWordTokens": 314,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "gameplay",
+      "sourceSha256": "6db0d10386d7b7db40cc8b0f4ad3d5db2822e7daf444b959fad5c2cff88a8d12",
+      "sourceHtmlSha256": "1ae03934475f26bd098bf93a4d70d628454d31a5befcc6e369663b07ef550f26",
+      "sourceWordTokens": 9,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "herni-mody",
+      "sourceSha256": "fbd18c683a897c1e7718dde51aab11bbacbe8956db152b93d82ef5b5203f8985",
+      "sourceHtmlSha256": "4346e03ddf7ed2c4ac3411311c2c06aea571dfa142fddf5ca9cf6bb3162650eb",
+      "sourceWordTokens": 864,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "prirucka-sl",
+      "sourceSha256": "093caf75ba7871e65e92d2f21a3c32836dbacd9d763f8ee75651b75e51c7179d",
+      "sourceHtmlSha256": "d4d5444e63a784b76ba5aed449de281daf097fbc7052042d3bf77ba9d0e023d4",
+      "sourceWordTokens": 1432,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "role",
+      "sourceSha256": "daad2e08c829f5a1b37cfca73585b2b0afa8405c38c0b336d2b19bffde597b0f",
+      "sourceHtmlSha256": "43689490a8f65a31b2f7999523c8ad4cdfeca97180c423a75742fdcd76ec9647",
+      "sourceWordTokens": 1446,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "spawny",
+      "sourceSha256": "83f94781ee1be583a55a85456bbc59e6fc917911e51165af7981aae07291f1ac",
+      "sourceHtmlSha256": "ade9e65c19b1b68965d6d73585a3f7147dbde9caf580db4e315b2ca1c1d065fc",
+      "sourceWordTokens": 349,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "tanky",
+      "sourceSha256": "8bae8278b635c96a241d0d9ea9a38634c622298b148070664d65486f24ff3db4",
+      "sourceHtmlSha256": "d41be1c443f7c083ca49fbb814f10315f582011f1c6e7a52139e24718483c079",
+      "sourceWordTokens": 1702,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "vozidla",
+      "sourceSha256": "895e71237f24c724fd4d75e79f370b864459dea71e45ef15a6e4cc6711d2c310",
+      "sourceHtmlSha256": "1317c9741e82ccd62bc8bd834c4432d91ba54a0095cece90af16c4961b224196",
+      "sourceWordTokens": 140,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "manual",
+      "legacyId": "zakladni-nastaveni",
+      "sourceSha256": "023cb8ba0b3ff7771bd7aa94396073d33c196a15d8531032bb7d9add3af69292",
+      "sourceHtmlSha256": "36b257768510204a3efbe8b0d48e9edb78e01445997f56f6b689aaf84dbc082e",
+      "sourceWordTokens": 51,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "ecl-2024",
+      "sourceSha256": "10aee83ab8d93a0e757abdb08519531110db8cdf774a18f230c1bf55f0648f9c",
+      "sourceHtmlSha256": "a3c83a7f267ce7961e29dbefff33335c4d30813a6fec263a6cdb7a4e30e361c6",
+      "sourceWordTokens": 318,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "ecl-2025-fall",
+      "sourceSha256": "3db91399857613211596129f302cf2cb130c03861a8a11a2dee16473aafffde1",
+      "sourceHtmlSha256": "19678f6a30968acb62fadd514060dc3e960dd82bc0e82e9c045833bc21d68bb6",
+      "sourceWordTokens": 107,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "ecl-2025-spring",
+      "sourceSha256": "2efafb6f98ae8e9239948b48282682af458942018c0dced1499cbb07388138b2",
+      "sourceHtmlSha256": "c0ad4e11ffde04b03f4772b13c5d7ad6eca05340965cbc0d2e0c4956a3f88da5",
+      "sourceWordTokens": 100,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "ecl-2026-fall",
+      "sourceSha256": "a367878f73b6e9861de4900d728b5b9e4b1b0168fabb70a6c0e5391d090534c7",
+      "sourceHtmlSha256": "1473b91e468b9d3f0e269420a658f2255bb08f33ef699742a133f8ac19b71282",
+      "sourceWordTokens": 121,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "ecl-2026-spring",
+      "sourceSha256": "70b2420949ebf6c05b590f3e2cb3d71082e789dda244a5d1c8d4607cc50dc7a0",
+      "sourceHtmlSha256": "15f1d3d7df3e51cbd84a2df85ce0aeb55935d1a84779851946691e3b255fea2b",
+      "sourceWordTokens": 108,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "greyhound-skirmish-cup-2025",
+      "sourceSha256": "46688b35c3296e8e394995f0bb84296692f1520cd16192ce7e7dc79dd92a9f88",
+      "sourceHtmlSha256": "a36302de47f7198e7d5a94edb57b52eb7f70dc7cb2cb73db8298d58fec4669f1",
+      "sourceWordTokens": 297,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "hca-fap-2025",
+      "sourceSha256": "de06262bf8de8c3a406985f2d7ee783bc132fa754b29e807116f9de2612b9cd4",
+      "sourceHtmlSha256": "6ba5be3ba365122cc6f2a5d2d02c6c6c0c22c98d1f6d33e1ae3e4598137128d3",
+      "sourceWordTokens": 312,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "tournament",
+      "legacyId": "thursday-night-league-eu-season-7",
+      "sourceSha256": "32fcf6c1e91c191d1c6ddf9bee15b376be78071eb9d58ffadf889e0dbaabad7d",
+      "sourceHtmlSha256": "ee7897cf2d2dbebd0d44dd53dff7e87dd3abffa3d98ab180b0be6d5290aa7486",
+      "sourceWordTokens": 353,
+      "missingWordOccurrences": 0,
+      "lexicalCheck": "multiset text nodes + image captions; order and formatting NOT proven"
+    },
+    {
+      "kind": "news",
+      "legacyId": "civil-war",
+      "sourceSha256": "b4570888de471f4280a9288cd7f8759b000d883fb6e575a344456677628f75d9",
+      "lexicalCheck": "not-applicable: literal FAQ/about extraction or archived markdown; distinct parser tests"
+    },
+    {
+      "kind": "news",
+      "legacyId": "vip-vanoce",
+      "sourceSha256": "1cd22aaf2e502991e9eebd8a226da817a10ef9237602781b0a18fdce983935b2",
+      "lexicalCheck": "not-applicable: literal FAQ/about extraction or archived markdown; distinct parser tests"
+    },
+    {
+      "kind": "news",
+      "legacyId": "vip-zdarma",
+      "sourceSha256": "2258334f494b6d3f901068156aa0c19c8c257983226745affd6076e183cdcbaa",
+      "lexicalCheck": "not-applicable: literal FAQ/about extraction or archived markdown; distinct parser tests"
+    },
+    {
+      "kind": "page",
+      "legacyId": "faq",
+      "sourceSha256": "f06449c8d1c59112bc6cdb9d4696186436cd610e605d064d5b4377d3e7979894",
+      "lexicalCheck": "not-applicable: literal FAQ/about extraction or archived markdown; distinct parser tests"
+    },
+    {
+      "kind": "page",
+      "legacyId": "about",
+      "sourceSha256": "6e61990c73ccf10f86c973a8cb21203ebc7342e09122de87f49b4d9df8b1101b",
+      "lexicalCheck": "not-applicable: literal FAQ/about extraction or archived markdown; distinct parser tests"
+    }
+  ],
+  "lexicalSummary": {
+    "checked": 25,
+    "sourceWordTokens": 11592,
+    "missingWordOccurrences": 0
+  },
+  "intentionalExclusions": [
+    "Private player data is not copied to public editorial DTOs.",
+    "Hidden records remain excluded.",
+    "Malformed source scoreboards remain quarantined, not silently repaired.",
+    "Independent prose normalization does not retain legacy DOM classes/React components.",
+    "Manual ordering is editorial category order; original indices are source provenance.",
+    "Historical descriptions and dates are attributed and never overwrite current editor revisions."
+  ],
+  "warnings": [],
+  "limitations": [
+    "This source audit does not prove database parity or publication. Run independent 205+30 repair reconciliation against the target.",
+    "Lexical multiset coverage proves observed source word occurrences only, not sentence order, formatting, layout, image identity or meaning."
+  ]
+}

@@ -9,6 +9,7 @@ import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { tournamentPhase } from './phase';
+import { publishedEditorialArchives } from '@/modules/legacy/editorial-public';
 import { adminTournamentListSchema, type AdminTournamentListInput } from './schemas';
 import type {
   AdminTournament,
@@ -69,7 +70,7 @@ function toSummary(row: SummaryRow, today: string, matchCount: number): PublicTo
  * Published tournaments of one game: ongoing, upcoming and undated first (soonest start
  * first), then finished ones (latest end first). At most 200 records.
  */
-export async function listPublicTournaments(db: Executor, game: Game, now: Date = new Date()): Promise<PublicTournamentSummary[]> {
+export async function listPublicTournaments(db: Executor, game: Game, now: Date = new Date(), locale: Locale = 'cs'): Promise<PublicTournamentSummary[]> {
   if (!GAMES.includes(game)) return [];
   const rows = await db
     .select(summaryColumns)
@@ -79,7 +80,8 @@ export async function listPublicTournaments(db: Executor, game: Game, now: Date 
     .limit(200);
   const today = zonedDate(now, TOURNAMENT_TIME_ZONE);
   const counts = await publishedMatchCounts(db, rows.map((row) => row.id));
-  const items = rows.map((row) => toSummary(row, today, counts.get(row.id) ?? 0));
+  const archives = await publishedEditorialArchives(db, { kind: 'tournament', ids: rows.map((row) => row.id) }, locale);
+  const items = rows.map((row) => ({ ...toSummary(row, today, counts.get(row.id) ?? 0), archiveEditorial: archives.get(row.id) ?? null }));
   return items.sort((a, b) => {
     const phase = PHASE_ORDER[a.phase] - PHASE_ORDER[b.phase];
     if (phase !== 0) return phase;
@@ -107,6 +109,7 @@ export async function getPublicTournament(db: Executor, game: Game, slug: string
   ]);
   return {
     ...toSummary(row, zonedDate(now, TOURNAMENT_TIME_ZONE), matches.length),
+    archiveEditorial: (await publishedEditorialArchives(db, { kind: 'tournament', ids: [row.id] }, locale)).get(row.id) ?? null,
     links: row.links.map((link) => ({ url: link.url, label: link.label })),
     description,
     matches,

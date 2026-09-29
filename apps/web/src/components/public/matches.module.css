@@ -153,6 +153,51 @@
   text-transform: uppercase;
 }
 
+.teamWithCountry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-width: 0;
+}
+
+.country {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  letter-spacing: normal;
+  min-width: 0;
+}
+
+.countrySymbol {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+
+.countryFlag {
+  display: block;
+  width: 24px;
+  height: 16px;
+  outline: 1px solid rgb(255 255 255 / 0.2);
+  outline-offset: 0;
+}
+
+.regionCode {
+  display: inline-block;
+  padding: 1px 3px;
+  border: var(--border-hairline) solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  max-width: 8ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .logo {
   flex: none;
   display: grid;
@@ -440,6 +485,57 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2) var(--space-3);
+}
+
+.legacyFacts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--space-3);
+  margin: var(--space-2) 0;
+}
+
+.legacyFacts > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.legacyFacts dt {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.legacyFacts dd {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-1) 0 0;
+}
+
+.legacyNotice {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-inline-start: 2px solid var(--color-warning);
+  color: var(--color-text);
+  background: rgb(255 255 255 / 0.04);
+  font-size: var(--text-small);
+}
+
+.legacySourceLinks {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legacySourceLinks li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.legacySourceLinks p {
+  margin: var(--space-2) 0;
+  font-size: var(--text-small);
+  white-space: pre-wrap;
 }
 
 .bigScore {
