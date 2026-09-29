@@ -6,6 +6,7 @@ import { ExternalLink } from '@/components/public/external-link';
 import { firstParam, type RawSearchParams } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
 import { DetailPane, EmptyState, FeedbackNotice, GameButton, PageHeader, SelectionTable, StatusBadge, type SelectionColumn, type StatusKind } from '@/components/ui';
+import { RefreshIcon, ServerIcon } from '@/components/ui/icons';
 import { MapScene, MapThumb } from '@/components/hll/map-artwork';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
@@ -85,7 +86,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
         return (
           <span className={styles.serverCell}>
             <span className={styles.thumb} aria-hidden="true">
-              {map ? <MapThumb artwork={map} /> : null}
+              {map ? <MapThumb artwork={map} /> : <ServerIcon size={20} />}
             </span>
             <span className={styles.serverText}>
               <span className={styles.serverName} data-server-name="">
@@ -233,7 +234,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
       {overview.state !== 'not_configured' ? (
         <div className={styles.refresh} data-server-refresh="">
           <label><input type="checkbox" checked={poll.automatic} onChange={(event) => poll.setAutomatic(event.target.checked)} /> {t('refresh.auto', { seconds: poll.interval })}</label>
-          <button type="button" className={styles.copyButton} disabled={poll.refreshing || poll.coolingDown} onClick={poll.refresh}>{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
+          <button type="button" className={styles.copyButton} disabled={poll.refreshing || poll.coolingDown} onClick={poll.refresh}><RefreshIcon size={20} />{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
           <span role="status">{t(poll.failed ? 'refresh.failed' : 'refresh.note')}</span>
         </div>
       ) : null}

@@ -13853,6 +13853,19 @@
       "bytes": 1852460,
       "width": 1280,
       "height": 2419
+    },
+    {
+      "id": "hll-official-fullmark-runtime",
+      "path": "apps/web/public/brand/hell-let-loose-fullmark-white.svg",
+      "source": "Copy of assets/brand/game-logos/hell-let-loose-fullmark-white.svg (catalog runtime-source; see assets/brand/game-logos/catalog.json)",
+      "sourceSha256": "36f7d36f23ad3b5fd7b8d9fa7b6bb8590be5086a132580c31bb2bfe98f0810d2",
+      "usage": "Hell Let Loose mark on the community hub game card and in the sharing-card header; the adjacent/accessible text keeps the game name",
+      "rights": "Official Hell Let Loose full mark (emblem and wordmark) from the navigation of https://www.hellletloose.com/game/hll, retrieved 2026-09-29; the page names Team17 Digital Limited. Third-party game artwork/trademark used to identify the game on the independent community website at the owner's request; excluded from the Apache-2.0 code license; no redistribution license, trademark permission or endorsement is asserted.",
+      "transformations": "byte-identical copy of assets/brand/game-logos/hell-let-loose-fullmark-white.svg (424x78, transparent, 34 paths, no active content)",
+      "sha256": "36f7d36f23ad3b5fd7b8d9fa7b6bb8590be5086a132580c31bb2bfe98f0810d2",
+      "bytes": 6515,
+      "width": 424,
+      "height": 78
     }
   ]
 }

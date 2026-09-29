@@ -14,6 +14,8 @@ export const SOCIAL_TEMPLATE_VERSION = '3';
 export type SocialKind = 'site' | 'news' | 'matches';
 /** Colours and default background: HLL khaki, Wardogs amber, shared community. */
 export type SocialTheme = 'hll' | 'wardogs' | 'community';
+/** Official game marks shown in the card header instead of the game name text. */
+export type SocialMark = 'hll' | 'wardogs';
 export type SocialCard = {
   locale: AppLocale;
   kind: SocialKind;
@@ -22,7 +24,9 @@ export type SocialCard = {
   detail: string;
   score: string | null;
   status: string;
+  /** Game name; rendered as text only when no official mark applies (community articles). */
   game: string;
+  marks: SocialMark[];
   /** Only a cover from the currently published DTO, never a draft or remote URL. */
   coverId: string | null;
   theme: SocialTheme;
@@ -62,6 +66,7 @@ export function siteCard(locale: AppLocale, kind: SocialKind = 'site', game?: Ga
     locale, kind, title: kind === 'site' ? 'VALKYRIA' : copy[kind], label: copy.community,
     detail: game === 'hll' ? copy.hllIntroduction : copy.introduction, score: null, status: '',
     game: game === 'hll' ? 'HELL LET LOOSE' : game === 'wardogs' ? 'WARDOGS' : 'WARDOGS // HELL LET LOOSE',
+    marks: game === 'hll' ? ['hll'] : game === 'wardogs' ? ['wardogs'] : ['wardogs', 'hll'],
     coverId: null, theme: game === 'hll' ? 'hll' : game === 'wardogs' ? 'wardogs' : 'community', map: null,
   };
 }
@@ -73,6 +78,7 @@ export function articleCard(article: ArticleDTO): SocialCard {
     label: cardText(article.category?.label || copy.news, 44),
     detail: article.publishedAt ? formatDate(article.publishedAt, article.locale, 'date') : '',
     score: null, status: '', game: article.game === 'wardogs' ? 'WARDOGS' : article.game === 'hell-let-loose' ? 'HELL LET LOOSE' : copy.community,
+    marks: article.game === 'wardogs' ? ['wardogs'] : article.game === 'hell-let-loose' ? ['hll'] : [],
     coverId: article.cover?.assetId ?? null, theme: article.game === 'wardogs' ? 'wardogs' : article.game === 'hell-let-loose' ? 'hll' : 'community', map: null,
   };
 }
@@ -99,7 +105,7 @@ export function matchCard(match: PublicMatchDetail, locale: AppLocale): SocialCa
     locale, kind: 'matches', title: cardText(`VALKYRIA vs ${match.opponentName}`, 112),
     label: match.status === 'completed' ? copy.result : copy.match,
     detail: cardText([formatDate(match.startsAt, locale, 'dateTimeZone', match.timeZone), match.competitionName].filter(Boolean).join(' · '), 110),
-    score, status, game: match.game === 'wardogs' ? 'WARDOGS' : 'HELL LET LOOSE',
+    score, status, game: match.game === 'wardogs' ? 'WARDOGS' : 'HELL LET LOOSE', marks: [match.game === 'wardogs' ? 'wardogs' : 'hll'],
     coverId: match.cover?.assetId ?? null, theme: match.game === 'wardogs' ? 'wardogs' : 'hll', map,
   };
 }

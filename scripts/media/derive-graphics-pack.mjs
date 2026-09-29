@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Derives the runtime artwork selected from the archived owner graphics pack
-// (assets/design-packs/valkyria-2026-09-29) and registers it in assets/manifest.json.
-// Sources are checked against the pack inventory before use. Re-running is idempotent;
+// (assets/design-packs/valkyria-2026-09-29) and the official HLL mark, and registers it
+// in assets/manifest.json. Pack sources are checked against the pack inventory and must
+// be clean layers in branded/catalog.json; the mark against its catalog. Idempotent;
 // `--check` only verifies that every derivative and manifest record is current.
 // Usage: node scripts/media/derive-graphics-pack.mjs [--check]
 import assert from 'node:assert/strict';
@@ -22,13 +23,31 @@ const inventory = JSON.parse(readFileSync(path.join(root, PACK, 'inventory.json'
 const entries = new Map(inventory.entries.map((entry) => [entry.path, entry]));
 const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
 
+// The brand-correction catalog decides per original: only clean layers without a
+// typographic brand block may be derived; branded compositions have corrected replacements.
+const branded = JSON.parse(readFileSync(path.join(root, PACK, 'branded/catalog.json'), 'utf8'));
+const coverage = new Map(branded.coverage.map((entry) => [entry.original, entry]));
+
 function source(original) {
   const entry = entries.get(original);
   assert(entry?.storedPath, `Not an archived original: ${original}`);
+  const decision = coverage.get(`${PACK}/${entry.storedPath}`);
+  assert.equal(decision?.action, 'retain-unbranded-source', `Not a retained clean layer in branded/catalog.json: ${original}`);
   const bytes = readFileSync(path.join(root, PACK, entry.storedPath));
   assert.equal(bytes.length, entry.bytes, `Size mismatch: ${original}`);
   assert.equal(sha(bytes), entry.sha256, `Hash mismatch: ${original}`);
   return { bytes, entry };
+}
+
+/** Official game mark from assets/brand/game-logos, verified against its catalog. */
+function brandSource(file) {
+  const catalog = JSON.parse(readFileSync(path.join(root, 'assets/brand/game-logos/catalog.json'), 'utf8'));
+  const asset = catalog.assets.find((candidate) => candidate.path === file && candidate.role === 'runtime-source');
+  assert(asset, `Not a runtime-source game mark: ${file}`);
+  const bytes = readFileSync(path.join(root, 'assets/brand/game-logos', file));
+  assert.equal(bytes.length, asset.bytes, `Size mismatch: ${file}`);
+  assert.equal(sha(bytes), asset.sha256, `Hash mismatch: ${file}`);
+  return { bytes, entry: { storedPath: null, sha256: asset.sha256 }, catalog };
 }
 
 const MAP_RIGHTS =
@@ -91,20 +110,30 @@ for (const name of TEMPLATES) {
   );
 }
 
+const HLL_MARK_RIGHTS =
+  'Official Hell Let Loose full mark (emblem and wordmark) from the navigation of https://www.hellletloose.com/game/hll, retrieved 2026-09-29; the page names Team17 Digital Limited. Third-party game artwork/trademark used to identify the game on the independent community website at the owner\'s request; excluded from the Apache-2.0 code license; no redistribution license, trademark permission or endorsement is asserted.';
+jobs.push({
+  id: 'hll-official-fullmark-runtime', out: 'apps/web/public/brand/hell-let-loose-fullmark-white.svg', brand: 'hell-let-loose-fullmark-white.svg', transform: null,
+  transformations: 'byte-identical copy of assets/brand/game-logos/hell-let-loose-fullmark-white.svg (424x78, transparent, 34 paths, no active content)',
+  usage: 'Hell Let Loose mark on the community hub game card and in the sharing-card header; the adjacent/accessible text keeps the game name', rights: HLL_MARK_RIGHTS,
+});
+
 const manifestPath = path.join(root, 'assets/manifest.json');
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const byId = new Map(manifest.assets.map((asset, index) => [asset.id, index]));
 const stale = [];
 const summary = {};
 for (const job of jobs) {
-  const { bytes: input, entry } = source(job.original);
+  const { bytes: input, entry } = job.brand ? brandSource(job.brand) : source(job.original);
   const output = job.transform ? await job.transform(sharp(input)).toBuffer() : input;
   const metadata = await sharp(output).metadata();
-  assert.equal(metadata.format, 'webp');
+  assert.equal(metadata.format, job.brand ? 'svg' : 'webp');
   const record = {
     id: job.id,
     path: job.out,
-    source: `Derived from ${PACK}/${entry.storedPath} (owner-supplied VALKYRIA-GRAFIKA-KOMPLET.zip, archive SHA256 ${ARCHIVE})`,
+    source: job.brand
+      ? `Copy of assets/brand/game-logos/${job.brand} (catalog runtime-source; see assets/brand/game-logos/catalog.json)`
+      : `Derived from ${PACK}/${entry.storedPath} (owner-supplied VALKYRIA-GRAFIKA-KOMPLET.zip, archive SHA256 ${ARCHIVE})`,
     sourceSha256: entry.sha256,
     usage: job.usage,
     rights: job.rights,

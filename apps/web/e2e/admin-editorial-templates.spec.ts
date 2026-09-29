@@ -15,6 +15,7 @@ test('an editor adds a template background, edits it and publishes it as a cover
   await page.goto('/cs/admin/media');
   const panel = page.getByTestId('editorial-templates');
   await expect(panel.locator('summary')).toHaveText('Šablony pozadí Valkyria (8)');
+  await expect(page.getByRole('button', { name: 'Nahrát obrázek' }).locator('svg[data-icon="upload"]')).toHaveAttribute('aria-hidden', 'true');
   await panel.locator('summary').click();
   await expect(panel.locator('[data-editorial-template]')).toHaveCount(8);
   const previews = panel.locator('[data-editorial-template] img');
@@ -51,6 +52,9 @@ test('an editor adds a template background, edits it and publishes it as a cover
 
   // Cover of a draft post through the ordinary picker.
   await createPost(page, `[E2E] Šablona ${suffix}`);
+  // Save/preview carry decorative pack glyphs; their accessible names are unchanged.
+  await expect(page.getByTestId('editor-save').locator('svg[data-icon="save"]')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.getByTestId('editor-preview').locator('svg[data-icon="preview"]')).toHaveAttribute('aria-hidden', 'true');
   await page.getByTestId('cover-choose').click();
   const picker = page.getByTestId('media-picker');
   await picker.getByRole('searchbox').fill(suffix);

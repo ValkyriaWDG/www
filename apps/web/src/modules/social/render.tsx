@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ImageResponse } from 'next/og';
 import sharp from 'sharp';
-import { SOCIAL_SIZE, socialCopy, type SocialCard, type SocialTheme } from './model';
+import { SOCIAL_SIZE, socialCopy, type SocialCard, type SocialMark, type SocialTheme } from './model';
 
 // All bytes come from shipped files or the publication-checked media store. No remote
 // image/font requests, private image URLs, game packages or runtime filesystem writes.
@@ -43,6 +43,23 @@ function backdrop(relative: string): Promise<string> {
   return cached;
 }
 
+/** Official white game marks (never redrawn), rasterized once at twice the header size. */
+const MARK_FILES: Record<SocialMark, string> = { hll: 'brand/hell-let-loose-fullmark-white.svg', wardogs: 'presskit/wardogs-fullmark-white.svg' };
+const MARK_HEIGHT = 28;
+const markImages = new Map<SocialMark, Promise<{ src: string; width: number }>>();
+function markImage(mark: SocialMark) {
+  let cached = markImages.get(mark);
+  if (!cached) {
+    cached = publicFile(MARK_FILES[mark]).then(async (svg) => {
+      const { data, info } = await sharp(svg, { density: 144 }).resize({ height: MARK_HEIGHT * 2 }).png().toBuffer({ resolveWithObject: true });
+      return { src: `data:image/png;base64,${data.toString('base64')}`, width: Math.round((info.width / info.height) * MARK_HEIGHT) };
+    });
+    cached.catch(() => markImages.delete(mark));
+    markImages.set(mark, cached);
+  }
+  return cached;
+}
+
 /** Map briefing layers from the catalog slug (`hll-maps.ts`), never from request input. */
 async function mapLayers(slug: string): Promise<{ background: string; scene: string }> {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error('Invalid map slug');
@@ -73,6 +90,7 @@ export async function renderSocialCard(card: SocialCard, cover: Buffer | null, s
   const coverArt = cover ? await asPng(cover) : null;
   const map = !cover && card.map ? await mapLayers(card.map.slug) : null;
   const scene = !cover && !map ? await backdrop(THEME_BACKDROP[card.theme]) : null;
+  const marks = await Promise.all(card.marks.map(markImage));
   const titleSize = card.score ? 56 : card.title.length > 92 ? 48 : card.title.length > 52 ? 56 : 70;
   const clampedText = { display: '-webkit-box', WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis', overflow: 'hidden', flexShrink: 0 } as const;
   const shade = (alpha: number) => `rgba(${rgb}, ${alpha})`;
@@ -99,7 +117,19 @@ export async function renderSocialCard(card: SocialCard, cover: Buffer | null, s
         {/* eslint-disable-next-line @next/next/no-img-element -- in-memory OG rasterization */}
         <img src={assets.crest} width={54} height={60} alt="" style={{ objectFit: 'contain' }} />
         <div style={{ display: 'flex', fontSize: 34, letterSpacing: 5, marginLeft: 19 }}>VALKYRIA</div>
-        <div style={{ display: 'flex', marginLeft: 'auto', fontSize: 19, letterSpacing: 2, color: '#ded6bd' }}>{renderText(card.game)}</div>
+        {marks.length > 0 ? (
+          <div style={{ display: 'flex', marginLeft: 'auto', alignItems: 'center' }}>
+            {marks.map((mark, index) => (
+              <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                {index > 0 ? <div style={{ display: 'flex', width: 1, height: MARK_HEIGHT + 6, margin: '0 18px', background: colours.line }} /> : null}
+                {/* eslint-disable-next-line @next/next/no-img-element -- in-memory OG rasterization of the official mark */}
+                <img src={mark.src} width={mark.width} height={MARK_HEIGHT} alt="" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', marginLeft: 'auto', fontSize: 19, letterSpacing: 2, color: '#ded6bd' }}>{renderText(card.game)}</div>
+        )}
       </div>
       <div style={{ display: 'flex', position: 'absolute', left: 48, top: 139, width: 624, bottom: 91, flexDirection: 'column' }}>
         <div style={{ ...clampedText, WebkitLineClamp: 1, color: accent, fontSize: 22, letterSpacing: 2, marginBottom: 20 }}>{renderText(card.label)}</div>

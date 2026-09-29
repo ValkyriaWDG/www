@@ -38,7 +38,12 @@ describe('social image publication and presentation contract', () => {
     expect(siteCard('cs', 'site', 'hll')).toMatchObject({ theme: 'hll', game: 'HELL LET LOOSE' });
     expect(siteCard('en', 'site', 'wardogs')).toMatchObject({ theme: 'wardogs', game: 'WARDOGS' });
     expect(siteCard('en')).toMatchObject({ theme: 'community', map: null });
-    expect(articleCard({ ...article, game: null } as unknown as ArticleDTO)).toMatchObject({ theme: 'community' });
+    expect(articleCard({ ...article, game: null } as unknown as ArticleDTO)).toMatchObject({ theme: 'community', marks: [] });
+    // Official marks replace the game-name text; a community article keeps its text label.
+    expect(siteCard('cs', 'site', 'hll').marks).toEqual(['hll']);
+    expect(siteCard('en').marks).toEqual(['wardogs', 'hll']);
+    expect(articleCard(article).marks).toEqual(['wardogs']);
+    expect(matchCard({ ...match, game: 'hell-let-loose' } as PublicMatchDetail, 'cs').marks).toEqual(['hll']);
     expect(articleCard(article).title).toBe(article.title);
   });
 
@@ -124,6 +129,30 @@ describe('social image publication and presentation contract', () => {
       expect(Math.max(...art.channels.map((channel) => channel.stdev)), card.theme).toBeGreaterThan(12);
       expect(Math.max(...text.channels.map((channel) => channel.mean)), card.theme).toBeLessThan(60);
     }
+  });
+
+  it('draws the official game marks in the header, and text only without a mark', async () => {
+    const header = async (card: SocialCard) => {
+      const png = await renderSocialCard(card, null, 'valkyria.cz');
+      const { data, info } = await sharp(png).extract({ left: 700, top: 40, width: 456, height: 50 }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      let bright = 0;
+      let firstColumn = info.width;
+      for (let i = 0; i < data.length; i += 3) {
+        if (data[i]! > 220 && data[i + 1]! > 220 && data[i + 2]! > 220) {
+          bright++;
+          firstColumn = Math.min(firstColumn, (i / 3) % info.width);
+        }
+      }
+      return { bright, firstColumn };
+    };
+    const hll = await header(siteCard('cs', 'site', 'hll'));
+    const both = await header(siteCard('cs'));
+    const text = await header(articleCard({ ...article, game: null } as unknown as ArticleDTO));
+    expect(hll.bright).toBeGreaterThan(400);
+    // Two marks with a divider reach further left than one.
+    expect(both.firstColumn).toBeLessThan(hll.firstColumn - 100);
+    // The community article keeps its small text label (few bright pixels).
+    expect(text.bright).toBeLessThan(hll.bright);
   });
 
   it('keeps a published cover framed and uncropped instead of the default scene or map', async () => {

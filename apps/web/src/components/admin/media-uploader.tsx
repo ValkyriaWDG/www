@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useId, useRef, useState } from 'react';
 import { GameButton } from '@/components/ui/game-button';
+import { UploadIcon } from '@/components/ui/icons';
 import { formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import styles from './admin.module.css';
@@ -102,7 +103,7 @@ export function MediaUploader({
             if (files.length > 0) void uploadAll(files);
           }}
         />
-        <GameButton intent="primary" onClick={() => inputRef.current?.click()} aria-describedby={hintId} data-testid="media-upload-button">
+        <GameButton intent="primary" onClick={() => inputRef.current?.click()} aria-describedby={hintId} icon={<UploadIcon />} data-testid="media-upload-button">
           {t('button')}
         </GameButton>
         {busy ? (

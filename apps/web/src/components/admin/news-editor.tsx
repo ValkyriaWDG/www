@@ -10,6 +10,7 @@ import { GuardedLink } from '@/components/shell/guarded-link';
 import { useNavigationGuard, useUnsavedChangesGuard } from '@/components/shell/unsaved-changes';
 import { Checkbox, FieldError, Select, TextArea, TextField } from '@/components/ui/form-fields';
 import { GameButton } from '@/components/ui/game-button';
+import { PreviewIcon, SaveIcon } from '@/components/ui/icons';
 import { gameHasSection, gameRouteFromDb } from '@/modules/games/registry';
 import { canonicalNewsPath, gamePath } from '@/modules/games/routes';
 import { FeedbackNotice, StatusBadge } from '@/components/ui/panels';
@@ -757,7 +758,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
               {saveStatus}
             </p>
             <div className={styles.buttonRow}>
-              <GameButton intent="secondary" onClick={() => void save('save')} disabled={readOnly || busy !== null} pending={machine.inFlight?.kind === 'save'} pendingLabel={t('save.saving')} data-testid="editor-save">
+              <GameButton intent="secondary" onClick={() => void save('save')} disabled={readOnly || busy !== null} pending={machine.inFlight?.kind === 'save'} pendingLabel={t('save.saving')} icon={<SaveIcon />} data-testid="editor-save">
                 {t('actions.save', { locale: contentLocale })}
               </GameButton>
               <GameButton
@@ -765,6 +766,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
                 href={`${basePath}/${documentId}/preview?lang=${contentLocale}`}
                 target="_blank"
                 rel="noopener"
+                icon={<PreviewIcon />}
                 data-testid="editor-preview"
                 onClick={(event) => {
                   if (!dirty) return;

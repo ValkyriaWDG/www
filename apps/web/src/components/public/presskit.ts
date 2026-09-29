@@ -57,6 +57,8 @@ export const PRESSKIT_FLYING: PresskitImage = {
 
 /** Unchanged white Wardogs wordmark for small game identification on dark surfaces. */
 export const WARDOGS_MARK = { src: '/presskit/wardogs-fullmark-white.svg', width: 2467, height: 489 } as const;
+/** Official Hell Let Loose full mark (assets/brand/game-logos): identification only, never the clan identity. */
+export const HLL_MARK = { src: '/brand/hell-let-loose-fullmark-white.svg', width: 424, height: 78 } as const;
 
 export function presskitSrcSet(image: PresskitImage): string {
   return image.sources.map((source) => `${source.src} ${source.width}w`).join(', ');

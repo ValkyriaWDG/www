@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CopyIcon } from '@/components/ui/icons';
 import styles from './servers.module.css';
 
 /**
@@ -20,6 +21,7 @@ export function CopyAddress({ address, labels }: { address: string; labels: { co
   return (
     <span className={styles.copy}>
       <button type="button" className={styles.copyButton} onClick={onCopy} data-copy-address="">
+        <CopyIcon size={20} />
         {labels.copy}
       </button>
       <span role="status" aria-live="polite" className={styles.copyStatus} data-copy-status={status}>

@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
-import { WARDOGS_MARK } from '@/components/public/presskit';
+import { HLL_MARK, WARDOGS_MARK } from '@/components/public/presskit';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { ExternalIcon } from '@/components/ui/icons';
 import { formatDate } from '@/i18n/date-format';
@@ -60,11 +60,13 @@ export async function CommunityHub({ locale }: { locale: AppLocale }) {
             <li key={game} className={styles.gameItem}>
               <Link href={gamePath(game)} className={styles.gameCard} data-theme-preview={game} data-hub-game={game} aria-describedby={`hub-game-${game}-body`}>
                 <span className={styles.gameVisual} aria-hidden="true">
+                  {/* Official game marks; the card text below carries the localized game name. */}
                   {game === 'wardogs' ? (
                     // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG wordmark
-                    <img className={styles.wardogsMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
+                    <img className={styles.gameMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" data-game-mark="wardogs" />
                   ) : (
-                    <span className={styles.hllMark}>{games('names.hll')}</span>
+                    // eslint-disable-next-line @next/next/no-img-element -- unchanged official SVG full mark
+                    <img className={styles.gameMark} src={HLL_MARK.src} width={HLL_MARK.width} height={HLL_MARK.height} alt="" data-game-mark="hll" />
                   )}
                 </span>
                 <span className={styles.gameText}>
