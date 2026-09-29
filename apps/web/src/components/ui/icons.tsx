@@ -191,6 +191,49 @@ export const MatchIcon = (props: IconProps) => (
   </Icon>
 );
 
+/*
+ * Match statistic glyphs: original Valkyria line icons in the pack style (not the game's
+ * own class or score icons, which are not licensed for this site). Decorative only; the
+ * adjacent text names the metric.
+ */
+export const KillsIcon = (props: IconProps) => (
+  <Icon {...props} data-icon="kills">
+    <circle cx="12" cy="12" r="6.5" />
+    <path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5M12 12h.01" />
+  </Icon>
+);
+
+export const DeathsIcon = (props: IconProps) => (
+  <Icon {...props} data-icon="deaths">
+    <path d="M12 3.5v12M7.5 11 12 15.5 16.5 11M4.5 20.5h15" />
+  </Icon>
+);
+
+export const CombatIcon = (props: IconProps) => (
+  <Icon {...props} data-icon="combat">
+    <path d="M4 4l11 11M13 17l4-4M15 15l4.5 4.5M20 4 9 15M7 13l4 4M9 15l-4.5 4.5" />
+  </Icon>
+);
+
+export const OffenseIcon = (props: IconProps) => (
+  <Icon {...props} data-icon="offense">
+    <path d="M6 12.5l6-6 6 6M6 19l6-6 6 6" />
+  </Icon>
+);
+
+export const DefenseIcon = (props: IconProps) => (
+  <Icon {...props} data-icon="defense">
+    <path d="M12 3.5l7.5 3v5.5c0 4.3-3 7.4-7.5 8.5-4.5-1.1-7.5-4.2-7.5-8.5V6.5z" />
+  </Icon>
+);
+
+export const SupportIcon = (props: IconProps) => (
+  <Icon {...props} data-icon="support">
+    <path d="M4 7.5l8-4 8 4v9l-8 4-8-4z" />
+    <path d="M4 7.5l8 4 8-4M12 11.5v9" />
+  </Icon>
+);
+
 export const TrophyIcon = (props: IconProps) => (
   <Icon {...props} data-icon="trophy">
     <path d="M7 3h10v5a5 5 0 0 1-10 0V3ZM7 5H3v3a4 4 0 0 0 4 4M17 5h4v3a4 4 0 0 1-4 4M12 13v5M8 21v-3h8v3M6 21h12" />

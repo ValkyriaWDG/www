@@ -136,6 +136,8 @@
   },
   "statistics": {
     "title": "Match statistics",
+    "comparisonTitle": "Team comparison",
+    "comparisonRow": "{metric}: {teamA} {a}, {teamB} {b}",
     "summaryCaption": "Team totals",
     "metric": "Metric",
     "valkyria": "Valkyria ({side})",

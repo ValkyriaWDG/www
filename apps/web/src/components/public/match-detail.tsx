@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 import { MapScene } from '@/components/hll/map-artwork';
 import { parseExternalHttpsUrl } from '@/components/shell/external-links';
 import { GameButton } from '@/components/ui/game-button';
@@ -14,8 +15,9 @@ import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { matchFormatLabel } from './match-format';
-import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge } from './match-parts';
+import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge, OpponentMark } from './match-parts';
 import { MatchStatistics } from './match-statistics';
+import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import styles from './matches.module.css';
 
 /** Map pack artwork for HLL rounds with a recognised map, in round order, each map once. */
@@ -254,7 +256,16 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
         </section>
       ) : null}
       {match.statistics ? (
-        <MatchStatistics statistics={match.statistics} locale={locale} titleId={titleId} opponentLabel={match.opponentShortCode ?? match.opponentName} />
+        <MatchStatistics
+          statistics={match.statistics}
+          locale={locale}
+          titleId={titleId}
+          opponentLabel={match.opponentShortCode ?? match.opponentName}
+          marks={{
+            valkyria: <Image src={emblem} alt="" className={styles.teamMark} sizes="24px" data-team-mark="valkyria" />,
+            opponent: <OpponentMark match={match} className={styles.teamMark} />,
+          }}
+        />
       ) : null}
     </div>
   );

@@ -220,3 +220,49 @@ a.choice:focus-visible {
 .body :is(h2, h3)[id] {
   scroll-margin-top: var(--space-6);
 }
+
+/*
+ * FAQ: every level-2 heading is one question. Numbered, sentence-case questions with a
+ * divider read as separate Q&A cards instead of one wall of uppercase headings; the
+ * editor's content (answers, lists, images) is rendered unchanged below each question.
+ */
+.content[data-core-page='faq'] .body > div {
+  counter-reset: faq-question;
+}
+
+.content[data-core-page='faq'] .body h2 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: var(--border-hairline) solid var(--color-border);
+  font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  text-transform: none;
+  counter-increment: faq-question;
+}
+
+.content[data-core-page='faq'] .body h2::before {
+  flex: none;
+  min-width: 2ch;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  content: counter(faq-question, decimal-leading-zero);
+}
+
+.content[data-core-page='faq'] .body > div > h2:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Questions after the number, answers aligned with the question text. */
+.content[data-core-page='faq'] .body h2 ~ :not(h2) {
+  margin-inline-start: calc(2ch + var(--space-3));
+}
+
+@media (min-width: 900px) {
+  .faqIndexList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-6);
+  }
+}

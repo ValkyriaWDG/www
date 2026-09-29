@@ -136,6 +136,8 @@
   },
   "statistics": {
     "title": "Statistiky zápasu",
+    "comparisonTitle": "Porovnání týmů",
+    "comparisonRow": "{metric}: {teamA} {a}, {teamB} {b}",
     "summaryCaption": "Souhrn týmů",
     "metric": "Údaj",
     "valkyria": "Valkyria ({side})",
