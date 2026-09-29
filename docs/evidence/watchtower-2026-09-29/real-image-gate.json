@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-09-29T10:24:13.278Z",
+  "helperSha256": "2f6d05387051c9a1809f84708607fe657e547a84173ef829680aba1798b20816",
+  "environment": "Node on Windows, Docker CLI over SSH to the existing Linux engine",
+  "realImageExtraction": true,
+  "imageCodeExecuted": false,
+  "registryMutationAllowed": false,
+  "unchanged": {
+    "image": "majorluk/valkyria-www",
+    "candidateDigest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+    "sourceSha": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+    "previousDigest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+    "previousRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+    "previousMigrationFingerprint": "45fe4a4446d66705c6d6dbbdda8b5f67c6ed200471dfae288c620bf94bd0b570",
+    "candidateMigrationFingerprint": "45fe4a4446d66705c6d6dbbdda8b5f67c6ed200471dfae288c620bf94bd0b570",
+    "previousRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+    "candidateRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+    "status": "unchanged",
+    "reasons": []
+  },
+  "held": {
+    "image": "majorluk/valkyria-www",
+    "candidateDigest": "sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25",
+    "sourceSha": "e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a",
+    "previousDigest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+    "previousRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+    "previousMigrationFingerprint": "45fe4a4446d66705c6d6dbbdda8b5f67c6ed200471dfae288c620bf94bd0b570",
+    "candidateMigrationFingerprint": "0329699334c2c89d8c7e46db5f2269555c7c184179da6d42555f9f20d713c03f",
+    "previousRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+    "candidateRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+    "status": "held",
+    "reasons": [
+      "migration-bundle-changed"
+    ]
+  },
+  "channelUnchanged": true
+}

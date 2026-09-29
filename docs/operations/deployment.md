@@ -181,10 +181,12 @@ re-runs CI (build, container smoke, scan, SBOM) and creates the GitHub release f
 `CHANGELOG.md`. It publishes no image; registry publication stays the gated manual
 **Publish container** workflow for an accepted main SHA.
 
-Watchtower is **off in the example**. Auto-pull may be enabled later only for an explicitly
-promoted compatible production tag after migration orchestration is solved. Never track
-every main build automatically while schema/content contracts are evolving. A digest-pinned
-service is updated by the operator; a mutable promoted tag needs a separate release step.
+The base example leaves Watchtower opt-in. Production now uses the explicitly
+scoped [automatic update policy](watchtower.md) and its dedicated Compose file.
+The updater follows `production` every 300 seconds; the qualified publisher may
+advance it only with unchanged migration and runtime contracts. New migrations
+require operator orchestration before promotion. An ordinary main push is not
+an image publication, and Watchtower does not provide automatic rollback.
 
 ## Operations
 

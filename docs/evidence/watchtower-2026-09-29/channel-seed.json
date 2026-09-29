@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-09-29T10:12:51.371Z",
+  "repository": "majorluk/valkyria-www",
+  "visibility": "public",
+  "authenticatedMetadata": true,
+  "tag": "production",
+  "digest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "seededFromAcceptedLiveImage": true,
+  "exactIndexBytesPreserved": true,
+  "attestationsPreserved": true,
+  "immutableTagUntouched": true
+}

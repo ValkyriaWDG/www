@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-29T10:19:26.457095+00:00",
+  "result": "enabled",
+  "channel": "majorluk/valkyria-www:production",
+  "channelDigest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "updaterImage": "nickfedor/watchtower:1.22.3@sha256:2f8f2a9bd21a195b3b650409532a20f6aada8ef5834f00d0d7a999dee0779a81",
+  "intervalSeconds": 300,
+  "containerNameFilter": [
+    "valkyria-web"
+  ],
+  "scope": "valkyria-web",
+  "labelEnable": true,
+  "composeDependencyExpansion": false,
+  "readiness": {
+    "status": "ready",
+    "checks": {
+      "config": "ok",
+      "database": "ok",
+      "schema": "ok",
+      "media": "ok"
+    }
+  },
+  "applicationImageUnchanged": true,
+  "applicationEnvironmentUnchanged": true,
+  "applicationSecurityAndMountsUnchanged": true,
+  "unrelatedContainersUnchanged": true,
+  "authenticationUnchanged": true,
+  "protectedRuntimeFileUnchanged": true,
+  "migrationsRun": false,
+  "rollbackAvailable": true,
+  "automaticReplacementTested": false,
+  "naturalPoll": "pending",
+  "timersRestored": true
+}
