@@ -311,6 +311,32 @@
     linear-gradient(160deg, rgb(58 59 54 / 0.95), rgb(22 23 20 / 0.98));
 }
 
+.banner[data-banner-scene] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* HLL map pack scene behind the teams; a scrim keeps the names readable. */
+.bannerScene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner[data-banner-scene]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgb(10 11 12 / 0.35), rgb(10 11 12 / 0.78) 75%),
+    linear-gradient(180deg, rgb(10 11 12 / 0.25), rgb(10 11 12 / 0.7));
+}
+
 .bannerSide {
   display: grid;
   justify-items: center;
@@ -359,6 +385,21 @@
   font-size: clamp(1.5rem, 1rem + 1vw, 2.25rem);
   font-weight: 700;
   letter-spacing: 0.08em;
+}
+
+/* Map briefing: recognised HLL maps of the rounds, scene + name + on-demand tactical map. */
+.mapBriefing {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.mapBriefing > li {
+  min-width: 0;
+  border: var(--border-hairline) solid var(--color-border);
 }
 
 .coverFigure {

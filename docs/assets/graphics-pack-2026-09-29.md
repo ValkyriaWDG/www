@@ -1,8 +1,9 @@
 # Complete graphics pack: implementation catalog
 
-The owner supplied a complete graphics ZIP for Claude Code to integrate in a later
-implementation. This PR archives and verifies it; it does not alter public pages,
-CMS records or production. All original files are recoverable from the repository
+The owner supplied a complete graphics ZIP for Claude Code to integrate. The archive
+is verified and preserved unchanged; a bounded runtime selection is integrated (see
+[implemented integration](#implemented-integration)). No CMS record or production
+system is changed by it. All original files are recoverable from the repository
 without the owner's PC, a cloud conversation or a download token.
 
 Start with the [pack README](../../assets/design-packs/valkyria-2026-09-29/README.md),
@@ -112,6 +113,52 @@ Do not embed the supplied editors or concatenate their SVG/HTML into application
 They contain local export/upload scripts and system-font assumptions. Preserve them
 as tools/reference; implement required workflows inside existing authenticated CMS
 and social-rendering boundaries with escaped text and selected trusted images.
+
+## Implemented integration
+
+`node scripts/media/derive-graphics-pack.mjs` verifies each source against the pack
+inventory, writes the derivatives below and upserts their manifest records (source path
+and hash, transformation, bytes, dimensions, rights); `--check` proves they are current.
+The 259 MB archive stays out of `public/` and the container.
+
+| Runtime file | Per | Bytes (total) | Use |
+|---|---|---|---|
+| `images/hll/maps/<map>/thumb-160x90.webp` | 20 maps | 60,372 | Server list row, lazy, `alt=""` beside the textual map |
+| `images/hll/maps/<map>/scene-718x404.webp` | 20 maps | 1,154,976 | Selected server and match map briefing; byte-identical source scene |
+| `images/hll/maps/<map>/tactical-1024.webp` | 20 maps | 7,674,432 | Linked only; loaded when a visitor opens it (size shown in the link) |
+| `images/hll/maps/<map>/sharing-1200x630.webp` | 20 maps | 284,682 | Background of the sharing card for an HLL match on that map |
+| `images/editorial/<scene>-1920x1080.webp` | 8 scenes | 1,540,126 | Template import source; HLL (`hll-infantry`) and Wardogs (`wdg-blue`) default sharing backgrounds |
+| `images/editorial/<scene>-480x270.webp` | 8 scenes | 76,166 | Previews in the authenticated template library |
+
+- **Map identity** (`apps/web/src/modules/games/hll-maps.ts`): explicit mapping of all 20
+  `HLL_MAPS` names to pack folders; case/diacritics/punctuation-insensitive names,
+  reviewed aliases, CRCON map IDs and pack codes, and layer IDs/names limited to a
+  bounded word list (`carentan_warfare_night`, `PHL_L_1944_Warfare`, `CT_warfare`,
+  `Carentan Warfare (Night)`). Typos, extra words, partial names and paths resolve to
+  nothing; an unknown map keeps its text and the neutral placeholder.
+- **Server browser:** row thumbnail and a selected-server scene with localized alt text
+  and an on-demand tactical-map link. Map, mode, players, score and freshness remain the
+  existing HTML read model. HLL only.
+- **Match detail:** each recognised round map once, in round order (scene, name,
+  tactical link) above the rounds table; with no published cover the match banner shows
+  the first map's scene behind the team names. Published covers win.
+- **Sharing (`modules/social`, template `v=3`):** same 1200×630 contract and publication
+  gates. Published cover stays framed and uncropped; otherwise an HLL match with a
+  recognised map gets the subdued tactical background plus the framed scene and a
+  `MAP <name>` label; everything else gets a full-bleed scene (HLL `hll-infantry`,
+  Wardogs `wdg-blue`, community: the PR #69 hub cover) labelled as an illustration. Text
+  is localized and escaped; zero scores render as `0 : 0`, unknown scores never do.
+- **Editorial templates:** `Media library → Valkyria background templates` lists the
+  eight text-free scenes for holders of platform-wide `media.editorial.manage`. Adding
+  one creates an ordinary private editorial asset (default CS/EN alt, provenance with
+  source hash, rights), or reuses the asset with identical bytes. Alt, caption and rights
+  stay editable; it becomes public only when published content uses it. Match managers
+  and game-scoped editors do not get the library.
+
+Not implemented, deliberately: the 14 text-bearing banner exports, Discord banners,
+square/poster/wide map exports and match-result templates (baked Czech copy, legacy
+domains or placeholder results); the offline editors; a new hub cover or map guide
+page; admin downloads of square/Discord exports. They remain in the archive.
 
 ## Integrity and verification
 

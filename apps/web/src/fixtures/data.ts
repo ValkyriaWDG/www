@@ -382,7 +382,13 @@ export const FIXTURE_MATCHES: FixtureMatch[] = [
     vodLinks: [],
     internalNotes: '',
     result: { scoreValkyria: 3, scoreOpponent: 2, outcome: 'win', verification: 'provisional', source: 'Synthetic historical fixture (not a real result)' },
-    rounds: [{ mapName: 'Synthetic Map D', mode: 'Warfare', side: 'allies', scoreValkyria: 3, scoreOpponent: 2, outcome: 'win' }],
+    // Public HLL map names (accented spellings on purpose) for map artwork; the third
+    // round's synthetic map stays text-only. Scores are synthetic, including a real zero.
+    rounds: [
+      { mapName: 'Hürtgen Forest', mode: 'Warfare', side: 'allies', scoreValkyria: 3, scoreOpponent: 2, outcome: 'win' },
+      { mapName: 'Sainte-Mère-Église', mode: 'Warfare', side: 'axis', scoreValkyria: 5, scoreOpponent: 0, outcome: 'win' },
+      { mapName: 'Synthetic Map D', mode: 'Warfare', side: 'allies', scoreValkyria: null, scoreOpponent: null, outcome: 'unknown' },
+    ],
     recap: {},
   },
   {

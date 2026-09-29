@@ -130,7 +130,9 @@
     "sides": {
       "allies": "Allies",
       "axis": "Axis"
-    }
+    },
+    "mapImageAlt": "{map} — in-game scene of the map (illustrative)",
+    "tacticalMap": "Tactical map of {map} (WebP, {size} kB)"
   },
   "statistics": {
     "title": "Match statistics",

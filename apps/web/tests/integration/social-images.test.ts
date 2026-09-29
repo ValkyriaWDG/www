@@ -54,12 +54,12 @@ describe('actual social handler with real publication persistence', () => {
   });
 
   it('selects fixed HLL artwork without persistence and cannot override an entity game', async () => {
-    const scopedRenderer = vi.fn<SocialDeps['render']>(async (card) => new TextEncoder().encode(card.artwork));
+    const scopedRenderer = vi.fn<SocialDeps['render']>(async (card) => new TextEncoder().encode(card.theme));
     const scoped = { ...deps, render: scopedRenderer, siteOrigin: 'https://scope-test.example' };
     const failingDb = vi.fn(() => { throw new Error('No database for fixed cards'); });
     const hllRequest = new Request('https://site.example/api/social/cs/site?game=hll');
     const response = await socialImageResponse(hllRequest, { locale: 'cs', kind: 'site' }, { ...scoped, db: failingDb });
-    expect(await response.text()).toBe('hll-scene');
+    expect(await response.text()).toBe('hll');
     expect(failingDb).not.toHaveBeenCalled();
     expect((await socialImageResponse(new Request('https://site.example/api/social/cs/site?game=invalid'), { locale: 'cs', kind: 'site' }, scoped)).status).toBe(404);
     const created = await createDocument(db.db, actor, {
@@ -68,7 +68,7 @@ describe('actual social handler with real publication persistence', () => {
     });
     await publishTranslation(db.db, actor, { translationId: created.translationId, expectedVersion: created.version });
     const entity = await socialImageResponse(new Request('https://site.example/api/social/cs/news/hll-scope?game=wardogs'), { locale: 'cs', kind: 'news', slug: ['hll-scope'] }, scoped);
-    expect(await entity.text()).toBe('hll-scene');
-    expect(scopedRenderer.mock.calls.at(-1)?.[0]).toMatchObject({ game: 'HELL LET LOOSE', artwork: 'hll-scene' });
+    expect(await entity.text()).toBe('hll');
+    expect(scopedRenderer.mock.calls.at(-1)?.[0]).toMatchObject({ game: 'HELL LET LOOSE', theme: 'hll' });
   });
 });

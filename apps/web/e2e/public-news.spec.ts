@@ -179,7 +179,7 @@ test.describe('public article', () => {
     await expect(page.locator('link[rel="alternate"][hreflang="cs"]')).toHaveAttribute('href', new RegExp(`/cs/wardogs/news/${NEWS.featureCs}$`));
     await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', new RegExp(`/cs/wardogs/news/${NEWS.featureCs}$`));
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', new RegExp(`/api/social/cs/news/${NEWS.featureCs}\\?v=2-`));
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', new RegExp(`/api/social/cs/news/${NEWS.featureCs}\\?v=3-`));
 
     for (const slug of [NEWS.csOnly, NEWS.withEnDraftCs]) {
       await page.goto(`/cs/news/${slug}`);

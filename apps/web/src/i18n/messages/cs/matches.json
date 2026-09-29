@@ -130,7 +130,9 @@
     "sides": {
       "allies": "Spojenci",
       "axis": "Osa"
-    }
+    },
+    "mapImageAlt": "{map} – herní scéna mapy (ilustrační)",
+    "tacticalMap": "Taktická mapa {map} (WebP, {size} kB)"
   },
   "statistics": {
     "title": "Statistiky zápasu",

@@ -123,5 +123,19 @@
     "deleteBody": "Soubor {name} bude odstraněn z knihovny. Tuto akci nelze vrátit.",
     "deleteInUseBody": "{count, plural, one {Obrázek je použit na # místě a nelze ho smazat, dokud ho tam neodeberete.} few {Obrázek je použit na # místech a nelze ho smazat, dokud ho tam neodeberete.} other {Obrázek je použit na # místech a nelze ho smazat, dokud ho tam neodeberete.}}",
     "inUseError": "Obrázek stále používá článek, stránka, člen nebo zápas, proto nebyl smazán."
+  },
+  "templates": {
+    "title": "Šablony pozadí Valkyria ({count})",
+    "lead": "Čistá pozadí bez textu z grafického balíku Valkyria. Přidáním vznikne běžný obrázek v knihovně: alternativní text, popisek a práva upravíte v detailu a jako titulní obrázek jej vyberete jako kterýkoli jiný. Nadpis článku zůstává textem v CMS.",
+    "listLabel": "Šablony pozadí",
+    "games": {
+      "hll": "Hell Let Loose",
+      "wardogs": "Wardogs",
+      "community": "Komunita"
+    },
+    "add": "Přidat do knihovny",
+    "adding": "Přidávám…",
+    "inLibrary": "Už je v knihovně – otevřít",
+    "rights": "AI ilustrace dodané vlastníkem Valkyrie pro tento web; nejde o herní snímky ani o záznam klanové akce."
   }
 }

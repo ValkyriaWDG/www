@@ -42,5 +42,9 @@ is archived reference material, including its original code/documents, game-deri
 map imagery and AI illustrations. It is excluded from the root Apache-2.0 grant.
 Its bundled source/rights notices remain intact; the included upstream MIT notice
 does not license game imagery. New repository-authored catalog and reconstruction
-tooling follow the repository code/documentation license. No pack asset is added to
-runtime by this handoff.
+tooling follow the repository code/documentation license. A bounded runtime selection
+(map thumbnails/scenes/tactical maps/sharing backgrounds and eight text-free editorial
+scenes under `apps/web/public/images/`) is recorded per file in
+[the asset manifest](assets/manifest.json) with its pack source hash; it keeps the same
+rights boundaries: HLL map imagery remains its rights holders' game content and the
+editorial scenes are owner-supplied AI illustrations, neither licensed under Apache-2.0.

@@ -6,10 +6,14 @@ import type { PublicMatchDetail } from '@/modules/matches/types';
 import cs from '@/i18n/messages/cs/social.json';
 import en from '@/i18n/messages/en/social.json';
 import type { GameRoute } from '@/modules/games/registry';
+import { hllMapArtwork } from '@/modules/games/hll-maps';
 
 export const SOCIAL_SIZE = { width: 1200, height: 630 } as const;
-export const SOCIAL_TEMPLATE_VERSION = '2';
+/** v3: owner graphics pack backgrounds and HLL map briefing (docs/assets/graphics-pack-2026-09-29.md). */
+export const SOCIAL_TEMPLATE_VERSION = '3';
 export type SocialKind = 'site' | 'news' | 'matches';
+/** Colours and default background: HLL khaki, Wardogs amber, shared community. */
+export type SocialTheme = 'hll' | 'wardogs' | 'community';
 export type SocialCard = {
   locale: AppLocale;
   kind: SocialKind;
@@ -21,7 +25,9 @@ export type SocialCard = {
   game: string;
   /** Only a cover from the currently published DTO, never a draft or remote URL. */
   coverId: string | null;
-  artwork: 'flying' | 'brand' | 'hll-scene';
+  theme: SocialTheme;
+  /** First recognised map of a published HLL match (catalog slug, never request input). */
+  map: { name: string; slug: string } | null;
 };
 
 export const socialCopy = (locale: AppLocale) => (locale === 'cs' ? cs : en);
@@ -56,7 +62,7 @@ export function siteCard(locale: AppLocale, kind: SocialKind = 'site', game?: Ga
     locale, kind, title: kind === 'site' ? 'VALKYRIA' : copy[kind], label: copy.community,
     detail: game === 'hll' ? copy.hllIntroduction : copy.introduction, score: null, status: '',
     game: game === 'hll' ? 'HELL LET LOOSE' : game === 'wardogs' ? 'WARDOGS' : 'WARDOGS // HELL LET LOOSE',
-    coverId: null, artwork: game === 'hll' ? 'hll-scene' : game === 'wardogs' ? 'flying' : 'brand',
+    coverId: null, theme: game === 'hll' ? 'hll' : game === 'wardogs' ? 'wardogs' : 'community', map: null,
   };
 }
 
@@ -67,7 +73,7 @@ export function articleCard(article: ArticleDTO): SocialCard {
     label: cardText(article.category?.label || copy.news, 44),
     detail: article.publishedAt ? formatDate(article.publishedAt, article.locale, 'date') : '',
     score: null, status: '', game: article.game === 'wardogs' ? 'WARDOGS' : article.game === 'hell-let-loose' ? 'HELL LET LOOSE' : copy.community,
-    coverId: article.cover?.assetId ?? null, artwork: article.game === 'wardogs' ? 'flying' : article.game === 'hell-let-loose' ? 'hll-scene' : 'brand',
+    coverId: article.cover?.assetId ?? null, theme: article.game === 'wardogs' ? 'wardogs' : article.game === 'hell-let-loose' ? 'hll' : 'community', map: null,
   };
 }
 
@@ -79,11 +85,21 @@ export function matchCard(match: PublicMatchDetail, locale: AppLocale): SocialCa
   if (result.kind === 'unpublished') status = copy.resultUnpublished;
   if (result.kind === 'outcome') status = copy.outcome[result.outcome];
   if (result.kind === 'score' || result.kind === 'outcome') status += ` · ${copy.verification[result.verification]}`;
+  let map: SocialCard['map'] = null;
+  if (match.game === 'hell-let-loose') {
+    for (const round of match.rounds ?? []) {
+      const artwork = hllMapArtwork(round.mapName);
+      if (artwork) {
+        map = { name: artwork.map, slug: artwork.slug };
+        break;
+      }
+    }
+  }
   return {
     locale, kind: 'matches', title: cardText(`VALKYRIA vs ${match.opponentName}`, 112),
     label: match.status === 'completed' ? copy.result : copy.match,
     detail: cardText([formatDate(match.startsAt, locale, 'dateTimeZone', match.timeZone), match.competitionName].filter(Boolean).join(' · '), 110),
     score, status, game: match.game === 'wardogs' ? 'WARDOGS' : 'HELL LET LOOSE',
-    coverId: match.cover?.assetId ?? null, artwork: match.game === 'wardogs' ? 'flying' : 'hll-scene',
+    coverId: match.cover?.assetId ?? null, theme: match.game === 'wardogs' ? 'wardogs' : 'hll', map,
   };
 }

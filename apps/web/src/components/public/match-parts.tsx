@@ -112,9 +112,12 @@ export function MatchResult({ match, t, variant }: { match: PublicMatchSummary; 
 }
 
 /** Decorative versus banner when no approved match cover exists (never a broken image). */
-export function MatchBanner({ match, t }: { match: PublicMatchSummary; t: MatchT }) {
+/** `scene`: decorative map pack scene of the first recognised HLL map (never live state). */
+export function MatchBanner({ match, t, scene }: { match: PublicMatchSummary; t: MatchT; scene?: string }) {
   return (
-    <div className={styles.banner} aria-hidden="true" data-match-banner="">
+    <div className={styles.banner} aria-hidden="true" data-match-banner="" data-banner-scene={scene ? '' : undefined}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- prepared static derivative (images are unoptimized) */}
+      {scene ? <img className={styles.bannerScene} src={scene} alt="" decoding="async" /> : null}
       <span className={styles.bannerSide}>
         <Image src={emblem} alt="" sizes="88px" />
         <span className={styles.bannerName}>{t('row.valkyria')}</span>
