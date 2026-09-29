@@ -41,7 +41,7 @@ export async function ClanScreen({ locale, game }: { locale: AppLocale; game: Ga
         <>
           <div className={publicStyles.linkPanels}>
             <DiscordPanel locale={locale} url={links.discordUrl} />
-            {game === 'wardogs' ? null : <HllPanel locale={locale} url={links.hllUrl} archiveUrl={links.hllArchiveUrl} />}
+            {game === 'wardogs' ? null : <HllPanel locale={locale} game={game} url={links.hllUrl} archiveUrl={links.hllArchiveUrl} />}
           </div>
           <nav className={pageStyles.nextSteps} aria-labelledby="clan-next-steps">
             <h2 id="clan-next-steps" className={pageStyles.nextStepsTitle}>

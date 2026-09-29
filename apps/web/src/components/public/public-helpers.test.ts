@@ -2,7 +2,7 @@ import { IntlMessageFormat } from 'intl-messageformat';
 import { describe, expect, it } from 'vitest';
 import { formatNumber } from '@/i18n/date-format';
 import { csMessages, enMessages } from '@/i18n/messages';
-import { describeResult, formatScore, outcomeKind, statusKind, viewForStatus, zoneName } from './match-format';
+import { describeResult, formatScore, matchFormatLabel, outcomeKind, statusKind, viewForStatus, zoneName } from './match-format';
 import { initialsOf } from './member-format';
 import { bilingualAlternates, publishedAlternates, seoTitle } from './metadata';
 import {
@@ -70,6 +70,29 @@ describe('match result presentation', () => {
     expect(zoneName('2026-10-03T17:00:00Z', 'cs')).toBe('SELČ');
     expect(zoneName('2026-11-03T18:00:00Z', 'cs')).toBe('SEČ');
     expect(zoneName('not a date', 'cs')).toBe('');
+  });
+});
+
+describe('match format line', () => {
+  const bestOf = (count: number) => `Best of ${count} (Bo${count})`;
+
+  it('does not repeat an imported format that only restates the best-of count', () => {
+    expect(matchFormatLabel('best of 1', 1, bestOf)).toBe('Best of 1 (Bo1)');
+    expect(matchFormatLabel(' Bo3 ', 3, bestOf)).toBe('Best of 3 (Bo3)');
+    expect(matchFormatLabel('BEST OF 5', 5, bestOf)).toBe('Best of 5 (Bo5)');
+    expect(matchFormatLabel('Best of 3 (Bo3)', 3, bestOf)).toBe('Best of 3 (Bo3)');
+  });
+
+  it('keeps a distinct format text beside the best-of label', () => {
+    expect(matchFormatLabel('Warfare 50v50', 3, bestOf)).toBe('Warfare 50v50 · Best of 3 (Bo3)');
+    expect(matchFormatLabel('best of 1', 3, bestOf)).toBe('best of 1 · Best of 3 (Bo3)');
+  });
+
+  it('shows only what is known', () => {
+    expect(matchFormatLabel('best of 1', null, bestOf)).toBe('best of 1');
+    expect(matchFormatLabel(null, 2, bestOf)).toBe('Best of 2 (Bo2)');
+    expect(matchFormatLabel('  ', null, bestOf)).toBe('');
+    expect(matchFormatLabel(null, null, bestOf)).toBe('');
   });
 });
 

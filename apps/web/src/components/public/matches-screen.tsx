@@ -8,7 +8,7 @@ import { sectionBase } from '@/modules/games/routes';
 import { getPublicMatch, getPublicMatchCounts, listPublicMatches } from '@/modules/matches/queries';
 import type { PublicMatchCounts, PublicMatchDetail, PublicMatchPage, PublicMatchSummary } from '@/modules/matches/types';
 import { ListLoadError } from './list-load-error';
-import { MatchDetailPane } from './match-detail';
+import { MatchDetailExtras, MatchDetailPane } from './match-detail';
 import { getMatchTranslations, MatchResult, MatchStart, MatchStatusBadge, MatchTeams } from './match-parts';
 import { hasMatchFilters, matchDetailHref, matchesListHref, type MatchFilters, type MatchView } from './query';
 import { TagList } from './tags';
@@ -21,7 +21,8 @@ const VIEWS: MatchView[] = ['upcoming', 'results'];
 /**
  * Reference-13 match browser shared by `/matches` (list + preview of the first row) and
  * `/matches/<slug>` (same list for the match's view with that row selected + full detail;
- * below 1280 px only the standalone detail is shown). Rows are real links to the detail.
+ * below 1280 px only the standalone detail is shown). The detail's maps/rounds and
+ * statistics span the full width below list and pane. Rows are real links to the detail.
  */
 export async function MatchesScreen({
   locale,
@@ -218,6 +219,7 @@ export async function MatchesScreen({
           />
         </div>
       ) : null}
+      {mode === 'detail' && pane ? <MatchDetailExtras match={pane} locale={locale} titleId="match-overview-title" /> : null}
     </div>
   );
 }

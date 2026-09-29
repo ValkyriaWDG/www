@@ -69,8 +69,9 @@
   },
   "hll": {
     "title": "Hell Let Loose",
-    "body": "Our Hell Let Loose history, matches and archive stay on our original website.",
-    "website": "Hell Let Loose website",
+    "body": "The Hell Let Loose division's matches, tournaments, servers and field manual are right here on this website. The original website remains as an archive.",
+    "section": "Hell Let Loose section",
+    "website": "Original HLL website",
     "archive": "HLL match archive"
   },
   "discord": {

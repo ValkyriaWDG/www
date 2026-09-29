@@ -1,7 +1,8 @@
 /*
  * Matches after reference 13 (server browser): toolbar above a ~2/3 list, ~1/3 detail
  * pane, compact zebra rows with an amber outline on the selected row. Below 1280 px the
- * list and the detail are separate pages (the detail URL renders standalone).
+ * list and the detail are separate pages (the detail URL renders standalone). Maps/rounds
+ * and statistics of the detail span the full width below.
  */
 .browser {
   display: grid;
@@ -9,7 +10,8 @@
   grid-template-areas:
     'toolbar'
     'list'
-    'pane';
+    'pane'
+    'extras';
   gap: var(--space-4);
   align-items: start;
 }
@@ -47,6 +49,26 @@
   min-width: 0;
 }
 
+.extras {
+  grid-area: extras;
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: 0 var(--space-4) var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  background: var(--color-panel);
+}
+
+.extras > * {
+  min-width: 0;
+}
+
+/* The first block's divider would double the panel edge. */
+.extras > .block:first-child {
+  padding-top: var(--space-4);
+  border-top: 0;
+}
+
 /* List route: the preview pane is a desktop enhancement only. */
 .browser[data-mode='list'] .pane {
   display: none;
@@ -63,7 +85,8 @@
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     grid-template-areas:
       'toolbar .'
-      'list pane';
+      'list pane'
+      'extras extras';
     column-gap: clamp(16px, 1.6vw, 32px);
   }
 
