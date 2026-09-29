@@ -83,7 +83,6 @@ export async function NewsListScreen({ locale, query, game }: { locale: AppLocal
   const filtered = hasNewsFilters(filters);
   const labels: NewsCardLabels = {
     games: { wardogs: t('games.wardogs'), 'hell-let-loose': t('games.hell-let-loose') },
-    placeholder: t('list.placeholderLabel'),
     tags: t('article.tags'),
   };
   const href = (next: Parameters<typeof newsListHref>[0]) => newsListHref(next, base);

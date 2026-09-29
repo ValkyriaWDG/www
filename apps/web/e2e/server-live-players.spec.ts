@@ -5,7 +5,7 @@ test.describe('HLL server player snapshots', () => {
     await page.goto('/cs/hll/servers?server=synthetic-alpha');
     await expect(page.locator('[data-live-players="fresh"]')).toContainText('[SYN] Alpha Player');
     await expect(page.locator('[data-live-players]')).toContainText('Statistiky hráčů kola');
-    await expect(page.locator('[data-live-players]')).toContainText('64 připojených hráčů');
+    await expect(page.locator('[data-live-players]')).toContainText('Právě připojení hráči: 64 · hráči v tabulce kola: 1.');
     await page.locator('[data-server-table] tbody tr').nth(1).getByRole('link').click();
     await expect(page).toHaveURL(/server=synthetic-bravo$/);
     await expect(page.locator('[data-live-players="stale"]')).toContainText('[SYN] Bravo Player');

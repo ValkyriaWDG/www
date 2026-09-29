@@ -28,8 +28,7 @@
     "firstPage": "Přejít na první stránku",
     "clearFilters": "Zrušit filtry",
     "loadError": "Novinky se nepodařilo načíst.",
-    "retry": "Zkusit znovu",
-    "placeholderLabel": "Valkyria"
+    "retry": "Zkusit znovu"
   },
   "missing": {
     "title": "Tento článek není v češtině k dispozici",

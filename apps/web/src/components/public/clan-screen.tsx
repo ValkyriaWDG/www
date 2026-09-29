@@ -36,6 +36,7 @@ export async function ClanScreen({ locale, game }: { locale: AppLocale; game: Ga
       pageKey="clan"
       page={page}
       home={game ? { href: base, label: games(`menuLabel.${game}`) } : undefined}
+      eyebrow={game ? games(`eyebrow.${game}`) : undefined}
       before={game === 'hll' ? undefined : <PresskitFigure image={PRESSKIT_KEY_ART} locale={locale} caption={t('gameArtCaption')} />}
       after={
         <>

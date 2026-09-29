@@ -9842,7 +9842,7 @@
       "path": "apps/web/public/images/editorial/hub-480x270.webp",
       "source": "Derived from assets/design-packs/valkyria-2026-09-29/source/02-predchozi-bannery/assets/hub.webp (owner-supplied VALKYRIA-GRAFIKA-KOMPLET.zip, archive SHA256 b4fe3e080cecf2cac9c3f10d26198d2b367d353a42187433344059d19465574b)",
       "sourceSha256": "56f38185aaa177851d6fd63ddbcd860776151d961449f27ee753146d043a92c3",
-      "usage": "preview in the authenticated admin editorial template library",
+      "usage": "preview in the authenticated admin editorial template library; decorative artwork of coverless shared community news cards",
       "rights": "AI-created game-inspired illustration supplied by the Valkyria owner (VALKYRIA-GRAFIKA-KOMPLET.zip, 2026-09-29) for this website; not a game screenshot, official key art or evidence of a clan event. Excluded from the Apache-2.0 code license; this record does not grant downstream reuse rights.",
       "transformations": "sharp resize 1920x1080 to 480x270, WebP quality 70, effort 6, metadata stripped; no crop or compositing",
       "sha256": "21426536786000494f631f7bc34c500001c0021b33dad1d4aefc891dbf4de66e",

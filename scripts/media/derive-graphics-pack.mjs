@@ -105,7 +105,10 @@ for (const name of TEMPLATES) {
       id: `editorial-template-${name}-preview`, out: `${dir}/${name}-480x270.webp`, original,
       transform: (image) => image.resize(480, 270).webp({ quality: 70, effort: 6 }),
       transformations: 'sharp resize 1920x1080 to 480x270, WebP quality 70, effort 6, metadata stripped; no crop or compositing',
-      usage: 'preview in the authenticated admin editorial template library', rights: SCENE_RIGHTS,
+      usage: name === 'hub'
+        ? 'preview in the authenticated admin editorial template library; decorative artwork of coverless shared community news cards'
+        : 'preview in the authenticated admin editorial template library',
+      rights: SCENE_RIGHTS,
     },
   );
 }

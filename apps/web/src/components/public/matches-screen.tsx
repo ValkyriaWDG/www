@@ -89,7 +89,8 @@ export async function MatchesScreen({
         <span className={styles.competition}>
           <TagList
             items={[
-              { key: 'game', label: t(`gamesShort.${match.game}`), tone: 'game' },
+              // A game section lists only its own game; the chip matters on the shared list.
+              ...(game ? [] : [{ key: 'game', label: t(`gamesShort.${match.game}`), tone: 'game' as const }]),
               { key: 'type', label: t(`competition.${match.competitionType}`) },
             ]}
           />

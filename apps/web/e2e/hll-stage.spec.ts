@@ -87,7 +87,8 @@ test('a direct content page keeps a static poster and never attaches a video sou
   await selectedClip(page);
   await expect(stage(page)).toHaveAttribute('data-hll-stage-state', 'paused');
   await expect(stage(page)).toHaveAttribute('data-hll-stage-reason', 'route');
-  await expect(page.locator('[data-hll-stage-toggle]')).toBeDisabled();
+  // The still poster needs no control: no permanently disabled button on content pages.
+  await expect(page.locator('[data-hll-stage-toggle]')).toHaveCount(0);
   await expect(page.locator('[data-hll-stage-video]')).not.toHaveAttribute('src');
   await page.waitForTimeout(500);
   expect(log.video).toEqual([]);

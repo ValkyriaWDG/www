@@ -15,7 +15,7 @@ const item: NewsSummary = {
   cover: null, publishedAt: new Date('2026-09-28T12:00:00Z'), updatedAt: new Date('2026-09-28T12:00:00Z'),
   authorLabel: '', category: null, tags: [], game: 'hell-let-loose',
 };
-const labels = { games: { 'hell-let-loose': 'Hell Let Loose', wardogs: 'Wardogs' }, placeholder: 'Valkyria', tags: 'Tags' };
+const labels = { games: { 'hell-let-loose': 'Hell Let Loose', wardogs: 'Wardogs' }, tags: 'Tags' };
 function render(overrides: Partial<NewsSummary> = {}) {
   return renderToStaticMarkup(createElement(NewsCard, { item: { ...item, ...overrides }, locale: 'cs', labels }));
 }

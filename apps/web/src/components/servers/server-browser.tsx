@@ -200,7 +200,6 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
             ) : (
               <p className={styles.connectNone}>{t('detail.noConnect')}</p>
             )}
-            <p className={styles.connectNote}>{t('detail.pingNote')}</p>
             {selected.statsUrl ? (
               <p className={styles.connectRow}>
                 <ExternalLink href={selected.statsUrl} externalLabel={common('suffix')} variant="button" data-server-stats="">
@@ -235,7 +234,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
         <div className={styles.refresh} data-server-refresh="">
           <label><input type="checkbox" checked={poll.automatic} onChange={(event) => poll.setAutomatic(event.target.checked)} /> {t('refresh.auto', { seconds: poll.interval })}</label>
           <button type="button" className={styles.copyButton} disabled={poll.refreshing || poll.coolingDown} onClick={poll.refresh}><RefreshIcon size={20} />{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
-          <span role="status">{t(poll.failed ? 'refresh.failed' : 'refresh.note')}</span>
+          <span role="status">{poll.failed ? t('refresh.failed') : null}</span>
         </div>
       ) : null}
       {overview.state === 'ok' && overview.synthetic ? (

@@ -22,6 +22,7 @@ export async function CorePage({
   before,
   after,
   home,
+  eyebrow,
   anchors,
 }: {
   locale: AppLocale;
@@ -31,6 +32,8 @@ export async function CorePage({
   after?: ReactNode;
   /** Breadcrumb root when shown inside a game section (default: the community hub). */
   home?: { href: string; label: string };
+  /** Eyebrow inside a game section (default: the community eyebrow). */
+  eyebrow?: string;
   /** Heading anchors (block index → id) for an in-page index such as the FAQ questions. */
   anchors?: ReadonlyMap<number, string>;
 }) {
@@ -42,7 +45,7 @@ export async function CorePage({
     <PageMain width="reading" labelledBy={titleId}>
       <PageHeader
         breadcrumbs={[home ?? { href: '/', label: t('shared.breadcrumbHome') }, { label: navLabel }]}
-        eyebrow={t('shared.eyebrow')}
+        eyebrow={eyebrow ?? t('shared.eyebrow')}
         title={page ? <span lang={page.locale}>{page.title}</span> : navLabel}
         titleId={titleId}
         description={page?.excerpt ? <p lang={page.locale}>{page.excerpt}</p> : undefined}

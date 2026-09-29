@@ -8,7 +8,7 @@
   "list": {
     "eyebrow": "Valkyria // CZ & SK",
     "title": "Matches",
-    "intro": "Upcoming fixtures and published results. Wardogs is our current focus; Hell Let Loose is our history.",
+    "intro": "Upcoming fixtures and results of the Valkyria clan in Hell Let Loose and Wardogs.",
     "breadcrumbHome": "Main menu",
     "viewsLabel": "Match lists",
     "views": {
@@ -205,7 +205,7 @@
     },
     "list": {
       "title": "Tournaments",
-      "intro": "{game} competitions Valkyria plays in. Standings carry the date they reflect; live rankings are on the competition website.",
+      "intro": "{game} competitions Valkyria plays in. Current standings are on the competition website.",
       "current": "Current and upcoming",
       "finished": "Finished",
       "emptyTitle": "No published tournaments yet",
