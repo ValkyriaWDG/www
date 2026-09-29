@@ -121,7 +121,10 @@ export function RichTextEditor({ initialContent, onChange, contentLocale, onRequ
     },
     // `useEditorState` only recomputes on transactions; an empty, history-free transaction
     // after creation makes the toolbar/word count reflect the initial content immediately.
-    onCreate: ({ editor: created }) => created.view.dispatch(created.state.tr.setMeta('addToHistory', false)),
+    // Plugins normalize the stored document in that same transaction (for example the
+    // trailing paragraph after a final table, list or image); that is not an edit, so it
+    // must not report a change and mark the content dirty.
+    onCreate: ({ editor: created }) => created.view.dispatch(created.state.tr.setMeta('addToHistory', false).setMeta('preventUpdate', true)),
     onUpdate: ({ editor: current }) => onChangeRef.current(current.getJSON()),
   });
 
