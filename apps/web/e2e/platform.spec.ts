@@ -110,6 +110,43 @@ test.describe('platform routing', () => {
     }
   });
 
+  test('the ghosted clan crest is identical on both main menus and absent from content pages', async ({ page }) => {
+    const crest = async (path: string) => {
+      await page.goto(path);
+      const image = page.locator('[data-emblem], [data-hll-crest]').first();
+      await expect(image).toBeVisible();
+      await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+      const box = (await image.boundingBox())!;
+      const style = await image.evaluate((element) => {
+        const computed = getComputedStyle(element);
+        return { opacity: Number(computed.opacity), filter: computed.filter };
+      });
+      return { ...box, ...style };
+    };
+    for (const [width, height] of [
+      [1920, 1080],
+      [1366, 768],
+      [390, 844],
+    ] as const) {
+      await page.setViewportSize({ width, height });
+      const wardogs = await crest('/cs/wardogs');
+      const hll = await crest('/cs/hll');
+      const at = `@${width}x${height}`;
+      // Same size, centre, opacity and colour (no HLL-only grayscale).
+      expect(Math.abs(hll.width - wardogs.width), at).toBeLessThan(2);
+      expect(Math.abs(hll.x + hll.width / 2 - (wardogs.x + wardogs.width / 2)), at).toBeLessThan(2);
+      expect(Math.abs(hll.y + hll.height / 2 - (wardogs.y + wardogs.height / 2)), at).toBeLessThan(2);
+      expect(hll.opacity, at).toBe(wardogs.opacity);
+      expect(hll.filter, at).toBe('none');
+      expect(wardogs.filter, at).toBe('none');
+    }
+    // Content pages keep the scene but not the crest, like Wardogs subpages.
+    for (const path of ['/cs/hll/news', '/cs/wardogs/news']) {
+      await page.goto(path);
+      await expect(page.locator('[data-emblem], [data-hll-crest]').first(), path).toBeHidden();
+    }
+  });
+
   test('the FAQ is an HLL menu destination that stays honestly unpublished until editors publish it', async ({ page }) => {
     await page.goto('/cs/hll/faq');
     await expect(page.getByRole('heading', { level: 1, name: 'Časté dotazy' })).toBeVisible();

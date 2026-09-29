@@ -205,10 +205,9 @@ export function CinematicStage({ clips, labels, children }: { clips: HllClip[]; 
               data-hll-stage-video=""
             />
           ) : null}
-          <div className={styles.stageFallback}>
-            <Image src={emblem} alt="" className={styles.stageCrest} sizes="(max-width: 767px) 40vw, 18vw" />
-          </div>
           <div className={styles.sceneVeil} />
+          {/* The ghosted clan crest matches the Wardogs landing: size, position, opacity (owner). */}
+          <Image src={emblem} alt="" className={styles.stageCrest} sizes="(max-width: 767px) 60vw, 22vw" data-hll-crest="" />
         </div>
       </div>
       {children}
