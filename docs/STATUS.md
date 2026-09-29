@@ -4,6 +4,24 @@ Updated: 2026-09-29. Stage: **Source 571475f (including crest/editor PR #61 and 
 
 ## Graphics source handoff (implementation pending)
 
+The owner's follow-up replaces typographic brand stand-ins with the actual clan
+crest and official game marks in **340 corrected exports** (240 HLL map + 100
+editorial/Discord). Use the [brand-correction guide](assets/brand-correction-2026-09-29.md)
+and its one-to-one catalog, not the superseded branded originals. All 458 original
+images are classified: 340 replacements, 107 clean retained sources and 11 historical
+references. The official HLL full mark has separate source provenance. Sixteen
+[original UI icons](assets/icon-handoff.md) include mappings to existing controls.
+
+Follow-up verification: 175/175 tooling tests; foundation passed (2,304 files);
+all 497 original hashes still match. The exporter decoded all 286 corrected rasters;
+tests verify 54 editable SVGs embed exact approved logo bytes. Four inspected
+[actual gallery captures](evidence/graphics-brand-correction-2026-09-29/README.md)
+cover 44 representative exports, and two icon captures cover desktop/mobile.
+These are source-asset proof, not application screenshots. No app, database,
+production, deployment or PR #69 cover changes are included. Claude should fetch
+and reconcile PR70's latest branch before integration; preserve concurrent #71
+migration-acceptance documentation and manifest additions when syncing main.
+
 The owner supplied the complete graphics pack on 2026-09-29. The separate
 `assets/graphics-pack-handoff` branch archives all **497 original files** with exact
 hashes and a reversible four-part representation of its oversized offline editor.

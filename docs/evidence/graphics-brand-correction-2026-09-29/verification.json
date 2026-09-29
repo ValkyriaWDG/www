@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-29T15:14:19.771Z",
+  "scope": "Offline exported-asset review; no application or production acceptance",
+  "baseRevision": "4f4f3896ce673d34021d3c905d126799befb21fb",
+  "catalogSha256": "6e32ad5b32901d5f354142231ee821876492c74c7b8b17afe0eda08b8f03dca8",
+  "gallerySha256": "2a289ba134fcdaca681dcafe51da02162113452b32421ab7739aa15888b2a20d",
+  "node": "v24.21.0",
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 1280,
+    "height": 1000
+  },
+  "decodedImages": 44,
+  "pageErrors": [],
+  "externalRequests": [],
+  "reviewedAssets": [
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/carentan/server-card-640x360.webp",
+      "sha256": "c5a3972f9c7e6c43002f3379eec6e549b2688aa26dbeebfce3e6a1aceb34dea7"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/driel/server-card-640x360.webp",
+      "sha256": "b16eddff583f3b2ef9836979917393a613e8560a07a8ffee0da6041642fb9b11"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/el-alamein/server-card-640x360.webp",
+      "sha256": "aa310d2c2931ea3bf626f421847ae0d81731ccf032e5e449a0d183a526db18ac"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/elsenborn-ridge/server-card-640x360.webp",
+      "sha256": "9a6ee4e376a4176e419eef2dfd5016e6dd451bcfc9c6e8c132179ab0ebbedf33"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/server-card-640x360.webp",
+      "sha256": "1b236f610fe5861ce7d9774eec5e8328aa84949dbf3def38dc25528cdb3e3ac3"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/hill-400/server-card-640x360.webp",
+      "sha256": "c5166fea0baa439848929cc207a48682f4b756cdd0d3ac0fed020c6de934d757"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/hurtgen-forest/server-card-640x360.webp",
+      "sha256": "76b58dc11b8b36617702b3fde7a810e05c27191d02ae27e6b6ddd9e92b8e7583"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/juno-beach/server-card-640x360.webp",
+      "sha256": "4a62685964620cd5f30fd607ff97ca63278dbccabbf3c228f8f3f110fce16869"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/kharkov/server-card-640x360.webp",
+      "sha256": "4bce39769c94697cd21b3bbfe731a51ca37fb84c9188016ee2bc7832aa481877"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/kursk/server-card-640x360.webp",
+      "sha256": "31d4a7afaaa3be61e703a872e4e8701a6d26066b94de12480ce670f34e018290"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/mortain/server-card-640x360.webp",
+      "sha256": "5b8afc28f4209923edcf5b60967e7f17383e2d170f80c09da82359324e636d36"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/omaha-beach/server-card-640x360.webp",
+      "sha256": "effe13c55cda80ef7c647827206a1dd9ad1ed42924027a2de900bedfafb95f57"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/purple-heart-lane/server-card-640x360.webp",
+      "sha256": "a955a8422bd1c08c732478578b09882f30d3abeb5adc70eb5d9649324f808eff"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/remagen/server-card-640x360.webp",
+      "sha256": "1ea32fc9cca432304edcb9f6c0cab9bfad81bada6b1bc2cca8ea7f39684725a7"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/sainte-marie-du-mont/server-card-640x360.webp",
+      "sha256": "fb4d04b7a6b8d7ea0f516fb23085f6922386726fdce47dd2f54a966116a91641"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/sainte-mere-eglise/server-card-640x360.webp",
+      "sha256": "2da2cd240b9bf0783cae049c1da2993046a79633f62926a427da55800f6db2c1"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/smolensk/server-card-640x360.webp",
+      "sha256": "64383d7f4e378fdda291a94c431611c23b26ff32a53ccc1ef1977f3fb9d688b2"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/stalingrad/server-card-640x360.webp",
+      "sha256": "9aff8878026aea5ac3e993ed96d475ed0b7c2303e135a1b54c8b41a771b5c195"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/tobruk/server-card-640x360.webp",
+      "sha256": "550d977238538f5424b393abe3298f44ee166a97528ac7799f15b45fc29e8890"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/utah-beach/server-card-640x360.webp",
+      "sha256": "3a766bfde6b8e20a0ebbe12b1bc2e5d5e150bd0079aa87fbfb3f48e663d1a176"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/01-wardogs-server-1200x630.webp",
+      "sha256": "3db38554eb1174f9e9eca17e0b6a441b6d82f32ce00aa5539ac43b03e6ad0d59"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/02-sobotni-verejna-akce-1200x630.webp",
+      "sha256": "97091b931c2205ee2466c5dad2f0bce0a98e8a58f9e08b3458816c7e2f466322"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/03-ecl-2026-split-2-1200x630.webp",
+      "sha256": "d7307ee544d48cb91d1ca68c0288d01f7e65a625a0cb87c78e8ffd3cbf3bad32"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/04-sbirka-na-servery-2026-1200x630.webp",
+      "sha256": "4c9f92766960a2a99ed36e163959318bfa0543d026ae18195208c3b046ee6b87"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/05-vip-na-serverech-1200x630.webp",
+      "sha256": "6dabb313aac21e41f15559cda8b047d5d803458c9ed0320c9015fd400b21f0e8"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/06-serverova-oznameni-1200x630.webp",
+      "sha256": "8748bfceed958d3416e112cc1757eb0427c87f2d50cb9f14fc6ca3f263e8d586"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/07-nabor-do-klanu-1200x630.webp",
+      "sha256": "792be3fe9dd2c3ea1a8484705b29c6512f4ae9fdfe1670c7e6448db4c14632bf"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/08-prirucka-hrace-1200x630.webp",
+      "sha256": "04cf4aa27c4d1c5acf69d58b54a833e580a7bf2fed564a09c52209fbfec15011"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/09-hll-novinky-1200x630.webp",
+      "sha256": "c1804f8c5c820a3d1b154f1d9152a6b3d42a7ed339971f217cd670fad29d9563"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/10-wardogs-novinky-1200x630.webp",
+      "sha256": "906a5d1a9f453a7d73d4cd7033586eb7ed9b845a56255147e1dc7471ee51fcae"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/11-seeding-serveru-1200x630.webp",
+      "sha256": "3d734bbff5d60082a6425a06b95d6cd93e8900da335f4f335005ba0aa679bafe"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/12-komunita-discord-1200x630.webp",
+      "sha256": "da934544d84bf4834ee48127bc87224ed0a0aba2e5f9eb78dbefc3e2548fab5a"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/13-vlk-vs-ejig-1200x630.webp",
+      "sha256": "3f40fe3966a041cbbbffd79a727284dcb39b3e67dbda5720a16419db8659a9f6"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/03-clanky-og/14-zapasovy-report-1200x630.webp",
+      "sha256": "016734dc1bcca4ee4e0a08fd3578ac2c832d2ba5603e1e6d2a3ed14dcdf4194b"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/06-discord/valkyria-hll-1920x480.webp",
+      "sha256": "6b50398c8214fa20989aa014bc2f8492148f6f24a4364bbde51b445ec55e815d"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/06-discord/valkyria-wardogs-1920x480.webp",
+      "sha256": "89bde13ca08f7d721daf44d873d954e030600b13fcc6e99bcc7a33d779e255b4"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/02-predchozi-bannery/06-discord/valkyria-komunita-1920x480.webp",
+      "sha256": "d1dad4d1f64ca564a89a94b8c27432d8ff7171e3607ed4a1e321b35fb4ccdf12"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/server-strip-960x240.webp",
+      "sha256": "cf8591a7dd43645721b3d33556ac9dcf60d7fd3ccc720294e3f7c73c21d027b1"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/article-1200x630.webp",
+      "sha256": "5396b91590e4d758b8e57774eeeb4d60ed37ee83c0da814369e1420db1190116"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/match-result-1920x1080.webp",
+      "sha256": "3954a2974b8eaf94a99256d0aa8a55b9a1ce7eee406d24fa6865144e0f8fb7b3"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/match-preview-1200x630.webp",
+      "sha256": "0da4636166ba0040007a944ee85ccec7b67981510eceda94c78b70664ab92898"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/wide-1920x480.webp",
+      "sha256": "0f3a04a77d338d1082e4896099d2963db0e6e70c4a6b09111572f463bfca9923"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/social-1080x1080.webp",
+      "sha256": "577ffc5a492cdbcf708a90dd43f9652d24fe3da10c0bb0f0ea19518532017514"
+    },
+    {
+      "path": "assets/design-packs/valkyria-2026-09-29/branded/01-hll-map-pack/maps/foy/tactical-poster-1080x1350.webp",
+      "sha256": "77662fd4bdc27c08c0d0d233a7e8d5110ca6b876512dec12df99bef796139388"
+    }
+  ],
+  "captures": [
+    {
+      "path": "docs/evidence/graphics-brand-correction-2026-09-29/maps.png",
+      "sha256": "480ed5c4ab13be916bad91c40391b00bb32fe2066402bb7de034d4549248dfaa",
+      "bytes": 1217611,
+      "width": 1280,
+      "height": 1405
+    },
+    {
+      "path": "docs/evidence/graphics-brand-correction-2026-09-29/editorial.png",
+      "sha256": "383b47f4c85f2c212d1ba05bddda116cba7367da8ab6c60645c9a97b41e082f0",
+      "bytes": 1479544,
+      "width": 1280,
+      "height": 1608
+    },
+    {
+      "path": "docs/evidence/graphics-brand-correction-2026-09-29/discord.png",
+      "sha256": "8b1ac6372dabf7bbff7e25dca9d72abbb41f455e4d3da5f51ec721c8c504fc9d",
+      "bytes": 1187238,
+      "width": 1280,
+      "height": 1288
+    },
+    {
+      "path": "docs/evidence/graphics-brand-correction-2026-09-29/formats.png",
+      "sha256": "93539c37ed734f60d0624ebdfe15074fae48bce62ca13198b3e01be9f4e18d5f",
+      "bytes": 1852460,
+      "width": 1280,
+      "height": 2419
+    }
+  ]
+}
