@@ -1,4 +1,4 @@
-/* Community hub: shared frame, two equal game entries, shared destinations below. */
+/* Community hub: shared frame over the owner's cover, two equal game entries, shared destinations below. */
 .hub {
   display: flex;
   flex: 1 0 auto;
@@ -46,6 +46,7 @@
   margin: var(--space-2) 0 0;
   color: var(--color-text-muted);
   font-size: 1.0625rem;
+  text-shadow: var(--shadow-text);
 }
 
 .sectionTitle {
@@ -81,7 +82,6 @@
   grid-template-rows: minmax(160px, 22vh) auto;
   width: 100%;
   border: var(--border-hairline) solid var(--color-border);
-  background: var(--color-panel);
   color: var(--color-text);
   text-decoration: none;
   transition:
@@ -97,6 +97,9 @@
 
 .gameCard:hover {
   border-color: var(--card-accent);
+}
+
+.gameCard:hover .gameText {
   background: rgb(30 31 29 / 0.94);
 }
 
@@ -111,20 +114,17 @@
   place-items: center;
   overflow: hidden;
   border-bottom: var(--border-hairline) solid var(--color-border);
+  /* A window onto the hub cover: each game's half of the artwork shows through its card. */
   background:
-    radial-gradient(ellipse 70% 90% at 50% 100%, var(--card-wash), transparent 70%),
-    linear-gradient(180deg, rgb(12 12 11 / 0.2), rgb(12 12 11 / 0.7));
-}
-
-.gameCard[data-theme-preview='hll'] .gameVisual {
-  background:
-    radial-gradient(ellipse 70% 90% at 50% 100%, rgb(197 185 103 / 0.12), transparent 70%),
-    linear-gradient(180deg, #2c3036, #17191d);
+    radial-gradient(ellipse 60% 70% at 50% 55%, rgb(8 8 7 / 0.45), transparent 75%),
+    linear-gradient(180deg, rgb(8 8 7 / 0) 35%, rgb(8 8 7 / 0.5) 100%),
+    radial-gradient(ellipse 70% 90% at 50% 100%, var(--card-wash), transparent 70%);
 }
 
 .wardogsMark {
   width: min(62%, 340px);
   height: auto;
+  filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.75));
 }
 
 .hllMark {
@@ -134,12 +134,15 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.85);
 }
 
 .gameText {
   display: grid;
   gap: var(--space-2);
   padding: clamp(16px, 1.6vw, 24px);
+  background: var(--color-panel);
+  transition: background-color var(--motion-fast) ease-out;
 }
 
 .gameName {
@@ -236,6 +239,20 @@
   margin: 0;
   color: var(--color-text-muted);
   font-size: var(--text-small);
+}
+
+/* The heading sits in the cover's dark centre, between the two games' soldiers. */
+@media (min-width: 768px) {
+  .intro {
+    flex-direction: column;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  .lead {
+    max-width: 52ch;
+    margin-inline: auto;
+  }
 }
 
 @media (max-width: 1023px) {

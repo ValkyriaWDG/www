@@ -5,6 +5,7 @@ import { getBackgroundMedia } from '@/lib/background-media';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import type { ShellAccount } from './account-slot';
 import { BackgroundMedia } from './background-media';
+import { HubCover } from './hub-cover';
 import type { BackgroundMediaConfig } from './background-policy';
 import { DEFAULT_FOCAL_POINT } from './background-policy';
 import { SceneFallback } from './scene-fallback';
@@ -40,6 +41,7 @@ export async function MenuShell({ account, children, presentation }: { account: 
       <div className={styles.scene} aria-hidden="true" data-scene="">
         <SceneFallback />
         <BackgroundMedia posterUrl={media.posterUrl} sources={media.sources} focalPoint={media.focalPoint} />
+        {presentation === 'platform' ? <HubCover /> : null}
         <div className={styles.scrim} />
         <div className={styles.vignette} />
         <Image src={emblem} alt="" className={styles.emblem} sizes="(max-width: 767px) 60vw, 22vw" loading="eager" fetchPriority="high" data-emblem="" />

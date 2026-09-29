@@ -48,9 +48,35 @@
   opacity: 0.86;
 }
 
-/* Community hub: dimmed shared scene with the crest; the page carries the game choices. */
+/*
+ * Community hub: the owner's cover (HLL left, Wardogs right) instead of the drawn scene.
+ * Only a light scrim; the cover's own shade darkens the top, the centre column behind the
+ * text and the bottom, so both soldiers stay visible beside and through the game cards.
+ */
 [data-route-mode='hub'] .scrim {
-  opacity: 0.58;
+  opacity: 0.12;
+}
+
+.hubCover {
+  position: absolute;
+  inset: 0;
+}
+
+.hubCover img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 35%;
+}
+
+.hubCover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(8 8 7 / 0.62) 0, rgb(8 8 7 / 0.18) 34%, rgb(8 8 7 / 0.12) 62%, rgb(8 8 7 / 0.66) 100%),
+    radial-gradient(ellipse 30% 75% at 50% 55%, rgb(8 8 7 / 0.5), transparent 100%);
 }
 
 /* Ghosted clan crest: centered at ~50% x / 47% of the stage below the header; home only. */
@@ -66,8 +92,8 @@
   transform: translate(-50%, -50%);
 }
 
-[data-route-mode='home'] .emblem,
-[data-route-mode='hub'] .emblem {
+/* The hub shows the crest in its own heading, over the cover. */
+[data-route-mode='home'] .emblem {
   display: block;
 }
 
