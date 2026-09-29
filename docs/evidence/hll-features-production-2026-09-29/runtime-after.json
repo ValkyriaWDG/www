@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-29T08:16:00.700165+00:00",
+  "origin": "https://valkyria.cz",
+  "image": "majorluk/valkyria-www@sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "health": "healthy",
+  "readiness": {
+    "status": "ready",
+    "checks": {
+      "config": "ok",
+      "database": "ok",
+      "media": "ok",
+      "schema": "ok"
+    }
+  },
+  "runtimeUid": 10001,
+  "readOnlyRoot": true,
+  "capabilitiesDropped": [
+    "ALL"
+  ],
+  "securityOptions": [
+    "no-new-privileges:true"
+  ],
+  "publishedPorts": [],
+  "watchtowerEnabled": false,
+  "authentication": {
+    "discordCredentialsPresent": false,
+    "localAdminLoginEnabled": false,
+    "localGrants": 0
+  },
+  "schema": {
+    "tables": 29,
+    "migrationCount": 5,
+    "knownMigrationHashesMatch": true,
+    "backgroundOverrides": 0
+  },
+  "hll": {
+    "backgroundClips": 0,
+    "serverStatusSource": "none",
+    "legacyHosts": []
+  },
+  "backgroundMediaOrigin": "https://valkyria.cz",
+  "approvedMediaHashesMatch": true,
+  "media": [
+    {
+      "filename": "wardogs-menu-full-1080p-619b27261fc9.mp4",
+      "bytes": 51032923,
+      "sha256": "619b27261fc903b26fcef14ee42a1a7bbd58953140568e1803f7a6c25f26455b"
+    },
+    {
+      "filename": "wardogs-menu-full-720p-040c3de21de3.mp4",
+      "bytes": 13654192,
+      "sha256": "040c3de21de316f2360aa6fdc50ca67ea32e621bce17599e2942acb6ede41b4e"
+    },
+    {
+      "filename": "wardogs-menu-full-1080p-b7aa9380dd06.webm",
+      "bytes": 19561104,
+      "sha256": "b7aa9380dd06f3d7e638bb9d45a63ef646a9517ea8dd0a4b1abb6b0206b0a309"
+    },
+    {
+      "filename": "wardogs-menu-full-poster-f31f6824f259.webp",
+      "bytes": 181198,
+      "sha256": "f31f6824f25971d4e70660b4e6834e533af1e13f8a458c4e6fd4b577abd3ce8c"
+    }
+  ],
+  "publisherTimer": {
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled",
+    "Result": "success"
+  },
+  "publisherService": {
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "static",
+    "Result": "success",
+    "ExecMainStatus": 0
+  },
+  "backupTimer": {
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled",
+    "Result": "success"
+  },
+  "backupService": {
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "static",
+    "Result": "success",
+    "ExecMainStatus": 0
+  },
+  "limitations": [
+    "Read-only observations only; no fresh backup, restore or public HTTP request is performed.",
+    "Public canonical/robots/media acceptance belongs to the protected promotion record and separate public probes.",
+    "Service state does not establish monitoring or alert delivery.",
+    "Container/environment, host identifiers, raw command output and database fingerprints are omitted."
+  ]
+}

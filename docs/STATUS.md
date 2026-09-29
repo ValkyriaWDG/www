@@ -1,10 +1,52 @@
 # Current status
 
-Updated: 2026-09-28. Stage: **Unified HLL/WDG deployed to valkyria.cz; robots origin accepted in production. Browser-network acceptance and live authentication remain open.**
+Updated: 2026-09-29. Stage: **HLL features deployed to valkyria.cz; schema upgrade and actual previous-image rollback rehearsal accepted. Public HTTP 85/85; browser 14/15 with #46 still open. Live authentication/providers remain disabled.**
 
-## Current production: robots-origin hotfix
+## Current production: HLL features and tournaments
 
-**https://valkyria.cz** now serves source `e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a`
+**https://valkyria.cz** now serves source `e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e`
+from `majorluk/valkyria-www@sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430`.
+Promotion completed at **08:15:19 UTC (10:15:19 CEST)** on 2026-09-29.
+[Production evidence](evidence/hll-features-production-2026-09-29/README.md) records
+exact-main CI **36503155902**, protected publisher **36539109346**, immutable registry
+identity, the fresh paired restore, actual-image rehearsal and independent runtime readback.
+
+Both full qualifications passed **497 unit, 291 database, 160 browser, 126 tooling,
+13 encrypted-recovery, 6 real restore and 4 separate HLL artwork cases**; 106 opt-in
+capture cases were skipped. All 15 page-budget samples and 12 CI rollback stages passed.
+Scans retain zero fixable HIGH/CRITICAL findings and 43 unfixed findings.
+
+The fresh production backup was actually restored and verified: **27 tables, one
+sequence, zero editorial files**. On that disposable PostgreSQL 15 restore, the exact
+candidate and actual previous **e03d3c5 / 5e9129** image both passed their route/health
+checks after upgrade. This is separate from CI's older **5e83 / 79bf** rollback pin.
+Live migrations applied **3 / 2 / 5**, followed by **0 / 5 / 5** with unchanged retry
+fingerprints. Schema now has **29 tables/five migrations**; old data was preserved,
+new tables are empty and new tournament references are NULL. No seed/import occurred.
+
+All **14 promotion smoke checks** passed; both timers resumed. The **08:16:00 UTC**
+independent runtime observation confirms the exact image, readiness, approved media
+hashes and security controls. A natural publication service pass at **08:16:20–21 UTC**
+exited successfully; authenticated publication and alert delivery were not tested.
+The corrected independent anonymous HTTP run passed **85/85**; browser verification
+passed all **14 functional scenarios**, but its fifteenth strict network check failed
+on **five non-prefetch RSC aborts**. There were zero page/HTTP errors. All **11 actual
+production screenshots** were inspected. Issue #46 remains open with the classifier
+unchanged. Initial **69/85 HTTP** and **0/1 browser (14 unrun)** reports are preserved:
+the harness expected old social template v1 and matched serialized tournament error
+translations. The separate source-backed harness correction changed no application code.
+
+This deployment includes PR #50's HLL/CRCON/statistics/FAQ/artwork, #57's hydration-aware
+assertions, #58's masthead/statistics defaults and #59's tournaments. PR #50 incorporates
+PR #55 artwork; #55 itself remains open. Authentication/local grants remain off/zero,
+HLL clips stay empty and server status remains `none`; no CRCON/Logi provider is enabled.
+No DNS/proxy routing or old `valkyriahll.cz` content changed. Populated content, live
+auth/provider workflows, off-host recovery and physical-device media coverage remain
+separate acceptance work. Historical reports and images below are unchanged.
+
+## Historical production: robots-origin hotfix
+
+At this checkpoint, **https://valkyria.cz** served source `e03d3c50b71f179dd22e7fbc07a1ce4a58a3731a`
 from `majorluk/valkyria-www@sha256:5e9129fabf0e737a138efa3ad198242dc945bfe4fe31965bf8a7ead266d8fa25`.
 The image-only promotion completed at **21:33:47 UTC (23:33:47 CEST)** on 2026-09-28.
 [Production acceptance](evidence/robots-runtime-origin-2026-09-28/production/README.md)
@@ -31,10 +73,10 @@ The original cutover's **54/55 HTTP** and **9/10 browser** reports below remain 
 No new browser run was used to waive #46: the non-prefetch RSC cancellation gate remains
 failed/open, and its six screenshots remain proof for the original `5e83abc` UI.
 
-Next work: diagnose #46 with its retained failures; continue #23/#8 live auth/hosted
+At this historical checkpoint, next work was to diagnose #46 with its retained failures; continue #23/#8 live auth/hosted
 Logi and operational acceptance, #25 physical-device/media coverage and separately
-owned #36 HLL content/footage work. Old `valkyriahll.cz` remains unchanged. Draft
-CRCON/statistics PR #50 and migration 0002 are outside this deployment; #52 retains
+owned #36 HLL content/footage work. Old `valkyriahll.cz` remained unchanged. Then-draft
+CRCON/statistics PR #50 and migration 0002 were outside that deployment; #52 retains
 the original cutover failure's unproven cause.
 
 ## Original unified deployment

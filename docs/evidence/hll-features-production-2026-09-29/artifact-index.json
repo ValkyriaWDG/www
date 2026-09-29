@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "scope": "Public evidence records and documentation; canonical LF Git bytes for text, exact bytes for images; private helpers/configuration excluded",
+  "artifacts": [
+    {
+      "file": "browser-after-01.json",
+      "bytes": 3313,
+      "sha256": "fcc8df245ddf36c5339b88ea759b6134813d429f0f9e64e13b16734e79a35716"
+    },
+    {
+      "file": "browser-after-02-hll-cs-desktop.png",
+      "bytes": 921174,
+      "sha256": "799478e0fad82bdbb383c958b49c606d653bc5215abd014297464e614a396ad8"
+    },
+    {
+      "file": "browser-after-02-hll-cs-mobile.png",
+      "bytes": 273990,
+      "sha256": "fcc3fc5e5f3add2f82dd3f11e3e7bfdb484bb05b8b00dafa2fe656e21255581b"
+    },
+    {
+      "file": "browser-after-02-hll-en-desktop.png",
+      "bytes": 918342,
+      "sha256": "f765527d076a83ae9e16c86b80ea2fbeb71c2ab3f25ddb9bf015b318f367c444"
+    },
+    {
+      "file": "browser-after-02-hll-en-mobile.png",
+      "bytes": 272420,
+      "sha256": "8911afb1de7f794906c171d788f0372c3dc188bce75c7a8d18a249462df384e7"
+    },
+    {
+      "file": "browser-after-02-hll-faq-en-mobile.png",
+      "bytes": 136139,
+      "sha256": "61f669c08390b2a337045089e6b75e5c6ac4bc4f4707e7bc1720a7c9d971e7b5"
+    },
+    {
+      "file": "browser-after-02-hll-tournaments-cs-desktop.png",
+      "bytes": 409255,
+      "sha256": "8fe6c4ab48b932de9016c7a483d6ab9d1322f5e5ed9168242c569ae59fbd8895"
+    },
+    {
+      "file": "browser-after-02-hll-tournaments-en-mobile.png",
+      "bytes": 146372,
+      "sha256": "2fbcd1beb286640bb278948ed301406b69bec26973d202620bcbdcc10bbe4363"
+    },
+    {
+      "file": "browser-after-02-hub-cs-desktop.png",
+      "bytes": 414671,
+      "sha256": "501847e1a5425e5689f359ea9200ea46ee7bdb8ce958096c861d563b0963568b"
+    },
+    {
+      "file": "browser-after-02-hub-en-mobile.png",
+      "bytes": 211208,
+      "sha256": "bfc24eb52fad6eadbfc683d44467a12eef96e55b3cf8a2862bd346a72b3ea609"
+    },
+    {
+      "file": "browser-after-02-wardogs-cs-desktop.png",
+      "bytes": 1347944,
+      "sha256": "3e2ca26bf92d5d511ef500fa4487c670a78f5fb7f8b726d7fd9c5fe83b19eba8"
+    },
+    {
+      "file": "browser-after-02-wardogs-en-mobile.png",
+      "bytes": 300186,
+      "sha256": "7732aae47419e17ec4031e049c450c4acc2c8c65e79c878a768487e9f94927d6"
+    },
+    {
+      "file": "browser-after-02.json",
+      "bytes": 86031,
+      "sha256": "df548847e99d4fdb88c89d46a35b7e5fb0e88e743d190bfee86ca41968b0564a"
+    },
+    {
+      "file": "browser-smoke.cjs",
+      "bytes": 30367,
+      "sha256": "1bd8c5fd6e2b2187dfdf54fb5f6a406c85000b03d3cefd006ba792ede869ee6f"
+    },
+    {
+      "file": "correction-provenance.json",
+      "bytes": 3297,
+      "sha256": "59004aea400b773798493ab70709560c2f392dbb50c711f561039aa1b8002007"
+    },
+    {
+      "file": "correction.test.cjs",
+      "bytes": 3504,
+      "sha256": "2f3f9799b9fd5a258ee99fb49990ee889cef3bba482b8ab245365db73d501568"
+    },
+    {
+      "file": "deployment-record.json",
+      "bytes": 6098,
+      "sha256": "4fcc6f435773274e96abe6ca6a198131061e2c438a325e8a1bd2cb97837e76b7"
+    },
+    {
+      "file": "harness.test.cjs",
+      "bytes": 3061,
+      "sha256": "f2f7835a4808a8663352a38dd8a379f8c4f06c0ec2858490589c4047b836331b"
+    },
+    {
+      "file": "hll-artwork-manifest.json",
+      "bytes": 11334,
+      "sha256": "ba7b3b06d4875e2fdff65ea8bc7b8900ee4e3196c90adae1efd708a12677f190"
+    },
+    {
+      "file": "http-after-01.json",
+      "bytes": 237657,
+      "sha256": "a11d4b60f2274645ab8ee2ee346f4a1255ddeedbfb3fed2dc21e7e2c23bbdd57"
+    },
+    {
+      "file": "http-after-02.json",
+      "bytes": 238180,
+      "sha256": "e9cbad4c7f2db348005e00f02ec8b2304d470db59a89b5ce667bc7897201d807"
+    },
+    {
+      "file": "http-smoke.mjs",
+      "bytes": 27300,
+      "sha256": "b8d0de7a0239f30a2e0760229da5a759d99a3faefba843fb6234adbb28bb0dd2"
+    },
+    {
+      "file": "initial-harness/browser-smoke.cjs",
+      "bytes": 30367,
+      "sha256": "3462d707812e04cf1ec70e0043a5ae02b21906c97a192eff0dcf18e19b432aeb"
+    },
+    {
+      "file": "initial-harness/harness.test.cjs",
+      "bytes": 3061,
+      "sha256": "f2f7835a4808a8663352a38dd8a379f8c4f06c0ec2858490589c4047b836331b"
+    },
+    {
+      "file": "initial-harness/http-smoke.mjs",
+      "bytes": 27270,
+      "sha256": "ec021bf25ba757a78c8ebfedb86ddb41a59fce104d959feb7f7c800adc57f2d3"
+    },
+    {
+      "file": "initial-harness/local-tests.txt",
+      "bytes": 1482,
+      "sha256": "e9346be684b22d5cd55d39fefa8431391d447be4bc6a659ce69c18044149ae29"
+    },
+    {
+      "file": "initial-harness/preparation.json",
+      "bytes": 4746,
+      "sha256": "82e131de95e7bbc92ad2a26db9071351bc9adba866c47c80330c4d13714a372b"
+    },
+    {
+      "file": "initial-harness/README.md",
+      "bytes": 716,
+      "sha256": "ff789482a6eccd5daeafcebac073c3e5e9fec6fa42f9d6afc5a613ce41f3ce07"
+    },
+    {
+      "file": "local-tests.txt",
+      "bytes": 1482,
+      "sha256": "e9346be684b22d5cd55d39fefa8431391d447be4bc6a659ce69c18044149ae29"
+    },
+    {
+      "file": "main-ci.json",
+      "bytes": 14126,
+      "sha256": "770c26b8a73e83a9972aa373d96df681669dd9410cb16998dc7f5fd1ad10fcaa"
+    },
+    {
+      "file": "operator-review.json",
+      "bytes": 950,
+      "sha256": "ff6efd48d155750323c8a31cfe08e46d60389582be70151878434372cbf12dd5"
+    },
+    {
+      "file": "pinned-operator-bundle.json",
+      "bytes": 545,
+      "sha256": "e8b6156e290ada707323dcbdd44aa91c8ef8f9a97abe2edba50b1c4db2ce40b6"
+    },
+    {
+      "file": "preparation.json",
+      "bytes": 4746,
+      "sha256": "82e131de95e7bbc92ad2a26db9071351bc9adba866c47c80330c4d13714a372b"
+    },
+    {
+      "file": "publisher-qualification.json",
+      "bytes": 20838,
+      "sha256": "bed299c6f1a9aee6afcb5f38d895f771024cb6673d39132075c04a90953e11b3"
+    },
+    {
+      "file": "publisher-service-after.json",
+      "bytes": 587,
+      "sha256": "737615a47eaf8ff7c8cb0071d44d2846cdba6328f80c4372eecfb10da07a3578"
+    },
+    {
+      "file": "README.md",
+      "bytes": 14333,
+      "sha256": "88ceff13ffde9ba3db9811d67c054d8ccb42be92251f452f5feddf9c3b674077"
+    },
+    {
+      "file": "request-classification.cjs",
+      "bytes": 466,
+      "sha256": "5fe236dbe035f6540f18edfad270f71ddce7ed35823698146bd5251cda517eac"
+    },
+    {
+      "file": "request-classification.test.cjs",
+      "bytes": 1385,
+      "sha256": "eb3da9ebfe3d36a0dc127e034327ee97da4efdade47d8dd06fdf52e78963cbc7"
+    },
+    {
+      "file": "runtime-after.json",
+      "bytes": 2864,
+      "sha256": "091e5a17c45eb30fea840c792f2d9bb1a39deefdfe1045e8b3a54775bcf61b1a"
+    },
+    {
+      "file": "tournament-markup.cjs",
+      "bytes": 1129,
+      "sha256": "170da7308b87b450300a85e5981bc4b258a6a9d1b12125f138b6839e4d3cfcca"
+    }
+  ]
+}

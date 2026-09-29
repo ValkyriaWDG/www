@@ -1,0 +1,11 @@
+{
+  "pinnedAt": "2026-09-29T08:10:29.581416+00:00",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "digest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+  "normalizedReviewedHashesMatch": true,
+  "filesSha256": {
+    "promote-latest.py": "8f13bf862a21309541e35cbaef6a645a0277f068e159491fa6cb969b438f089e",
+    "verify-runtime.py": "abd78c10618ca85758c2f5ac3cde95556624884ac78f599227102fe3ae17d655",
+    "collect-safe.py": "7b3747bf390de9810ca05e0522439eafd19976b50c592877f7199997cec86782"
+  }
+}

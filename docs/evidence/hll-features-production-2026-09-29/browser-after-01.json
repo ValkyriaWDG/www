@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "anonymous-public-production-browser",
+  "origin": "https://valkyria.cz",
+  "mediaOrigin": "https://valkyria.cz",
+  "startedAt": "2026-09-29T08:19:10.622Z",
+  "deploymentIdentity": {
+    "revision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+    "imageDigest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+    "identityReference": "../runtime-after.json",
+    "provenance": "Operator-supplied observed identity; browser checks do not establish container digest or source labels."
+  },
+  "localHarnessRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "harnessSha256": "3462d707812e04cf1ec70e0043a5ae02b21906c97a192eff0dcf18e19b432aeb",
+  "requestClassifierSha256": "5fe236dbe035f6540f18edfad270f71ddce7ed35823698146bd5251cda517eac",
+  "browserProduct": "Chrome for Testing",
+  "browserExecutableSha256": "6b5da320179b656aefdb74ff10bc0bd33ba8d5ea869347e04e0a6b2bdd815e96",
+  "playwrightVersion": "1.63.0",
+  "mediaManifest": {
+    "id": "wardogs-menu-full-2026-09-26",
+    "sha256": "3a94459ea499bdd0249d3a90bdc0b438bf7dcb953ebf509724e54ddd78195388"
+  },
+  "hllArtworkManifest": {
+    "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+    "sha256": "ba7b3b06d4875e2fdff65ea8bc7b8900ee4e3196c90adae1efd708a12677f190",
+    "scenePosterSha256": "552756e7c9aae88ead9f5627b9fcd03c131daef2a518c4015c585bf4b8a648e4"
+  },
+  "checks": [
+    {
+      "name": "desktop-cs-hub",
+      "status": "failed",
+      "durationMs": 475,
+      "errorType": "AssertionError",
+      "reason": "A browser operation or assertion failed; inspect this named scenario."
+    }
+  ],
+  "captures": [],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "failedRequests": [],
+  "cancelledRequests": [],
+  "httpFailures": [],
+  "unexpectedOriginRequests": [],
+  "unexpectedOriginResponses": [],
+  "observedWriteAttempts": [],
+  "webSocketAttempts": [],
+  "limits": [
+    "Anonymous public pages only. Fresh contexts, no owner cookies, no authentication or production content mutation.",
+    "Initial routed requests are filtered to approved-origin GET/HEAD. Playwright can follow redirect hops without routing them again; this is not a complete pre-network isolation boundary.",
+    "Every observed request/response origin is checked; unexpected-origin hops or write attempts fail the run. WebSocket attempts are blocked by routeWebSocket and fail the run.",
+    "Issue #46 remains an open qualification limit: actual non-prefetch RSC cancellations fail the network gate; no broad exception is introduced.",
+    "Short native playback interval, not full-loop, cross-codec, constrained-network or physical-device qualification.",
+    "Mobile viewport/touch and reduced-motion settings are browser emulation, not physical Android or iOS.",
+    "Actual screenshot visual inspection is required separately from this script."
+  ],
+  "browserVersion": "154.0.8037.57",
+  "activeCheck": null,
+  "fatal": {
+    "errorType": "AssertionError",
+    "reason": "Setup or named browser check failed; remaining checks are not run."
+  },
+  "completedAt": "2026-09-29T08:19:12.593Z",
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "expectedChecks": 15
+  },
+  "status": "failed",
+  "visualInspection": "Required separately; not asserted by this script."
+}

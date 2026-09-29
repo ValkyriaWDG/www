@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "status": "prepared-not-run",
+  "checkedAt": "2026-09-29T07:56:10.314Z",
+  "sourceRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "commands": [
+    "node --check http-smoke.mjs",
+    "node --check browser-smoke.cjs",
+    "node --test harness.test.cjs request-classification.test.cjs"
+  ],
+  "results": {
+    "syntax": "passed",
+    "localContractTests": {
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0
+    },
+    "registeredArtwork": [
+      {
+        "id": "hll-editorial-scene-poster",
+        "sha256": "552756e7c9aae88ead9f5627b9fcd03c131daef2a518c4015c585bf4b8a648e4",
+        "bytes": 52936,
+        "width": 1920,
+        "height": 1080,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-getting-started",
+        "sha256": "93c6d318789a5b333196d1663d2a1c29310db3a6c97a4c0d46c0604e50c2dcae",
+        "bytes": 128958,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-objectives-and-modes",
+        "sha256": "94e43111d1ec080fece16d8915d6be6223d108a20325a2f8a42c9c7cbea246e6",
+        "bytes": 151748,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-roles-and-equipment",
+        "sha256": "2eacb76685578d53e43c1114b65f128d8ca2dc02fe0a78ae96a57d482bce4543",
+        "bytes": 35982,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-communication",
+        "sha256": "afb1ff7c1601545a9965c413ff1b8d88228a394f2032bba19e647e69ed0f2913",
+        "bytes": 73334,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-logistics-and-vehicles",
+        "sha256": "28f521337a0930ae2e3abb4b424a3421c2a771412ac59a3a60be1569fa8443b2",
+        "bytes": 108792,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-armor-and-artillery",
+        "sha256": "7562e8b43706d0b0705b44fcb88af7a3ae21386dfa50c4b9273c1d0c948d636c",
+        "bytes": 29330,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-spawns-and-engineering",
+        "sha256": "b5a26d2a35e32db9d0d3286a01d0360f743229436b250b0713c75f083daf9e43",
+        "bytes": 108082,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-squad-leader-fieldcraft",
+        "sha256": "a861f80b917614f47e73de08c5151fa955ac1e5da274ec756d6698e22c03a80c",
+        "bytes": 32550,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      },
+      {
+        "id": "hll-editorial-news",
+        "sha256": "a4db3120450c965177d5ff0b0ba0c296406756c95eb907258c0e06ea3464e122",
+        "bytes": 25056,
+        "width": 1280,
+        "height": 720,
+        "completeDecode": true
+      }
+    ]
+  },
+  "expected": {
+    "httpChecks": 85,
+    "browserChecks": 15,
+    "captures": 11
+  },
+  "sourceHashes": {
+    "apps/web/src/modules/social/model.ts": "1aa53473fadb3feba2b322a7c2b98642c4d05c9d5fe17b17952cf9dc7d3d5b40",
+    "apps/web/src/components/hll/cinematic-stage.tsx": "739884b0147dd22577eead45f606b4dc47f392a3bbdaeb0933acc5f6fd5d757f",
+    "apps/web/src/components/hll/hll-shell.tsx": "16cafc21a3bf23fc948c9db1706cec847c936709261cfe915c4f65922ffc38df",
+    "apps/web/src/components/public/faq-screen.tsx": "69ec5e970e8319782bae95f2769dc6da5d11b8d424f7ceba587ea7c23bb37387",
+    "apps/web/src/components/public/core-page-data.ts": "b27d49a449b19844d0c0e1e39d4ad06091e15b642d4420b7760311104c3dd3a3",
+    "apps/web/src/components/public/tournaments-screen.tsx": "86abdce70d4ff233274fb60e0aa2759a70e312e7f7dcbb05ed6b226fbb4170b4",
+    "apps/web/src/app/sitemap.ts": "fbfd63257ecd107d4861b3f1c149e2149f8c8aea38328acd7838505e530d2835",
+    "apps/web/src/modules/games/registry.ts": "da434abb1cbc9232bb55dfbaf31ea37a339f15c8cdfea9b0372eb14ae4e0213f"
+  },
+  "harnessHashes": {
+    "http-smoke.mjs": "ec021bf25ba757a78c8ebfedb86ddb41a59fce104d959feb7f7c800adc57f2d3",
+    "browser-smoke.cjs": "3462d707812e04cf1ec70e0043a5ae02b21906c97a192eff0dcf18e19b432aeb",
+    "request-classification.cjs": "5fe236dbe035f6540f18edfad270f71ddce7ed35823698146bd5251cda517eac",
+    "hll-artwork-manifest.json": "ba7b3b06d4875e2fdff65ea8bc7b8900ee4e3196c90adae1efd708a12677f190"
+  },
+  "limits": [
+    "No production request, service startup or browser execution in preparation.",
+    "No provider, authentication, database or content mutation.",
+    "Browser network failures remain strict; issue46 may still fail the final gate."
+  ]
+}
