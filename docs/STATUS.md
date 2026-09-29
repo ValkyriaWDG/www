@@ -35,8 +35,19 @@ passes. Full CI for `0efebe7` then passed in run
 checks. Independent review subsequently found that deferred owner publication also
 needed to guard independently published English prose. Four real-database failures
 reproduced the issue; the all-locale guard passes all 16 focused cases, including
-preservation of unpublished English drafts. The next-head CI and production
-PostgreSQL restore/release acceptance remain pending. Credentials were saved only to protected local
+preservation of unpublished English drafts. Final implementation `f154a59` passed
+[CI 36568326780](https://github.com/ValkyriaWDG/www/actions/runs/36568326780):
+602 unit, 331 PostgreSQL and 166 browser cases, with 107 optional captures skipped.
+PR #67 merged as `338ee2f`; exact-main CI and publisher verification also passed.
+The published immutable image then failed the real PostgreSQL 15 restore/import
+rehearsal: its bundled importer could not resolve `sharp` from `/app/scripts`.
+Restore, four migrations, a zero-change migration rerun and seed passed before that
+failure; production schema/content were unchanged. See the
+[failed rehearsal and pending acceptance record](evidence/hll-legacy-production-2026-09-29/README.md).
+PR #68 corrects the standalone dependency link and adds an actual image importer
+dry-run/apply/replay regression. A new candidate and complete production-major
+rehearsal are required before import. The old web remains ready while its dedicated
+updater and publisher timer are held for this maintenance. Credentials were saved only to protected local
 and runtime environment files; public CRCON reads do not require them. No production
 schema/import, provider activation or legacy-domain cutover is established here.
 

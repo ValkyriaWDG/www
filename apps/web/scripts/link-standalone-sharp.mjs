@@ -17,11 +17,14 @@ export function linkStandaloneSharp(directory) {
   assert(target.startsWith(root + path.sep), 'Traced dependency must stay inside the standalone tree');
   const pkg = JSON.parse(readFileSync(path.join(target, 'package.json'), 'utf8'));
   assert(pkg.name === 'sharp' && pkg.version === expected, 'Traced sharp must match the application pin');
-  const modules = path.join(app, 'node_modules');
-  mkdirSync(modules, { recursive: true });
-  const link = path.join(modules, 'sharp');
-  if (existsSync(link)) assert.equal(realpathSync(link), target, 'Existing sharp entry points to a different package');
-  else symlinkSync(process.platform === 'win32' ? target : path.relative(modules, target), link, process.platform === 'win32' ? 'junction' : 'dir');
+  // Next's server resolves from apps/web; bundled ESM CLIs execute from scripts
+  // and walk the standalone root instead. Both must use the same traced package.
+  for (const modules of [path.join(app, 'node_modules'), path.join(root, 'node_modules')]) {
+    mkdirSync(modules, { recursive: true });
+    const link = path.join(modules, 'sharp');
+    if (existsSync(link)) assert.equal(realpathSync(link), target, 'Existing sharp entry points to a different package');
+    else symlinkSync(process.platform === 'win32' ? target : path.relative(modules, target), link, process.platform === 'win32' ? 'junction' : 'dir');
+  }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
