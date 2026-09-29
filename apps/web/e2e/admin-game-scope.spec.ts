@@ -67,8 +67,16 @@ test('an HLL-scoped editor sees only HLL posts and is denied a Wardogs post', as
 
 test('a platform-wide editor sees every scope and can choose community, Wardogs or HLL', async ({ context, page }) => {
   await signInAs(context, { roles: ['editor'], name: 'Synthetic platform editor' });
-  await page.goto('/cs/admin/news?locale=cs');
-  const scopes = new Set(await columnTexts(page, 'Rozsah'));
+  // Other admin specs publish posts into the shared database; newest rows come first, so
+  // collect the scope column across pages instead of relying on page 1.
+  const scopes = new Set<string>();
+  for (let listPage = 1; listPage <= 10 && scopes.size < 3; listPage++) {
+    await page.goto(`/cs/admin/news?locale=cs&page=${listPage}`);
+    if ((await page.locator('table').count()) === 0) break;
+    const texts = await columnTexts(page, 'Rozsah');
+    if (texts.length === 0) break;
+    for (const text of texts) scopes.add(text);
+  }
   for (const label of ['Wardogs', 'Hell Let Loose', 'Komunita']) expect(scopes).toContain(label);
   await page.goto('/cs/admin/news/new');
   await expect(page.getByTestId('new-post-scope').locator('option')).toHaveText(['Komunita', 'Wardogs', 'Hell Let Loose']);
