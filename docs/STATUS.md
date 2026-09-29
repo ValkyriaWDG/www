@@ -21,6 +21,23 @@ found and fixed on application source `9946e4b`:
 Checks on the `9946e4b` build: lint/types passed; unit 706/706; integration 340/340;
 browser 182 passed, 0 failed (99 opt-in captures skipped), including the new
 `e2e/public-layout.spec.ts`. [Before/after captures](evidence/public-ui-audit-2026-09-29/README.md).
+
+Follow-up on `b8209bb` and `797f7d4` ([captures](evidence/public-ui-copy-icons-2026-09-29/README.md)):
+- Copy no longer calls HLL our history or sends visitors to the old site for HLL matches.
+- Server/members/tournament intros are visitor copy; Czech plural fixed; ping and
+  duplicate refresh notes removed.
+- No disabled "still image" button on HLL content pages; coverless community posts use
+  the pack's community scene.
+- Game sections stop repeating their own game on cards/rows, and shared pages there
+  use the game eyebrow.
+- Discord mark (Simple Icons, CC0; manifest/NOTICE) on every Discord link and the
+  sign-in button; clan crest on sign-in/recovery; pack glyphs on hub destinations;
+  trophy emblems on tournaments.
+
+Checks on the `797f7d4` build: lint/types passed; unit 707/707; full browser suite
+182 passed, 0 failed (99 skipped) before the icon case was added, then
+`public-layout.spec.ts` 4/4 with it; integration 340/340; foundation and `derive-graphics-pack.mjs --check` passed.
+Tournaments have no logo field (a logo upload needs a migration).
 Not changed: the published clan/community CMS pages still contain the owner's older
 sentence about HLL matches on the original website (an editor must update that content);
 production was not re-audited because `valkyria.cz` is blocked by this environment's
