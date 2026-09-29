@@ -14328,6 +14328,182 @@
       "bytes": 29440,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-before-servers-cs-390x844",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/before/servers-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application at main a7be042 (standalone production build, synthetic e2e fixtures), before the change; WebP q72 via sharp; cropped to the top 1300 px",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "b279dad0b1d58d1a12c7880bc6db9a0b5549228368f342b33b832cddfc3c081f",
+      "bytes": 31056,
+      "width": 390,
+      "height": 1300
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-servers-cs-390x844",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/servers-cs-390x844.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "c6f58b99b52a2b0226b197ba96d490e8392673076fb51830fcc4e70b2de6b234",
+      "bytes": 27734,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-before-servers-cs-1024x768",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/before/servers-cs-1024x768.webp",
+      "source": "Playwright capture of the Valkyria application at main a7be042 (standalone production build, synthetic e2e fixtures), before the change; WebP q72 via sharp; cropped to the top 1100 px",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "b69597c45751c7fd2a02ad65875d23ad11810d0b19c276298dd22f80a1bf6bf4",
+      "bytes": 46614,
+      "width": 1024,
+      "height": 1100
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-servers-cs-1024x768",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/servers-cs-1024x768.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "9845da8acd3f21d2fe477e9ad59b89323a63be0b653ff1267ad640d08a735973",
+      "bytes": 37734,
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-before-match-hll-cs-1440-full",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/before/match-hll-cs-1440-full.webp",
+      "source": "Playwright capture of the Valkyria application at main a7be042 (standalone production build, synthetic e2e fixtures), before the change; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "977e44aeffa90e1ae5bdf1b3e5abb789abe33ad2a478bc9777e7c4ab5e9c3317",
+      "bytes": 120484,
+      "width": 1440,
+      "height": 2749
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-match-hll-cs-1440-full",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/match-hll-cs-1440-full.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "0daa621b74cae8394e9547151c2698d358c804f1bc44708431931626b0be2230",
+      "bytes": 104966,
+      "width": 1440,
+      "height": 2345
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-before-match-players-cs-1440x900",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/before/match-players-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application at main a7be042 (standalone production build, synthetic e2e fixtures), before the change; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "0c69a0d9d295dd7c5faa1bb9ae3e04dfec1fc754aa17a967a155dcf22c489cdf",
+      "bytes": 41042,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-match-players-cs-1440x900",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/match-players-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "fe3703ae2d6fd4a139da02b64e4393b3f8090124a81cb681cff62986dc95aff0",
+      "bytes": 52060,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-match-hll-en-1366x768",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/match-hll-en-1366x768.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "517cc22dab564c25b0411cf3b795c997d80c8f5a061e72bc8f302b1dac500b7b",
+      "bytes": 33952,
+      "width": 1366,
+      "height": 768
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-match-hll-cs-390-full",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/match-hll-cs-390-full.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "51c70ca6128439811340dde6f1a9309216d4d4f1afa66ac5ad217f624b52c983",
+      "bytes": 75416,
+      "width": 390,
+      "height": 2798
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-before-tournament-cs-390-full",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/before/tournament-cs-390-full.webp",
+      "source": "Playwright capture of the Valkyria application at main a7be042 (standalone production build, synthetic e2e fixtures), before the change; WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "2ab6f33029852f02501447c280b515fc158fd608a28b21847c957c1f62e62a84",
+      "bytes": 39968,
+      "width": 559,
+      "height": 1728
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-tournament-cs-390-full",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/tournament-cs-390-full.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "109821fdfdd3bf236f45c4f34d891ecb7ded73d4380aaeed10017f6c289e3e93",
+      "bytes": 38114,
+      "width": 390,
+      "height": 1782
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-before-hll-clan-cs-390-panel",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/before/hll-clan-cs-390-panel.webp",
+      "source": "Playwright capture of the Valkyria application at main a7be042 (standalone production build, synthetic e2e fixtures), before the change; WebP q72 via sharp; cropped to the bottom 1000 px",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "1c6c1f72551836610fe1e6288a2fde3b39489b7003ab203577804ff5e0c17dec",
+      "bytes": 17384,
+      "width": 390,
+      "height": 1000
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-hll-clan-en-390x844",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/hll-clan-en-390x844.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "99040a7db39ab6984a0f5d8f191fe03cccbdf1584a5f74535437f0197aa05228",
+      "bytes": 16922,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-clan-cs-1440x900",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/clan-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "16e229248ff7df6cec3b8f37d48dc56e07ab92c66ba712b85b3ef6f8f7c8a890",
+      "bytes": 40810,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "public-ui-audit-2026-09-29-after-format-cs-1440x900",
+      "path": "docs/evidence/public-ui-audit-2026-09-29/after/format-cs-1440x900.webp",
+      "source": "Playwright capture of the Valkyria application at branch feat/hll-platform-handoff 9946e4b (standalone production build, synthetic e2e fixtures); WebP q72 via sharp; the local disposable e2e database had this synthetic match's format set to \"best of 3\" (imported-record style) for the capture",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data, Valkyria branding and graphics-pack artwork (map imagery: HLL rights holders; scenes: owner-supplied AI illustrations); excluded from the Apache code license",
+      "sha256": "a5c4179b86972387b5b7c064d5c76d9db6f74889fd030bef2530436aee25c275",
+      "bytes": 26110,
+      "width": 1440,
+      "height": 900
     }
   ]
 }

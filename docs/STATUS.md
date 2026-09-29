@@ -1,10 +1,43 @@
 # Current status
 
-Updated: 2026-09-29. Stage: **Legacy HLL migration and live CRCON accepted on valkyria.cz at 14:58:22 UTC. Running source 1b38314, immutable image 6623125c; dedicated Watchtower and publisher timer restored. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-29. Stage: **Graphics pack (PR #70, main `a7be042`) published and promoted to the `production` channel at 19:36:21 UTC (image `6c329c43`); the Watchtower replacement was not observed from this environment. Public UI audit fixes are on branch `feat/hll-platform-handoff` (not merged). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
-## Graphics pack integration (PR #70, open, not deployed)
+## Public UI audit fixes (branch `feat/hll-platform-handoff`, not merged)
 
-Branch `assets/graphics-pack-handoff` integrates the owner's graphics pack with the
+A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed
+[legacy production captures](evidence/hll-legacy-production-2026-09-29/README.md))
+found and fixed on application source `9946e4b`:
+
+- Match detail: maps/rounds and imported statistics left the one-third pane (player
+  columns were cut at 1440 px) for a full-width section below list and pane.
+- Imported format "best of 1" was shown as "best of 1 · Best of 1 (Bo1)"; now once.
+- HLL servers: PR #70's row thumbnail squeezed phone names into mid-word breaks, and
+  1024 px squeezed the 58 % list; phones now get row summaries, two columns from 1280 px.
+- Tournament description tables widened the page by 169 px on phones.
+- The HLL panel on clan/community said HLL matches stay on the original website; it now
+  links the on-site HLL section and labels the old site as the archive.
+- Breadcrumb links have a 24 px touch target.
+
+Checks on the `9946e4b` build: lint/types passed; unit 706/706; integration 340/340;
+browser 182 passed, 0 failed (99 opt-in captures skipped), including the new
+`e2e/public-layout.spec.ts`. [Before/after captures](evidence/public-ui-audit-2026-09-29/README.md).
+Not changed: the published clan/community CMS pages still contain the owner's older
+sentence about HLL matches on the original website (an editor must update that content);
+production was not re-audited because `valkyria.cz` is blocked by this environment's
+network policy. Next: review and merge, then an operator-run publication.
+
+## Graphics pack integration (PR #70, merged and published)
+
+Squash-merged as main `a7be042c0089629d3b850dd59a5761c5a8fe1899`. Publisher run
+[36615145766](https://github.com/ValkyriaWDG/www/actions/runs/36615145766) passed
+Foundation, Application (lint, types, unit, integration, build, image, rollback
+rehearsal, scan, e2e, budgets, artwork) and Quality gate; after the protected
+environment approval it published `majorluk/valkyria-www@sha256:6c329c43b071f322ad8b123a120a3c5744689557d2241edc269092e584ede330`
+and reported channel status `promoted` at 19:36:21 UTC (migration and runtime
+fingerprints equal to `1b38314 / 6623125c`). The Watchtower replacement and live pages
+were not observed from this environment.
+
+Branch `assets/graphics-pack-handoff` integrated the owner's graphics pack with the
 brand correction (`5aa60ff`) on application source `7f4dc44`; head also merges main
 `264bea6` (#71, docs only). See the [catalog's implemented integration](assets/graphics-pack-2026-09-29.md#implemented-integration)
 and [evidence](evidence/graphics-pack-2026-09-29/README.md). The PR #69 hub cover,
@@ -23,9 +56,8 @@ strip geometry, crest and HLL/WDG media contracts are unchanged.
   176/176; archive `restore.mjs --verify` 497/497.
 
 Not included: corrected ready-made compositions with baked Czech copy, a map-guide page,
-square/Discord export downloads, icons on the remaining mapped targets. No merge,
-deployment, production import or Discord message. Next: review PR #70; operator-run
-release per `docs/operations/` after merge.
+square/Discord export downloads, icons on the remaining mapped targets. No production
+import or Discord message.
 
 The archived pack itself: **497 original files** with exact hashes and a reversible
 representation of the oversized editor ([pack README](../assets/design-packs/valkyria-2026-09-29/README.md));
