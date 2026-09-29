@@ -1,0 +1,1512 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "anonymous-public-production-crest-comparison",
+  "origin": "https://valkyria.cz",
+  "startedAt": "2026-09-29T11:56:53.483Z",
+  "deploymentIdentity": {
+    "revision": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+    "imageDigest": "sha256:b5f636fcc3b36f87ca8e5234ffd968c307627783f9367b99070dde929428ab65",
+    "identityReference": "runtime-after.json",
+    "provenance": "Operator-supplied runtime observation; browser cannot attest container labels."
+  },
+  "harnessSha256": "21d4bd962ee122977fc1d7381c2410e315a23f9906a3c6e8d2b7ebb6ce9009fb",
+  "localSourceRevision": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+  "sourceFiles": [
+    {
+      "file": "apps/web/src/components/shell/shell.module.css",
+      "sha256Lf": "f701c49ff2a2c250401d6eba5ea2d8ba44554ad0286f77808846a7a83281c8e4"
+    },
+    {
+      "file": "apps/web/src/components/hll/hll.module.css",
+      "sha256Lf": "6f4c45e117bdb9fda37c5f014743cd80d213daaa878ce1cdcd3d0d725392c91f"
+    },
+    {
+      "file": "apps/web/e2e/platform.spec.ts",
+      "sha256Lf": "8bc6d7e22834472a0ca2a695975309b5015ec03f92c5aa0b7ef8d27ced483236"
+    }
+  ],
+  "browserProduct": "Chrome for Testing",
+  "browserExecutableSha256": "6b5da320179b656aefdb74ff10bc0bd33ba8d5ea869347e04e0a6b2bdd815e96",
+  "playwrightVersion": "1.63.0",
+  "checks": [
+    {
+      "name": "cs-desktop-landing-crest-equivalence",
+      "status": "passed",
+      "observed": {
+        "wardogs": {
+          "x": 748.8046875,
+          "y": 307.8515625,
+          "width": 422.390625,
+          "height": 467.328125,
+          "centerX": 960,
+          "centerY": 541.515625,
+          "opacity": 0.12,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        },
+        "hll": {
+          "x": 748.8046875,
+          "y": 307.8515625,
+          "width": 422.390625,
+          "height": 467.328125,
+          "centerX": 960,
+          "centerY": 541.515625,
+          "opacity": 0.12,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        }
+      },
+      "durationMs": 2249
+    },
+    {
+      "name": "cs-desktop-hll-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.12",
+        "visibility": "visible"
+      },
+      "durationMs": 578
+    },
+    {
+      "name": "cs-desktop-wardogs-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.12",
+        "visibility": "visible"
+      },
+      "durationMs": 790
+    },
+    {
+      "name": "en-desktop-landing-crest-equivalence",
+      "status": "passed",
+      "observed": {
+        "wardogs": {
+          "x": 748.8046875,
+          "y": 307.8515625,
+          "width": 422.390625,
+          "height": 467.328125,
+          "centerX": 960,
+          "centerY": 541.515625,
+          "opacity": 0.12,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        },
+        "hll": {
+          "x": 748.8046875,
+          "y": 307.8515625,
+          "width": 422.390625,
+          "height": 467.328125,
+          "centerX": 960,
+          "centerY": 541.515625,
+          "opacity": 0.12,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        }
+      },
+      "durationMs": 1152
+    },
+    {
+      "name": "en-desktop-hll-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.12",
+        "visibility": "visible"
+      },
+      "durationMs": 584
+    },
+    {
+      "name": "en-desktop-wardogs-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.12",
+        "visibility": "visible"
+      },
+      "durationMs": 476
+    },
+    {
+      "name": "cs-mobile-landing-crest-equivalence",
+      "status": "passed",
+      "observed": {
+        "wardogs": {
+          "x": 74.1015625,
+          "y": 190.1484375,
+          "width": 241.796875,
+          "height": 267.515625,
+          "centerX": 195,
+          "centerY": 323.90625,
+          "opacity": 0.11,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        },
+        "hll": {
+          "x": 74.1015625,
+          "y": 190.1484375,
+          "width": 241.796875,
+          "height": 267.515625,
+          "centerX": 195,
+          "centerY": 323.90625,
+          "opacity": 0.11,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        }
+      },
+      "durationMs": 1476
+    },
+    {
+      "name": "cs-mobile-hll-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.11",
+        "visibility": "visible"
+      },
+      "durationMs": 1863
+    },
+    {
+      "name": "cs-mobile-wardogs-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.11",
+        "visibility": "visible"
+      },
+      "durationMs": 898
+    },
+    {
+      "name": "en-mobile-landing-crest-equivalence",
+      "status": "passed",
+      "observed": {
+        "wardogs": {
+          "x": 74.1015625,
+          "y": 190.1484375,
+          "width": 241.796875,
+          "height": 267.515625,
+          "centerX": 195,
+          "centerY": 323.90625,
+          "opacity": 0.11,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        },
+        "hll": {
+          "x": 74.1015625,
+          "y": 190.1484375,
+          "width": 241.796875,
+          "height": 267.515625,
+          "centerX": 195,
+          "centerY": 323.90625,
+          "opacity": 0.11,
+          "filter": "none",
+          "display": "block",
+          "visibility": "visible",
+          "asset": "/_next/static/media/valkyria-emblem-733.3pmu4fyke6h3k.webp",
+          "naturalWidth": 733,
+          "naturalHeight": 811,
+          "complete": true
+        }
+      },
+      "durationMs": 2359
+    },
+    {
+      "name": "en-mobile-hll-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.11",
+        "visibility": "visible"
+      },
+      "durationMs": 754
+    },
+    {
+      "name": "en-mobile-wardogs-news-crest-hidden",
+      "status": "passed",
+      "observed": {
+        "display": "none",
+        "opacity": "0.11",
+        "visibility": "visible"
+      },
+      "durationMs": 1174
+    },
+    {
+      "name": "strict-browser-network-gate",
+      "status": "passed",
+      "observed": {
+        "pageErrors": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "blockedRequests": 0,
+        "unexpectedOrigins": 0,
+        "writeAttempts": 0,
+        "webSockets": 0
+      },
+      "durationMs": 0
+    }
+  ],
+  "captures": [
+    {
+      "file": "browser-after-01-wardogs-cs-desktop.png",
+      "sha256": "ed40d2d21f77db8e02bd654724728acdf21deab6b5fcc14370e68a05c7c38c0a",
+      "bytes": 1481165,
+      "width": 1920,
+      "height": 1080,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "sourceUrl": "https://valkyria.cz/cs/wardogs",
+      "sourceRevision": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+      "caption": "Actual Wardogs Czech landing at 1920x1080; decorative crest comparison.",
+      "capturedAt": "2026-09-29T11:56:55.721Z",
+      "visualInspection": "Required separately."
+    },
+    {
+      "file": "browser-after-01-hll-cs-desktop.png",
+      "sha256": "93cfeba1be5a892b447f46cd2fcd1c1746ac2da1458ce54ec6bd808012a6ce68",
+      "bytes": 1377821,
+      "width": 1920,
+      "height": 1080,
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "sourceUrl": "https://valkyria.cz/cs/hll",
+      "sourceRevision": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+      "caption": "Actual Hell Let Loose Czech landing at 1920x1080; decorative crest comparison.",
+      "capturedAt": "2026-09-29T11:56:56.790Z",
+      "visualInspection": "Required separately."
+    },
+    {
+      "file": "browser-after-01-wardogs-cs-mobile.png",
+      "sha256": "894eba18d265d72b00c384f052fc110b0fd39852ed1636925f93c1187739eb3c",
+      "bytes": 302510,
+      "width": 390,
+      "height": 844,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sourceUrl": "https://valkyria.cz/cs/wardogs",
+      "sourceRevision": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+      "caption": "Actual Wardogs Czech landing at 390x844; decorative crest comparison.",
+      "capturedAt": "2026-09-29T11:57:01.187Z",
+      "visualInspection": "Required separately."
+    },
+    {
+      "file": "browser-after-01-hll-cs-mobile.png",
+      "sha256": "72bdb73ecb430840a1030ab4764889127c8cc9d24d7d30b2beb5c3af3a4d7a16",
+      "bytes": 284599,
+      "width": 390,
+      "height": 844,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sourceUrl": "https://valkyria.cz/cs/hll",
+      "sourceRevision": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+      "caption": "Actual Hell Let Loose Czech landing at 390x844; decorative crest comparison.",
+      "capturedAt": "2026-09-29T11:57:02.016Z",
+      "visualInspection": "Required separately."
+    }
+  ],
+  "pageErrors": [],
+  "httpErrors": [],
+  "failedRequests": [],
+  "prefetchCancellations": [
+    {
+      "path": "/cs/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/tournaments",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/servers",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/faq",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/field-manual",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/tournaments",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/servers",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/community",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/field-manual",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/servers",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/tournaments",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/faq",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/community",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/servers",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/servers",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/tournaments",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll/faq",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/cs/wardogs/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/clan",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/tournaments",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/matches",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/servers",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/members",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/faq",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll/field-manual",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/login",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/hll",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs/news",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": true,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/wardogs",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    },
+    {
+      "path": "/en/privacy",
+      "sameOrigin": true,
+      "method": "GET",
+      "resourceType": "fetch",
+      "errorCode": "net::ERR_ABORTED",
+      "rsc": true,
+      "prefetch": true,
+      "duringNavigation": false,
+      "duringContextClose": false
+    }
+  ],
+  "lifecycleCancellations": [],
+  "blockedRequests": [],
+  "unexpectedOrigins": [],
+  "writeAttempts": [],
+  "webSockets": [],
+  "limits": [
+    "Fresh anonymous contexts; only approved-origin GET/HEAD initial requests, no owner profile or authentication/content changes.",
+    "Redirect hops are observed and fail on unexpected origins; initial routing is not complete pre-network redirect isolation. WebSockets never connect upstream.",
+    "Issue #46 is not waived: non-prefetch RSC fetch failures remain failures, including during context disposal. Only exact optional RSC prefetch aborts are classified separately.",
+    "Document/media ERR_ABORTED during our explicit page navigation or context disposal is recorded separately; no ordinary fetch receives that lifecycle exception.",
+    "Mobile means 390x844 touch/viewport emulation, not physical iOS/Android. This verifies crest rendering, not media playback or broad application acceptance.",
+    "The four actual Czech viewport captures require separate visual inspection. English routes are measured without additional captures."
+  ],
+  "browserVersion": "154.0.8037.57",
+  "activeCheck": null,
+  "completedAt": "2026-09-29T11:57:09.402Z",
+  "summary": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "expectedChecks": 13,
+    "captures": 4,
+    "expectedCaptures": 4
+  },
+  "status": "passed"
+}
