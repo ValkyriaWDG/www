@@ -158,6 +158,41 @@ test.describe('platform routing', () => {
     }
   });
 
+  test('the community hub shows the owner cover; phones get the small copy and shared pages never load it', async ({ browser }) => {
+    const covers: string[] = [];
+    const open = async (width: number, height: number) => {
+      const context = await browser.newContext({ viewport: { width, height } });
+      const page = await context.newPage();
+      page.on('request', (request) => {
+        if (request.url().includes('/images/community/hub-cover')) covers.push(new URL(request.url()).pathname);
+      });
+      return { context, page };
+    };
+    const desktop = await open(1920, 1080);
+    await desktop.page.goto('/cs/news');
+    await expect(desktop.page.locator('[data-scene-fallback]')).toBeAttached();
+    await expect(desktop.page.locator('[data-hub-cover]')).toHaveCount(0);
+    expect(covers).toEqual([]);
+
+    await desktop.page.goto('/cs');
+    const cover = desktop.page.locator('[data-hub-cover] img');
+    await expect.poll(() => cover.evaluate((image: HTMLImageElement) => (image.complete ? image.currentSrc : ''))).toContain('/images/community/hub-cover-1672.webp');
+    const box = (await cover.boundingBox())!;
+    expect(box.width).toBeGreaterThanOrEqual(1920);
+    expect(box.height).toBeGreaterThanOrEqual(1080);
+    // The hub carries the crest in its heading; the scene's ghosted crest stays on the game landings.
+    await expect(desktop.page.locator('[data-emblem]')).toBeHidden();
+    await desktop.context.close();
+
+    const phone = await open(390, 844);
+    await phone.page.goto('/en');
+    await expect
+      .poll(() => phone.page.locator('[data-hub-cover] img').evaluate((image: HTMLImageElement) => (image.complete ? image.currentSrc : '')))
+      .toContain('/images/community/hub-cover-960.webp');
+    await expectNoHorizontalOverflow(phone.page);
+    await phone.context.close();
+  });
+
   test('the FAQ is an HLL menu destination that stays honestly unpublished until editors publish it', async ({ page }) => {
     await page.goto('/cs/hll/faq');
     await expect(page.getByRole('heading', { level: 1, name: 'Časté dotazy' })).toBeVisible();

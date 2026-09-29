@@ -355,6 +355,12 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   boxes on both games' landings, news pages and the hub at 1920/1366/1024/390 px
   ([evidence](evidence/hll-strip-2026-09-29/README.md)). PR #66 merged as `571475f`
   and is deployed with production strip/crest verification above; no migration.
+- **Hub cover:** the community hub uses the owner-supplied cover (HLL left, Wardogs right)
+  on the hub route only, with 960/1672 px derivatives, a centred heading and the game
+  cards as windows onto their half ([evidence](evidence/hll-hub-cover-2026-09-29/README.md)).
+  PR #69 merged as `d61c38f`; included in the next corrected migration candidate.
+  No additional migration. Its earlier publisher was cancelled before publication
+  because that source still contains the importer packaging defect recorded above.
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
