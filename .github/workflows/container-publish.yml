@@ -75,4 +75,16 @@ jobs:
           test "$SOURCE_SHA" = "$EXPECTED_SHA"
           docker pull "$IMAGE_NAME@$IMAGE_DIGEST"
           test "$(docker image inspect "$IMAGE_NAME@$IMAGE_DIGEST" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')" = "$SOURCE_SHA"
-          printf 'Verified published image %s@%s from accepted revision %s. No deployment or mutable production tag was performed.\n' "$IMAGE_NAME" "$IMAGE_DIGEST" "$SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
+          printf 'Verified immutable image %s@%s from accepted revision %s. Production promotion is reported separately below.\n' "$IMAGE_NAME" "$IMAGE_DIGEST" "$SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
+      - name: Promote compatible image to the Watchtower production channel
+        if: vars.WATCHTOWER_PROMOTION_ENABLED == 'true'
+        id: promotion
+        env:
+          IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE }}
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+          SOURCE_SHA: ${{ github.sha }}
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: node scripts/release/production-channel.mjs
+      - name: Record disabled production promotion
+        if: vars.WATCHTOWER_PROMOTION_ENABLED != 'true'
+        run: echo 'Production promotion is disabled. Only the immutable image was published; no deployment or mutable tag update was performed.' >> "$GITHUB_STEP_SUMMARY"
