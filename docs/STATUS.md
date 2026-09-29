@@ -207,8 +207,9 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   160 browser tests at `c3e65a6`). PR #59 merged as `e5d7276`; exact-main
   [CI 36503155902](https://github.com/ValkyriaWDG/www/actions/runs/36503155902) passed.
 - **Crest:** the HLL main menu shows the Wardogs ghosted crest (same size, position,
-  colour and opacity; hidden on content pages), per the owner
-  ([evidence](evidence/hll-crest-2026-09-29/README.md)).
+  colour and opacity; hidden on content pages), per the owner. Editors now continue after
+  an inserted image instead of leaving it selected, so the next keystroke or table no longer
+  replaces it ([evidence](evidence/hll-crest-2026-09-29/README.md)).
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
