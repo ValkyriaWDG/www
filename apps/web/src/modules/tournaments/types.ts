@@ -1,6 +1,7 @@
 import type { ExternalLink, Game, Locale } from '@valkyria/db';
 import type { PublicMatchSummary } from '@/modules/matches/types';
 import type { LocalizedProse, ProseAdminDetail, ProseStatus } from '@/modules/prose/types';
+import type { PublicArchiveEditorial } from '@/modules/legacy/editorial-details';
 
 export type TournamentPublication = 'draft' | 'published';
 
@@ -9,6 +10,7 @@ export type TournamentPhase = 'upcoming' | 'ongoing' | 'finished' | 'undated';
 
 /** Public list row: published shared facts only (no notes, no creator). */
 export type PublicTournamentSummary = {
+  archiveEditorial?: PublicArchiveEditorial | null;
   slug: string;
   game: Game;
   name: string;

@@ -12,6 +12,7 @@ import { listPublicTournaments } from '@/modules/tournaments/queries';
 import type { PublicTournamentSummary, TournamentPhase } from '@/modules/tournaments/types';
 import { ListLoadError } from './list-load-error';
 import styles from './tournaments.module.css';
+import { ArchiveEditorial } from '@/components/content/archive-editorial';
 
 export const PHASE_KIND: Record<TournamentPhase, StatusKind> = { ongoing: 'success', upcoming: 'info', finished: 'neutral', undated: 'neutral' };
 
@@ -41,6 +42,7 @@ function TournamentCard({ item, locale, t }: { item: PublicTournamentSummary; lo
             {item.name}
           </Link>
         </h3>
+        {item.archiveEditorial ? <ArchiveEditorial details={item.archiveEditorial} locale={locale} compact /> : null}
         <p className={styles.cardFacts}>
           <span>{tournamentDates(item, locale, t)}</span>
           <span>{t('list.matchCount', { count: item.matchCount })}</span>
@@ -57,7 +59,7 @@ export async function TournamentsScreen({ locale, game }: { locale: AppLocale; g
   let items: PublicTournamentSummary[] | null = null;
   if (getServerEnv().DATABASE_URL) {
     try {
-      items = await listPublicTournaments(getDb(), GAME_REGISTRY[game].db);
+      items = await listPublicTournaments(getDb(), GAME_REGISTRY[game].db, new Date(), locale);
     } catch (error) {
       console.error('[tournaments] list query failed', error instanceof Error ? error.name : 'unknown');
     }

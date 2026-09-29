@@ -1,8 +1,23 @@
 # Current status
 
-Updated: 2026-09-29. Stage: **Legacy HLL migration and live CRCON accepted on valkyria.cz at 14:58:22 UTC. Running source 1b38314, immutable image 6623125c; dedicated Watchtower and publisher timer restored. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
-## Graphics pack integration (PR #70, open, not deployed)
+## Public source field parity (#73)
+
+The additive repair restores country/coalition labels, capture and time provenance,
+complete recording credits, tournament descriptions/logos and article author images.
+It preserves original import identities, editor versions/revisions, match facts and
+results, publication and privacy decisions. Conflicting source values stay marked.
+See the [operator procedure](operations/legacy-hll-import.md#additive-public-metadata-repair)
+and [local/source/browser evidence](evidence/legacy-field-parity-2026-09-30/README.md).
+Production repair and exact-image acceptance remain required before issue closure.
+
+## Graphics pack integration (PR #70; original implementation record)
+
+Update: PR #70 has merged as `a7be042c0089629d3b850dd59a5761c5a8fe1899`.
+The 29 September 21:58 UTC paired capture confirmed it running healthy as image
+`sha256:6c329c43b071f322ad8b123a120a3c5744689557d2241edc269092e584ede330`.
+The original branch verification below is historical, not the current merge status.
 
 Branch `assets/graphics-pack-handoff` integrates the owner's graphics pack with the
 brand correction (`5aa60ff`) on application source `7f4dc44`; head also merges main
@@ -33,7 +48,7 @@ representation of the oversized editor ([pack README](../assets/design-packs/val
 ([brand correction](assets/brand-correction-2026-09-29.md)); 16 original
 [UI icons](assets/icon-handoff.md). Source galleries are asset proof, not app screenshots.
 
-## Current production: legacy HLL migration and CRCON
+## Initial production import: legacy HLL migration and CRCON
 
 Source `1b38314ff6faf5182166fe15dff3172e4cf752ef` runs from
 `majorluk/valkyria-www@sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b`
@@ -50,8 +65,10 @@ There are **131 primary scoreboards and three additional rounds**. Twenty-one
 historical sides remain unknown; editorial results are preserved without claiming
 new verification. Only match211's origin/game link is individually verified; other
 historical game IDs do not acquire guessed provider links. Hidden matches and private
-player/account fields are excluded. Twenty-seven external/unsupported image references
-remain readable source links. Original fixed GMT+1 instants and credits are preserved.
+player/account fields are excluded. Twenty-six external/unsupported body image
+references remain readable source links; one unsupported cover was omitted and is
+covered by follow-up #73. Original fixed GMT+1 instants are preserved; complete
+recording attribution and additional public fields are also repaired by #73.
 
 The actual immutable image passed an isolated PostgreSQL **15.17** restore from the
 held production capture, **680 HTTP/media checks**, and five previous-image checks

@@ -115,6 +115,61 @@ Legacy-domain DNS/Cloudflare routing remains a separate cutover. With configured
 published destinations. Missing, archived or unpublished targets are not redirected
 to Home or exposed. Retain the old website until migration acceptance is complete.
 
+## Additive public metadata repair
+
+Use this path for the already imported archive. It does not run the normal import,
+seed, publication or schema migration. Both repair flags can be combined; neither
+can be combined with `--publish` or `--adopt-seed`.
+
+From a trusted operator checkout, extract the bounded supplement from the same
+legacy source revision and the unchanged original bundle:
+
+```sh
+pnpm --filter @valkyria/web exec tsx src/cli/extract-legacy-editorial-supplement.ts \
+  --source /private/legacy-source --bundle /private/bundle/bundle.json \
+  --output /private/.local/editorial-supplement
+```
+
+The source-only extractor is not shipped in the production image. Review the
+supplement before the first repair: two local author image files and 25 document
+frontmatter records. Its internal `bundleSha256` is the canonical parsed-bundle
+hash, while CLI `--expected-sha256` and `--expected-supplement-sha256` are hashes of
+the actual file bytes. Do not substitute one hash representation for the other.
+Keep this supplement private alongside the original bundle and staged image files.
+
+Run the actual qualified image importer with read-only input mounts and a writable
+private report directory, first without `--apply`:
+
+```sh
+node /app/scripts/import-legacy-hll.mjs \
+  --bundle /bundle/bundle.json --editorial-supplement /supplement/supplement.json \
+  --repair-match-metadata --repair-editorial-metadata \
+  --match-clock legacy-fixed-offset --report /reports/dry.json
+```
+
+After a fresh paired backup and isolated production-major rehearsal, add `--apply`,
+`--expected-sha256 <bundle-file-sha256>` and
+`--expected-supplement-sha256 <supplement-file-sha256>`. Require zero invalid/conflict
+items. Compare all application tables, sequences, migration journal and media files;
+only the source ledger, supplemental media and audit events may change. Repeat the
+same apply and require identical full fingerprints and only unchanged results.
+Never repair a different or partially edited source projection by overwriting it.
+
+The projection is separately versioned and hashed. Original ledger hashes remain
+unchanged, and current editor revisions, match facts/results, player visibility and
+publication are preserved even when their version has advanced. Missing/mismatched
+source identity, target or ready media is a conflict. Country labels, coalition names,
+capture fields, duration, point values and complete recording credits retain their
+historical attribution. Conflicting times/capture values receive an explicit note;
+the repair never silently changes the match's start instant or declares a winner.
+Anonymous metadata/media reads require published targets; tampered projection hashes
+fail closed. See [field-parity evidence](../evidence/legacy-field-parity-2026-09-30/README.md).
+
+This repair adds no SQL migration. The previous post-import application remains a
+compatible rollback reader of the augmented ledger, subject to the recorded real
+image rehearsal. The older pre-import rollback limitations above still apply to the
+initial schema/statistics migration; do not confuse the two recovery boundaries.
+
 ## CRCON configuration and administration
 
 Set `SERVER_STATUS_SOURCE=crcon` and an approved `HLL_SERVER_SOURCES_JSON` in the

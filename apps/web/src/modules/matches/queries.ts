@@ -23,6 +23,7 @@ import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/mo
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { adminMatchListSchema, publicMatchListSchema, type AdminMatchListInput, type PublicMatchListInput } from './schemas';
 import { loadMatchStatistics } from './statistics-service';
+import { loadPublicLegacyMatchDetails } from './legacy-details';
 import type {
   AdminMatch,
   AdminMatchListItem,
@@ -98,6 +99,7 @@ function publicResult(row: Pick<SummaryRow, 'status' | 'resultOutcome' | 'result
 }
 
 async function toSummaries(db: Executor, rows: SummaryRow[]): Promise<PublicMatchSummary[]> {
+  const legacyDetails = await loadPublicLegacyMatchDetails(db, rows.map((row) => row.id));
   const logos = await loadPublicImages(
     db,
     rows.map((row) => row.opponentLogoAssetId),
@@ -115,6 +117,7 @@ async function toSummaries(db: Executor, rows: SummaryRow[]): Promise<PublicMatc
     originalStartsAt: row.originalStartsAt?.toISOString() ?? null,
     status: row.status,
     result: publicResult(row),
+    legacyDetails: legacyDetails.get(row.id) ?? null,
   }));
 }
 

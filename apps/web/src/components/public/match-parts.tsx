@@ -7,6 +7,7 @@ import { mediaUrl } from '@/modules/content/rich-text/render';
 import type { PublicMatchSummary } from '@/modules/matches/types';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import { describeResult, formatScore, outcomeKind, statusKind, zoneName } from './match-format';
+import { MatchCountry } from './match-country';
 import styles from './matches.module.css';
 
 export const getMatchTranslations = (locale: AppLocale) => getTranslations({ locale, namespace: 'matches' });
@@ -51,9 +52,9 @@ export function MatchTeams({ match, t }: { match: PublicMatchSummary; t: MatchT 
     <span className={styles.matchName}>
       <OpponentMark match={match} />
       <span className={styles.teams}>
-        <span className={styles.us}>{t('row.valkyria')}</span>
+        <span className={styles.teamWithCountry}><MatchCountry code={match.legacyDetails?.homeCountry} t={t} /><span className={styles.us}>{match.legacyDetails?.homeTeamName ?? t('row.valkyria')}</span></span>
         <span className={styles.vs}>{t('row.versus')}</span>
-        <span data-opponent="">{match.opponentName}</span>
+        <span className={styles.teamWithCountry}><MatchCountry code={match.opponentName === match.legacyDetails?.awayTeamName ? match.legacyDetails.awayCountry : null} t={t} /><span data-opponent="">{match.opponentName}</span></span>
       </span>
     </span>
   );
@@ -120,7 +121,7 @@ export function MatchBanner({ match, t, scene }: { match: PublicMatchSummary; t:
       {scene ? <img className={styles.bannerScene} src={scene} alt="" decoding="async" /> : null}
       <span className={styles.bannerSide}>
         <Image src={emblem} alt="" sizes="88px" />
-        <span className={styles.bannerName}>{t('row.valkyria')}</span>
+        <span className={styles.bannerName}>{match.legacyDetails?.homeTeamName ?? t('row.valkyria')}</span>
       </span>
       <span className={styles.bannerVs}>VS</span>
       <span className={styles.bannerSide}>
