@@ -1,0 +1,2 @@
+ALTER TABLE "legacy_import" ADD COLUMN "source_metadata" jsonb DEFAULT '{}'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "legacy_import" ADD CONSTRAINT "legacy_import_metadata_ck" CHECK (jsonb_typeof("legacy_import"."source_metadata") = 'object');

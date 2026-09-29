@@ -24,6 +24,12 @@ const sourceBaseUrl = z
     return url.protocol === 'https:' || LOOPBACK.has(url.hostname);
   }, 'must be an HTTPS origin (optional path) without credentials, query or fragment');
 
+/** Explicit public statistics base; it is a link allowlist, never an API fetch target. */
+const publicStatsBaseUrl = sourceBaseUrl.refine((value) => {
+  const url = new URL(value);
+  return url.protocol === 'https:' && !/[\s\\?#]/.test(value) && url.href.replace(/\/$/, '') === value.replace(/\/$/, '');
+}, 'must be a canonical HTTPS public statistics base');
+
 const crconConfigSchema = z
   .array(
     z.object({
@@ -36,7 +42,9 @@ const crconConfigSchema = z
       /** Approved public join address (`host:port`). */
       address: z.string().trim().regex(ADDRESS).optional(),
       /** Public live statistics page for this server. */
-      statsUrl: z.url({ protocol: /^https$/ }).optional(),
+      statsUrl: publicStatsBaseUrl.optional(),
+      /** CRCON database server number; shared history IDs are not fenced by API origin. */
+      serverNumber: z.number().int().positive().max(2_147_483_647).optional(),
       /** CRCON API key, only when the server locks its statistics API; never logged or sent to browsers. */
       statsApiKey: z.string().trim().min(16).max(256).regex(/^[\x21-\x7e]+$/).optional(),
     }),
@@ -51,6 +59,7 @@ export type CrconServerConfig = {
   address: string | null;
   statsUrl: string | null;
   statsApiKey?: string | null;
+  serverNumber?: number | null;
 };
 
 /**
@@ -74,9 +83,27 @@ export function parseCrconConfig(json: string): { servers: CrconServerConfig[]; 
       address: server.address ?? null,
       statsUrl: server.statsUrl ?? null,
       statsApiKey: server.statsApiKey ?? null,
+      serverNumber: server.serverNumber ?? null,
     })),
     error: null,
   };
+}
+
+/** Builds a link only from the configured public base, never from upstream JSON. */
+export function crconGameUrl(server: CrconServerConfig, gameId: number): string | null {
+  if (!server.statsUrl || !publicStatsBaseUrl.safeParse(server.statsUrl).success || !Number.isSafeInteger(gameId) || gameId <= 0 || gameId > 2_147_483_647) return null;
+  return `${server.statsUrl.replace(/\/$/, '')}/games/${gameId}`;
+}
+
+/** Accepts only the exact trusted base and canonical /games/<positive integer> path. */
+export function parseCrconGameUrl(value: string, server: CrconServerConfig): { gameId: number; url: string } | null {
+  if (value.length > 2048 || /[\s\\?#]/.test(value)) return null;
+  const id = value.match(/\/games\/([1-9]\d*)$/)?.[1];
+  if (!id) return null;
+  const gameId = Number(id);
+  const url = crconGameUrl(server, gameId);
+  // Exact equality rejects alternate origins, credentials, percent encoding and dot segments.
+  return url === value ? { gameId, url } : null;
 }
 
 export type TeamPair = { allied: number; axis: number };

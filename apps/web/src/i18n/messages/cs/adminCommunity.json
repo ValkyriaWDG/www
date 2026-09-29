@@ -802,6 +802,19 @@
     "replace": "Nahradit statistiky",
     "importNote": "Import nahradí dříve uložené statistiky tohoto zápasu.",
     "imported": "Statistiky importovány.",
-    "working": "Probíhá…"
+    "working": "Probíhá…",
+    "sourceLink": "Původní statistiky hry (externí web)",
+    "sourceOptionUrl": "Odkaz na dokončenou hru",
+    "sourceOptionUrlHint": "Vložte veřejný odkaz na hru vybraného serveru. Přijímáme pouze nastavené weby se statistikami.",
+    "gameUrl": "Odkaz na hru",
+    "gameUrlHint": "Odkaz HTTPS končící /games/1234. Před importem se ověří číslo hry i server.",
+    "additionalRounds": "{count, plural, one {# další historické kolo je dostupné ve veřejném detailu zápasu.} few {# další historická kola jsou dostupná ve veřejném detailu zápasu.} other {# dalších historických kol je dostupných ve veřejném detailu zápasu.}} Zveřejnění hráčů platí pro všechna kola; změna strany jen pro první kolo. Nový import nahradí všechna kola.",
+    "unassignedSide": "Historický zdroj neuvádí stranu Valkyrie. Dokud není vybrána ověřená strana, týmy se zobrazují jako Spojenci a Osa.",
+    "selectSide": "Neznámá — nepřiřazeno",
+    "errors": {
+      "game_url_invalid": "Použijte přesný veřejný odkaz /games/číslo vybraného nastaveného serveru, bez parametrů a fragmentu.",
+      "scoreboard_source_mismatch": "Vrácená hra nebo server neodpovídá požadovanému zdroji. Statistiky se nezměnily.",
+      "scoreboard_unfinished": "Zdroj musí obsahovat dokončenou hru s platným začátkem, koncem a výsledkem. Statistiky se nezměnily."
+    }
   }
 }

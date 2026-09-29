@@ -47,6 +47,8 @@
 
 .widget {
   display: grid;
+  /* Keep a scrollable child (such as the mobile editor toolbar) inside its panel. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
 }
 

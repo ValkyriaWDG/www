@@ -36,6 +36,34 @@
       "when": 1790636938220,
       "tag": "0004_tournaments",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790680494335,
+      "tag": "0005_legacy_crcon",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790680864401,
+      "tag": "0006_legacy_match_rounds",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790680937796,
+      "tag": "0007_unknown_legacy_side",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790682250200,
+      "tag": "0008_legacy_source_provenance",
+      "breakpoints": true
     }
   ]
 }

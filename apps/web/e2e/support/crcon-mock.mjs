@@ -61,6 +61,7 @@ function scoreboard(gameId) {
   };
   return {
     id: gameId,
+    server_number: 1,
     start: '2024-06-01T18:00:00',
     end: '2024-06-01T19:00:00',
     map_name: 'synthetic_offensive',

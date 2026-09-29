@@ -1,7 +1,7 @@
 import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
-import { canonicalOrigin, legacyHostRedirect, parseLegacyHosts } from './lib/legacy-hosts';
+import { canonicalOrigin, isLegacyHost, legacyHostLookup, legacyHostRedirect, parseLegacyHosts } from './lib/legacy-hosts';
 import { buildContentSecurityPolicy } from './lib/security-headers';
 import { resolveUnprefixedRedirect } from './lib/locale-redirect';
 
@@ -32,8 +32,12 @@ export default function proxy(request: NextRequest) {
   const first = segments[0];
 
   if (LEGACY_REDIRECTS.hosts.size > 0) {
-    const legacy = legacyHostRedirect({ hostname: request.nextUrl.hostname, pathname, searchParams: request.nextUrl.searchParams }, LEGACY_REDIRECTS);
+    const legacyRequest = { hostname: request.nextUrl.hostname, pathname, searchParams: request.nextUrl.searchParams };
+    const legacy = legacyHostRedirect(legacyRequest, LEGACY_REDIRECTS);
     if (legacy) return withHeaders(NextResponse.redirect(legacy, 308), { requestId });
+    const lookup = legacyHostLookup(legacyRequest, LEGACY_REDIRECTS);
+    if (lookup) return withHeaders(NextResponse.rewrite(new URL(lookup, request.url)), { requestId });
+    if (isLegacyHost(legacyRequest, LEGACY_REDIRECTS)) return withHeaders(new NextResponse('Not found', { status: 404, headers: { 'Cache-Control': 'no-store' } }), { requestId });
   }
 
   if (!first || !(routing.locales as readonly string[]).includes(first)) {

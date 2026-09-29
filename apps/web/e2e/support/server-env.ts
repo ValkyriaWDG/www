@@ -53,7 +53,7 @@ export function e2eServerEnv(options: {
     // Scoreboard imports by game ID use the loopback CRCON mock (e2e/support/crcon-mock.mjs)
     // started next to the Discord mock; the servers page keeps the fixture scenario above.
     E2E_CRCON_MOCK_PORT: String(crconMockPort),
-    HLL_SERVER_SOURCES_JSON: JSON.stringify([{ publicId: 'synthetic-crcon', name: '[SYNTHETIC] CRCON Mock Alpha', baseUrl: `http://127.0.0.1:${crconMockPort}/alpha` }]),
+    HLL_SERVER_SOURCES_JSON: JSON.stringify([{ publicId: 'synthetic-crcon', name: '[SYNTHETIC] CRCON Mock Alpha', baseUrl: `http://127.0.0.1:${crconMockPort}/alpha`, statsUrl: 'https://stats.example.org', serverNumber: 1 }]),
     // Opt-in real-artwork acceptance: no synthetic clips/posters may cover shipped art.
     // This switch belongs only to the test server; the default stage suite is unchanged.
     HLL_BACKGROUND_CLIPS_JSON: process.env.E2E_HLL_EMPTY_MEDIA === '1' ? '[]' : JSON.stringify(SYNTHETIC_HLL_CLIPS),

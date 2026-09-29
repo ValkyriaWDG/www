@@ -18,7 +18,7 @@ beforeAll(async () => {
 });
 afterAll(async () => { await t?.drop(); });
 
-const servers: CrconServerConfig[] = [{ publicId: 'synthetic-crcon', name: '[SYNTHETIC] CRCON', baseUrl: 'https://crcon.example.org', address: null, statsUrl: null, statsApiKey: null }];
+const servers: CrconServerConfig[] = [{ publicId: 'synthetic-crcon', name: '[SYNTHETIC] CRCON', baseUrl: 'https://crcon.example.org', address: null, statsUrl: 'https://stats.example.org', serverNumber: 1, statsApiKey: null }];
 const upload = (matchId: string) => ({
   source: 'upload' as const,
   matchId,
@@ -57,7 +57,7 @@ async function waitForBlockedMutation() {
 const snapshot = async (matchId: string) => t.db.select().from(matchStatistics).where(eq(matchStatistics.matchId, matchId));
 
 describe('match statistics after a concurrent move of the match to another game', () => {
-  it.each(['import', 'import-crcon', 'update', 'remove'] as const)('denies %s to an HLL-only manager once the match left HLL', async (operation) => {
+  it.each(['import', 'import-crcon', 'import-url', 'update', 'remove'] as const)('denies %s to an HLL-only manager once the match left HLL', async (operation) => {
     const { matchId, scoped } = await fixture();
     const before = await snapshot(matchId);
     expect(before).toHaveLength(1);
@@ -72,11 +72,13 @@ describe('match statistics after a concurrent move of the match to another game'
     const pending =
       operation === 'import'
         ? importMatchStatistics(t.db, scoped, upload(matchId))
-        : operation === 'import-crcon'
+        : operation === 'import-crcon' || operation === 'import-url'
           ? importMatchStatistics(
               t.db,
               scoped,
-              { source: 'crcon', matchId, serverPublicId: 'synthetic-crcon', gameId: 77, valkyriaSide: 'allies', publishPlayers: false },
+              operation === 'import-url'
+                ? { source: 'crcon-url', matchId, serverPublicId: 'synthetic-crcon', gameUrl: 'https://stats.example.org/games/77', valkyriaSide: 'allies', publishPlayers: false }
+                : { source: 'crcon', matchId, serverPublicId: 'synthetic-crcon', gameId: 77, valkyriaSide: 'allies', publishPlayers: false },
               {
                 servers,
                 fetchImpl: async (url) => {
@@ -103,9 +105,9 @@ describe('match statistics after a concurrent move of the match to another game'
     expect(outcome.error).toBeInstanceOf(AccessDeniedError);
     expect(outcome.error).toMatchObject({ code: 'forbidden' });
     // The slow CRCON request completed before the mutation waited for any lock.
-    if (operation === 'import-crcon') expect(fetchedBeforeBlocking).toEqual(['https://crcon.example.org/api/get_map_scoreboard?map_id=77']);
+    if (operation === 'import-crcon' || operation === 'import-url') expect(fetchedBeforeBlocking).toEqual(['https://crcon.example.org/api/get_map_scoreboard?map_id=77']);
     expect(await snapshot(matchId)).toEqual(before);
-    const action = `match.statistics.${operation === 'import-crcon' ? 'import' : operation}`;
+    const action = `match.statistics.${operation.startsWith('import') ? 'import' : operation}`;
     const denials = await t.db
       .select({ summary: auditEvent.summary })
       .from(auditEvent)

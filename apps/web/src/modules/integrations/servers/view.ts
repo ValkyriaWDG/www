@@ -1,4 +1,5 @@
-import type { ServerSnapshot } from '../contract';
+import { classifyFreshness, SERVER_FRESHNESS, type ServerSnapshot } from '../contract';
+import type { ServerBrowserData } from './browser';
 
 /** Public server IDs in the URL are short lowercase slugs; anything else selects nothing. */
 const PUBLIC_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -21,4 +22,23 @@ export function resolveSelection(servers: readonly ServerSnapshot[], param: stri
 export function populationParts(server: Pick<ServerSnapshot, 'players' | 'capacity'>): { players: number | null; capacity: number | null } | null {
   if (server.players === null && server.capacity === null) return null;
   return { players: server.players, capacity: server.capacity };
+}
+
+/** Age the last response even when a browser is paused, disconnected or a poll fails. */
+export function ageServerBrowserData(data: ServerBrowserData, now: Date, failed = false): ServerBrowserData {
+  const freshness = (observedAt: string | null, previous: ServerSnapshot['freshness']) => {
+    const age = classifyFreshness(observedAt ? new Date(observedAt) : null, now, SERVER_FRESHNESS);
+    if (age === 'unavailable' || previous === 'unavailable') return 'unavailable' as const;
+    return failed || previous === 'stale' || age === 'stale' ? 'stale' as const : 'fresh' as const;
+  };
+  const overview = data.overview.state === 'not_configured' ? data.overview : {
+    ...data.overview,
+    servers: data.overview.servers.map((server) => {
+      const state = freshness(server.observedAt, server.freshness);
+      return { ...server, freshness: state, reachability: failed || state === 'unavailable' ? 'unknown' as const : server.reachability, map: state === 'unavailable' ? null : server.map, players: state === 'unavailable' ? null : server.players, mode: state === 'unavailable' ? null : server.mode, score: state === 'fresh' ? server.score : null, teams: state === 'fresh' ? server.teams : null, nextMap: state === 'fresh' ? server.nextMap : null, timeRemainingSeconds: state === 'fresh' ? server.timeRemainingSeconds : null };
+    }),
+  };
+  if (!data.livePlayers) return { overview, livePlayers: null };
+  const state = freshness(data.livePlayers.observedAt, data.livePlayers.freshness);
+  return { overview, livePlayers: { ...data.livePlayers, freshness: state, state: state === 'unavailable' && data.livePlayers.state === 'ok' ? 'unavailable' : data.livePlayers.state, players: state === 'unavailable' ? [] : data.livePlayers.players } };
 }

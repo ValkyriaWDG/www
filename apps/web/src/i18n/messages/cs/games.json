@@ -178,6 +178,41 @@
     "partial": {
       "title": "Některé servery teď neodpovídají.",
       "body": "U nich zobrazujeme poslední známý stav jako neaktuální, nebo stav neznámý. Neznamená to, že jsou offline."
+    },
+    "refresh": {
+      "auto": "Obnovovat automaticky každých {seconds} sekund",
+      "now": "Obnovit",
+      "loading": "Obnovuji…",
+      "failed": "Obnovení selhalo. Předchozí údaje jsou označené jako zastaralé; neznamená to, že herní server neběží.",
+      "note": "Obnovování probíhá při zobrazené kartě. Ručně lze obnovit jednou za 30 sekund."
+    },
+    "livePlayers": {
+      "title": "Statistiky hráčů kola",
+      "description": "Snímek účastníků kola může obsahovat i hráče, kteří už odešli. Nejde o seznam právě připojených hráčů.",
+      "observed": "Snímek z {time}",
+      "noTimestamp": "Čas snímku není k dispozici.",
+      "synthetic": "Ukázková syntetická data hráčů.",
+      "stale": "Tento snímek je zastaralý. Hodnoty se mezitím mohly změnit.",
+      "populationMismatch": "Status uvádí {connected} připojených hráčů; snímek kola obsahuje {rows} účastníků.",
+      "notConfigured": "Statistiky hráčů pro tento server zatím nejsou nastavené.",
+      "unavailable": "Statistiky hráčů nejsou dostupné. Neznamená to, že na serveru nikdo nehraje.",
+      "empty": "Tento snímek zdroje neobsahuje statistiky hráčů.",
+      "caption": "Účastníci kola a jejich skóre",
+      "columns": {
+        "name": "Hráč",
+        "side": "Strana",
+        "kills": "Zabití",
+        "deaths": "Úmrtí",
+        "combat": "Boj",
+        "offense": "Útok",
+        "defense": "Obrana",
+        "support": "Podpora"
+      },
+      "sides": {
+        "allies": "Spojenci",
+        "axis": "Osa",
+        "unknown": "Neznámá"
+      }
     }
   },
   "manual": {

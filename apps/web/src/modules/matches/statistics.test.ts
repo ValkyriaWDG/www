@@ -62,4 +62,17 @@ describe('CRCON scoreboard import', () => {
     const parsed = parseCrconScoreboard(syntheticScoreboard())!;
     expect(orderPlayers(parsed.players).map((player) => player.name).slice(0, 2)).toEqual(['[SYN] Allies Player 01', '[SYN] Allies Player 02']);
   });
+
+  it.each([{}, { allied: 1 }, { allied: '1', axis: 4 }, { allied: -1, axis: 4 }, { allied: 1.5, axis: 3.5 }, { allied: 9, axis: 0 }])('keeps malformed sector results unknown: %j', (result) => {
+    const body = syntheticScoreboard();
+    Object.assign(body.result, { result });
+    expect(parseCrconScoreboard(body)?.result).toBeNull();
+  });
+
+  it('exposes the source server number for validation without inventing a missing number', () => {
+    const body = syntheticScoreboard();
+    expect(parseCrconScoreboard(body)).toMatchObject({ serverNumber: 1 });
+    Object.assign(body.result, { server_number: '1', end: 1e30 });
+    expect(parseCrconScoreboard(body)).toMatchObject({ serverNumber: null, endedAt: null });
+  });
 });

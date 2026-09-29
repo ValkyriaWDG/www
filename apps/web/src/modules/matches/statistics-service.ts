@@ -1,13 +1,13 @@
 import 'server-only';
-import { match, matchStatistics, STATISTICS_SIDES, type Executor } from '@valkyria/db';
-import { eq } from 'drizzle-orm';
+import { legacyMatchScoreboard, match, matchStatistics, STATISTICS_SIDES, type Executor } from '@valkyria/db';
+import { asc, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { getServerEnv } from '@/lib/env';
 import { DomainError } from '@/lib/result';
 import { actorUserId } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { recordAudit } from '@/modules/audit/audit';
-import { type CrconServerConfig, CrconRequestError, fetchScoreboard, type FetchLike, parseCrconConfig } from '@/modules/integrations/servers/crcon';
+import { type CrconServerConfig, CrconRequestError, crconGameUrl, fetchScoreboard, type FetchLike, parseCrconConfig, parseCrconGameUrl } from '@/modules/integrations/servers/crcon';
 import { authorize, authorizeGames, parseInput } from '@/modules/prose/domain';
 import { orderPlayers, parseCrconScoreboard, summarizeTeams } from './statistics';
 import type { MatchStatisticsView } from './types';
@@ -16,7 +16,7 @@ import type { MatchStatisticsView } from './types';
  * Match statistics import (HLL). Editors with `matches.edit` in the match's game link a
  * finished CRCON game (configured server + CRCON game ID) or upload its scoreboard JSON.
  * The server fetches/parses the data itself; nothing client-computed is trusted. One
- * snapshot per match; a new import replaces it. Player rows stay private by default.
+ * snapshot per match; a new import replaces it. Editors explicitly choose player visibility.
  */
 
 /** Upload content after the client removed per-kill encounters (server actions accept about 1 MB). */
@@ -28,6 +28,14 @@ const side = z.enum(STATISTICS_SIDES);
 const publicId = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).max(64);
 
 const importSchema = z.discriminatedUnion('source', [
+  z.object({
+    source: z.literal('crcon-url'),
+    matchId,
+    serverPublicId: publicId,
+    gameUrl: z.string().min(1).max(2048),
+    valkyriaSide: side,
+    publishPlayers: z.boolean(),
+  }),
   z.object({
     source: z.literal('crcon'),
     matchId,
@@ -47,7 +55,7 @@ const importSchema = z.discriminatedUnion('source', [
 ]);
 export type ImportStatisticsInput = z.input<typeof importSchema>;
 
-const settingsSchema = z.object({ matchId, valkyriaSide: side, publishPlayers: z.boolean() });
+const settingsSchema = z.object({ matchId, valkyriaSide: side.nullable(), publishPlayers: z.boolean() });
 export type StatisticsSettingsInput = z.input<typeof settingsSchema>;
 const removeSchema = z.object({ matchId });
 
@@ -79,10 +87,19 @@ async function editableHllMatch(db: Executor, actor: Actor, id: string, action: 
   return row;
 }
 
-async function scoreboardBody(input: z.output<typeof importSchema>, deps: StatisticsDeps): Promise<{ body: unknown; label: string; field: string }> {
+type ScoreboardSource = {
+  body: unknown;
+  label: string;
+  field: string;
+  serverPublicId: string | null;
+  gameUrl: string | null;
+  expected: { gameId: number; serverNumber: number | null } | null;
+};
+
+async function scoreboardBody(input: z.output<typeof importSchema>, deps: StatisticsDeps): Promise<ScoreboardSource> {
   if (input.source === 'upload') {
     try {
-      return { body: JSON.parse(input.content), label: input.fileName, field: 'file' };
+      return { body: JSON.parse(input.content), label: input.fileName, field: 'file', serverPublicId: null, gameUrl: null, expected: null };
     } catch {
       throw new DomainError('validation', 'Not a JSON scoreboard.', { file: 'invalid_scoreboard' });
     }
@@ -90,10 +107,21 @@ async function scoreboardBody(input: z.output<typeof importSchema>, deps: Statis
   const servers = deps.servers ?? parseCrconConfig(getServerEnv().HLL_SERVER_SOURCES_JSON).servers;
   const server = servers.find((candidate) => candidate.publicId === input.serverPublicId);
   if (!server) throw new DomainError('validation', 'Unknown statistics source.', { serverPublicId: 'unknown_server' });
+  const linked = input.source === 'crcon-url' ? parseCrconGameUrl(input.gameUrl, server) : null;
+  if (input.source === 'crcon-url' && !linked) throw new DomainError('validation', 'Use a game URL from the configured public statistics site.', { gameUrl: 'game_url_invalid' });
+  const gameId = input.source === 'crcon' ? input.gameId : linked!.gameId;
+  const field = input.source === 'crcon' ? 'gameId' : 'gameUrl';
   try {
-    return { body: await fetchScoreboard(server, input.gameId, AbortSignal.timeout(SCOREBOARD_TIMEOUT_MS), deps.fetchImpl), label: server.name ?? server.publicId, field: 'gameId' };
+    return {
+      body: await fetchScoreboard(server, gameId, AbortSignal.timeout(SCOREBOARD_TIMEOUT_MS), deps.fetchImpl),
+      label: server.name ?? server.publicId,
+      field,
+      serverPublicId: server.publicId,
+      gameUrl: crconGameUrl(server, gameId),
+      expected: { gameId, serverNumber: server.serverNumber ?? null },
+    };
   } catch (error) {
-    if (error instanceof CrconRequestError && error.category === 'invalid') throw new DomainError('validation', 'Not a scoreboard.', { gameId: 'invalid_scoreboard' });
+    if (error instanceof CrconRequestError && error.category === 'invalid') throw new DomainError('validation', 'Not a scoreboard.', { [field]: 'invalid_scoreboard' });
     throw new DomainError('unavailable', 'The statistics source did not answer.');
   }
 }
@@ -104,15 +132,25 @@ export async function importMatchStatistics(db: Executor, actor: Actor, input: I
   const data = parseInput(importSchema, input);
   // Fail fast before the (possibly slow) fetch; the transaction rechecks under the lock.
   await editableHllMatch(db, actor, data.matchId, 'match.statistics.import');
-  const { body, label, field } = await scoreboardBody(data, deps);
+  const { body, label, field, serverPublicId, gameUrl, expected } = await scoreboardBody(data, deps);
   const parsed = parseCrconScoreboard(body);
   if (!parsed || parsed.players.length === 0) throw new DomainError('validation', 'The scoreboard has no player statistics.', { [field]: 'invalid_scoreboard' });
+  if (expected) {
+    if (parsed.externalGameId !== String(expected.gameId) || (expected.serverNumber !== null && parsed.serverNumber !== expected.serverNumber)) {
+      throw new DomainError('validation', 'The scoreboard does not belong to the requested game and server.', { [field]: 'scoreboard_source_mismatch' });
+    }
+    if (!parsed.startedAt || !parsed.endedAt || parsed.endedAt < parsed.startedAt || parsed.endedAt.getTime() > Date.now() || !parsed.result) {
+      throw new DomainError('validation', 'Only a finished game with a known result can be linked.', { [field]: 'scoreboard_unfinished' });
+    }
+  }
   const teams = summarizeTeams(parsed);
   const now = new Date();
   const values = {
-    source: data.source,
+    source: data.source === 'upload' ? 'upload' as const : 'crcon' as const,
     sourceLabel: label.slice(0, 120),
-    externalGameId: data.source === 'crcon' ? String(data.gameId) : parsed.externalGameId,
+    externalGameId: parsed.externalGameId,
+    sourceServerPublicId: serverPublicId,
+    sourceGameUrl: gameUrl,
     mapName: parsed.mapName,
     mode: parsed.mode,
     gameStartedAt: parsed.startedAt,
@@ -130,6 +168,7 @@ export async function importMatchStatistics(db: Executor, actor: Actor, input: I
   await db.transaction(async (tx) => {
     await editableHllMatch(db, actor, data.matchId, 'match.statistics.import', tx);
     await tx.insert(matchStatistics).values({ matchId: data.matchId, ...values }).onConflictDoUpdate({ target: matchStatistics.matchId, set: values });
+    await tx.delete(legacyMatchScoreboard).where(eq(legacyMatchScoreboard.matchId, data.matchId));
     await tx.update(match).set({ updatedAt: now }).where(eq(match.id, data.matchId));
     await recordAudit(tx, {
       actor,
@@ -138,7 +177,8 @@ export async function importMatchStatistics(db: Executor, actor: Actor, input: I
       entityType: 'match',
       entityId: data.matchId,
       summary: {
-        source: data.source,
+        source: values.source,
+        sourceServerPublicId: serverPublicId,
         externalGameId: values.externalGameId,
         players: parsed.players.length,
         valkyriaSide: data.valkyriaSide,
@@ -185,6 +225,7 @@ export async function removeMatchStatistics(db: Executor, actor: Actor, input: {
     await editableHllMatch(db, actor, data.matchId, 'match.statistics.remove', tx);
     const removed = await tx.delete(matchStatistics).where(eq(matchStatistics.matchId, data.matchId)).returning({ matchId: matchStatistics.matchId });
     if (removed.length === 0) throw new DomainError('not_found');
+    await tx.delete(legacyMatchScoreboard).where(eq(legacyMatchScoreboard.matchId, data.matchId));
     await tx.update(match).set({ updatedAt: new Date() }).where(eq(match.id, data.matchId));
     await recordAudit(tx, { actor, action: 'match.statistics.remove', outcome: 'success', entityType: 'match', entityId: data.matchId, summary: {} });
   });
@@ -196,10 +237,13 @@ export async function loadMatchStatistics(db: Executor, id: string, options: { i
   const [row] = await db.select().from(matchStatistics).where(eq(matchStatistics.matchId, id)).limit(1);
   if (!row) return null;
   const showPlayers = options.includePlayers || row.publishPlayers;
+  const additional = await db.select().from(legacyMatchScoreboard).where(eq(legacyMatchScoreboard.matchId, id)).orderBy(asc(legacyMatchScoreboard.ordinal));
   return {
     source: row.source,
     sourceLabel: row.sourceLabel,
     externalGameId: row.externalGameId,
+    sourceServerPublicId: row.sourceServerPublicId,
+    sourceGameUrl: row.sourceGameUrl,
     mapName: row.mapName,
     mode: row.mode,
     gameStartedAt: row.gameStartedAt?.toISOString() ?? null,
@@ -211,5 +255,27 @@ export async function loadMatchStatistics(db: Executor, id: string, options: { i
     playerCount: row.players.length,
     publishPlayers: row.publishPlayers,
     observedAt: row.observedAt.toISOString(),
+    rounds: additional.map(({ ordinal, snapshot }) => ({
+      ordinal,
+      statistics: {
+        source: 'upload',
+        sourceLabel: 'Legacy CRCON export',
+        sourceServerPublicId: null,
+        externalGameId: snapshot.externalGameId,
+        sourceGameUrl: snapshot.sourceGameUrl,
+        mapName: snapshot.mapName,
+        mode: snapshot.mode,
+        gameStartedAt: snapshot.gameStartedAt,
+        gameEndedAt: snapshot.gameEndedAt,
+        result: snapshot.result,
+        // Side swaps belong to the individual round; primary settings do not relabel them.
+        valkyriaSide: snapshot.valkyriaSide,
+        teams: snapshot.teams,
+        players: showPlayers ? orderPlayers(snapshot.players) : null,
+        playerCount: snapshot.players.length,
+        publishPlayers: row.publishPlayers,
+        observedAt: snapshot.observedAt,
+      },
+    })),
   };
 }

@@ -562,7 +562,7 @@ export function MatchEditor({ uiLocale, initial, canPublish, created, statistics
                   <div className={styles.fieldBlock}>
                     <p className={styles.mediaLabel}>{t('fields.publicAddress')}</p>
                     <p className={`${styles.mediaMeta} ${styles.code}`} data-public-path="">
-                      /{uiLocale}/matches/{server.slug}
+                      /{uiLocale}{canonicalMatchPath(server.game, server.slug)}
                     </p>
                   </div>
                 )}

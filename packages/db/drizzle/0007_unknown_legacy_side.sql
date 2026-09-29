@@ -1,0 +1,1 @@
+ALTER TABLE "match_statistics" ALTER COLUMN "valkyria_side" DROP NOT NULL;

@@ -127,6 +127,21 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await downloaded.getByRole('tab', { name: 'Zbraně' }).click();
   await expect(downloaded.locator('[data-statistics-weapons]')).toContainText('MG42');
   await expect(visitor.getByText('must not be imported')).toHaveCount(0);
+
+  // A pasted public game URL resolves only through the configured loopback API.
+  await panel.getByRole('radio', { name: /^Odkaz na dokončenou hru/ }).check();
+  await panel.getByLabel(/^Odkaz na hru/).fill('https://untrusted.example.org/games/4321');
+  await panel.locator('[data-statistics-action="import"]').click();
+  await expect(panel.getByLabel(/^Odkaz na hru/)).toHaveAttribute('aria-invalid', 'true');
+  await expect(panel.locator('[data-statistics-current]')).toContainText('hra č. 1234');
+  await panel.getByLabel(/^Odkaz na hru/).fill('https://stats.example.org/games/4321');
+  await panel.locator('[data-statistics-action="import"]').click();
+  await expect(panel.locator('[data-statistics-current]')).toContainText('hra č. 4321');
+  await expect(panel.locator('[data-statistics-current] [data-statistics-source-link]')).toHaveAttribute('href', 'https://stats.example.org/games/4321');
+  await visitor.goto(publicPath);
+  await expect(visitor.locator('[data-statistics-source-link]')).toHaveAttribute('href', 'https://stats.example.org/games/4321');
+  await expect(visitor.locator('[data-statistics-provenance]')).toContainText('hra č. 4321');
+  await expect(visitor.locator('main table').filter({ hasText: 'Carentan' })).toContainText('4 : 1');
   await visitor.close();
   await context.close();
 });

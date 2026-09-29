@@ -3317,6 +3317,127 @@
       "bytes": 134087,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-server-round-players-cs-1920x1200",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/server-round-players-cs-1920x1200.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "e2ec4795ac0072e3d0cc67af369d20f3724ce5207386ebc3f513ebba943b810d",
+      "bytes": 645138,
+      "width": 1920,
+      "height": 1558
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-crcon-game-url-import-cs-1920x1200",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/crcon-game-url-import-cs-1920x1200.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "bdf3eb89cd083eb2179bcb65969043369c5c26dc20c14ac6817752629dba78e3",
+      "bytes": 137155,
+      "width": 1078,
+      "height": 1418
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-server-round-players-cs-390x844",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/server-round-players-cs-390x844.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "1cd80477fea336545f61afa759d77bfa1a31290d31f20ccd4fb0b58eae13ef47",
+      "bytes": 253010,
+      "width": 390,
+      "height": 2307
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-crcon-game-url-import-cs-390x844",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/crcon-game-url-import-cs-390x844.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "5ac110f6642649c3bf5ced0ca8b23f513b0bd8c5d63b0c2cfc82b62c702a34d6",
+      "bytes": 126309,
+      "width": 340,
+      "height": 1951
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-server-round-players-en-1920x1200",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/server-round-players-en-1920x1200.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "8f8faa8cd1a6c8dddac848e991c8ce7d9a2f04f19919e459a7c00e82b253698e",
+      "bytes": 637781,
+      "width": 1920,
+      "height": 1558
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-crcon-untrusted-url-en-1920x1200",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/crcon-untrusted-url-en-1920x1200.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "9450ed576e0ea9c0aa847ce357593b0e00451bcee9a137b763856b71f18c4003",
+      "bytes": 139899,
+      "width": 1078,
+      "height": 1503
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-crcon-game-url-import-en-1920x1200",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/crcon-game-url-import-en-1920x1200.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "e4c8d2c36a7f6e130df361f7ef6cdbf1e9429961e1465eb2c7cea2d51a8bb2af",
+      "bytes": 132520,
+      "width": 1078,
+      "height": 1458
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-server-round-players-en-390x844",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/server-round-players-en-390x844.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "c412f5a6ad2db4eccafc3dab08ac27bf45fa68d17a7216c783917096ab7a7d4d",
+      "bytes": 248200,
+      "width": 390,
+      "height": 2329
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-crcon-game-url-import-en-390x844",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/crcon-game-url-import-en-390x844.png",
+      "source": "Actual local standalone application capture at source 69f341428aaf71696954cd657af048335eaaa2d1; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "72a710beb1e7b489843396665a372f38599b8bb47fa8983a4b1d19829b55a9ec",
+      "bytes": 124243,
+      "width": 340,
+      "height": 2032
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-match-editor-mobile-cs-390x844",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/match-editor-mobile-cs-390x844.png",
+      "source": "Actual local standalone application capture at source 26ff8d9c60a4d8a3d214c4b290d16eee98e615dc; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "704558bb53262a40add73bc71b2edf6b515b49623ca8ffe21bc6c259bf121e79",
+      "bytes": 81751,
+      "width": 366,
+      "height": 1624
+    },
+    {
+      "id": "hll-legacy-crcon-2026-09-29-match-editor-mobile-en-390x844",
+      "path": "docs/evidence/hll-legacy-crcon-2026-09-29/match-editor-mobile-en-390x844.png",
+      "source": "Actual local standalone application capture at source 26ff8d9c60a4d8a3d214c4b290d16eee98e615dc; Chromium 153.0.8010.12; synthetic fixtures and loopback CRCON, not live clan data; unmodified PNG",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with Valkyria branding and documented game artwork; excluded from the Apache code license",
+      "sha256": "3a01e0c58681b59c9060807033c5f314fde183d24dd5af2e464e340ce28042b5",
+      "bytes": 71243,
+      "width": 366,
+      "height": 1636
     }
   ]
 }

@@ -6,3 +6,4 @@ export * from './media.ts';
 export * from './content.ts';
 export * from './community.ts';
 export * from './manual.ts';
+export * from './legacy.ts';
