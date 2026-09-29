@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { rehearsalDiagnostic } from './rehearsal-diagnostics.mjs';
 import { waitForFixtureDatabase } from './fixture-readiness.mjs';
 import { containerHttp } from './container-http.mjs';
+import { IMPORTER_SLUG, writeLegacyImporterFixture } from './legacy-importer-fixture.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(readFileSync(new URL('./runtime-policy.json', import.meta.url), 'utf8'));
@@ -127,7 +128,7 @@ const runtimeEnv = (name) => [
   '-e',
   'LOCAL_ADMIN_LOGIN_ENABLED=false',
 ];
-function cli(image, file, name = dbName, extra = []) {
+function cli(image, file, name = dbName, extra = [], args = []) {
   const container = `${prefix}-cli-${randomBytes(4).toString('hex')}`;
   containers.add(container);
   const result = docker([
@@ -150,6 +151,7 @@ function cli(image, file, name = dbName, extra = []) {
     image,
     'node',
     file,
+    ...args,
     ...(file.endsWith('rehearsal-fixtures.mjs') ? ['--allow-fixtures', '--schema-compatible'] : []),
   ]);
   docker(['rm', container]);
@@ -402,6 +404,56 @@ try {
     };
   });
   const postMigrationTables = fingerprints(dbName);
+  await step('immutable-image-legacy-importers', () => {
+    // Resolve the built candidate once and run all importer checks by immutable
+    // local image ID. This does not mount host node_modules or replace image CLIs.
+    const image = JSON.parse(docker(['image', 'inspect', candidate]))[0];
+    assert.match(image.Id, /^sha256:[a-f0-9]{64}$/);
+    assert.equal(image.Config.Labels['org.opencontainers.image.revision'], expectedRevision);
+    const database = 'valkyria_importer_test';
+    pg(`CREATE DATABASE ${database}`);
+    cli(image.Id, 'scripts/migrate.mjs', database);
+    cli(image.Id, 'scripts/seed.mjs', database);
+    const fixtureRoot = path.join(output, prefix + '-importer');
+    const fixture = writeLegacyImporterFixture(fixtureRoot);
+    const mount = ['--mount', `type=bind,src=${fixtureRoot},dst=/fixtures,readonly`];
+    const args = ['--bundle', '/fixtures/bundle.json', '--report', '/tmp/import-report.json'];
+    const initial = fingerprints(database);
+    const manual = cli(image.Id, 'scripts/import-legacy-manual.mjs', database);
+    assert.match(manual, /Legacy manual import dry run:/);
+    assert.deepEqual(fingerprints(database), initial);
+    const dry = JSON.parse(cli(image.Id, 'scripts/import-legacy-hll.mjs', database, mount, args));
+    assert.equal(dry.apply, false);
+    assert.deepEqual(dry.counts, { 'media:create': 1, 'news:create': 1 });
+    assert.deepEqual(fingerprints(database), initial);
+    const applyArgs = [...args, '--apply', '--expected-sha256', fixture.sha256];
+    const applied = JSON.parse(cli(image.Id, 'scripts/import-legacy-hll.mjs', database, mount, applyArgs));
+    assert.equal(applied.apply, true);
+    assert.deepEqual(applied.counts, dry.counts);
+    assert.equal(pg('select count(*) from legacy_import', database), '2');
+    assert.equal(pg(`select count(*) from content_translation where draft_slug='${IMPORTER_SLUG}' and published_revision_id is null`, database), '1');
+    const media = JSON.parse(pg("select json_build_object('id',id,'state',state,'variants',variants) from asset where provenance='https://valkyriahll.cz/images/synthetic-container-import.png'", database));
+    assert.equal(media.state, 'ready');
+    assert.match(media.id, /^[a-f0-9-]{36}$/);
+    const native = JSON.parse(cli(image.Id, '--input-type=module', database, [], ['-e', `
+      import sharp from 'sharp';
+      import { readFileSync } from 'node:fs';
+      const proof=[];
+      for(const variant of ['full','thumb']) {
+        const bytes=readFileSync('/app/storage/editorial/${media.id}/'+variant+'.webp');
+        const metadata=await sharp(bytes).metadata();
+        if(metadata.format!=='webp'||metadata.width!==8||metadata.height!==8)throw Error('invalid derivative');
+        if(!(await sharp(bytes).raw().toBuffer()).length)throw Error('empty decoded image');
+        proof.push({variant,format:metadata.format,width:metadata.width,height:metadata.height,bytes:bytes.length});
+      }
+      console.log(JSON.stringify(proof));
+    `]));
+    const afterApply = fingerprints(database);
+    const replay = JSON.parse(cli(image.Id, 'scripts/import-legacy-hll.mjs', database, mount, applyArgs));
+    assert.deepEqual(replay.counts, { 'media:unchanged': 1, 'news:unchanged': 1 });
+    assert.deepEqual(fingerprints(database), afterApply);
+    return { imageId: image.Id, sourceRevision: expectedRevision, manualDryRun: true, dryRunWrites: false, applied: applied.counts, replay: replay.counts, allReplayTableContentsMatch: true, derivatives: native };
+  });
   for (const [name, image] of [
     ['bookworm', baseline],
     ['trixie', candidate],
@@ -490,7 +542,7 @@ try {
       return {
         ...proof,
         allRestoredTableContentsMatch: true,
-        media: 'Unchanged retained fixture volume; no media-write migration was exercised.',
+        media: 'Original referenced fixture media preserved; synthetic importer media was added separately. No full media-volume restore was exercised.',
       };
     } finally {
       stop(app);

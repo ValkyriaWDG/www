@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "environment": "production-backup-rehearsal",
+  "observedAt": "2026-09-29T13:21:58.387463+00:00",
+  "finishedAt": "2026-09-29T13:23:39.238322+00:00",
+  "candidateRevision": "338ee2ff39ac484b4fef6d9f9da8bc1238d68b5a",
+  "candidateDigest": "sha256:8f048f6c9d2f0038d0a48ae66940ddb5bcb300d899615d56f0fbe4b1269cb18a",
+  "previousRevision": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+  "previousDigest": "sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b",
+  "artifactHashes": {
+    "protectedRehearsalReportSha256": "726fff4e9b706859ab9579e7d041041cb73050312a69add744929fb7d0cb2941",
+    "protectedCaptureReportSha256": "a00f3ed0d96b7f5d3c8770de826ba4fd32a4e6e2665fdb0e921409356338d76d",
+    "restored-candidateSnapshotFileSha256": "3367671ed8ac8fa35c51c6d95640728ef4b36a3f521660c2e0a87f15419181ba",
+    "restored-rollbackSnapshotFileSha256": "3367671ed8ac8fa35c51c6d95640728ef4b36a3f521660c2e0a87f15419181ba",
+    "migratedSnapshotFileSha256": "abf20369b809725b69fde73df1f0839b35b7a529ee8fd6834280bce16eae8c45",
+    "migration-noopSnapshotFileSha256": "abf20369b809725b69fde73df1f0839b35b7a529ee8fd6834280bce16eae8c45",
+    "seededSnapshotFileSha256": "ad6b6859840647ee287bbf24fd0677d2a141209be01ae33a789063d55aca5452"
+  },
+  "snapshotFingerprints": {
+    "algorithm": "SHA-256 of UTF-8 canonical JSON: sorted keys, compact separators, ensure_ascii=false",
+    "values": {
+      "restored-candidate": "8b2f01632ccae5d5446a2be77c4ea01393226c7cde8bb59493a6c28ca2582f3c",
+      "restored-rollback": "8b2f01632ccae5d5446a2be77c4ea01393226c7cde8bb59493a6c28ca2582f3c",
+      "migrated": "a59fbd7d6b134f2eefb430c117b36960783f685457ba7fd35e851ad72756840a",
+      "migration-noop": "a59fbd7d6b134f2eefb430c117b36960783f685457ba7fd35e851ad72756840a",
+      "seeded": "a199b2a641ddedf65eb664051475f0f44fff7f4b349731f8f5655ed52c2cc048"
+    }
+  },
+  "capture": {
+    "capturedAt": "2026-09-29T13:21:04+00:00",
+    "sourceTableCount": 29,
+    "sourceMediaFileCount": 0,
+    "automationHeld": true,
+    "previousWebReadyAfterCapture": true
+  },
+  "databaseIsolation": {
+    "postgresVersionNum": 150017,
+    "applicationRole": {
+      "super": false,
+      "createdb": false,
+      "createrole": false,
+      "replication": false,
+      "bypassrls": false,
+      "inherit": true,
+      "canlogin": true
+    },
+    "internalNetwork": true,
+    "publishedPorts": 0
+  },
+  "baselineRestore": {
+    "status": "passed",
+    "candidateAndRollbackCopiesMatchCapture": true
+  },
+  "candidateMigrations": {
+    "status": "passed",
+    "baselineCount": 5,
+    "applied": 4,
+    "total": 9,
+    "repeatApplied": 0,
+    "repeatDatabaseAndMediaFingerprintsUnchanged": true
+  },
+  "seed": {
+    "status": "passed",
+    "snapshotRecorded": true
+  },
+  "importDryRun": {
+    "status": "failed",
+    "reportedFailureCode": "subprocess_failed",
+    "operatorDiagnostic": {
+      "code": "ERR_MODULE_NOT_FOUND",
+      "dependency": "sharp",
+      "importingModule": "/app/scripts/import-legacy-hll.mjs",
+      "basis": "Operator-inspected failing process stderr; the protected result report stores only subprocess_failed."
+    }
+  },
+  "remainingRehearsal": {
+    "applyImport": "not-run",
+    "repeatImport": "not-run",
+    "candidateHttp": "not-run",
+    "rollbackHttp": "not-run"
+  },
+  "cleanup": {
+    "ownedContainers": 7,
+    "stoppedContainers": 7,
+    "resourcesDeleted": false
+  },
+  "production": {
+    "migration": "not-run",
+    "legacyImport": "not-run",
+    "candidateAcceptance": "pending",
+    "runtimeSourceReportedByOperator": "571475f3f60fb38c7cf14cd6afb4702982ba4681",
+    "sourceAndProductionDataChanged": false
+  },
+  "limitations": [
+    "This is an isolated failed rehearsal, not production migration or acceptance.",
+    "Protected report paths, container/resource names, exports and raw data are intentionally omitted.",
+    "Production source/data state and the specific missing-package diagnostic are operator readback; no new live check was run by the documentation step.",
+    "Exact-source publication succeeded, but automatic promotion was held for migration-bundle-changed; a corrected image and complete new rehearsal are required."
+  ]
+}

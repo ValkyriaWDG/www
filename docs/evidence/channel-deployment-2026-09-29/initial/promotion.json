@@ -1,0 +1,13 @@
+{
+  "image": "majorluk/valkyria-www",
+  "candidateDigest": "sha256:b5f636fcc3b36f87ca8e5234ffd968c307627783f9367b99070dde929428ab65",
+  "sourceSha": "6c5f5c7e6e4602091b5494e16cc1bd03a927a53a",
+  "previousDigest": "sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430",
+  "previousRevision": "e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e",
+  "previousMigrationFingerprint": "45fe4a4446d66705c6d6dbbdda8b5f67c6ed200471dfae288c620bf94bd0b570",
+  "candidateMigrationFingerprint": "45fe4a4446d66705c6d6dbbdda8b5f67c6ed200471dfae288c620bf94bd0b570",
+  "previousRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+  "candidateRuntimeFingerprint": "63cee9253455282767827f43591140c09d20441e5cbde3dfd84e18c88e8eb344",
+  "status": "promoted",
+  "reasons": []
+}

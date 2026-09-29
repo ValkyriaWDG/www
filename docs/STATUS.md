@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-29. Stage: **HLL features deployed to valkyria.cz; schema upgrade and actual previous-image rollback rehearsal accepted. Public HTTP 85/85; browser 14/15 with #46 still open. Live authentication/providers remain disabled.**
+Updated: 2026-09-29. Stage: **Source 571475f (including crest/editor PR #61 and shared top strip PR #66) deployed to valkyria.cz through Watchtower. Latest focused proof: HTTP/media 16/16 and browser 33/33. Broader client-navigation issue #46 stays open; live authentication/providers remain disabled.**
 
 ## Legacy HLL migration and CRCON implementation (not yet deployed)
 
@@ -35,8 +35,19 @@ passes. Full CI for `0efebe7` then passed in run
 checks. Independent review subsequently found that deferred owner publication also
 needed to guard independently published English prose. Four real-database failures
 reproduced the issue; the all-locale guard passes all 16 focused cases, including
-preservation of unpublished English drafts. The next-head CI and production
-PostgreSQL restore/release acceptance remain pending. Credentials were saved only to protected local
+preservation of unpublished English drafts. Final implementation `f154a59` passed
+[CI 36568326780](https://github.com/ValkyriaWDG/www/actions/runs/36568326780):
+602 unit, 331 PostgreSQL and 166 browser cases, with 107 optional captures skipped.
+PR #67 merged as `338ee2f`; exact-main CI and publisher verification also passed.
+The published immutable image then failed the real PostgreSQL 15 restore/import
+rehearsal: its bundled importer could not resolve `sharp` from `/app/scripts`.
+Restore, four migrations, a zero-change migration rerun and seed passed before that
+failure; production schema/content were unchanged. See the
+[failed rehearsal and pending acceptance record](evidence/hll-legacy-production-2026-09-29/README.md).
+PR #68 corrects the standalone dependency link and adds an actual image importer
+dry-run/apply/replay regression. A new candidate and complete production-major
+rehearsal are required before import. The old web remains ready while its dedicated
+updater and publisher timer are held for this maintenance. Credentials were saved only to protected local
 and runtime environment files; public CRCON reads do not require them. No production
 schema/import, provider activation or legacy-domain cutover is established here.
 
@@ -48,20 +59,47 @@ database/media backup; image-only rollback is incompatible with populated import
 
 On 2026-09-29, a dedicated `valkyria-watchtower` was enabled for only
 `valkyria-web`, polling `majorluk/valkyria-www:production` every 300 seconds. The
-channel initially points to the already accepted `e5d7276 / c4b53776` image below;
-this setup does not deploy a new application revision or run migrations.
+channel initially pointed to the accepted `e5d7276 / c4b53776` image below. Two
+natural replacements have now been verified: `6c5f5c7 / b5f636fc` at 11:54:46 UTC
+and `571475f / da884eda` at 12:19:48 UTC. Neither replacement ran migrations.
 The [operating guide](operations/watchtower.md) describes selection, compatible
 channel promotion and rollback. [Verification](evidence/watchtower-2026-09-29/README.md)
-distinguishes natural polling from an actual future image replacement.
+records the original polling-only setup; [deployment proof](evidence/channel-deployment-2026-09-29/README.md)
+now establishes two actual replacements of the selected application container.
 
 The publisher remains manual/main-only with full CI and accepted `expected_sha`.
 With `WATCHTOWER_PROMOTION_ENABLED=true`, it promotes only byte-identical migration
 bundles/runners and unchanged image runtime defaults. Changed or unknown contracts
 stay outside automatic deployment. Authentication/providers and #46 remain open.
 
-## Current production: HLL features and tournaments
+## Current production: crest and shared top strip
 
-**https://valkyria.cz** now serves source `e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e`
+At **12:19:48 UTC / 14:19:48 CEST** on 2026-09-29, Watchtower replaced the web
+container with source `571475f3f60fb38c7cf14cd6afb4702982ba4681`, image
+`majorluk/valkyria-www@sha256:da884edad5dd00cbf1ed0fd9fcb733cb894de594739b99be5eee5049bcea015b`.
+This includes PR #61's crest/editor fix, PR #64's channel support and PR #66's
+matching HLL/Wardogs strip. [Production proof](evidence/channel-deployment-2026-09-29/README.md)
+links successful exact-main CI **36563899286**, protected publisher **36565208081**,
+independent registry hashes and exact runtime identity.
+
+Qualification passed **500 unit, 291 database, 161 browser, 168 tooling, 13 encrypted
+recovery, 6 real restore and 4 HLL artwork tests**; 106 optional captures were skipped.
+Migration and runtime fingerprints matched the previous image. The natural update
+reported one scanned container, one replacement and zero failures. Environment,
+effective mounts/security, compose/env files, updater and other containers stayed
+unchanged. All four readiness checks, **16 HTTP/media checks** and both timers passed.
+No database migration, provider activation, content import or routing change occurred.
+
+Anonymous production verification passed **33/33** checks over CS/EN, both game
+landings/news and 1920/1366/1024/390 px viewports. All six actual screenshots were
+inspected. Strip geometry and crest presentation match, with no overflow or page,
+HTTP or unaccepted network errors. The 252 optional prefetch cancellations are
+recorded separately; this full-navigation check does not close the broader #46.
+Authenticated editor behavior is covered by release CI, not a live admin mutation.
+
+## Historical production: HLL features and tournaments
+
+At this earlier checkpoint, **https://valkyria.cz** served source `e5d7276f7dd7215dc2f5e402a6bbf3c7a3228f3e`
 from `majorluk/valkyria-www@sha256:c4b53776e500b62088f69ae1b94c57ab91f9c68becea43a0790dce2ff4abe430`.
 Promotion completed at **08:15:19 UTC (10:15:19 CEST)** on 2026-09-29.
 [Production evidence](evidence/hll-features-production-2026-09-29/README.md) records
@@ -310,17 +348,19 @@ cutover are delivered as recorded above, with explicit remaining acceptance item
   an inserted image instead of leaving it selected, so the next keystroke or table no longer
   replaces it ([evidence](evidence/hll-crest-2026-09-29/README.md)). PR #61 merged as
   `1efdf09`; exact-main [CI 36548677606](https://github.com/ValkyriaWDG/www/actions/runs/36548677606)
-  passed. Not deployed; no migration.
+  passed. Deployed in `571475f`; no migration. See the current production proof above.
 - **Top strip:** HLL renders the Wardogs strip classes (height, crest, game switch,
   language, account, community link, breakpoints, phone layout) in HLL colours, so nothing
   in the strip moves or resizes when switching games; `platform.spec.ts` requires equal
   boxes on both games' landings, news pages and the hub at 1920/1366/1024/390 px
-  ([evidence](evidence/hll-strip-2026-09-29/README.md)). Merged as `571475f` and promoted to
-  the Watchtower production channel by publisher run 36565208081.
+  ([evidence](evidence/hll-strip-2026-09-29/README.md)). PR #66 merged as `571475f`
+  and is deployed with production strip/crest verification above; no migration.
 - **Hub cover:** the community hub uses the owner-supplied cover (HLL left, Wardogs right)
   on the hub route only, with 960/1672 px derivatives, a centred heading and the game
   cards as windows onto their half ([evidence](evidence/hll-hub-cover-2026-09-29/README.md)).
-  No migration.
+  PR #69 merged as `d61c38f`; included in the next corrected migration candidate.
+  No additional migration. Its earlier publisher was cancelled before publication
+  because that source still contains the importer packaging defect recorded above.
 
 Not done / blocked: approved clan footage (stage shows its fallback), hosted Logi (events),
 acceptance against real CRCON servers (hosts/keys are deployment inputs), legacy guide
@@ -367,8 +407,9 @@ preserve the static stage and unavailable-provider states without synthetic prod
 Follow-up after PR #37 (PR #50, which also delivered the HLL graphics of PR #55; #55 was
 closed as delivered): CRCON server status, HLL rounds, imported match statistics (migration
 0002), the FAQ page (migration 0003) and tournaments (migration 0004, administration-managed
-per the owner) are deployed in `e5d7276` (see Current production). PR #61 (`1efdf09`, crest
-and editor caret) is on main but not deployed; it adds no migration. Next: configure the
+per the owner) were deployed in `e5d7276`. Current production `571475f` also includes
+PR #61 (`1efdf09`, crest and editor caret) and PR #66 (shared top strip), with no new
+migration. Next: configure the
 real CRCON hosts; write and publish the FAQ answers; import the legacy content once
 `valkyriahll.cz` is reachable; choose the owner of events (Logi) and a source for rankings.
 
