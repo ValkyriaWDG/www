@@ -1,3 +1,5 @@
+import type { ArchiveEditorialDetails } from '../modules/legacy/editorial-details';
+
 /** Synthetic archive metadata, never copied from a real match or person. */
 export const FIXTURE_LEGACY_MATCH_DETAILS = {
   version: 1,
@@ -29,3 +31,15 @@ export const FIXTURE_LEGACY_MATCH_DETAILS = {
     type: 'youtube',
   }],
 } as const;
+
+export const FIXTURE_EDITORIAL_KEYS = ['synthetic-editorial-fixture:clan', 'synthetic-editorial-fixture:faq', 'synthetic-editorial-fixture:manual-setup'] as const;
+
+export function fixtureEditorialDetails(kind: 'page' | 'manual', key: string): ArchiveEditorialDetails {
+  return {
+    schemaVersion: 1, kind, sourceUrl: `https://valkyriahll.cz/synthetic-fixture/${key}`, sourceLanguage: 'cs',
+    sourcePublishedOn: '2020-05-01', sourceModifiedOn: '2020-06-01',
+    sourceAuthorLabel: 'Synthetic historical author <b>plain text</b>',
+    excerpt: '', tag: '', series: '', logoAssetId: null, authorImageAssetId: null,
+    coverSourceUrl: null, thumbnailSourceUrl: null, sourceIndex: null, warnings: [],
+  };
+}

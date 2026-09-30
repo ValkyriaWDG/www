@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { cache } from 'react';
+import { ArchiveEditorial } from '@/components/content/archive-editorial';
 import { OG_LOCALE, publishedAlternates, seoTitle } from '@/components/public/metadata';
 import { isSlug } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
@@ -138,6 +139,7 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
                 anchors={outlineAnchors(outline)}
               />
             </div>
+            {article.archiveEditorial ? <ArchiveEditorial details={article.archiveEditorial} locale={locale} /> : null}
             {hasProvenance ? (
               <section className={styles.provenance} aria-labelledby="manual-source-title" data-manual-provenance="">
                 <h2 id="manual-source-title" className={styles.provenanceTitle}>

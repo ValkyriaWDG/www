@@ -12,6 +12,30 @@ See the [operator procedure](operations/legacy-hll-import.md#additive-public-met
 and [local/source/browser evidence](evidence/legacy-field-parity-2026-09-30/README.md).
 Production repair and exact-image acceptance remain required before issue closure.
 
+## Editorial renderer follow-up (local verification; production pending)
+
+Source `8bc036d7adfa6cd07c4c10956fcdaba54ed8f341` records the tested fix above
+`6f8f40662e49b432540cbf571e6eaf6966c37b06`:
+clan/FAQ and field-manual pages now render their already-validated archive metadata.
+Current editorial revisions and existing manual provenance are preserved. Czech
+metadata stays publication-gated; English and ordinary pages gain no invented source
+facts. Synthetic fixture reload/reset preserves seeded page publication and guards
+older ledgers without `source_metadata`.
+
+The renderer regression reproduced three failures before the fix, then passed all
+12 cases. Final local checks: lint/types/build passed, unit **766/766**, integration
+**357/357**, focused read-only browser **5/5**, FAQ admin publication **1/1**.
+[Six inspected desktop/mobile captures and reproduction steps](evidence/legacy-editorial-renderers-2026-09-30/README.md)
+use synthetic metadata only. They do not prove migrated production content. Exact
+PR-head CI, publication, rehearsal and production field-parity acceptance remain pending.
+
+PR #76's first CI run `36687129273` passed application unit/integration/build and
+container smoke/rollback checks, then stopped on four fixable OpenSSL OS-package
+findings. Its later browser/SBOM/page-budget steps were skipped. The runtime build
+now upgrades only the two affected trixie packages to Debian's exact fixed version;
+an isolated build verified both installed versions. Full replacement CI and the
+production image scan remain required; see the [runtime update](operations/release-hardening.md#september-2026-openssl-runtime-update).
+
 ## Public UI audit fixes (branch `feat/hll-platform-handoff`, not merged)
 
 A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed
