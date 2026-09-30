@@ -7,6 +7,7 @@ import type { AppLocale } from '@/i18n/routing';
 import { getSiteOrigin } from '@/lib/site';
 import { RichText } from '@/modules/content/rich-text/render';
 import type { ArticleDTO } from '@/modules/content/types';
+import { legacyLinkRewrite } from '@/modules/legacy/public-links';
 import styles from './pages.module.css';
 
 /**
@@ -55,7 +56,7 @@ export async function CorePage({
         {page ? (
           <SectionFrame title={t(`${pageKey}.frameTitle`)} titleId={`${pageKey}-content`}>
             <div className={styles.body} lang={page.locale}>
-              <RichText doc={page.body} assets={page.assets} labels={{ tableRegion: tr('tableRegion'), externalLink: tr('externalLink') }} siteOrigin={getSiteOrigin()} anchors={anchors} />
+              <RichText doc={page.body} assets={page.assets} labels={{ tableRegion: tr('tableRegion'), externalLink: tr('externalLink') }} siteOrigin={getSiteOrigin()} rewriteLink={await legacyLinkRewrite(page.body, page.locale)} anchors={anchors} />
             </div>
           </SectionFrame>
         ) : (

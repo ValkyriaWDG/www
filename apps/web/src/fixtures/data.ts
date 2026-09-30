@@ -548,6 +548,7 @@ export type FixtureNews = {
 const featureBodyCs = doc(
   p(bold('[Ukázka] '), 'Tento syntetický článek ukazuje ', bold('tučné'), ', ', italic('kurzívu'), ', ', underline('podtržení'), ' a ', strike('přeškrtnutí'), '.'),
   p('Odkaz na ', link('bezpečnou externí stránku', 'https://example.org/synthetic-fixture/article'), ' se otevře jako běžný odkaz.'),
+  p('Starší odkazy: ', link('servery', 'https://valkyriahll.cz/servery'), ' a ', link('žebříčky', 'https://www.valkyriahll.cz/zebricky'), '.'),
   image(FIXTURE_ASSET_IDS.newsInline, 'Syntetický obrázek v textu článku', 'Syntetický popisek obrázku', 'wide'),
   h2('Ukázková tabulka'),
   table(
@@ -566,6 +567,7 @@ const featureBodyCs = doc(
 const featureBodyEn = doc(
   p(bold('[Sample] '), 'This synthetic article shows ', bold('bold'), ', ', italic('italic'), ', ', underline('underline'), ' and ', strike('strikethrough'), '.'),
   p('A link to a ', link('safe external page', 'https://example.org/synthetic-fixture/article'), ' renders as a normal link.'),
+  p('Older links: ', link('servers', 'https://valkyriahll.cz/servery'), ' and ', link('leaderboards', 'https://www.valkyriahll.cz/zebricky'), '.'),
   image(FIXTURE_ASSET_IDS.newsInline, 'Synthetic inline article image', 'Synthetic image caption', 'wide'),
   h2('Sample table'),
   table(

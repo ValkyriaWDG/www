@@ -200,7 +200,7 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
   };
   return (
     <div className={styles.extras} data-match-extras={match.slug}>
-      {match.legacyDetails ? <MatchLegacyDetails details={match.legacyDetails} t={t} titleId={titleId} externalLabel={external} /> : null}
+      {match.legacyDetails ? <MatchLegacyDetails details={match.legacyDetails} locale={locale} t={t} titleId={titleId} externalLabel={external} /> : null}
       {match.rounds.length > 0 ? (
         <section className={styles.block} aria-labelledby={`${titleId}-rounds`} data-match-rounds="">
           <h3 id={`${titleId}-rounds`} className={styles.blockTitle}>

@@ -16,6 +16,7 @@ import { GAME_REGISTRY, gameRouteFromDb, type GameRoute } from '@/modules/games/
 import { canonicalMatchPath, canonicalTournamentPath, sectionBase } from '@/modules/games/routes';
 import type { PublicMatchSummary } from '@/modules/matches/types';
 import { sharingMetadata } from '@/modules/social/metadata';
+import { genericTournamentLink } from '@/modules/tournaments/link-labels';
 import { getPublicTournament } from '@/modules/tournaments/queries';
 import { TournamentArchiveFacts } from './tournament-archive';
 import { TournamentEmblem } from './tournament-emblem';
@@ -61,6 +62,10 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
     getTranslations({ locale, namespace: 'common.external' }),
   ]);
   const base = sectionBase(game);
+  const linkLabel = (label: string) => {
+    const kind = genericTournamentLink(label);
+    return kind ? t(`detail.linkLabels.${kind}`) : label;
+  };
   return (
     <PageMain width="full" labelledBy="tournament-title">
       <PageHeader
@@ -107,7 +112,7 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
                 {tournament.links.map((link) => (
                   <li key={link.url}>
                     <ExternalLink href={link.url} externalLabel={external('suffix')}>
-                      {link.label}
+                      {linkLabel(link.label)}
                     </ExternalLink>
                   </li>
                 ))}

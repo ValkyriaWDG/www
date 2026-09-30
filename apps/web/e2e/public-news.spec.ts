@@ -147,6 +147,11 @@ test.describe('public article', () => {
     await expect(body.locator('figcaption')).toHaveText('Syntetický popisek obrázku');
     const external = body.getByRole('link', { name: /bezpečnou externí stránku/ });
     await expect(external).toHaveAccessibleName(/^bezpečnou externí stránku \(externí odkaz\)/);
+    // Stored links to the former website lead to the on-site page, or stay plain text.
+    await expect(body.getByRole('link', { name: 'servery', exact: true })).toHaveAttribute('href', '/cs/hll/servers');
+    await expect(body.getByRole('link', { name: /žebříčky/ })).toHaveCount(0);
+    await expect(body).toContainText('Starší odkazy: servery a žebříčky.');
+    await expect(body.locator('a[href*="valkyriahll"]')).toHaveCount(0);
 
     const related = page.locator('[data-related]');
     await expect(related.getByRole('heading', { name: 'Související novinky' })).toBeVisible();
@@ -170,6 +175,7 @@ test.describe('public article', () => {
     // en-GB: day before month, no comma (never the US "September 25, 2026").
     await expect(page.locator('[data-article-published] time')).toHaveText(/^\d{1,2}\s[A-Z][a-z]+\s\d{4}$/);
     await expect(page.locator('[data-article-body]').getByRole('region', { name: 'Table (scroll horizontally on smaller screens)' })).toBeVisible();
+    await expect(page.locator('[data-article-body]').getByRole('link', { name: 'servers', exact: true })).toHaveAttribute('href', '/en/hll/servers');
   });
 
   test('hreflang alternates list only published counterparts', async ({ page }) => {

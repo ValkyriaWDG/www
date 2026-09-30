@@ -1,4 +1,4 @@
-import { asset, auditEvent, match, proseTranslation } from '@valkyria/db';
+import { asset, auditEvent, match, proseTranslation, tournament } from '@valkyria/db';
 import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { ensureTestActors, TEST_ACTOR_IDS, type TestActors } from '@/fixtures/test-actors';
@@ -80,6 +80,9 @@ describe('tournament administration', () => {
     expect((await getPublicTournament(t.db, 'hell-let-loose', created.slug, 'en', now))?.description).toEqual({ state: 'missing', availableIn: ['cs'] });
     // Scoped to its game: the Wardogs section does not serve it.
     expect(await getPublicTournament(t.db, 'wardogs', created.slug, 'cs', now)).toBeNull();
+    // A link to the former website (stored by earlier imports) stays for editors, not visitors.
+    await t.db.update(tournament).set({ links: [{ label: 'Legacy source', url: 'https://valkyriahll.cz/turnaje/synthetic' }, { label: 'Rules', url: 'https://example.org/synthetic-rules' }] }).where(eq(tournament.id, created.id));
+    expect((await getPublicTournament(t.db, 'hell-let-loose', created.slug, 'cs', now))?.links).toEqual([{ label: 'Rules', url: 'https://example.org/synthetic-rules' }]);
 
     const finished = await createTournament(t.db, actors.matchManager, { game: 'hell-let-loose', name: 'Synthetic Finished Cup', startsOn: '2026-01-01', endsOn: '2026-02-01' });
     await publishTournament(t.db, actors.matchManager, { id: finished.id, expectedVersion: finished.version });

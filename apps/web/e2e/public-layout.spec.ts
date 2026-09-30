@@ -59,6 +59,24 @@ test.describe('public layout', () => {
     await expectNoHorizontalOverflow(page);
     const panel = (await page.locator('[data-tournament-detail] section').last().boundingBox())!;
     expect(panel.x + panel.width).toBeLessThanOrEqual(390);
+    // A three-column standings table fits without scrolling sideways.
+    const region = page.locator('[data-tournament-detail] [role="region"]').first();
+    expect(await region.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+  });
+
+  test('the match banner shows whole team names on phones', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`);
+    const banner = page.locator('[data-match-detail] [data-match-banner]');
+    await expect(banner).toContainText('VLK + Synthetic Ally');
+    await expect(banner).toContainText('Synthetic HLL Opponent Foxtrot');
+    expect(await banner.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      return [...element.querySelectorAll('span')].every((name) => {
+        const rect = name.getBoundingClientRect();
+        return rect.top >= box.top - 0.5 && rect.bottom <= box.bottom + 0.5;
+      });
+    })).toBe(true);
   });
 
   test('match facts, archive pages and prose read as current page content', async ({ page }) => {

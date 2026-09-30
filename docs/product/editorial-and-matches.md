@@ -214,8 +214,10 @@ Wardogs telemetry API has been established.
 The former HLL website is neither linked nor mentioned publicly (owner decision,
 2026-09-30): no utility/footer link, no clan/community or match-archive link and no
 "from the original website" attribution. Imported records keep their stored provenance
-for operators; public pages show only current content. Do not hotlink its graphics as
-runtime assets.
+for operators; public pages show only current content. Stored links to it (imported
+article/manual/page bodies, tournament links) render as the corresponding on-site page, or
+as plain text when nothing public corresponds. Do not hotlink its graphics as runtime
+assets.
 
 ## Acceptance journeys
 

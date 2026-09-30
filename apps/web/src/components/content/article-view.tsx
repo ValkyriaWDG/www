@@ -41,6 +41,8 @@ export type ArticleViewProps = {
   backHref?: string | null;
   /** Site origin for the external-link indicator in the body. */
   siteOrigin?: string;
+  /** Body link rewrite (see `legacyLinkRewrite`). */
+  rewriteLink?: (href: string) => string | null;
   /** Locale of date formatting; defaults to the article's own locale. */
   dateLocale?: AppLocale;
   titleId?: string;
@@ -75,7 +77,7 @@ const UPDATE_THRESHOLD_MS = 60_000;
  * posts. Renders only the DTO it is given (no data fetching), so the public route and the
  * authorized admin preview share one renderer. Content parts carry the article's `lang`.
  */
-export function ArticleView({ article, labels, preview = false, related = [], backHref = '/news', siteOrigin, dateLocale, titleId = 'article-title' }: ArticleViewProps) {
+export function ArticleView({ article, labels, preview = false, related = [], backHref = '/news', siteOrigin, rewriteLink, dateLocale, titleId = 'article-title' }: ArticleViewProps) {
   const locale: AppLocale = dateLocale ?? (article.locale as AppLocale);
   const contentLang: Locale = article.locale;
   const published = article.publishedAt;
@@ -154,7 +156,7 @@ export function ArticleView({ article, labels, preview = false, related = [], ba
         </figure>
       ) : null}
       <div className={styles.body} lang={contentLang} data-article-body="">
-        <RichText doc={article.body} assets={article.assets} labels={labels.richText} siteOrigin={siteOrigin} className={styles.bodyText} />
+        <RichText doc={article.body} assets={article.assets} labels={labels.richText} siteOrigin={siteOrigin} rewriteLink={rewriteLink} className={styles.bodyText} />
       </div>
       {related.length > 0 ? (
         <section className={styles.related} aria-labelledby={`${titleId}-related`} data-related="">

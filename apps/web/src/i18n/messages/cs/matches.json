@@ -265,6 +265,13 @@
       "dates": "Termín",
       "phase": "Stav",
       "links": "Odkazy",
+      "linkLabels": {
+        "website": "Web soutěže",
+        "rules": "Pravidla",
+        "standings": "Tabulka",
+        "schedule": "Rozpis zápasů",
+        "registration": "Registrace"
+      },
       "description": "Popis a pravidla",
       "matches": "Zápasy Valkyrie",
       "noMatches": "Zatím nejsou zveřejněné žádné zápasy tohoto turnaje.",

@@ -10,6 +10,7 @@ import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/mo
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { tournamentPhase } from './phase';
 import { publishedEditorialArchives } from '@/modules/legacy/editorial-public';
+import { isLegacyHllUrl } from '@/modules/legacy/hll';
 import { adminTournamentListSchema, type AdminTournamentListInput } from './schemas';
 import type {
   AdminTournament,
@@ -110,7 +111,8 @@ export async function getPublicTournament(db: Executor, game: Game, slug: string
   return {
     ...toSummary(row, zonedDate(now, TOURNAMENT_TIME_ZONE), matches.length),
     archiveEditorial: (await publishedEditorialArchives(db, { kind: 'tournament', ids: [row.id] }, locale)).get(row.id) ?? null,
-    links: row.links.map((link) => ({ url: link.url, label: link.label })),
+    // Earlier imports stored a link to the former website, which public pages never show.
+    links: row.links.filter((link) => !isLegacyHllUrl(link.url)).map((link) => ({ url: link.url, label: link.label })),
     description,
     matches,
     publishedAt: (row.publishedAt ?? row.updatedAt).toISOString(),

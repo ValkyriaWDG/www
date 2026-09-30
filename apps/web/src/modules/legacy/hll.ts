@@ -7,6 +7,14 @@
 
 export const LEGACY_HLL_ORIGIN = 'https://valkyriahll.cz';
 
+const LEGACY_HLL_HOSTS: ReadonlySet<string> = new Set(['valkyriahll.cz', 'www.valkyriahll.cz']);
+
+/** True for a URL on the former HLL website, which public pages neither link nor mention. */
+export function isLegacyHllUrl(href: string): boolean {
+  const url = URL.parse(href);
+  return Boolean(url && (url.protocol === 'https:' || url.protocol === 'http:') && LEGACY_HLL_HOSTS.has(url.hostname.toLowerCase()));
+}
+
 export type LegacyGuide = {
   /** Exact legacy slug under `/guide/`, reused as the Czech field manual slug. */
   slug: string;

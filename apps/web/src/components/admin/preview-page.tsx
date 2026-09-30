@@ -13,6 +13,7 @@ import { DomainError } from '@/lib/result';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { uuidSchema } from '@/modules/content/inputs';
 import { getPreview } from '@/modules/content/preview';
+import { legacyLinkRewrite } from '@/modules/legacy/public-links';
 import styles from './admin.module.css';
 import { loadEditorState, selectedContentLocale } from './editor-page';
 import { oneOf, single, type RawSearchParams } from './search-params';
@@ -79,7 +80,7 @@ export async function PreviewPage({ locale, id, raw, mode }: { locale: AppLocale
           ) : null}
         </div>
       </div>
-      <ArticleView article={article} labels={articleLabels} backHref={null} siteOrigin={getSiteOrigin()} dateLocale={contentLocale} />
+      <ArticleView article={article} labels={articleLabels} backHref={null} siteOrigin={getSiteOrigin()} rewriteLink={await legacyLinkRewrite(article.body, article.locale)} dateLocale={contentLocale} />
     </div>
   );
 }
