@@ -32,6 +32,8 @@ portrait photo, found:
   - Public Czech copy uses the community's informal register ("Vyber hru", "Zeptej se na
     Discordu"). Sign-in, account and administration stay formal; the rule is recorded in
     `product/localization.md`.
+  - Verification on `9407ad4`: lint, typecheck, unit 787/787 and the full browser suite
+    (198 passed, 0 failed, 99 opt-in captures skipped) passed.
   - [Captures](evidence/public-ui-round8-2026-09-30/README.md).
 
 ## Former-website links in stored content and page fixes (PR #79, merged `8547f77`)
