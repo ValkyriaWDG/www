@@ -1,27 +1,25 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import AxeBuilder from '@axe-core/playwright';
 import { expect, type Page } from '@playwright/test';
 import { fixtureEditorialDetails } from '../../src/fixtures/legacy';
 import { expectNoHorizontalOverflow } from './shell-helpers';
 
-export async function expectEditorialArchive(page: Page, key: 'clan' | 'faq' | 'manual-setup') {
-  const kind = key === 'manual-setup' ? 'manual' : 'page';
-  const details = fixtureEditorialDetails(kind, key);
-  const archive = page.locator(`[data-archive-editorial="${kind}"]`);
-  await expect(archive).toBeVisible();
-  await expect(archive).toHaveAccessibleName('Z původního webu');
-  await expect(archive).toContainText(details.sourceAuthorLabel);
-  await expect(archive.locator('b')).toHaveCount(0);
-  await expect(archive.locator('time')).toHaveAttribute('datetime', details.sourceModifiedOn!);
-  await expect(archive.getByRole('link', { name: 'Původní záznam', exact: true })).toHaveAttribute('href', details.sourceUrl);
+/**
+ * Pages with published archive metadata render only their current content: no "from the
+ * original website" block, archive author, source date or link to the former website.
+ */
+export async function expectNoArchiveAttribution(page: Page, key: 'clan' | 'faq' | 'manual-setup') {
+  const details = fixtureEditorialDetails(key === 'manual-setup' ? 'manual' : 'page', key);
+  await expect(page.locator('[data-archive-editorial]')).toHaveCount(0);
+  const text = await page.locator('main').innerText();
+  expect(text).not.toMatch(/Z původního webu|Původní záznam/);
+  expect(text).not.toContain(details.sourceAuthorLabel);
+  await expect(page.locator(`main a[href="${details.sourceUrl}"]`)).toHaveCount(0);
   expect(await page.content()).not.toContain('SYNTHETIC-NOT-PUBLIC');
   await expectNoHorizontalOverflow(page);
-  const result = await new AxeBuilder({ page }).include('[data-archive-editorial]').withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-  expect(result.violations).toEqual([]);
 }
 
-export async function captureEditorialArchive(page: Page, key: 'clan' | 'faq' | 'manual-setup', width: number) {
+export async function captureEditorialPage(page: Page, key: 'clan' | 'faq' | 'manual-setup', width: number) {
   if (!process.env.CAPTURE_EVIDENCE) return;
   const outDir = path.resolve(import.meta.dirname, '../../../../.local/evidence/legacy-editorial-renderers');
   mkdirSync(outDir, { recursive: true });
@@ -40,6 +38,6 @@ export async function captureEditorialArchive(page: Page, key: 'clan' | 'faq' | 
   writeFileSync(path.join(outDir, file.replace('.png', '.json')), `${JSON.stringify({
     capturedAt: new Date().toISOString(), synthetic: true, file, locale: 'cs',
     route: new URL(page.url()).pathname, viewport: page.viewportSize(),
-    caption: `${key}: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. ${key === 'manual-setup' ? 'The existing manual provenance is preserved.' : key === 'faq' ? 'The editor published only Czech; English remains unpublished.' : 'The existing clan content remains unchanged.'}`,
+    caption: `${key}: current published Czech content without any reference to the former website. ${key === 'manual-setup' ? 'Third-party guide credits remain.' : key === 'faq' ? 'The editor published only Czech; English remains unpublished.' : 'The existing clan content remains unchanged.'}`,
   }, null, 2)}\n`);
 }

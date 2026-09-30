@@ -2,7 +2,7 @@ import { createElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import type { NewsSummary } from '@/modules/content/types';
-import { NewsCard } from './news-card';
+import { NewsCard, NewsPlaceholder } from './news-card';
 
 // App Router's navigation runtime is unavailable in plain Node; keep the card itself real.
 vi.mock('@/i18n/navigation', () => ({
@@ -45,5 +45,17 @@ describe('news card decorative game artwork', () => {
     const html = render({ game: null });
     expect(html).not.toContain('/images/hll/');
     expect(html).not.toContain('/presskit/');
+  });
+});
+
+describe('NewsPlaceholder', () => {
+  it('gives related-news cards the same artwork as the news list instead of a text box', () => {
+    const community = renderToStaticMarkup(NewsPlaceholder({ game: null }));
+    expect(community).toContain('data-placeholder-game="community"');
+    expect(community).toContain('/images/editorial/hub-480x270.webp');
+    expect(community).not.toContain('>Valkyria<');
+    const hll = renderToStaticMarkup(NewsPlaceholder({ game: 'hell-let-loose' }));
+    expect(hll).toContain('/brand/valkyria-emblem-733.webp');
+    expect(hll).not.toContain('>Hell Let Loose<');
   });
 });

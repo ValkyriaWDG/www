@@ -40,7 +40,7 @@ export async function CommunityScreen({ locale, game }: { locale: AppLocale; gam
       after={
         <>
           <CommunityLinks locale={locale} links={config?.communityLinks ?? []} />
-          <HllPanel locale={locale} game={game} url={links.hllUrl} archiveUrl={links.hllArchiveUrl} />
+          <HllPanel locale={locale} game={game} />
         </>
       }
     />

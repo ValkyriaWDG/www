@@ -126,7 +126,8 @@ export function MatchBanner({ match, t, scene }: { match: PublicMatchSummary; t:
       <span className={styles.bannerVs}>VS</span>
       <span className={styles.bannerSide}>
         <OpponentMark match={match} className={styles.bannerLogo} />
-        <span className={styles.bannerName}>{match.opponentShortCode ?? match.opponentName}</span>
+        {/* Without a logo the mark already shows the short code, so the full name follows it. */}
+        <span className={styles.bannerName}>{match.opponentLogo ? (match.opponentShortCode ?? match.opponentName) : match.opponentName}</span>
       </span>
     </div>
   );

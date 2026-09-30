@@ -3,12 +3,10 @@ import { getTranslations } from 'next-intl/server';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { cache } from 'react';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
-import { ExternalLink } from '@/components/public/external-link';
 import { viewForStatus } from '@/components/public/match-format';
 import { MatchesScreen } from '@/components/public/matches-screen';
 import { bilingualAlternates, OG_LOCALE, seoTitle } from '@/components/public/metadata';
 import { isSlug, matchesListHref, parseMatchFilters, type RawSearchParams } from '@/components/public/query';
-import { getShellLinks } from '@/components/shell/shell-config';
 import { PageMain } from '@/components/shell/page-main';
 import { PageHeader } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
@@ -70,11 +68,7 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
   const view = viewForStatus(match.status);
   const filters = { ...parseMatchFilters(query, view), view, game: undefined };
   const base = sectionBase(game);
-  const [t, links, external] = await Promise.all([
-    getTranslations({ locale, namespace: 'matches' }),
-    getShellLinks(),
-    getTranslations({ locale, namespace: 'common.external' }),
-  ]);
+  const t = await getTranslations({ locale, namespace: 'matches' });
   return (
     <PageMain width="full" labelledBy="match-title">
       <PageHeader
@@ -82,13 +76,6 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
         eyebrow={`${t('detail.eyebrow')} // ${t(`games.${match.game}`)}`}
         title={t('meta.detailTitle', { opponent: match.opponentName })}
         titleId="match-title"
-        actions={
-          game === 'hll' && links.hllArchiveUrl ? (
-            <ExternalLink href={links.hllArchiveUrl} externalLabel={external('suffix')} variant="button" data-hll-archive="">
-              {t('list.hllArchive')}
-            </ExternalLink>
-          ) : undefined
-        }
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
       <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} />

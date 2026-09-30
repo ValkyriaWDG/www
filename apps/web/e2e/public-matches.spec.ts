@@ -93,12 +93,12 @@ test.describe('public matches: lists', () => {
     await expect(page.getByRole('heading', { name: 'Zatím nejsou naplánované žádné zápasy.' })).toHaveCount(0);
   });
 
-  test('HLL match archive link is an explicit external destination', async ({ page }) => {
-    await page.goto('/en/matches');
-    const archive = page.locator('[data-hll-archive]');
-    await expect(archive).toHaveAttribute('href', 'https://valkyriahll.cz/matches');
-    await expect(archive).toHaveAccessibleName('HLL match archive (external link)');
-    await expect(archive).not.toHaveAttribute('target', /.+/);
+  test('match lists and details do not send visitors to the former HLL match archive', async ({ page }) => {
+    for (const path of ['/en/matches?view=results', '/cs/hll/matches?view=results', `/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`]) {
+      await page.goto(path);
+      await expect(page.locator('[data-match-table]')).toBeVisible();
+      await expect(page.locator('[data-hll-archive], a[href^="https://valkyriahll.cz"]')).toHaveCount(0);
+    }
   });
 
   test('list rows show a visible keyboard focus ring', async ({ page }) => {

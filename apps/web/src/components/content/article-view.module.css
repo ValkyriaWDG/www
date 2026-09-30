@@ -154,7 +154,7 @@
   border-bottom: var(--border-hairline) solid var(--color-border);
 }
 
-.relatedMedia img {
+.relatedMedia > img {
   display: block;
   width: 100%;
   height: 100%;

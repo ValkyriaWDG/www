@@ -151,8 +151,8 @@ describe('production seed', () => {
     expect(fixtures).toHaveLength(0);
   });
 
-  it('uses only reviewed facts and links, including the HLL website link on clan and community pages', () => {
-    const allowed = new Set(['https://valkyriahll.cz/', 'https://valkyriahll.cz/matches', 'https://discord.gg/vlkhll']);
+  it('uses only reviewed facts and links and never refers visitors to the former HLL website', () => {
+    const allowed = new Set(['https://discord.gg/vlkhll']);
     const forbidden = [/3\s?500/, /\b100\s?\+/, /\b150\s?\+/, /ECL/, /Vietnam/i, /youtube|instagram|facebook|steam/i, /moneta/i, /eef9c6d0/];
     for (const pageKey of PAGE_KEYS) {
       for (const locale of LOCALES) {
@@ -162,9 +162,9 @@ describe('production seed', () => {
         for (const link of collectLinks(copy.body)) expect(allowed.has(link.href), link.href).toBe(true);
       }
     }
-    for (const pageKey of ['clan', 'community'] as const) {
-      expect(collectLinks(SEED_PAGES[pageKey].cs.body)).toContainEqual({ href: 'https://valkyriahll.cz/', text: 'Web Hell Let Loose' });
-      expect(collectLinks(SEED_PAGES[pageKey].en.body)).toContainEqual({ href: 'https://valkyriahll.cz/', text: 'Hell Let Loose website' });
+    for (const pageKey of PAGE_KEYS) {
+      expect(JSON.stringify(SEED_PAGES[pageKey].cs)).not.toMatch(/původní(m|ho)? web|valkyriahll/i);
+      expect(JSON.stringify(SEED_PAGES[pageKey].en)).not.toMatch(/original website|valkyriahll/i);
     }
     expect(JSON.stringify(SEED_PAGES.clan.cs)).toContain('2022');
     expect(JSON.stringify(SEED_PAGES.clan.cs)).toContain('17. září 2026');

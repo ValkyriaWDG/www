@@ -1,7 +1,6 @@
 import type { PageKey } from '@valkyria/db/schema';
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
-import { ArchiveEditorial } from '@/components/content/archive-editorial';
 import { PageMain } from '@/components/shell/page-main';
 import { EmptyState, PageHeader, SectionFrame } from '@/components/ui/panels';
 import type { AppLocale } from '@/i18n/routing';
@@ -58,7 +57,6 @@ export async function CorePage({
             <div className={styles.body} lang={page.locale}>
               <RichText doc={page.body} assets={page.assets} labels={{ tableRegion: tr('tableRegion'), externalLink: tr('externalLink') }} siteOrigin={getSiteOrigin()} anchors={anchors} />
             </div>
-            {page.archiveEditorial ? <ArchiveEditorial details={page.archiveEditorial} locale={locale} /> : null}
           </SectionFrame>
         ) : (
           <EmptyState title={t('shared.unpublishedTitle')}>

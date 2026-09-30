@@ -10,7 +10,6 @@ import { isSlug } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
 import { PageHeader, StatusBadge } from '@/components/ui/panels';
 import { SelectionTable } from '@/components/ui';
-import { TrophyIcon } from '@/components/ui/icons';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { GAME_REGISTRY, gameRouteFromDb, type GameRoute } from '@/modules/games/registry';
@@ -18,11 +17,12 @@ import { canonicalMatchPath, canonicalTournamentPath, sectionBase } from '@/modu
 import type { PublicMatchSummary } from '@/modules/matches/types';
 import { sharingMetadata } from '@/modules/social/metadata';
 import { getPublicTournament } from '@/modules/tournaments/queries';
+import { TournamentArchiveFacts } from './tournament-archive';
+import { TournamentEmblem } from './tournament-emblem';
 import { getTournamentTranslations, PHASE_KIND, tournamentDates } from './tournaments-screen';
 import matchStyles from './matches.module.css';
 import { TagList } from './tags';
 import styles from './tournaments.module.css';
-import { ArchiveEditorial } from '@/components/content/archive-editorial';
 
 /** Published tournament of `game` only; unknown, draft and other-game slugs are indistinguishable. */
 const loadPublicTournament = cache(async (game: GameRoute, slug: string, locale: AppLocale) =>
@@ -76,9 +76,7 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
       />
       <div className={styles.detail} data-tournament-detail={tournament.slug}>
         <section className={styles.facts} aria-labelledby="tournament-facts">
-          <span className={styles.cardEmblem} aria-hidden="true" data-tournament-emblem="">
-            <TrophyIcon size={36} />
-          </span>
+          <TournamentEmblem item={tournament} size={36} data-tournament-emblem="" />
           <h2 className={styles.groupTitle} id="tournament-facts">
             {t('detail.facts')}
           </h2>
@@ -121,7 +119,7 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
           <h2 className={styles.groupTitle} id="tournament-description">
             {t('detail.description')}
           </h2>
-          {tournament.archiveEditorial ? <ArchiveEditorial details={tournament.archiveEditorial} locale={locale} /> : null}
+          {tournament.archiveEditorial ? <TournamentArchiveFacts details={tournament.archiveEditorial} /> : null}
           <LocalizedProseView
             prose={tournament.description}
             locale={locale}

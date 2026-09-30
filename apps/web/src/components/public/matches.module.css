@@ -533,15 +533,6 @@
   margin: var(--space-1) 0 0;
 }
 
-.legacyNotice {
-  margin: 0;
-  padding: var(--space-2) var(--space-3);
-  border-inline-start: 2px solid var(--color-warning);
-  color: var(--color-text);
-  background: rgb(255 255 255 / 0.04);
-  font-size: var(--text-small);
-}
-
 .legacySourceLinks {
   display: grid;
   gap: var(--space-4);

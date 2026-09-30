@@ -150,7 +150,7 @@ for (const [width, height, note] of [
 test('mobile menu open', async ({ browser }) => {
   await capture(browser, {
     file: 'mobile-menu-cs-390x844.png',
-    caption: 'Mobile disclosure menu open (cs, 390×844): all sections incl. NOVINKY, sign-in and HLL WEB; flag switcher in the compact header.',
+    caption: 'Mobile disclosure menu open (cs, 390×844): all sections incl. NOVINKY and sign-in; flag switcher in the compact header.',
     locale: 'cs',
     width: 390,
     height: 844,
@@ -165,7 +165,7 @@ test('mobile menu open', async ({ browser }) => {
 test('public subpage treatment', async ({ browser }) => {
   await capture(browser, {
     file: 'subpage-not-found-en-1440x900.png',
-    caption: 'Localized not-found page inside the shell (en): darker public scrim, no crest, footer strip with HLL WEBSITE/Privacy.',
+    caption: 'Localized not-found page inside the shell (en): darker public scrim, no crest, footer strip with Privacy.',
     locale: 'en',
     width: 1440,
     height: 900,

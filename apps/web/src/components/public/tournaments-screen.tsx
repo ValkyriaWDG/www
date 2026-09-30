@@ -1,6 +1,5 @@
 import { getTranslations } from 'next-intl/server';
 import { PageMain } from '@/components/shell/page-main';
-import { TrophyIcon } from '@/components/ui/icons';
 import { EmptyState, PageHeader, StatusBadge, type StatusKind } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
@@ -12,8 +11,9 @@ import { canonicalTournamentPath, sectionBase } from '@/modules/games/routes';
 import { listPublicTournaments } from '@/modules/tournaments/queries';
 import type { PublicTournamentSummary, TournamentPhase } from '@/modules/tournaments/types';
 import { ListLoadError } from './list-load-error';
+import { TournamentArchiveFacts } from './tournament-archive';
+import { TournamentEmblem } from './tournament-emblem';
 import styles from './tournaments.module.css';
-import { ArchiveEditorial } from '@/components/content/archive-editorial';
 
 export const PHASE_KIND: Record<TournamentPhase, StatusKind> = { ongoing: 'success', upcoming: 'info', finished: 'neutral', undated: 'neutral' };
 
@@ -34,9 +34,7 @@ function TournamentCard({ item, locale, t }: { item: PublicTournamentSummary; lo
   return (
     <li className={styles.card} data-tournament-card={item.slug} data-phase={item.phase}>
       <article aria-labelledby={titleId}>
-        <span className={styles.cardEmblem} aria-hidden="true">
-          <TrophyIcon size={30} />
-        </span>
+        <TournamentEmblem item={item} size={30} />
         <p className={styles.cardMeta}>
           <StatusBadge kind={PHASE_KIND[item.phase]}>{t(`phase.${item.phase}`)}</StatusBadge>
           {item.season ? <span>{item.season}</span> : null}
@@ -46,7 +44,7 @@ function TournamentCard({ item, locale, t }: { item: PublicTournamentSummary; lo
             {item.name}
           </Link>
         </h3>
-        {item.archiveEditorial ? <ArchiveEditorial details={item.archiveEditorial} locale={locale} compact /> : null}
+        {item.archiveEditorial ? <TournamentArchiveFacts details={item.archiveEditorial} compact /> : null}
         <p className={styles.cardFacts}>
           <span>{tournamentDates(item, locale, t)}</span>
           <span>{t('list.matchCount', { count: item.matchCount })}</span>

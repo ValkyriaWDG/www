@@ -12,15 +12,13 @@ import styles from './pages.module.css';
 import publicStyles from './public.module.css';
 
 /**
- * Contextual Hell Let Loose block (clan/community). The HLL division lives on this site, so
- * outside the HLL section the block links to it; the clan's original HLL website stays a
- * separate archive destination, opened same-tab with an external indication.
+ * Contextual Hell Let Loose block on shared and Wardogs clan/community pages: the HLL
+ * division lives on this site, so the block links to its section. Inside the HLL section
+ * it would only repeat the navigation and is omitted.
  */
-export async function HllPanel({ locale, game, url, archiveUrl }: { locale: AppLocale; game: GameRoute | null; url: string | null; archiveUrl?: string | null }) {
-  const inHll = game === 'hll';
-  if (inHll && !url) return null;
+export async function HllPanel({ locale, game }: { locale: AppLocale; game: GameRoute | null }) {
+  if (game === 'hll') return null;
   const t = await getTranslations({ locale, namespace: 'pages.hll' });
-  const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   return (
     <section className={publicStyles.linkPanel} aria-labelledby="hll-panel-title" data-hll-panel="">
       <h2 id="hll-panel-title" className={publicStyles.linkPanelTitle}>
@@ -28,21 +26,9 @@ export async function HllPanel({ locale, game, url, archiveUrl }: { locale: AppL
       </h2>
       <p className={publicStyles.linkPanelBody}>{t('body')}</p>
       <div className={publicStyles.linkPanelActions}>
-        {inHll ? null : (
-          <GameButton href={sectionBase('hll')} data-hll-section="">
-            {t('section')}
-          </GameButton>
-        )}
-        {url ? (
-          <ExternalLink href={url} externalLabel={external} variant={inHll ? 'button' : undefined} data-hll-website="">
-            {t('website')}
-          </ExternalLink>
-        ) : null}
-        {archiveUrl ? (
-          <ExternalLink href={archiveUrl} externalLabel={external} data-hll-archive="">
-            {t('archive')}
-          </ExternalLink>
-        ) : null}
+        <GameButton href={sectionBase('hll')} data-hll-section="">
+          {t('section')}
+        </GameButton>
       </div>
     </section>
   );

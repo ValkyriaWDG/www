@@ -6,7 +6,7 @@ import cs from '@/i18n/messages/cs/matches.json';
 import en from '@/i18n/messages/en/matches.json';
 import type { LegacyMatchDetails } from '@/modules/legacy/match-details';
 import type { PublicMatchSummary } from '@/modules/matches/types';
-import { MatchLegacyDetails } from './match-legacy-details';
+import { MatchLegacyDetails, sourceTypeName } from './match-legacy-details';
 import { MatchTeams } from './match-parts';
 
 vi.mock('@/modules/content/rich-text/render', () => ({ mediaUrl: (id: string) => `/api/media/${id}` }));
@@ -27,24 +27,29 @@ function render(details: LegacyMatchDetails, locale: 'cs' | 'en' = 'en') {
   return renderToStaticMarkup(<MatchLegacyDetails details={details} t={t} titleId="test" externalLabel={locale === 'cs' ? '(externí odkaz)' : '(external link)'} />);
 }
 
-describe('public historical match facts', () => {
-  it.each(['cs', 'en'] as const)('renders safe source facts in %s independently of the recap', (locale) => {
+describe('public match facts', () => {
+  it.each(['cs', 'en'] as const)('renders recorded facts in %s independently of the recap', (locale) => {
     const html = render(detail(), locale);
-    for (const value of ['VLK + Synthetic Ally', 'Synthetic Opponent', 'Synthetic Capture Point', 'Synthetic Point', '3 · 2', '12/05/2024 19:00', '20:00']) expect(html).toContain(value);
+    for (const value of ['VLK + Synthetic Ally', 'Synthetic Opponent', 'Synthetic Capture Point', '3 · 2']) expect(html).toContain(value);
     expect(html).toContain(locale === 'cs' ? '90 minut' : '90 minutes');
-    expect(html).toContain('data-legacy-time-conflict=""');
-    expect(html).toContain('data-legacy-capture-conflict=""');
-    expect(html).toContain('UTC+01:00');
-    expect(html).toContain(locale === 'cs' ? 'Původní domácí tým' : 'Original home team');
+    expect(html).toContain(locale === 'cs' ? 'Domácí tým' : 'Home team');
     expect(html).toContain(locale === 'cs' ? 'První obsazení' : 'First capture');
     expect(html).not.toContain('data-match-recap');
   });
 
-  it('preserves recording credits, descriptions and source dates without embedding a third party player', () => {
+  it.each(['cs', 'en'] as const)('keeps conflicting duplicates and raw source timestamps stored but not shown in %s', (locale) => {
+    const html = render(detail(), locale);
+    for (const value of ['Synthetic Point', '12/05/2024 19:00', '20:00', 'UTC+01:00', 'data-legacy-time-conflict', 'data-legacy-capture-conflict']) expect(html).not.toContain(value);
+    const sourceWording = locale === 'cs'
+      ? ['Původní domácí', 'Zdrojové záznamy', 'Typ zdroje', 'Datum ve zdroji', 'původním jazyce', 'Historický zdroj']
+      : ['Original home', 'Source recordings', 'Source type', 'Source date', 'original language', 'historical source'];
+    for (const value of sourceWording) expect(html).not.toContain(value);
+  });
+
+  it('preserves recording credits, descriptions and dates without embedding a third party player', () => {
     const html = render(detail());
-    for (const value of ['Synthetic recording', 'Synthetic original description', 'Synthetic credit', '12/05/2024', 'youtube']) expect(html).toContain(value);
+    for (const value of ['Synthetic recording', 'Synthetic original description', 'Synthetic credit', '12/05/2024', 'YouTube']) expect(html).toContain(value);
     expect(html).toContain('href="https://example.org/synthetic-recording"');
-    expect(html).toContain('original language');
     expect(html).not.toMatch(/<iframe|target=/);
   });
 
@@ -82,8 +87,8 @@ describe('public historical match facts', () => {
   it('gives untitled recordings a localized accessible link name', () => {
     const details = detail();
     details.sourceLinks[0]!.title = ' ';
-    expect(render(details)).toContain('Source link 1');
-    expect(render(details, 'cs')).toContain('Zdrojový odkaz 1');
+    expect(render(details)).toContain('Link 1');
+    expect(render(details, 'cs')).toContain('Odkaz 1');
   });
 });
 
@@ -111,5 +116,13 @@ describe('opponent country ownership', () => {
 
   it('does not invent flags for a normal match without archive metadata', () => {
     expect(renderTeams({ ...match(), legacyDetails: null })).not.toContain('data-match-country');
+  });
+});
+
+describe('sourceTypeName', () => {
+  it('uses brand spelling for known recording platforms and keeps other source types verbatim', () => {
+    expect(sourceTypeName('youtube')).toBe('YouTube');
+    expect(sourceTypeName(' Twitch ')).toBe('Twitch');
+    expect(sourceTypeName('forum post')).toBe('forum post');
   });
 });

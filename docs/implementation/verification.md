@@ -18,7 +18,7 @@ in the PR and related issue/incident before closure; local files alone do not fu
 | Editorial media | Reject hostile/oversized uploads and pasted markup; scoped access, draft assets private, safe referenced-asset deletion |
 | Scheduled posts | Due/cancel/reschedule/retry, preserve live revision/metadata during scheduled updates, UTC/DST boundaries, scoped local-admin delegation/revocation, stalled runner, no double publication |
 | Match authoring | Create/publish fixture, postpone/cancel, record verified result; unknown score remains null; scope checks |
-| HLL links | NEWS and HLL WEBSITE discoverable without login on desktop/mobile; correct external HLL domain/archive |
+| HLL links | NEWS and the HLL section discoverable without login on desktop/mobile; no public link or mention of the former HLL website |
 | Language routing | `/` defaults to `/cs` even with English browser preferences; `/en` direct navigation, switching/back/refresh, unsupported locale and unprefixed auth/API/health routes |
 | Localized UI | Czech and English labels/errors/editor controls, dictionary key parity/format validation, Czech glyphs/plurals/dates and accessible flag/text switcher on desktop/mobile |
 | Localized content | Independent draft/live revisions and schedules, per-locale slugs/metadata/media text, concurrent edits, missing translation state, cache/privacy separation and published-only alternates |

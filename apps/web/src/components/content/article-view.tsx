@@ -1,8 +1,7 @@
 import type { Game, Locale } from '@valkyria/db/schema';
 import { getTranslations } from 'next-intl/server';
+import { NewsPlaceholder } from '@/components/public/news-card';
 import { TagList } from '@/components/public/tags';
-import { WARDOGS_MARK } from '@/components/public/presskit';
-import publicStyles from '@/components/public/public.module.css';
 import { PageHeader, StatusBadge } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
@@ -11,7 +10,6 @@ import { mediaUrl, RichText, type RichTextLabels } from '@/modules/content/rich-
 import type { ArticleDTO, NewsSummary } from '@/modules/content/types';
 import { canonicalNewsPath } from '@/modules/games/routes';
 import styles from './article-view.module.css';
-import { ArchiveEditorial } from './archive-editorial';
 
 /** Localized strings for {@link ArticleView}; load them with {@link getArticleViewLabels}. */
 export type ArticleViewLabels = {
@@ -158,7 +156,6 @@ export function ArticleView({ article, labels, preview = false, related = [], ba
       <div className={styles.body} lang={contentLang} data-article-body="">
         <RichText doc={article.body} assets={article.assets} labels={labels.richText} siteOrigin={siteOrigin} className={styles.bodyText} />
       </div>
-      {article.archiveEditorial ? <ArchiveEditorial details={article.archiveEditorial} locale={locale} /> : null}
       {related.length > 0 ? (
         <section className={styles.related} aria-labelledby={`${titleId}-related`} data-related="">
           <h2 id={`${titleId}-related`} className={styles.relatedTitle}>
@@ -172,16 +169,7 @@ export function ArticleView({ article, labels, preview = false, related = [], ba
                     // eslint-disable-next-line @next/next/no-img-element -- publication-aware media route
                     <img src={mediaUrl(item.cover.assetId, 'thumb')} alt="" width={item.cover.width} height={item.cover.height} loading="lazy" decoding="async" />
                   ) : (
-                    <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={item.game ?? undefined}>
-                      {item.game === 'wardogs' ? (
-                        // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; decorative
-                        <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
-                      ) : item.game ? (
-                        labels.games[item.game]
-                      ) : (
-                        'Valkyria'
-                      )}
-                    </div>
+                    <NewsPlaceholder game={item.game} />
                   )}
                 </div>
                 <div className={styles.relatedBody}>

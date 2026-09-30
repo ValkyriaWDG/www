@@ -52,7 +52,6 @@ flowchart LR
     Home --> News["News /news"]
     News --> Article["Article /news/slug"]
     Home --> Discord["Verified Discord invitation"]
-    Home --> HLL["HLL WEBSITE: valkyriahll.cz"]
     Members --> Member["Profile /members/slug"]
     Matches --> Match["Detail /matches/slug"]
     Login["Sign in /login"] --> Account["My account /account"]
@@ -69,7 +68,7 @@ flowchart LR
 - In desktop list/detail layouts, selecting a row may update the canonical detail URL while retaining list context, or use an explicit accessible detail link. The implementation must choose one consistent pattern. Direct detail visits always render a standalone useful detail page, and mobile selection navigates to that page.
 - Do not model all public pages as dialogs. A modal is for a bounded action such as confirmation or a filter panel, not the clan article, full directory or result history.
 - External Discord navigation uses a validated HTTPS invitation. If opening a new tab, indicate it appropriately and use safe link attributes. Discord joining is independent from website sign-in.
-- A visible `HLL WEB` / `HLL WEBSITE` link points to `https://valkyriahll.cz/` in the desktop and mobile utility/footer area, with contextual links on the clan and community pages. Identify it as an external destination. Use normal same-tab navigation unless a new tab is explicitly indicated; a new-tab link requires safe attributes. Do not silently redirect the old site or imply it has been replaced.
+- The former HLL website (`valkyriahll.cz`) is neither linked nor mentioned publicly (owner decision, 2026-09-30); the HLL division lives in the on-site HLL section.
 - A successful sign-in returns to a validated same-origin intended path. An arbitrary `returnTo` query string must not become an open redirect.
 - Language switching preserves a safe logical route/entity and compatible filters. Resolve published localized slugs from entity identity. If a requested article translation is missing/unpublished, switch to the target localized news list with a localized notice and safe link to the source-language published article; never reveal a draft, silently serve the wrong language or auto-translate. A direct missing-translation route follows the canonical localization contract.
 - Guard UI-locale changes and content-locale changes when a form/editor has unsaved work. Saving or discarding must target the correct translation. UI locale does not change identity, grants, event time or content publication state. Date/number formatting is `cs-CZ` / `en-GB`, with `Europe/Prague` display time.
@@ -84,7 +83,7 @@ Reference: [09 Main menu](references/09-main-menu.jpg), adapted according to [vi
 
 **Entry state:** useful text/navigation appears before video playback. Poster transitions into muted video only when permitted. Central emblem is decorative and never blocks controls.
 
-**Actions:** join Discord, navigate to news/clan/matches, open `HLL WEBSITE`, sign in, pause/resume background. The only actionable icons are controls that have an implementation.
+**Actions:** join Discord, navigate to news/clan/matches, sign in, pause/resume background. The only actionable icons are controls that have an implementation.
 
 **Alternate states:** static poster due to reduced motion/data saving; rejected autoplay; media missing; Discord invite unavailable; authenticated account menu. All preserve the public menu.
 
@@ -100,7 +99,7 @@ Reference: [09 Main menu](references/09-main-menu.jpg), adapted according to [vi
 
 **Content modules:** introduction, history/timeline only when factual milestones exist, games, recruitment requirements only if supplied, original/approved clan media with captions. No invented win rate, membership total, competitive title or founding date.
 
-**Actions:** Discord join, member directory, match history, relevant news and an explicit `HLL WEBSITE` link to `https://valkyriahll.cz/` in the HLL-history context. Avoid every paragraph becoming a large panel; maintain a readable line length.
+**Actions:** Discord join, member directory, match history, relevant news and the on-site HLL section. Avoid every paragraph becoming a large panel; maintain a readable line length.
 
 **States:** draft content stays private; missing verified subsection is omitted rather than filled with generic assertions; unavailable decorative image does not hide text.
 
@@ -170,7 +169,7 @@ Reference: [11 Deploy](references/11-deploy.jpg) supports two large, square choi
 
 **Suggested choices:** `DISCORD` with a brief join explanation; `HOW TO JOIN` with verified recruitment guidance. Additional legacy links can appear below as a compact list when current and approved. Do not present another community's server as Valkyria's official server.
 
-**Actions:** actual Discord invitation; anchors to joining/rules content; verified public links; a visible `HLL WEBSITE` link to `https://valkyriahll.cz/` identifying the clan's existing HLL destination. The site must explain the difference between joining Discord and signing into the website when both controls are present.
+**Actions:** actual Discord invitation; anchors to joining/rules content; verified public links; the on-site HLL section. The site must explain the difference between joining Discord and signing into the website when both controls are present.
 
 **States:** missing/invalid invitation becomes a clear unavailable message; a third-party link failure does not cause an app crash. Do not fetch and disclose unapproved live member counts simply for decorative activity.
 

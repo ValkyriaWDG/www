@@ -5,18 +5,16 @@ import { expectNoHorizontalOverflow } from './support/shell-helpers';
 const HLL_URL = 'https://valkyriahll.cz/';
 
 test.describe('core public pages', () => {
-  test('clan page shows the published story, the HLL section, the original HLL website and Discord in both locales', async ({ page }) => {
+  test('clan page shows the published story, the HLL section and Discord in both locales without the former HLL website', async ({ page }) => {
     await page.goto('/cs/clan');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Klan Valkyria');
     await expect(page.locator('[data-core-page="clan"]')).toHaveAttribute('data-published', 'true');
-    // The HLL division lives on this site; the original website is only its archive.
+    // The HLL division lives on this site; nothing points visitors to the former website.
     const panel = page.locator('[data-hll-panel]');
     await expect(panel).toContainText('přímo tady na webu');
+    await expect(panel).not.toContainText(/původní/i);
     await expect(panel.locator('[data-hll-section]')).toHaveAttribute('href', '/cs/hll');
-    const hll = page.locator('[data-hll-website]');
-    await expect(hll).toHaveAttribute('href', HLL_URL);
-    await expect(hll).toHaveAccessibleName('Původní web HLL (externí odkaz)');
-    await expect(hll).not.toHaveAttribute('target', /.+/);
+    await expect(page.locator(`a[href^="${HLL_URL}"]`)).toHaveCount(0);
     await expect(page.locator('[data-discord-panel] [data-cta="discord"]')).toHaveAttribute('href', /^https:\/\/(discord\.gg|discord\.com)\//);
     await expect(page.getByRole('navigation', { name: 'Kam dál' }).getByRole('link', { name: 'ČLENOVÉ' })).toHaveAttribute('href', '/cs/members');
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', /\/en\/clan$/);
@@ -25,17 +23,16 @@ test.describe('core public pages', () => {
     await page.goto('/en/clan');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('The Valkyria clan');
     await expect(page.locator('[data-hll-section]')).toHaveAttribute('href', '/en/hll');
-    await expect(page.locator('[data-hll-website]')).toHaveAccessibleName('Original HLL website (external link)');
-    await expect(page.locator('[data-hll-website]')).toHaveAttribute('href', HLL_URL);
+    await expect(page.locator('[data-hll-panel]')).not.toContainText(/original/i);
 
-    // Inside the HLL section the block keeps only the archive link.
+    // Inside the HLL section the block would only repeat the navigation.
     await page.goto('/cs/hll/clan');
-    await expect(page.locator('[data-hll-panel] [data-hll-section]')).toHaveCount(0);
-    await expect(page.locator('[data-hll-panel] [data-hll-website]')).toHaveAttribute('href', HLL_URL);
+    await expect(page.locator('[data-hll-panel]')).toHaveCount(0);
+    await expect(page.locator(`a[href^="${HLL_URL}"]`)).toHaveCount(0);
     await expect(page.locator('link[rel="alternate"][hreflang="cs"]')).toHaveAttribute('href', /\/cs\/clan$/);
   });
 
-  test('community page offers the two choices, explains Discord vs sign-in and links the HLL website', async ({ page }) => {
+  test('community page offers the two choices, explains Discord vs sign-in and links the HLL section', async ({ page }) => {
     await page.goto('/cs/community');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Komunita');
     const discord = page.locator('[data-choice="discord"]');
@@ -50,7 +47,8 @@ test.describe('core public pages', () => {
     const explainer = page.locator('[data-sign-in-explainer]');
     await expect(explainer).toContainText('Připojení na Discord není přihlášení na web');
     await expect(explainer.getByRole('link', { name: 'Přihlásit se na web' })).toHaveAttribute('href', '/cs/login');
-    await expect(page.locator('[data-hll-website]')).toHaveAttribute('href', HLL_URL);
+    await expect(page.locator('[data-hll-panel] [data-hll-section]')).toHaveAttribute('href', '/cs/hll');
+    await expect(page.locator(`a[href^="${HLL_URL}"]`)).toHaveCount(0);
 
     await page.goto('/en/community');
     await expect(page.locator('[data-choice="join"]')).toContainText('How to join');
