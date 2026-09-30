@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "status": "verified",
+  "sourceReportSha256": "102bf65904571d06168ae44ee1ad1e2dea1f985e965a882708befa214e71f04c",
+  "observedFrom": "2026-09-30T09:17:01.190345+00:00",
+  "observedAt": "2026-09-30T09:17:10.612407+00:00",
+  "candidateRevision": "609528df9e6a201f7cab9775607dd0f9210dcd63",
+  "candidateDigest": "sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2",
+  "acceptedRecordSha256": "cc3f122fa541d1934b590e86c3aa797cba5cff7c98214090be91ecf7014cbc57",
+  "finalResumeSha256": "4dc41efeb270b0dc4539a0f9ac7cc1776feb86e344069a9d68dd7aab1d4d37a3",
+  "finalResumeHelperSha256": "dc73b4f1184352b0bf46689a73c0eb396b33dcd6945371208f2a43c0cc02b116",
+  "productionHelperSha256": "e800a87d2332bb426c5f2ac2c7466cb8c21de8059073d127e57332693188dac3",
+  "observerSha256": "3238fd52b97e862f5efece31ee6a38e6ba59da3933e550e6698bc90d39e26c3c",
+  "holdSha256": "15f1a6bed3b375f904f7cc2fc19361bc8a3e3af36a6e19b31a6930ab45112cc2",
+  "captureSha256": "ab2ddf2b65d2117bff9cc465b004fb83ebaf7780146be1e3d4cf4a80db96ae5d",
+  "publicProofSha256": "aab31a48797f8b2f5ad7e206a0c13666d1d27ecec7b6f69155431cda346863ea",
+  "updaterStartedAt": "2026-09-30T09:08:33.800959+00:00",
+  "resumeVerifiedAt": "2026-09-30T09:08:37.269287+00:00",
+  "readOnlyObservation": true,
+  "forcedUpdaterRun": false,
+  "runtime": {
+    "webContainerUnchanged": true,
+    "webHealthy": true,
+    "runtimeContractPassed": true,
+    "configurationUnchanged": true,
+    "watchtowerRunning": true,
+    "publisherTimerActive": true,
+    "updaterContainerUnchanged": true,
+    "unrelatedContainersUnchanged": true,
+    "unrelatedContainerCount": 50
+  },
+  "publicHealth": [
+    {
+      "path": "/api/health/live",
+      "status": 200,
+      "pass": true,
+      "bytes": 15,
+      "bodySha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288"
+    },
+    {
+      "path": "/api/health/ready",
+      "status": 200,
+      "pass": true,
+      "bytes": 86,
+      "bodySha256": "0b99b8cd2f3f86e882c1d34597f1c51e7302df12ec7c8aa916b70b7e3bc32ef5"
+    }
+  ],
+  "updaterPoll": {
+    "naturalScheduledPollObserved": true,
+    "logSha256": "4a10934ccbbf2aeb20bbc0da912c5863b72bd78c6543cef457e6bec68f6a6151",
+    "logBytes": 629,
+    "sessionsObserved": 1,
+    "qualifyingSessions": [
+      {
+        "completedAt": "2026-09-30T09:13:43.727948+00:00",
+        "scanned": 1,
+        "updated": 0,
+        "failed": 0
+      }
+    ],
+    "scheduledIntervalSeconds": 300,
+    "timestampToleranceSeconds": 1
+  }
+}

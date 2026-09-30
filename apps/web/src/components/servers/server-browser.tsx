@@ -231,9 +231,9 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
       />
       {switchNotice}
       {overview.state !== 'not_configured' ? (
-        <div className={styles.refresh} data-server-refresh="">
-          <label><input type="checkbox" checked={poll.automatic} onChange={(event) => poll.setAutomatic(event.target.checked)} /> {t('refresh.auto', { seconds: poll.interval })}</label>
-          <button type="button" className={styles.copyButton} disabled={poll.refreshing || poll.coolingDown} onClick={poll.refresh}><RefreshIcon size={20} />{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
+        <div className={styles.refresh} data-server-refresh="" aria-busy={!poll.ready}>
+          <label><input type="checkbox" checked={poll.automatic} disabled={!poll.ready} onChange={(event) => poll.setAutomatic(event.target.checked)} /> {t('refresh.auto', { seconds: poll.interval })}</label>
+          <button type="button" className={styles.copyButton} disabled={!poll.ready || poll.refreshing || poll.coolingDown} onClick={poll.refresh}><RefreshIcon size={20} />{t(poll.refreshing ? 'refresh.loading' : 'refresh.now')}</button>
           <span role="status">{poll.failed ? t('refresh.failed') : null}</span>
         </div>
       ) : null}
