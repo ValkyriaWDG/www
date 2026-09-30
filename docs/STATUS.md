@@ -1,8 +1,27 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. PR #78 (no public references to the former HLL website) is merged as `f1ae338` and its image `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa` was promoted to the Watchtower channel on 2026-09-30 13:32 UTC; the live rollout was not observed from this environment. Follow-up page fixes (stored former-website links, tournament links, phone layout, recording dates) are on branch `feat/hll-platform-handoff`. Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. PR #78 (no public references to the former HLL website) is merged as `f1ae338` and its image `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa` was promoted to the Watchtower channel on 2026-09-30 13:32 UTC; the live rollout was not observed from this environment. PR #79 (stored former-website links, tournament links, phone layout, recording dates) is merged as `8547f77`; its publication run 36731270341 awaits the owner's environment approval. Image sizing, tablet navigation and visitor copy fixes are on branch `feat/hll-platform-handoff`. Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
 
-## Former-website links in stored content and page fixes (branch `feat/hll-platform-handoff`)
+## Image sizing, tablet navigation and visitor copy (branch `feat/hll-platform-handoff`)
+
+A CS/EN audit of main `8547f77` at 360/768/1024/1920 px (in addition to the earlier
+390/1440 px audits), including a long-form fixture with a square logo, a small image and a
+portrait photo, found:
+- Every rich-text image was stretched to the column width: small images were upscaled,
+  logos became huge (as in the owner's production article capture) and portrait photos
+  exceeded the viewport. Figures are now bounded by the stored size and a 60vh/520 px
+  height budget, and captions follow the image. Article and manual covers are height-capped.
+- Team logos were cropped to a square in match rows and the banner; they are now contained.
+- At 360 px the HLL match detail scrolled sideways by 2 px: screen-reader text in the
+  scrolled rounds table escaped its container. Table scroll containers now hold it.
+- The HLL section bar wrapped a lone item to a second row at 768–1279 px. It is compact below
+  1280 px and scrolls sideways below 1024 px.
+- On the HLL landing the Discord button wrapped at 1024–1439 px, and the stacked tablet menu
+  had low contrast on its right half.
+- Match statistics and server status showed technical wording (import/export/source,
+  "Pozorováno", "Snímek"). Visitor copy is plain now; the import time is admin-only.
+
+## Former-website links in stored content and page fixes (PR #79, merged `8547f77`)
 
 A CS/EN audit of main `f1ae338` (all public routes, 1440/390 px) plus the owner's production
 captures found:
