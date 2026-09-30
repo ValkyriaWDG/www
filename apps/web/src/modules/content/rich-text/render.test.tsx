@@ -83,6 +83,28 @@ describe('RichText renderer', () => {
     expect(internal).not.toContain('externí odkaz');
   });
 
+  it('applies a caller link rewrite: a site path stays internal and a null target keeps only the text', () => {
+    const parsed = parseRichTextDocument({
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        content: [
+          { type: 'text', text: 'Servery', marks: [{ type: 'link', attrs: { href: 'https://valkyriahll.cz/servery' } }] },
+          { type: 'text', text: ' a ' },
+          { type: 'text', text: 'žebříčky', marks: [{ type: 'link', attrs: { href: 'https://valkyriahll.cz/zebricky' } }] },
+          { type: 'text', text: ' a ' },
+          { type: 'text', text: 'jinde', marks: [{ type: 'link', attrs: { href: 'https://example.org/' } }] },
+        ],
+      }],
+    });
+    if (!parsed.ok) throw new Error(parsed.issues.join('\n'));
+    const rewrite = (href: string) => (href === 'https://valkyriahll.cz/servery' ? '/cs/hll/servers' : href.includes('valkyriahll.cz') ? null : href);
+    const html = renderToStaticMarkup(<RichText doc={parsed.doc} assets={new Map()} labels={labels} siteOrigin="https://valkyria.cz" rewriteLink={rewrite} />);
+    expect(html).toContain('<a href="/cs/hll/servers" rel="noopener noreferrer">Servery</a> a žebříčky a <a href="https://example.org/"');
+    expect(html).not.toContain('valkyriahll');
+    expect(html.match(/externí odkaz/g)).toHaveLength(1);
+  });
+
   it('never renders an unsafe href even if an unvalidated document reaches the renderer', () => {
     const unsafe = {
       type: 'doc',
@@ -137,6 +159,19 @@ describe('RichText renderer', () => {
     expect(html).toMatch(/<div class="[^"]*" role="region" aria-label="Tabulka \(posuňte vodorovně\)" tabindex="0"><table/);
     expect(html).toContain('<thead><tr><th scope="col"><p>Mapa</p></th><th scope="col"><p>Skóre</p></th></tr></thead>');
     expect(html).toContain('<td colSpan="2"><p>Celkem</p></td>');
+    expect(html).toMatch(/<table class="[^"]*" data-narrow="">/);
+  });
+
+  it('lets tables of up to three columns fit a phone and keeps wider tables scrollable', () => {
+    const table = (columns: number) => render({
+      type: 'doc',
+      content: [{
+        type: 'table',
+        content: [{ type: 'tableRow', content: Array.from({ length: columns }, (_, i) => ({ type: 'tableCell', attrs: { colspan: 1, rowspan: 1 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: `C${i}` }] }] })) }],
+      }],
+    });
+    expect(table(3)).toContain('data-narrow=""');
+    expect(table(4)).not.toContain('data-narrow');
   });
 
   it('derives a table of contents with unique ASCII anchors that match the rendered headings', () => {

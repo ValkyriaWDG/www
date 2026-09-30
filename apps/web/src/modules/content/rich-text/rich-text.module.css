@@ -172,6 +172,11 @@
   line-height: 1.5;
 }
 
+/* Up to three columns fit a phone when their text wraps, so they need no sideways scroll. */
+.table[data-narrow] {
+  min-width: 0;
+}
+
 .table th,
 .table td {
   padding: var(--space-2) var(--space-3);

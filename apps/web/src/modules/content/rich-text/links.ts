@@ -64,11 +64,14 @@ function decodeSafe(value: string): string {
 }
 
 /**
- * True when the link leaves the site. `mailto:` counts as external. The site origin is
- * supplied by the caller so this module stays free of server configuration.
+ * True when the link leaves the site. `mailto:` counts as external; a site-relative path
+ * does not. The site origin is supplied by the caller so this module stays free of server
+ * configuration.
  */
 export function isExternalHref(href: string, siteOrigin: string | undefined): boolean {
   if (href.startsWith('mailto:')) return true;
+  // A site-relative path (from a caller's link rewrite) never leaves the site.
+  if (/^\/(?![/\\])/.test(href)) return false;
   if (!siteOrigin) return true;
   try {
     return new URL(href).origin !== new URL(siteOrigin).origin;

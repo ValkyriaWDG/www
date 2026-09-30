@@ -265,6 +265,13 @@
       "dates": "Dates",
       "phase": "Status",
       "links": "Links",
+      "linkLabels": {
+        "website": "Tournament website",
+        "rules": "Rules",
+        "standings": "Standings",
+        "schedule": "Schedule",
+        "registration": "Registration"
+      },
       "description": "Description and rules",
       "matches": "Valkyria matches",
       "noMatches": "No matches of this tournament are published yet.",

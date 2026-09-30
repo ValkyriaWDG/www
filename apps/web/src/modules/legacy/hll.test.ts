@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { isValidSlug } from '@/modules/content/slug';
 import { SEED_MANUAL_CATEGORIES } from '@/seed/taxonomy';
-import { LEGACY_GUIDES, LEGACY_NEWS, resolveLegacyHllPath } from './hll';
+import { isLegacyHllUrl, LEGACY_GUIDES, LEGACY_NEWS, resolveLegacyHllPath } from './hll';
 
 const params = (query: string) => new URLSearchParams(query);
 
@@ -54,5 +54,12 @@ describe('legacy HLL redirects', () => {
     for (const path of ['/zebricky/unknown', '/stats/2', '/matches/abc', '/matches/0', '/matches/0211', '/Guide', '/guide/a/b', '/wp-admin', '/guide/%2e%2e', 'https://evil.invalid/guide/tanky', '//evil.invalid', '/guide//tanky', '/guide/tanky?next=elsewhere', '/guide/tanky#fragment', '/guide/../faq', '/guide/tanky\\elsewhere', `/guide/${'a'.repeat(121)}`]) {
       expect(resolveLegacyHllPath(path), path).toBeNull();
     }
+  });
+});
+
+describe('former website URLs', () => {
+  it('recognises the former website with or without www and over http(s) only', () => {
+    for (const href of ['https://valkyriahll.cz/', 'https://www.valkyriahll.cz/clanky/x', 'http://VALKYRIAHLL.cz/guide']) expect(isLegacyHllUrl(href)).toBe(true);
+    for (const href of ['https://valkyria.cz/cs/hll', 'https://valkyriahll.cz.example.org/', 'mailto:info@valkyriahll.cz', '/cs/hll', 'not a url']) expect(isLegacyHllUrl(href)).toBe(false);
   });
 });

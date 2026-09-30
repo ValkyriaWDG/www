@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { getSiteOrigin } from '@/lib/site';
 import { RichText } from '@/modules/content/rich-text/render';
 import { parseRichTextDocument } from '@/modules/content/rich-text/schema';
+import { legacyLinkRewrite } from '@/modules/legacy/public-links';
 import type { LocalizedProse } from '@/modules/prose/types';
 import styles from './public.module.css';
 
@@ -39,7 +40,7 @@ export async function LocalizedProseView({
     const assets = new Map(prose.assets.map((image) => [image.assetId, { width: image.width, height: image.height }]));
     return (
       <div lang={prose.locale} data-prose="published">
-        <RichText doc={parsed.doc} assets={assets} labels={{ tableRegion: t('tableRegion'), externalLink: t('externalLink') }} siteOrigin={getSiteOrigin()} />
+        <RichText doc={parsed.doc} assets={assets} labels={{ tableRegion: t('tableRegion'), externalLink: t('externalLink') }} siteOrigin={getSiteOrigin()} rewriteLink={await legacyLinkRewrite(parsed.doc, prose.locale)} />
       </div>
     );
   }

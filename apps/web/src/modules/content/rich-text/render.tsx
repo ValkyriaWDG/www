@@ -33,6 +33,8 @@ export type RichTextProps = {
   className?: string;
   /** Fragment ids of top-level headings by block index (see {@link headingOutline}). */
   anchors?: ReadonlyMap<number, string>;
+  /** Replaces a checked link target; `null` keeps the text without a link. */
+  rewriteLink?: (href: string) => string | null;
 };
 
 /** Public URL of a delivered media variant (publication-aware route). */
@@ -40,7 +42,7 @@ export function mediaUrl(assetId: string, variant: 'full' | 'thumb' = 'full'): s
   return `/api/media/${encodeURIComponent(assetId)}/${variant}`;
 }
 
-type RenderContext = Pick<RichTextProps, 'assets' | 'labels' | 'siteOrigin'>;
+type RenderContext = Pick<RichTextProps, 'assets' | 'labels' | 'siteOrigin' | 'rewriteLink'>;
 
 export type OutlineEntry = { id: string; level: 2 | 3; text: string; index: number };
 
@@ -86,8 +88,8 @@ export function outlineAnchors(outline: readonly OutlineEntry[]): ReadonlyMap<nu
   return new Map(outline.map((entry) => [entry.index, entry.id]));
 }
 
-export function RichText({ doc, assets, labels, siteOrigin, className, anchors }: RichTextProps) {
-  const ctx: RenderContext = { assets, labels, siteOrigin };
+export function RichText({ doc, assets, labels, siteOrigin, className, anchors, rewriteLink }: RichTextProps) {
+  const ctx: RenderContext = { assets, labels, siteOrigin, rewriteLink };
   const content = Array.isArray(doc?.content) ? doc.content : [];
   return <div className={className ? `${styles.root} ${className}` : styles.root}>{renderBlocks(content, ctx, anchors)}</div>;
 }
@@ -163,9 +165,10 @@ function renderTable(rows: readonly TableRowNode[], key: number, ctx: RenderCont
   const [first, ...rest] = rows;
   const headerRow = first && first.content.length > 0 && first.content.every((cell) => cell.type === 'tableHeader');
   const bodyRows = headerRow ? rest : rows;
+  const columns = Math.max(...rows.map((row) => row.content.reduce((sum, cell) => sum + (cell.attrs?.colspan > 1 ? cell.attrs.colspan : 1), 0)));
   return (
     <div key={key} className={styles.tableScroll} role="region" aria-label={ctx.labels.tableRegion} tabIndex={0}>
-      <table className={styles.table}>
+      <table className={styles.table} data-narrow={columns <= 3 ? '' : undefined}>
         {headerRow ? (
           <thead>
             <tr>{first.content.map((cell, i) => renderCell(cell, i, 'col', ctx))}</tr>
@@ -201,12 +204,13 @@ function renderCell(cell: TableCellNode, key: number, headerScope: 'col' | 'row'
   );
 }
 
-function linkOf(node: InlineNode): string | null {
+function linkOf(node: InlineNode, ctx: RenderContext): string | null {
   if (node.type !== 'text' || !node.marks) return null;
   const link = node.marks.find((mark): mark is Extract<RichTextMark, { type: 'link' }> => mark.type === 'link');
   if (!link) return null;
   const checked = checkLinkHref(link.attrs?.href);
-  return checked.ok ? checked.href : null;
+  if (!checked.ok) return null;
+  return ctx.rewriteLink ? ctx.rewriteLink(checked.href) : checked.href;
 }
 
 /** Groups consecutive text nodes sharing one link target into a single anchor. */
@@ -215,10 +219,10 @@ function renderInline(nodes: readonly InlineNode[], ctx: RenderContext): ReactNo
   let index = 0;
   while (index < nodes.length) {
     const node = nodes[index]!;
-    const href = linkOf(node);
+    const href = linkOf(node, ctx);
     if (href) {
       const group: TextNode[] = [];
-      while (index < nodes.length && linkOf(nodes[index]!) === href) {
+      while (index < nodes.length && linkOf(nodes[index]!, ctx) === href) {
         group.push(nodes[index] as TextNode);
         index += 1;
       }

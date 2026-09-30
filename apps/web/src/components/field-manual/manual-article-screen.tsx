@@ -13,8 +13,9 @@ import { getSiteOrigin } from '@/lib/site';
 import { headingOutline, mediaUrl, outlineAnchors, RichText } from '@/modules/content/rich-text/render';
 import { getPublishedManualBySlug } from '@/modules/field-manual/public';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
-import { LEGACY_HLL_ORIGIN } from '@/modules/legacy/hll';
+import { isLegacyHllUrl } from '@/modules/legacy/hll';
 import { gamePath } from '@/modules/games/routes';
+import { legacyLinkRewrite } from '@/modules/legacy/public-links';
 import styles from './manual.module.css';
 
 const UPDATE_THRESHOLD_MS = 60_000;
@@ -59,7 +60,7 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
   const showUpdated = Boolean(published && updated && updated.getTime() - published.getTime() > UPDATE_THRESHOLD_MS);
   // Guides moved over from the clan's former HLL website are simply ours now: only a third
   // party's source (a translated or adapted guide) is credited with its link, date and language.
-  const externalSource = Boolean(meta.sourceUrl) && URL.parse(meta.sourceUrl!)?.origin !== LEGACY_HLL_ORIGIN;
+  const externalSource = Boolean(meta.sourceUrl) && !isLegacyHllUrl(meta.sourceUrl!);
   const sourceUrl = externalSource ? meta.sourceUrl : null;
   const sourceDate = externalSource && meta.sourcePublishedOn ? new Date(`${meta.sourcePublishedOn}T12:00:00Z`) : null;
   const sourceLanguage = externalSource ? meta.sourceLanguage : null;
@@ -141,6 +142,7 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
                 assets={article.assets}
                 labels={{ tableRegion: tNews('richText.tableRegion'), externalLink: tNews('richText.externalLink') }}
                 siteOrigin={getSiteOrigin()}
+                rewriteLink={await legacyLinkRewrite(article.body, contentLang)}
                 anchors={outlineAnchors(outline)}
               />
             </div>

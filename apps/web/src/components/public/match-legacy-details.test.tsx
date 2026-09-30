@@ -6,7 +6,7 @@ import cs from '@/i18n/messages/cs/matches.json';
 import en from '@/i18n/messages/en/matches.json';
 import type { LegacyMatchDetails } from '@/modules/legacy/match-details';
 import type { PublicMatchSummary } from '@/modules/matches/types';
-import { MatchLegacyDetails, sourceTypeName } from './match-legacy-details';
+import { MatchLegacyDetails, recordingDate, sourceTypeName } from './match-legacy-details';
 import { MatchTeams } from './match-parts';
 
 vi.mock('@/modules/content/rich-text/render', () => ({ mediaUrl: (id: string) => `/api/media/${id}` }));
@@ -24,7 +24,7 @@ const detail = (): LegacyMatchDetails => ({
 
 function render(details: LegacyMatchDetails, locale: 'cs' | 'en' = 'en') {
   const t = createTranslator({ locale, messages: locale === 'cs' ? cs : en });
-  return renderToStaticMarkup(<MatchLegacyDetails details={details} t={t} titleId="test" externalLabel={locale === 'cs' ? '(externí odkaz)' : '(external link)'} />);
+  return renderToStaticMarkup(<MatchLegacyDetails details={details} locale={locale} t={t} titleId="test" externalLabel={locale === 'cs' ? '(externí odkaz)' : '(external link)'} />);
 }
 
 describe('public match facts', () => {
@@ -48,9 +48,21 @@ describe('public match facts', () => {
 
   it('preserves recording credits, descriptions and dates without embedding a third party player', () => {
     const html = render(detail());
-    for (const value of ['Synthetic recording', 'Synthetic original description', 'Synthetic credit', '12/05/2024', 'YouTube']) expect(html).toContain(value);
+    for (const value of ['Synthetic recording', 'Synthetic original description', 'Synthetic credit', 'YouTube']) expect(html).toContain(value);
     expect(html).toContain('href="https://example.org/synthetic-recording"');
     expect(html).not.toMatch(/<iframe|target=/);
+  });
+
+  it.each([['cs', '12. května 2024'], ['en', '12 May 2024']] as const)('shows the recording date in the %s date format', (locale, shown) => {
+    const html = render(detail(), locale);
+    expect(html).toContain(shown);
+    expect(html).not.toContain('12/05/2024');
+  });
+
+  it('formats only real day/month/year or ISO dates and keeps anything else verbatim', () => {
+    expect(recordingDate('1/2/2025', 'en')).toBe('1 February 2025');
+    expect(recordingDate('2025-02-01', 'cs')).toBe('1. února 2025');
+    for (const value of ['31/02/2024', '05/2024', 'jaro 2024', '']) expect(recordingDate(value, 'cs')).toBe(value);
   });
 
   it('keeps unverified strings as text and ignores unsafe links at the rendering boundary', () => {

@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 import { parseExternalHttpsUrl } from '@/components/shell/external-links';
+import { formatDate } from '@/i18n/date-format';
+import type { AppLocale } from '@/i18n/routing';
 import type { LegacyMatchDetails } from '@/modules/legacy/match-details';
 import { ExternalLink } from './external-link';
 import { MatchCountry } from './match-country';
@@ -10,13 +12,25 @@ import styles from './matches.module.css';
 const SOURCE_TYPE_NAMES: Record<string, string> = { youtube: 'YouTube', twitch: 'Twitch', facebook: 'Facebook', discord: 'Discord', vimeo: 'Vimeo', kick: 'Kick' };
 export const sourceTypeName = (type: string) => SOURCE_TYPE_NAMES[type.trim().toLowerCase()] ?? type;
 
+/** Imported recording dates are `DD/MM/YYYY` (or ISO) text; other values stay verbatim. */
+export function recordingDate(value: string, locale: AppLocale): string {
+  const text = value.trim();
+  const parts = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(text)?.slice(1).reverse() ?? /^(\d{4})-(\d{2})-(\d{2})$/.exec(text)?.slice(1);
+  if (!parts) return value;
+  const [year, month, day] = parts.map(Number) as [number, number, number];
+  const date = new Date(Date.UTC(year, month - 1, day, 12));
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return value;
+  return formatDate(date, locale, 'date', 'UTC');
+}
+
 /**
  * Recorded match facts (teams with countries and sides, capture point, points, duration,
  * first capture, recordings), readable in both locales independent of recap translation.
  * Conflicting duplicate values and raw source timestamps stay stored, not shown.
  */
-export function MatchLegacyDetails({ details, t, titleId, externalLabel }: {
+export function MatchLegacyDetails({ details, locale, t, titleId, externalLabel }: {
   details: LegacyMatchDetails;
+  locale: AppLocale;
   t: MatchT;
   titleId: string;
   externalLabel: string;
@@ -55,7 +69,7 @@ export function MatchLegacyDetails({ details, t, titleId, externalLabel }: {
               {link.description ? <p>{link.description}</p> : null}
               {link.author || link.date || link.type ? <dl className={styles.legacyFacts}>
                 {link.author ? <div><dt>{t('legacy.linkAuthor')}</dt><dd>{link.author}</dd></div> : null}
-                {link.date ? <div><dt>{t('legacy.linkDate')}</dt><dd>{link.date}</dd></div> : null}
+                {link.date ? <div><dt>{t('legacy.linkDate')}</dt><dd>{recordingDate(link.date, locale)}</dd></div> : null}
                 {link.type ? <div><dt>{t('legacy.linkType')}</dt><dd>{sourceTypeName(link.type)}</dd></div> : null}
               </dl> : null}
             </li>)}

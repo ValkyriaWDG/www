@@ -14,6 +14,7 @@ import { getPublishedNewsBySlug, getRelatedNews } from '@/modules/content/public
 import type { ArticleDTO } from '@/modules/content/types';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { canonicalNewsPath, sectionBase } from '@/modules/games/routes';
+import { legacyLinkRewrite } from '@/modules/legacy/public-links';
 import { sharingMetadata } from '@/modules/social/metadata';
 import { articleStructuredData, serializeStructuredData } from '@/modules/social/structured-data';
 
@@ -75,9 +76,10 @@ export async function NewsArticleScreen({ locale, slug, game }: { locale: AppLoc
   if (canonical !== `${sectionBase(game)}/news/${slug}`) permanentRedirect(`/${locale}${canonical}`);
   const structuredData = articleStructuredData(article, getSiteOrigin());
   const nonce = (await headers()).get('x-nonce') ?? undefined;
-  const [labels, related] = await Promise.all([
+  const [labels, related, rewriteLink] = await Promise.all([
     getArticleViewLabels(locale),
     getRelatedNews({ locale, documentId: article.documentId, limit: 3, gameScope: game ? GAME_REGISTRY[game].db : undefined }, getDb()).catch(() => []),
+    legacyLinkRewrite(article.body, article.locale),
   ]);
   return (
     <PageMain width="reading" labelledBy="article-title">
@@ -88,6 +90,7 @@ export async function NewsArticleScreen({ locale, slug, game }: { locale: AppLoc
         related={related}
         backHref={`${sectionBase(game)}/news`}
         siteOrigin={getSiteOrigin()}
+        rewriteLink={rewriteLink}
         dateLocale={locale}
         titleId="article-title"
       />

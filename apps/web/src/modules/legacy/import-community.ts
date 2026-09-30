@@ -7,6 +7,7 @@ import { parseCrconScoreboard, summarizeTeams } from '@/modules/matches/statisti
 import { publishProse, saveProseDraft } from '@/modules/prose/service';
 import { coverSnapshotSchema } from '@/modules/prose/schemas';
 import { createTournament, publishTournament } from '@/modules/tournaments/service';
+import { isLegacyHllUrl } from './hll';
 import { importCover, remapBodyAssets } from './import-content';
 import { readBundleFile, sourceHash, type ImportDocument } from './import-contract';
 import type { normalizeLegacyMatch } from './import-match';
@@ -86,7 +87,8 @@ export async function importTournamentRecord(db: Executor, context: ImportContex
     const created = await createTournament(tx, IMPORT_ACTOR, {
       slug: document.slug, game: document.game, name: document.metadata.name || document.title,
       season: document.metadata.season, startsOn: document.metadata.startsOn, endsOn: document.metadata.endsOn,
-      links: document.metadata.links ?? [{ url: document.sourceUrl, label: 'Legacy source' }],
+      // The source URL stays in the internal notes: public pages never link the former website.
+      links: (document.metadata.links ?? []).filter((link) => !isLegacyHllUrl(link.url)),
       internalNotes: [document.sourceUrl, ...(document.metadata.sourceNotes ?? []), ...document.warnings].join('\n').slice(0, 5000),
     });
     const prose = await saveProseDraft(tx, IMPORT_ACTOR, { owner: { kind: 'tournament', id: created.id }, locale: 'cs', expectedVersion: 0, body, cover });

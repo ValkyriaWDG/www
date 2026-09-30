@@ -379,10 +379,11 @@
     linear-gradient(160deg, rgb(58 59 54 / 0.95), rgb(22 23 20 / 0.98));
 }
 
+/* No overflow clipping: the aspect ratio is a minimum, so long team names on phones grow
+   the banner instead of being cut off. The scene and scrim fill it at any height. */
 .banner[data-banner-scene] {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
 }
 
 /* HLL map pack scene behind the teams; a scrim keeps the names readable. */

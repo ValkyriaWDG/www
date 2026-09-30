@@ -64,7 +64,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(recording.getByRole('link', { name: /Synthetic HLL recording/ })).toHaveAttribute('href', 'https://example.org/synthetic-fixture/hll-recording');
       await expect(recording).toContainText('Synthetic match recording for migration parity tests.');
       await expect(recording).toContainText('Synthetic recording author');
-      await expect(recording).toContainText('12/05/2024');
+      await expect(recording).toContainText(locale === 'cs' ? '12. května 2024' : '12 May 2024');
       await expect(recording).toContainText('YouTube');
       await expect(recording.locator('iframe')).toHaveCount(0);
       // The preserved conflicting source strings must not replace the published instant.
