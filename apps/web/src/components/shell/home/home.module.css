@@ -130,6 +130,15 @@ a.cta:focus-visible {
   text-wrap: balance;
 }
 
+/* Discord mark before the label; it follows the first line when the label wraps. */
+.ctaIcon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-inline-end: 0.45em;
+  vertical-align: -0.16em;
+}
+
 .ctaSub {
   color: rgb(255 248 228 / 0.95);
   font-family: var(--font-display);

@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { CommunityIcon, ExternalIcon, GlobeIcon, NewsIcon } from '@/components/ui/icons';
+import { DiscordIcon, ExternalIcon, GlobeIcon, NewsIcon } from '@/components/ui/icons';
 import { UtilityButton } from '@/components/ui/utility-button';
 import { BackgroundToggle } from './background-toggle';
 import { GuardedLink } from './guarded-link';
@@ -19,7 +19,7 @@ export async function SiteFooter({ discordUrl, hllUrl, hasBackgroundVideo, newsH
     <footer className={styles.footer} data-shell-footer="">
       <div className={styles.group} role="group" aria-label={t('footer.communityLabel')}>
         {discordUrl ? (
-          <UtilityButton href={discordUrl} external externalLabel={external} label={t('footer.discord')} icon={<CommunityIcon />} tooltipAlign="start" data-utility="discord" />
+          <UtilityButton href={discordUrl} external externalLabel={external} label={t('footer.discord')} icon={<DiscordIcon />} tooltipAlign="start" data-utility="discord" />
         ) : null}
         <UtilityButton href={newsHref} label={t('footer.news')} icon={<NewsIcon />} tooltipAlign={discordUrl ? 'center' : 'start'} data-utility="news" />
         {hllUrl ? <UtilityButton href={hllUrl} external externalLabel={external} label={t('nav.hllWebsite')} icon={<GlobeIcon />} data-utility="hll" /> : null}

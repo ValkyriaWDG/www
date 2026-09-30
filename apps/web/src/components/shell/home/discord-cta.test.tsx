@@ -16,6 +16,7 @@ describe('DiscordCta', () => {
     const html = renderToStaticMarkup(createElement(DiscordCta, { url: 'https://discord.gg/vlkhll', ...labels }));
     expect(html).toContain('href="https://discord.gg/vlkhll"');
     expect(html).toContain('PŘIPOJIT SE NA DISCORD');
+    expect(html).toMatch(/<svg[^>]*aria-hidden="true"[^>]*data-icon="discord"/);
     expect(html).toContain('(externí odkaz)');
     expect(html).not.toContain('target=');
   });

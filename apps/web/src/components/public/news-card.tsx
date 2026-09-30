@@ -11,7 +11,7 @@ import { TagList } from './tags';
 import styles from './news.module.css';
 import publicStyles from './public.module.css';
 
-export type NewsCardLabels = { games: Record<Game, string>; placeholder: string; tags: string };
+export type NewsCardLabels = { games: Record<Game, string>; tags: string };
 
 /**
  * One published post as an image panel: cover thumbnail with reserved dimensions (or a
@@ -29,11 +29,14 @@ export function NewsCard({
   locale: AppLocale;
   labels: NewsCardLabels;
   priority?: boolean;
-  /** In a game section, names shared community posts explicitly (they link to `/news/<slug>`). */
+  /**
+   * In a game section, names shared community posts explicitly (they link to
+   * `/news/<slug>`); the section's own game is not repeated on every card.
+   */
   communityLabel?: string;
 }) {
   const titleId = `news-${item.translationId}`;
-  const scopeLabel = item.game ? labels.games[item.game] : (communityLabel ?? null);
+  const scopeLabel = communityLabel !== undefined ? (item.game ? null : communityLabel) : item.game ? labels.games[item.game] : null;
   const sameAsCategory = scopeLabel && item.category?.label.toLocaleLowerCase() === scopeLabel.toLocaleLowerCase();
   const eyebrow = [item.category?.label, sameAsCategory ? null : scopeLabel].filter(Boolean).join(' · ');
   return (
@@ -50,7 +53,7 @@ export function NewsCard({
             decoding="async"
           />
         ) : (
-          <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={item.game ?? undefined}>
+          <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={item.game ?? 'community'}>
             {item.game === 'wardogs' ? (
               // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; the eyebrow names the game
               <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
@@ -63,7 +66,13 @@ export function NewsCard({
                 <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
               </>
             ) : (
-              labels.placeholder
+              <>
+                {/* Shared community post: the text-free community scene of the graphics pack and the clan emblem. */}
+                {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; whole placeholder is decorative */}
+                <img className={publicStyles.placeholderHllScene} src="/images/editorial/hub-480x270.webp" width={480} height={270} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />
+                {/* eslint-disable-next-line @next/next/no-img-element -- unchanged clan emblem with intrinsic dimensions */}
+                <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
+              </>
             )}
           </div>
         )}

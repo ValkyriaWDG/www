@@ -1,3 +1,4 @@
+import { DiscordIcon } from '@/components/ui/icons';
 import styles from './home.module.css';
 
 type DiscordCtaProps = {
@@ -35,7 +36,10 @@ export function DiscordCta({ url, label, sublabel, externalLabel, unavailableTit
     <a href={url} className={styles.cta} data-cta="discord">
       {decoration}
       <span className={styles.ctaText}>
-        <span className={styles.ctaLabel}>{label}</span>
+        <span className={styles.ctaLabel}>
+          <DiscordIcon className={styles.ctaIcon} size={28} />
+          {label}
+        </span>
         <span className={styles.ctaSub}>{sublabel}</span>
       </span>
       <span className="visually-hidden"> {externalLabel}</span>

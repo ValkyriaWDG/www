@@ -33,6 +33,7 @@ export async function FaqScreen({ locale, game }: { locale: AppLocale; game: Gam
       pageKey="faq"
       page={page}
       home={game ? { href: base, label: games(`menuLabel.${game}`) } : undefined}
+      eyebrow={game ? games(`eyebrow.${game}`) : undefined}
       anchors={outlineAnchors(outline)}
       before={
         page && questions.length > 1 ? (

@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { PageMain } from '@/components/shell/page-main';
+import { TrophyIcon } from '@/components/ui/icons';
 import { EmptyState, PageHeader, StatusBadge, type StatusKind } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
@@ -33,6 +34,9 @@ function TournamentCard({ item, locale, t }: { item: PublicTournamentSummary; lo
   return (
     <li className={styles.card} data-tournament-card={item.slug} data-phase={item.phase}>
       <article aria-labelledby={titleId}>
+        <span className={styles.cardEmblem} aria-hidden="true">
+          <TrophyIcon size={30} />
+        </span>
         <p className={styles.cardMeta}>
           <StatusBadge kind={PHASE_KIND[item.phase]}>{t(`phase.${item.phase}`)}</StatusBadge>
           {item.season ? <span>{item.season}</span> : null}

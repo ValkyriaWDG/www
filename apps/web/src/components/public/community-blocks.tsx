@@ -1,20 +1,24 @@
 import { getTranslations } from 'next-intl/server';
 import { DiscordCta } from '@/components/shell/home/discord-cta';
 import { GameButton } from '@/components/ui/game-button';
-import { CommunityIcon, ExternalIcon, ShieldIcon } from '@/components/ui/icons';
+import { DiscordIcon, ExternalIcon, ShieldIcon } from '@/components/ui/icons';
 import { FeedbackNotice } from '@/components/ui/panels';
 import type { AppLocale } from '@/i18n/routing';
+import type { GameRoute } from '@/modules/games/registry';
+import { sectionBase } from '@/modules/games/routes';
 import type { CommunityLink } from '@/modules/settings/schemas';
 import { ExternalLink } from './external-link';
 import styles from './pages.module.css';
 import publicStyles from './public.module.css';
 
 /**
- * Contextual "Hell Let Loose website" block (clan/community): the clan's existing HLL
- * site stays a separate destination, opened same-tab with an external indication.
+ * Contextual Hell Let Loose block (clan/community). The HLL division lives on this site, so
+ * outside the HLL section the block links to it; the clan's original HLL website stays a
+ * separate archive destination, opened same-tab with an external indication.
  */
-export async function HllPanel({ locale, url, archiveUrl }: { locale: AppLocale; url: string | null; archiveUrl?: string | null }) {
-  if (!url) return null;
+export async function HllPanel({ locale, game, url, archiveUrl }: { locale: AppLocale; game: GameRoute | null; url: string | null; archiveUrl?: string | null }) {
+  const inHll = game === 'hll';
+  if (inHll && !url) return null;
   const t = await getTranslations({ locale, namespace: 'pages.hll' });
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   return (
@@ -24,9 +28,16 @@ export async function HllPanel({ locale, url, archiveUrl }: { locale: AppLocale;
       </h2>
       <p className={publicStyles.linkPanelBody}>{t('body')}</p>
       <div className={publicStyles.linkPanelActions}>
-        <ExternalLink href={url} externalLabel={external} variant="button" data-hll-website="">
-          {t('website')}
-        </ExternalLink>
+        {inHll ? null : (
+          <GameButton href={sectionBase('hll')} data-hll-section="">
+            {t('section')}
+          </GameButton>
+        )}
+        {url ? (
+          <ExternalLink href={url} externalLabel={external} variant={inHll ? 'button' : undefined} data-hll-website="">
+            {t('website')}
+          </ExternalLink>
+        ) : null}
         {archiveUrl ? (
           <ExternalLink href={archiveUrl} externalLabel={external} data-hll-archive="">
             {t('archive')}
@@ -72,7 +83,7 @@ export async function CommunityChoices({ locale, discordUrl, guideAnchor }: { lo
         <li>
           {discordUrl ? (
             <a href={discordUrl} className={styles.choice} data-choice="discord">
-              <CommunityIcon className={styles.choiceIcon} size={96} strokeWidth={1.25} />
+              <DiscordIcon className={styles.choiceIcon} size={88} />
               <span className={styles.choiceTitle}>{t('discordChoice.title')}</span>
               <span className={styles.choiceBody}>{t('discordChoice.body')}</span>
               <span className={styles.choiceMarker} aria-hidden="true">
@@ -83,7 +94,7 @@ export async function CommunityChoices({ locale, discordUrl, guideAnchor }: { lo
             </a>
           ) : (
             <div className={`${styles.choice} ${styles.choiceUnavailable}`} data-choice="discord-unavailable">
-              <CommunityIcon className={styles.choiceIcon} size={96} strokeWidth={1.25} />
+              <DiscordIcon className={styles.choiceIcon} size={88} />
               <span className={styles.choiceTitle}>{t('discordChoice.title')}</span>
               <span className={styles.choiceBody}>{t('discordChoice.unavailableBody')}</span>
             </div>

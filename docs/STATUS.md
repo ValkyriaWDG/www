@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes are on branch `feat/hll-platform-handoff` (PR #72, not merged). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
 ## Public source field parity (#73)
 
@@ -12,14 +12,68 @@ See the [operator procedure](operations/legacy-hll-import.md#additive-public-met
 and [local/source/browser evidence](evidence/legacy-field-parity-2026-09-30/README.md).
 Production repair and exact-image acceptance remain required before issue closure.
 
-## Graphics pack integration (PR #70; original implementation record)
+## Public UI audit fixes (branch `feat/hll-platform-handoff`, not merged)
 
-Update: PR #70 has merged as `a7be042c0089629d3b850dd59a5761c5a8fe1899`.
-The 29 September 21:58 UTC paired capture confirmed it running healthy as image
-`sha256:6c329c43b071f322ad8b123a120a3c5744689557d2241edc269092e584ede330`.
-The original branch verification below is historical, not the current merge status.
+A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed
+[legacy production captures](evidence/hll-legacy-production-2026-09-29/README.md))
+found and fixed on application source `9946e4b`:
 
-Branch `assets/graphics-pack-handoff` integrates the owner's graphics pack with the
+- Match detail: maps/rounds and imported statistics left the one-third pane (player
+  columns were cut at 1440 px) for a full-width section below list and pane.
+- Imported format "best of 1" was shown as "best of 1 · Best of 1 (Bo1)"; now once.
+- HLL servers: PR #70's row thumbnail squeezed phone names into mid-word breaks, and
+  1024 px squeezed the 58 % list; phones now get row summaries, two columns from 1280 px.
+- Tournament description tables widened the page by 169 px on phones.
+- The HLL panel on clan/community said HLL matches stay on the original website; it now
+  links the on-site HLL section and labels the old site as the archive.
+- Breadcrumb links have a 24 px touch target.
+
+Checks on the `9946e4b` build: lint/types passed; unit 706/706; integration 340/340;
+browser 182 passed, 0 failed (99 opt-in captures skipped), including the new
+`e2e/public-layout.spec.ts`. [Before/after captures](evidence/public-ui-audit-2026-09-29/README.md).
+
+Follow-up on `b8209bb` and `797f7d4` ([captures](evidence/public-ui-copy-icons-2026-09-29/README.md)):
+- Copy no longer calls HLL our history or sends visitors to the old site for HLL matches.
+- Server/members/tournament intros are visitor copy; Czech plural fixed; ping and
+  duplicate refresh notes removed.
+- No disabled "still image" button on HLL content pages; coverless community posts use
+  the pack's community scene.
+- Game sections stop repeating their own game on cards/rows, and shared pages there
+  use the game eyebrow.
+- Discord mark (Simple Icons, CC0; manifest/NOTICE) on every Discord link and the
+  sign-in button; clan crest on sign-in/recovery; pack glyphs on hub destinations;
+  trophy emblems on tournaments.
+
+Checks on the `797f7d4` build: lint/types passed; unit 707/707; full browser suite
+182 passed, 0 failed (99 skipped) before the icon case was added, then
+`public-layout.spec.ts` 4/4 with it; integration 340/340; foundation and `derive-graphics-pack.mjs --check` passed.
+Tournaments have no logo field (a logo upload needs a migration).
+
+Match statistics and FAQ on `e4598c5` ([captures](evidence/match-stats-faq-2026-09-29/README.md)):
+per-metric split bars comparing the teams (validated palette), team marks beside team
+names and player rows, original glyphs for kills/deaths/combat/offense/defense/support
+(game class/score icons are not licensed; stored statistics have no class), numbered
+FAQ questions with a two-column index. Checks: lint/types passed, unit 708/708, browser
+183 passed (99 skipped). The imported manual/FAQ content on production was not visible
+from this environment; its reported formatting problems remain open.
+Not changed: the published clan/community CMS pages still contain the owner's older
+sentence about HLL matches on the original website (an editor must update that content);
+production was not re-audited because `valkyria.cz` is blocked by this environment's
+network policy. Next: review and merge, then an operator-run publication.
+
+## Graphics pack integration (PR #70, merged and published)
+
+Squash-merged as main `a7be042c0089629d3b850dd59a5761c5a8fe1899`. Publisher run
+[36615145766](https://github.com/ValkyriaWDG/www/actions/runs/36615145766) passed
+Foundation, Application (lint, types, unit, integration, build, image, rollback
+rehearsal, scan, e2e, budgets, artwork) and Quality gate; after the protected
+environment approval it published `majorluk/valkyria-www@sha256:6c329c43b071f322ad8b123a120a3c5744689557d2241edc269092e584ede330`
+and reported channel status `promoted` at 19:36:21 UTC (migration and runtime
+fingerprints equal to `1b38314 / 6623125c`). The 29 September 21:58 UTC paired
+capture confirmed it running healthy as that image. The original branch verification
+below is historical.
+
+Branch `assets/graphics-pack-handoff` integrated the owner's graphics pack with the
 brand correction (`5aa60ff`) on application source `7f4dc44`; head also merges main
 `264bea6` (#71, docs only). See the [catalog's implemented integration](assets/graphics-pack-2026-09-29.md#implemented-integration)
 and [evidence](evidence/graphics-pack-2026-09-29/README.md). The PR #69 hub cover,
@@ -38,9 +92,8 @@ strip geometry, crest and HLL/WDG media contracts are unchanged.
   176/176; archive `restore.mjs --verify` 497/497.
 
 Not included: corrected ready-made compositions with baked Czech copy, a map-guide page,
-square/Discord export downloads, icons on the remaining mapped targets. No merge,
-deployment, production import or Discord message. Next: review PR #70; operator-run
-release per `docs/operations/` after merge.
+square/Discord export downloads, icons on the remaining mapped targets. No production
+import or Discord message.
 
 The archived pack itself: **497 original files** with exact hashes and a reversible
 representation of the oversized editor ([pack README](../assets/design-packs/valkyria-2026-09-29/README.md));

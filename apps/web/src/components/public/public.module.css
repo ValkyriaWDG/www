@@ -108,7 +108,7 @@
   opacity: 0.55;
 }
 
-/* Distinguish reusable HLL news branding from an editor's actual event cover. */
+/* Distinguish reusable HLL/community news branding from an editor's actual event cover. */
 .placeholder > .placeholderHllScene {
   position: absolute;
   inset: 0;
@@ -119,7 +119,8 @@
   filter: saturate(0.65);
 }
 
-.placeholder[data-placeholder-game='hell-let-loose']::after {
+.placeholder[data-placeholder-game='hell-let-loose']::after,
+.placeholder[data-placeholder-game='community']::after {
   position: absolute;
   inset: 0;
   content: '';

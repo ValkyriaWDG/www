@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { GuardedLink } from '@/components/shell/guarded-link';
 import { getShellLinks } from '@/components/shell/shell-config';
-import { ExternalIcon } from '@/components/ui/icons';
+import { DiscordIcon, ExternalIcon } from '@/components/ui/icons';
 import { formatDate } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
@@ -57,6 +57,7 @@ export async function HllLanding({ locale, notice }: { locale: AppLocale; notice
           <div className={styles.cta}>
             {links.discordUrl ? (
               <a href={links.discordUrl} className={styles.discord} data-hll-discord="">
+                <DiscordIcon size={24} />
                 <span>{t('joinDiscord')}</span>
                 <ExternalIcon size={18} />
                 <span className="visually-hidden"> {external('suffix')}</span>

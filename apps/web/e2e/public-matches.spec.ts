@@ -141,9 +141,16 @@ test.describe('public matches: detail', () => {
     await expect(detail.locator('[data-result="score"]')).toContainText('2 : 1');
     await expect(detail).toContainText('Ověřený výsledek');
     await expect(detail.locator('[data-match-recap] [data-prose="published"]')).toContainText('Syntetická reportáž');
-    await expect(detail.locator('[data-match-rounds] table tbody tr')).toHaveCount(3);
     await expect(detail.locator('[data-match-links] a').first()).toHaveAttribute('href', 'https://example.org/synthetic-fixture/event-delta');
     await expect(detail).not.toContainText('internal note');
+    // Maps/rounds (and statistics) need more than the one-third pane: full width below list and pane.
+    const extras = page.locator(`[data-match-extras="${M.completedVerified}"]`);
+    await expect(extras.locator('[data-match-rounds] table tbody tr')).toHaveCount(3);
+    const extrasBox = (await extras.boundingBox())!;
+    expect(extrasBox.x).toBeLessThanOrEqual(listBox!.x + 1);
+    expect(extrasBox.x + extrasBox.width).toBeGreaterThanOrEqual(paneBox!.x + paneBox!.width - 1);
+    expect(extrasBox.y).toBeGreaterThanOrEqual(paneBox!.y + paneBox!.height - 1);
+    await expect(extras).not.toContainText('internal note');
 
     // Direct reload keeps the same meaningful page; browser back returns to the list.
     await page.reload();

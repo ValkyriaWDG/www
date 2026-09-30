@@ -20,6 +20,7 @@ Application dependencies are installed from npm under their own licenses (record
 | Barlow and Barlow Condensed (via `@fontsource/barlow`, `@fontsource/barlow-condensed`) | Self-hosted web fonts incl. Latin Extended (Czech/Slovak glyphs) | SIL Open Font License 1.1 |
 | Tiptap / ProseMirror (`@tiptap/*`) | Administration rich-text editor only (not loaded on public pages) | MIT |
 | Next.js, React, next-intl, Better Auth, Drizzle ORM, zod, sharp (libvips) | Application runtime | MIT / Apache-2.0 / LGPL-3.0 (libvips, dynamically linked prebuilt binary) |
+| Discord mark from [Simple Icons](https://simpleicons.org/) 16.33.0 (`assets/icons/simple-icons/discord.svg`, inlined as `DiscordIcon`) | Identifies links to the Valkyria Discord and Discord sign-in | SVG under CC0-1.0 ([license](assets/icons/simple-icons/LICENSE.md)); Discord name and logo are trademarks of Discord Inc. |
 
 Bundled CLI files (`apps/web/dist/cli/*.mjs`) retain third-party license comments.
 

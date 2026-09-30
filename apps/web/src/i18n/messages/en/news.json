@@ -28,8 +28,7 @@
     "firstPage": "Go to the first page",
     "clearFilters": "Clear filters",
     "loadError": "The news could not be loaded.",
-    "retry": "Try again",
-    "placeholderLabel": "Valkyria"
+    "retry": "Try again"
   },
   "missing": {
     "title": "This article is not available in English",

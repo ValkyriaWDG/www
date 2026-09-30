@@ -13,9 +13,9 @@
   },
   "sectionTitle": "{section} – {game}",
   "communityLabel": "Community",
-  "newsIntro": "News, reports and announcements of the {game} division. Shared community posts are labelled.",
+  "newsIntro": "News, reports and announcements from {game} and the whole community.",
   "matchesIntro": "Upcoming fixtures and results of the {game} division.",
-  "membersIntro": "Members with a published profile and a public {game} affiliation.",
+  "membersIntro": "Valkyria clan members who play {game} and have a public profile.",
   "switchNotice": {
     "detail": {
       "title": "Switched to {game}",
@@ -37,7 +37,7 @@
     "choose": "Choose a game",
     "cards": {
       "hll": {
-        "body": "Clan matches, servers, the Field Manual and unit recruitment.",
+        "body": "Matches and tournaments, game servers, the field manual and clan recruitment.",
         "cta": "Enter the Hell Let Loose section"
       },
       "wardogs": {
@@ -88,7 +88,7 @@
     "discordUnavailable": "The Discord invitation is not configured right now.",
     "stage": {
       "label": "Clan battle footage",
-      "pending": "Clan battle footage will be added once approved.",
+      "pending": "Clan battle footage is on its way.",
       "play": "Play footage",
       "pause": "Pause footage",
       "unavailable": "The footage cannot be played right now.",
@@ -109,7 +109,7 @@
   },
   "servers": {
     "title": "Servers",
-    "intro": "Observed status of the configured Valkyria servers with the time of observation. Missing values are never estimated.",
+    "intro": "Valkyria game servers: the current map, player count and connection address.",
     "synthetic": "Synthetic demo data – not the live status of Valkyria servers.",
     "caption": "Valkyria servers",
     "columns": {
@@ -163,7 +163,6 @@
       "copied": "Address copied.",
       "copyFailed": "Copying failed – please copy the address manually.",
       "noConnect": "Connection instructions are not published yet. Ask on Discord.",
-      "pingNote": "Latency (ping) is not shown: it would be measured from the website server, not from your computer.",
       "back": "Back to the server list",
       "nextMap": "Next map",
       "timeRemaining": "Time left in the round",
@@ -185,17 +184,16 @@
       "auto": "Update automatically every {seconds} seconds",
       "now": "Refresh",
       "loading": "Refreshing…",
-      "failed": "Refresh failed. Previous observations are marked as stale; this does not mean the game server is offline.",
-      "note": "Refreshes while this tab is visible. Manual refresh is available once every 30 seconds."
+      "failed": "Refresh failed. Previous observations are marked as stale; this does not mean the game server is offline."
     },
     "livePlayers": {
       "title": "Round player statistics",
-      "description": "A snapshot of participants in the round. It may include players who have left; it is not a connected-player roster.",
+      "description": "The table covers the whole round, so it can include players who have already left.",
       "observed": "Snapshot taken {time}",
       "noTimestamp": "Snapshot time is unavailable.",
       "synthetic": "Synthetic player data for demonstration only.",
       "stale": "This snapshot is outdated. Values may have changed.",
-      "populationMismatch": "The status reports {connected} connected players; this round snapshot contains {rows} participants.",
+      "populationMismatch": "Players connected now: {connected} · players in the round table: {rows}.",
       "notConfigured": "Player statistics are not configured for this server.",
       "unavailable": "Player statistics are unavailable. This does not mean there are no players.",
       "empty": "This source snapshot contains no player statistics.",
@@ -239,7 +237,7 @@
     "unknownCategoryTitle": "Category not found",
     "unknownCategoryBody": "This category has no published articles. Choose another category.",
     "emptyTitle": "The field manual is being prepared",
-    "emptyBody": "No article is published yet. Guides from the previous website are under editorial review.",
+    "emptyBody": "No article has been published here yet.",
     "loadError": "The field manual could not be loaded.",
     "retry": "Try again",
     "metaDescription": "Valkyria field manual for {game}: guides, roles, communication and procedures.",

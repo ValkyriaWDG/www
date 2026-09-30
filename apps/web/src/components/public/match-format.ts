@@ -96,3 +96,17 @@ export function zoneName(value: Date | string, locale: AppLocale, timeZone: stri
   }
   return formatter.formatToParts(date).find((part) => part.type === 'timeZoneName')?.value ?? '';
 }
+
+const BEST_OF_TEXT = /^\s*(?:best\s*of\s*|bo\s*)(\d+)(?:\s*\(\s*bo\s*\d+\s*\))?\s*$/i;
+
+/**
+ * Format line of the detail: the free-text format plus the localized best-of label. A
+ * format that only restates the best-of count ("best of 1", "Bo3", common in imported
+ * records) is not repeated next to it.
+ */
+export function matchFormatLabel(format: string | null, bestOf: number | null, bestOfLabel: (count: number) => string): string {
+  const text = format?.trim() || null;
+  if (!bestOf) return text ?? '';
+  const restated = text ? BEST_OF_TEXT.exec(text) : null;
+  return [restated && Number(restated[1]) === bestOf ? null : text, bestOfLabel(bestOf)].filter(Boolean).join(' · ');
+}

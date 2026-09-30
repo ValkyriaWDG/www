@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 import { MapScene } from '@/components/hll/map-artwork';
 import { parseExternalHttpsUrl } from '@/components/shell/external-links';
 import { GameButton } from '@/components/ui/game-button';
@@ -13,16 +14,30 @@ import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/rou
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
-import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge } from './match-parts';
+import { matchFormatLabel } from './match-format';
+import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge, OpponentMark } from './match-parts';
 import { MatchStatistics } from './match-statistics';
 import { MatchLegacyDetails } from './match-legacy-details';
+import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import styles from './matches.module.css';
+
+/** Map pack artwork for HLL rounds with a recognised map, in round order, each map once. */
+function matchMaps(match: PublicMatchDetail): { artwork: HllMapArtwork; name: string }[] {
+  const maps: { artwork: HllMapArtwork; name: string }[] = [];
+  if (match.game !== 'hell-let-loose') return maps;
+  for (const round of match.rounds) {
+    const artwork = hllMapArtwork(round.mapName);
+    if (artwork && round.mapName && !maps.some((entry) => entry.artwork.slug === artwork.slug)) maps.push({ artwork, name: round.mapName });
+  }
+  return maps;
+}
 
 /**
  * Match detail after reference 13's right pane. Order: opponent/event → game/date/status →
- * result (+ provisional/verified) → recap → maps/rounds → VOD/event links. `preview` is the
- * compact desktop preview beside the list with a MATCH DETAILS action; `detail` is the full
- * content of the canonical `/matches/<slug>` page.
+ * result (+ provisional/verified) → recap → VOD/event links. `preview` is the compact
+ * desktop preview beside the list with a MATCH DETAILS action; `detail` is the overview of
+ * the canonical `/matches/<slug>` page, whose maps/rounds and statistics follow in
+ * `MatchDetailExtras` at full width.
  */
 export async function MatchDetailPane({
   match,
@@ -40,7 +55,7 @@ export async function MatchDetailPane({
   const t = await getMatchTranslations(locale);
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const competition = [t(`competition.${match.competitionType}`), match.competitionName].filter(Boolean).join(' – ');
-  const format = [match.format, match.bestOf ? t('detail.bestOf', { count: match.bestOf }) : null].filter(Boolean).join(' · ');
+  const format = matchFormatLabel(match.format, match.bestOf, (count) => t('detail.bestOf', { count }));
 
   const metadata = [
     { label: t('detail.competition'), value: competition },
@@ -85,21 +100,8 @@ export async function MatchDetailPane({
 
   const eventUrl = parseExternalHttpsUrl(match.eventUrl);
   const vods = match.vodLinks.map((link) => ({ url: parseExternalHttpsUrl(link.url), label: link.label })).filter((link): link is { url: string; label: string } => Boolean(link.url));
-  const showRoundColumn = {
-    map: match.rounds.some((round) => round.mapName),
-    mode: match.rounds.some((round) => round.mode),
-    side: match.rounds.some((round) => round.side),
-  };
-
-  // Map pack artwork for HLL rounds with a recognised map, in round order, each map once.
-  // A published cover always wins; unknown maps stay text-only.
-  const maps: { artwork: HllMapArtwork; name: string }[] = [];
-  if (match.game === 'hell-let-loose') {
-    for (const round of match.rounds) {
-      const artwork = hllMapArtwork(round.mapName);
-      if (artwork && round.mapName && !maps.some((entry) => entry.artwork.slug === artwork.slug)) maps.push({ artwork, name: round.mapName });
-    }
-  }
+  // A published cover always wins; otherwise the first recognised HLL map is the banner scene.
+  const scene = match.cover ? undefined : matchMaps(match)[0]?.artwork.scene.src;
 
   const media = match.cover ? (
     <figure className={styles.coverFigure}>
@@ -108,7 +110,7 @@ export async function MatchDetailPane({
       {mode === 'detail' && match.cover.caption ? <figcaption>{match.cover.caption}</figcaption> : null}
     </figure>
   ) : (
-    <MatchBanner match={match} t={t} scene={maps[0]?.artwork.scene.src} />
+    <MatchBanner match={match} t={t} scene={scene} />
   );
 
   return (
@@ -152,66 +154,6 @@ export async function MatchDetailPane({
                 }}
               />
             </section>
-            {match.rounds.length > 0 ? (
-              <section className={styles.block} aria-labelledby={`${titleId}-rounds`} data-match-rounds="">
-                <h3 id={`${titleId}-rounds`} className={styles.blockTitle}>
-                  {t('detail.rounds')}
-                </h3>
-                {maps.length > 0 ? (
-                  <ul className={styles.mapBriefing} data-match-maps="">
-                    {maps.map(({ artwork, name }) => (
-                      <li key={artwork.slug}>
-                        <MapScene
-                          artwork={artwork}
-                          caption={name}
-                          alt={t('detail.mapImageAlt', { map: name })}
-                          tacticalLabel={t('detail.tacticalMap', { map: name, size: formatNumber(Math.round(artwork.tactical.bytes / 1024), locale) })}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-                <div className={styles.rounds} role="region" aria-labelledby={`${titleId}-rounds`} tabIndex={0}>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th scope="col">{t('detail.roundColumns.ordinal')}</th>
-                        {showRoundColumn.map ? <th scope="col">{t('detail.roundColumns.map')}</th> : null}
-                        {showRoundColumn.mode ? <th scope="col">{t('detail.roundColumns.mode')}</th> : null}
-                        {showRoundColumn.side ? <th scope="col">{t('detail.roundColumns.side')}</th> : null}
-                        <th scope="col">{t('detail.roundColumns.score')}</th>
-                        <th scope="col">{t('detail.roundColumns.outcome')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {match.rounds.map((round) => {
-                        const score = round.scoreValkyria !== null && round.scoreOpponent !== null ? `${round.scoreValkyria} : ${round.scoreOpponent}` : null;
-                        return (
-                          <tr key={round.ordinal}>
-                            <td data-numeric="">{round.ordinal}</td>
-                            {showRoundColumn.map ? <td>{round.mapName ?? '—'}</td> : null}
-                            {showRoundColumn.mode ? <td>{round.mode ?? '—'}</td> : null}
-                            {showRoundColumn.side ? <td>{isHllSide(round.side) ? t(`detail.sides.${round.side}`) : (round.side ?? '—')}</td> : null}
-                            <td data-numeric="">
-                              {score ?? (
-                                <>
-                                  <span aria-hidden="true">—</span>
-                                  <span className="visually-hidden">{t('result.unknown')}</span>
-                                </>
-                              )}
-                            </td>
-                            <td>{round.outcome && round.outcome !== 'unknown' ? t(`outcome.${round.outcome}`) : '—'}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            ) : null}
-            {match.statistics ? (
-              <MatchStatistics statistics={match.statistics} locale={locale} titleId={titleId} opponentLabel={match.opponentShortCode ?? match.opponentName} />
-            ) : null}
             {eventUrl || vods.length > 0 ? (
               <section className={styles.block} aria-labelledby={`${titleId}-links`} data-match-links="">
                 <h3 id={`${titleId}-links`} className={styles.blockTitle}>
@@ -238,6 +180,95 @@ export async function MatchDetailPane({
           </>
         ) : null}
       </DetailPane>
+    </div>
+  );
+}
+
+/**
+ * Maps/rounds and imported statistics of the canonical detail. They need more width than
+ * the one-third pane, so the browser lays them out below the list and pane at full width
+ * (and below the overview on narrower screens).
+ */
+export async function MatchDetailExtras({ match, locale, titleId }: { match: PublicMatchDetail; locale: AppLocale; titleId: string }) {
+  if (match.rounds.length === 0 && !match.statistics) return null;
+  const t = await getMatchTranslations(locale);
+  const maps = matchMaps(match);
+  const showRoundColumn = {
+    map: match.rounds.some((round) => round.mapName),
+    mode: match.rounds.some((round) => round.mode),
+    side: match.rounds.some((round) => round.side),
+  };
+  return (
+    <div className={styles.extras} data-match-extras={match.slug}>
+      {match.rounds.length > 0 ? (
+        <section className={styles.block} aria-labelledby={`${titleId}-rounds`} data-match-rounds="">
+          <h3 id={`${titleId}-rounds`} className={styles.blockTitle}>
+            {t('detail.rounds')}
+          </h3>
+          {maps.length > 0 ? (
+            <ul className={styles.mapBriefing} data-match-maps="">
+              {maps.map(({ artwork, name }) => (
+                <li key={artwork.slug}>
+                  <MapScene
+                    artwork={artwork}
+                    caption={name}
+                    alt={t('detail.mapImageAlt', { map: name })}
+                    tacticalLabel={t('detail.tacticalMap', { map: name, size: formatNumber(Math.round(artwork.tactical.bytes / 1024), locale) })}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className={styles.rounds} role="region" aria-labelledby={`${titleId}-rounds`} tabIndex={0}>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">{t('detail.roundColumns.ordinal')}</th>
+                  {showRoundColumn.map ? <th scope="col">{t('detail.roundColumns.map')}</th> : null}
+                  {showRoundColumn.mode ? <th scope="col">{t('detail.roundColumns.mode')}</th> : null}
+                  {showRoundColumn.side ? <th scope="col">{t('detail.roundColumns.side')}</th> : null}
+                  <th scope="col">{t('detail.roundColumns.score')}</th>
+                  <th scope="col">{t('detail.roundColumns.outcome')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {match.rounds.map((round) => {
+                  const score = round.scoreValkyria !== null && round.scoreOpponent !== null ? `${round.scoreValkyria} : ${round.scoreOpponent}` : null;
+                  return (
+                    <tr key={round.ordinal}>
+                      <td data-numeric="">{round.ordinal}</td>
+                      {showRoundColumn.map ? <td>{round.mapName ?? '—'}</td> : null}
+                      {showRoundColumn.mode ? <td>{round.mode ?? '—'}</td> : null}
+                      {showRoundColumn.side ? <td>{isHllSide(round.side) ? t(`detail.sides.${round.side}`) : (round.side ?? '—')}</td> : null}
+                      <td data-numeric="">
+                        {score ?? (
+                          <>
+                            <span aria-hidden="true">—</span>
+                            <span className="visually-hidden">{t('result.unknown')}</span>
+                          </>
+                        )}
+                      </td>
+                      <td>{round.outcome && round.outcome !== 'unknown' ? t(`outcome.${round.outcome}`) : '—'}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+      {match.statistics ? (
+        <MatchStatistics
+          statistics={match.statistics}
+          locale={locale}
+          titleId={titleId}
+          opponentLabel={match.opponentShortCode ?? match.opponentName}
+          marks={{
+            valkyria: <Image src={emblem} alt="" className={styles.teamMark} sizes="24px" data-team-mark="valkyria" />,
+            opponent: <OpponentMark match={match} className={styles.teamMark} />,
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import { HLL_MARK, WARDOGS_MARK } from '@/components/public/presskit';
 import { getShellLinks } from '@/components/shell/shell-config';
-import { ExternalIcon } from '@/components/ui/icons';
+import { CommunityIcon, DiscordIcon, ExternalIcon, MatchIcon, MembersIcon, NewsIcon, ShieldIcon } from '@/components/ui/icons';
 import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
@@ -14,6 +14,9 @@ import { GAME_ROUTES, gameRouteFromDb, type GameRoute } from '@/modules/games/re
 import { canonicalNewsPath, gamePath } from '@/modules/games/routes';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import styles from './hub.module.css';
+
+/** Decorative glyphs of the shared destinations; the visible text stays the link name. */
+const SHARED_ICONS = { news: NewsIcon, matches: MatchIcon, members: MembersIcon, clan: ShieldIcon, community: CommunityIcon } as const;
 
 async function loadLatestNews(locale: AppLocale): Promise<NewsSummary | null> {
   try {
@@ -88,16 +91,21 @@ export async function CommunityHub({ locale }: { locale: AppLocale }) {
             {t('shared.title')}
           </h2>
           <ul className={styles.sharedList}>
-            {(['news', 'matches', 'members', 'clan', 'community'] as const).map((key) => (
-              <li key={key}>
-                <Link href={`/${key}`} className={styles.sharedLink} data-hub-shared={key}>
-                  {t(`shared.${key}`)}
-                </Link>
-              </li>
-            ))}
+            {(['news', 'matches', 'members', 'clan', 'community'] as const).map((key) => {
+              const Glyph = SHARED_ICONS[key];
+              return (
+                <li key={key}>
+                  <Link href={`/${key}`} className={styles.sharedLink} data-hub-shared={key}>
+                    <Glyph size={20} />
+                    {t(`shared.${key}`)}
+                  </Link>
+                </li>
+              );
+            })}
             {links.discordUrl ? (
               <li>
                 <a href={links.discordUrl} className={styles.sharedLink} data-hub-shared="discord" data-accent="">
+                  <DiscordIcon size={20} />
                   {common('discord')}
                   <ExternalIcon size={16} />
                   <span className="visually-hidden"> {external}</span>

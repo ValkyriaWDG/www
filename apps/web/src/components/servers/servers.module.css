@@ -1,4 +1,4 @@
-/* Server browser (references 12–13): 58:42 list/detail with a 24 px gap. */
+/* Server browser (references 12–13): 58:42 list/detail with a 24 px gap from 1280 px. */
 .browser {
   display: grid;
   grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
@@ -238,7 +238,8 @@
 .playerScroll th:first-child { text-align: start; white-space: normal; min-width: 140px; overflow-wrap: anywhere; }
 .playerScroll tbody tr:nth-child(odd) { background: rgb(255 255 255 / 0.035); }
 
-@media (max-width: 1023px) {
+/* Below 1280 px the 58 % list column would wrap server names over several lines. */
+@media (max-width: 1279px) {
   .browser {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -258,5 +259,60 @@
 
   .browser:not([data-selected]) .detail {
     display: none;
+  }
+}
+
+/* Phones: compact row summaries (server with thumbnail on its own line, then players,
+   mode and freshness), so long names never break inside words. */
+@media (max-width: 767px) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .table :global(tbody tr) {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas:
+      'server server server'
+      'players mode status';
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    height: auto;
+    margin-bottom: 2px;
+    padding: var(--space-3);
+  }
+
+  .table :global(tbody) th,
+  .table :global(tbody) td {
+    display: block;
+    padding: 0 !important;
+  }
+
+  .table :global(tbody tr) > :nth-child(1) {
+    grid-area: server;
+  }
+
+  .table :global(tbody tr) > :nth-child(2) {
+    grid-area: players;
+    text-align: start;
+  }
+
+  .table :global(tbody tr) > :nth-child(3) {
+    grid-area: mode;
+  }
+
+  .table :global(tbody tr) > :nth-child(4) {
+    grid-area: status;
+    justify-self: end;
+  }
+
+  .table :global(tbody tr) > :nth-child(4) .statusCell {
+    justify-items: end;
+    text-align: end;
   }
 }

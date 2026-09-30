@@ -13,9 +13,9 @@
   },
   "sectionTitle": "{section} – {game}",
   "communityLabel": "Komunita",
-  "newsIntro": "Novinky, reportáže a oznámení divize {game}. Společné komunitní články jsou označené.",
+  "newsIntro": "Novinky, reportáže a oznámení z {game} i z celé komunity.",
   "matchesIntro": "Nadcházející zápasy a výsledky divize {game}.",
-  "membersIntro": "Členové se zveřejněným profilem a veřejnou příslušností ke hře {game}.",
+  "membersIntro": "Hráči klanu Valkyria, kteří hrají {game} a mají veřejný profil.",
   "switchNotice": {
     "detail": {
       "title": "Přepnuto na {game}",
@@ -37,7 +37,7 @@
     "choose": "Vyberte hru",
     "cards": {
       "hll": {
-        "body": "Klanové zápasy, servery, Příručka a nábor do jednotky.",
+        "body": "Zápasy a turnaje, herní servery, příručka a nábor do klanu.",
         "cta": "Vstoupit do sekce Hell Let Loose"
       },
       "wardogs": {
@@ -88,7 +88,7 @@
     "discordUnavailable": "Pozvánka na Discord teď není nastavena.",
     "stage": {
       "label": "Záběry z bitev klanu",
-      "pending": "Záběry z bitev klanu doplníme po schválení.",
+      "pending": "Záběry z bitev klanu připravujeme.",
       "play": "Přehrát záběry",
       "pause": "Pozastavit záběry",
       "unavailable": "Záběry teď nelze přehrát.",
@@ -109,7 +109,7 @@
   },
   "servers": {
     "title": "Servery",
-    "intro": "Pozorovaný stav nakonfigurovaných serverů Valkyria s časem pozorování. Chybějící údaje nevyplňujeme odhadem.",
+    "intro": "Herní servery Valkyria: právě hraná mapa, počet hráčů a adresa pro připojení.",
     "synthetic": "Syntetická ukázková data – nejde o živý stav serverů Valkyria.",
     "caption": "Servery Valkyria",
     "columns": {
@@ -163,7 +163,6 @@
       "copied": "Adresa zkopírována.",
       "copyFailed": "Kopírování se nezdařilo – adresu opište ručně.",
       "noConnect": "Postup připojení zatím není zveřejněn. Zeptejte se na Discordu.",
-      "pingNote": "Odezvu (ping) nezobrazujeme: měřili bychom ji ze serveru webu, ne z vašeho počítače.",
       "back": "Zpět na seznam serverů",
       "nextMap": "Další mapa",
       "timeRemaining": "Zbývá do konce kola",
@@ -185,17 +184,16 @@
       "auto": "Obnovovat automaticky každých {seconds} sekund",
       "now": "Obnovit",
       "loading": "Obnovuji…",
-      "failed": "Obnovení selhalo. Předchozí údaje jsou označené jako zastaralé; neznamená to, že herní server neběží.",
-      "note": "Obnovování probíhá při zobrazené kartě. Ručně lze obnovit jednou za 30 sekund."
+      "failed": "Obnovení selhalo. Předchozí údaje jsou označené jako zastaralé; neznamená to, že herní server neběží."
     },
     "livePlayers": {
       "title": "Statistiky hráčů kola",
-      "description": "Snímek účastníků kola může obsahovat i hráče, kteří už odešli. Nejde o seznam právě připojených hráčů.",
+      "description": "Tabulka zachycuje celé kolo, takže v ní mohou být i hráči, kteří už odešli.",
       "observed": "Snímek z {time}",
       "noTimestamp": "Čas snímku není k dispozici.",
       "synthetic": "Ukázková syntetická data hráčů.",
       "stale": "Tento snímek je zastaralý. Hodnoty se mezitím mohly změnit.",
-      "populationMismatch": "Status uvádí {connected} připojených hráčů; snímek kola obsahuje {rows} účastníků.",
+      "populationMismatch": "Právě připojení hráči: {connected} · hráči v tabulce kola: {rows}.",
       "notConfigured": "Statistiky hráčů pro tento server zatím nejsou nastavené.",
       "unavailable": "Statistiky hráčů nejsou dostupné. Neznamená to, že na serveru nikdo nehraje.",
       "empty": "Tento snímek zdroje neobsahuje statistiky hráčů.",
@@ -239,7 +237,7 @@
     "unknownCategoryTitle": "Kategorie neexistuje",
     "unknownCategoryBody": "Tato kategorie nemá žádné zveřejněné články. Vyberte jinou kategorii.",
     "emptyTitle": "Příručka se připravuje",
-    "emptyBody": "Zatím není zveřejněný žádný článek. Návody z původního webu procházejí redakční kontrolou.",
+    "emptyBody": "Zatím tu není žádný zveřejněný článek.",
     "loadError": "Příručku se nepodařilo načíst.",
     "retry": "Zkusit znovu",
     "metaDescription": "Příručka klanu Valkyria pro {game}: návody, role, komunikace a postupy.",

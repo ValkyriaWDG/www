@@ -9,7 +9,7 @@
     "navLabel": "Klan",
     "meta": {
       "title": "Klan",
-      "description": "Kdo je Valkyria: česká a slovenská herní komunita zaměřená na Wardogs s historií v Hell Let Loose."
+      "description": "Kdo je Valkyria: česko-slovenská herní komunita, která hraje Hell Let Loose a Wardogs."
     },
     "frameTitle": "Příběh a hodnoty",
     "actionsTitle": "Kam dál",
@@ -69,8 +69,9 @@
   },
   "hll": {
     "title": "Hell Let Loose",
-    "body": "Naše historie z Hell Let Loose, zápasy a archiv zůstávají na našem původním webu.",
-    "website": "Web Hell Let Loose",
+    "body": "Zápasy, turnaje, servery a příručka divize Hell Let Loose jsou přímo tady na webu. Původní web zůstává jako archiv.",
+    "section": "Sekce Hell Let Loose",
+    "website": "Původní web HLL",
     "archive": "Archiv zápasů HLL"
   },
   "discord": {

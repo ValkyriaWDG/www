@@ -1,7 +1,8 @@
 /*
  * Matches after reference 13 (server browser): toolbar above a ~2/3 list, ~1/3 detail
  * pane, compact zebra rows with an amber outline on the selected row. Below 1280 px the
- * list and the detail are separate pages (the detail URL renders standalone).
+ * list and the detail are separate pages (the detail URL renders standalone). Maps/rounds
+ * and statistics of the detail span the full width below.
  */
 .browser {
   display: grid;
@@ -9,7 +10,8 @@
   grid-template-areas:
     'toolbar'
     'list'
-    'pane';
+    'pane'
+    'extras';
   gap: var(--space-4);
   align-items: start;
 }
@@ -47,6 +49,26 @@
   min-width: 0;
 }
 
+.extras {
+  grid-area: extras;
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: 0 var(--space-4) var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  background: var(--color-panel);
+}
+
+.extras > * {
+  min-width: 0;
+}
+
+/* The first block's divider would double the panel edge. */
+.extras > .block:first-child {
+  padding-top: var(--space-4);
+  border-top: 0;
+}
+
 /* List route: the preview pane is a desktop enhancement only. */
 .browser[data-mode='list'] .pane {
   display: none;
@@ -63,7 +85,8 @@
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     grid-template-areas:
       'toolbar .'
-      'list pane';
+      'list pane'
+      'extras extras';
     column-gap: clamp(16px, 1.6vw, 32px);
   }
 
@@ -684,4 +707,216 @@
   flex: none;
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
+}
+
+/* ---- Match statistics: team marks, metric glyphs and the team comparison chart ---- */
+.teamLabel,
+.metricLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.metricLabel svg {
+  flex: none;
+  color: var(--color-text-muted);
+}
+
+/* Crest, opponent logo or short code beside a team name (decorative). */
+.teamMark {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
+  border: 0;
+  background: none;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+  object-fit: contain;
+}
+
+span.teamMark {
+  border: var(--border-hairline) solid rgb(168 168 154 / 0.4);
+  background: rgb(12 12 11 / 0.6);
+}
+
+.teamMark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/*
+ * Split bar per metric: each row is its own 100 % scale (share of both teams), so
+ * metrics of different size never share an axis. Palette validated for the dark HLL
+ * surface (dataviz validate_palette, all checks pass): Valkyria #a39234, opponent #4a84d6.
+ */
+.teamChart {
+  --team-valkyria: #a39234;
+  --team-opponent: #4a84d6;
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+  padding: var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  background: rgb(0 0 0 / 0.2);
+}
+
+/* Keep the split bars readable on wide screens. */
+.teamLegend,
+.chartRows {
+  width: min(100%, 60rem);
+  justify-self: center;
+}
+
+.teamLegend {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 600;
+}
+
+.legendTeam {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.legendTeam[data-team='opponent'] {
+  justify-self: end;
+  text-align: end;
+}
+
+.chartTitle {
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.swatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.swatch[data-team='valkyria'],
+.chartSegment[data-team='valkyria'] {
+  background: var(--team-valkyria);
+}
+
+.swatch[data-team='opponent'],
+.chartSegment[data-team='opponent'] {
+  background: var(--team-opponent);
+}
+
+.chartRows {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chartRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(3.5rem, auto) minmax(0, 1fr) minmax(3.5rem, auto);
+  align-items: center;
+  gap: 4px var(--space-3);
+}
+
+.chartLabel {
+  grid-column: 1 / -1;
+  justify-self: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.chartValue {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chartValue[data-lead] {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.chartRow > .chartValue:last-of-type {
+  text-align: end;
+}
+
+.chartBar {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  height: 14px;
+}
+
+.chartSegment {
+  flex-basis: 0;
+  min-width: 2px;
+}
+
+.chartSegment[data-team='valkyria'] {
+  border-radius: 4px 0 0 4px;
+}
+
+.chartSegment[data-team='opponent'] {
+  border-radius: 0 4px 4px 0;
+}
+
+/* Even split reference. */
+.chartBar::after {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: 50%;
+  width: 1px;
+  content: '';
+  background: rgb(240 239 234 / 0.35);
+}
+
+.chartTip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  z-index: 1;
+  padding: 2px 8px;
+  border: var(--border-hairline) solid var(--color-border);
+  background: rgb(10 11 12 / 0.95);
+  color: var(--color-text);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity var(--motion-fast) var(--ease-out);
+}
+
+.chartRow:hover .chartTip {
+  opacity: 1;
+}
+
+@media (max-width: 599px) {
+  .teamLegend {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .chartTitle {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+  }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { DiscordIcon } from '@/components/ui/icons';
 import { routing } from '@/i18n/routing';
 import { getServerEnv } from '@/lib/env';
 import { defaultReturnPath, sanitizeReturnPath } from '@/modules/access/return-path';
@@ -42,7 +43,7 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
   return (
     <AuthScene>
       <Panel labelledBy="login-title">
-        <PanelHeading id="login-title" eyebrow={t('eyebrow')} title={t('title')} />
+        <PanelHeading id="login-title" eyebrow={t('eyebrow')} title={t('title')} crest />
         {current ? (
           <>
             <Notice tone="info" role="status" testId="login-signed-in">
@@ -71,6 +72,7 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
               <input type="hidden" name="locale" value={locale} />
               <input type="hidden" name="returnTo" value={returnTo} />
               <SubmitButton className={styles.primary} pendingLabel={t('redirecting')} disabled={!discordReady} testId="login-discord">
+                <DiscordIcon size={22} />
                 {t('continueDiscord')}
               </SubmitButton>
             </form>

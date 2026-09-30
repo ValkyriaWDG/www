@@ -17,8 +17,9 @@ function view(): MatchStatisticsView {
     valkyriaSide: 'allies', teams: summarizeTeams(parsed), players: null, playerCount: parsed.players.length, publishPlayers: false, observedAt: '2026-09-29T10:00:00Z',
   };
 }
-async function render(statistics: MatchStatisticsView) {
-  return renderToStaticMarkup(await MatchStatistics({ statistics, locale: 'en', titleId: 'synthetic', opponentLabel: 'Synthetic opponent' }));
+const MARKS = { valkyria: <span data-team-mark="valkyria" />, opponent: <span data-team-mark="opponent">SYN</span> };
+async function render(statistics: MatchStatisticsView, marks: typeof MARKS | null = null) {
+  return renderToStaticMarkup(await MatchStatistics({ statistics, locale: 'en', titleId: 'synthetic', opponentLabel: 'Synthetic opponent', marks }));
 }
 
 describe('public match statistics provenance and rounds', () => {
@@ -39,8 +40,9 @@ describe('public match statistics provenance and rounds', () => {
     const players = parseCrconScoreboard(syntheticScoreboard())!.players;
     const html = await render({ ...view(), valkyriaSide: null, players, publishPlayers: true });
     expect(html).toContain('The historical source does not identify Valkyria');
-    expect(html).toContain('<th scope="col">Allies</th>');
-    expect(html).toContain('<th scope="col">Axis</th>');
+    // Faction names without team marks: no crest or opponent logo is attributed to a side.
+    expect(html).toMatch(/<th scope="col"><span class="[^"]*"><span>Allies<\/span><\/span><\/th>/);
+    expect(html).toMatch(/<th scope="col"><span class="[^"]*"><span>Axis<\/span><\/span><\/th>/);
     expect(html).not.toContain('Valkyria (');
     expect(html).not.toContain('Synthetic opponent (');
     const rows = html.match(/<tr data-player-side="(?:allies|axis)">[\s\S]*?<\/tr>/g) ?? [];
@@ -63,5 +65,26 @@ describe('public match statistics provenance and rounds', () => {
     expect(html).toContain('Valkyria (Allies)');
     expect(html).toContain('Valkyria (Axis)');
     expect(html).not.toContain('[SYN] Allies Player');
+  });
+
+  it('compares the teams per metric on its own scale and marks players with their team', async () => {
+    const players = parseCrconScoreboard(syntheticScoreboard())!.players;
+    const statistics = { ...view(), players, publishPlayers: true };
+    const html = await render(statistics, MARKS);
+    const rows = html.match(/<li [^>]*data-metric="[a-z]+"[\s\S]*?<\/li>/g) ?? [];
+    expect(rows.map((row) => /data-metric="([a-z]+)"/.exec(row)![1])).toEqual(['kills', 'deaths', 'combat', 'offense', 'defense', 'support']);
+    const kills = rows[0]!;
+    const { allies, axis } = statistics.teams;
+    const expected = allies.kills / (allies.kills + axis.kills);
+    expect(kills).toContain(`flex-grow:${expected}`);
+    expect(kills).toContain(`Kills: Valkyria (Allies) ${allies.kills}, Synthetic opponent (Axis) ${axis.kills}`);
+    // Every player row carries its own team mark next to the team name.
+    const playerRows = html.match(/<tr data-player-side="(?:allies|axis)">[\s\S]*?<\/tr>/g) ?? [];
+    expect(playerRows).toHaveLength(players.length);
+    for (const row of playerRows) {
+      expect(row).toContain(row.includes('data-player-side="allies"') ? 'data-team-mark="valkyria"' : 'data-team-mark="opponent"');
+    }
+    // Metric glyphs are decorative; the text stays the label.
+    expect(html).toMatch(/<svg[^>]*aria-hidden="true"[^>]*data-icon="combat"/);
   });
 });

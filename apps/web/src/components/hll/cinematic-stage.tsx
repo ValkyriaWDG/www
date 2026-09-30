@@ -216,25 +216,28 @@ export function CinematicStage({ clips, labels, children }: { clips: HllClip[]; 
   );
 }
 
-/** Kept in the utility footer, outside the decorative aria-hidden scene. */
+/**
+ * Kept in the utility footer, outside the decorative aria-hidden scene. Content pages
+ * always show the still poster, so they get no (permanently disabled) control.
+ */
 export function CinematicStageControls() {
   const control = useContext(StageContext);
-  if (!control) return null;
-  const { running, unavailable, contentPage, labels, onToggle } = control;
+  if (!control || control.contentPage) return null;
+  const { running, unavailable, labels, onToggle } = control;
   return (
     <div className={styles.stageControls}>
       <button
         type="button"
         className={styles.stageButton}
         onClick={onToggle}
-        disabled={unavailable || contentPage}
+        disabled={unavailable}
         aria-pressed={running}
         data-hll-stage-toggle=""
       >
-        {unavailable || contentPage ? <VideoOffIcon /> : running ? <PauseIcon /> : <PlayIcon />}
-        <span>{unavailable ? labels.unavailable : contentPage ? labels.posterOnly : running ? labels.pause : labels.play}</span>
+        {unavailable ? <VideoOffIcon /> : running ? <PauseIcon /> : <PlayIcon />}
+        <span>{unavailable ? labels.unavailable : running ? labels.pause : labels.play}</span>
       </button>
-      {!unavailable && !running && !contentPage ? <span className={styles.stageHint}>{labels.posterOnly}</span> : null}
+      {!unavailable && !running ? <span className={styles.stageHint}>{labels.posterOnly}</span> : null}
     </div>
   );
 }

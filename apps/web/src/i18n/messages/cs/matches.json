@@ -8,7 +8,7 @@
   "list": {
     "eyebrow": "Valkyria // CZ & SK",
     "title": "Zápasy",
-    "intro": "Nadcházející zápasy a zveřejněné výsledky. Dnes hrajeme hlavně Wardogs, Hell Let Loose je naše historie.",
+    "intro": "Nadcházející zápasy a výsledky klanu Valkyria v Hell Let Loose i ve Wardogs.",
     "breadcrumbHome": "Hlavní menu",
     "viewsLabel": "Seznamy zápasů",
     "views": {
@@ -179,6 +179,8 @@
   },
   "statistics": {
     "title": "Statistiky zápasu",
+    "comparisonTitle": "Porovnání týmů",
+    "comparisonRow": "{metric}: {teamA} {a}, {teamB} {b}",
     "summaryCaption": "Souhrn týmů",
     "metric": "Údaj",
     "valkyria": "Valkyria ({side})",
@@ -248,7 +250,7 @@
     },
     "list": {
       "title": "Turnaje",
-      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Tabulky jsou uvedené se dnem stavu; živé pořadí najdete na webu soutěže.",
+      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Aktuální pořadí najdete na webu soutěže.",
       "current": "Probíhající a nadcházející",
       "finished": "Ukončené",
       "emptyTitle": "Zatím žádné zveřejněné turnaje",

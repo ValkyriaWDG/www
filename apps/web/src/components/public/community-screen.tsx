@@ -29,6 +29,7 @@ export async function CommunityScreen({ locale, game }: { locale: AppLocale; gam
       pageKey="community"
       page={page}
       home={game ? { href: sectionBase(game), label: games(`menuLabel.${game}`) } : undefined}
+      eyebrow={game ? games(`eyebrow.${game}`) : undefined}
       before={
         <>
           <CommunityChoices locale={locale} discordUrl={links.discordUrl} guideAnchor={page ? 'community-content' : 'community-title'} />
@@ -39,7 +40,7 @@ export async function CommunityScreen({ locale, game }: { locale: AppLocale; gam
       after={
         <>
           <CommunityLinks locale={locale} links={config?.communityLinks ?? []} />
-          <HllPanel locale={locale} url={links.hllUrl} archiveUrl={links.hllArchiveUrl} />
+          <HllPanel locale={locale} game={game} url={links.hllUrl} archiveUrl={links.hllArchiveUrl} />
         </>
       }
     />
