@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { contentDocument, createDb, type DbHandle } from '@valkyria/db';
+import { contentDocument, createDb, legacyImport, type DbHandle } from '@valkyria/db';
 import { runMigrations } from '@valkyria/db/migrate';
 import { eq } from 'drizzle-orm';
 import pg from 'pg';
@@ -65,6 +65,17 @@ describe('fixtures on the schema that predates the field manual', () => {
     expect(report).toMatchObject({ manual: 0, manualTranslations: 0, statistics: 0, tournaments: 0, skipped: ['field manual', 'match statistics', 'tournaments'] });
     expect(report.news).toBeGreaterThan(0);
     expect(await handle.db.select().from(contentDocument).where(eq(contentDocument.kind, 'news'))).toHaveLength(report.news);
+  });
+
+  it('loads and resets fixtures when the import ledger exists without source metadata', async () => {
+    await runMigrations(url, { migrationsFolder: migrationsUpTo(6) });
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const report = await loadFixtures(handle.db, { mediaRoot: mediaRoot(), schemaCompatible: true });
+      expect(report.skipped).toEqual([]);
+      expect(report.manual).toBeGreaterThan(0);
+      // Only select a column present in this older ledger schema.
+      expect(await handle.db.select({ id: legacyImport.id }).from(legacyImport)).toEqual([]);
+    }
   });
 
   it('loads the complete set, field manual included, after the remaining migrations', async () => {

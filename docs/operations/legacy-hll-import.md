@@ -137,6 +137,27 @@ hash, while CLI `--expected-sha256` and `--expected-supplement-sha256` are hashe
 the actual file bytes. Do not substitute one hash representation for the other.
 Keep this supplement private alongside the original bundle and staged image files.
 
+**Qualify canonical hashes in the target runtime.** The existing `sourceHash`
+implementation sorts object keys using the runtime's default `localeCompare`
+collation. Generate or qualify the supplement with the candidate's Node/ICU locale;
+matching source bytes alone does not guarantee the same canonical hash on Windows
+and Linux. Record the resolved locale, original file SHA-256 and candidate-computed
+canonical hash before running the repair.
+
+The September 2026 rehearsal found a `cs-CZ`/`en-US` difference in the whole-bundle
+binding (`schemaVersion`/`scoreboardSources` key order). A bounded comparison found
+zero hash differences across 205 original match identities, 30 documents, 246 media
+descriptors and 205 match projections. The reviewed Linux supplement changed only
+its internal bundle binding; its 25 document records and two image files were
+unchanged. This qualifies that input, not production acceptance.
+
+If a binding check fails, stop and compare immutable source bytes, parsed values,
+per-entity identities and supplemental media before generating a replacement
+manifest. Preserve the original manifest and both raw file hashes as evidence.
+Do not blindly rehash an input, change existing ledger hashes or alter the identity
+algorithm to bypass a conflict. Rehearse the newly reviewed manifest from a fresh
+restored copy before any production repair.
+
 Run the actual qualified image importer with read-only input mounts and a writable
 private report directory, first without `--apply`:
 

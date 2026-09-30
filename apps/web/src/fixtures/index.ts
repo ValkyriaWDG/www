@@ -35,6 +35,7 @@ import {
   FIXTURE_MATCHES,
   FIXTURE_MEMBERS,
   FIXTURE_MANUAL,
+  FIXTURE_MANUAL_SLUGS,
   FIXTURE_NEWS,
   FIXTURE_SLUGS,
   FIXTURE_TAGS,
@@ -47,7 +48,7 @@ import {
   type FixtureNews,
 } from './data';
 import { createFixtureAsset, FIXTURE_FILENAME_PREFIX, FIXTURE_PROVENANCE, removeFixtureFiles, resolveMediaRoot } from './images';
-import { FIXTURE_LEGACY_MATCH_DETAILS } from './legacy';
+import { FIXTURE_EDITORIAL_KEYS, FIXTURE_LEGACY_MATCH_DETAILS, fixtureEditorialDetails } from './legacy';
 import { sourceHash } from '../modules/legacy/import-contract';
 
 export { FIXTURE_ASSET_IDS, FIXTURE_MANUAL_SLUGS, FIXTURE_SLUGS } from './data';
@@ -104,6 +105,13 @@ async function fixtureAssetIds(db: Executor): Promise<string[]> {
 export async function resetFixtures(db: Database, options: { mediaRoot?: string } = {}): Promise<ResetReport> {
   const mediaRoot = options.mediaRoot ?? resolveMediaRoot();
   const report = await db.transaction(async (tx) => {
+    // These synthetic ledger rows decorate seeded pages without modifying their editorial revisions.
+    if ((await knownColumns(tx, ['legacy_import'])).has('legacy_import')) {
+      await tx.delete(legacyImport).where(and(
+        eq(legacyImport.sourceOrigin, 'https://valkyriahll.cz'), eq(legacyImport.locale, 'cs'),
+        inArray(legacyImport.sourceKind, ['page', 'manual']), inArray(legacyImport.sourceKey, [...FIXTURE_EDITORIAL_KEYS]),
+      ));
+    }
     const documents = await tx.delete(contentDocument).where(eq(contentDocument.isFixture, true)).returning({ id: contentDocument.id });
     const matches = await tx.delete(match).where(eq(match.isFixture, true)).returning({ id: match.id });
     // An older schema (release rollback rehearsal) has no tournament table yet.
@@ -275,7 +283,7 @@ async function insertMatches(tx: Executor, now: Date, options: { statistics: boo
     );
     const row = { id };
     ids.set(fixture.slug, id);
-    if (fixture.slug === FIXTURE_SLUGS.matches.hllHistorical && known.has('legacy_import')) {
+    if (fixture.slug === FIXTURE_SLUGS.matches.hllHistorical && known.get('legacy_import')?.has('source_metadata')) {
       await tx.insert(legacyImport).values({
         sourceOrigin: 'https://valkyriahll.cz', sourceKind: 'match', sourceKey: 'synthetic-fixture',
         sourceUrl: 'https://valkyriahll.cz/matches/900001', sourceSha256: '0'.repeat(64),
@@ -490,6 +498,26 @@ async function insertManual(tx: Executor, fixture: FixtureManual, now: Date): Pr
   return translations;
 }
 
+async function insertEditorialArchives(tx: Executor, now: Date) {
+  const owners = await tx.select({ id: contentTranslation.id, pageKey: contentDocument.pageKey, kind: contentDocument.kind })
+    .from(contentTranslation).innerJoin(contentDocument, eq(contentDocument.id, contentTranslation.documentId))
+    .where(and(eq(contentTranslation.locale, 'cs'), or(
+      and(eq(contentDocument.kind, 'page'), inArray(contentDocument.pageKey, ['clan', 'faq'])),
+      and(eq(contentDocument.kind, 'manual'), eq(contentDocument.isFixture, true), eq(contentTranslation.draftSlug, FIXTURE_MANUAL_SLUGS.setupCs)),
+    )));
+  for (const owner of owners) {
+    const kind = owner.kind === 'page' ? 'page' : 'manual';
+    const key = kind === 'page' ? owner.pageKey! : 'manual-setup';
+    const details = fixtureEditorialDetails(kind, key);
+    await tx.insert(legacyImport).values({
+      sourceOrigin: 'https://valkyriahll.cz', sourceKind: kind, sourceKey: `synthetic-editorial-fixture:${key}`,
+      locale: 'cs', sourceUrl: details.sourceUrl, sourceSha256: sourceHash(details), translationId: owner.id,
+      sourceMetadata: { archiveEditorial: details, archiveEditorialSha256: sourceHash(details), privateOperatorNote: 'SYNTHETIC-NOT-PUBLIC' },
+      observedAt: now,
+    });
+  }
+}
+
 /** Which optional fixture groups the connected schema can store. */
 async function schemaSupport(db: Executor): Promise<{ manual: boolean; statistics: boolean; tournaments: boolean }> {
   const result = await db.execute<{ manual: boolean; statistics: boolean; tournaments: boolean }>(
@@ -545,6 +573,7 @@ export async function loadFixtures(
     let manualTranslations = 0;
     const manualFixtures = manualSchema ? FIXTURE_MANUAL : [];
     for (const fixture of manualFixtures) manualTranslations += await insertManual(tx, fixture, now);
+    if (known.get('legacy_import')?.has('source_metadata')) await insertEditorialArchives(tx, now);
     return {
       manual: manualFixtures.length,
       manualTranslations,

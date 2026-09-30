@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "environment": "Local production Next.js build with disposable PostgreSQL fixtures",
+  "browser": "Playwright Chromium",
+  "screenshotsReviewed": true,
+  "baseRevision": "6f8f40662e49b432540cbf571e6eaf6966c37b06",
+  "implementationCommit": "8bc036d7adfa6cd07c4c10956fcdaba54ed8f341",
+  "implementationCommitNote": "Committed after capture; contains the renderer changes whose actual captured bytes are recorded below.",
+  "testedSource": "Working-tree renderer changes in this PR; not a production deployment",
+  "sourceFiles": [
+    {
+      "path": "apps/web/src/components/public/core-page.tsx",
+      "sha256": "3fb7821b906f81c3f088b6a652a2100ae33d1973ec0c245b2f34d0120b6faf0e"
+    },
+    {
+      "path": "apps/web/src/components/field-manual/manual-article-screen.tsx",
+      "sha256": "f23d9fabcda2874ead5905f9d88593804da4de25b1c883ae5102c6370b86837c"
+    },
+    {
+      "path": "apps/web/src/components/content/archive-editorial.tsx",
+      "sha256": "7df5fde85d35dee15ba70fafd0630755837617d89c6cd0a521dc373b210fc0f9"
+    }
+  ],
+  "captures": [
+    {
+      "file": "legacy-editorial-clan-cs-1920.png",
+      "capturedAt": "2026-09-30T07:51:01.058Z",
+      "route": "/cs/hll/clan",
+      "locale": "cs",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "width": 1920,
+      "height": 2197,
+      "sha256": "38d6d4dcec2b99c3de167d179d3879e9bc446c20cae638d1b5a55f4f1a75c228",
+      "caption": "clan: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. The existing clan content remains unchanged."
+    },
+    {
+      "file": "legacy-editorial-clan-cs-390.png",
+      "capturedAt": "2026-09-30T07:51:04.440Z",
+      "route": "/cs/hll/clan",
+      "locale": "cs",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "width": 390,
+      "height": 2807,
+      "sha256": "2e7b395ae7c9554607c6cb0079bb9cba8cdec9ba3aaf3156d429c211aaffb3c6",
+      "caption": "clan: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. The existing clan content remains unchanged."
+    },
+    {
+      "file": "legacy-editorial-manual-setup-cs-1920.png",
+      "capturedAt": "2026-09-30T07:51:03.016Z",
+      "route": "/cs/hll/field-manual/ukazka-prvni-nastaveni",
+      "locale": "cs",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "width": 1920,
+      "height": 2109,
+      "sha256": "a5a391158e519591c36aaa648941f1e4577bae9c346e7dff664ccac5036aea27",
+      "caption": "manual-setup: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. The existing manual provenance is preserved."
+    },
+    {
+      "file": "legacy-editorial-manual-setup-cs-390.png",
+      "capturedAt": "2026-09-30T07:51:05.702Z",
+      "route": "/cs/hll/field-manual/ukazka-prvni-nastaveni",
+      "locale": "cs",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "width": 390,
+      "height": 2436,
+      "sha256": "9e3d0ed21d7d534ba7eb6bcd423b0597bc5dd0e749978a8c4ca891d64600a2f3",
+      "caption": "manual-setup: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. The existing manual provenance is preserved."
+    },
+    {
+      "file": "legacy-editorial-faq-cs-1920.png",
+      "capturedAt": "2026-09-30T07:53:42.825Z",
+      "route": "/cs/hll/faq",
+      "locale": "cs",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "width": 1920,
+      "height": 2905,
+      "sha256": "8f5d1f8e274e19cbec914f966ba9b9c5876fc618448e774ab398ce60168d56a1",
+      "caption": "faq: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. The editor published only Czech; English remains unpublished. Only the first answer is synthetic published copy; the remaining seeded answers still say they are in preparation. This does not prove migrated production answers."
+    },
+    {
+      "file": "legacy-editorial-faq-cs-390.png",
+      "capturedAt": "2026-09-30T07:53:44.115Z",
+      "route": "/cs/hll/faq",
+      "locale": "cs",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "width": 390,
+      "height": 3089,
+      "sha256": "74396cb7813b12b5c8ea750da06555e4e6842ed91f25b6ffb8bb4b90a8a00303",
+      "caption": "faq: synthetic historical attribution rendered beside the current published Czech content. Original author text remains escaped; source date/link remain visible. The editor published only Czech; English remains unpublished. Only the first answer is synthetic published copy; the remaining seeded answers still say they are in preparation. This does not prove migrated production answers."
+    }
+  ]
+}

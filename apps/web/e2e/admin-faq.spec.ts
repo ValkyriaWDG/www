@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { canvas, expectSaved, publish, storedTranslation } from './admin-editorial-helpers';
 import { signInAs } from './support/auth';
+import { captureEditorialArchive, expectEditorialArchive } from './support/legacy-editorial';
 
 /**
  * FAQ (legacy `/faq`): a shared core page seeded only as an unpublished Czech/English
@@ -34,7 +35,8 @@ test('an editor publishes the Czech FAQ independently of English', async ({ cont
   expect(await storedTranslation(documentId, 'cs')).toMatchObject({ liveSlug: 'faq' });
   expect(await storedTranslation(documentId, 'en')).toMatchObject({ liveSlug: null, publishedRevisionId: null });
 
-  const visitor = await page.context().browser()!.newPage();
+  const visitorContext = await page.context().browser()!.newContext();
+  const visitor = await visitorContext.newPage();
   await visitor.goto('/cs/hll/faq');
   await expect(visitor.locator('[data-core-page="faq"]')).toHaveAttribute('data-published', 'true');
   const index = visitor.locator('[data-faq-index]');
@@ -47,9 +49,20 @@ test('an editor publishes the Czech FAQ independently of English', async ({ cont
   await expect(visitor.locator('[data-core-page="faq"]')).toContainText(answer);
   await expect(visitor.locator('[data-hll-menu="bar"] [data-hll-menu-item="faq"]')).toHaveAttribute('aria-current', 'page');
 
+  // The saved source ledger becomes visible only after this locale is published.
+  for (const width of [1920, 390]) {
+    await visitor.setViewportSize({ width, height: width === 1920 ? 1080 : 844 });
+    await visitor.emulateMedia({ reducedMotion: 'reduce' });
+    await visitor.goto('/cs/hll/faq');
+    await expectEditorialArchive(visitor, 'faq');
+    await captureEditorialArchive(visitor, 'faq', width);
+  }
+
   // English is published separately and stays an honest unpublished state.
   await visitor.goto('/en/hll/faq');
   await expect(visitor.locator('[data-core-page="faq"]')).toHaveAttribute('data-published', 'false');
   await expect(visitor.getByText('How do I join Valkyria?')).toHaveCount(0);
-  await visitor.close();
+  await expect(visitor.locator('[data-archive-editorial]')).toHaveCount(0);
+  expect(await visitor.content()).not.toContain('Synthetic historical author');
+  await visitorContext.close();
 });

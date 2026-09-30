@@ -104,6 +104,28 @@ CI uploads both full reports, a comparison, image sizes/IDs from the rehearsal a
 candidate CycloneDX SBOM. Compare native behavior and actual scan/size results before
 accepting the runtime change. A scanner's unavailable database is a failed check.
 
+### September 2026 OpenSSL runtime update
+
+Application CI run `36687129273` stopped release qualification on four fixable HIGH
+findings in the Debian 13 runtime: two advisories each affecting `libssl3t64` and
+`openssl-provider-legacy` at `3.5.7-1~deb13u2`. These are OS package findings, not npm
+dependency findings. Debian records both
+[CVE-2026-75804](https://security-tracker.debian.org/tracker/CVE-2026-75804) and
+[CVE-2026-84782](https://security-tracker.debian.org/tracker/CVE-2026-84782) as fixed
+for trixie in `3.5.7-1~deb13u3`.
+
+The pinned Node runtime predates these fixes. The Dockerfile therefore upgrades
+only those two already-installed packages to that exact version through Debian's
+authenticated APT repositories, verifies both installed versions and removes the
+package indexes. This step is conditional on Debian trixie: the pinned build image
+and bookworm comparison are unchanged. It does not perform a broad distribution
+upgrade or change the non-root runtime identity, command or environment contract.
+
+The failed scan remains evidence of the blocked candidate. The patched image must
+pass a new complete image rehearsal and advisory comparison before qualification;
+the package-version assertion alone does not establish a passing security scan.
+No scanner suppression, severity exception or advisory ignore list is introduced.
+
 ## Disposable image rollback and database restore
 
 The rehearsal accepts only local `valkyria-web:*` build tags and a local Docker endpoint.
