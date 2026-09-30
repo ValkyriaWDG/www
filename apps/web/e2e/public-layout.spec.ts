@@ -64,6 +64,48 @@ test.describe('public layout', () => {
     expect(await region.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
   });
 
+  test('the HLL match detail fits a 360 px phone, including screen-reader text in scrolled tables', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.goto(`/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`);
+    await expect(page.locator('[data-match-rounds] table')).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test('article images keep their proportions: no upscaling, tall images within the viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`/cs/news/${FIXTURE_SLUGS.news.longFormCs}`);
+    const figures = page.locator('[data-article-body] figure');
+    await expect(figures).toHaveCount(3);
+    for (const figure of await figures.all()) await figure.scrollIntoViewIfNeeded();
+    const boxes = await figures.locator('img').evaluateAll((images) => images.map((image) => {
+      const box = image.getBoundingClientRect();
+      return { width: Math.round(box.width), height: Math.round(box.height) };
+    }));
+    // Square logo and portrait photo: height capped (60vh / 520 px), proportions kept.
+    expect(boxes[0]!.height).toBeLessThanOrEqual(522);
+    expect(Math.abs(boxes[0]!.width - boxes[0]!.height)).toBeLessThanOrEqual(2);
+    // The 360 × 200 image is shown at its own size, not stretched to the column.
+    expect(boxes[1]!.width).toBe(360);
+    expect(Math.abs(boxes[1]!.height - 200)).toBeLessThanOrEqual(2);
+    expect(boxes[2]!.height).toBeLessThanOrEqual(522);
+    expect(Math.abs(boxes[2]!.width / boxes[2]!.height - 900 / 1350)).toBeLessThan(0.02);
+    // The caption follows the image instead of the text column.
+    const caption = (await figures.nth(1).locator('figcaption').boundingBox())!;
+    const image = (await figures.nth(1).locator('img').boundingBox())!;
+    expect(Math.abs(caption.x - image.x)).toBeLessThanOrEqual(1);
+  });
+
+  test('the HLL section bar keeps one row on tablets', async ({ page }) => {
+    for (const width of [1024, 768]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/cs/hll/field-manual');
+      const items = page.locator('[data-hll-section-bar] a');
+      const tops = await items.evaluateAll((links) => [...new Set(links.map((link) => Math.round(link.getBoundingClientRect().top)))]);
+      expect(tops, `one row at ${width} px`).toHaveLength(1);
+      await expectNoHorizontalOverflow(page);
+    }
+  });
+
   test('the match banner shows whole team names on phones', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`);

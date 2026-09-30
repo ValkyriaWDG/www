@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from 'react';
+import { Fragment, type CSSProperties, type ReactNode } from 'react';
 import { checkLinkHref, isExternalHref } from './links';
 import type { BlockNode, InlineNode, RichTextDocument, RichTextMark, TableCellNode, TableRowNode, TextNode } from './schema';
 import styles from './rich-text.module.css';
@@ -138,8 +138,10 @@ function renderBlock(node: BlockNode, key: number, ctx: RenderContext, anchor?: 
       const asset = attrs && typeof attrs.assetId === 'string' ? ctx.assets.get(attrs.assetId) : undefined;
       if (!asset) return null;
       const caption = typeof attrs.caption === 'string' ? attrs.caption.trim() : '';
+      // The stored size bounds the figure: no upscaling, and tall images stay within the viewport.
+      const size = { '--image-width': `${asset.width}px`, '--image-ratio': (asset.width / asset.height).toFixed(4) } as CSSProperties;
       return (
-        <figure key={key} className={attrs.align === 'wide' ? styles.figureWide : styles.figure}>
+        <figure key={key} className={attrs.align === 'wide' ? styles.figureWide : styles.figure} style={size}>
           {/* eslint-disable-next-line @next/next/no-img-element -- publication-aware media route, not the optimizer */}
           <img
             src={mediaUrl(attrs.assetId)}

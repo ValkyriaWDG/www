@@ -218,17 +218,16 @@
     "playersPrivate": "Individual player statistics ({count}) are not published.",
     "kills": "{count, plural, one {# kill} other {# kills}}",
     "noWeapons": "No kills recorded.",
-    "sourceCrcon": "Source: game server (CRCON), game {game}",
-    "sourceUpload": "Source: uploaded game scoreboard export",
-    "importedAt": "Imported {time}",
+    "sourceCrcon": "Game scoreboard from the game server (game {game})",
+    "sourceUpload": "Game scoreboard",
     "tabs": {
       "summary": "Summary",
       "players": "Players",
       "weapons": "Weapons"
     },
-    "sourceLink": "Original game statistics (external site)",
-    "unassignedSide": "The historical source does not identify Valkyria’s side. Teams are shown as Allies and Axis until a verified side is selected.",
-    "roundsTitle": "Imported game rounds",
+    "sourceLink": "Game statistics on the game server",
+    "unassignedSide": "This game does not record which side Valkyria played, so the teams are shown as Allies and Axis.",
+    "roundsTitle": "Match rounds",
     "round": "Round {number}"
   },
   "tournaments": {

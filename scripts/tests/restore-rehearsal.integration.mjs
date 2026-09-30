@@ -119,7 +119,8 @@ test('real same-cluster rehearsal ownership and restore contract', async t => {
       const { report, exitCode } = await cli(options(`${prefix}_media_restore`, 'media'), ['--public-asset', cover, '--private-asset', privateId]);
       reports.media = report;
       assert.equal(exitCode, 0, report.code); assert.equal(report.status, 'passed'); assert.equal(report.steps.migrate.applied, 0);
-      assert.equal(report.steps.rows.contentMatches, true); assert.equal(report.steps.media.assets, 6); assert.equal(report.steps.media.variants, 12);
+      // Eight synthetic fixture images (two variants each) plus the private copy made above.
+      assert.equal(report.steps.rows.contentMatches, true); assert.equal(report.steps.media.assets, 9); assert.equal(report.steps.media.variants, 18);
       assert(report.steps.serve.delivered >= 1); assert.equal(report.steps.serve.privateDenied, 1); assert.equal(report.ownership.appProcess, 'stopped');
       accepted.push('media');
     });

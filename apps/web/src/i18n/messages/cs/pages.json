@@ -3,7 +3,7 @@
     "breadcrumbHome": "Hlavní menu",
     "eyebrow": "Valkyria // CZ & SK",
     "unpublishedTitle": "Tato stránka zatím není zveřejněná.",
-    "unpublishedBody": "Její obsah se teprve připravuje. Zkuste to prosím později."
+    "unpublishedBody": "Její obsah se teprve připravuje. Zkus to prosím později."
   },
   "clan": {
     "navLabel": "Klan",
@@ -26,7 +26,7 @@
     "discordChoice": {
       "title": "Discord",
       "body": "Připoj se na náš Discord server. Tam se domlouváme na hraní a probíhá i nábor.",
-      "unavailableBody": "Pozvánka na Discord teď není nastavena. Zkuste to prosím později."
+      "unavailableBody": "Pozvánka na Discord teď není nastavena. Zkus to prosím později."
     },
     "joinChoice": {
       "title": "Jak se přidat",
@@ -78,6 +78,6 @@
     "cta": "Připojit se na Discord",
     "ctaSub": "Komunita Valkyria",
     "unavailableTitle": "Discord není k dispozici",
-    "unavailableBody": "Pozvánka na Discord teď není nastavena. Zkuste to prosím později."
+    "unavailableBody": "Pozvánka na Discord teď není nastavena. Zkus to prosím později."
   }
 }

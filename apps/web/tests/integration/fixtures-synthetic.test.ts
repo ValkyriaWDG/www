@@ -238,7 +238,7 @@ describe('synthetic fixture set', () => {
     const realMember = await createMemberProfile(t.db, actors.editor, { displayName: 'Admin-created profile' });
 
     const removed = await resetFixtures(t.db, { mediaRoot });
-    expect(removed).toMatchObject({ members: 6, matches: 7, assets: 5, tags: 3 });
+    expect(removed).toMatchObject({ members: 6, matches: 7, assets: 8, tags: 3 });
     expect((await t.db.select().from(match)).map((row) => row.id)).toEqual([realMatch.id]);
     expect((await t.db.select().from(match))[0]?.coverAssetId).toBeNull();
     expect((await t.db.select().from(memberProfile)).map((row) => row.id)).toEqual([realMember.id]);

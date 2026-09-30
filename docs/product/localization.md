@@ -31,8 +31,11 @@ Implement localized pages in the existing App Router application, with `next-int
 and platform `Intl` formatting. Resolve a compatible stable version and pin it with
 the initial app dependencies; no i18n runtime exists in this foundation yet. Keep
 English message keys in one typed contract with complete Czech and English dictionaries.
-Do not concatenate translated sentence fragments or store rendered translations as
-business identifiers. Use locale-aware plural handling, especially Czech plural forms.
+Czech public pages address visitors informally (tykání), like the community's own copy
+("Přidej se", "Připoj se"); sign-in, account, administration and error messages keep
+the formal register. Do not concatenate translated sentence fragments or store rendered
+translations as business identifiers. Use locale-aware plural handling, especially Czech
+plural forms.
 
 The planned routing configuration uses `locales: ['cs', 'en']`, `defaultLocale: 'cs'`,
 `localePrefix: 'always'`, `localeDetection: false`, `localeCookie: false` and

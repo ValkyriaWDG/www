@@ -226,7 +226,9 @@ a.choice:focus-visible {
  * divider read as separate Q&A cards instead of one wall of uppercase headings; the
  * editor's content (answers, lists, images) is rendered unchanged below each question.
  */
+/* Questions and their dividers span the panel; answers keep the readable line length. */
 .content[data-core-page='faq'] .body > div {
+  --reading-max: 100%;
   counter-reset: faq-question;
 }
 
@@ -257,6 +259,7 @@ a.choice:focus-visible {
 
 /* Questions after the number, answers aligned with the question text. */
 .content[data-core-page='faq'] .body h2 ~ :not(h2) {
+  max-width: 72ch;
   margin-inline-start: calc(2ch + var(--space-3));
 }
 

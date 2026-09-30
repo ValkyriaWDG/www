@@ -26,7 +26,7 @@ describe('public match statistics provenance and rounds', () => {
   it('links the validated public source without exposing player rows that are not published', async () => {
     const html = await render(view());
     expect(html).toContain('href="https://stats.example.org/games/4242"');
-    expect(html).toContain('Original game statistics (external site)');
+    expect(html).toContain('Game statistics on the game server');
     expect(html).not.toContain('[SYN] Allies Player');
     expect(html).not.toContain('target=');
   });
@@ -39,7 +39,7 @@ describe('public match statistics provenance and rounds', () => {
   it('labels unassigned historical teams by faction without guessing Valkyria’s side', async () => {
     const players = parseCrconScoreboard(syntheticScoreboard())!.players;
     const html = await render({ ...view(), valkyriaSide: null, players, publishPlayers: true });
-    expect(html).toContain('The historical source does not identify Valkyria');
+    expect(html).toContain('This game does not record which side Valkyria played');
     // Faction names without team marks: no crest or opponent logo is attributed to a side.
     expect(html).toMatch(/<th scope="col"><span class="[^"]*"><span>Allies<\/span><\/span><\/th>/);
     expect(html).toMatch(/<th scope="col"><span class="[^"]*"><span>Axis<\/span><\/span><\/th>/);
@@ -58,7 +58,7 @@ describe('public match statistics provenance and rounds', () => {
     const first = view();
     const second = { ...view(), externalGameId: '4243', sourceGameUrl: 'https://stats.example.org/games/4243', valkyriaSide: 'axis' as const };
     const html = await render({ ...first, rounds: [{ ordinal: 2, statistics: second }] });
-    expect(html).toContain('aria-label="Imported game rounds"');
+    expect(html).toContain('aria-label="Match rounds"');
     expect(html).toContain('>Round 1</button>');
     expect(html).toContain('>Round 2</button>');
     expect(html).toContain('href="https://stats.example.org/games/4243"');

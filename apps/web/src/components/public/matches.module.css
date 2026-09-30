@@ -237,10 +237,12 @@
   letter-spacing: 0.04em;
 }
 
+/* Team logos are never cropped: wide or tall marks fit inside the square. */
 .logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  padding: 2px;
+  object-fit: contain;
 }
 
 .competition {
@@ -435,7 +437,8 @@
 .bannerLogo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  padding: 4px;
+  object-fit: contain;
 }
 
 .bannerName {
@@ -582,6 +585,9 @@
 }
 
 .rounds {
+  /* Contains absolutely positioned screen-reader text of its cells, which would otherwise
+     widen the page past a phone screen. */
+  position: relative;
   max-width: 100%;
   overflow-x: auto;
   border: var(--border-hairline) solid var(--color-border);

@@ -38,7 +38,7 @@
     "emptyResultsTitle": "Zatím nebyly zveřejněny žádné výsledky.",
     "emptyResultsBody": "Odehrané zápasy se tu objeví po zveřejnění výsledku.",
     "filteredEmptyTitle": "Těmto filtrům neodpovídají žádné výsledky.",
-    "filteredEmptyBody": "Zkuste jinou hru nebo hledaný výraz.",
+    "filteredEmptyBody": "Zkus jinou hru nebo hledaný výraz.",
     "pageEmptyTitle": "Na této stránce nejsou žádné zápasy.",
     "firstPage": "Přejít na první stránku",
     "clearFilters": "Zrušit filtry",
@@ -218,17 +218,16 @@
     "playersPrivate": "Statistiky jednotlivých hráčů ({count}) nejsou zveřejněny.",
     "kills": "{count, plural, one {# zabití} few {# zabití} many {# zabití} other {# zabití}}",
     "noWeapons": "Bez zaznamenaných zabití.",
-    "sourceCrcon": "Zdroj: herní server (CRCON), hra č. {game}",
-    "sourceUpload": "Zdroj: nahraný export tabulky hry",
-    "importedAt": "Importováno {time}",
+    "sourceCrcon": "Tabulka hry z herního serveru (hra č. {game})",
+    "sourceUpload": "Tabulka hry",
     "tabs": {
       "summary": "Souhrn",
       "players": "Hráči",
       "weapons": "Zbraně"
     },
-    "sourceLink": "Původní statistiky hry (externí web)",
-    "unassignedSide": "Historický zdroj neuvádí stranu Valkyrie. Dokud není vybrána ověřená strana, týmy se zobrazují jako Spojenci a Osa.",
-    "roundsTitle": "Importovaná kola zápasu",
+    "sourceLink": "Statistiky hry na herním serveru",
+    "unassignedSide": "U této hry není uvedeno, za kterou stranu Valkyria hrála, proto se týmy zobrazují jako Spojenci a Osa.",
+    "roundsTitle": "Kola zápasu",
     "round": "Kolo {number}"
   },
   "tournaments": {
@@ -238,7 +237,7 @@
     },
     "list": {
       "title": "Turnaje",
-      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Aktuální pořadí najdete na webu soutěže.",
+      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Aktuální pořadí najdeš na webu soutěže.",
       "current": "Probíhající a nadcházející",
       "finished": "Ukončené",
       "emptyTitle": "Zatím žádné zveřejněné turnaje",
@@ -249,7 +248,7 @@
       "from": "od {start}",
       "until": "do {end}",
       "organizer": "Pořadatel: {name}",
-      "loadError": "Turnaje se nepodařilo načíst. Zkuste to prosím později.",
+      "loadError": "Turnaje se nepodařilo načíst. Zkus to prosím později.",
       "retry": "Zkusit znovu"
     },
     "phase": {

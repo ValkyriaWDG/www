@@ -569,10 +569,54 @@
     grid-template-columns: minmax(250px, 290px) minmax(0, 1fr);
     column-gap: 32px;
   }
+
+  /* "Připojit se na Discord" stays on one line in the narrower menu lane. */
+  .discord {
+    font-size: 1.0625rem;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* ---- Below 1280: a compact section bar keeps every destination on one row ---- */
+@media (max-width: 1279px) {
+  .menu[data-variant='bar'] .menuList {
+    gap: 0 2px;
+  }
+
+  .menu[data-variant='bar'] .menuLink {
+    padding: 0 8px;
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+  }
+
+  .menu[data-variant='bar'] .menuMarker {
+    right: 6px;
+    left: 6px;
+  }
 }
 
 /* ---- 768–1023: stacked foreground content; background stays fullscreen ---- */
 @media (max-width: 1023px) {
+  /* The stacked menu spans the width, so the veil darkens the right side as well. */
+  [data-hll-mode='landing'] .sceneVeil {
+    background:
+      linear-gradient(0deg, rgb(14 16 19 / 0.6), transparent 45%),
+      linear-gradient(90deg, rgb(14 16 19 / 0.86), rgb(14 16 19 / 0.6));
+  }
+
+  /* Tablets scroll the section bar sideways instead of wrapping a lone item to a second row. */
+  .menu[data-variant='bar'] .menuList {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-inline-end: 32px;
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent);
+  }
+
+  .menu[data-variant='bar'] .menuLink {
+    white-space: nowrap;
+  }
+
   .landingGrid {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--space-5);
