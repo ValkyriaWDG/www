@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-09-30T09:09:02.244Z",
+  "status": "passed",
+  "configuredHllSources": [
+    {
+      "publicId": "valkyria-1",
+      "reachability": "online",
+      "freshness": "fresh",
+      "currentPlayers": 0,
+      "capacity": 100,
+      "roundParticipants": 1,
+      "playerProjectionAllowlisted": true
+    },
+    {
+      "publicId": "valkyria-event",
+      "reachability": "online",
+      "freshness": "fresh",
+      "currentPlayers": 0,
+      "capacity": 100,
+      "roundParticipants": 2,
+      "playerProjectionAllowlisted": true
+    }
+  ],
+  "wardogs": "section_unavailable_404",
+  "secretsOrPlayerIdentifiersStored": false
+}

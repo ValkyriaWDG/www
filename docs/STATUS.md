@@ -1,42 +1,86 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes are on branch `feat/hll-platform-handoff` (PR #72, not merged). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
 
 ## Public source field parity (#73)
 
-The additive repair restores country/coalition labels, capture and time provenance,
-complete recording credits, tournament descriptions/logos and article author images.
-It preserves original import identities, editor versions/revisions, match facts and
-results, publication and privacy decisions. Conflicting source values stay marked.
-See the [operator procedure](operations/legacy-hll-import.md#additive-public-metadata-repair)
-and [local/source/browser evidence](evidence/legacy-field-parity-2026-09-30/README.md).
-Production repair and exact-image acceptance remain required before issue closure.
+The accepted additive repair covers **235 overlays: 205 matches and 30 documents**,
+including source country/coalition and side labels, capture/time facts, all recording
+credits, tournament descriptions/logos and two original author images. Production has
+**221 imported media assets / 442 variants**. The original 205 match import identities
+and source hashes, existing editorial/results/statistics values, editor revisions,
+publication decisions, stored media, sequence state and all nine migration-journal
+entries are unchanged. Only the declared provenance metadata, two media assets with
+four variants and their audit entries were added. No schema migration or seed ran;
+the dry-run and repeated repair made no writes.
 
-## Editorial renderer follow-up (local verification; production pending)
+The [actual production evidence](evidence/legacy-field-parity-2026-09-30/README.md#production-acceptance)
+binds the accepted revision and image to successful CI/publication, an isolated restored
+image rehearsal, 888/888 public HTTP checks, **410 CS/EN match provenance
+checks, 27 published editorial checks and three archived-page denials**, and five
+reviewed real browser captures. Match captures are provenance-panel crops that exclude
+real player tables; the three editorial viewport captures retain provenance context.
+These observations are separate from earlier source/lexical/static-markup checks and
+synthetic captures.
 
-Source `8bc036d7adfa6cd07c4c10956fcdaba54ed8f341` records the tested fix above
-`6f8f40662e49b432540cbf571e6eaf6966c37b06`:
-clan/FAQ and field-manual pages now render their already-validated archive metadata.
-Current editorial revisions and existing manual provenance are preserved. Czech
-metadata stays publication-gated; English and ordinary pages gain no invented source
-facts. Synthetic fixture reload/reset preserves seeded page publication and guards
-older ledgers without `source_metadata`.
+The **134 existing statistics snapshots** remain **131 primary scoreboards plus three
+additional rounds across 131 matches**. Only match 211's provider origin was individually
+verified; the other 133 snapshots are preserved historical exports, not newly verified
+CRCON origins. Two hidden matches, quarantined exports 101/199 and private identity
+fields remain excluded. Unknown statistical sides and conflicting source times stay
+explicit rather than guessed. Public link fallbacks preserve unsupported media.
 
-The renderer regression reproduced three failures before the fix, then passed all
-12 cases. Final local checks: lint/types/build passed, unit **766/766**, integration
-**357/357**, focused read-only browser **5/5**, FAQ admin publication **1/1**.
-[Six inspected desktop/mobile captures and reproduction steps](evidence/legacy-editorial-renderers-2026-09-30/README.md)
-use synthetic metadata only. They do not prove migrated production content. Exact
-PR-head CI, publication, rehearsal and production field-parity acceptance remain pending.
+The owner's older published clan/community CMS prose is unchanged. Manual and FAQ
+formatting has not been visually audited universally; metadata parity and five captures
+do not close every content/layout concern. admin2 DNS remains unavailable, authentication
+and hosted Logi remain disabled/unaccepted, and Wardogs API/RCON awaits configuration.
+The original valkyriahll.cz domain remains the legacy site until a separate cutover.
+See the [operator procedure](operations/legacy-hll-import.md#additive-public-metadata-repair),
+including target-runtime hash qualification. At 09:08:37 UTC the dedicated Watchtower
+and publisher timer were restored; original configuration bytes and 50 unrelated
+containers were unchanged. The later [read-only observation](evidence/legacy-field-parity-2026-09-30/production-post-resume.json)
+at 09:17:10 UTC verified a natural scheduled poll completed at 09:13:43 UTC:
+one scanned, zero updated, zero failed, without forcing a run. The same application,
+updater, configuration and 50 unrelated containers remained unchanged; public
+liveness/readiness passed. The initial acceptance JSON keeps its earlier pending-poll
+checkpoint rather than being rewritten.
 
-PR #76's first CI run `36687129273` passed application unit/integration/build and
-container smoke/rollback checks, then stopped on four fixable OpenSSL OS-package
-findings. Its later browser/SBOM/page-budget steps were skipped. The runtime build
-now upgrades only the two affected trixie packages to Debian's exact fixed version;
-an isolated build verified both installed versions. Full replacement CI and the
-production image scan remain required; see the [runtime update](operations/release-hardening.md#september-2026-openssl-runtime-update).
+## Corrective renderer and runtime qualification (PR #76)
 
-## Public UI audit fixes (branch `feat/hll-platform-handoff`, not merged)
+The qualified application source is `609528df9e6a201f7cab9775607dd0f9210dcd63`.
+The [complete exact-source CI](https://github.com/ValkyriaWDG/www/actions/runs/36689819903)
+passed **766 unit tests / 69 files**, **357 integration tests / 38 files**,
+**193 browser tests** (124 explicitly skipped), and **four artwork tests**, plus
+foundation, lint, types, build and page budgets. The accepted image includes the
+clan/FAQ and eight field-manual archive-metadata render paths; their earlier
+[six synthetic captures](evidence/legacy-editorial-renderers-2026-09-30/README.md)
+remain local regression evidence, separate from the production captures above.
+
+The first PR #76 CI run `36687129273` was blocked by four fixable OpenSSL
+OS-package findings. The final Dockerfile updates only `libssl3t64` and
+`openssl-provider-legacy` to `3.5.7-1~deb13u3` in the trixie runtime, leaving the
+runtime environment and non-root execution contract unchanged. The failed run stays
+historical; the replacement complete CI and exact-image rehearsal qualify the later
+candidate. See the [runtime update](operations/release-hardening.md#september-2026-openssl-runtime-update).
+
+Publisher [36689822633](https://github.com/ValkyriaWDG/www/actions/runs/36689822633)
+published `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`
+and promoted it at 08:46:17 UTC from the prior `6f8f406 / bd0fddf9` channel;
+migration and runtime fingerprints were unchanged. Its qualification scan reported
+**zero fixable HIGH/CRITICAL findings and 43 unfixed findings** at that scan time;
+this is not an advisory-free image claim. Registry publication alone did not prove
+the live replacement; the separate actual production acceptance above does.
+
+## Public UI audit fixes (PR #72, merged; historical branch verification)
+
+PR #72 merged as `6f8f40662e49b432540cbf571e6eaf6966c37b06` (including #74).
+Publisher [36682391443](https://github.com/ValkyriaWDG/www/actions/runs/36682391443)
+published `majorluk/valkyria-www@sha256:bd0fddf9e833fc3990a4c32cdb742b4e53f4210542c660e199160094a01f9493`
+and reported promotion at 07:30:52 UTC from `b10299e / ad84414d`, with unchanged
+migration/runtime fingerprints. The subsequent Trivy database update exposed four
+fixable OpenSSL findings in that earlier image; #76 and the later publication above
+addressed them. PR #75 recorded these publications without a live observation.
+The checks below record original branch builds, not final production acceptance.
 
 A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed
 [legacy production captures](evidence/hll-legacy-production-2026-09-29/README.md))
@@ -71,21 +115,21 @@ Follow-up on `b8209bb` and `797f7d4` ([captures](evidence/public-ui-copy-icons-2
 Checks on the `797f7d4` build: lint/types passed; unit 707/707; full browser suite
 182 passed, 0 failed (99 skipped) before the icon case was added, then
 `public-layout.spec.ts` 4/4 with it; integration 340/340; foundation and `derive-graphics-pack.mjs --check` passed.
-Tournaments have no logo field (a logo upload needs a migration).
+At that branch checkpoint tournaments had no native editable logo field. The later
+#73 repair renders validated historical source logos; a native admin logo-upload
+feature remains separate work.
 
 Match statistics and FAQ on `e4598c5` ([captures](evidence/match-stats-faq-2026-09-29/README.md)):
 per-metric split bars comparing the teams (validated palette), team marks beside team
 names and player rows, original glyphs for kills/deaths/combat/offense/defense/support
 (game class/score icons are not licensed; stored statistics have no class), numbered
 FAQ questions with a two-column index. Checks: lint/types passed, unit 708/708, browser
-183 passed (99 skipped). The imported manual/FAQ content on production was not visible
-from this environment; its reported formatting problems remain open.
-Not changed: the published clan/community CMS pages still contain the owner's older
-sentence about HLL matches on the original website (an editor must update that content);
-production was not re-audited because `valkyria.cz` is blocked by this environment's
-network policy. Next: review and merge, then an operator-run publication.
+183 passed (99 skipped). At that earlier branch checkpoint the environment could not
+read production manual/FAQ content. The later parity acceptance above verifies the
+restored metadata, not every manual's formatting. The published clan/community CMS
+prose still contains the owner's older HLL-archive wording; an editor must update it.
 
-## Graphics pack integration (PR #70, merged and published)
+## Graphics pack integration (PR #70, historical publication)
 
 Squash-merged as main `a7be042c0089629d3b850dd59a5761c5a8fe1899`. Publisher run
 [36615145766](https://github.com/ValkyriaWDG/www/actions/runs/36615145766) passed
@@ -125,11 +169,12 @@ representation of the oversized editor ([pack README](../assets/design-packs/val
 ([brand correction](assets/brand-correction-2026-09-29.md)); 16 original
 [UI icons](assets/icon-handoff.md). Source galleries are asset proof, not app screenshots.
 
-## Initial production import: legacy HLL migration and CRCON
+## Initial production import: legacy HLL migration and CRCON (historical)
 
-Source `1b38314ff6faf5182166fe15dff3172e4cf752ef` runs from
+The initial import ran source `1b38314ff6faf5182166fe15dff3172e4cf752ef` from
 `majorluk/valkyria-www@sha256:6623125c93ec576e0402ce9708749d3a7175f36230c99890b132d3d23f71ef1b`
-through the verified `production` channel. PR #67 implements issue #65; PR #68
+through the then-verified `production` channel; it is not the current source above.
+PR #67 implements issue #65; PR #68
 fixes standalone importer dependency resolution and exercises the actual image
 importer. [Production acceptance and screenshots](evidence/hll-legacy-production-2026-09-29/README.md)
 record exact-source CI/publisher, the initial failed image rehearsal, its correction,
@@ -153,7 +198,7 @@ against its matching restored baseline. Production's fresh frozen baseline match
 that restored source exactly. The fresh paired backup was hashed, its database dump
 TOC checked and its media archive restored; **that new database dump was not itself
 restored again**. Four migrations advanced the journal from five to nine; the second
-migration run applied zero. Production now has 31 application tables. Dry-run and
+migration run applied zero. That initial import left 31 application tables. Dry-run and
 repeated import preserved full database/sequence/journal/media fingerprints; all nine
 identity/grant tables remained unchanged. Recovery after this populated import requires
 the matching pre-import database/media backup and old image, or a reviewed forward fix.
