@@ -1,6 +1,6 @@
 import { Fragment, type CSSProperties, type ReactNode } from 'react';
 import { checkLinkHref, isExternalHref } from './links';
-import type { BlockNode, InlineNode, RichTextDocument, RichTextMark, TableCellNode, TableRowNode, TextNode } from './schema';
+import type { BlockNode, InlineNode, ListItemNode, RichTextDocument, RichTextMark, TableCellNode, TableRowNode, TextNode } from './schema';
 import styles from './rich-text.module.css';
 
 /**
@@ -101,11 +101,11 @@ function renderBlocks(nodes: readonly BlockNode[], ctx: RenderContext, anchors?:
 function renderBlock(node: BlockNode, key: number, ctx: RenderContext, anchor?: string): ReactNode {
   switch (node?.type) {
     case 'paragraph': {
-      const inline = renderInline(node.content ?? [], ctx);
+      const inline = renderInline(tidyInline(node.content), ctx);
       return inline.length > 0 ? <p key={key}>{inline}</p> : null;
     }
     case 'heading': {
-      const inline = renderInline(node.content ?? [], ctx);
+      const inline = renderInline(tidyInline(node.content), ctx);
       if (inline.length === 0) return null;
       return node.attrs?.level === 3 ? (
         <h3 key={key} id={anchor}>
@@ -117,20 +117,24 @@ function renderBlock(node: BlockNode, key: number, ctx: RenderContext, anchor?: 
         </h2>
       );
     }
-    case 'bulletList':
-      return <ul key={key}>{node.content.map((item, i) => <li key={i}>{renderBlocks(item.content ?? [], ctx)}</li>)}</ul>;
+    case 'bulletList': {
+      const items = renderItems(node.content, ctx);
+      return items.length > 0 ? <ul key={key}>{items}</ul> : null;
+    }
     case 'orderedList': {
+      const items = renderItems(node.content, ctx);
+      if (items.length === 0) return null;
       const start = Number.isInteger(node.attrs?.start) && node.attrs.start > 1 ? node.attrs.start : undefined;
       return (
         <ol key={key} start={start}>
-          {node.content.map((item, i) => (
-            <li key={i}>{renderBlocks(item.content ?? [], ctx)}</li>
-          ))}
+          {items}
         </ol>
       );
     }
-    case 'blockquote':
-      return <blockquote key={key}>{renderBlocks(node.content ?? [], ctx)}</blockquote>;
+    case 'blockquote': {
+      const children = renderBlocks(node.content ?? [], ctx);
+      return children.some((child) => child != null) ? <blockquote key={key}>{children}</blockquote> : null;
+    }
     case 'horizontalRule':
       return <hr key={key} />;
     case 'image': {
@@ -160,6 +164,42 @@ function renderBlock(node: BlockNode, key: number, ctx: RenderContext, anchor?: 
     default:
       return null;
   }
+}
+
+/** List items with visible content; an empty item would show a lone bullet or number. */
+function renderItems(items: readonly ListItemNode[] | undefined, ctx: RenderContext): ReactNode[] {
+  return (items ?? []).flatMap((item, i) => {
+    const children = renderBlocks(item?.content ?? [], ctx);
+    return children.some((child) => child != null) ? [<li key={i}>{children}</li>] : [];
+  });
+}
+
+function isBlankInline(node: InlineNode | undefined): boolean {
+  return node?.type === 'hardBreak' || (node?.type === 'text' && !node.marks?.some((mark) => mark.type === 'link') && !node.text?.trim());
+}
+
+/**
+ * Line breaks as spacing: a paragraph of breaks only (an empty line typed in the editor
+ * or imported from `<p><br></p>`) renders nothing, breaks at either end of a paragraph are
+ * dropped, and runs of more than two breaks become one empty line. Spacing between blocks
+ * comes from the stylesheet, so stored documents keep their breaks.
+ */
+function tidyInline(nodes: readonly InlineNode[] | undefined): InlineNode[] {
+  const list = [...(nodes ?? [])];
+  let start = 0;
+  let end = list.length;
+  while (start < end && isBlankInline(list[start])) start += 1;
+  while (end > start && isBlankInline(list[end - 1])) end -= 1;
+  const result: InlineNode[] = [];
+  let breaks = 0;
+  for (const node of list.slice(start, end)) {
+    if (node?.type === 'hardBreak') {
+      breaks += 1;
+      if (breaks > 2) continue;
+    } else if (!isBlankInline(node)) breaks = 0;
+    result.push(node);
+  }
+  return result;
 }
 
 function renderTable(rows: readonly TableRowNode[], key: number, ctx: RenderContext): ReactNode {

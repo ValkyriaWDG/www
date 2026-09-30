@@ -71,7 +71,7 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
             name: 'game',
             label: t('list.gameGroup'),
             options: [
-              { value: 'all', label: t('list.all'), href: href({ ...filters, game: undefined, page: 1 }), current: !filters.game },
+              { value: 'all', label: t('list.allGames'), href: href({ ...filters, game: undefined, page: 1 }), current: !filters.game },
               ...GAMES.map((value) => ({ value, label: t(`games.${value}`), href: href({ ...filters, game: value, page: 1 }), current: filters.game === value })),
             ],
           },
@@ -80,7 +80,7 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
       name: 'role',
       label: t('list.roleGroup'),
       options: [
-        { value: 'all', label: t('list.all'), href: href({ ...filters, role: undefined, page: 1 }), current: !filters.role },
+        { value: 'all', label: t('list.allRoles'), href: href({ ...filters, role: undefined, page: 1 }), current: !filters.role },
         ...PUBLIC_ROLE_KEYS.map((role) => ({ value: role, label: t(`roles.${role}`), href: href({ ...filters, role, page: 1 }), current: filters.role === role })),
       ],
     },

@@ -18,6 +18,7 @@
     "categoryGroup": "Category",
     "gameGroup": "Game",
     "all": "All",
+    "allGames": "All games",
     "resultCount": "{count, plural, one {# article} other {# articles}}",
     "emptyTitle": "No news has been published yet.",
     "emptyBody": "New announcements and reports will appear here as soon as they are published.",

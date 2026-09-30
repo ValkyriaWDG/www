@@ -17,7 +17,8 @@
     "searchPlaceholder": "Search by name",
     "gameGroup": "Game",
     "roleGroup": "Role",
-    "all": "All",
+    "allGames": "All games",
+    "allRoles": "All roles",
     "columns": {
       "member": "Member",
       "roles": "Role",

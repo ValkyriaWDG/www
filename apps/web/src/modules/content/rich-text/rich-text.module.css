@@ -27,8 +27,16 @@
 
 .root > * + p,
 .root > * + ul,
-.root > * + ol {
+.root > * + ol,
+.root > * + blockquote {
   margin-block-start: var(--space-4);
+}
+
+/* The surrounding panel provides the top spacing, also when a document opens with a heading or image. */
+.root > :first-child,
+.root > .figure:first-child,
+.root > .figureWide:first-child {
+  margin-block-start: 0;
 }
 
 .root h2,

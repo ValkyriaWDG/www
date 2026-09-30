@@ -17,7 +17,8 @@
     "searchPlaceholder": "Hledat podle jména",
     "gameGroup": "Hra",
     "roleGroup": "Role",
-    "all": "Vše",
+    "allGames": "Všechny hry",
+    "allRoles": "Všechny role",
     "columns": {
       "member": "Člen",
       "roles": "Role",

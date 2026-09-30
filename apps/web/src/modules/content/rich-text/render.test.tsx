@@ -59,6 +59,32 @@ describe('RichText renderer', () => {
     expect(html).not.toContain('dangerouslySetInnerHTML');
   });
 
+  it('drops empty lines, edge breaks, empty list items and empty quotes, and caps break runs', () => {
+    const text = (value: string) => ({ type: 'text', text: value });
+    const br = { type: 'hardBreak' };
+    const item = (...content: unknown[]) => ({ type: 'listItem', content: [{ type: 'paragraph', content }] });
+    const html = render({
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [br] },
+        { type: 'paragraph', content: [br, text('  '), br] },
+        { type: 'paragraph', content: [br, text('první'), br, br, br, text(' '), br, text('druhý'), br] },
+        { type: 'heading', attrs: { level: 2 }, content: [text('Nadpis'), br] },
+        { type: 'bulletList', content: [item(text('bod')), { type: 'listItem', content: [{ type: 'paragraph' }] }, item(br)] },
+        { type: 'orderedList', attrs: { start: 1 }, content: [{ type: 'listItem', content: [{ type: 'paragraph' }] }] },
+        { type: 'blockquote', content: [{ type: 'paragraph', content: [br] }] },
+        { type: 'paragraph', content: [{ type: 'text', text: ' ', marks: [{ type: 'link', attrs: { href: 'https://example.com' } }] }] },
+      ],
+    });
+    expect(html).toContain('<p>první<br/><br/> druhý</p>');
+    expect(html).toContain('<h2>Nadpis</h2>');
+    expect(html).toContain('<ul><li><p>bod</p></li></ul>');
+    expect(html).not.toContain('<ol');
+    expect(html).not.toContain('<blockquote');
+    expect(html.match(/<p>/g)).toHaveLength(3);
+    expect(html).toContain('href="https://example.com"');
+  });
+
   it('renders safe links with rel and an accessible external indicator', () => {
     const html = render({
       type: 'doc',
