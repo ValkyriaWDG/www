@@ -14878,6 +14878,72 @@
       "bytes": 153362,
       "width": 390,
       "height": 993
+    },
+    {
+      "id": "legacy-editorial-clan-cs-1920",
+      "path": "docs/evidence/legacy-editorial-renderers-2026-09-30/legacy-editorial-clan-cs-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic archive attribution on the HLL application",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "38d6d4dcec2b99c3de167d179d3879e9bc446c20cae638d1b5a55f4f1a75c228",
+      "bytes": 586262,
+      "width": 1920,
+      "height": 2197
+    },
+    {
+      "id": "legacy-editorial-clan-cs-390",
+      "path": "docs/evidence/legacy-editorial-renderers-2026-09-30/legacy-editorial-clan-cs-390.png",
+      "source": "Local Playwright Chromium capture of synthetic archive attribution on the HLL application",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "2e7b395ae7c9554607c6cb0079bb9cba8cdec9ba3aaf3156d429c211aaffb3c6",
+      "bytes": 257029,
+      "width": 390,
+      "height": 2807
+    },
+    {
+      "id": "legacy-editorial-manual-setup-cs-1920",
+      "path": "docs/evidence/legacy-editorial-renderers-2026-09-30/legacy-editorial-manual-setup-cs-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic archive attribution on the HLL application",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "a5a391158e519591c36aaa648941f1e4577bae9c346e7dff664ccac5036aea27",
+      "bytes": 630826,
+      "width": 1920,
+      "height": 2109
+    },
+    {
+      "id": "legacy-editorial-manual-setup-cs-390",
+      "path": "docs/evidence/legacy-editorial-renderers-2026-09-30/legacy-editorial-manual-setup-cs-390.png",
+      "source": "Local Playwright Chromium capture of synthetic archive attribution on the HLL application",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "9e3d0ed21d7d534ba7eb6bcd423b0597bc5dd0e749978a8c4ca891d64600a2f3",
+      "bytes": 251569,
+      "width": 390,
+      "height": 2436
+    },
+    {
+      "id": "legacy-editorial-faq-cs-1920",
+      "path": "docs/evidence/legacy-editorial-renderers-2026-09-30/legacy-editorial-faq-cs-1920.png",
+      "source": "Local Playwright Chromium capture of synthetic archive attribution on the HLL application",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "8f5d1f8e274e19cbec914f966ba9b9c5876fc618448e774ab398ce60168d56a1",
+      "bytes": 588608,
+      "width": 1920,
+      "height": 2905
+    },
+    {
+      "id": "legacy-editorial-faq-cs-390",
+      "path": "docs/evidence/legacy-editorial-renderers-2026-09-30/legacy-editorial-faq-cs-390.png",
+      "source": "Local Playwright Chromium capture of synthetic archive attribution on the HLL application",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "74396cb7813b12b5c8ea750da06555e4e6842ed91f25b6ffb8bb4b90a8a00303",
+      "bytes": 246878,
+      "width": 390,
+      "height": 3089
     }
   ]
 }
