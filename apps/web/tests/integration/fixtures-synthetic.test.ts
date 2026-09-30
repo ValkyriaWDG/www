@@ -10,6 +10,7 @@ import {
   contentDocument,
   contentRevision,
   contentTranslation,
+  legacyImport,
   match,
   memberProfile,
   proseRevision,
@@ -22,6 +23,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { FIXTURE_IMAGES, FIXTURE_MEMBERS } from '@/fixtures/data';
 import { renderFixturePng } from '@/fixtures/images';
 import { FIXTURE_ASSET_IDS, FIXTURE_SLUGS, loadFixtures, resetFixtures } from '@/fixtures/index';
+import { FIXTURE_EDITORIAL_KEYS } from '@/fixtures/legacy';
 import { ensureTestActors } from '@/fixtures/test-actors';
 import { parseRichTextDocument } from '@/modules/content/rich-text/schema';
 import { getPublicMatch, listPublicMatches } from '@/modules/matches/queries';
@@ -214,10 +216,15 @@ describe('synthetic fixture set', () => {
       matches: (await t.db.select({ n: count() }).from(match))[0]!.n,
       documents: (await t.db.select({ n: count() }).from(contentDocument))[0]!.n,
       assets: (await t.db.select({ n: count() }).from(asset))[0]!.n,
+      legacy: (await t.db.select({ n: count() }).from(legacyImport))[0]!.n,
     });
+    const pagesBefore = await t.db.select().from(contentTranslation).where(eq(contentTranslation.namespace, 'page'));
+    const archiveKeys = (await t.db.select().from(legacyImport)).filter((row) => row.sourceKind === 'page' || row.sourceKind === 'manual').map((row) => row.sourceKey).sort();
+    expect(archiveKeys).toEqual([...FIXTURE_EDITORIAL_KEYS].sort());
     const before = await snapshot();
     await loadFixtures(t.db, { mediaRoot });
     expect(await snapshot()).toEqual(before);
+    expect(await t.db.select().from(contentTranslation).where(eq(contentTranslation.namespace, 'page'))).toEqual(pagesBefore);
 
     const actors = await ensureTestActors(t.db);
     const realMatch = await createMatch(t.db, actors.matchManager, {
@@ -238,6 +245,8 @@ describe('synthetic fixture set', () => {
     const documents = await t.db.select().from(contentDocument);
     expect(documents.map((row) => row.pageKey).sort()).toEqual(['clan', 'community', 'faq', 'privacy']);
     expect(await t.db.select().from(asset)).toHaveLength(0);
+    expect(await t.db.select().from(legacyImport)).toHaveLength(0);
+    expect(await t.db.select().from(contentTranslation).where(eq(contentTranslation.namespace, 'page'))).toEqual(pagesBefore);
     expect((await t.db.select().from(taxonomyTerm)).map((row) => row.kind)).toEqual(['category', 'category', 'category', 'category']);
     for (const id of Object.values(FIXTURE_ASSET_IDS)) expect(existsSync(path.join(mediaRoot, id))).toBe(false);
   });
