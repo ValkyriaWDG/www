@@ -20,6 +20,13 @@ portrait photo, found:
   had low contrast on its right half.
 - Match statistics and server status showed technical wording (import/export/source,
   "Pozorováno", "Snímek"). Visitor copy is plain now; the import time is admin-only.
+- Verification on `6a53399` + `4080aec`:
+  - lint and typecheck passed;
+  - unit 787/787, integration 357/357;
+  - full browser suite: 197 passed, 1 failed (an outdated copy expectation, fixed in
+    `4080aec`), 99 opt-in captures skipped; the fixed spec then passed together with the
+    `chromium` project it depends on (158 passed).
+- [Captures](evidence/public-ui-round7-2026-09-30/README.md).
 
 ## Former-website links in stored content and page fixes (PR #79, merged `8547f77`)
 
