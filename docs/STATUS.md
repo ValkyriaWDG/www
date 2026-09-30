@@ -29,6 +29,13 @@ The renderer regression reproduced three failures before the fix, then passed al
 use synthetic metadata only. They do not prove migrated production content. Exact
 PR-head CI, publication, rehearsal and production field-parity acceptance remain pending.
 
+PR #76's first CI run `36687129273` passed application unit/integration/build and
+container smoke/rollback checks, then stopped on four fixable OpenSSL OS-package
+findings. Its later browser/SBOM/page-budget steps were skipped. The runtime build
+now upgrades only the two affected trixie packages to Debian's exact fixed version;
+an isolated build verified both installed versions. Full replacement CI and the
+production image scan remain required; see the [runtime update](operations/release-hardening.md#september-2026-openssl-runtime-update).
+
 ## Public UI audit fixes (branch `feat/hll-platform-handoff`, not merged)
 
 A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed

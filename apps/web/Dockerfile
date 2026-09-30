@@ -50,6 +50,20 @@ ENV NODE_ENV=production \
     EDITORIAL_MEDIA_ROOT=/app/storage/editorial \
     MIGRATIONS_DIR=/app/migrations
 WORKDIR /app
+# Debian's 2026-09-29 OpenSSL fixes postdate the pinned trixie base image.
+# Upgrade only the two installed runtime packages; retain bookworm as the unchanged
+# comparison baseline. Exact versions and dpkg checks keep the build fail-closed.
+RUN set -eux; \
+    . /etc/os-release; \
+    if [ "$ID" = debian ] && [ "$VERSION_CODENAME" = trixie ]; then \
+      apt-get update; \
+      apt-get install --yes --no-install-recommends --only-upgrade --no-remove \
+        libssl3t64=3.5.7-1~deb13u3 \
+        openssl-provider-legacy=3.5.7-1~deb13u3; \
+      test "$(dpkg-query -W -f='${Version}' libssl3t64)" = '3.5.7-1~deb13u3'; \
+      test "$(dpkg-query -W -f='${Version}' openssl-provider-legacy)" = '3.5.7-1~deb13u3'; \
+      rm -rf /var/lib/apt/lists/*; \
+    fi
 # The runtime only executes `node`; drop the base image's package managers (and their
 # bundled dependencies) so they are neither an attack surface nor scan findings.
 RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
