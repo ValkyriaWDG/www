@@ -45,6 +45,30 @@ updater, configuration and 50 unrelated containers remained unchanged; public
 liveness/readiness passed. The initial acceptance JSON keeps its earlier pending-poll
 checkpoint rather than being rewritten.
 
+## Polling readiness follow-up (PR #77; not deployed)
+
+The first final-evidence [CI run](https://github.com/ValkyriaWDG/www/actions/runs/36695583373)
+failed an existing server-player polling test: after a 31-second simulated clock jump,
+one request was expected but none arrived. Its initial player-text and disabled-button
+assertions matched server-rendered HTML and did not establish that the polling effect
+had registered its timer. The trace records no browser polling request, but does not
+record effect registration; all JavaScript downloads had already completed.
+
+A controlled local probe against the unchanged `609528d` build held 15 client chunks,
+passed those same initial assertions, advanced 31 seconds and reproduced zero requests.
+The follow-up exposes readiness only after the polling timer/listeners are registered,
+keeps the controls disabled during hydration, and waits for readiness before manipulating
+the test clock. A delayed-hydration regression preserves the exact request-count,
+failure/empty, pause/manual-refresh and hidden-tab checks. No timeout, retry or branch
+protection was relaxed. This source follow-up is separate from the accepted production
+image above; merging it does not dispatch the protected container publisher.
+
+Local checks on the follow-up passed: lint, typecheck, production build, 766 unit
+tests across 69 files and all four focused server-player browser scenarios. The
+required full CI on the final PR revision must pass before merge. The separate
+[synthetic loading-state evidence](evidence/server-polling-readiness-2026-09-30/README.md)
+contains both inspected browser captures and the controlled reproduction details.
+
 ## Corrective renderer and runtime qualification (PR #76)
 
 The qualified application source is `609528df9e6a201f7cab9775607dd0f9210dcd63`.

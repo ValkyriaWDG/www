@@ -14999,6 +14999,28 @@
       "bytes": 212272,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "polling-controls-pending",
+      "path": "docs/evidence/server-polling-readiness-2026-09-30/polling-controls-pending.png",
+      "source": "Local Playwright Chromium capture with synthetic HLL data; polling readiness correction on f8e79b0 working tree",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "b87255cc7fe0166342d700d696619bf7221b75b429e41b502e00d5624cfb2f25",
+      "bytes": 31047,
+      "width": 1174,
+      "height": 57
+    },
+    {
+      "id": "polling-controls-ready",
+      "path": "docs/evidence/server-polling-readiness-2026-09-30/polling-controls-ready.png",
+      "source": "Local Playwright Chromium capture with synthetic HLL data; polling readiness correction on f8e79b0 working tree",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "330128e7c06b669d225e4487a686427ab1e050b6bb6f70d1db380a154ab3a78e",
+      "bytes": 31118,
+      "width": 1174,
+      "height": 57
     }
   ]
 }

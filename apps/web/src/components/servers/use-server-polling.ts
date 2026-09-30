@@ -13,6 +13,7 @@ export function useServerPolling(game: GameRoute, selected: string | null, initi
   const [refreshing, setRefreshing] = useState(false);
   const [automatic, setAutomatic] = useState(true);
   const [coolingDown, setCoolingDown] = useState(true);
+  const [ready, setReady] = useState(false);
   const refreshRef = useRef<() => void>(() => undefined);
   const lastAttempt = useRef(0);
   const interval = Math.max(30, data.livePlayers?.refreshAfterSeconds ?? 30);
@@ -58,8 +59,10 @@ export function useServerPolling(game: GameRoute, selected: string | null, initi
     document.addEventListener('visibilitychange', visibility);
     window.addEventListener('online', online);
     window.addEventListener('offline', offline);
+    // SSR controls stay pending until this effect has registered their behavior.
+    queueMicrotask(() => { if (active) setReady(true); });
     return () => { active = false; controller?.abort(); window.clearInterval(timer); document.removeEventListener('visibilitychange', visibility); window.removeEventListener('online', online); window.removeEventListener('offline', offline); };
   }, [game, selected, automatic, interval, configured]);
   // Exact SSR snapshot for hydration; subsequent ticks age it even after failures or while paused.
-  return { data: clock === null ? data : ageServerBrowserData(data, new Date(clock), failed), failed, refreshing, coolingDown, automatic, setAutomatic, interval, refresh: () => refreshRef.current() };
+  return { data: clock === null ? data : ageServerBrowserData(data, new Date(clock), failed), ready, failed, refreshing, coolingDown, automatic, setAutomatic, interval, refresh: () => refreshRef.current() };
 }
