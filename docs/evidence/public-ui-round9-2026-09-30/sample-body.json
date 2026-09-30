@@ -1,0 +1,636 @@
+{
+ "type": "doc",
+ "content": [
+  {
+   "type": "heading",
+   "attrs": {
+    "level": 2
+   },
+   "content": [
+    {
+     "type": "text",
+     "text": "Úvodní nadpis jako první blok"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "text",
+     "text": "První řádek odstavce."
+    },
+    {
+     "type": "hardBreak"
+    },
+    {
+     "type": "hardBreak"
+    },
+    {
+     "type": "text",
+     "text": "Druhý řádek po dvou zalomeních, jak je to běžné ve starém webu."
+    },
+    {
+     "type": "hardBreak"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "hardBreak"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "hardBreak"
+    },
+    {
+     "type": "hardBreak"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "text",
+     "text": "Odkaz na záznam: "
+    },
+    {
+     "type": "text",
+     "text": "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL1234567890abcdefghijklmnop&index=12",
+     "marks": [
+      {
+       "type": "link",
+       "attrs": {
+        "href": "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL1234567890abcdefghijklmnop&index=12"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "text",
+     "text": "Záznam / původní média",
+     "marks": [
+      {
+       "type": "link",
+       "attrs": {
+        "href": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "text",
+     "text": "Obrázek: mapa Foy s rozestavením",
+     "marks": [
+      {
+       "type": "link",
+       "attrs": {
+        "href": "https://i.imgur.com/abcdef.png"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "attrs": {
+    "level": 2
+   },
+   "content": [
+    {
+     "type": "text",
+     "text": "Nadpis druhé úrovně"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "attrs": {
+    "level": 3
+   },
+   "content": [
+    {
+     "type": "text",
+     "text": "Hned podnadpis třetí úrovně"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "text",
+     "text": "Tučně",
+     "marks": [
+      {
+       "type": "bold"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": ", "
+    },
+    {
+     "type": "text",
+     "text": "kurzíva",
+     "marks": [
+      {
+       "type": "italic"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": ", "
+    },
+    {
+     "type": "text",
+     "text": "podtržení",
+     "marks": [
+      {
+       "type": "underline"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": " a "
+    },
+    {
+     "type": "text",
+     "text": "přeškrtnutí",
+     "marks": [
+      {
+       "type": "strike"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": ". Nejneobhospodařovávatelnějšími slovy pokračuje text dál."
+    }
+   ]
+  },
+  {
+   "type": "bulletList",
+   "content": [
+    {
+     "type": "listItem",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Položka se zanořeným seznamem"
+        }
+       ]
+      },
+      {
+       "type": "bulletList",
+       "content": [
+        {
+         "type": "listItem",
+         "content": [
+          {
+           "type": "paragraph",
+           "content": [
+            {
+             "type": "text",
+             "text": "Zanořená položka jedna"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "type": "listItem",
+         "content": [
+          {
+           "type": "paragraph",
+           "content": [
+            {
+             "type": "text",
+             "text": "Zanořená položka dva s delším textem, který se na telefonu zalomí do několika řádků."
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "listItem",
+     "content": [
+      {
+       "type": "paragraph"
+      }
+     ]
+    },
+    {
+     "type": "listItem",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Třetí položka"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "orderedList",
+   "attrs": {
+    "start": 3
+   },
+   "content": [
+    {
+     "type": "listItem",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Krok tři"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "listItem",
+     "content": [
+      {
+       "type": "paragraph",
+       "content": [
+        {
+         "type": "text",
+         "text": "Krok čtyři"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "blockquote",
+   "content": [
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "type": "text",
+       "text": "Citace s odstavcem."
+      }
+     ]
+    },
+    {
+     "type": "bulletList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "a seznamem"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "table",
+   "content": [
+    {
+     "type": "tableRow",
+     "content": [
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Pozice"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Tým"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Zápasy"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Výhry"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Remízy"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Prohry"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableHeader",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Body"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "tableRow",
+     "content": [
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "1."
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Valkyria"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "6"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "5"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "0"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableCell",
+       "attrs": {
+        "colspan": 1,
+        "rowspan": 1
+       },
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "15"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "horizontalRule"
+  },
+  {
+   "type": "image",
+   "attrs": {
+    "assetId": "f1c7a0e0-0000-4000-8000-00000000a002",
+    "alt": "Ukázka",
+    "caption": "Obrázek za čarou",
+    "decorative": false,
+    "align": "wide"
+   }
+  },
+  {
+   "type": "image",
+   "attrs": {
+    "assetId": "f1c7a0e0-0000-4000-8000-00000000a001",
+    "alt": "Ukázka 2",
+    "caption": "",
+    "decorative": false,
+    "align": "wide"
+   }
+  },
+  {
+   "type": "paragraph",
+   "content": [
+    {
+     "type": "text",
+     "text": "Závěrečný odstavec."
+    }
+   ]
+  }
+ ]
+}
