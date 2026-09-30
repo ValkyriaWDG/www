@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes are on branch `feat/hll-platform-handoff` (PR #72, not merged). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes (PR #72, main `6f8f406`) are published and promoted as image `bd0fddf9`; the Watchtower replacement was not observed from this environment. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
 ## Public source field parity (#73)
 
@@ -12,7 +12,16 @@ See the [operator procedure](operations/legacy-hll-import.md#additive-public-met
 and [local/source/browser evidence](evidence/legacy-field-parity-2026-09-30/README.md).
 Production repair and exact-image acceptance remain required before issue closure.
 
-## Public UI audit fixes (branch `feat/hll-platform-handoff`, not merged)
+## Public UI audit fixes (PR #72, merged and published)
+
+Squash-merged as main `6f8f40662e49b432540cbf571e6eaf6966c37b06` (includes main
+`b10299e`, #74). Publisher run [36682391443](https://github.com/ValkyriaWDG/www/actions/runs/36682391443)
+passed Foundation, Application and Quality gate; after the protected environment approval
+it published `majorluk/valkyria-www@sha256:bd0fddf9e833fc3990a4c32cdb742b4e53f4210542c660e199160094a01f9493`,
+verified the OCI revision label against `6f8f406` and reported channel status `promoted`
+at 07:30:52 UTC (previous `ad84414d` from `b10299e`; migration and runtime fingerprints
+unchanged, `fde0abef / 63cee925`). The Watchtower replacement and live pages were not
+observed from this environment. The branch record below is historical.
 
 A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed
 [legacy production captures](evidence/hll-legacy-production-2026-09-29/README.md))
@@ -59,7 +68,7 @@ from this environment; its reported formatting problems remain open.
 Not changed: the published clan/community CMS pages still contain the owner's older
 sentence about HLL matches on the original website (an editor must update that content);
 production was not re-audited because `valkyria.cz` is blocked by this environment's
-network policy. Next: review and merge, then an operator-run publication.
+network policy.
 
 ## Graphics pack integration (PR #70, merged and published)
 
