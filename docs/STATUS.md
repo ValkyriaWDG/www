@@ -27,6 +27,12 @@ portrait photo, found:
     `4080aec`), 99 opt-in captures skipped; the fixed spec then passed together with the
     `chromium` project it depends on (158 passed).
 - [Captures](evidence/public-ui-round7-2026-09-30/README.md).
+- Follow-up on the same branch (`9407ad4`):
+  - FAQ questions and dividers span the answers panel (they stopped at the text column).
+  - Public Czech copy uses the community's informal register ("Vyber hru", "Zeptej se na
+    Discordu"). Sign-in, account and administration stay formal; the rule is recorded in
+    `product/localization.md`.
+  - [Captures](evidence/public-ui-round8-2026-09-30/README.md).
 
 ## Former-website links in stored content and page fixes (PR #79, merged `8547f77`)
 
