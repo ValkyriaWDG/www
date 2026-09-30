@@ -1,8 +1,39 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. Removal of all public references to the former HLL website is on branch `feat/hll-platform-handoff` (not merged). Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. PR #78 (no public references to the former HLL website) is merged as `f1ae338` and its image `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa` was promoted to the Watchtower channel on 2026-09-30 13:32 UTC; the live rollout was not observed from this environment. Follow-up page fixes (stored former-website links, tournament links, phone layout, recording dates) are on branch `feat/hll-platform-handoff`. Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
 
-## No public references to the former HLL website (branch `feat/hll-platform-handoff`)
+## Former-website links in stored content and page fixes (branch `feat/hll-platform-handoff`)
+
+A CS/EN audit of main `f1ae338` (all public routes, 1440/390 px) plus the owner's production
+captures found:
+- Imported article, manual and page bodies still link the former HLL website: the importer
+  resolved relative source links against it. Public rich text now points such a link to its
+  on-site page (collections by route, details through the published import identity, English
+  falling back to the Czech page), or keeps only the text when nothing public corresponds.
+  Admin previews render the same way. Stored bodies are unchanged, so the published
+  clan/community pages lose their former-website links but keep their sentences about it
+  until an editor updates them.
+- Imported tournaments without their own links got a "Legacy source" link to the former
+  website. Public tournament details hide former-website links, and the importer no longer
+  adds one (the source URL stays in the internal notes).
+- Generic tournament link labels typed in one language ("Website", "Rules", "Pravidla") show in
+  the page language.
+- On phones the match banner cut off long team names. The banner now grows to fit them.
+- Recording dates showed raw `12/05/2024` text. They now use the page's date format.
+- Rich-text tables with up to three columns needed sideways scrolling on phones. They now fit.
+- Verification on `106d88c`: lint and typecheck passed; unit 787/787; integration 357/357;
+  `check-foundation.mjs`, `derive-graphics-pack.mjs --check` and tooling tests 176/176 passed.
+  The full browser suite (`chromium` + `chromium-admin`) passed 195, failed 0, skipped 99
+  opt-in captures on the same tree before the lookup-failure fallback was added. The
+  news/layout/legacy/page specs passed again on `106d88c` (38/38).
+- [Captures](evidence/public-ui-round6-2026-09-30/README.md).
+
+## No public references to the former HLL website (PR #78, merged `f1ae338`, promoted)
+
+Publication: [run 36719981485](https://github.com/ValkyriaWDG/www/actions/runs/36719981485)
+verified `f1ae338` and promoted `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa`
+at 13:32 UTC (previous `609528d` / `sha256:b4c84921…`, identical migration and runtime
+fingerprints). The live rollout was not observed from this environment.
 
 Owner decision, 2026-09-30: public pages neither link nor mention the former HLL website.
 - Removed: the footer and mobile menu "HLL WEB" link, the match "Archiv zápasů HLL" button,
