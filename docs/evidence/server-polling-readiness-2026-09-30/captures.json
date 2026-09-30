@@ -1,0 +1,53 @@
+{
+  "synthetic": true,
+  "environment": "http://127.0.0.1:3146",
+  "route": "/en/hll/servers?server=synthetic-alpha",
+  "locale": "en",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "baseRevision": "f8e79b08fd690993197514d485e6a994c9140922",
+  "workingTreeDirty": true,
+  "sourceNote": "Uncommitted polling readiness hook, component and E2E changes on the recorded base; not a production capture. Production remains accepted609528.",
+  "testStartedAt": "2026-09-30T09:45:11.360Z",
+  "status": "passed",
+  "captures": [
+    {
+      "file": "polling-controls-pending.png",
+      "kind": "polling-controls-element",
+      "width": 1174,
+      "height": 57,
+      "bytes": 31047,
+      "sha256": "b87255cc7fe0166342d700d696619bf7221b75b429e41b502e00d5624cfb2f25",
+      "caption": "Server-rendered pending polling controls while Next client chunks are held; automatic update is disabled.",
+      "capturedAt": "2026-09-30T09:45:11.630Z"
+    },
+    {
+      "file": "polling-controls-ready.png",
+      "kind": "polling-controls-element",
+      "width": 1174,
+      "height": 57,
+      "bytes": 31118,
+      "sha256": "330128e7c06b669d225e4487a686427ab1e050b6bb6f70d1db380a154ab3a78e",
+      "caption": "Polling controls after hydration registered timer and listeners; automatic update is enabled and Refresh remains in its initial cooldown.",
+      "capturedAt": "2026-09-30T09:45:11.813Z"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "apps/web/src/components/servers/use-server-polling.ts",
+      "sha256": "53feaf7ac1d3c966f01724c27324b62054b9f0424ce6c4f7be0b31c8537fe5c7"
+    },
+    {
+      "path": "apps/web/src/components/servers/server-browser.tsx",
+      "sha256": "2637a3f517efbf7050651c99a9b6bb203e03df5c64de4eba29e6741805daa915"
+    },
+    {
+      "path": "apps/web/e2e/server-live-players.spec.ts",
+      "sha256": "5d8100c7924f7778065131347535534d173ab2675f55bb8806fe4aedb18dd5c0"
+    }
+  ],
+  "reviewed": true
+}

@@ -20,6 +20,55 @@ test.describe('HLL server player snapshots', () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   });
 
+  test('keeps polling controls pending until delayed hydration registers their timer', async ({ page, request }) => {
+    const original = await (await request.get('/api/servers/hll?server=synthetic-alpha')).json();
+    let polls = 0;
+    await page.route('**/api/servers/hll?server=synthetic-alpha', async (route) => {
+      polls++;
+      await route.fulfill({ status: 200, json: original });
+    });
+    // Hold client chunks explicitly: server-rendered content and disabled Refresh
+    // alone must not be mistaken for a mounted polling effect.
+    let releaseScripts!: () => void;
+    const scriptsReleased = new Promise<void>((resolve) => { releaseScripts = resolve; });
+    const chunks = /\/_next\/static\/.*\.js(?:\?.*)?$/;
+    let heldChunks = 0;
+    await page.route(chunks, async (route) => {
+      heldChunks++;
+      await scriptsReleased;
+      await route.continue();
+    });
+    await page.clock.install();
+    try {
+      await page.goto('/en/hll/servers?server=synthetic-alpha', { waitUntil: 'commit' });
+      await expect(page.locator('[data-live-players]')).toContainText('[SYN] Alpha Player');
+      await expect.poll(() => heldChunks).toBeGreaterThan(0);
+      const controls = page.locator('[data-server-refresh]');
+      const automatic = page.getByRole('checkbox', { name: 'Update automatically every 30 seconds' });
+      await expect(controls).toHaveAttribute('aria-busy', 'true');
+      await expect(automatic).toBeDisabled();
+      await expect(page.getByRole('button', { name: 'Refresh', exact: true })).toBeDisabled();
+      if (process.env.CAPTURE_EVIDENCE === '1') {
+        await test.info().attach('polling-controls-pending', { body: await controls.screenshot({ animations: 'disabled' }), contentType: 'image/png' });
+      }
+      await page.clock.fastForward(31_000);
+      expect(polls).toBe(0);
+      await expect(controls).toHaveAttribute('aria-busy', 'true');
+      releaseScripts();
+      await expect(controls).toHaveAttribute('aria-busy', 'false');
+      await expect(automatic).toBeEnabled();
+      if (process.env.CAPTURE_EVIDENCE === '1') {
+        await test.info().attach('polling-controls-ready', { body: await controls.screenshot({ animations: 'disabled' }), contentType: 'image/png' });
+      }
+      expect(polls).toBe(0);
+      await page.clock.fastForward(31_000);
+      await expect.poll(() => polls).toBe(1);
+    } finally {
+      releaseScripts();
+      await page.unroute(chunks);
+    }
+  });
+
   test('automatically updates a selected snapshot, distinguishes failure from empty, and can pause', async ({ page, request }) => {
     const original = await (await request.get('/api/servers/hll?server=synthetic-alpha')).json();
     let polls = 0;
@@ -34,6 +83,7 @@ test.describe('HLL server player snapshots', () => {
     await page.clock.install();
     await page.goto('/en/hll/servers?server=synthetic-alpha');
     await expect(page.locator('[data-live-players]')).toContainText('[SYN] Alpha Player');
+    await expect(page.locator('[data-server-refresh]')).toHaveAttribute('aria-busy', 'false');
     await expect(page.getByRole('button', { name: 'Refresh', exact: true })).toBeDisabled();
     await page.clock.fastForward(31_000);
     await expect.poll(() => polls).toBe(1);
@@ -66,6 +116,7 @@ test.describe('HLL server player snapshots', () => {
     await page.clock.install();
     await page.goto('/en/hll/servers?server=synthetic-alpha');
     await expect(page.locator('[data-live-players]')).toBeVisible();
+    await expect(page.locator('[data-server-refresh]')).toHaveAttribute('aria-busy', 'false');
     await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' }); document.dispatchEvent(new Event('visibilitychange')); });
     await page.clock.fastForward(61_000);
     expect(polls).toBe(0);

@@ -15098,6 +15098,83 @@
       "bytes": 13658,
       "width": 1040,
       "height": 380
+    },
+    {
+      "id": "legacy-parity-production-match-cs-desktop",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/production-match-cs-desktop.png",
+      "source": "Anonymous production Playwright Chromium capture from https://valkyria.cz at 2026-09-30T09:04:49.711Z, revision 609528df9e6a201f7cab9775607dd0f9210dcd63",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "cecd3900e02074e281bc85b6411e2eb2e055611c29fb67bc47c648f4015286c0",
+      "bytes": 100069,
+      "width": 543,
+      "height": 951
+    },
+    {
+      "id": "legacy-parity-production-match-en-mobile",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/production-match-en-mobile.png",
+      "source": "Anonymous production Playwright Chromium capture from https://valkyria.cz at 2026-09-30T09:04:49.711Z, revision 609528df9e6a201f7cab9775607dd0f9210dcd63",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "f456a6e216d35120612b7f275930d002f50f22b9da2192d4c3c39624fb4c6e19",
+      "bytes": 62977,
+      "width": 316,
+      "height": 604
+    },
+    {
+      "id": "legacy-parity-production-article-cs-desktop",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/production-article-cs-desktop.png",
+      "source": "Anonymous production Playwright Chromium capture from https://valkyria.cz at 2026-09-30T09:04:49.711Z, revision 609528df9e6a201f7cab9775607dd0f9210dcd63",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "9460427b88aade4b8c50a0111f352408a285e3e78d8b1b672938a654ac0df00f",
+      "bytes": 659276,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "legacy-parity-production-tournament-cs-desktop",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/production-tournament-cs-desktop.png",
+      "source": "Anonymous production Playwright Chromium capture from https://valkyria.cz at 2026-09-30T09:04:49.711Z, revision 609528df9e6a201f7cab9775607dd0f9210dcd63",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "dcb6cea69dad6644ce0ae5cac9c120c7e3a1a87f09dffc32ac3b3378faf4938e",
+      "bytes": 406861,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "legacy-parity-production-manual-cs-mobile",
+      "path": "docs/evidence/legacy-field-parity-2026-09-30/production-manual-cs-mobile.png",
+      "source": "Anonymous production Playwright Chromium capture from https://valkyria.cz at 2026-09-30T09:04:49.711Z, revision 609528df9e6a201f7cab9775607dd0f9210dcd63",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "a588e0021fa20e04873e8a369351befa61c2081440baf6f0a52019dadb0711b2",
+      "bytes": 212272,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "polling-controls-pending",
+      "path": "docs/evidence/server-polling-readiness-2026-09-30/polling-controls-pending.png",
+      "source": "Local Playwright Chromium capture with synthetic HLL data; polling readiness correction on f8e79b0 working tree",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "b87255cc7fe0166342d700d696619bf7221b75b429e41b502e00d5624cfb2f25",
+      "bytes": 31047,
+      "width": 1174,
+      "height": 57
+    },
+    {
+      "id": "polling-controls-ready",
+      "path": "docs/evidence/server-polling-readiness-2026-09-30/polling-controls-ready.png",
+      "source": "Local Playwright Chromium capture with synthetic HLL data; polling readiness correction on f8e79b0 working tree",
+      "usage": "verification-evidence-only",
+      "rights": "Application verification capture; third-party scene rights remain with their authors",
+      "sha256": "330128e7c06b669d225e4487a686427ab1e050b6bb6f70d1db380a154ab3a78e",
+      "bytes": 31118,
+      "width": 1174,
+      "height": 57
     }
   ]
 }

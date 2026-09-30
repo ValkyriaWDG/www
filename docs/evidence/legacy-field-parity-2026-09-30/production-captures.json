@@ -1,0 +1,65 @@
+{
+  "capturedAt": "2026-09-30T09:04:49.711Z",
+  "synthetic": false,
+  "environment": "https://valkyria.cz",
+  "browser": "Playwright Chromium",
+  "revision": "609528df9e6a201f7cab9775607dd0f9210dcd63",
+  "imageDigest": "sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2",
+  "captures": [
+    {
+      "file": "production-match-cs-desktop.png",
+      "locale": "cs",
+      "route": "/cs/hll/matches/66",
+      "viewport": "1920x1080",
+      "captureKind": "public-parity-panel",
+      "width": 543,
+      "height": 951,
+      "sha256": "cecd3900e02074e281bc85b6411e2eb2e055611c29fb67bc47c648f4015286c0",
+      "caption": "Actual Czech historical match provenance, country labels and conflicting source-time notice. Browser panel capture excludes the real player table."
+    },
+    {
+      "file": "production-match-en-mobile.png",
+      "locale": "en",
+      "route": "/en/hll/matches/211",
+      "viewport": "390x844",
+      "captureKind": "public-parity-panel",
+      "width": 316,
+      "height": 604,
+      "sha256": "f456a6e216d35120612b7f275930d002f50f22b9da2192d4c3c39624fb4c6e19",
+      "caption": "Actual English historical match provenance at a mobile viewport, retaining original source facts. Browser panel capture excludes the real player table."
+    },
+    {
+      "file": "production-article-cs-desktop.png",
+      "locale": "cs",
+      "route": "/cs/hll/news/ecl-2025-a-ghc-2025-aktualne",
+      "viewport": "1920x1080",
+      "captureKind": "editorial-provenance-context",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "9460427b88aade4b8c50a0111f352408a285e3e78d8b1b672938a654ac0df00f",
+      "caption": "Actual desktop viewport at the published Czech article provenance, showing its restored source-author image and historical metadata with surrounding page context."
+    },
+    {
+      "file": "production-tournament-cs-desktop.png",
+      "locale": "cs",
+      "route": "/cs/hll/tournaments/ecl-2024",
+      "viewport": "1920x1080",
+      "captureKind": "editorial-provenance-context",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "dcb6cea69dad6644ce0ae5cac9c120c7e3a1a87f09dffc32ac3b3378faf4938e",
+      "caption": "Actual desktop viewport at the published Czech tournament provenance, showing its restored description, labels and logo with surrounding page context."
+    },
+    {
+      "file": "production-manual-cs-mobile.png",
+      "locale": "cs",
+      "route": "/cs/hll/field-manual/gameplay",
+      "viewport": "390x844",
+      "captureKind": "editorial-provenance-context",
+      "width": 390,
+      "height": 844,
+      "sha256": "a588e0021fa20e04873e8a369351befa61c2081440baf6f0a52019dadb0711b2",
+      "caption": "Actual mobile viewport at the published Czech field manual provenance, showing source attribution and historical metadata with surrounding page context."
+    }
+  ]
+}

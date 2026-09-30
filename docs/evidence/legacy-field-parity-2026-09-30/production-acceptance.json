@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "status": "accepted",
+  "acceptedAt": "2026-09-30T09:08:13.708898+00:00",
+  "revision": "609528df9e6a201f7cab9775607dd0f9210dcd63",
+  "imageDigest": "sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2",
+  "source": {
+    "legacyRevision": "1f0396517f90527f5aa44d7c66ac8f1c1117c425",
+    "bundleFileSha256": "7d3151b895607f4c3ec8e8d7c91acf9b101cf0a067d2df3277e0f451d4ee48fe",
+    "supplementFileSha256": "dbdfc021a50eaef20e415e8a2377b8ec1a91ff193f30c872a58a1142f0e13aab"
+  },
+  "ci": {
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36689819903",
+    "conclusion": "success",
+    "checks": [
+      {
+        "name": "unit",
+        "status": "passed",
+        "passed": 766,
+        "files": 69
+      },
+      {
+        "name": "integration",
+        "status": "passed",
+        "passed": 357,
+        "files": 38
+      },
+      {
+        "name": "browser",
+        "status": "passed",
+        "passed": 193,
+        "skipped": 124
+      },
+      {
+        "name": "artwork",
+        "status": "passed",
+        "passed": 4
+      },
+      {
+        "name": "foundation",
+        "status": "passed"
+      },
+      {
+        "name": "lint",
+        "status": "passed"
+      },
+      {
+        "name": "typecheck",
+        "status": "passed"
+      },
+      {
+        "name": "build",
+        "status": "passed"
+      },
+      {
+        "name": "page-budget",
+        "status": "passed"
+      }
+    ]
+  },
+  "publisher": {
+    "url": "https://github.com/ValkyriaWDG/www/actions/runs/36689822633",
+    "conclusion": "success"
+  },
+  "repair": {
+    "matchOverlays": 205,
+    "editorialOverlays": 30,
+    "totalOverlays": 235,
+    "newMediaAssets": 2,
+    "newMediaVariants": 4,
+    "metadataIntegrityHashesVerified": 235,
+    "allOriginalRowsAndMediaPreserved": true,
+    "journalAndSequencesUnchanged": true,
+    "journalEntries": 9,
+    "sqlMigrationsRun": false,
+    "seedRun": false,
+    "dryRunNoWrites": true,
+    "replayNoWrites": true
+  },
+  "rehearsal": {
+    "finishedAt": "2026-09-30T08:55:22.244446+00:00",
+    "candidateHttp": {
+      "total": 1094,
+      "passed": 1094
+    },
+    "previousImageHttp": {
+      "total": 682,
+      "passed": 682
+    },
+    "previousImageCompatibility": {
+      "ready": true,
+      "allRoutesAndPriorMediaGatesPassed": true,
+      "databaseAndMediaUnchanged": true
+    }
+  },
+  "public": {
+    "checkedAt": "2026-09-30T09:02:12.405Z",
+    "httpChecks": 888,
+    "httpPassed": 888,
+    "mediaVariantChecks": 442,
+    "publicMediaVariants": 422,
+    "deniedMediaVariants": 20,
+    "overlayCoverage": {
+      "matches": 410,
+      "publishedEditorial": 27,
+      "archivedEditorial": 3,
+      "fieldChecks": 9064
+    },
+    "browserCheckedAt": "2026-09-30T09:04:49.711Z",
+    "browserScenarios": 5,
+    "screenshotsReviewed": true
+  },
+  "automation": {
+    "status": "resumed",
+    "verifiedAt": "2026-09-30T09:08:37.269287+00:00",
+    "watchtowerRunning": true,
+    "publisherTimerActive": true,
+    "unrelatedContainersUnchanged": true,
+    "unrelatedContainerCount": 50,
+    "originalConfigBytesUnchanged": true,
+    "naturalScheduledPollObserved": false
+  },
+  "evidenceHashes": {
+    "acceptedRecordSha256": "cc3f122fa541d1934b590e86c3aa797cba5cff7c98214090be91ecf7014cbc57",
+    "rehearsalSha256": "e205f447f079dcb5ad4a0bb98d96cf782cceda512d62be60c3dc775aae6c7b97",
+    "publicProofSha256": "aab31a48797f8b2f5ad7e206a0c13666d1d27ecec7b6f69155431cda346863ea",
+    "httpSha256": "fa308aa36053891d6eedb53a0c77e7fd598b7bcadaab3633d300a03f4e11f8ad",
+    "browserSha256": "1d9979192eb9421173b02b8fae2f2c037ff4e8e6a5db7a3579ce596da5ed130e",
+    "reviewSha256": "bd34324c079a784e8a9aeea0d80654e7ecb2949dba0789527e9333653e68d288"
+  },
+  "limits": [
+    "134 existing statistics snapshots are 131 primary exports plus 3 extra rounds across 131 matches; this repair does not verify new CRCON origins.",
+    "Source defects, intentional private-data exclusions, unavailable admin2 DNS and hosted authenticated administration remain separately documented.",
+    "Source/lexical/static markup checks and earlier synthetic screenshots remain distinct from these production observations."
+  ]
+}
