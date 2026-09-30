@@ -85,7 +85,7 @@ test('match manager records an HLL match with map, mode, side and sector score',
 
   await visitor.goto(publicPath);
   const statistics = visitor.locator('[data-match-statistics]');
-  await expect(statistics.locator('[data-statistics-provenance]')).toContainText('nahraný export tabulky hry');
+  await expect(statistics.locator('[data-statistics-provenance]')).toContainText('Tabulka hry');
   await expect(statistics.locator('[data-statistics-summary]')).toContainText('Valkyria (Osa)');
   await statistics.getByRole('tab', { name: 'Hráči' }).click();
   await expect(statistics.locator('[data-statistics-players] tbody tr')).toHaveCount(12);

@@ -218,17 +218,16 @@
     "playersPrivate": "Statistiky jednotlivých hráčů ({count}) nejsou zveřejněny.",
     "kills": "{count, plural, one {# zabití} few {# zabití} many {# zabití} other {# zabití}}",
     "noWeapons": "Bez zaznamenaných zabití.",
-    "sourceCrcon": "Zdroj: herní server (CRCON), hra č. {game}",
-    "sourceUpload": "Zdroj: nahraný export tabulky hry",
-    "importedAt": "Importováno {time}",
+    "sourceCrcon": "Tabulka hry z herního serveru (hra č. {game})",
+    "sourceUpload": "Tabulka hry",
     "tabs": {
       "summary": "Souhrn",
       "players": "Hráči",
       "weapons": "Zbraně"
     },
-    "sourceLink": "Původní statistiky hry (externí web)",
-    "unassignedSide": "Historický zdroj neuvádí stranu Valkyrie. Dokud není vybrána ověřená strana, týmy se zobrazují jako Spojenci a Osa.",
-    "roundsTitle": "Importovaná kola zápasu",
+    "sourceLink": "Statistiky hry na herním serveru",
+    "unassignedSide": "U této hry není uvedeno, za kterou stranu Valkyria hrála, proto se týmy zobrazují jako Spojenci a Osa.",
+    "roundsTitle": "Kola zápasu",
     "round": "Kolo {number}"
   },
   "tournaments": {

@@ -120,8 +120,8 @@
     },
     "mapUnknown": "Map unknown",
     "notAvailable": "Not available",
-    "observed": "Observed {time}",
-    "neverObserved": "Observation time unknown",
+    "observed": "Updated {time}",
+    "neverObserved": "Update time unknown",
     "freshness": {
       "fresh": "Current",
       "stale": "Stale",
@@ -133,17 +133,17 @@
       "unknown": "Unknown"
     },
     "notConfigured": {
-      "title": "No server status source is configured yet.",
-      "body": "Valkyria servers will be added once a data source is approved. Until then no estimates or player counts are shown."
+      "title": "Server status is not available yet.",
+      "body": "Valkyria servers will appear here once their status is available. Until then no estimates or player counts are shown."
     },
     "empty": {
       "title": "No servers are configured.",
-      "body": "The data source is connected but contains no Valkyria server."
+      "body": "There is no Valkyria server here yet."
     },
     "unavailable": {
-      "title": "The server data source is not responding.",
+      "title": "Server status could not be loaded right now.",
       "body": "This does not mean the servers are offline or empty.",
-      "lastKnown": "The last known observations are listed below and marked as stale.",
+      "lastKnown": "The last known status is listed below and marked as outdated.",
       "retry": "Reload"
     },
     "selectPrompt": "Select a server",
@@ -156,7 +156,7 @@
       "population": "Players / capacity",
       "reachability": "Reachability",
       "freshness": "Data status",
-      "observedAt": "Last observation",
+      "observedAt": "Last updated",
       "connect": "Connect",
       "address": "Public address",
       "copy": "Copy address",
@@ -184,19 +184,19 @@
       "auto": "Update automatically every {seconds} seconds",
       "now": "Refresh",
       "loading": "Refreshing…",
-      "failed": "Refresh failed. Previous observations are marked as stale; this does not mean the game server is offline."
+      "failed": "Refresh failed. The previous status is marked as outdated; this does not mean the game server is offline."
     },
     "livePlayers": {
       "title": "Round player statistics",
       "description": "The table covers the whole round, so it can include players who have already left.",
-      "observed": "Snapshot taken {time}",
-      "noTimestamp": "Snapshot time is unavailable.",
+      "observed": "Round table as of {time}",
+      "noTimestamp": "The round table time is unavailable.",
       "synthetic": "Synthetic player data for demonstration only.",
-      "stale": "This snapshot is outdated. Values may have changed.",
+      "stale": "This table is outdated. Values may have changed.",
       "populationMismatch": "Players connected now: {connected} · players in the round table: {rows}.",
       "notConfigured": "Player statistics are not configured for this server.",
       "unavailable": "Player statistics are unavailable. This does not mean there are no players.",
-      "empty": "This source snapshot contains no player statistics.",
+      "empty": "The round table contains no player statistics yet.",
       "caption": "Round participants and scores",
       "columns": {
         "name": "Player",

@@ -1,5 +1,8 @@
 /* ---- SelectionTable (references 12/13) ---- */
 .scroll {
+  /* Contains absolutely positioned screen-reader text of its cells, which would otherwise
+     widen the page past a phone screen. */
+  position: relative;
   max-width: 100%;
   overflow-x: auto;
   border: var(--border-hairline) solid var(--color-border);

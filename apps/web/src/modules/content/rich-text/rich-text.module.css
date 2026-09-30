@@ -117,29 +117,36 @@
 .root .figure,
 .root .figureWide {
   margin-block: var(--space-5);
+  margin-inline: auto;
 }
 
 .figure img,
 .figureWide img {
+  display: block;
   width: 100%;
   height: auto;
   background: var(--color-panel-solid);
   border: var(--border-hairline) solid var(--color-border);
 }
 
-.figure {
-  max-width: 100%;
-}
-
+/*
+ * A figure is never wider than its stored image (small images are not upscaled) and never
+ * taller than the height budget (logos and portrait photos stay proportionate). The
+ * caption follows the image width. `--image-width`/`--image-ratio` come from the renderer.
+ */
+.figure,
 .figureWide {
-  width: 100%;
+  --image-max-height: min(60vh, 520px);
+  --figure-max: min(var(--image-width, 100%), calc(var(--image-max-height) * var(--image-ratio, 1000)));
+  width: min(100%, var(--figure-max));
 }
 
 /* Wide images bleed modestly past the reading column where the viewport allows it. */
 @media (min-width: 1200px) {
   .root .figureWide {
-    width: calc(100% + 2 * var(--space-7));
-    margin-inline: calc(-1 * var(--space-7));
+    --figure-width: min(calc(100% + 2 * var(--space-7)), var(--figure-max));
+    width: var(--figure-width);
+    margin-inline: calc((100% - var(--figure-width)) / 2);
   }
 }
 
@@ -153,6 +160,9 @@
 }
 
 .tableScroll {
+  /* Contains absolutely positioned screen-reader text of its cells, which would otherwise
+     widen the page past a phone screen. */
+  position: relative;
   max-width: 100%;
   overflow-x: auto;
   border: var(--border-hairline) solid var(--color-border);

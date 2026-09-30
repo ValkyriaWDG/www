@@ -15,6 +15,9 @@ export const FIXTURE_ASSET_IDS = {
   memberAvatar: 'f1c7a0e0-0000-4000-8000-00000000a003',
   opponentLogo: 'f1c7a0e0-0000-4000-8000-00000000a004',
   matchCover: 'f1c7a0e0-0000-4000-8000-00000000a005',
+  squareLogo: 'f1c7a0e0-0000-4000-8000-00000000a006',
+  smallImage: 'f1c7a0e0-0000-4000-8000-00000000a007',
+  portraitPhoto: 'f1c7a0e0-0000-4000-8000-00000000a008',
 } as const;
 
 export const FIXTURE_IMAGES: FixtureImageSpec[] = [
@@ -72,6 +75,40 @@ export const FIXTURE_IMAGES: FixtureImageSpec[] = [
     colors: ['#0e1110', '#26351f', '#b6e36b'],
     altCs: 'Syntetický obrázek zápasu',
     altEn: 'Synthetic match image',
+  },
+  // Imported and editor-uploaded bodies also hold logos, small images and portrait photos.
+  {
+    id: FIXTURE_ASSET_IDS.squareLogo,
+    name: 'square-logo',
+    label: 'SQUARE LOGO',
+    width: 800,
+    height: 800,
+    scope: 'editorial',
+    colors: ['#15100c', '#4a2a12', '#ff9a3c'],
+    altCs: 'Syntetické čtvercové logo',
+    altEn: 'Synthetic square logo',
+  },
+  {
+    id: FIXTURE_ASSET_IDS.smallImage,
+    name: 'small-image',
+    label: 'SMALL',
+    width: 360,
+    height: 200,
+    scope: 'editorial',
+    colors: ['#0f1412', '#23402f', '#7fe0a8'],
+    altCs: 'Syntetický malý obrázek',
+    altEn: 'Synthetic small image',
+  },
+  {
+    id: FIXTURE_ASSET_IDS.portraitPhoto,
+    name: 'portrait-photo',
+    label: 'PORTRAIT',
+    width: 900,
+    height: 1350,
+    scope: 'editorial',
+    colors: ['#12101a', '#2e2446', '#c3a6ff'],
+    altCs: 'Syntetická fotografie na výšku',
+    altEn: 'Synthetic portrait photo',
   },
 ];
 
@@ -597,6 +634,9 @@ function longBody(locale: Locale) {
       ),
       ...(n % 3 === 0 ? [ul(cs ? 'Syntetická odrážka A' : 'Synthetic bullet A', cs ? 'Syntetická odrážka B' : 'Synthetic bullet B')] : []),
       ...(n % 4 === 0 ? [quote([cs ? 'Syntetická citace uprostřed článku.' : 'A synthetic quote in the middle of the article.']), hr()] : []),
+      ...(n === 2 ? [image(FIXTURE_ASSET_IDS.squareLogo, cs ? 'Syntetické čtvercové logo' : 'Synthetic square logo')] : []),
+      ...(n === 5 ? [image(FIXTURE_ASSET_IDS.smallImage, cs ? 'Syntetický malý obrázek' : 'Synthetic small image', cs ? 'Syntetický popisek malého obrázku' : 'Synthetic small image caption')] : []),
+      ...(n === 7 ? [image(FIXTURE_ASSET_IDS.portraitPhoto, cs ? 'Syntetická fotografie na výšku' : 'Synthetic portrait photo', cs ? 'Syntetická fotografie na výšku' : 'Synthetic portrait photo')] : []),
     ]),
   );
 }

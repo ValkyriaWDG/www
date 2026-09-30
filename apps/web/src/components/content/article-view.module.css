@@ -77,10 +77,13 @@
   background: var(--color-panel-solid);
 }
 
+/* Square or portrait covers stay within the viewport, letterboxed on the panel. */
 .cover img {
   display: block;
   width: 100%;
   height: auto;
+  max-height: min(70vh, 640px);
+  object-fit: contain;
 }
 
 .cover figcaption {

@@ -296,8 +296,6 @@ export async function MatchStatistics({
       </h3>
       <p className={styles.statsProvenance} data-statistics-provenance="">
         {[sourceText, game || null, statistics.gameStartedAt ? formatDate(statistics.gameStartedAt, locale, 'dateTimeZone') : null].filter(Boolean).join(' · ')}
-        <br />
-        {t('importedAt', { time: formatDate(statistics.observedAt, locale, 'dateTimeZone') })}
         {statistics.sourceGameUrl ? <><br /><a href={statistics.sourceGameUrl} rel="noopener noreferrer" data-statistics-source-link="">{t('sourceLink')}</a></> : null}
       </p>
       {statistics.valkyriaSide === null ? <p className={styles.statsNote}>{t('unassignedSide')}</p> : null}

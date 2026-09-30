@@ -120,8 +120,8 @@
     },
     "mapUnknown": "Mapa neznámá",
     "notAvailable": "Není k dispozici",
-    "observed": "Pozorováno {time}",
-    "neverObserved": "Čas pozorování není znám",
+    "observed": "Aktualizováno {time}",
+    "neverObserved": "Čas aktualizace není znám",
     "freshness": {
       "fresh": "Aktuální",
       "stale": "Neaktuální",
@@ -133,17 +133,17 @@
       "unknown": "Neznámý"
     },
     "notConfigured": {
-      "title": "Zdroj stavu serverů zatím není nastaven.",
-      "body": "Servery Valkyria doplníme po schválení zdroje dat. Do té doby nezobrazujeme žádné odhady ani počty hráčů."
+      "title": "Stav serverů zatím není k dispozici.",
+      "body": "Servery Valkyria sem doplníme, jakmile bude jejich stav k dispozici. Do té doby nezobrazujeme žádné odhady ani počty hráčů."
     },
     "empty": {
       "title": "Nejsou nastaveny žádné servery.",
-      "body": "Zdroj dat je připojen, ale neobsahuje žádný server Valkyria."
+      "body": "Zatím tu není žádný server Valkyria."
     },
     "unavailable": {
-      "title": "Zdroj dat o serverech teď neodpovídá.",
+      "title": "Stav serverů se teď nepodařilo načíst.",
       "body": "To neznamená, že jsou servery offline nebo prázdné.",
-      "lastKnown": "Níže jsou poslední známá pozorování, označená jako neaktuální.",
+      "lastKnown": "Níže je poslední známý stav, označený jako neaktuální.",
       "retry": "Načíst znovu"
     },
     "selectPrompt": "Vyberte server",
@@ -156,7 +156,7 @@
       "population": "Hráči / kapacita",
       "reachability": "Dostupnost",
       "freshness": "Stav údajů",
-      "observedAt": "Poslední pozorování",
+      "observedAt": "Naposledy aktualizováno",
       "connect": "Připojení",
       "address": "Veřejná adresa",
       "copy": "Kopírovat adresu",
@@ -189,14 +189,14 @@
     "livePlayers": {
       "title": "Statistiky hráčů kola",
       "description": "Tabulka zachycuje celé kolo, takže v ní mohou být i hráči, kteří už odešli.",
-      "observed": "Snímek z {time}",
-      "noTimestamp": "Čas snímku není k dispozici.",
+      "observed": "Tabulka kola z {time}",
+      "noTimestamp": "Čas tabulky kola není k dispozici.",
       "synthetic": "Ukázková syntetická data hráčů.",
-      "stale": "Tento snímek je zastaralý. Hodnoty se mezitím mohly změnit.",
+      "stale": "Tato tabulka je zastaralá. Hodnoty se mezitím mohly změnit.",
       "populationMismatch": "Právě připojení hráči: {connected} · hráči v tabulce kola: {rows}.",
       "notConfigured": "Statistiky hráčů pro tento server zatím nejsou nastavené.",
       "unavailable": "Statistiky hráčů nejsou dostupné. Neznamená to, že na serveru nikdo nehraje.",
-      "empty": "Tento snímek zdroje neobsahuje statistiky hráčů.",
+      "empty": "Tabulka kola zatím neobsahuje statistiky hráčů.",
       "caption": "Účastníci kola a jejich skóre",
       "columns": {
         "name": "Hráč",
