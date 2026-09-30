@@ -1,6 +1,6 @@
 {
   "richText": {
-    "tableRegion": "Tabulka (na menší obrazovce ji posuňte vodorovně)",
+    "tableRegion": "Tabulka (na menší obrazovce ji posuň vodorovně)",
     "externalLink": "externí odkaz"
   },
   "meta": {
@@ -22,7 +22,7 @@
     "emptyTitle": "Zatím nebyly zveřejněny žádné novinky.",
     "emptyBody": "Nová oznámení a reportáže se tu objeví, jakmile je zveřejníme.",
     "filteredEmptyTitle": "Těmto filtrům neodpovídají žádné novinky.",
-    "filteredEmptyBody": "Zkuste jinou kategorii, hru nebo hledaný výraz.",
+    "filteredEmptyBody": "Zkus jinou kategorii, hru nebo hledaný výraz.",
     "pageEmptyTitle": "Na této stránce nejsou žádné novinky.",
     "pageEmptyBody": "Seznam je kratší než požadovaná stránka.",
     "firstPage": "Přejít na první stránku",

@@ -33,8 +33,8 @@
     },
     "eyebrow": "Valkyria // CZ & SK",
     "heading": "Komunita Valkyria",
-    "intro": "Česko-slovenská herní komunita. Vyberte hru, nebo pokračujte do společných částí webu.",
-    "choose": "Vyberte hru",
+    "intro": "Česko-slovenská herní komunita. Vyber hru, nebo pokračuj do společných částí webu.",
+    "choose": "Vyber hru",
     "cards": {
       "hll": {
         "body": "Zápasy a turnaje, herní servery, příručka a nábor do klanu.",
@@ -146,7 +146,7 @@
       "lastKnown": "Níže je poslední známý stav, označený jako neaktuální.",
       "retry": "Načíst znovu"
     },
-    "selectPrompt": "Vyberte server",
+    "selectPrompt": "Vyber server",
     "missingSelection": "Vybraný server už v seznamu není.",
     "selectBody": "Podrobnosti se zobrazí po výběru serveru ze seznamu.",
     "detail": {
@@ -161,8 +161,8 @@
       "address": "Veřejná adresa",
       "copy": "Kopírovat adresu",
       "copied": "Adresa zkopírována.",
-      "copyFailed": "Kopírování se nezdařilo – adresu opište ručně.",
-      "noConnect": "Postup připojení zatím není zveřejněn. Zeptejte se na Discordu.",
+      "copyFailed": "Kopírování se nezdařilo – adresu opiš ručně.",
+      "noConnect": "Postup připojení zatím není zveřejněn. Zeptej se na Discordu.",
       "back": "Zpět na seznam serverů",
       "nextMap": "Další mapa",
       "timeRemaining": "Zbývá do konce kola",
@@ -233,9 +233,9 @@
     "articleListLabel": "Články",
     "openCategory": "Otevřít kategorii {category}",
     "noResultsTitle": "Nic jsme nenašli",
-    "noResultsBody": "Zkuste jiné slovo nebo běžnou zkratku (SL, TC, AT) a hledejte bez diakritiky, nebo procházejte kategorie.",
+    "noResultsBody": "Zkus jiné slovo nebo běžnou zkratku (SL, TC, AT) a hledej bez diakritiky, nebo procházej kategorie.",
     "unknownCategoryTitle": "Kategorie neexistuje",
-    "unknownCategoryBody": "Tato kategorie nemá žádné zveřejněné články. Vyberte jinou kategorii.",
+    "unknownCategoryBody": "Tato kategorie nemá žádné zveřejněné články. Vyber jinou kategorii.",
     "emptyTitle": "Příručka se připravuje",
     "emptyBody": "Zatím tu není žádný zveřejněný článek.",
     "loadError": "Příručku se nepodařilo načíst.",

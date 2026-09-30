@@ -38,7 +38,7 @@
     "emptyResultsTitle": "Zatím nebyly zveřejněny žádné výsledky.",
     "emptyResultsBody": "Odehrané zápasy se tu objeví po zveřejnění výsledku.",
     "filteredEmptyTitle": "Těmto filtrům neodpovídají žádné výsledky.",
-    "filteredEmptyBody": "Zkuste jinou hru nebo hledaný výraz.",
+    "filteredEmptyBody": "Zkus jinou hru nebo hledaný výraz.",
     "pageEmptyTitle": "Na této stránce nejsou žádné zápasy.",
     "firstPage": "Přejít na první stránku",
     "clearFilters": "Zrušit filtry",
@@ -237,7 +237,7 @@
     },
     "list": {
       "title": "Turnaje",
-      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Aktuální pořadí najdete na webu soutěže.",
+      "intro": "Soutěže {game}, ve kterých Valkyria hraje. Aktuální pořadí najdeš na webu soutěže.",
       "current": "Probíhající a nadcházející",
       "finished": "Ukončené",
       "emptyTitle": "Zatím žádné zveřejněné turnaje",
@@ -248,7 +248,7 @@
       "from": "od {start}",
       "until": "do {end}",
       "organizer": "Pořadatel: {name}",
-      "loadError": "Turnaje se nepodařilo načíst. Zkuste to prosím později.",
+      "loadError": "Turnaje se nepodařilo načíst. Zkus to prosím později.",
       "retry": "Zkusit znovu"
     },
     "phase": {

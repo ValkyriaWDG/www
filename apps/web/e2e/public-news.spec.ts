@@ -140,7 +140,7 @@ test.describe('public article', () => {
     await expect(page.locator('[data-article-published] time')).toHaveText(/^\d{1,2}\.\s[a-zěščřžýáíéúůň]+\s\d{4}$/);
 
     const body = page.locator('[data-article-body]');
-    const region = body.getByRole('region', { name: 'Tabulka (na menší obrazovce ji posuňte vodorovně)' });
+    const region = body.getByRole('region', { name: 'Tabulka (na menší obrazovce ji posuň vodorovně)' });
     await expect(region).toBeVisible();
     await expect(region.getByRole('table')).toContainText('Syntetická data');
     await expect(body.getByRole('img', { name: 'Syntetický obrázek v textu článku' })).toBeVisible();

@@ -48,6 +48,11 @@ test('an editor publishes the Czech FAQ independently of English', async ({ cont
   await expect(visitor.locator('#jak-ziskat-vip-na-nasich-serverech')).toBeInViewport();
   await expect(visitor.locator('[data-core-page="faq"]')).toContainText(answer);
   await expect(visitor.locator('[data-hll-menu="bar"] [data-hll-menu-item="faq"]')).toHaveAttribute('aria-current', 'page');
+  // Question dividers span the answers panel instead of stopping at the text column.
+  const body = visitor.locator('[data-core-page="faq"] div[lang]').first();
+  const panel = (await body.boundingBox())!;
+  const question = (await body.locator('h2').nth(1).boundingBox())!;
+  expect(question.width).toBeGreaterThan(panel.width - 2);
 
   // Published archive metadata never surfaces as a reference to the former website.
   for (const width of [1920, 390]) {
