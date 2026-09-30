@@ -9,7 +9,8 @@
   font-size: clamp(1rem, 0.96rem + 0.25vw, 1.125rem);
   line-height: 1.7;
   overflow-wrap: anywhere;
-  hyphens: auto;
+  /* Ragged-right text needs no automatic hyphenation; it split Czech words mid-line. */
+  hyphens: manual;
 }
 
 .root > * + * {

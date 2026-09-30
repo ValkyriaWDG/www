@@ -245,9 +245,9 @@
       "back": "Back to the field manual",
       "toc": "Contents",
       "source": "Source and authors",
-      "sourceLink": "Original guide",
-      "sourcePublished": "Originally published",
-      "sourceLanguage": "Original language",
+      "sourceLink": "Guide source",
+      "sourcePublished": "Published at the source",
+      "sourceLanguage": "Source language",
       "languages": {
         "cs": "Czech",
         "sk": "Slovak",

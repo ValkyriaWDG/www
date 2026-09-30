@@ -58,17 +58,14 @@ test.describe('menu shell: navigation and language', () => {
     await expect(czech).toHaveAttribute('href', '/api/locale-switch?to=cs&from=%2Fen');
   });
 
-  test('HLL WEB link is visible on desktop with an external indication', async ({ page }) => {
-    await page.goto('/cs');
-    const hll = page.locator('[data-footer-link="hll"]');
-    await expect(hll).toBeVisible();
-    await expect(hll).toHaveAttribute('href', HLL_URL);
-    await expect(hll).toHaveAccessibleName('HLL WEB (externí odkaz)');
-    await expect(hll).not.toHaveAttribute('target', /.+/);
+  test('the shell never links the former HLL website', async ({ page }) => {
+    for (const path of ['/cs', '/en/clan', '/cs/wardogs', '/cs/hll/matches']) {
+      await page.goto(path);
+      await expect(page.locator('[data-footer-link="privacy"]')).toBeVisible();
+      await expect(page.locator(`a[href^="${HLL_URL}"]`)).toHaveCount(0);
+      await expect(page.locator('[data-footer-link="hll"], [data-utility="hll"], [data-mobile-link="hll"]')).toHaveCount(0);
+    }
     await expect(page.locator('[data-footer-link="privacy"]')).toHaveAttribute('href', '/cs/privacy');
-
-    await page.goto('/en/clan');
-    await expect(page.locator('[data-footer-link="hll"]')).toHaveAccessibleName('HLL WEBSITE (external link)');
   });
 
   test('unknown routes keep HTTP 404 and render the localized not-found page inside the shell', async ({ page }) => {
@@ -137,7 +134,7 @@ test.describe('menu shell: mobile', () => {
     await expect(nav.getByRole('link', { name: 'NOVINKY' })).toBeVisible();
     await expect(nav.getByRole('link', { name: 'NOVINKY' })).toHaveAttribute('href', '/cs/wardogs/news');
     await expect(panel.locator('[data-mobile-link="signIn"]')).toHaveAttribute('href', '/cs/login');
-    await expect(panel.locator('[data-mobile-link="hll"]')).toHaveAttribute('href', HLL_URL);
+    await expect(panel.locator('[data-mobile-link="hll"]')).toHaveCount(0);
 
     await trigger.focus();
     await page.keyboard.press('Tab');
@@ -146,14 +143,6 @@ test.describe('menu shell: mobile', () => {
     await expect(panel).toBeHidden();
     await expect(trigger).toBeFocused();
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  test('HLL WEB stays visible in the mobile footer', async ({ page }) => {
-    await page.goto('/cs');
-    const hll = page.locator('[data-footer-link="hll"]');
-    await hll.scrollIntoViewIfNeeded();
-    await expect(hll).toBeVisible();
-    await expect(hll).toHaveAttribute('href', HLL_URL);
   });
 
   test('coarse narrow devices start poster-only with an explicit play control', async ({ page }) => {

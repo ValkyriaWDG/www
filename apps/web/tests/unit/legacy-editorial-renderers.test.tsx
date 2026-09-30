@@ -48,17 +48,15 @@ function article(kind: 'page' | 'manual', locale: AppLocale, slug: 'clan' | 'faq
 
 beforeEach(() => vi.clearAllMocks());
 
-describe('published editorial archive attribution at the actual page renderers', () => {
+describe('published archive metadata at the actual page renderers', () => {
   for (const pageKey of ['clan', 'faq'] as const) {
-    it(`${pageKey} renders attributed historical facts alongside the unchanged Czech editorial body`, async () => {
+    it(`${pageKey} renders the unchanged Czech editorial body without referring to the former website`, async () => {
       const html = renderToStaticMarkup(await CorePage({ locale: 'cs', pageKey, page: article('page', 'cs', pageKey) }));
-      expect(html).toContain('data-archive-editorial="page"');
-      expect(html).toContain('aria-label="Z původního webu"');
-      expect(html).toContain(`href="https://valkyriahll.cz/${pageKey}"`);
-      expect(html).toContain('dateTime="2020-06-01"');
       expect(html).toContain('Current cs editorial body remains unchanged.');
-      expect(html).toContain('Synthetic historical author &lt;b&gt;plain text&lt;/b&gt;');
-      expect(html).not.toContain('<b>plain text</b>');
+      expect(html).not.toContain('data-archive-editorial');
+      expect(html).not.toContain('Z původního webu');
+      expect(html).not.toContain('valkyriahll.cz');
+      expect(html).not.toContain('Synthetic historical author');
     });
     it(`${pageKey} renders an independent English page without inventing an archive counterpart`, async () => {
       const html = renderToStaticMarkup(await CorePage({ locale: 'en', pageKey, page: article('page', 'en', pageKey) }));
@@ -78,16 +76,26 @@ describe('published editorial archive attribution at the actual page renderers',
     });
   }
 
-  it('manual retains existing provenance and body while adding repaired source modification and author fields', async () => {
+  it('manual moved from the former website keeps its credits but no link, date or language of that website', async () => {
     vi.mocked(getPublishedManualBySlug).mockResolvedValue({ kind: 'article', article: article('manual', 'cs', 'synthetic-manual'),
       meta: { sourceUrl: 'https://valkyriahll.cz/synthetic-manual', sourcePublishedOn: '2020-05-01', sourceLanguage: 'cs', credits: 'Existing manual credit', reviewedAt: null } });
     const html = renderToStaticMarkup(await ManualArticleScreen({ locale: 'cs', game: 'hll', slug: 'synthetic-manual' }));
-    expect(html).toContain('data-archive-editorial="manual"');
-    expect(html).toContain('dateTime="2020-06-01"');
-    expect(html).toContain('Synthetic historical author &lt;b&gt;plain text&lt;/b&gt;');
+    expect(html).not.toContain('data-archive-editorial');
+    expect(html).not.toContain('valkyriahll.cz');
+    expect(html).not.toContain('dateTime="2020-05-01"');
+    expect(html).not.toContain('Synthetic historical author');
     expect(html).toContain('data-manual-provenance');
     expect(html).toContain('Existing manual credit');
     expect(html).toContain('Current cs editorial body remains unchanged.');
+  });
+
+  it('manual adapted from a third-party guide still credits that source', async () => {
+    vi.mocked(getPublishedManualBySlug).mockResolvedValue({ kind: 'article', article: article('manual', 'cs', 'synthetic-manual', false),
+      meta: { sourceUrl: 'https://example.org/guide', sourcePublishedOn: '2020-05-01', sourceLanguage: 'en', credits: 'Guide author', reviewedAt: null } });
+    const html = renderToStaticMarkup(await ManualArticleScreen({ locale: 'cs', game: 'hll', slug: 'synthetic-manual' }));
+    expect(html).toContain('href="https://example.org/guide"');
+    expect(html).toContain('dateTime="2020-05-01"');
+    expect(html).toContain('Guide author');
   });
 
   it.each(['cs', 'en'] as const)('manual without archival DTO remains unchanged in %s', async (locale) => {

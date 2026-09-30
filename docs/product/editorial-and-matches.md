@@ -211,13 +211,11 @@ Do not copy the old scheduled `0:0` placeholder or assume HLL-specific factions/
 sizes apply to Wardogs. Players/weapons/tactical telemetry is not required; no supported
 Wardogs telemetry API has been established.
 
-Expose a localized **HLL WEBSITE** link → `https://valkyriahll.cz/` in the shared desktop/mobile utility
-navigation or footer, and as an explicit localized `Hell Let Loose website` link on
-`/[locale]/clan` and `/[locale]/community`. The matches page may additionally offer
-a localized `HLL match archive` →
-`https://valkyriahll.cz/matches`. Clearly identify these as external links and announce
-a new tab if one is used. Keep them discoverable without login. Do not redirect or
-replace the old site, and do not hotlink its graphics as runtime assets.
+The former HLL website is neither linked nor mentioned publicly (owner decision,
+2026-09-30): no utility/footer link, no clan/community or match-archive link and no
+"from the original website" attribution. Imported records keep their stored provenance
+for operators; public pages show only current content. Do not hotlink its graphics as
+runtime assets.
 
 ## Acceptance journeys
 
@@ -234,7 +232,7 @@ replace the old site, and do not hotlink its graphics as runtime assets.
 - A match manager creates/publishes an upcoming match, postpones it, then records a
   verified result; the public lists and detail reflect the correct transitions.
 - Czech-default and English desktop/mobile visitors can find localized NEWS, MATCHES
-  and HLL WEBSITE links and the language switcher without signing in.
+  links, the HLL section and the language switcher without signing in.
 - Two translators edit Czech and English for the same entity concurrently; saving,
   publishing, restoring or scheduling one never alters the other translation's revision,
   slug, SEO or image alt/caption. Same-translation conflicts are explicit.

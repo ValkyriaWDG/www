@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { cache } from 'react';
-import { ArchiveEditorial } from '@/components/content/archive-editorial';
 import { OG_LOCALE, publishedAlternates, seoTitle } from '@/components/public/metadata';
 import { isSlug } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
@@ -14,6 +13,7 @@ import { getSiteOrigin } from '@/lib/site';
 import { headingOutline, mediaUrl, outlineAnchors, RichText } from '@/modules/content/rich-text/render';
 import { getPublishedManualBySlug } from '@/modules/field-manual/public';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
+import { LEGACY_HLL_ORIGIN } from '@/modules/legacy/hll';
 import { gamePath } from '@/modules/games/routes';
 import styles from './manual.module.css';
 
@@ -57,8 +57,13 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
   const published = article.publishedAt;
   const updated = article.updatedAt;
   const showUpdated = Boolean(published && updated && updated.getTime() - published.getTime() > UPDATE_THRESHOLD_MS);
-  const hasProvenance = Boolean(meta.sourceUrl || meta.sourcePublishedOn || meta.sourceLanguage || meta.credits || meta.reviewedAt);
-  const sourceDate = meta.sourcePublishedOn ? new Date(`${meta.sourcePublishedOn}T12:00:00Z`) : null;
+  // Guides moved over from the clan's former HLL website are simply ours now: only a third
+  // party's source (a translated or adapted guide) is credited with its link, date and language.
+  const externalSource = Boolean(meta.sourceUrl) && URL.parse(meta.sourceUrl!)?.origin !== LEGACY_HLL_ORIGIN;
+  const sourceUrl = externalSource ? meta.sourceUrl : null;
+  const sourceDate = externalSource && meta.sourcePublishedOn ? new Date(`${meta.sourcePublishedOn}T12:00:00Z`) : null;
+  const sourceLanguage = externalSource ? meta.sourceLanguage : null;
+  const hasProvenance = Boolean(sourceUrl || sourceDate || sourceLanguage || meta.credits || meta.reviewedAt);
 
   return (
     <PageMain width="wide" labelledBy="manual-article-title">
@@ -139,19 +144,18 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
                 anchors={outlineAnchors(outline)}
               />
             </div>
-            {article.archiveEditorial ? <ArchiveEditorial details={article.archiveEditorial} locale={locale} /> : null}
             {hasProvenance ? (
               <section className={styles.provenance} aria-labelledby="manual-source-title" data-manual-provenance="">
                 <h2 id="manual-source-title" className={styles.provenanceTitle}>
                   {t('source')}
                 </h2>
                 <dl className={styles.provenanceList}>
-                  {meta.sourceUrl ? (
+                  {sourceUrl ? (
                     <div>
                       <dt>{t('sourceLink')}</dt>
                       <dd>
-                        <a href={meta.sourceUrl} rel="noopener noreferrer" className={styles.sourceLink}>
-                          {meta.sourceUrl.replace(/^https:\/\//, '')}
+                        <a href={sourceUrl} rel="noopener noreferrer" className={styles.sourceLink}>
+                          {sourceUrl.replace(/^https:\/\//, '')}
                           <span className="visually-hidden"> {tNews('richText.externalLink')}</span>
                         </a>
                       </dd>
@@ -165,10 +169,10 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
                       </dd>
                     </div>
                   ) : null}
-                  {meta.sourceLanguage === 'cs' || meta.sourceLanguage === 'sk' || meta.sourceLanguage === 'en' ? (
+                  {sourceLanguage === 'cs' || sourceLanguage === 'sk' || sourceLanguage === 'en' ? (
                     <div>
                       <dt>{t('sourceLanguage')}</dt>
-                      <dd>{t(`languages.${meta.sourceLanguage}`)}</dd>
+                      <dd>{t(`languages.${sourceLanguage}`)}</dd>
                     </div>
                   ) : null}
                   {meta.credits ? (

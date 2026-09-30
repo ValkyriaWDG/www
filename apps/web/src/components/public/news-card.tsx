@@ -14,6 +14,37 @@ import publicStyles from './public.module.css';
 export type NewsCardLabels = { games: Record<Game, string>; tags: string };
 
 /**
+ * Artwork for a post without a cover: the Wardogs mark, the HLL scene with the clan crest,
+ * or the pack's community scene with the crest for shared posts. Never a broken image.
+ */
+export function NewsPlaceholder({ game, priority = false }: { game: Game | null; priority?: boolean }) {
+  return (
+    <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={game ?? 'community'}>
+      {game === 'wardogs' ? (
+        // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; the eyebrow names the game
+        <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
+      ) : game === 'hell-let-loose' ? (
+        <>
+          {/* Illustrative game scene and clan branding, never a photograph of this event. */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; whole placeholder is decorative */}
+          <img className={publicStyles.placeholderHllScene} src={HLL_NEWS_ARTWORK.src} width={HLL_NEWS_ARTWORK.width} height={HLL_NEWS_ARTWORK.height} style={{ objectPosition: HLL_NEWS_ARTWORK.objectPosition }} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- unchanged clan emblem with intrinsic dimensions */}
+          <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
+        </>
+      ) : (
+        <>
+          {/* Shared community post: the text-free community scene of the graphics pack and the clan emblem. */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; whole placeholder is decorative */}
+          <img className={publicStyles.placeholderHllScene} src="/images/editorial/hub-480x270.webp" width={480} height={270} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- unchanged clan emblem with intrinsic dimensions */}
+          <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
+        </>
+      )}
+    </div>
+  );
+}
+
+/**
  * One published post as an image panel: cover thumbnail with reserved dimensions (or a
  * neutral placeholder, never a broken image), category/game eyebrow, title link covering
  * the panel, excerpt, date and approved author label, tags. Published snapshot data only.
@@ -53,28 +84,7 @@ export function NewsCard({
             decoding="async"
           />
         ) : (
-          <div className={publicStyles.placeholder} aria-hidden="true" data-placeholder-game={item.game ?? 'community'}>
-            {item.game === 'wardogs' ? (
-              // eslint-disable-next-line @next/next/no-img-element -- unchanged presskit SVG; the eyebrow names the game
-              <img className={publicStyles.placeholderMark} src={WARDOGS_MARK.src} width={WARDOGS_MARK.width} height={WARDOGS_MARK.height} alt="" />
-            ) : item.game === 'hell-let-loose' ? (
-              <>
-                {/* Illustrative game scene and clan branding, never a photograph of this event. */}
-                {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; whole placeholder is decorative */}
-                <img className={publicStyles.placeholderHllScene} src={HLL_NEWS_ARTWORK.src} width={HLL_NEWS_ARTWORK.width} height={HLL_NEWS_ARTWORK.height} style={{ objectPosition: HLL_NEWS_ARTWORK.objectPosition }} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />
-                {/* eslint-disable-next-line @next/next/no-img-element -- unchanged clan emblem with intrinsic dimensions */}
-                <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
-              </>
-            ) : (
-              <>
-                {/* Shared community post: the text-free community scene of the graphics pack and the clan emblem. */}
-                {/* eslint-disable-next-line @next/next/no-img-element -- registered static WebP; whole placeholder is decorative */}
-                <img className={publicStyles.placeholderHllScene} src="/images/editorial/hub-480x270.webp" width={480} height={270} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />
-                {/* eslint-disable-next-line @next/next/no-img-element -- unchanged clan emblem with intrinsic dimensions */}
-                <img className={publicStyles.placeholderHllCrest} src="/brand/valkyria-emblem-733.webp" width={733} height={811} alt="" loading="lazy" decoding="async" />
-              </>
-            )}
-          </div>
+          <NewsPlaceholder game={item.game} priority={priority} />
         )}
       </div>
       <div className={styles.body}>

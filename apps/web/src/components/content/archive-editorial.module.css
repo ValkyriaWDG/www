@@ -1,7 +1,0 @@
-.archive { margin-block: 1.25rem; padding: 1rem; border-inline-start: 2px solid var(--color-border, #6c6956); background: rgb(0 0 0 / 12%); font-size: .875rem; line-height: 1.6; overflow-wrap: anywhere; }
-.archive p { margin-block: .4rem; }
-.heading { text-transform: uppercase; letter-spacing: .06em; opacity: .8; font-size: .75rem; }
-.logo { display: block; width: 5rem; height: 5rem; object-fit: contain; margin-block: .5rem; }
-.author { display: flex; gap: .65rem; align-items: center; }
-.author img { width: 2rem; height: 2rem; object-fit: contain; flex: none; }
-.archive a { text-decoration: underline; text-underline-offset: .15em; }

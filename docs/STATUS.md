@@ -1,6 +1,31 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes (PR #72, main `6f8f406`) and the OpenSSL runtime update (`609528d`) are published; image `b4c84921` is promoted, and the Watchtower replacement was not observed from this environment. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes (PR #72, main `6f8f406`) and the OpenSSL runtime update (`609528d`) are published; image `b4c84921` is promoted, and the Watchtower replacement was not observed from this environment. Removal of all public references to the former HLL website is on branch `feat/hll-platform-handoff` (not merged). Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+
+## No public references to the former HLL website (branch `feat/hll-platform-handoff`)
+
+Owner decision, 2026-09-30: public pages neither link nor mention the former HLL website.
+- Removed: the footer and mobile menu "HLL WEB" link, the match "Archiv zápasů HLL" button,
+  the "Původní web HLL"/archive links in the HLL panel (the panel now links only the on-site HLL
+  section and is omitted inside it), and the "Z původního webu" block on news, field manual,
+  clan and FAQ pages.
+- Imported tournaments show their restored short description and series as ordinary content,
+  with the restored logo as the card/detail emblem.
+- Imported match facts read "Podrobnosti zápasu" with neutral labels. Conflicting duplicate
+  values and raw source timestamps stay stored but are not shown.
+- Manual guides from the former website keep their credits, but not its link, date or language.
+  Third-party guide sources are still credited.
+- Seed copy for new installs no longer refers visitors to the former website. The
+  published production clan/community pages still contain those sentences and links until an
+  editor updates them.
+
+The same branch fixes display issues found on main `609528d`:
+- Match facts use the full-width panel below the list and overview.
+- The banner no longer repeats the opponent short code.
+- Recording platforms use their brand spelling (YouTube).
+- Related-news placeholders match the news list.
+- Rich text no longer auto-hyphenates Czech words.
+- [Captures](evidence/public-ui-round5-2026-09-30/README.md).
 
 ## Public source field parity (#73)
 

@@ -3,11 +3,9 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
-import { ExternalLink } from '@/components/public/external-link';
 import { MatchesScreen } from '@/components/public/matches-screen';
 import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
 import { hasMatchFilters, parseMatchFilters } from '@/components/public/query';
-import { getShellLinks } from '@/components/shell/shell-config';
 import { PageMain } from '@/components/shell/page-main';
 import { PageHeader } from '@/components/ui/panels';
 import { routing } from '@/i18n/routing';
@@ -39,11 +37,9 @@ export default async function GameMatchesPage({ params, searchParams }: PageProp
   setRequestLocale(locale);
   const query = await searchParams;
   const filters = parseMatchFilters(query);
-  const [t, games, links, external] = await Promise.all([
+  const [t, games] = await Promise.all([
     getTranslations({ locale, namespace: 'matches.list' }),
     getTranslations({ locale, namespace: 'games' }),
-    getShellLinks(),
-    getTranslations({ locale, namespace: 'common.external' }),
   ]);
   return (
     <PageMain width="full" labelledBy="matches-title">
@@ -53,13 +49,6 @@ export default async function GameMatchesPage({ params, searchParams }: PageProp
         title={t('title')}
         titleId="matches-title"
         description={<p>{games('matchesIntro', { game: games(`names.${game}`) })}</p>}
-        actions={
-          game === 'hll' && links.hllArchiveUrl ? (
-            <ExternalLink href={links.hllArchiveUrl} externalLabel={external('suffix')} variant="button" data-hll-archive="">
-              {t('hllArchive')}
-            </ExternalLink>
-          ) : undefined
-        }
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
       <MatchesScreen locale={locale} filters={filters} mode="list" game={game} />

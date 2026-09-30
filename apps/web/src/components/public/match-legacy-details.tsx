@@ -6,7 +6,15 @@ import { MatchCountry } from './match-country';
 import type { MatchT } from './match-parts';
 import styles from './matches.module.css';
 
-/** Shared historical facts remain readable in both locales, independent of recap translation. */
+/** Well-known recording platforms keep their brand spelling; other source types stay verbatim. */
+const SOURCE_TYPE_NAMES: Record<string, string> = { youtube: 'YouTube', twitch: 'Twitch', facebook: 'Facebook', discord: 'Discord', vimeo: 'Vimeo', kick: 'Kick' };
+export const sourceTypeName = (type: string) => SOURCE_TYPE_NAMES[type.trim().toLowerCase()] ?? type;
+
+/**
+ * Recorded match facts (teams with countries and sides, capture point, points, duration,
+ * first capture, recordings), readable in both locales independent of recap translation.
+ * Conflicting duplicate values and raw source timestamps stay stored, not shown.
+ */
 export function MatchLegacyDetails({ details, t, titleId, externalLabel }: {
   details: LegacyMatchDetails;
   t: MatchT;
@@ -24,13 +32,9 @@ export function MatchLegacyDetails({ details, t, titleId, externalLabel }: {
     },
   ];
   if (details.capturePoint) facts.push({ key: 'capturePoint', label: t('legacy.capturePoint'), value: details.capturePoint });
-  if (details.legacyPoint && details.legacyPoint !== details.capturePoint) facts.push({ key: 'legacyPoint', label: t('legacy.legacyPoint'), value: details.legacyPoint });
   if (details.points.length) facts.push({ key: 'points', label: t('legacy.points'), value: details.points.join(' · ') });
   if (details.durationMinutes !== null) facts.push({ key: 'duration', label: t('legacy.duration'), value: t('legacy.minutes', { count: details.durationMinutes }) });
   if (details.firstCapture) facts.push({ key: 'firstCapture', label: t('legacy.firstCapture'), value: t(`detail.sides.${details.firstCapture}`) });
-  if (details.legacyFirstCaptured && details.legacyFirstCaptured !== details.firstCapture) facts.push({ key: 'legacyFirstCaptured', label: t('legacy.legacyFirstCaptured'), value: t(`detail.sides.${details.legacyFirstCaptured}`) });
-  facts.push({ key: 'sourceDate', label: t('legacy.sourceDate'), value: <><span>{details.sourceDate}</span><span className={styles.note}>{t(`legacy.clocks.${details.clock}`)}</span></> });
-  if (details.timeConflict && details.separateTime) facts.push({ key: 'separateTime', label: t('legacy.separateTime'), value: details.separateTime });
   const sourceLinks = details.sourceLinks.flatMap((link) => {
     const url = parseExternalHttpsUrl(link.url);
     return url ? [{ ...link, url }] : [];
@@ -39,15 +43,12 @@ export function MatchLegacyDetails({ details, t, titleId, externalLabel }: {
   return (
     <section className={styles.block} aria-labelledby={`${titleId}-legacy`} data-match-legacy="">
       <h3 id={`${titleId}-legacy`} className={styles.blockTitle}>{t('legacy.title')}</h3>
-      {details.timeConflict ? <p className={styles.legacyNotice} data-legacy-time-conflict="">{t('legacy.timeConflict')}</p> : null}
-      {details.firstCaptureConflict ? <p className={styles.legacyNotice} data-legacy-capture-conflict="">{t('legacy.firstCaptureConflict')}</p> : null}
       <dl className={styles.legacyFacts}>
         {facts.map((fact) => <div key={fact.key} data-legacy-fact={fact.key}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}
       </dl>
       {sourceLinks.length ? (
         <div data-legacy-source-links="">
           <h4 className={styles.statsSubtitle}>{t('legacy.sourceLinks')}</h4>
-          <p className={styles.note}>{t('legacy.sourceLanguage')}</p>
           <ul className={styles.legacySourceLinks}>
             {sourceLinks.map((link, index) => <li key={`${link.url}-${index}`}>
               <ExternalLink href={link.url} externalLabel={externalLabel}>{link.title?.trim() ? link.title : t('legacy.sourceLink', { number: index + 1 })}</ExternalLink>
@@ -55,7 +56,7 @@ export function MatchLegacyDetails({ details, t, titleId, externalLabel }: {
               {link.author || link.date || link.type ? <dl className={styles.legacyFacts}>
                 {link.author ? <div><dt>{t('legacy.linkAuthor')}</dt><dd>{link.author}</dd></div> : null}
                 {link.date ? <div><dt>{t('legacy.linkDate')}</dt><dd>{link.date}</dd></div> : null}
-                {link.type ? <div><dt>{t('legacy.linkType')}</dt><dd>{link.type}</dd></div> : null}
+                {link.type ? <div><dt>{t('legacy.linkType')}</dt><dd>{sourceTypeName(link.type)}</dd></div> : null}
               </dl> : null}
             </li>)}
           </ul>

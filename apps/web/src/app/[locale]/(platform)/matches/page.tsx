@@ -2,12 +2,10 @@ import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { ExternalLink } from '@/components/public/external-link';
 import { MatchesScreen } from '@/components/public/matches-screen';
 import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
 import { sharingMetadata } from '@/modules/social/metadata';
 import { hasMatchFilters, parseMatchFilters } from '@/components/public/query';
-import { getShellLinks } from '@/components/shell/shell-config';
 import { PageMain } from '@/components/shell/page-main';
 import { PageHeader } from '@/components/ui/panels';
 import { routing } from '@/i18n/routing';
@@ -34,11 +32,7 @@ export default async function MatchesPage({ params, searchParams }: PageProps<'/
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const filters = parseMatchFilters(await searchParams);
-  const [t, links, external] = await Promise.all([
-    getTranslations({ locale, namespace: 'matches.list' }),
-    getShellLinks(),
-    getTranslations({ locale, namespace: 'common.external' }),
-  ]);
+  const t = await getTranslations({ locale, namespace: 'matches.list' });
   return (
     <PageMain width="full" labelledBy="matches-title">
       <PageHeader
@@ -47,13 +41,6 @@ export default async function MatchesPage({ params, searchParams }: PageProps<'/
         title={t('title')}
         titleId="matches-title"
         description={<p>{t('intro')}</p>}
-        actions={
-          links.hllArchiveUrl ? (
-            <ExternalLink href={links.hllArchiveUrl} externalLabel={external('suffix')} variant="button" data-hll-archive="">
-              {t('hllArchive')}
-            </ExternalLink>
-          ) : undefined
-        }
       />
       <MatchesScreen locale={locale} filters={filters} mode="list" />
     </PageMain>

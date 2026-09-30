@@ -1,6 +1,5 @@
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
-import { ExternalIcon } from '@/components/ui/icons';
 import mark from '../../../public/brand/valkyria-mark-132.webp';
 import { AccountSlot, accountLinks, type ShellAccount } from './account-slot';
 import { GameSwitch } from './game-switch';
@@ -12,7 +11,7 @@ import { NAV_SECTIONS, WARDOGS_NAV_SECTIONS } from './route-mode';
 import type { ShellPresentation } from './menu-shell';
 import styles from './header.module.css';
 
-type SiteHeaderProps = { account: ShellAccount; hllUrl: string | null; presentation: ShellPresentation };
+type SiteHeaderProps = { account: ShellAccount; presentation: ShellPresentation };
 
 /**
  * Narrow charcoal strip: brand → primary nav → community link, game switch, language and
@@ -21,7 +20,7 @@ type SiteHeaderProps = { account: ShellAccount; hllUrl: string | null; presentat
  * into a disclosure. The shared frame lists community routes; the Wardogs frame lists its
  * unchanged menu under `/wardogs`.
  */
-export async function SiteHeader({ account, hllUrl, presentation }: SiteHeaderProps) {
+export async function SiteHeader({ account, presentation }: SiteHeaderProps) {
   const t = await getTranslations('common');
   const sections = presentation === 'wardogs' ? WARDOGS_NAV_SECTIONS : NAV_SECTIONS;
   const items: PrimaryNavItem[] = sections.map((section) => ({
@@ -65,15 +64,6 @@ export async function SiteHeader({ account, hllUrl, presentation }: SiteHeaderPr
               </GuardedLink>
             </li>
           ))}
-          {hllUrl ? (
-            <li>
-              <a href={hllUrl} className={styles.mobileLink} data-mobile-link="hll">
-                {t('nav.hllWebsite')}
-                <ExternalIcon size={16} />
-                <span className="visually-hidden"> {t('external.suffix')}</span>
-              </a>
-            </li>
-          ) : null}
         </ul>
       </MobileMenu>
       <div className={styles.mobileGame}>

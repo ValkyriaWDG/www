@@ -76,7 +76,6 @@ Primary navigation working copy:
 | Members / MEMBERS | ČLENOVÉ |
 | Matches / MATCHES | ZÁPASY |
 | Sign in / SIGN IN | PŘIHLÁSIT SE |
-| HLL website / HLL WEBSITE | HLL WEB |
 
 All labels, validation, empty/error states, tooltips, accessible names, editor controls
 and privacy/navigation copy must have reviewed Czech and English text. English labels

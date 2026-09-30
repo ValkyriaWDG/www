@@ -245,9 +245,9 @@
       "back": "Zpět do příručky",
       "toc": "Obsah článku",
       "source": "Zdroj a autoři",
-      "sourceLink": "Původní návod",
-      "sourcePublished": "Původně zveřejněno",
-      "sourceLanguage": "Jazyk originálu",
+      "sourceLink": "Zdroj návodu",
+      "sourcePublished": "Zveřejněno ve zdroji",
+      "sourceLanguage": "Jazyk zdroje",
       "languages": {
         "cs": "čeština",
         "sk": "slovenština",

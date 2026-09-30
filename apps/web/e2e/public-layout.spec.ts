@@ -61,6 +61,22 @@ test.describe('public layout', () => {
     expect(panel.x + panel.width).toBeLessThanOrEqual(390);
   });
 
+  test('match facts, archive pages and prose read as current page content', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`);
+    // Historical facts need the full width below the list and overview, not the one-third pane.
+    await expect(page.locator('[data-match-detail] [data-match-legacy]')).toHaveCount(0);
+    const legacy = page.locator('[data-match-extras] [data-match-legacy]');
+    expect((await legacy.boundingBox())!.width).toBeGreaterThan(1200);
+    await expect(legacy.locator('[data-legacy-source-links]')).toContainText('YouTube');
+    // Without a logo the banner mark shows the short code, so the name is the opponent's name.
+    await expect(page.locator('[data-match-banner]')).toContainText('Synthetic HLL Opponent Foxtrot');
+
+    await page.goto('/cs/clan');
+    // Ragged-right Czech prose is not split by automatic hyphenation.
+    expect(await page.locator('[data-core-page] [class*="root"]').first().evaluate((element) => getComputedStyle(element).hyphens)).toBe('manual');
+  });
+
   test('Discord links carry the Discord mark and shared destinations and tournaments their glyphs', async ({ page }) => {
     const discordMark = 'svg[data-icon="discord"][aria-hidden="true"]';
     await page.goto('/cs');

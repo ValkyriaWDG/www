@@ -43,7 +43,7 @@ signing in are separate actions with separate explanations.
 - WordPress-like rich-text news/blog administration, media library, autosave, revisions,
   preview, publish/unpublish and scheduled publication; a plain textarea is insufficient.
 - Explicit first-release match creation, fixture scheduling and result entry for admins.
-- Discoverable external `HLL WEBSITE` link to `https://valkyriahll.cz/` on desktop/mobile.
+- The former HLL website (`valkyriahll.cz`) is neither linked nor mentioned publicly (owner decision, 2026-09-30); the HLL division lives in the on-site HLL section.
 - Working Docker image and migration procedure; first live deployment remains an operator task.
 
 The detailed mandatory workflows are in [editorial and match requirements](editorial-and-matches.md).

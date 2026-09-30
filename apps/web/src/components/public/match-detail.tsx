@@ -137,7 +137,6 @@ export async function MatchDetailPane({
         </section>
         {mode === 'detail' ? (
           <>
-            {match.legacyDetails ? <MatchLegacyDetails details={match.legacyDetails} t={t} titleId={titleId} externalLabel={external} /> : null}
             <section className={styles.block} aria-labelledby={`${titleId}-recap`} data-match-recap="">
               <h3 id={`${titleId}-recap`} className={styles.blockTitle}>
                 {t('detail.recap')}
@@ -185,13 +184,14 @@ export async function MatchDetailPane({
 }
 
 /**
- * Maps/rounds and imported statistics of the canonical detail. They need more width than
- * the one-third pane, so the browser lays them out below the list and pane at full width
- * (and below the overview on narrower screens).
+ * Historical facts, maps/rounds and imported statistics of the canonical detail. They need
+ * more width than the one-third pane, so the browser lays them out below the list and pane
+ * at full width (and below the overview on narrower screens).
  */
 export async function MatchDetailExtras({ match, locale, titleId }: { match: PublicMatchDetail; locale: AppLocale; titleId: string }) {
-  if (match.rounds.length === 0 && !match.statistics) return null;
+  if (match.rounds.length === 0 && !match.statistics && !match.legacyDetails) return null;
   const t = await getMatchTranslations(locale);
+  const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const maps = matchMaps(match);
   const showRoundColumn = {
     map: match.rounds.some((round) => round.mapName),
@@ -200,6 +200,7 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
   };
   return (
     <div className={styles.extras} data-match-extras={match.slug}>
+      {match.legacyDetails ? <MatchLegacyDetails details={match.legacyDetails} t={t} titleId={titleId} externalLabel={external} /> : null}
       {match.rounds.length > 0 ? (
         <section className={styles.block} aria-labelledby={`${titleId}-rounds`} data-match-rounds="">
           <h3 id={`${titleId}-rounds`} className={styles.blockTitle}>

@@ -26,7 +26,7 @@ async function capture(page: Page, locale: 'cs' | 'en', width: number, kind: 'li
   await page.screenshot({ path: path.join(outDir, file), fullPage: true, animations: 'disabled', caret: 'hide' });
   captures.push({
     file, locale, route: new URL(page.url()).pathname + new URL(page.url()).search, viewport: `${width}x${width === 1920 ? 1080 : 844}`,
-    caption: kind === 'list' ? 'Synthetic HLL result with original coalition name, Czech and US vector flags and localized accessible country labels.' : 'Synthetic HLL historical facts: countries, sides, capture points, duration, recorded points and preserved conflicting source time/first-capture fields. Published start remains unchanged.',
+    caption: kind === 'list' ? 'Synthetic HLL result with original coalition name, Czech and US vector flags and localized accessible country labels.' : 'Synthetic HLL match details: countries, sides, capture point, duration, recorded points, first capture and recordings. Published start remains unchanged.',
   });
 }
 
@@ -49,23 +49,23 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(page).toHaveURL(new RegExp(`/${locale}/hll/matches/${slug}$`));
       const facts = page.locator('[data-match-legacy]');
       await expect(facts).toBeVisible();
-      await expect(facts.getByRole('heading', { name: locale === 'cs' ? 'Historické údaje o zápasu' : 'Historical match details' })).toBeVisible();
+      await expect(facts.getByRole('heading', { name: locale === 'cs' ? 'Podrobnosti zápasu' : 'Match details' })).toBeVisible();
+      await expect(facts.locator('[data-legacy-fact="home"]')).toContainText(locale === 'cs' ? 'Domácí tým' : 'Home team');
       await expect(facts.locator('[data-legacy-fact="capturePoint"]')).toContainText('Synthetic Capture Point');
-      await expect(facts.locator('[data-legacy-fact="legacyPoint"]')).toContainText('Synthetic Point');
       await expect(facts.locator('[data-legacy-fact="duration"]')).toContainText(locale === 'cs' ? '90 minut' : '90 minutes');
       await expect(facts.locator('[data-legacy-fact="points"]')).toContainText('3 · 2');
-      await expect(facts.locator('[data-legacy-fact="sourceDate"]')).toContainText('12/05/2024 19:00');
-      await expect(facts.locator('[data-legacy-fact="separateTime"]')).toContainText('20:00');
-      await expect(facts.locator('[data-legacy-time-conflict]')).toBeVisible();
-      await expect(facts.locator('[data-legacy-capture-conflict]')).toBeVisible();
       await expect(facts.locator('[data-legacy-fact="firstCapture"]')).toContainText(locale === 'cs' ? 'Spojenci' : 'Allies');
-      await expect(facts.locator('[data-legacy-fact="legacyFirstCaptured"]')).toContainText(locale === 'cs' ? 'Osa' : 'Axis');
+      // Conflicting duplicate values and raw source timestamps stay stored, not shown; nothing
+      // refers visitors to where the record came from.
+      for (const key of ['legacyPoint', 'legacyFirstCaptured', 'sourceDate', 'separateTime']) await expect(facts.locator(`[data-legacy-fact="${key}"]`)).toHaveCount(0);
+      await expect(facts.locator('[data-legacy-time-conflict], [data-legacy-capture-conflict]')).toHaveCount(0);
+      await expect(facts).not.toContainText(locale === 'cs' ? /původní|zdroj/i : /original|source/i);
       const recording = facts.locator('[data-legacy-source-links]');
       await expect(recording.getByRole('link', { name: /Synthetic HLL recording/ })).toHaveAttribute('href', 'https://example.org/synthetic-fixture/hll-recording');
       await expect(recording).toContainText('Synthetic match recording for migration parity tests.');
       await expect(recording).toContainText('Synthetic recording author');
       await expect(recording).toContainText('12/05/2024');
-      await expect(recording).toContainText('youtube');
+      await expect(recording).toContainText('YouTube');
       await expect(recording.locator('iframe')).toHaveCount(0);
       // The preserved conflicting source strings must not replace the published instant.
       await expect(page.locator('[data-match-start]')).toHaveAttribute('dateTime', '2024-05-12T18:00:00.000Z');
@@ -73,7 +73,7 @@ for (const locale of ['cs', 'en'] as const) {
       const violations = await new AxeBuilder({ page }).include('[data-match-legacy]').withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
       expect(violations.violations).toEqual([]);
       await page.reload();
-      await expect(facts.locator('[data-legacy-time-conflict]')).toBeVisible();
+      await expect(facts.locator('[data-legacy-fact="points"]')).toBeVisible();
       await capture(page, locale, width, 'detail');
     });
   }

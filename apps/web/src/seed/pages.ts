@@ -41,9 +41,8 @@ const clan: Record<Locale, SeedPageCopy> = {
       p('Soutěžní Wardogs nás láká. Jestli a v jaké podobě ho budeme hrát, ale záleží na tom, jakou podporu mu hra v budoucnu nabídne.'),
       h2('Kořeny v Hell Let Loose'),
       p(
-        'Jako komunita fungujeme od roku 2022. Začínali jsme v Hell Let Loose, kde jsme hráli i soutěžně. Tahle historie k nám patří – zápasy a informace z té doby zůstávají na našem původním webu.',
+        'Jako komunita fungujeme od roku 2022. Začínali jsme v Hell Let Loose, kde jsme hráli i soutěžně, a tahle historie k nám patří. Zápasy, turnaje, servery a příručku divize Hell Let Loose najdeš v její sekci na tomto webu.',
       ),
-      ul([link('Web Hell Let Loose', HLL_WEBSITE_URL)], [link('Archiv HLL zápasů', HLL_MATCH_ARCHIVE_URL)]),
       h2('Jak hrajeme'),
       ul(
         [bold('Týmová hra.'), ' Společný výsledek je víc než osobní statistiky.'],
@@ -72,9 +71,8 @@ const clan: Record<Locale, SeedPageCopy> = {
       p('Competitive Wardogs appeals to us, but whether and how we play it depends on the support the game offers in the future.'),
       h2('Roots in Hell Let Loose'),
       p(
-        'We have been a community since 2022. We started in Hell Let Loose, where we also played competitively. That history is part of us – matches and information from that time remain on our original website.',
+        'We have been a community since 2022. We started in Hell Let Loose, where we also played competitively, and that history is part of us. The Hell Let Loose division has its own section on this website with matches, tournaments, servers and the field manual.',
       ),
-      ul([link('Hell Let Loose website', HLL_WEBSITE_URL)], [link('HLL match archive', HLL_MATCH_ARCHIVE_URL)]),
       h2('How we play'),
       ul(
         [bold('Teamwork.'), ' The shared result matters more than personal stats.'],
@@ -109,9 +107,6 @@ const community: Record<Locale, SeedPageCopy> = {
         'Připojením k Discordu se stáváš součástí komunity. Přihlášení na tento web přes Discord je samostatný krok: web si při něm ověří tvůj účet a role na našem serveru, aby mohl správcům obsahu otevřít administraci.',
       ),
       p('Přihlášení z nikoho nedělá člena klanu a nevytváří veřejný profil. Obsah webu si můžeš přečíst i bez přihlášení.'),
-      h2('Hell Let Loose'),
-      p('Naše historie a zápasy z Hell Let Loose zůstávají na původním webu:'),
-      ul([link('Web Hell Let Loose', HLL_WEBSITE_URL)], [link('Archiv HLL zápasů', HLL_MATCH_ARCHIVE_URL)]),
     ),
   },
   en: {
@@ -134,9 +129,6 @@ const community: Record<Locale, SeedPageCopy> = {
         'Joining Discord makes you part of the community. Signing in to this website with Discord is a separate step: the website checks your account and roles on our server so that it can open the administration to content managers.',
       ),
       p('Signing in does not make anyone a clan member and does not create a public profile. You can read the website without signing in.'),
-      h2('Hell Let Loose'),
-      p('Our Hell Let Loose history and matches remain on the original website:'),
-      ul([link('Hell Let Loose website', HLL_WEBSITE_URL)], [link('HLL match archive', HLL_MATCH_ARCHIVE_URL)]),
     ),
   },
 };
