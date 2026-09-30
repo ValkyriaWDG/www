@@ -121,7 +121,7 @@ test('match manager records an HLL match with map, mode, side and sector score',
   await expect(panel.locator('[data-statistics-player-count]')).toContainText('10 · řádky hráčů nejsou veřejné');
   await visitor.goto(publicPath);
   const downloaded = visitor.locator('[data-match-statistics]');
-  await expect(downloaded.locator('[data-statistics-provenance]')).toContainText('herní server (CRCON), hra č. 1234');
+  await expect(downloaded.locator('[data-statistics-provenance]')).toContainText('Tabulka hry z herního serveru (hra č. 1234)');
   await expect(downloaded.locator('[data-statistics-provenance]')).toContainText('Synthetic Map North');
   await expect(downloaded.locator('[data-statistics-summary]')).toContainText('Valkyria (Osa)');
   await downloaded.getByRole('tab', { name: 'Zbraně' }).click();
