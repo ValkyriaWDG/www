@@ -36,7 +36,7 @@ test.describe('HLL map artwork', () => {
     await expect.poll(() => scene.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth)).toBe(718);
     const tactical = detail.locator('[data-map-tactical="sainte-mere-eglise"]');
     await expect(tactical).toHaveAttribute('href', '/images/hll/maps/sainte-mere-eglise/tactical-1024.webp');
-    await expect(tactical).toHaveText(/^Taktická mapa Sainte-Mère-Église \(WebP, \d{3} kB\)$/);
+    await expect(tactical).toHaveText(/^Taktická mapa Sainte-Mère-Église \(\d{3} kB\)$/);
     // Map name, mode and live state remain HTML beside the illustration.
     await expect(detail.getByText('Warfare', { exact: true })).toBeVisible();
     await expect(page.locator('[data-server-score]')).toHaveText('Spojenci 3 : 2 Osa');
@@ -49,7 +49,7 @@ test.describe('HLL map artwork', () => {
     // English context; a server without a recognised map gets no scene.
     await page.goto('/en/hll/servers?server=synthetic-alpha');
     await expect(page.locator('[data-map-scene] img')).toHaveAttribute('alt', 'Sainte-Mère-Église — in-game scene of the map (illustrative, not the live game state)');
-    await expect(page.locator('[data-map-tactical]')).toHaveText(/^Tactical map of Sainte-Mère-Église \(WebP, \d{3} kB\)$/);
+    await expect(page.locator('[data-map-tactical]')).toHaveText(/^Tactical map of Sainte-Mère-Église \(\d{3} kB\)$/);
     await page.goto('/en/hll/servers?server=synthetic-bravo');
     await expect(page.locator('#server-detail-title')).toContainText('Bravo');
     await expect(page.locator('[data-map-scene]')).toHaveCount(0);
@@ -94,7 +94,7 @@ test.describe('HLL map artwork', () => {
     expect(requests.filter((path) => path.includes('/tactical-'))).toEqual([]);
 
     await page.goto(`/en/hll/matches/${slug}`);
-    await expect(page.locator('[data-match-maps] [data-map-tactical]').last()).toHaveText(/^Tactical map of Sainte-Mère-Église \(WebP, \d{3} kB\)$/);
+    await expect(page.locator('[data-match-maps] [data-map-tactical]').last()).toHaveText(/^Tactical map of Sainte-Mère-Église \(\d{3} kB\)$/);
   });
 
   for (const [path, width] of [

@@ -131,7 +131,7 @@
       "axis": "Osa"
     },
     "mapImageAlt": "{map} – herní scéna mapy (ilustrační)",
-    "tacticalMap": "Taktická mapa {map} (WebP, {size} kB)"
+    "tacticalMap": "Taktická mapa {map} ({size} kB)"
   },
   "legacy": {
     "title": "Podrobnosti zápasu",

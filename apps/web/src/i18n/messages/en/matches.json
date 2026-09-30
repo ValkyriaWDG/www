@@ -131,7 +131,7 @@
       "axis": "Axis"
     },
     "mapImageAlt": "{map} — in-game scene of the map (illustrative)",
-    "tacticalMap": "Tactical map of {map} (WebP, {size} kB)"
+    "tacticalMap": "Tactical map of {map} ({size} kB)"
   },
   "legacy": {
     "title": "Match details",

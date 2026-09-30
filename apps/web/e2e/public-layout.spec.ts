@@ -121,6 +121,17 @@ test.describe('public layout', () => {
     })).toBe(true);
   });
 
+  test('the match banner scene stays inside the banner at every width', async ({ page }) => {
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`);
+      const banner = page.locator('[data-match-detail] [data-match-banner]');
+      const [box, scene] = await banner.evaluate((element) => [element.getBoundingClientRect().toJSON(), element.querySelector('img[class*="bannerScene"]')!.getBoundingClientRect().toJSON()]);
+      expect(Math.abs(scene.top - box.top), `scene top at ${width}px`).toBeLessThan(1);
+      expect(Math.abs(scene.bottom - box.bottom), `scene bottom at ${width}px`).toBeLessThan(1);
+    }
+  });
+
   test('match facts, archive pages and prose read as current page content', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`);
