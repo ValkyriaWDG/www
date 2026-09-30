@@ -1,6 +1,6 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes (PR #72, main `6f8f406`) are published and promoted as image `bd0fddf9`; the Watchtower replacement was not observed from this environment. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import and CRCON are deployed. Public field-parity follow-up #73 is under verification; it is not closed by the earlier record-count acceptance. Fresh production capture observed source a7be042c and image 6c329c43 (including graphics PR #70). Public UI audit fixes (PR #72, main `6f8f406`) and the OpenSSL runtime update (`609528d`) are published; image `b4c84921` is promoted, and the Watchtower replacement was not observed from this environment. Live authentication/Logi and broader client-navigation issue #46 remain separate work.**
 
 ## Public source field parity (#73)
 
@@ -47,8 +47,12 @@ at 07:30:52 UTC (previous `ad84414d` from `b10299e`; migration and runtime finge
 unchanged, `fde0abef / 63cee925`). The Watchtower replacement and live pages were not
 observed from this environment. A Trivy database update at about 07:40 UTC reports
 fixable OpenSSL `3.5.7-1~deb13u2` findings (CVE-2026-75804, CVE-2026-84782) in this
-image; the runtime update in `609528d` fixes them, so production needs a newer
-publication. The branch record below is historical.
+image. Main `609528d` (runtime update and #73 renderer follow-up) was then published
+by run [36689822633](https://github.com/ValkyriaWDG/www/actions/runs/36689822633) as
+`majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`
+and promoted at 08:46:17 UTC (previous `bd0fddf9` from `6f8f406`; fingerprints unchanged).
+A remote scan of that digest with the pinned Trivy 0.67.2 reports revision `609528d`
+and zero fixable HIGH/CRITICAL findings (43 unfixed). The branch record below is historical.
 
 A CS/EN audit at 390/768/1024/1440 px (synthetic fixtures, plus the committed
 [legacy production captures](evidence/hll-legacy-production-2026-09-29/README.md))
