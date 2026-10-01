@@ -388,8 +388,10 @@
   isolation: isolate;
 }
 
-/* HLL map pack scene behind the teams; a scrim keeps the names readable. */
-.bannerScene {
+/* HLL map pack scene behind the teams; a scrim keeps the names readable. The banner
+   qualifier outranks the detail pane's `img { height: auto }`, which let the scene spill
+   over the match overview below the banner. */
+.banner .bannerScene {
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -449,6 +451,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   overflow-wrap: anywhere;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.85);
 }
 
 .bannerVs {

@@ -18,6 +18,7 @@
     "categoryGroup": "Kategorie",
     "gameGroup": "Hra",
     "all": "Vše",
+    "allGames": "Všechny hry",
     "resultCount": "{count, plural, one {# článek} few {# články} many {# článku} other {# článků}}",
     "emptyTitle": "Zatím nebyly zveřejněny žádné novinky.",
     "emptyBody": "Nová oznámení a reportáže se tu objeví, jakmile je zveřejníme.",

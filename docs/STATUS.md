@@ -1,8 +1,34 @@
 # Current status
 
-Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. PR #78 (no public references to the former HLL website) is merged as `f1ae338` and its image `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa` was promoted to the Watchtower channel on 2026-09-30 13:32 UTC; the live rollout was not observed from this environment. PR #79 (stored former-website links, tournament links, phone layout, recording dates) is merged as `8547f77`; its publication run 36731270341 awaits the owner's environment approval. Image sizing, tablet navigation and visitor copy fixes are on branch `feat/hll-platform-handoff`. Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
+Updated: 2026-09-30. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. PR #78 (no public references to the former HLL website) is merged as `f1ae338` and its image `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa` was promoted to the Watchtower channel on 2026-09-30 13:32 UTC; the live rollout was not observed from this environment. PR #79 (stored former-website links, tournament links, phone layout, recording dates) is merged as `8547f77`; its publication run 36731270341 was cancelled before approval because the next source includes it. PR #80 (image sizing, tablet navigation, phone overflow, FAQ dividers, visitor copy) is merged as `f9f3439`; publication run 36786684822 passed verification and awaits the owner's environment approval. Blank-line, filter-label and match-banner fixes are on branch `feat/hll-platform-handoff`. Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
 
-## Image sizing, tablet navigation and visitor copy (branch `feat/hll-platform-handoff`)
+## Blank lines in rich text, filter labels and the match banner (branch `feat/hll-platform-handoff`)
+
+A CS/EN audit of main `f9f3439` at 1280/1366 px, plus 390/768 px on the branch, and a
+local article body with imported-content patterns (`sample-body.json` in the evidence)
+found:
+- Paragraphs of line breaks only (`<p><br></p>` from imports, empty lines typed in the
+  editor) left large gaps, and empty list items showed a lone bullet. Rich text now skips
+  them, drops breaks at either end of a paragraph and caps break runs at one empty line.
+  Stored documents are unchanged. The first block has no top margin, and quotes keep the
+  block spacing.
+- The member and community news filters showed two identical "Vše" buttons. The game and
+  role groups now read "Všechny hry" / "Všechny role".
+- The match banner's map scene took the detail pane's `img { height: auto }` rule, so it
+  grew to 16:9 and covered the top of the match overview (80 px at 1440 px, 130 px at
+  768 px). This regressed in PR #79 when the banner stopped clipping. The scene now fills
+  the banner, and team names have a shadow.
+- The tactical map link dropped the file format ("WebP") and keeps the size.
+- Verification on `5e731e6`:
+  - lint and typecheck passed;
+  - unit 788/788, integration 357/357;
+  - full browser suite (`chromium` + `chromium-admin`): 199 passed, 0 failed, 99 opt-in
+    captures skipped;
+  - `check-foundation.mjs`, tooling tests 176/176 and `derive-graphics-pack.mjs --check`
+    passed.
+- [Captures](evidence/public-ui-round9-2026-09-30/README.md).
+
+## Image sizing, tablet navigation and visitor copy (PR #80, merged `f9f3439`)
 
 A CS/EN audit of main `8547f77` at 360/768/1024/1920 px (in addition to the earlier
 390/1440 px audits), including a long-form fixture with a square logo, a small image and a
