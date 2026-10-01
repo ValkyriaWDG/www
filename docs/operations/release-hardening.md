@@ -121,6 +121,16 @@ package indexes. This step is conditional on Debian trixie: the pinned build ima
 and bookworm comparison are unchanged. It does not perform a broad distribution
 upgrade or change the non-root runtime identity, command or environment contract.
 
+### October 2026 PCRE2 runtime update
+
+Publication run `36854126053` (main `471511b`) and PR CI run `36854534133` stopped at the
+image scan on a new fixable HIGH finding in the same runtime:
+[CVE-2026-103111](https://security-tracker.debian.org/tracker/CVE-2026-103111) in
+`libpcre2-8-0` `10.46-1~deb13u2`, fixed in `10.46-1~deb13u3`. A local Trivy scan with the
+pinned scanner image confirmed it on the pinned trixie base image. The application's
+traced npm packages had no HIGH/CRITICAL findings. The same conditional step now also
+upgrades `libpcre2-8-0` to that exact version and verifies it.
+
 The failed scan remains evidence of the blocked candidate. The patched image must
 pass a new complete image rehearsal and advisory comparison before qualification;
 the package-version assertion alone does not establish a passing security scan.
