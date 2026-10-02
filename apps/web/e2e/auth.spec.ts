@@ -25,7 +25,10 @@ test.describe('sign-in page', () => {
 
   test('callback errors map to localized safe messages without echoing provider text', async ({ page }) => {
     await page.goto('/cs/login?error=access_denied&error_description=%3Cscript%3Eraw%20provider%20text%3C%2Fscript%3E');
-    await expect(page.getByTestId('login-error')).toContainText('Přihlášení bylo na Discordu zrušeno.');
+    await expect(page.getByTestId('login-error')).toHaveText('Přihlášení bylo zrušeno. Můžete to kdykoli zkusit znovu.');
+    await expect(page.getByText('raw provider text')).toHaveCount(0);
+    await page.goto('/en/login?error=access_denied&error_description=raw%20provider%20text');
+    await expect(page.getByTestId('login-error')).toHaveText('Sign-in was cancelled. You can try again at any time.');
     await expect(page.getByText('raw provider text')).toHaveCount(0);
     await page.goto('/en/login?error=state_mismatch');
     await expect(page.getByTestId('login-error')).toContainText('The sign-in attempt is invalid or has expired.');
