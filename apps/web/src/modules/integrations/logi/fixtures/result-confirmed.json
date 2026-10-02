@@ -1,0 +1,44 @@
+{
+  "data": {
+    "id": "synthetic-event",
+    "eventId": "synthetic-event",
+    "guildId": "synthetic-guild",
+    "gameId": "hell_let_loose",
+    "title": "HLL synthetic result",
+    "updatedAt": "2026-09-29T10:00:00Z",
+    "resultState": "confirmed",
+    "result": {
+      "version": 2,
+      "status": "confirmed",
+      "participants": [
+        {
+          "id": "axis",
+          "label": "Axis",
+          "score": 0
+        },
+        {
+          "id": "allies",
+          "label": "Allies",
+          "score": null
+        }
+      ],
+      "provenance": {
+        "origin": "collected",
+        "sources": [
+          {
+            "provider": "hll_crcon",
+            "complete": true,
+            "startedAt": "2026-09-29T08:00:00Z",
+            "endedAt": "2026-09-29T10:00:00Z"
+          }
+        ]
+      },
+      "reviewedAt": "2026-09-29T10:00:00Z",
+      "supersedesVersion": 1,
+      "attribution": {
+        "verified": 0,
+        "unresolved": 0
+      }
+    }
+  }
+}

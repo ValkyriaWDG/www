@@ -12,6 +12,8 @@ import { MatchDetailExtras, MatchDetailPane } from './match-detail';
 import { getMatchTranslations, MatchResult, MatchStart, MatchStatusBadge, MatchTeams } from './match-parts';
 import { hasMatchFilters, matchDetailHref, matchesListHref, type MatchFilters, type MatchView } from './query';
 import { TagList } from './tags';
+import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
+import { LogiMatchBrowser } from './logi-matches';
 import styles from './matches.module.css';
 
 export const MATCH_PAGE_SIZE = 10;
@@ -45,6 +47,7 @@ export async function MatchesScreen({
   const scopedGame = game ? GAME_REGISTRY[game].db : undefined;
   const filters: MatchFilters = scopedGame ? { ...requested, game: undefined } : requested;
   const effectiveGame = scopedGame ?? filters.game;
+  const logiEvents = mode === 'list' ? (await getPublicLogiEvents(game ?? undefined)).filter((event) => !effectiveGame || GAME_REGISTRY[event.ref.game].db === effectiveGame) : [];
   const listHref = (next: Partial<MatchFilters>) => matchesListHref(next, base);
   // Game lists keep their list context on the detail URL; the shared list links to each
   // match's canonical game section.
@@ -171,7 +174,8 @@ export async function MatchesScreen({
   if (filters.view === 'results') hiddenParams.view = 'results';
   if (filters.game) hiddenParams.game = filters.game;
 
-  return (
+  return (<>
+    {mode === 'list' && logiEvents.length > 0 ? <LogiMatchBrowser locale={locale} events={logiEvents} game={game} filters={filters} /> : null}
     <div className={styles.browser} data-mode={mode} data-view={filters.view}>
       <div className={styles.toolbar}>
         <LinkTabs label={t('list.viewsLabel')} tabs={tabs} current={mode === 'list' ? filters.view : ''} />
@@ -221,6 +225,6 @@ export async function MatchesScreen({
         </div>
       ) : null}
       {mode === 'detail' && pane ? <MatchDetailExtras match={pane} locale={locale} titleId="match-overview-title" /> : null}
-    </div>
+    </div></>
   );
 }

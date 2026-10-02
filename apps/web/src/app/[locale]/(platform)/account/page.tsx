@@ -60,7 +60,7 @@ export default async function AccountPage({ params, searchParams }: PageProps<'/
           <dt>{t('displayName')}</dt>
           <dd data-testid="account-name">{actor.label}</dd>
           <dt>{t('method')}</dt>
-          <dd data-testid="account-method">{t(`methods.${actor.source}`)}</dd>
+          <dd data-testid="account-method">{t(`methods.${actor.assurance === 'logi' ? 'logi' : actor.source}`)}</dd>
         </dl>
 
         <h2 className={styles.subtitle}>{t('statusLabel')}</h2>

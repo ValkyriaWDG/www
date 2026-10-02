@@ -1,54 +1,182 @@
-# Website / hosted Logi contract draft
+# Logi integration contract
 
-Version 0.3, 2026-09-28 (0.2 proposed the same day). Version 0.3 only extends `ServerSnapshot` for the CRCON public-information adapter; no Logi model changes. This is a **website-owned normalized boundary**, not a claim that Logi exposes these exact DTOs, scopes or routes. Version 0.2 replaces separate HLL/WDG deployments and sessions with the owner-selected unified `ValkyriaWDG/www` application, canonical `valkyria.cz` and game-scoped sections; normalized resource models remain unchanged. The integration session owns upstream mapping and capability evidence. The website session consumes fixtures through this boundary. Changes require a dated version and an explicit handoff between sessions.
+Implementation contract, 2026-10-02. This replaces the earlier planning-only draft.
+The website keeps its own backend and PostgreSQL database. Logi owns the connected
+operational records. The [runbook](runbook.md) describes activation; the
+[verification record](verification.md) distinguishes local proof from deployment.
+All integration switches and public projections start disabled or unpublished.
 
-Hosted discovery update, 2026-09-28: the owner supplied `https://logi.igportals.eu`; configure the server-side API base as `https://logi.igportals.eu/api/v1`. [Documentation](https://logi.igportals.eu/api/v1/docs) and [OpenAPI](https://logi.igportals.eu/api/v1/openapi.json) were retrieved successfully. Their availability and schema version do not establish tenant access, runtime semantics or SSO readiness. No normalized DTO changes are introduced by this discovery update.
+## Authority and identity
 
-## Authority and identifiers
+| Area | Authority | Website behavior |
+| --- | --- | --- |
+| Login through Logi | Logi central session and maintained Better Auth consumer | Creates a separate durable website session; an existing Logi login can complete the redirect without another Discord login |
+| Website permissions | Explicit website role mapping plus fresh Logi membership | Grants only configured game capabilities; login alone grants no administration |
+| Connected matches/events | Logi | Creates, edits and cancels the same operation through an actor-backed command; no second writable copy |
+| Changes made in Logi or Discord | Logi change feed and authoritative reads | Synchronizes supported projections into the website on the next successful pull |
+| News, pages, translations, media and publishing | Website CMS | Existing local workflows remain available under website permissions |
+| Historical local matches | Website archive | Remain separate records; they are not silently merged with Logi by title or date |
+| Results and server observations | Qualified Logi collectors and review workflows | Displays safe supplied facts and their state; does not manufacture or write results |
 
-| Domain | Proposed authority | Website responsibility |
-|---|---|---|
-| News, pages, translations, SEO and publishing | Website CMS | Draft/review/publish, sanitization, media permission, canonical/social metadata |
-| Events, signups, rosters, attendance, Discord coordination | Hosted Logi | Display approved projections and link to operational workflows; no second writable master |
-| Match result | Confirmed result in agreed Logi workflow | Map rounds, provenance and confirmation; preserve unknown/provisional states |
-| Live server state and telemetry | Authorized CRCON/provider adapter | Freshness-aware snapshots, no invented zeroes or public administrative data |
-| Website admin authorization | Website permission policy | Explicit grants with current trusted identity/membership checks; never grant authority from a service API key |
-| Public member profile | Explicit publication/consent policy | Do not publish every Discord/Logi member automatically |
+Wire `guildId`, membership guild IDs and SSO `guild_id` are the **canonical Discord
+guild snowflake**. Logi's internal workspace record ID is a different identifier used
+when configuring its dashboard, SSO application and command policy. Do not substitute
+one for the other. `sub` is the exact Discord subject; names and email-shaped aliases
+are never identity joins.
 
-Keep `source`, `sourceInstanceId`, `guildId`, `gameId`, resource kind and external ID as a composite identity. Use opaque strings for Discord/Steam/Convex IDs. Game mapping is explicit: route `hll` -> existing website/database `hell-let-loose` -> Logi `hell_let_loose`; route/database/Logi `wardogs` maps explicitly. HLL and Wardogs pages must not accidentally accept `game=all` or rely on Logi's default game. One website database stores scoped projections; Logi retains its own separate database. Do not assume both games use the same guild or credential: use validated configuration. Keep reconciliation cursors/watermarks/cache keys isolated by configured source/guild/game/resource.
+Keep source instance, guild, game, resource and external ID together. Game mapping is
+explicit: `hll` route -> `hell-let-loose` website/database -> `hell_let_loose` Logi;
+`wardogs` remains `wardogs`. Configuration permits at most one source per game. A
+shared source instance may cover both games, but a webhook binding must have the same
+origin and guild in both rows. Credentials remain server-only.
 
-The central community hub may aggregate explicitly eligible projections across games while retaining provenance. Website editorial content has its own explicit community/game publication policy; shared content is not fabricated as a Logi `game=all` entity. Shared identity/CMS must not grant cross-game permissions by default.
+## Login and authorization
 
-No fuzzy identity joins by nickname. Raw server sessions become competitive-match candidates only after an explicit external-session-to-event mapping and confirmation.
+With `LOGI_SSO_ENABLED=true`, Logi is the primary provider. The callback is
+`/api/auth/callback/logi`, without a locale prefix. Better Auth 1.7.6 `genericOAuth`
+uses discovery, authorization code, S256 PKCE, nonce and `client_secret_post`; it
+requires an RS256 ID token verified through the provider's JWKS, including issuer,
+audience and expiration checks. Required scope is `openid profile`. Userinfo is a
+closed profile bound to the same subject, central session ID and guild as the token.
+Roles come from the separate membership boundary, not from profile claims.
 
-## Proposed website read models
+Website cookies stay host-only. The central login is reused through redirects, not
+by copying a cookie between domains. Each website session retains its own encrypted
+opaque access token and fixed issuer/client/subject/session/guild binding. Its Logi
+authority expires within one hour; no refresh grant is implemented. A later sign-in
+can reuse an active Logi session. Account linking is disabled, including implicit
+linking with old Discord or local recovery accounts.
 
-- `EventSummary`: opaque external reference, game, localized display title where actually supplied, kind/status, UTC schedule, last source update, safe public detail/signup URL. Private meeting credentials and tactical information are excluded.
-- `MatchSummary`: reference, opponents, competition/map/rounds when supplied, nullable scores, `unknown | provisional | confirmed | corrected` result state, provenance and confirmation time. Do not manufacture an English translation or interpret missing score as zero.
-- `ServerSnapshot`: safe server name/reference, reachable state `online | offline | unknown`, nullable map/mode/player count/capacity, source and observation time. Timeout is unknown/stale, not proof of an empty/offline server. Since 0.3 also nullable next map, round time left, sector score and players per team (shown only while fresh) and a configured public statistics link. The CRCON adapter reads `GET <base>/api/get_public_info` (public in CRCON) for configured servers only.
-- `PublicMember`: allowlisted display identity, approved biography/avatar and explicitly allowed game affiliations. Exclude internal notes, private contact data, platform IDs and operational permissions unless there is a deliberate publication policy.
-- `IntegrationHealth`: configured capabilities, last successful reconciliation, last attempt, age, error category and backlog count. It is collector health, not proof of the hosted bot process or Discord health.
+Each protected Logi request checks current central userinfo and current membership.
+A revoked central token removes the corresponding local session; an outage denies
+protected access without inventing a departure. Website sign-out ends the local
+session. Central Logi logout takes effect on the website's next protected request;
+this is request-time revalidation, not an advertised back-channel logout protocol.
+Local recovery remains separately provisioned, off by default and MFA-protected.
 
-Every projection carries `observedAt`, `sourceUpdatedAt` when available, `freshness` (`fresh | stale | unavailable`), and public publication eligibility. Public rendering fails closed for unknown publication state. Stale permission or consent state must not preserve privileged access or indefinitely retain withdrawn public data.
+`LOGI_MEMBERSHIP_SOURCE=logi` selects per-game restricted membership keys. Every
+observed game is explicit; one game's role evidence cannot authorize the other game.
+Platform-wide capabilities require matching evidence across both supported games.
+Writes and scheduled publication require observations no older than **60 seconds**;
+private reads allow **5 minutes**. These are role-observation limits, not session
+lifetimes. Identity, row-version and freshness fences are rechecked after awaited
+work and inside the publication transaction. Unknown, stale or unavailable authority
+fails closed. See [authentication policy](../../security/auth-rbac.md).
 
-## Synchronization semantics
+With Logi SSO disabled, the configured legacy Discord provider remains available.
+With it enabled, direct Discord login is disabled unless the operator explicitly
+sets `LOGI_DISCORD_FALLBACK_ENABLED=true`; no silent fallback bypasses Logi policy.
 
-1. Fixed configured HTTPS origins; bounded server-only requests; no browser service key and no arbitrary URL proxy.
-2. Explicit tenant/game filter and opaque pagination cursor. Keep `updatedSince`, sort and all filters fixed throughout a sweep. Persist its resumable page cursor separately; advance the completed-sweep watermark only after **all** pages succeed. Most collections paginate by creation order, not update time, so never use a successful page's maximum update timestamp as the next sweep boundary. The inspected implementation filters game after pagination: continue an empty page when `nextCursor` exists. Use overlap, idempotent upserts and full-sweep recovery for timestamp ties, concurrent changes and clock uncertainty; bound pages and total run time.
-3. Treat Logi webhooks as authenticated invalidation hints. Verify exact raw-body signature, timestamp and configured guild before durable deduplication/enqueue; acknowledge only after durable acceptance. Refetch the resource instead of publishing the webhook body directly.
-4. Keep periodic reconciliation: inspected webhook calls do not establish universal coverage of dashboard and Discord mutations. Use complete-sweep/delete semantics or explicit tombstones; a partial page or outage does not establish deletion.
-5. Duplicate delivery, retry, out-of-order data and concurrent polling must not regress state. There is no assumed monotonic sequence compatible with the old Valkyria bot.
-6. Apply bounded exponential backoff with jitter and `Retry-After`; surface 401/403 as configuration/authority errors rather than endless retry.
-7. Keep writes and game-server control disabled in the first slice. Later writes need a per-action authorization/actor contract, audit and Logi idempotency semantics. A guild-wide service key is not proof that an end user may register someone or change a roster.
+## Reads and public surfaces
 
-## Authentication boundary
+The consumer reads `event-summaries`, `match-summaries`, `result-summaries`,
+`server-snapshots` and `integration-health`. Membership is an on-demand authorization
+read, stored separately from public operational projections. Unknown scores and
+observations remain null. Result states remain `unknown`, `provisional`, `confirmed`
+or `corrected` as supplied; a concluded event is not automatic result confirmation.
 
-Logi declares OIDC code flow with S256 PKCE, per-application HTTPS callbacks, `client_secret_post` and HS256 ID tokens. The provider readiness review and hosted-version acceptance are pending. Keep production Logi SSO disabled until the authorized integration workstream provides acceptance evidence.
+| Surface | Implemented behavior | Publication control |
+| --- | --- | --- |
+| `/{locale}/{game}/matches` | Connected match list alongside the historical local archive | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
+| `/{locale}/{game}/matches/logi/{id}` | Connected detail, schedule and supplied participant/result rows | Uses the same published, current projection; unavailable/unpublished IDs are not public |
+| `/{locale}/admin/matches/logi` | Load authoritative editable facts; create, update or cancel an eligible connected match | Current Logi session, game capability, write flag/key and provider command policy |
+| Existing server pages and `/api/servers/{game}` | Safe Logi server cards when `SERVER_STATUS_SOURCE=logi` | Each configured `publicServers` entry needs `published=true` |
 
-The unified canonical website owns one host-only session cookie and production callback/client registration across both game sections, with separate credentials/registrations for development and staging. Capabilities must carry explicit global or game scope; sharing a session does not grant both games' administrative rights. Legacy-domain sessions do not automatically migrate; plan re-login/callback transition without sharing cookies across unrelated domains or blindly redirecting OAuth exchanges. Require state, PKCE, issuer/audience/expiry/signature and nonce behavior appropriate to a verified provider contract; do not weaken validation to accommodate an upstream defect. Stored `member/guest` membership is neither a current Discord role set nor a website-admin claim. Local recovery access, if retained, is independently controlled and audited.
+`publishMatches` is a **source/game-wide approval**, not a per-event moderation UI.
+Leave it false until the operator approves exposing every safe match summary in that
+source. Fetching an event does not itself make it public. Descriptions, notes, rosters,
+platform identifiers, server passwords and tactical data are excluded from the public
+DTO. The title is a shared supplied fact; the adapter does not fabricate translations.
 
-## Shared synthetic acceptance pack
+The match DTO supports the supplied participant array, including three factions when
+actually returned. It does not infer participants, placement, scores or faction names
+from array order. Public Logi server summaries currently provide name, reachability,
+map, player count, capacity and observation freshness. HLL side scores require explicit
+configured source-side IDs. Mode, next map, round timer and per-team player counts stay
+null in this adapter; live player names and advanced statistics are not exported.
+A separately approved statistics URL can be linked.
 
-Both sessions should use the same versioned fixtures for HLL/Wardogs separation inside one platform, shared-session/game-scoped permission denial, explicit hub aggregation, separate or shared configured guilds, CS/EN game-switch navigation, old-domain migration behavior; public and private events; draft/withdrawn articles; confirmed/provisional/unknown/corrected results; absent media; multiple pages and timestamp ties; duplicate/out-of-order hooks; deleted records; timeout/429/invalid key; missing/revoked membership; and provider-disabled state.
+Public match eligibility expires after 15 minutes without successful source
+revalidation. Server observations are fresh for 2 minutes, stale for up to 30 minutes,
+then unavailable; failed source revalidation also makes reachability unknown. Timeout
+never becomes zero players or proof that a server is offline.
 
-The integration session supplies redacted wire examples, schemas and capability evidence. The website session proves its actual UI and publication behavior against those fixtures. Neither session labels this as live hosted acceptance. No fixture may use private real rosters or working credentials.
+## Durable synchronization and webhooks
+
+The bounded `logi:sync` runner captures a change-feed boundary, discovers identities
+through full paginated lists, refetches authoritative revisioned records, replays
+changes and promotes the completed generation. Empty pages with a cursor continue.
+Opaque cursors are scoped to the configured authority; decimal revisions are compared
+exactly without conversion to JavaScript numbers.
+
+PostgreSQL owns leases and checkpoint compare-and-swap. Each projection page and its
+checkpoint commit together. Explicit removals retain tombstones against older updates.
+A cursor reset starts an invisible replacement generation while the last complete
+one remains available within its freshness limits. Promotion removes retired
+generations transactionally. Neither partial lists nor provider failures prove deletion.
+Changed source/key configuration gets a distinct cache scope.
+
+Run a pass every minute. A pass is bounded to 8 synchronization steps and 25 seconds
+per game, with a 60-second lease. It can finish as `pending`, `busy`, `lease_lost`,
+`caught_up` or `failed`; `pending` resumes on a later pass. Failures preserve the
+checkpoint and use bounded backoff, including `Retry-After`. Periodic pulls remain
+necessary even when webhooks are configured.
+
+`POST /api/integrations/logi/{sourceInstanceId}/webhook` accepts only configured
+sources. It verifies HMAC-SHA256 over `X-Logi-Timestamp + "." + rawBody`, a timestamp
+age of at most 300 seconds, future skew of at most 30 seconds, the signed guild/game
+and matching event type. Bodies are limited to 64 KiB and 10 seconds. Signing secrets
+are separate from service keys.
+
+Legacy/test envelopes have a signed UUID `id`; integration/membership change envelopes
+currently omit it. Deduplication uses that signed ID when present, otherwise the raw
+body hash, plus configured source and guild. `X-Logi-Delivery` is unsigned, differs
+from the legacy event ID and is never deduplication authority. Reusing a signed ID with
+a different body returns 409. First committed intake returns 202, identical repeats
+204; storage failure returns retryable 503 without acknowledgment.
+
+The durable inbox stores only identity, hash, type and timestamps. No webhook payload
+becomes a public projection or role grant. The pull runner marks up to 500 hints
+processed only after every associated game catches up; hints arriving after the pass
+started remain pending. Membership authorization continues to use current dedicated
+reads. There is no detached request-time background job to lose on process exit.
+
+## Actor-backed event commands
+
+The website sends create/update/cancel to the fixed Logi command endpoint using a
+restricted service key plus the current user's opaque actor token. Logi independently
+checks the client policy, game, current session and member roles in the final mutation.
+An operator must enable the provider's per-game role policy; a service key alone is
+insufficient. Updates and cancellations require the exact supplied revision and an
+eligible lifecycle state. The editor reloads authoritative facts after confirmation.
+
+A UUID request ID, canonical parsed command and hash are durably bound to the author
+and source before POST. User/body/source collisions fail before another mutation.
+Retries preserve the original ID/body, including after a lost reply or receipt-write
+failure. The per-user pending journal survives reload. It does not store bearer tokens.
+A late failed response cannot downgrade an already confirmed receipt.
+
+The editor offers an explicit retry for an unknown outcome; it does not silently issue
+a new create operation or automatically retry POST. Definitive domain rejection is
+separate from an unknown outcome. HTTP 429 preserves the same pending request and
+persists a bounded retry time; an early retry cannot send another POST. Response reads
+have an 8-second deadline and 32-KiB limit. Schedule input uses Europe/Prague with an
+explicit choice for repeated daylight-saving times and stores UTC instants.
+
+`LOGI_EVENT_WRITE_ENABLED=true` routes new ordinary website match creation through
+the connected editor and blocks legacy creation **globally**, even when only one game
+has a key. Configure every required game first. Existing local historical records and
+the website CMS remain separate. No roster, attendance, signup, result or game-server
+control writes are exposed by this editor.
+
+## Storage and activation boundary
+
+The additive `0009_aspiring_klaw` migration creates `logi_membership`, `logi_sync_scope`,
+`logi_projection`, `logi_inbox` and `logi_command`, and adds seven private Logi binding
+columns to `auth_session`. It does not migrate the historical match archive or make
+private source records public. Migration execution is explicit, never on app startup.
+
+Local interoperability and isolated database proof do not establish hosted Logi,
+new live Discord OAuth, production role mapping, deployment, scheduling or public
+publication acceptance. Those operator checks remain part of the separate activation
+record in the [runbook](runbook.md).

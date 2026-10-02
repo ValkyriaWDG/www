@@ -6,10 +6,11 @@ import { DiscordIcon } from '@/components/ui/icons';
 import { routing } from '@/i18n/routing';
 import { getServerEnv } from '@/lib/env';
 import { defaultReturnPath, sanitizeReturnPath } from '@/modules/access/return-path';
-import { startDiscordSignIn } from '@/modules/auth/actions';
+import { startDiscordSignIn, startLogiSignIn } from '@/modules/auth/actions';
 import { authConfigFromEnv, isDiscordSignInConfigured } from '@/modules/auth/auth';
 import { loginErrorKey } from '@/modules/auth/login-errors';
 import { getRequestSession } from '@/modules/auth/session';
+import { isLogiSignInConfigured } from '@/modules/auth/logi-provider';
 import styles from '@/modules/auth/ui/auth.module.css';
 import { AuthScene, Notice, Panel, PanelHeading } from '@/modules/auth/ui/panels';
 import { SubmitButton } from '@/modules/auth/ui/submit-button';
@@ -35,7 +36,10 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
   const returnTo = sanitizeReturnPath(firstValue(query.returnTo), locale);
   const errorKey = loginErrorKey(query.error);
   const env = getServerEnv();
-  const discordReady = isDiscordSignInConfigured(authConfigFromEnv(env));
+  const authConfig = authConfigFromEnv(env);
+  const discordReady = isDiscordSignInConfigured(authConfig);
+  const logiReady = isLogiSignInConfigured(authConfig.logi);
+  const preferLogi = authConfig.logi?.enabled === true;
   const current = await getRequestSession().catch(() => null);
   const t = await getTranslations({ locale, namespace: 'auth.login' });
   const recoveryHref = `/${locale}/login/recovery${returnTo !== defaultReturnPath(locale) ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`;
@@ -57,26 +61,33 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
           </>
         ) : (
           <>
-            <p className={styles.lead}>{t('purpose')}</p>
+            <p className={styles.lead}>{t(preferLogi ? 'logiPurpose' : 'purpose')}</p>
             {errorKey ? (
               <Notice tone="danger" role="alert" testId="login-error">
                 {t(`errors.${errorKey}`)}
               </Notice>
             ) : null}
-            {!discordReady ? (
+            {!discordReady && !logiReady ? (
               <Notice tone="warning" role="status" testId="login-provider-unavailable">
-                {t('providerUnavailable')}
+                {t(preferLogi ? 'logiUnavailable' : 'providerUnavailable')}
               </Notice>
             ) : null}
-            <form action={startDiscordSignIn}>
+            {preferLogi ? <form action={startLogiSignIn}>
+              <input type="hidden" name="locale" value={locale} />
+              <input type="hidden" name="returnTo" value={returnTo} />
+              <SubmitButton className={styles.primary} pendingLabel={t('logiRedirecting')} disabled={!logiReady} testId="login-logi">
+                {t('continueLogi')}
+              </SubmitButton>
+            </form> : null}
+            {!preferLogi || discordReady ? <form action={startDiscordSignIn}>
               <input type="hidden" name="locale" value={locale} />
               <input type="hidden" name="returnTo" value={returnTo} />
               <SubmitButton className={styles.primary} pendingLabel={t('redirecting')} disabled={!discordReady} testId="login-discord">
                 <DiscordIcon size={22} />
                 {t('continueDiscord')}
               </SubmitButton>
-            </form>
-            <p className={styles.note}>{t('separate')}</p>
+            </form> : null}
+            <p className={styles.note}>{t(preferLogi ? 'logiSeparate' : 'separate')}</p>
           </>
         )}
         <hr className={styles.divider} />

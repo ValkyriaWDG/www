@@ -10,6 +10,7 @@ import { refreshActorMembership } from '@/modules/access/server';
 import { authConfigFromEnv, isDiscordSignInConfigured } from './auth';
 import { callAuthEndpoint } from './forward';
 import { getRequestSession } from './session';
+import { resolveLogiConfig } from './logi-provider';
 
 function localeFrom(formData: FormData): AppLocale {
   const value = formData.get('locale');
@@ -46,6 +47,30 @@ export async function startDiscordSignIn(formData: FormData): Promise<void> {
     const url = (result.body as { url?: unknown } | null)?.url;
     if (result.status === 200 && typeof url === 'string' && url.startsWith('https://discord.com/')) target = url;
     else if (result.status === 429) failure = 'rate_limited';
+  } catch {
+    failure = 'unavailable';
+  }
+  redirect(target ?? withError(errorPath, failure));
+}
+
+/** Starts the Logi SSO code flow; the website keeps its own host-only session. */
+export async function startLogiSignIn(formData: FormData): Promise<void> {
+  const locale = localeFrom(formData);
+  const returnTo = sanitizeReturnPath(textField(formData, 'returnTo', 600) || undefined, locale);
+  const errorPath = loginErrorPath(locale, returnTo);
+  const config = resolveLogiConfig(authConfigFromEnv(getServerEnv()).logi);
+  if (!config) redirect(withError(errorPath, 'provider_unavailable'));
+  let target: string | null = null;
+  let failure = 'unavailable';
+  try {
+    const result = await callAuthEndpoint('/sign-in/social', {
+      provider: 'logi', callbackURL: returnTo, errorCallbackURL: errorPath, disableRedirect: true,
+    });
+    const value = (result.body as { url?: unknown } | null)?.url;
+    if (result.status === 200 && typeof value === 'string') {
+      const url = new URL(value);
+      if (url.origin === config.issuer && url.pathname === '/api/sso/authorize' && !url.username && !url.password) target = url.href;
+    } else if (result.status === 429) failure = 'rate_limited';
   } catch {
     failure = 'unavailable';
   }

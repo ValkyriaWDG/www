@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-10-02T21:33:54.925Z",
+  "kind": "actual local browser + Next + Convex + PostgreSQL; synthetic preexisting central session",
+  "checks": [
+    {
+      "name": "Logi sign-in button enabled",
+      "pass": true
+    },
+    {
+      "name": "existing central session establishes website admin session",
+      "pass": true
+    },
+    {
+      "name": "browser command returned canonical event ID",
+      "pass": true
+    },
+    {
+      "name": "actual Logi event appears once in public website",
+      "pass": true
+    },
+    {
+      "name": "public detail uses actual event identity",
+      "pass": true
+    },
+    {
+      "name": "phone page has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "English detail displays the same event",
+      "pass": true
+    },
+    {
+      "name": "browser session DTO excludes upstream tokens and binding",
+      "pass": true
+    },
+    {
+      "name": "same website session spans CS and EN",
+      "pass": true
+    }
+  ],
+  "captures": [
+    "login-cs.png",
+    "editor-cs.png",
+    "saved-cs.png",
+    "matches-cs-desktop.png",
+    "match-detail-cs.png",
+    "match-detail-cs-phone.png",
+    "match-detail-en.png"
+  ],
+  "passed": 9,
+  "failed": 0,
+  "environment": "Optimized Next 16.3.6 build via next start; NODE_ENV=test for explicit loopback-only configuration; actual local Logi Next/Convex and PostgreSQL; synthetic identities. This does not verify production HTTPS/cookie configuration.",
+  "websiteBuildId": "dQIO2k_7lNUWYEYPleEPi"
+}

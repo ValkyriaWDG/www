@@ -1,4 +1,4 @@
-import { authUser, guildMembership, localAdminGrant, type Executor, type Game } from '@valkyria/db';
+import { authAccount, authUser, guildMembership, localAdminGrant, type Executor, type Game } from '@valkyria/db';
 import { and, eq } from 'drizzle-orm';
 import { scopesForGrants, type Capability, type RoleGrant } from './capabilities';
 import { accessEnvFromProcess, discordClientConfig, isDiscordMembershipConfigured, WRITE_SNAPSHOT_MAX_AGE_MS, type AccessEnv } from './config';
@@ -7,6 +7,7 @@ import { findLocalGrantById, isGrantActive, summarizeAccounts } from './local-gr
 import { membershipRowVersion, readMembership, refreshMembership, snapshotAgeMs } from './membership';
 import { grantsForRoleIds, loadRoleMapping } from './role-mapping';
 import { isSnowflake } from './snowflake';
+import { loadLogiMembershipEvidence, logiEvidenceGrants, revalidateLogiMembership, type LogiMembershipEvidence } from './logi-membership';
 
 export type IssuerCheck = {
   issuerKind: 'discord' | 'local_admin';
@@ -42,6 +43,7 @@ export type IssuerVerdict = 'authorized' | 'revoked' | 'unknown';
 
 /** Server-only proof captured from the exact observation that granted authority. */
 export type IssuerFence =
+  | { kind: 'logi'; evidence: LogiMembershipEvidence[]; game: Game | null; userId: string; providerId: string; subject: string }
   | { kind: 'discord'; guildId: string; discordUserId: string; rowVersion: string; game: Game | null }
   | { kind: 'local_admin'; userId: string; grantId: string; grantVersion: number; capability: Capability; game: Game | null };
 export type IssuerAuthorization =
@@ -88,9 +90,19 @@ export async function authorizeIssuer(db: Executor, input: IssuerCheck, deps: Is
 
   // Discord issuer: a local recovery account can never act as a Discord issuer.
   if (accounts.hasCredential) return { verdict: 'revoked' };
-  const discordUserId = accounts.discordAccountId;
-  if (!discordUserId || !isSnowflake(discordUserId)) return { verdict: 'revoked' };
   const env = deps.env ?? accessEnvFromProcess();
+  if (accounts.socialProviders.length !== 1 || (env.LOGI_SSO_ENABLED && !env.LOGI_DISCORD_FALLBACK_ENABLED && accounts.socialProviders[0] !== 'logi')) return { verdict: 'revoked' };
+  const discordUserId = env.LOGI_MEMBERSHIP_SOURCE === 'logi' ? (accounts.logiAccountId ?? accounts.discordAccountId) : accounts.discordAccountId;
+  if (!discordUserId || !isSnowflake(discordUserId)) return { verdict: 'revoked' };
+  if (env.LOGI_MEMBERSHIP_SOURCE === 'logi') {
+    const evidence = await loadLogiMembershipEvidence(db, { env, subject: discordUserId, maxAgeMs: WRITE_SNAPSHOT_MAX_AGE_MS, now, fetchImpl: deps.fetchImpl });
+    if (!evidence) return { verdict: 'unknown' };
+    const mapping = loadRoleMapping(env.DISCORD_ROLE_MAPPING_JSON);
+    if (!mapping.ok) return { verdict: 'unknown' };
+    return grantsCover(logiEvidenceGrants(mapping.mapping, evidence), input.capability, input.game)
+      ? { verdict: 'authorized', fence: { kind: 'logi', evidence, game: input.game, userId: user.id, providerId: accounts.socialProviders[0]!, subject: discordUserId } }
+      : { verdict: 'revoked' };
+  }
   if (!isDiscordMembershipConfigured(env) || !isSnowflake(env.DISCORD_GUILD_ID)) return { verdict: 'unknown' };
 
   let snapshot = await readMembership(db, env.DISCORD_GUILD_ID, discordUserId);
@@ -126,6 +138,13 @@ export async function verifyIssuerAuthority(db: Executor, input: IssuerCheck, de
  * confirms that the locked resource still belongs to `fence.game`.
  */
 export async function revalidateIssuerFence(tx: Executor, fence: IssuerFence, now: () => Date): Promise<IssuerVerdict> {
+  if (fence.kind === 'logi') {
+    // Bind scheduled authority to the still-existing website identity as well as roles.
+    const accounts = await tx.select({ providerId: authAccount.providerId, subject: authAccount.accountId }).from(authAccount)
+      .innerJoin(authUser, eq(authUser.id, authAccount.userId)).where(eq(authUser.id, fence.userId)).for('share');
+    if (accounts.length !== 1 || accounts[0]!.providerId !== fence.providerId || accounts[0]!.subject !== fence.subject) return 'revoked';
+    return await revalidateLogiMembership(tx, fence.evidence, WRITE_SNAPSHOT_MAX_AGE_MS, now) ? 'authorized' : 'revoked';
+  }
   if (fence.kind === 'local_admin') {
     const [grant] = await tx.select().from(localAdminGrant).where(eq(localAdminGrant.id, fence.grantId)).for('share');
     if (!grant || grant.userId !== fence.userId || grant.version !== fence.grantVersion) return 'revoked';

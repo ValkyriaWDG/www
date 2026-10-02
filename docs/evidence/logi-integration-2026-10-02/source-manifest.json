@@ -1,0 +1,546 @@
+{
+  "capturedAt": "2026-10-02T21:38:40.457Z",
+  "normalization": "sha256 uses UTF-8 with LF newlines; capturedBytesSha256 records the actual tested working-copy bytes. Base revisions are not the tested patch.",
+  "website": {
+    "baseRevision": "5c4a1764cdb8f127dd33034048f6511cf914e75a",
+    "files": {
+      "apps/web/package.json": {
+        "sha256": "c1efae6c53cc18a73cf81ab297d5da7ea16a1110fc0880b9d5776173b40b5fb9",
+        "capturedBytesSha256": "c1efae6c53cc18a73cf81ab297d5da7ea16a1110fc0880b9d5776173b40b5fb9"
+      },
+      "apps/web/src/app/[locale]/(platform)/account/page.tsx": {
+        "sha256": "ac0102452aea8ccfd637dae34f4e7b5282073edc39230fbc468ba86ea435bc73",
+        "capturedBytesSha256": "ac0102452aea8ccfd637dae34f4e7b5282073edc39230fbc468ba86ea435bc73"
+      },
+      "apps/web/src/app/[locale]/(platform)/account/security/page.tsx": {
+        "sha256": "37a46547ea9f785fb0dcf6f5bc45576908eff3ad266d936013438f2ff301be18",
+        "capturedBytesSha256": "37a46547ea9f785fb0dcf6f5bc45576908eff3ad266d936013438f2ff301be18"
+      },
+      "apps/web/src/app/[locale]/(platform)/admin/matches/logi/page.tsx": {
+        "sha256": "4082ad7b34ddb35f2555ee367b0ff7e3b3dec5710691a3bcb8ce64e38de5a62a",
+        "capturedBytesSha256": "4082ad7b34ddb35f2555ee367b0ff7e3b3dec5710691a3bcb8ce64e38de5a62a"
+      },
+      "apps/web/src/app/[locale]/(platform)/admin/matches/new/page.tsx": {
+        "sha256": "b5bfda96bbd1952679564c32a2fa1ffb2aac536cc47cbbf8fcc7f9ffd9544b40",
+        "capturedBytesSha256": "b5bfda96bbd1952679564c32a2fa1ffb2aac536cc47cbbf8fcc7f9ffd9544b40"
+      },
+      "apps/web/src/app/[locale]/(platform)/admin/matches/page.tsx": {
+        "sha256": "af414d2c16cf72e4cfdeb196619feaffb282565a9bbf2c8f2a6fae9f9b1f943c",
+        "capturedBytesSha256": "af414d2c16cf72e4cfdeb196619feaffb282565a9bbf2c8f2a6fae9f9b1f943c"
+      },
+      "apps/web/src/app/[locale]/(platform)/login/page.tsx": {
+        "sha256": "9858d8adde3eba38cfb2f6dceb60cdb756d705ad22dd9359c36f649df26c9232",
+        "capturedBytesSha256": "9858d8adde3eba38cfb2f6dceb60cdb756d705ad22dd9359c36f649df26c9232"
+      },
+      "apps/web/src/app/[locale]/[game]/matches/logi/[id]/page.tsx": {
+        "sha256": "23bc9d922ff26ec3259c322f79df8cc91165c67502a24a661d067e8838870325",
+        "capturedBytesSha256": "23bc9d922ff26ec3259c322f79df8cc91165c67502a24a661d067e8838870325"
+      },
+      "apps/web/src/app/api/integrations/logi/[source]/webhook/route.ts": {
+        "sha256": "ee76fe75a45372e7d754d9aee35bab1c95944e00795df083a1f1455550c52f61",
+        "capturedBytesSha256": "ee76fe75a45372e7d754d9aee35bab1c95944e00795df083a1f1455550c52f61"
+      },
+      "apps/web/src/cli/logi-sync.ts": {
+        "sha256": "a3058d4e332b4d1b6dfb932efe240ea0293ab8a50724dfc2aabdc88e670b9508",
+        "capturedBytesSha256": "a3058d4e332b4d1b6dfb932efe240ea0293ab8a50724dfc2aabdc88e670b9508"
+      },
+      "apps/web/src/components/admin-community/logi-match-editor.tsx": {
+        "sha256": "241540f8eb37030557df41661c7fee1eedc748811d47c906389a07542eb1f937",
+        "capturedBytesSha256": "241540f8eb37030557df41661c7fee1eedc748811d47c906389a07542eb1f937"
+      },
+      "apps/web/src/components/admin-community/logi-match-page.tsx": {
+        "sha256": "1344b984d06e17a04d7c76f276a23879eb400579bbfc93a0af0d652c870f0652",
+        "capturedBytesSha256": "1344b984d06e17a04d7c76f276a23879eb400579bbfc93a0af0d652c870f0652"
+      },
+      "apps/web/src/components/public/logi-matches.module.css": {
+        "sha256": "30e5dbc4b146682b76092559a685b89b7d2a4fc6df01d5843caf57af053a8f9c",
+        "capturedBytesSha256": "30e5dbc4b146682b76092559a685b89b7d2a4fc6df01d5843caf57af053a8f9c"
+      },
+      "apps/web/src/components/public/logi-matches.tsx": {
+        "sha256": "0a24c9e7e42aa72ae45487fe7e970addff7f5db8499467f39ddc19c24c893213",
+        "capturedBytesSha256": "0a24c9e7e42aa72ae45487fe7e970addff7f5db8499467f39ddc19c24c893213"
+      },
+      "apps/web/src/components/public/matches-screen.tsx": {
+        "sha256": "3ba26052baa8f02440807c9c641ea05fe7cd8447af73aa75b0e6ac1841744a6f",
+        "capturedBytesSha256": "3ba26052baa8f02440807c9c641ea05fe7cd8447af73aa75b0e6ac1841744a6f"
+      },
+      "apps/web/src/i18n/messages/cs/auth.json": {
+        "sha256": "d53385cfbb26cd232badaa1d3d2b5d0c8dd7ae9176de957f447e22c31886cf67",
+        "capturedBytesSha256": "d53385cfbb26cd232badaa1d3d2b5d0c8dd7ae9176de957f447e22c31886cf67"
+      },
+      "apps/web/src/i18n/messages/cs/logi.json": {
+        "sha256": "143890553162c943239362bcfcd0080d8211ba23cf3e901bd3c8ba020307e5ed",
+        "capturedBytesSha256": "143890553162c943239362bcfcd0080d8211ba23cf3e901bd3c8ba020307e5ed"
+      },
+      "apps/web/src/i18n/messages/en/auth.json": {
+        "sha256": "0eca0cd0b6fc7e2561971bfc7bd2fc6dafaace7c88e6f2b0273c72437f4e2c2e",
+        "capturedBytesSha256": "0eca0cd0b6fc7e2561971bfc7bd2fc6dafaace7c88e6f2b0273c72437f4e2c2e"
+      },
+      "apps/web/src/i18n/messages/en/logi.json": {
+        "sha256": "c657d9f076e2128435622b56358af0bbd49922e6ea09db244b6d3e8bff66d954",
+        "capturedBytesSha256": "c657d9f076e2128435622b56358af0bbd49922e6ea09db244b6d3e8bff66d954"
+      },
+      "apps/web/src/i18n/messages/index.ts": {
+        "sha256": "1bd8300cbb089e406e96c7eaad4b0bd1b6de6a65613b2fc32d62ffb51d70cde6",
+        "capturedBytesSha256": "1bd8300cbb089e406e96c7eaad4b0bd1b6de6a65613b2fc32d62ffb51d70cde6"
+      },
+      "apps/web/src/lib/env.ts": {
+        "sha256": "9de12a5bee06d2ec94f7c3ac2d70c2e428f2622e01939b28c5525820a16522ab",
+        "capturedBytesSha256": "9de12a5bee06d2ec94f7c3ac2d70c2e428f2622e01939b28c5525820a16522ab"
+      },
+      "apps/web/src/modules/access/config.ts": {
+        "sha256": "f670892212d01480bf1d649919048756efa32dccc79fd2d50930f93ca05884d1",
+        "capturedBytesSha256": "f670892212d01480bf1d649919048756efa32dccc79fd2d50930f93ca05884d1"
+      },
+      "apps/web/src/modules/access/issuer.ts": {
+        "sha256": "bfaf1012d0bfa4378225208454b7356529f2cad8b01b650db12349bf318af630",
+        "capturedBytesSha256": "bfaf1012d0bfa4378225208454b7356529f2cad8b01b650db12349bf318af630"
+      },
+      "apps/web/src/modules/access/local-grant.ts": {
+        "sha256": "e25ae93d9a30a1a893bc3524085feec23fd83679c4628c84142a9f41da5122e5",
+        "capturedBytesSha256": "e25ae93d9a30a1a893bc3524085feec23fd83679c4628c84142a9f41da5122e5"
+      },
+      "apps/web/src/modules/access/logi-grants.test.ts": {
+        "sha256": "5a93838df5f5b5eaa6b4d4fe8a8c0af576859f91eb2f7e70f859eeb26a955b23",
+        "capturedBytesSha256": "5a93838df5f5b5eaa6b4d4fe8a8c0af576859f91eb2f7e70f859eeb26a955b23"
+      },
+      "apps/web/src/modules/access/logi-grants.ts": {
+        "sha256": "0bd15df96b156065e973a364676c6ea59ad9d51ef60aceb8498d8dee80fa414c",
+        "capturedBytesSha256": "0bd15df96b156065e973a364676c6ea59ad9d51ef60aceb8498d8dee80fa414c"
+      },
+      "apps/web/src/modules/access/logi-membership.ts": {
+        "sha256": "b42be4e853d058a2e21912877cd936f9262188b14eae8864bc1f60e550e9d84c",
+        "capturedBytesSha256": "b42be4e853d058a2e21912877cd936f9262188b14eae8864bc1f60e550e9d84c"
+      },
+      "apps/web/src/modules/access/resolve-actor.ts": {
+        "sha256": "fc1e22a9bd428b92ea7a57bc5347a30bf22878a77040bac5866df29b159f7182",
+        "capturedBytesSha256": "fc1e22a9bd428b92ea7a57bc5347a30bf22878a77040bac5866df29b159f7182"
+      },
+      "apps/web/src/modules/access/types.ts": {
+        "sha256": "2b7c04b2e5b67f27f94a4786c17a867da2cc4a02baf0334f447dad8537c3db5b",
+        "capturedBytesSha256": "2b7c04b2e5b67f27f94a4786c17a867da2cc4a02baf0334f447dad8537c3db5b"
+      },
+      "apps/web/src/modules/auth/actions.ts": {
+        "sha256": "34d02f4ff3432f68ae67734690f3d27065fd0cf168081580cfe93da90d4994af",
+        "capturedBytesSha256": "34d02f4ff3432f68ae67734690f3d27065fd0cf168081580cfe93da90d4994af"
+      },
+      "apps/web/src/modules/auth/assurance.ts": {
+        "sha256": "5bdf5ef5355b6a349dc51b2e4667cdc9d3b20f1927df75ce608f53ea13d11064",
+        "capturedBytesSha256": "5bdf5ef5355b6a349dc51b2e4667cdc9d3b20f1927df75ce608f53ea13d11064"
+      },
+      "apps/web/src/modules/auth/auth-units.test.ts": {
+        "sha256": "ee9a46570183a421798200c6e52328fe2b0d47898c1b930fca183dc45083c133",
+        "capturedBytesSha256": "ee9a46570183a421798200c6e52328fe2b0d47898c1b930fca183dc45083c133"
+      },
+      "apps/web/src/modules/auth/auth.ts": {
+        "sha256": "3ef487b46f702d29de9a42320f07272a076a52ade7d947a07c1e04c956430090",
+        "capturedBytesSha256": "3ef487b46f702d29de9a42320f07272a076a52ade7d947a07c1e04c956430090"
+      },
+      "apps/web/src/modules/auth/endpoint-policy.ts": {
+        "sha256": "06eb703bb4aa40299a9ddbbea0f1763a861f5f23aff47f28595db87f9b84617a",
+        "capturedBytesSha256": "06eb703bb4aa40299a9ddbbea0f1763a861f5f23aff47f28595db87f9b84617a"
+      },
+      "apps/web/src/modules/auth/logi-provider.ts": {
+        "sha256": "8e0d6a45d3163fecce045efa9c0faa93cd2bdcf2d13c748a6021ceb69ae10852",
+        "capturedBytesSha256": "8e0d6a45d3163fecce045efa9c0faa93cd2bdcf2d13c748a6021ceb69ae10852"
+      },
+      "apps/web/src/modules/integrations/logi-command-actions.ts": {
+        "sha256": "d7d6f4578049b2401e74b487d572bb4dd66ece3a9fc00837b66bcc66af7a6a33",
+        "capturedBytesSha256": "d7d6f4578049b2401e74b487d572bb4dd66ece3a9fc00837b66bcc66af7a6a33"
+      },
+      "apps/web/src/modules/integrations/logi-command-client.test.ts": {
+        "sha256": "e4092bb9af046f1d15fe3a56d494c290409417bce2f6ef3d2f1330957a23767b",
+        "capturedBytesSha256": "e4092bb9af046f1d15fe3a56d494c290409417bce2f6ef3d2f1330957a23767b"
+      },
+      "apps/web/src/modules/integrations/logi-command-client.ts": {
+        "sha256": "22d0f8d765fadba607b63194ca37ce902a9b24a530eca8276a0f059f6f719479",
+        "capturedBytesSha256": "22d0f8d765fadba607b63194ca37ce902a9b24a530eca8276a0f059f6f719479"
+      },
+      "apps/web/src/modules/integrations/logi-command-contract.ts": {
+        "sha256": "cb3caf725a61cf6ee233d2647d95636106da0eb38897a9474c245cf29ca8678c",
+        "capturedBytesSha256": "cb3caf725a61cf6ee233d2647d95636106da0eb38897a9474c245cf29ca8678c"
+      },
+      "apps/web/src/modules/integrations/logi-command-service.ts": {
+        "sha256": "9eb310077009e6591f02367a6678a75aace43df29907262ecea26751c9e9111e",
+        "capturedBytesSha256": "9eb310077009e6591f02367a6678a75aace43df29907262ecea26751c9e9111e"
+      },
+      "apps/web/src/modules/integrations/logi-config.ts": {
+        "sha256": "3b33e3e898d94b0121ad59cc8a52f53d309d84035154f1cb0befa2b182fcc2ab",
+        "capturedBytesSha256": "3b33e3e898d94b0121ad59cc8a52f53d309d84035154f1cb0befa2b182fcc2ab"
+      },
+      "apps/web/src/modules/integrations/logi-public.ts": {
+        "sha256": "ea5b7c6f2018393ec33bba72d18258327ab9a46fb356c1c366a49bca3bf1857d",
+        "capturedBytesSha256": "ea5b7c6f2018393ec33bba72d18258327ab9a46fb356c1c366a49bca3bf1857d"
+      },
+      "apps/web/src/modules/integrations/logi-runner.ts": {
+        "sha256": "6eafa0b41b1151ea6420c3c1d434dcdcc088dea3ac9c6100edb0a41b3fa0c449",
+        "capturedBytesSha256": "6eafa0b41b1151ea6420c3c1d434dcdcc088dea3ac9c6100edb0a41b3fa0c449"
+      },
+      "apps/web/src/modules/integrations/logi-store.ts": {
+        "sha256": "9e31114abbfe2bf3c2947a1739e328b8bc2d6465355363c59bf0b3c47c75a917",
+        "capturedBytesSha256": "9e31114abbfe2bf3c2947a1739e328b8bc2d6465355363c59bf0b3c47c75a917"
+      },
+      "apps/web/src/modules/integrations/logi-webhook.ts": {
+        "sha256": "946ffd977097f7c189cc584bc6dd5fa6ceaab7ea3ce08b83c16d3d53fde0fd8d",
+        "capturedBytesSha256": "946ffd977097f7c189cc584bc6dd5fa6ceaab7ea3ce08b83c16d3d53fde0fd8d"
+      },
+      "apps/web/src/modules/integrations/logi/README.md": {
+        "sha256": "2b25859af549983cec546d5dd3ee12d393a0051338b0a908f6bce82328c8839a",
+        "capturedBytesSha256": "2b25859af549983cec546d5dd3ee12d393a0051338b0a908f6bce82328c8839a"
+      },
+      "apps/web/src/modules/integrations/logi/client.test.ts": {
+        "sha256": "7910f6600a6a1fc2760cada3a05899e64fc71e7977b488a477407c82380a443e",
+        "capturedBytesSha256": "7910f6600a6a1fc2760cada3a05899e64fc71e7977b488a477407c82380a443e"
+      },
+      "apps/web/src/modules/integrations/logi/client.ts": {
+        "sha256": "ab79f37c2313904fb59f6f6b90c5420bb59c66ddd956fe48a5382c780f05ac10",
+        "capturedBytesSha256": "ab79f37c2313904fb59f6f6b90c5420bb59c66ddd956fe48a5382c780f05ac10"
+      },
+      "apps/web/src/modules/integrations/logi/contracts.ts": {
+        "sha256": "353e8f9c8a8b463b5899af265d3ac429537aa3d81612830e4d56718dd1461605",
+        "capturedBytesSha256": "353e8f9c8a8b463b5899af265d3ac429537aa3d81612830e4d56718dd1461605"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/provenance.md": {
+        "sha256": "7897049352c16fb5193fc5f20fba2b6a8d49c89c4df8752794eff0119725cb67",
+        "capturedBytesSha256": "7897049352c16fb5193fc5f20fba2b6a8d49c89c4df8752794eff0119725cb67"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/result-confirmed.json": {
+        "sha256": "0c172c396b39907583b225936fd632ab6dedea24648b11fa806320680cb47568",
+        "capturedBytesSha256": "0c172c396b39907583b225936fd632ab6dedea24648b11fa806320680cb47568"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/result-corrected.json": {
+        "sha256": "5809561e360eee137de0e67317b73f8d5bed1ec5fe8665a7bc69de98305de9ee",
+        "capturedBytesSha256": "5809561e360eee137de0e67317b73f8d5bed1ec5fe8665a7bc69de98305de9ee"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/result-provisional.json": {
+        "sha256": "dbf2d3a7d9e167892f239cc5d9ec9d83c358303af43d151f7bde0f001f6f76db",
+        "capturedBytesSha256": "dbf2d3a7d9e167892f239cc5d9ec9d83c358303af43d151f7bde0f001f6f76db"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/result-unknown.json": {
+        "sha256": "22d71060c66cb3913cea59c307d109047abddd8f928d73b142a8286eab611e61",
+        "capturedBytesSha256": "22d71060c66cb3913cea59c307d109047abddd8f928d73b142a8286eab611e61"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/result-wardogs-factions.json": {
+        "sha256": "b6e3fd8f293c7de59373a0e18787421dd5d01b87b0a0871659567bc37aef5a73",
+        "capturedBytesSha256": "b6e3fd8f293c7de59373a0e18787421dd5d01b87b0a0871659567bc37aef5a73"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/v0.4.json": {
+        "sha256": "a3f3524832b4267a12c0a79b73e8f261cf2e46bd1488f8c461dcca3e9c6fa012",
+        "capturedBytesSha256": "a3f3524832b4267a12c0a79b73e8f261cf2e46bd1488f8c461dcca3e9c6fa012"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/v0.5.json": {
+        "sha256": "1bc4f12657a36319f098d28a8eec6c1e1f6a9e2512f0e4a3348db9307e56f734",
+        "capturedBytesSha256": "1bc4f12657a36319f098d28a8eec6c1e1f6a9e2512f0e4a3348db9307e56f734"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/v0.6.json": {
+        "sha256": "e0d65069cb55736654214a958ecda9e074f736419f813b73d090220b92dea2c2",
+        "capturedBytesSha256": "e0d65069cb55736654214a958ecda9e074f736419f813b73d090220b92dea2c2"
+      },
+      "apps/web/src/modules/integrations/logi/fixtures/v0.7.json": {
+        "sha256": "f5001d4755120b6b2981ae67257681f736f5758140c3d4fc6222f12f517a9b7d",
+        "capturedBytesSha256": "f5001d4755120b6b2981ae67257681f736f5758140c3d4fc6222f12f517a9b7d"
+      },
+      "apps/web/src/modules/integrations/logi/mapping.test.ts": {
+        "sha256": "9b00d40cb573a9baaec35e5b6948053eae36622fd8b1e3ea2ebc2560372f0ad4",
+        "capturedBytesSha256": "9b00d40cb573a9baaec35e5b6948053eae36622fd8b1e3ea2ebc2560372f0ad4"
+      },
+      "apps/web/src/modules/integrations/logi/mapping.ts": {
+        "sha256": "19c3f7852aee81733ab87c7f281d55286183ccf05a037f71f1c40d623412d047",
+        "capturedBytesSha256": "19c3f7852aee81733ab87c7f281d55286183ccf05a037f71f1c40d623412d047"
+      },
+      "apps/web/src/modules/integrations/logi/sync.test.ts": {
+        "sha256": "4c6ba2901b02808b50d966148cb24645313488cffcc9e38af780734e47190bbc",
+        "capturedBytesSha256": "4c6ba2901b02808b50d966148cb24645313488cffcc9e38af780734e47190bbc"
+      },
+      "apps/web/src/modules/integrations/logi/sync.ts": {
+        "sha256": "09213853619dc3dcddb3423f5e8624a1b282cc71e8fe7f8532200e98370f5c12",
+        "capturedBytesSha256": "09213853619dc3dcddb3423f5e8624a1b282cc71e8fe7f8532200e98370f5c12"
+      },
+      "apps/web/src/modules/integrations/servers/provider.ts": {
+        "sha256": "f421d80f7a27c03b3669c84d9fd0b68d9ec8e3ac75aa9665011e95f7703c9736",
+        "capturedBytesSha256": "f421d80f7a27c03b3669c84d9fd0b68d9ec8e3ac75aa9665011e95f7703c9736"
+      },
+      "apps/web/src/modules/matches/actions.ts": {
+        "sha256": "562fb1d38ff79f8254bc95af92ffb5b15bc4c430584f098fc05b654b00984f34",
+        "capturedBytesSha256": "562fb1d38ff79f8254bc95af92ffb5b15bc4c430584f098fc05b654b00984f34"
+      },
+      "apps/web/tests/integration/auth-logi.test.ts": {
+        "sha256": "21c55660caf18ee39146b0fff7e9fc2e356dc27e9596e3d567b9c23b11084e41",
+        "capturedBytesSha256": "21c55660caf18ee39146b0fff7e9fc2e356dc27e9596e3d567b9c23b11084e41"
+      },
+      "apps/web/tests/integration/logi-command-service.test.ts": {
+        "sha256": "7c6fc039cd7d6565706c0a7ea89101738c167cb8a35b2d6c18ce8391262ed511",
+        "capturedBytesSha256": "7c6fc039cd7d6565706c0a7ea89101738c167cb8a35b2d6c18ce8391262ed511"
+      },
+      "apps/web/tests/integration/logi-membership.test.ts": {
+        "sha256": "969d23f19839695594e7dc14261822125f8bb58b63b1ea0d65b9144d69bdbbce",
+        "capturedBytesSha256": "969d23f19839695594e7dc14261822125f8bb58b63b1ea0d65b9144d69bdbbce"
+      },
+      "apps/web/tests/integration/logi-store.test.ts": {
+        "sha256": "bb11fec3d4522ae8384b1bae559eb048214a234df7654175c01c71bc9b1eda63",
+        "capturedBytesSha256": "bb11fec3d4522ae8384b1bae559eb048214a234df7654175c01c71bc9b1eda63"
+      },
+      "apps/web/tests/integration/logi-webhook.test.ts": {
+        "sha256": "d3a227a543cb96622763a87b3f9603b9dfa9f4b359ce1bcbe7a025a1e55d7af0",
+        "capturedBytesSha256": "d3a227a543cb96622763a87b3f9603b9dfa9f4b359ce1bcbe7a025a1e55d7af0"
+      },
+      "packages/db/drizzle/0009_aspiring_klaw.sql": {
+        "sha256": "c2edc2310d2fa05f4f9a8fff2410028dd0c14f557c70dede5b1ef7516006edf8",
+        "capturedBytesSha256": "c2edc2310d2fa05f4f9a8fff2410028dd0c14f557c70dede5b1ef7516006edf8"
+      },
+      "packages/db/drizzle/meta/0009_snapshot.json": {
+        "sha256": "233cfd1a8459f0835f44d94a56a504ddcac3b55d78857345d8a9f115286482b7",
+        "capturedBytesSha256": "233cfd1a8459f0835f44d94a56a504ddcac3b55d78857345d8a9f115286482b7"
+      },
+      "packages/db/drizzle/meta/_journal.json": {
+        "sha256": "30955d0b7467c76e07eeebb1fe9910f29cd1078549c14f7721fe81b075fb74a4",
+        "capturedBytesSha256": "30955d0b7467c76e07eeebb1fe9910f29cd1078549c14f7721fe81b075fb74a4"
+      },
+      "packages/db/src/schema/auth.ts": {
+        "sha256": "f13da737a0c46c86e4f07816277f2d3a7b5dac8d4ae78323691a8af63aa98b4c",
+        "capturedBytesSha256": "f13da737a0c46c86e4f07816277f2d3a7b5dac8d4ae78323691a8af63aa98b4c"
+      },
+      "packages/db/src/schema/index.ts": {
+        "sha256": "e5427a01ad19e8a2cf8159c82b235594ec7407901204821da010b03ac977d477",
+        "capturedBytesSha256": "e5427a01ad19e8a2cf8159c82b235594ec7407901204821da010b03ac977d477"
+      },
+      "packages/db/src/schema/logi.ts": {
+        "sha256": "9c5751e790dcab537e40af278d15b4c380676626eedcb7ff87ad3ceedf53caaa",
+        "capturedBytesSha256": "9c5751e790dcab537e40af278d15b4c380676626eedcb7ff87ad3ceedf53caaa"
+      },
+      "pnpm-lock.yaml": {
+        "sha256": "3550f851c9ad181084d4a37506c6ee6375e0de7231fcd8f0f6726afdd3c4b83d",
+        "capturedBytesSha256": "3550f851c9ad181084d4a37506c6ee6375e0de7231fcd8f0f6726afdd3c4b83d"
+      }
+    }
+  },
+  "provider": {
+    "baseRevision": "61cae6f5e86fe2a20840c452b6ca9c4c32712bf6",
+    "files": {
+      "convex/_generated/api.d.ts": {
+        "sha256": "932cd35aec8443c7c9d9ff4047402a5e483e15ab0d9f5cc0bcc23cf2ba4b525f",
+        "capturedBytesSha256": "932cd35aec8443c7c9d9ff4047402a5e483e15ab0d9f5cc0bcc23cf2ba4b525f"
+      },
+      "convex/_generated/api.js": {
+        "sha256": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70",
+        "capturedBytesSha256": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70"
+      },
+      "convex/_generated/dataModel.d.ts": {
+        "sha256": "db177073d16a4393c7a96bcdc3a2a904e88c2432d54d138ca7715cc431982c17",
+        "capturedBytesSha256": "db177073d16a4393c7a96bcdc3a2a904e88c2432d54d138ca7715cc431982c17"
+      },
+      "convex/_generated/server.d.ts": {
+        "sha256": "2b536ee08d434dd044efe0302aeaf4ccb00cd08af10c9f8c7bc7a6734e4aa49b",
+        "capturedBytesSha256": "2b536ee08d434dd044efe0302aeaf4ccb00cd08af10c9f8c7bc7a6734e4aa49b"
+      },
+      "convex/_generated/server.js": {
+        "sha256": "0cdd1d842b9458d8a6f2444c35eb9929312316a384ca76a4b1d964bedde8a6f2",
+        "capturedBytesSha256": "0cdd1d842b9458d8a6f2444c35eb9929312316a384ca76a4b1d964bedde8a6f2"
+      },
+      "convex/crons.ts": {
+        "sha256": "0ced26e9d3d4f5acfb5d4cf52353f7fbbb9b06a8c3a20a53c7fbbc68fad37a4b",
+        "capturedBytesSha256": "0ced26e9d3d4f5acfb5d4cf52353f7fbbb9b06a8c3a20a53c7fbbc68fad37a4b"
+      },
+      "convex/dashboardSessionStore.ts": {
+        "sha256": "96ab1bdd81c621a8e6000fb17320018b21f3627e9f4b760ec2914bdd4033a485",
+        "capturedBytesSha256": "96ab1bdd81c621a8e6000fb17320018b21f3627e9f4b760ec2914bdd4033a485"
+      },
+      "convex/dashboardSessions.ts": {
+        "sha256": "9436481fca61238356c5dc40d51c8538ba75b6a752d232c27a72bf62218c04c3",
+        "capturedBytesSha256": "9436481fca61238356c5dc40d51c8538ba75b6a752d232c27a72bf62218c04c3"
+      },
+      "convex/players.ts": {
+        "sha256": "b70b6af2d46307f58b9134e8005636dd677559610ed77fd7ec726363ad8292af",
+        "capturedBytesSha256": "b70b6af2d46307f58b9134e8005636dd677559610ed77fd7ec726363ad8292af"
+      },
+      "convex/schema.ts": {
+        "sha256": "bfe30261869df4aa80d595732f5a57b157ce466d2be87a7f9155af27054d813a",
+        "capturedBytesSha256": "bfe30261869df4aa80d595732f5a57b157ce466d2be87a7f9155af27054d813a"
+      },
+      "convex/sso.ts": {
+        "sha256": "75a0cc17d55ed5a16c0ded8b39edfc3ae5fa4b7e21ce412e7cdcbb289e31f37f",
+        "capturedBytesSha256": "75a0cc17d55ed5a16c0ded8b39edfc3ae5fa4b7e21ce412e7cdcbb289e31f37f"
+      },
+      "convex/ssoTokenStore.ts": {
+        "sha256": "534a47e52e7db58970a26da42f66b19563a5dcabcdd817fb1591cc83fdcda46b",
+        "capturedBytesSha256": "534a47e52e7db58970a26da42f66b19563a5dcabcdd817fb1591cc83fdcda46b"
+      },
+      "convex/websiteEventCommands.ts": {
+        "sha256": "663d0f436a5b1d37d98ecd95cd52d09589945994ead065034d18b822e0ee111f",
+        "capturedBytesSha256": "663d0f436a5b1d37d98ecd95cd52d09589945994ead065034d18b822e0ee111f"
+      },
+      "src/app/api/auth/logout/route.ts": {
+        "sha256": "d5b05b602aa846e5f70169ffbdf0886d0695b04642cb249bd02f2de2371e9517",
+        "capturedBytesSha256": "d5b05b602aa846e5f70169ffbdf0886d0695b04642cb249bd02f2de2371e9517"
+      },
+      "src/app/api/servers/[serverId]/website-event-policies/route.ts": {
+        "sha256": "6934cb25a842c403efd1e20e7fa07f83cadeffb1d4836e077ad00da6a853bde3",
+        "capturedBytesSha256": "6934cb25a842c403efd1e20e7fa07f83cadeffb1d4836e077ad00da6a853bde3"
+      },
+      "src/app/api/sso/.well-known/openid-configuration/route.ts": {
+        "sha256": "02521db0988f5c6645c0c0ea7598560101cf035345da4c23488bf1c0cff98090",
+        "capturedBytesSha256": "02521db0988f5c6645c0c0ea7598560101cf035345da4c23488bf1c0cff98090"
+      },
+      "src/app/api/sso/authorize/route.ts": {
+        "sha256": "65329e36df436b4dd4b8996af56db38d0a48a16cd605bcdbef4d055432bfcedf",
+        "capturedBytesSha256": "65329e36df436b4dd4b8996af56db38d0a48a16cd605bcdbef4d055432bfcedf"
+      },
+      "src/app/api/sso/jwks/route.ts": {
+        "sha256": "4bcb575c44e49411244b8c14c1385a3db0c0a499e98056f5a4d2a54adf2d1243",
+        "capturedBytesSha256": "4bcb575c44e49411244b8c14c1385a3db0c0a499e98056f5a4d2a54adf2d1243"
+      },
+      "src/app/api/sso/logout/route.ts": {
+        "sha256": "d22e6a13625cde49d6daf70b65bd2f0aec2b2241f9590de85112223a14271469",
+        "capturedBytesSha256": "d22e6a13625cde49d6daf70b65bd2f0aec2b2241f9590de85112223a14271469"
+      },
+      "src/app/api/sso/token/route.ts": {
+        "sha256": "86981a196d6105fa9d6209f82b7a322c6bc94660a27b39d7581d997872ce3516",
+        "capturedBytesSha256": "86981a196d6105fa9d6209f82b7a322c6bc94660a27b39d7581d997872ce3516"
+      },
+      "src/app/api/sso/userinfo/route.ts": {
+        "sha256": "937988245be4f827477f49b18200c424b9beb19c7d9fdffb7af3382a393c6529",
+        "capturedBytesSha256": "937988245be4f827477f49b18200c424b9beb19c7d9fdffb7af3382a393c6529"
+      },
+      "src/app/api/v1/clan/event-commands/[eventId]/route.ts": {
+        "sha256": "22cb55140af028e0a435fa80668c74ba411b3fbe3ce42d9b661011d415d61bb4",
+        "capturedBytesSha256": "22cb55140af028e0a435fa80668c74ba411b3fbe3ce42d9b661011d415d61bb4"
+      },
+      "src/app/api/v1/clan/event-commands/route.ts": {
+        "sha256": "cd3ff8804befe933a802f4ca6e4325f50cfd542c04e5bebf99f448dfc68679fd",
+        "capturedBytesSha256": "cd3ff8804befe933a802f4ca6e4325f50cfd542c04e5bebf99f448dfc68679fd"
+      },
+      "src/app/api/v1/openapi.json/route.test.ts": {
+        "sha256": "ef9cd179fcf4d93c5f7a7170fd9465ede6868b94fd696213aa85cab1b34f0327",
+        "capturedBytesSha256": "ef9cd179fcf4d93c5f7a7170fd9465ede6868b94fd696213aa85cab1b34f0327"
+      },
+      "src/app/api/v1/openapi.json/route.ts": {
+        "sha256": "ec97f2ffdafd5428f4a38211e525e123790722df0ba0101e5b21f5ec644450cf",
+        "capturedBytesSha256": "ec97f2ffdafd5428f4a38211e525e123790722df0ba0101e5b21f5ec644450cf"
+      },
+      "src/application/events/website-event-command.ts": {
+        "sha256": "8f1eb73248678979e9c6a58716935fe182de7ecf0b8113d251fad1373280efcc",
+        "capturedBytesSha256": "8f1eb73248678979e9c6a58716935fe182de7ecf0b8113d251fad1373280efcc"
+      },
+      "src/application/identity/end-dashboard-session.test.ts": {
+        "sha256": "e7cbb6c2c4ab80d06ca1df874dd90b3a848e5874329efc4622e2bf9334f7fa86",
+        "capturedBytesSha256": "e7cbb6c2c4ab80d06ca1df874dd90b3a848e5874329efc4622e2bf9334f7fa86"
+      },
+      "src/application/identity/end-dashboard-session.ts": {
+        "sha256": "43bee9d53cfbdfe902bb86e5b357bb76b773e5ca38143ad28a937335882034e5",
+        "capturedBytesSha256": "43bee9d53cfbdfe902bb86e5b357bb76b773e5ca38143ad28a937335882034e5"
+      },
+      "src/application/identity/redeem-sso-code.ts": {
+        "sha256": "72f49fdc7a276403ffe3952e70ac755e74a5b84ccd1cfae180477fc443b49df5",
+        "capturedBytesSha256": "72f49fdc7a276403ffe3952e70ac755e74a5b84ccd1cfae180477fc443b49df5"
+      },
+      "src/components/auth/sign-out-button.tsx": {
+        "sha256": "2e63cad76b9d2c2d17d18556e01e2feb625b33ed222ec2a4daabee1367ec1fea",
+        "capturedBytesSha256": "2e63cad76b9d2c2d17d18556e01e2feb625b33ed222ec2a4daabee1367ec1fea"
+      },
+      "src/domain/events/website-command.test.ts": {
+        "sha256": "ac53f954f22e073ffc2276ee2aa14076b9a4a056ea8ab6e7cfdb382116f122c4",
+        "capturedBytesSha256": "ac53f954f22e073ffc2276ee2aa14076b9a4a056ea8ab6e7cfdb382116f122c4"
+      },
+      "src/domain/events/website-command.ts": {
+        "sha256": "9f8fbb06a846fa813d7cc83453f2da420abfe4a1f4b77d4c1c65b15214fc5a85",
+        "capturedBytesSha256": "9f8fbb06a846fa813d7cc83453f2da420abfe4a1f4b77d4c1c65b15214fc5a85"
+      },
+      "src/domain/identity/sso-policy.ts": {
+        "sha256": "2f59c13aa07900956bf1167d5c02f82b05e3db96a77b6ad622b8385deedd1173",
+        "capturedBytesSha256": "2f59c13aa07900956bf1167d5c02f82b05e3db96a77b6ad622b8385deedd1173"
+      },
+      "src/infrastructure/convex/sso-provider.test.ts": {
+        "sha256": "02413a179b13ecce73f41537b14a17a4370199ef0166fd74cb38cb32306ecf61",
+        "capturedBytesSha256": "02413a179b13ecce73f41537b14a17a4370199ef0166fd74cb38cb32306ecf61"
+      },
+      "src/infrastructure/convex/website-event-commands.test.ts": {
+        "sha256": "800627b4fe251b769c075b863485600aff019ffdfd77aac0fac2ec86b72f9069",
+        "capturedBytesSha256": "800627b4fe251b769c075b863485600aff019ffdfd77aac0fac2ec86b72f9069"
+      },
+      "src/infrastructure/identity/dashboard-jwt.test.ts": {
+        "sha256": "2cbe0a8badfd89bb19a1aaa2a2c5cfaac2d5d0334f3b47235db233a57872956e",
+        "capturedBytesSha256": "2cbe0a8badfd89bb19a1aaa2a2c5cfaac2d5d0334f3b47235db233a57872956e"
+      },
+      "src/infrastructure/identity/dashboard-jwt.ts": {
+        "sha256": "7aa7ba0c3ac69a21f5219bbbbe4d93bccd02549f3cc85e185a7bc485374709c3",
+        "capturedBytesSha256": "7aa7ba0c3ac69a21f5219bbbbe4d93bccd02549f3cc85e185a7bc485374709c3"
+      },
+      "src/infrastructure/identity/sso-signing.test.ts": {
+        "sha256": "fdd26090b8160d94cf3fc7b058ff4a2c7fe16dd0d03a7d37611755a6c6237ae1",
+        "capturedBytesSha256": "fdd26090b8160d94cf3fc7b058ff4a2c7fe16dd0d03a7d37611755a6c6237ae1"
+      },
+      "src/infrastructure/identity/sso-signing.ts": {
+        "sha256": "85c259a20655eaf79779ae38739c6381318a965f33ebe9fe67e21be068755d4f",
+        "capturedBytesSha256": "85c259a20655eaf79779ae38739c6381318a965f33ebe9fe67e21be068755d4f"
+      },
+      "src/lib/api/dashboard-logout.test.ts": {
+        "sha256": "d028b77d67383d53599236f5c1709a246e3409bc34510837ce4774ad874497f8",
+        "capturedBytesSha256": "d028b77d67383d53599236f5c1709a246e3409bc34510837ce4774ad874497f8"
+      },
+      "src/lib/api/dashboard-logout.ts": {
+        "sha256": "7c11df50311b762d3332c901427e8c1199a9fdbb3f2df598bbcb99115991a4ef",
+        "capturedBytesSha256": "7c11df50311b762d3332c901427e8c1199a9fdbb3f2df598bbcb99115991a4ef"
+      },
+      "src/lib/api/sso-routes.test.ts": {
+        "sha256": "32278440cf8b13622cc090691b8f35881c537de218346e17b44163687e9f42ce",
+        "capturedBytesSha256": "32278440cf8b13622cc090691b8f35881c537de218346e17b44163687e9f42ce"
+      },
+      "src/lib/api/sso-routes.ts": {
+        "sha256": "5ade34fd3615c5ee9483b932cbbbbc92eb1b7a97b6efe814cd2ed8cdc2f5622c",
+        "capturedBytesSha256": "5ade34fd3615c5ee9483b932cbbbbc92eb1b7a97b6efe814cd2ed8cdc2f5622c"
+      },
+      "src/lib/api/website-event-command-openapi.ts": {
+        "sha256": "d45070ca1797319f79acd29694d2850096ed44e1db0b7812eedd2133d2eb2135",
+        "capturedBytesSha256": "d45070ca1797319f79acd29694d2850096ed44e1db0b7812eedd2133d2eb2135"
+      },
+      "src/lib/api/website-event-command-route.test.ts": {
+        "sha256": "e1f2fcd083402ab8ba092a64f5a4ed0a06168ee4cc85eb60d27cb9bfc553e379",
+        "capturedBytesSha256": "e1f2fcd083402ab8ba092a64f5a4ed0a06168ee4cc85eb60d27cb9bfc553e379"
+      },
+      "src/lib/api/website-event-command-route.ts": {
+        "sha256": "0ded8559a0b63a66a1b8a48d9a7cfda3a5c8aae3ba4459966f42961580a83dba",
+        "capturedBytesSha256": "0ded8559a0b63a66a1b8a48d9a7cfda3a5c8aae3ba4459966f42961580a83dba"
+      },
+      "src/lib/api/website-event-policy-route.ts": {
+        "sha256": "67e76823afcb0891a5748502085f51d48106b0ffdfc2fe11e231e38872fc8969",
+        "capturedBytesSha256": "67e76823afcb0891a5748502085f51d48106b0ffdfc2fe11e231e38872fc8969"
+      },
+      "src/lib/auth.ts": {
+        "sha256": "a3f058eb46a70c867e6cbd0ae88d1264deea240c64368ac635f7d5053883f1ca",
+        "capturedBytesSha256": "a3f058eb46a70c867e6cbd0ae88d1264deea240c64368ac635f7d5053883f1ca"
+      },
+      "src/lib/env.ts": {
+        "sha256": "4156371b3156d8734fc20fefb99a0cb3ab1c23522cd6978290072720a2788fd4",
+        "capturedBytesSha256": "4156371b3156d8734fc20fefb99a0cb3ab1c23522cd6978290072720a2788fd4"
+      },
+      "src/lib/gateways/dashboard-sessions.ts": {
+        "sha256": "3f806ad169fb7d63b4bcbd1ede78c82131e454922ca8e0f509cc2238eca6a51b",
+        "capturedBytesSha256": "3f806ad169fb7d63b4bcbd1ede78c82131e454922ca8e0f509cc2238eca6a51b"
+      },
+      "src/lib/gateways/sso-provider.ts": {
+        "sha256": "57ca0235bc7c9467471f6c1481075e55b525935c3875c70ea2f34b3c957a76d1",
+        "capturedBytesSha256": "57ca0235bc7c9467471f6c1481075e55b525935c3875c70ea2f34b3c957a76d1"
+      },
+      "src/lib/gateways/sso-routes.ts": {
+        "sha256": "66c08ab27e0ce17b9397d7b6f2b5e885ee5548583da35cec9d5614c25c61c310",
+        "capturedBytesSha256": "66c08ab27e0ce17b9397d7b6f2b5e885ee5548583da35cec9d5614c25c61c310"
+      },
+      "src/lib/gateways/website-event-commands.ts": {
+        "sha256": "9ec30ec7629e3bdca47c733ea572423b558e0e19c6418dc5a5ef30ffccf64afc",
+        "capturedBytesSha256": "9ec30ec7629e3bdca47c733ea572423b558e0e19c6418dc5a5ef30ffccf64afc"
+      },
+      "src/lib/sso-server.ts": {
+        "sha256": "72baf19481bba208844ea4a7e93ca56a3cccb3ffdc992b6431b56878bf0d77ec",
+        "capturedBytesSha256": "72baf19481bba208844ea4a7e93ca56a3cccb3ffdc992b6431b56878bf0d77ec"
+      },
+      "src/lib/sso.test.ts": {
+        "sha256": "07c54e29eababd3e2dac4d226efbb2a78237ccedf956bf93bf1ace4956dc8619",
+        "capturedBytesSha256": "07c54e29eababd3e2dac4d226efbb2a78237ccedf956bf93bf1ace4956dc8619"
+      },
+      "src/lib/sso.ts": {
+        "sha256": "a33c6b62882f7ce77730573df52bb7b099bfdb7da59fee329f069f0fc2c6964b",
+        "capturedBytesSha256": "a33c6b62882f7ce77730573df52bb7b099bfdb7da59fee329f069f0fc2c6964b"
+      }
+    }
+  }
+}

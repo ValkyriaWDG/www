@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": "synthetic-event",
+    "eventId": "synthetic-event",
+    "guildId": "synthetic-guild",
+    "gameId": "hell_let_loose",
+    "title": "HLL synthetic result",
+    "updatedAt": "2026-09-29T10:00:00Z",
+    "resultState": "unknown",
+    "result": null
+  }
+}

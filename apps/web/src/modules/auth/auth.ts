@@ -14,11 +14,12 @@ import { refreshMembership } from '@/modules/access/membership';
 import { isSnowflake } from '@/modules/access/snowflake';
 import { getDb } from '@/lib/db';
 import { getServerEnv, type ServerEnv } from '@/lib/env';
-import { assuranceForEndpoint, DISCORD_CALLBACK_PATH, SECOND_FACTOR_PATHS, type AssuranceContext } from './assurance';
+import { assuranceForEndpoint, DISCORD_CALLBACK_PATH, guardSessionUpdate, SECOND_FACTOR_PATHS, type AssuranceContext } from './assurance';
 import { auditActor, auditAuthEvent, safeCode } from './auth-audit';
 import { createHashedBackupCodeStore } from './backup-codes';
 import { mapDiscordProfileToUser } from './discord-profile';
 import { AUTH_BASE_PATH, createEndpointPolicyHook, isAllowedAuthRequest, type EndpointPolicyFlags } from './endpoint-policy';
+import { createLogiProvider, isLogiSignInConfigured, logiProviderConfigFromEnv, takeLogiCallbackBinding, type LogiProviderConfig, type LogiProviderDeps } from './logi-provider';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 const SESSION_REFRESH_AGE_SECONDS = 60 * 60 * 24;
@@ -32,6 +33,7 @@ export type AuthConfig = {
   secret: string | undefined;
   discordClientId?: string | undefined;
   discordClientSecret?: string | undefined;
+  logi?: LogiProviderConfig | undefined;
   access: AccessEnv;
 };
 
@@ -39,6 +41,7 @@ export type AuthDeps = {
   /** Discord REST adapter overrides (tests); production uses global fetch. */
   fetchImpl?: typeof fetch;
   discord?: Omit<DiscordClientDeps, 'fetchImpl'>;
+  logi?: LogiProviderDeps;
 };
 
 export function authConfigFromEnv(env: ServerEnv): AuthConfig {
@@ -49,17 +52,21 @@ export function authConfigFromEnv(env: ServerEnv): AuthConfig {
     secret: env.BETTER_AUTH_SECRET,
     discordClientId: env.DISCORD_CLIENT_ID,
     discordClientSecret: env.DISCORD_CLIENT_SECRET,
+    logi: logiProviderConfigFromEnv(env),
     access: env,
   };
 }
 
-export function isDiscordSignInConfigured(config: Pick<AuthConfig, 'discordClientId' | 'discordClientSecret'>): boolean {
-  return Boolean(config.discordClientId && config.discordClientSecret);
+export function isDiscordSignInConfigured(config: Pick<AuthConfig, 'discordClientId' | 'discordClientSecret' | 'logi'>): boolean {
+  return Boolean(config.discordClientId && config.discordClientSecret && (!config.logi?.enabled || config.logi.discordFallbackEnabled));
 }
 
 let ephemeralSecret: string | undefined;
 
 function resolveSecret(config: AuthConfig): string {
+  if (config.logi?.enabled && (!config.secret || config.secret.length < 32)) {
+    throw new Error('BETTER_AUTH_SECRET must be at least 32 characters when Logi SSO is enabled.');
+  }
   if (config.secret) return config.secret;
   if (config.nodeEnv === 'production') throw new Error('BETTER_AUTH_SECRET is required in production.');
   ephemeralSecret ??= randomBytes(32).toString('base64url');
@@ -103,7 +110,9 @@ function redirectLocation(value: unknown): string | null {
  * better-auth 1.7.6 sources):
  * - DB-backed sessions only (no cookie cache); `assurance` is written by the session
  *   create hook from the endpoint path and can never be set by clients (`input: false`).
- * - Discord with `identify` scope only; alias e-mail; OAuth tokens are not retained.
+ * - Discord uses `identify` and discards tokens. Optional Logi uses maintained OIDC
+ *   code/PKCE/nonce verification and an encrypted private token per website session.
+ * - Provider aliases cannot implicitly link identities or unlock local recovery grants.
  * - No sign-up, no account linking, no password reset; local credentials are provisioned
  *   by the operator CLI only and require TOTP. `/sign-in/email` for a 2FA user returns a
  *   challenge and deletes the provisional session (two-factor plugin after-hook).
@@ -113,7 +122,9 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
   const secret = resolveSecret(config);
   const { appOrigin, authOrigin } = resolveOrigins(config);
   const discordEnabled = isDiscordSignInConfigured(config);
-  const flags: EndpointPolicyFlags = { discordEnabled, localAdminLoginEnabled: config.access.LOCAL_ADMIN_LOGIN_ENABLED };
+  const logiEnabled = isLogiSignInConfigured(config.logi);
+  const logiProvider = createLogiProvider(config.logi, secret, deps.logi);
+  const flags: EndpointPolicyFlags = { discordEnabled, logiEnabled, localAdminLoginEnabled: config.access.LOCAL_ADMIN_LOGIN_ENABLED };
   const backupCodes = createHashedBackupCodeStore(secret);
   const tokenFields = { accessToken: null, refreshToken: null, idToken: null, accessTokenExpiresAt: null, refreshTokenExpiresAt: null };
 
@@ -163,7 +174,7 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
           actor: { kind: 'anonymous' },
           action: 'auth.sign_in',
           outcome: 'failure',
-          summary: { method: 'discord', code: safeCode(code) },
+          summary: { method: ctx.params?.id === 'logi' ? 'logi' : 'discord', code: safeCode(code) },
         });
       }
     }
@@ -211,6 +222,13 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
       cookieCache: { enabled: false },
       additionalFields: {
         assurance: { type: 'string', required: false, input: false, returned: true },
+        logiIssuer: { type: 'string', required: false, input: false, returned: false },
+        logiClientId: { type: 'string', required: false, input: false, returned: false },
+        logiSubject: { type: 'string', required: false, input: false, returned: false },
+        logiSid: { type: 'string', required: false, input: false, returned: false },
+        logiGuildId: { type: 'string', required: false, input: false, returned: false },
+        logiAccessTokenCiphertext: { type: 'string', required: false, input: false, returned: false },
+        logiAccessTokenExpiresAt: { type: 'date', required: false, input: false, returned: false },
       },
     },
     account: {
@@ -260,10 +278,10 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
     databaseHooks: {
       user: {
         create: {
-          // Users are created only by the Discord OAuth callback (local admins via the CLI).
+          // Social users are created only by an enabled callback; local admins use the CLI.
           before: async (_user, ctx) => {
             const context = ctx as AssuranceContext;
-            if (context?.path !== DISCORD_CALLBACK_PATH || context.params?.id !== 'discord') return false;
+            if (context?.path !== DISCORD_CALLBACK_PATH || !['discord', 'logi'].includes(context.params?.id ?? '')) return false;
             return undefined;
           },
         },
@@ -271,16 +289,16 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
       account: {
         create: {
           before: async (account) => {
-            // Credential accounts are operator-provisioned; social accounts only for Discord.
-            if (account.providerId !== 'discord') return false;
+            // Credential accounts are operator-provisioned; no arbitrary social providers.
+            if (account.providerId !== 'discord' && account.providerId !== 'logi') return false;
             // A local recovery account can never gain a social identity (even via stale rows).
             if (await isLocalAccountUser(db, account.userId)) return false;
-            return { data: { ...tokenFields, scope: 'identify' } };
+            return { data: { ...tokenFields, scope: account.providerId === 'logi' ? 'openid profile' : 'identify' } };
           },
         },
         update: {
           before: async (account) => {
-            if (account.providerId !== undefined && account.providerId !== 'discord') return false;
+            if (account.providerId !== undefined && account.providerId !== 'discord' && account.providerId !== 'logi') return false;
             return { data: tokenFields };
           },
         },
@@ -289,8 +307,15 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
         create: {
           before: async (session, ctx) => {
             const assurance = assuranceForEndpoint(ctx as AssuranceContext);
-            // A Discord callback must never produce a session for a local recovery account.
-            if (assurance === 'discord' && (await isLocalAccountUser(db, session.userId))) return false;
+            // A social callback must never produce a session for a local recovery account.
+            if ((assurance === 'discord' || assurance === 'logi') && (await isLocalAccountUser(db, session.userId))) return false;
+            if (assurance === 'logi') {
+              const binding = takeLogiCallbackBinding(ctx);
+              if (!binding || binding.logiAccessTokenExpiresAt <= new Date()) return false;
+              const accounts = await summarizeAccounts(db, session.userId);
+              if (accounts.logiAccountId !== binding.logiSubject) return false;
+              return { data: { assurance, ...binding, expiresAt: new Date(Math.min(new Date(session.expiresAt).getTime(), binding.logiAccessTokenExpiresAt.getTime())) } };
+            }
             return { data: { assurance } };
           },
           after: async (session) => {
@@ -308,6 +333,13 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
                 action: 'auth.sign_in',
                 outcome: 'success',
                 summary: { method: 'discord', membership },
+              });
+            } else if (assurance === 'logi') {
+              await auditAuthEvent(db, {
+                actor: auditActor({ userId: user.id, name: user.name, source: 'discord', assurance: 'logi' }),
+                action: 'auth.sign_in',
+                outcome: 'success',
+                summary: { method: 'logi', membership: 'checked_on_private_access' },
               });
             } else if (assurance === 'mfa') {
               await auditAuthEvent(db, {
@@ -328,8 +360,8 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
           },
         },
         update: {
-          // Assurance is immutable after creation.
-          before: async (data) => ('assurance' in data ? false : undefined),
+          // Assurance and the upstream binding are immutable; a Logi session keeps its sign-in expiry.
+          before: async (data, ctx) => guardSessionUpdate(data, ctx as AssuranceContext),
         },
       },
     },
@@ -339,6 +371,7 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
     },
     plugins: [
       endpointAllowlistPlugin(flags),
+      ...(logiProvider ? [logiProvider] : []),
       twoFactor({
         issuer: 'Valkyria',
         skipVerificationOnEnable: false,

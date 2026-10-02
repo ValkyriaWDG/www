@@ -40,6 +40,14 @@ export const authSession = pgTable(
      * factor) or `unknown`. Local administrator grants require `mfa`.
      */
     assurance: text('assurance').notNull().default('unknown'),
+    /** Private, per-session Logi binding; never returned by Better Auth or public DTOs. */
+    logiIssuer: text('logi_issuer'),
+    logiClientId: text('logi_client_id'),
+    logiSubject: text('logi_subject'),
+    logiSid: text('logi_sid'),
+    logiGuildId: text('logi_guild_id'),
+    logiAccessTokenCiphertext: text('logi_access_token_ciphertext'),
+    logiAccessTokenExpiresAt: tz('logi_access_token_expires_at'),
   },
   (t) => [index('auth_session_user_idx').on(t.userId)],
 );

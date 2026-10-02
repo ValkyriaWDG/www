@@ -1,0 +1,96 @@
+{
+  "testedAt": "2026-10-02T21:28:17.174Z",
+  "passed": true,
+  "sourceStable": true,
+  "checks": [
+    {
+      "name": "real-SSO-authorize-0",
+      "passed": true
+    },
+    {
+      "name": "real-SSO-token-1",
+      "passed": true
+    },
+    {
+      "name": "default-no-write-grant",
+      "passed": true
+    },
+    {
+      "name": "actual-session-authorized-policy-setup",
+      "passed": true
+    },
+    {
+      "name": "policy-rejects-cross-origin",
+      "passed": true
+    },
+    {
+      "name": "concurrent-create-one-event-one-receipt",
+      "passed": true
+    },
+    {
+      "name": "actual-editor-revision-and-fields",
+      "passed": true
+    },
+    {
+      "name": "same-key-changed-body-conflict",
+      "passed": true
+    },
+    {
+      "name": "stale-revision-does-not-overwrite",
+      "passed": true
+    },
+    {
+      "name": "concurrent-update-one-winner-one-conflict",
+      "passed": true
+    },
+    {
+      "name": "editor-reports-committed-new-revision",
+      "passed": true
+    },
+    {
+      "name": "receipt-replay-denied-after-role-removal",
+      "passed": true
+    },
+    {
+      "name": "receipt-replay-denied-after-epoch-change",
+      "passed": true
+    },
+    {
+      "name": "actual-native-premeeting-cancellation",
+      "passed": true
+    },
+    {
+      "name": "cancelled-editor-readonly",
+      "passed": true
+    },
+    {
+      "name": "native-command-visible-through-summary-API",
+      "passed": true
+    },
+    {
+      "name": "receipt-replay-denied-after-central-revocation",
+      "passed": true
+    },
+    {
+      "name": "real-SSO-authorize-17",
+      "passed": true
+    },
+    {
+      "name": "real-SSO-token-18",
+      "passed": true
+    },
+    {
+      "name": "receipt-replay-denied-after-service-key-revocation",
+      "passed": true
+    },
+    {
+      "name": "replacement-key-explicit-policy",
+      "passed": true
+    },
+    {
+      "name": "retained-active-web-fixture",
+      "passed": true
+    }
+  ],
+  "environment": "Actual isolated local HTTP and databases; synthetic central identity and Discord observations. No production, live Discord, or hosted acceptance."
+}

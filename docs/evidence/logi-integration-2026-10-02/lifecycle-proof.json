@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-10-02T21:34:08.995Z",
+  "kind": "actual local browser + native Logi commands + guarded sync + synthetic role observations",
+  "checks": [
+    {
+      "name": "web editor loads the canonical current Logi event",
+      "pass": true
+    },
+    {
+      "name": "removing the role blocks an already-open website editor",
+      "pass": true
+    },
+    {
+      "name": "restored role permits the same request and preserves event ID",
+      "pass": true
+    },
+    {
+      "name": "updated title is projected back onto the public website",
+      "pass": true
+    },
+    {
+      "name": "360 px page has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "browser cancels the same native Logi event",
+      "pass": true
+    },
+    {
+      "name": "cancelled event is concluded exactly once on website",
+      "pass": true
+    },
+    {
+      "name": "central Logi logout succeeds",
+      "pass": true
+    },
+    {
+      "name": "central logout removes website protected access",
+      "pass": true
+    },
+    {
+      "name": "revoked upstream session removes durable website session",
+      "pass": true
+    }
+  ],
+  "captures": [
+    "role-denied-cs.png",
+    "updated-detail-cs.png",
+    "updated-detail-cs-360.png",
+    "cancelled-editor-cs.png",
+    "cancelled-public-cs.png",
+    "central-logout-cs.png"
+  ],
+  "passed": 10,
+  "failed": 0,
+  "environment": "Optimized Next 16.3.6 build via next start; NODE_ENV=test for explicit loopback-only configuration; actual local Logi Next/Convex and PostgreSQL; synthetic identities. This does not verify production HTTPS/cookie configuration.",
+  "websiteBuildId": "dQIO2k_7lNUWYEYPleEPi"
+}

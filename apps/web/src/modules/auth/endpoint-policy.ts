@@ -8,11 +8,12 @@ export const AUTH_BASE_PATH = '/api/auth';
 export type EndpointPolicyFlags = {
   /** Discord social sign-in is configured (client ID and secret present). */
   discordEnabled: boolean;
+  logiEnabled?: boolean;
   /** Local administrator recovery (credential + TOTP) is enabled by the operator. */
   localAdminLoginEnabled: boolean;
 };
 
-type HttpRule = { methods: readonly string[]; requires?: 'discord' | 'local' };
+type HttpRule = { methods: readonly string[]; requires?: 'discord' | 'logi' | 'social' | 'local' };
 
 /**
  * The complete public HTTP surface of `/api/auth/*`. Everything else — sign-up, account
@@ -22,8 +23,9 @@ type HttpRule = { methods: readonly string[]; requires?: 'discord' | 'local' };
 const HTTP_ALLOWLIST: Readonly<Record<string, HttpRule>> = {
   '/get-session': { methods: ['GET'] },
   '/sign-out': { methods: ['POST'] },
-  '/sign-in/social': { methods: ['POST'], requires: 'discord' },
+  '/sign-in/social': { methods: ['POST'], requires: 'social' },
   '/callback/discord': { methods: ['GET'], requires: 'discord' },
+  '/callback/logi': { methods: ['GET'], requires: 'logi' },
   '/sign-in/email': { methods: ['POST'], requires: 'local' },
   '/two-factor/enable': { methods: ['POST'], requires: 'local' },
   '/two-factor/verify-totp': { methods: ['POST'], requires: 'local' },
@@ -34,8 +36,8 @@ const HTTP_ALLOWLIST: Readonly<Record<string, HttpRule>> = {
 const ENDPOINT_ALLOWLIST: Readonly<Record<string, HttpRule['requires'] | null>> = {
   '/get-session': null,
   '/sign-out': null,
-  '/sign-in/social': 'discord',
-  '/callback/:id': 'discord',
+  '/sign-in/social': 'social',
+  '/callback/:id': 'social',
   '/sign-in/email': 'local',
   '/two-factor/enable': 'local',
   '/two-factor/verify-totp': 'local',
@@ -44,6 +46,8 @@ const ENDPOINT_ALLOWLIST: Readonly<Record<string, HttpRule['requires'] | null>> 
 
 function flagAllows(requires: HttpRule['requires'] | null | undefined, flags: EndpointPolicyFlags): boolean {
   if (requires === 'discord') return flags.discordEnabled;
+  if (requires === 'logi') return flags.logiEnabled === true;
+  if (requires === 'social') return flags.discordEnabled || flags.logiEnabled === true;
   if (requires === 'local') return flags.localAdminLoginEnabled;
   return true;
 }
@@ -85,11 +89,11 @@ function boundedString(value: unknown, max: number): value is string {
   return typeof value === 'string' && value.length > 0 && value.length <= max;
 }
 
-/** Validates the Discord sign-in initiation body: only localized same-origin return paths. */
-export function isValidSocialSignInBody(value: unknown): boolean {
+/** Validates an enabled social sign-in: no token shortcut, caller scope or arbitrary redirect. */
+export function isValidSocialSignInBody(value: unknown, flags: EndpointPolicyFlags = { discordEnabled: true, localAdminLoginEnabled: false }): boolean {
   const body = asBody(value);
   if (!body || !onlyKeys(body, ['provider', 'callbackURL', 'errorCallbackURL', 'disableRedirect'])) return false;
-  if (body.provider !== 'discord') return false;
+  if (body.provider === 'discord' ? !flags.discordEnabled : body.provider !== 'logi' || !flags.logiEnabled) return false;
   if (body.disableRedirect !== undefined && typeof body.disableRedirect !== 'boolean') return false;
   return isSafeReturnPath(body.callbackURL) && isSafeLoginErrorPath(body.errorCallbackURL);
 }
@@ -115,11 +119,11 @@ export function createEndpointPolicyHook({ db, flags, hashBackupCode }: Endpoint
 
     switch (path) {
       case '/callback/:id': {
-        if (ctx.params?.id !== 'discord') throw notFound();
+        if (ctx.params?.id === 'discord' ? !flags.discordEnabled : ctx.params?.id !== 'logi' || !flags.logiEnabled) throw notFound();
         return;
       }
       case '/sign-in/social': {
-        if (!isValidSocialSignInBody(ctx.body)) throw badRequest();
+        if (!isValidSocialSignInBody(ctx.body, flags)) throw badRequest();
         return;
       }
       case '/sign-in/email': {
