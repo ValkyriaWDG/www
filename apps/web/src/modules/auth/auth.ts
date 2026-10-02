@@ -14,7 +14,7 @@ import { refreshMembership } from '@/modules/access/membership';
 import { isSnowflake } from '@/modules/access/snowflake';
 import { getDb } from '@/lib/db';
 import { getServerEnv, type ServerEnv } from '@/lib/env';
-import { assuranceForEndpoint, DISCORD_CALLBACK_PATH, SECOND_FACTOR_PATHS, type AssuranceContext } from './assurance';
+import { assuranceForEndpoint, DISCORD_CALLBACK_PATH, guardSessionUpdate, SECOND_FACTOR_PATHS, type AssuranceContext } from './assurance';
 import { auditActor, auditAuthEvent, safeCode } from './auth-audit';
 import { createHashedBackupCodeStore } from './backup-codes';
 import { mapDiscordProfileToUser } from './discord-profile';
@@ -360,8 +360,8 @@ export function createAuth(db: Database, config: AuthConfig, deps: AuthDeps = {}
           },
         },
         update: {
-          // Assurance and the upstream binding are immutable after creation.
-          before: async (data) => (Object.keys(data).some((key) => key === 'assurance' || key.startsWith('logi')) ? false : undefined),
+          // Assurance and the upstream binding are immutable; a Logi session keeps its sign-in expiry.
+          before: async (data, ctx) => guardSessionUpdate(data, ctx as AssuranceContext),
         },
       },
     },

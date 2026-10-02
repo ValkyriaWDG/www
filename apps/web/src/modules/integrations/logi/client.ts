@@ -18,6 +18,8 @@ export class LogiClientError extends Error {
 }
 
 export type LogiRequestOptions = { signal?: AbortSignal };
+/** Tolerated provider clock lead for membership observations. */
+export const LOGI_CLOCK_SKEW_MS = 5_000;
 export interface LogiReader {
   readonly scope: LogiScope;
   readonly resources: readonly LogiResource[];
@@ -222,8 +224,9 @@ export function createLogiClient(config: LogiClientConfig, dependencies: { fetch
       if (envelope.data.discordUserId !== discordUserId) throw new LogiClientError('scope_mismatch');
       const observed = envelope.data.observedAt ? Date.parse(envelope.data.observedAt) : NaN;
       const age = now() - observed;
-      // receivedAt and transport success cannot refresh authorization evidence.
-      return !Number.isFinite(age) || age < 0 || age > maxAgeMs
+      // receivedAt and transport success cannot refresh authorization evidence. A
+      // provider clock slightly ahead of ours is tolerated, as in the stored check.
+      return !Number.isFinite(age) || age < -LOGI_CLOCK_SKEW_MS || age > maxAgeMs
         ? { ...envelope.data, state: 'unknown', completeness: 'unavailable', roleIds: [] }
         : envelope.data;
     },

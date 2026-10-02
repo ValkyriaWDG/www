@@ -1,19 +1,24 @@
 import { authSession, logiMembership, type Executor, type Game } from '@valkyria/db';
 import { and, eq, gt, inArray, sql } from 'drizzle-orm';
 import { configuredLogiSources, type ConfiguredLogiSource } from '@/modules/integrations/logi-config';
-import { createLogiClient } from '@/modules/integrations/logi/client';
+import { createLogiClient, LOGI_CLOCK_SKEW_MS } from '@/modules/integrations/logi/client';
 import type { LogiMembership } from '@/modules/integrations/logi/contracts';
 import type { AccessEnv } from './config';
 import { grantsFromLogiMembership } from './logi-grants';
 import type { RoleMapping } from './role-mapping';
 
-export const logiMembershipVersion = sql<string>`${logiMembership}.xmin::text || ':' || ${logiMembership}.ctid::text`;
+/**
+ * Logical evidence version. Re-confirming the same observation refreshes its timestamps
+ * without changing it, so concurrent decisions of one member do not invalidate each
+ * other's fence; a departure, role change or new epoch/revision does.
+ */
+export const logiMembershipVersion = sql<string>`${logiMembership.epoch} || ':' || ${logiMembership.revision} || ':' || ${logiMembership.state} || ':' || array_to_string(${logiMembership.roleIds}, ',')`;
 export type LogiMembershipEvidence = typeof logiMembership.$inferSelect & { rowVersion: string; game: Game };
 
 function stillFresh(row: Pick<LogiMembershipEvidence, 'observedAt' | 'receivedAt' | 'state'>, now: Date, maxAgeMs: number): boolean {
   if (row.state !== 'present' || !row.observedAt) return false;
   const observed = row.observedAt.getTime();
-  return observed <= now.getTime() + 5_000 && now.getTime() - Math.min(observed, row.receivedAt.getTime()) <= maxAgeMs;
+  return observed <= now.getTime() + LOGI_CLOCK_SKEW_MS && now.getTime() - Math.min(observed, row.receivedAt.getTime()) <= maxAgeMs;
 }
 
 async function persist(db: Executor, source: ConfiguredLogiSource, value: LogiMembership, at: Date): Promise<LogiMembershipEvidence> {
@@ -25,7 +30,8 @@ async function persist(db: Executor, source: ConfiguredLogiSource, value: LogiMe
   }).onConflictDoUpdate({
     target: [logiMembership.scopeKey, logiMembership.subject],
     set: { revision: sql`excluded.revision`, epoch: sql`excluded.epoch`, state: sql`excluded.state`, roleIds: sql`excluded.role_ids`, observedAt: sql`excluded.observed_at`, receivedAt: at, updatedAt: at },
-    setWhere: sql`excluded.revision::numeric >= ${logiMembership.revision}::numeric and excluded.epoch::numeric >= ${logiMembership.epoch}::numeric`,
+    // (epoch, revision) order: a new epoch supersedes any revision of an older one.
+    setWhere: sql`excluded.epoch::numeric > ${logiMembership.epoch}::numeric or (excluded.epoch::numeric = ${logiMembership.epoch}::numeric and excluded.revision::numeric >= ${logiMembership.revision}::numeric)`,
   });
   const [row] = await db.select({ data: logiMembership, rowVersion: logiMembershipVersion }).from(logiMembership)
     .where(and(eq(logiMembership.scopeKey, source.scopeKey), eq(logiMembership.subject, value.discordUserId))).limit(1);

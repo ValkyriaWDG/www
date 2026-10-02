@@ -57,7 +57,9 @@ export function configuredLogiSources(env: LogiIntegrationEnv, purpose: 'data' |
       : purpose === 'membership' ? (hll ? env.LOGI_MEMBERSHIP_API_KEY_HLL : env.LOGI_MEMBERSHIP_API_KEY_WDG)
       : (hll ? env.LOGI_EVENT_API_KEY_HLL : env.LOGI_EVENT_API_KEY_WDG);
     if (!apiKey || apiKey.length < 16) throw new Error('Missing restricted Logi service key.');
-    const scopeKey = createHash('sha256').update(JSON.stringify([source, purpose, apiKey])).digest('hex');
+    // Authority only: presentation settings (publishMatches, publicServers) must not move
+    // the cached sync scope and its projections to a new key.
+    const scopeKey = createHash('sha256').update(JSON.stringify([source.sourceInstanceId, url.origin, source.guildId, source.gameId, purpose, apiKey])).digest('hex');
     return { ...source, origin: url.origin, apiKey, allowLoopbackHttp, environment, scopeKey };
   });
 }

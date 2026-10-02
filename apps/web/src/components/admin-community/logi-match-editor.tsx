@@ -47,7 +47,13 @@ export function LogiMatchEditor({ games, events, pendingRequests }: { games: Gam
     setRequest(input); setBusy(true); setNotice(null);
     try {
       const result = await submitLogiMatchAction(input);
-      if (!result.ok) { setNotice(result.code === 'conflict' ? 'conflict' : 'failed'); return; }
+      if (!result.ok) {
+        // Only a transient failure is worth retrying with the same request; a definite
+        // refusal (role, validation, request-ID conflict) releases the form.
+        if (!['unavailable', 'rate_limited', 'unexpected'].includes(result.code)) setRequest(null);
+        setNotice(result.code === 'conflict' ? 'conflict' : 'failed');
+        return;
+      }
       if (result.data.state === 'pending') { setNotice('pending'); return; }
       if (result.data.state === 'rejected') { setRequest(null); setNotice(result.data.code === 'revision_conflict' ? 'conflict' : 'failed'); return; }
       setRequest(null); setNotice(input.command.operation === 'cancel' ? 'cancelled' : 'saved');

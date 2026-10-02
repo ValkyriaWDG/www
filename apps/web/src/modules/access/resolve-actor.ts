@@ -121,15 +121,18 @@ export async function resolveActor(db: Executor, input: ResolveActorInput): Prom
     if (input.env.LOGI_MEMBERSHIP_SOURCE !== 'logi' || !['logi', 'discord'].includes(assurance)) return deny('unavailable');
     const maxAgeMs = input.intent === 'write' ? WRITE_SNAPSHOT_MAX_AGE_MS : READ_SNAPSHOT_MAX_AGE_MS;
     const clock = input.now ? () => input.now! : () => new Date();
-    const evidence = await loadLogiMembershipEvidence(db, { env: input.env, subject: discordUserId, maxAgeMs, now: clock, fetchImpl: input.fetchImpl });
+    // The membership and session checks are independent remote calls; run them together.
+    const [evidence, identity] = await Promise.all([
+      loadLogiMembershipEvidence(db, { env: input.env, subject: discordUserId, maxAgeMs, now: clock, fetchImpl: input.fetchImpl }),
+      assurance === 'logi' ? validateLogiSession(db, session.id, user.id, logiProviderConfigFromEnv(input.env), input.env.BETTER_AUTH_SECRET ?? '', { fetchImpl: input.fetchImpl, now: clock }) : null,
+    ]);
     if (!evidence) return deny('stale');
     const mapping = loadRoleMapping(input.env.DISCORD_ROLE_MAPPING_JSON);
     if (!mapping.ok) return deny('unavailable');
-    await ensureRoleMappingVersion(db, mapping, input.env.LOGI_GUILD_ID ?? input.env.DISCORD_GUILD_ID);
-    if (assurance === 'logi') {
-      const identity = await validateLogiSession(db, session.id, user.id, logiProviderConfigFromEnv(input.env), input.env.BETTER_AUTH_SECRET ?? '', { fetchImpl: input.fetchImpl, now: clock });
-      if (!identity.ok || identity.subject !== discordUserId) return deny('unavailable');
-    }
+    await ensureRoleMappingVersion(db, mapping, input.env.LOGI_GUILD_ID ?? input.env.DISCORD_GUILD_ID).catch((error: unknown) => {
+      console.error(`[access] could not record role mapping version: ${error instanceof Error ? error.name : 'unknown'}`);
+    });
+    if (identity && (!identity.ok || identity.subject !== discordUserId)) return deny('unavailable');
     if (!await revalidateLogiMembership(db, evidence, maxAgeMs, clock, { id: session.id, userId: user.id, assurance })) return deny('stale');
     const grants = logiEvidenceGrants(mapping.mapping, evidence);
     return { ...base, source: 'discord', label, status: 'verified', roles: [...new Set(grants.map((grant) => grant.role))], ...scopesForGrants(grants), localGrant: null, verifiedAt: new Date(Math.min(...evidence.map((row) => row.observedAt!.getTime()))) };

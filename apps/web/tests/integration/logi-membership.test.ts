@@ -121,6 +121,43 @@ describe('Logi authorization with real database sessions and observations', () =
     await database.db.update(logiMembership).set({ state: 'left', roleIds: [], revision: '2' }).where(eq(logiMembership.subject, id.discordUserId));
     expect(await database.db.transaction((tx) => revalidateIssuerFence(tx, result.fence, () => NOW))).toBe('revoked');
   });
+  it('keeps a fence when the same member is re-confirmed concurrently', async () => {
+    const id = await identity();
+    const first = await loadLogiMembershipEvidence(database.db, { env, subject: id.discordUserId, maxAgeMs: 60_000, now: () => NOW, fetchImpl: id.fetchImpl });
+    // A second request (header next to page, another tab) re-persists the same observation.
+    const second = await loadLogiMembershipEvidence(database.db, { env, subject: id.discordUserId, maxAgeMs: 60_000, now: () => NOW, fetchImpl: id.fetchImpl });
+    expect(first).not.toBeNull();
+    expect(second).not.toBeNull();
+    expect(await revalidateLogiMembership(database.db, first!, 60_000, () => NOW)).toBe(true);
+    await database.db.update(logiMembership).set({ roleIds: [], revision: '2' }).where(eq(logiMembership.subject, id.discordUserId));
+    expect(await revalidateLogiMembership(database.db, first!, 60_000, () => NOW)).toBe(false);
+  });
+  it('keeps scheduled authority while the issuer keeps browsing', async () => {
+    const id = await identity();
+    const result = await authorizeIssuer(database.db, { issuerKind: 'discord', issuerUserId: id.userId, grantId: null, grantVersion: null, capability: 'matches.publish', game: 'wardogs' }, { env, now: () => NOW, fetchImpl: id.fetchImpl });
+    if (result.verdict !== 'authorized') throw new Error('Missing issuer proof');
+    expect(can(await resolve(id), 'matches.edit')).toBe(true);
+    expect(await database.db.transaction((tx) => revalidateIssuerFence(tx, result.fence, () => NOW))).toBe('authorized');
+  });
+  it('orders observations by epoch before revision', async () => {
+    const id = await identity();
+    id.member.revision = '900';
+    expect(can(await resolve(id), 'matches.edit')).toBe(true);
+    // A provider reset starts a new epoch with low revisions; its departure must win.
+    Object.assign(id.member, { epoch: '2', revision: '3', state: 'left', completeness: 'verified_absent', roleIds: [] });
+    expect(can(await resolve(id), 'matches.edit')).toBe(false);
+    // A later return in the same new epoch is accepted instead of locking the member out.
+    Object.assign(id.member, { revision: '4', state: 'present', completeness: 'verified_member', roleIds: [ROLE.matchManager] });
+    expect(can(await resolve(id), 'matches.edit')).toBe(true);
+  });
+  it('tolerates a provider clock slightly ahead of the website', async () => {
+    const id = await identity();
+    id.member.observedAt = new Date(NOW.getTime() + 2_000).toISOString();
+    expect(can(await resolve(id), 'matches.edit')).toBe(true);
+    id.member.observedAt = new Date(NOW.getTime() + 10_000).toISOString();
+    id.member.revision = '2';
+    expect(can(await resolve(id), 'matches.edit')).toBe(false);
+  });
   it('checks age again after the evidence was loaded', async () => {
     const id = await identity();
     const evidence = await loadLogiMembershipEvidence(database.db, { env, subject: id.discordUserId, maxAgeMs: 60_000, now: () => NOW, fetchImpl: id.fetchImpl });

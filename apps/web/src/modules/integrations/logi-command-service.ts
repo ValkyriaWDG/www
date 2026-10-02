@@ -6,7 +6,7 @@ import { DomainError } from '@/lib/result';
 import type { AccessEnv } from '@/modules/access/config';
 import { assertCanForGames } from '@/modules/access/policy';
 import type { Principal } from '@/modules/access/types';
-import { logiProviderConfigFromEnv, readLogiActorToken } from '@/modules/auth/logi-provider';
+import { logiProviderConfigFromEnv, readLogiActorToken, resolveLogiConfig } from '@/modules/auth/logi-provider';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { configuredLogiSources } from './logi-config';
 import { createLogiCommandClient, LogiCommandError } from './logi-command-client';
@@ -16,7 +16,9 @@ async function authorizedClient(db: Executor, actor: Principal, game: GameRoute,
   assertCanForGames(actor, 'matches.edit', [GAME_REGISTRY[game].db], intent);
   if (actor.assurance !== 'logi' || env.LOGI_MEMBERSHIP_SOURCE !== 'logi') throw new DomainError('unavailable');
   const source = configuredLogiSources(env, 'commands').find((entry) => entry.gameId === GAME_REGISTRY[game].logi);
-  if (!source || source.origin !== env.LOGI_ISSUER_URL?.replace(/\/$/, '')) throw new DomainError('unavailable');
+  // Same normalized origin the sign-in provider uses (case, default port, trailing slash).
+  const issuer = resolveLogiConfig(logiProviderConfigFromEnv(env))?.issuer;
+  if (!source || !issuer || source.origin !== issuer) throw new DomainError('unavailable');
   const binding = await readLogiActorToken(db, actor.sessionId, actor.userId, logiProviderConfigFromEnv(env), env.BETTER_AUTH_SECRET ?? '', { fetchImpl });
   if (!binding || binding.guildId !== source.guildId) throw new DomainError('unavailable');
   return { client: createLogiCommandClient(source, binding.token, fetchImpl), source };

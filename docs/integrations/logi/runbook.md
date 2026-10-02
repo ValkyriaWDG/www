@@ -191,3 +191,21 @@ callback registration, timer installation, production migration, image deploymen
 end-user domain acceptance remain **not performed by this implementation**. Record each
 separately with its actual environment/revision. The live-name/advanced-statistics,
 roster-write and result-write capabilities are outside this website adapter's contract.
+
+### Review follow-ups before activation
+
+The independent review of PR #83 left these open; resolve or accept them before enabling
+the related flag:
+- **Sign-in discovery.** Better Auth fetches the OIDC discovery document once, when the
+  process creates its auth instance, without a timeout or retry. If Logi is unreachable at
+  that moment the `logi` provider is skipped until the website restarts, while the login
+  button stays visible. Start the website only after Logi answers, or add a retry.
+- **Public match list.** The connected list reuses the archive's `view`, `q` and `page`
+  parameters, so paging one list pages the other. Separate them before
+  `publishMatches` is enabled.
+- **Per-request provider calls.** Every authorization of a Logi user, including the public
+  header on each page view, calls membership and userinfo. Expect that load, or add a short
+  read cache, before broad SSO rollout.
+- **One source fails all.** With both game sources configured, a membership timeout for one
+  game denies the user's authority in both. This is fail-closed by design; revisit it if one
+  source is often unavailable.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { assuranceForEndpoint } from './assurance';
+import { assuranceForEndpoint, guardSessionUpdate } from './assurance';
 import { createHashedBackupCodeStore, isHashedBackupCodeList } from './backup-codes';
 import { discordAliasEmail, discordDisplayName, mapDiscordProfileToUser } from './discord-profile';
 import { isAllowedAuthRequest, isValidSocialSignInBody } from './endpoint-policy';
@@ -175,5 +175,31 @@ describe('login error mapping', () => {
     expect(loginErrorKey(undefined)).toBeNull();
     expect(loginErrorKey('')).toBeNull();
     expect(loginErrorKey(['access_denied'])).toBe('cancelled');
+  });
+});
+
+describe('session update guard', () => {
+  const signedIn = new Date('2026-10-02T13:00:00Z');
+  const refreshed = new Date('2026-10-09T12:00:00Z');
+  const ctx = (session: Record<string, unknown> | null) => ({ context: { session: session ? { session } : null } });
+
+  it('rejects changes to assurance and the upstream binding', () => {
+    expect(guardSessionUpdate({ assurance: 'mfa' }, ctx(null))).toBe(false);
+    expect(guardSessionUpdate({ logiSubject: '300000000000000001' }, ctx(null))).toBe(false);
+  });
+  it('keeps the sign-in expiry of a Logi session when Better Auth refreshes it', () => {
+    expect(guardSessionUpdate({ expiresAt: refreshed, updatedAt: refreshed }, ctx({ assurance: 'logi', expiresAt: signedIn }))).toEqual({ data: { expiresAt: signedIn, updatedAt: refreshed } });
+    expect(guardSessionUpdate({ expiresAt: refreshed }, ctx({ assurance: 'logi', expiresAt: signedIn.toISOString() }))).toEqual({ data: { expiresAt: signedIn } });
+    // An earlier expiry (sign-out style shortening) stays possible.
+    const earlier = new Date('2026-10-02T12:30:00Z');
+    expect(guardSessionUpdate({ expiresAt: earlier }, ctx({ assurance: 'logi', expiresAt: signedIn }))).toEqual({ data: { expiresAt: earlier } });
+  });
+  it('drops an unbounded extension when the original expiry is unknown', () => {
+    expect(guardSessionUpdate({ expiresAt: refreshed, updatedAt: refreshed }, ctx({ assurance: 'logi' }))).toEqual({ data: { updatedAt: refreshed } });
+  });
+  it('leaves other sessions and non-expiry updates to Better Auth', () => {
+    expect(guardSessionUpdate({ expiresAt: refreshed }, ctx({ assurance: 'discord', expiresAt: signedIn }))).toBeUndefined();
+    expect(guardSessionUpdate({ updatedAt: refreshed }, ctx({ assurance: 'logi', expiresAt: signedIn }))).toBeUndefined();
+    expect(guardSessionUpdate({ expiresAt: refreshed }, null)).toBeUndefined();
   });
 });
