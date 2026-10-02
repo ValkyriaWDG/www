@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { LogiClientError, type LogiErrorCode, type LogiReader } from './client';
 import {
-  LOGI_COLLECTION_RESOURCES, compareLogiRevisions, logiCursorSchema, logiScopeSchema,
+  LOGI_ALL_COLLECTION_RESOURCES, compareLogiRevisions, logiCursorSchema, logiScopeSchema,
   type LogiCollectionResource, type LogiScope, type LogiSyncRecord,
 } from './contracts';
 
@@ -12,10 +12,12 @@ export const logiSyncCheckpointSchema = z.strictObject({
   version: z.number().int().positive().safe(),
   mode: z.enum(['bootstrap', 'replay', 'live']),
   generation: z.string().min(1).max(128).nullable(),
-  resourceIndex: z.number().int().nonnegative().max(LOGI_COLLECTION_RESOURCES.length),
+  resourceIndex: z.number().int().nonnegative().max(LOGI_ALL_COLLECTION_RESOURCES.length),
   listCursor: logiCursorSchema.nullable(),
   boundaryCursor: logiCursorSchema,
   cursor: logiCursorSchema,
+  /** Full generation completion, not an idle incremental pull or a source observation. */
+  reconciledAt: z.iso.datetime().optional(),
 }).refine((value) => (value.mode === 'live') === (value.generation === null));
 export type LogiSyncCheckpoint = z.infer<typeof logiSyncCheckpointSchema>;
 export type LogiSyncLease = { token: string; checkpoint: LogiSyncCheckpoint | null };
@@ -55,7 +57,7 @@ export type LogiSyncOutcome = {
 export function logiSyncScopeKey(scope: LogiSyncScope): string {
   logiScopeSchema.parse({ sourceInstanceId: scope.sourceInstanceId, guildId: scope.guildId, gameId: scope.gameId });
   if (!scope.resources.length || new Set(scope.resources).size !== scope.resources.length
-    || scope.resources.some((resource) => !LOGI_COLLECTION_RESOURCES.includes(resource))) throw new LogiClientError('configuration');
+    || scope.resources.some((resource) => !LOGI_ALL_COLLECTION_RESOURCES.includes(resource))) throw new LogiClientError('configuration');
   return JSON.stringify([scope.sourceInstanceId, scope.guildId, scope.gameId, [...scope.resources].sort()]);
 }
 
@@ -83,6 +85,8 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
   leaseMs?: number;
   now?: () => number;
   newGeneration?: () => string;
+  /** Revalidate identity joins even when no item-change hint was produced. */
+  fullRefreshMs?: number;
 } = {}): Promise<LogiSyncOutcome> {
   const resources = [...(options.resources ?? reader.resources.filter((resource): resource is LogiCollectionResource => resource !== 'membership-summaries'))].sort();
   const scope: LogiSyncScope = { ...reader.scope, resources };
@@ -95,7 +99,8 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
   const leaseMs = options.leaseMs ?? 60_000;
   if (!Number.isInteger(maxSteps) || maxSteps < 1 || maxSteps > 100
     || !Number.isInteger(maxRunMs) || maxRunMs < 1 || maxRunMs > 50_000
-    || !Number.isInteger(leaseMs) || leaseMs <= maxRunMs || leaseMs > 300_000) throw new LogiClientError('configuration');
+    || !Number.isInteger(leaseMs) || leaseMs <= maxRunMs || leaseMs > 300_000
+    || options.fullRefreshMs !== undefined && (!Number.isInteger(options.fullRefreshMs) || options.fullRefreshMs < 1)) throw new LogiClientError('configuration');
   const outcome: LogiSyncOutcome = { state: 'pending', committedPages: 0, records: 0, reset: false, error: null, retryAfterMs: null };
   const acquired = await store.acquire(scope, now(), leaseMs);
   if (!acquired) return { ...outcome, state: 'busy' };
@@ -148,6 +153,11 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
       }
       // Copy narrows the local value; commit advances the captured checkpoint.
       const current: LogiSyncCheckpoint = checkpoint;
+      if (current.mode === 'live' && options.fullRefreshMs !== undefined
+        && (!current.reconciledAt || now() - Date.parse(current.reconciledAt) >= options.fullRefreshMs)) {
+        if (!await beginBootstrap()) return outcome;
+        continue;
+      }
       if (current.mode === 'bootstrap') {
         const resource = resources[current.resourceIndex];
         if (!resource) throw new LogiClientError('invalid_response');
@@ -187,6 +197,7 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
         if (!await commit({
           ...current, version: current.version + 1, cursor: page.page.nextCursor,
           mode: promote ? 'live' : current.mode, generation: promote ? null : current.generation,
+          ...(promote ? { reconciledAt: new Date(now()).toISOString() } : {}),
         }, records, promote)) return outcome;
         if (!page.page.hasMore) return { ...outcome, state: 'caught_up' };
       } catch (error) {

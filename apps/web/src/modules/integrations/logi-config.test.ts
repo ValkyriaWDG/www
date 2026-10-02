@@ -22,3 +22,28 @@ describe('Logi source scope', () => {
     expect(configuredLogiSources({ ...env(), LOGI_MEMBERSHIP_API_KEY_WDG: 'synthetic-data-key-0123456789' }, 'membership')[0]!.scopeKey).not.toBe(base!.scopeKey);
   });
 });
+
+const peopleEnv = { LOGI_SOURCES_JSON: JSON.stringify([source]), LOGI_DATA_API_KEY_WDG: 'synthetic-data-key-12345', LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-12345' };
+
+describe('separate people source authorization', () => {
+  it('defaults to disabled and never needs a people key for existing data', () => {
+    expect(configuredLogiSources({ ...peopleEnv, LOGI_PEOPLE_API_KEY_WDG: undefined }, 'people')).toEqual([]);
+    expect(configuredLogiSources(peopleEnv, 'data')).toHaveLength(1);
+  });
+
+  it('requires an explicit people grant instead of borrowing a data or membership key', () => {
+    const enabled = { ...peopleEnv, LOGI_SOURCES_JSON: JSON.stringify([{ ...source, syncPeople: true }]) };
+    expect(() => configuredLogiSources({ ...enabled, LOGI_PEOPLE_API_KEY_WDG: undefined }, 'people')).toThrow('Missing restricted Logi service key');
+    const people = configuredLogiSources(enabled, 'people')[0]!;
+    expect(people.purpose).toBe('people');
+    expect(people.apiKey).toBe(peopleEnv.LOGI_PEOPLE_API_KEY_WDG);
+    expect(people.scopeKey).not.toBe(configuredLogiSources(enabled, 'data')[0]!.scopeKey);
+    expect(configuredLogiSources({ ...enabled, LOGI_PEOPLE_API_KEY_WDG: 'replacement-people-key-12345' }, 'people')[0]!.scopeKey).not.toBe(people.scopeKey);
+  });
+
+  it('permits a people-only source without a data key and still enforces safe origins', () => {
+    const enabled = { ...peopleEnv, LOGI_DATA_API_KEY_WDG: undefined, LOGI_SOURCES_JSON: JSON.stringify([{ ...source, syncPeople: true }]) };
+    expect(configuredLogiSources(enabled, 'people')).toHaveLength(1);
+    expect(() => configuredLogiSources({ ...enabled, LOGI_SOURCES_JSON: JSON.stringify([{ ...source, syncPeople: true, origin: 'http://logi.example.test' }]) }, 'people')).toThrow('Invalid Logi source origin');
+  });
+});

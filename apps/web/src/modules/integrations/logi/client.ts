@@ -1,7 +1,7 @@
 import 'server-only';
 import { z } from 'zod';
 import {
-  LOGI_RESOURCES, logiChangesPageSchema, logiChangeSchema, logiCursorSchema, logiIdSchema,
+  LOGI_RESOURCES, LOGI_PEOPLE_RESOURCES, logiChangesPageSchema, logiChangeSchema, logiCursorSchema, logiIdSchema,
   logiResourceSchemas, logiScopeSchema,
   type LogiChangesPage, type LogiCollectionPage, type LogiCollectionResource,
   type LogiMembership, type LogiResource, type LogiScope, type LogiSyncRecord,
@@ -187,10 +187,13 @@ export function createLogiClient(config: LogiClientConfig, dependencies: { fetch
     scope, resources,
     async list<R extends LogiCollectionResource>(resource: R, input: { cursor?: string | null; limit?: number } & LogiRequestOptions = {}): Promise<LogiCollectionPage<R>> {
       permitted(resource);
-      const limit = input.limit ?? 25;
+      const people = (LOGI_PEOPLE_RESOURCES as readonly string[]).includes(resource);
+      const limit = input.limit ?? (people ? 10 : 25);
       if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new LogiClientError('configuration');
+      if (people && limit > 10) throw new LogiClientError('configuration');
       const query = { limit: String(limit), ...(input.cursor ? { cursor: checkedCursor(input.cursor) } : {}) };
-      const schema = z.strictObject({ data: z.array(logiResourceSchemas[resource]).max(limit), page: z.strictObject({ nextCursor: logiCursorSchema.nullable(), limit: z.literal(limit) }) });
+      const schema = z.strictObject({ data: z.array(logiResourceSchemas[resource]).max(limit), page: z.strictObject({ nextCursor: logiCursorSchema.nullable(), limit: people ? z.number().int().min(1).max(limit) : z.literal(limit) }) })
+        .refine((value) => value.data.length <= value.page.limit);
       const page = parse(schema, await get(resource, query, input));
       page.data.forEach((row) => assertScope(row, scope));
       return page as LogiCollectionPage<R>;

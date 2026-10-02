@@ -292,6 +292,25 @@ This phase does not implicitly include Discord messaging, calendar invitations, 
 
 ## 12. Implementation and acceptance order
 
+### Implemented Logi read-only extension (2026-10-03)
+
+- `/[game]/team`: authorized game members see membership, published line-ups,
+  attendance responses and collected-session statistics. Entry is on the account
+  page. No roster/attendance mutation controls; source state and observation time
+  are visible. Missing metrics use a dash, not zero. Registration/confirmation is
+  explicitly distinguished from played participation.
+- `/admin/members/logi`: editors with publication authority associate an existing
+  profile to a verified native identity. Stats and roster publication are separate
+  opt-ins. The page explains that profile consent/publication is still required and
+  login accounts are unaffected. Conflicts/revocation do not show a saved state.
+- Public profile and connected match detail: only approved consented associations
+  enrich the existing screen. No individual attendance or internal membership
+  status/groups. Reuse rectangular panels, restrained type and accessible tables
+  from scoreboard reference 12; screen-reader labels and CS/EN copy are required.
+
+Operational editing stays in Logi/Discord; this is not the previously proposed
+second writable roster engine. Details: [people contract](../integrations/logi/people.md).
+
 1. Build the public shell, route skeleton and deterministic preview state; compare the home composition against reference 09 before extending components across every page.
 2. Implement clan/community/news content and member/match list/detail views with verified fixtures or unmistakably labelled development fixtures. Validate all public routes without authentication.
 3. Verify both locales' routing, translation boundaries, Czech font glyphs, desktop/mobile switcher, unsaved-draft guard, responsive layouts, keyboard behavior, background fallback and reduced motion with real browser screenshots described in [visual-spec.md](visual-spec.md).

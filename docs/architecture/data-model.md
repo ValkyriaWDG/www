@@ -88,6 +88,16 @@ against profile slug collisions, stale updates and switching an entity ID in a r
 
 ## Migrations and seeds
 
+Implemented Logi people extension (2026-10-03): `logi_member_link` is a local
+publication association, not an auth identity. It binds a consent-managed profile to
+the source instance, canonical guild, game, native assignment and immutable user ID.
+Source-member and profile-game pairs are unique. Independent stats/roster opt-ins
+default false; a positive version supports optimistic conflict handling. Removing a
+profile cascades its associations. Existing sync-scope/projection tables retain
+isolated people generations under a distinct restricted-key scope. The additive
+`0010_bizarre_gambit` migration leaves previous tables and data usable by the prior
+image. See [the read-only contract](../integrations/logi/people.md).
+
 Generate SQL migrations and review the SQL. Use expand/migrate/contract for schema
 changes so the previous image can still run during rollback. Never use schema push
 against production or auto-run destructive migrations on app startup. Seed scripts

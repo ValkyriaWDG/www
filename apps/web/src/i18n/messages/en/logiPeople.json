@@ -1,0 +1,16 @@
+{
+  "title": "Team overview", "description": "Membership, published line-ups and attendance managed in Logi / Discord.",
+  "account": "My account", "openTeam": "Team · {game}", "members": "Members", "rosters": "Published line-ups", "attendance": "Attendance responses",
+  "name": "Player", "membership": "Membership", "groups": "Groups", "status": "Status", "statistics": "Collected session statistics", "empty": "No synchronized records yet.",
+  "unknown": "Not available", "updated": "Observed {date}", "rosterTitle": "Line-up {number}", "reserves": "Reserves", "vacant": "Unassigned / unresolved", "paused": "Paused",
+  "statsNote": "Only verified, linked source sessions are included. These are not career totals. A dash means the source did not provide the metric.",
+  "statsCoverage": "{sessions} collected sessions · {complete} complete", "metricCoverage": "Reported in {count} sessions", "period": "{from} – {to}",
+  "attendanceNote": "Registration, acknowledgement and confirmation are responses, not evidence that a player took part in the match.",
+  "fresh": "Current synchronized data", "stale": "Last known data. Synchronization is delayed.", "unavailable": "Team data is temporarily unavailable.", "unconfigured": "Team synchronization is not configured.",
+  "member": "Member", "reserve_member": "Reserve member", "mercenary": "Guest player", "pending": "Pending", "recruit": "Recruit", "active": "Active",
+  "attending": "Attending", "acknowledged": "Acknowledged", "confirmed": "Confirmed", "not_attending": "Not attending", "accepted": "Accepted", "declined": "Declined", "tentative": "Tentative", "registered": "Registered", "passed": "Passed", "failed": "Failed",
+  "publicTitle": "Team activity", "publicNotice": "Approved data from Logi. Only published, consented profiles appear here.", "publicRoster": "Approved line-up", "source": "Source: Logi", "position": "Position", "match": "Match",
+  "linkTitle": "Logi profile associations", "linkDescription": "Associate a verified member with an existing website profile. Profile consent and publication are still required. This does not change login accounts or data in Logi.",
+  "profile": "Website profile", "chooseProfile": "Choose a profile", "chooseMember": "Choose a verified member", "loadProfile": "Open associations", "allowStats": "Publish verified session statistics", "allowRoster": "Publish line-up position", "save": "Save association", "remove": "Remove association", "saved": "Association saved.", "removed": "Association removed.", "noCandidates": "No fresh, verified members are available for this game.", "association": "Association for {game}", "staleLink": "The saved identity is unavailable. Select a current verified member to replace it, or remove the association.", "linked": "Associated", "unlinked": "Not associated",
+  "metrics": { "kills": "Kills", "deaths": "Deaths", "combat": "Combat", "offense": "Offense", "defense": "Defense", "support": "Support", "seconds": "Played seconds", "cashDelta": "Cash change", "headshots": "Headshots", "teamKills": "Team kills", "suicides": "Suicides", "vehicleKills": "Vehicle kills", "longestM": "Longest distance (m)", "killStreak": "Best kill streak", "deathStreak": "Longest death streak" }
+}

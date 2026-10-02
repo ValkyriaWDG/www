@@ -36,6 +36,7 @@ export default async function AdminMembersPage({ params, searchParams }: PagePro
 
   const t = await getTranslations({ locale, namespace: 'adminCommunity.members.list' });
   const tc = await getTranslations({ locale, namespace: 'adminCommunity.common' });
+  const tp = await getTranslations({ locale, namespace: 'logiPeople' });
   const sp = (await searchParams) as SearchParams;
   const filters = { q: pickParam(sp, 'q'), state: pickEnum(sp, 'state', PROFILE_STATES) };
   const page = pickPage(sp);
@@ -58,9 +59,9 @@ export default async function AdminMembersPage({ params, searchParams }: PagePro
         title={t('title')}
         description={t('description')}
         actions={
-          <GameButton href="/admin/members/new" intent="primary" size="lg" data-action="new-member">
+          <><GameButton href="/admin/members/logi">{tp('linkTitle')}</GameButton><GameButton href="/admin/members/new" intent="primary" size="lg" data-action="new-member">
             {t('newMember')}
-          </GameButton>
+          </GameButton></>
         }
       />
       <FilterForm

@@ -56,6 +56,7 @@ false in production.
 | `BETTER_AUTH_SECRET` | Independent website session/token encryption secret of at least 32 characters; not a provider private key |
 | `LOGI_MEMBERSHIP_SOURCE=logi`, `LOGI_MEMBERSHIP_API_KEY_HLL/WDG`, `DISCORD_ROLE_MAPPING_JSON` | Restricted per-game membership reads and reviewed application-role mapping |
 | `LOGI_DATA_API_KEY_HLL/WDG` | Restricted reads for the five collections and their scoped change/refetch operations |
+| `LOGI_PEOPLE_API_KEY_HLL/WDG`, source `syncPeople: true` | Private directory, published rosters and verified player-session reads; see [people synchronization](people.md) |
 | `LOGI_EVENT_WRITE_ENABLED`, `LOGI_EVENT_API_KEY_HLL/WDG` | Separate command credentials, current user session and an explicitly enabled provider application/key/game/role policy |
 | `LOGI_WEBHOOK_ENABLED`, `LOGI_WEBHOOK_SIGNING_SECRETS_JSON` | Map configured source instance ID to a separate signing secret, at least 32 printable characters; never reuse a service key |
 | `SERVER_STATUS_SOURCE=logi` | Read server cards from approved configured Logi connections; this does not publish every collected server |

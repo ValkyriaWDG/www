@@ -6,6 +6,10 @@ operational records. The [runbook](runbook.md) describes activation; the
 [verification record](verification.md) distinguishes local proof from deployment.
 All integration switches and public projections start disabled or unpublished.
 
+The [read-only people extension](people.md) adds private membership, published
+rosters, attendance responses and verified collected-session statistics. Website
+publication still requires local profile consent and explicit association opt-ins.
+
 ## Authority and identity
 
 | Area | Authority | Website behavior |

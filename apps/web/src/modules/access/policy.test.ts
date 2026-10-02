@@ -5,10 +5,10 @@ import { testPrincipal } from './testing';
 import { AccessDeniedError } from './types';
 
 describe('capability matrix', () => {
-  it('grants nothing to anonymous visitors or plain members', () => {
+  it('denies anonymous visitors and limits ordinary members to team reads', () => {
     for (const capability of CAPABILITIES) {
       expect(can({ kind: 'anonymous' }, capability)).toBe(false);
-      expect(can(testPrincipal(['member']), capability)).toBe(false);
+      expect(can(testPrincipal(['member']), capability)).toBe(capability === 'team.read');
     }
   });
 
@@ -19,6 +19,8 @@ describe('capability matrix', () => {
     expect(can(editor, 'matches.publish')).toBe(false);
     expect(can(editor, 'media.match.manage')).toBe(false);
     expect(can(editor, 'settings.manage')).toBe(false);
+    expect(can(editor, 'team.read')).toBe(false);
+    expect(can(manager, 'team.read')).toBe(true);
     expect(can(manager, 'matches.publish')).toBe(true);
     expect(can(manager, 'content.publish')).toBe(false);
     expect(can(manager, 'media.editorial.manage')).toBe(false);

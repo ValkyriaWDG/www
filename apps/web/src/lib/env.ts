@@ -53,6 +53,8 @@ const serverEnvSchema = z.object({
   LOGI_SOURCES_JSON: z.string().default('[]'),
   LOGI_DATA_API_KEY_HLL: optionalSecret,
   LOGI_DATA_API_KEY_WDG: optionalSecret,
+  LOGI_PEOPLE_API_KEY_HLL: optionalSecret,
+  LOGI_PEOPLE_API_KEY_WDG: optionalSecret,
   LOGI_MEMBERSHIP_API_KEY_HLL: optionalSecret,
   LOGI_MEMBERSHIP_API_KEY_WDG: optionalSecret,
   LOGI_EVENT_WRITE_ENABLED: booleanFlag,

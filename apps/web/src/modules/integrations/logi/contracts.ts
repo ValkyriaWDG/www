@@ -1,9 +1,12 @@
 import { z } from 'zod';
+import { LOGI_PEOPLE_RESOURCES, logiMemberSummarySchema, logiRosterSummarySchema, logiPlayerStatSummarySchema } from './people-contracts';
+export { LOGI_PEOPLE_RESOURCES } from './people-contracts';
 
 /** Wire DTOs from Logi PR #158. Keep them distinct from website publication DTOs. */
 export const LOGI_COLLECTION_RESOURCES = ['event-summaries', 'match-summaries', 'result-summaries', 'server-snapshots', 'integration-health'] as const;
-export const LOGI_RESOURCES = [...LOGI_COLLECTION_RESOURCES, 'membership-summaries'] as const;
-export type LogiCollectionResource = (typeof LOGI_COLLECTION_RESOURCES)[number];
+export const LOGI_ALL_COLLECTION_RESOURCES = [...LOGI_COLLECTION_RESOURCES, ...LOGI_PEOPLE_RESOURCES] as const;
+export const LOGI_RESOURCES = [...LOGI_ALL_COLLECTION_RESOURCES, 'membership-summaries'] as const;
+export type LogiCollectionResource = (typeof LOGI_ALL_COLLECTION_RESOURCES)[number];
 export type LogiResource = (typeof LOGI_RESOURCES)[number];
 export const logiGameSchema = z.enum(['hell_let_loose', 'wardogs']);
 export const logiIdSchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/);
@@ -120,6 +123,9 @@ export const logiResourceSchemas = {
   'server-snapshots': logiServerSnapshotSchema,
   'integration-health': logiIntegrationHealthSchema,
   'membership-summaries': logiMembershipSchema,
+  'member-summaries': logiMemberSummarySchema,
+  'roster-summaries': logiRosterSummarySchema,
+  'player-stat-summaries': logiPlayerStatSummarySchema,
 } as const;
 export type LogiResourceMap = { [K in LogiResource]: z.infer<(typeof logiResourceSchemas)[K]> };
 export type LogiEventSummary = LogiResourceMap['event-summaries'];
