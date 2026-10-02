@@ -1,5 +1,31 @@
 # Current status
 
+## Logi integration source checkpoint — 2026-10-02
+
+The current integration branch wires Logi SSO through maintained Better Auth, fresh
+game-scoped role checks, durable data pulls/webhook hints, published match list/detail,
+Logi server summaries and an actor-backed match create/edit/cancel editor. Logi owns
+connected operations; the website retains its CMS and historical match archive.
+Flags and public projections default off. Enabling Logi event writes blocks ordinary
+legacy match creation globally. No roster/result writes or live-player-name export
+are claimed. The additive `0009_aspiring_klaw` migration adds five tables and private
+session bindings; no production migration or deployment was performed for this work.
+
+Actual isolated provider/consumer SSO passed 33 checks and native producer commands 22.
+The final website checks passed lint, typecheck, optimized build, 875 unit tests and
+440 PostgreSQL integration tests. Logi passed 696 tests, types and webpack build.
+The optimized website browser flow passed 19 behavior and two visual checks; upgrade
+from the preceding schema passed six assertions. The central-login fixture is
+synthetic, not a new live Discord OAuth login. Exact file hashes, captions, screenshots
+and limits are in the [acceptance bundle](evidence/logi-integration-2026-10-02/README.md).
+See the [contract](integrations/logi/contract.md), [runbook](integrations/logi/runbook.md)
+and [verification record with commands and limits](integrations/logi/verification.md).
+Current PR-head CI is recorded in the PR discussion. Container execution, hosted
+activation and production rollout remain separate. Discord command redesign follows
+this integration milestone.
+
+## Earlier deployment record
+
 Updated: 2026-10-01. Stage: **Legacy HLL record import, CRCON read-only integration and public source field parity #73 are deployed on verified source `609528df9e6a201f7cab9775607dd0f9210dcd63` / image `majorluk/valkyria-www@sha256:b4c849213aaf954a4f88817f462d506aa78c3de1ed5eb76f195145c5f71e30b2`. The later accepted source includes merged PR #72 and its editorial attribution follow-up. PR #78 (no public references to the former HLL website) is merged as `f1ae338` and its image `sha256:6f8cf3183e15f1bed4fdcaff89c89dbbc2b2b9b10920e3eec98b2233b1d6ebfa` was promoted to the Watchtower channel on 2026-09-30 13:32 UTC; the live rollout was not observed from this environment. PR #79 (stored former-website links, tournament links, phone layout, recording dates) is merged as `8547f77`; its publication run 36731270341 was cancelled before approval because the next source includes it. PR #80 (image sizing, tablet navigation, phone overflow, FAQ dividers, visitor copy) is merged as `f9f3439`; publication run 36786684822 promoted image `sha256:19d4899f2fca8bc134069d9afb609c40b5730a9e1264796f1ac6a8ed54132a74` to the Watchtower channel on 2026-10-01 09:30 UTC (previous `sha256:6f8cf318…` / `f1ae338`; migration and runtime fingerprints unchanged); the live rollout was not observed from this environment. PR #81 (blank lines in rich text, match banner overflow, filter labels) is merged as `471511b`; its publication run 36854126053 stopped at the image scan on a new fixable Debian advisory (CVE-2026-103111, `libpcre2-8-0`), so nothing was published. The runtime fix is on branch `feat/hll-platform-handoff` (PR #82). Authentication/hosted Logi and broader client-navigation issue #46 remain separate work.**
 
 ## Blank lines in rich text, filter labels and the match banner (PR #81, merged `471511b`)

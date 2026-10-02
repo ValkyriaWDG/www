@@ -42,7 +42,7 @@ export default async function SecurityPage({ params }: PageProps<'/[locale]/acco
   if (!isLocal) {
     body = (
       <Notice tone="info" role="status" testId="security-discord-managed">
-        {t('discordManaged')}
+        {t(current.session.assurance === 'logi' ? 'logiManaged' : 'discordManaged')}
       </Notice>
     );
   } else if (current.user.twoFactorEnabled) {

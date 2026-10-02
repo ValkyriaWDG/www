@@ -155,7 +155,12 @@ function unknownSnapshot(game: GameRoute, result: Extract<ServerResult, { kind: 
   );
 }
 
-export async function getServerOverview(game: GameRoute, now: Date = new Date(), source: ServerStatusSource | null = configuredSource()): Promise<ServerOverview> {
+export async function getServerOverview(game: GameRoute, now: Date = new Date(), source?: ServerStatusSource | null): Promise<ServerOverview> {
+  if (source === undefined && getServerEnv().SERVER_STATUS_SOURCE === 'logi') {
+    const { getLogiServerOverview } = await import('../logi-public');
+    return getLogiServerOverview(game, now);
+  }
+  if (source === undefined) source = configuredSource();
   if (!source) return { state: 'not_configured' };
   const attemptedAt = now.toISOString();
   const known = (id: string) => lastKnown.get(`${game}/${id}`);

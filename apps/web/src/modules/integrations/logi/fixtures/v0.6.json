@@ -1,0 +1,75 @@
+{
+    "version": "0.6.0",
+    "note": "Synthetic DTOs. Opaque cursor placeholders are illustrative; HTTP tests generate real signed cursors.",
+    "bootstrap": {
+        "data": [],
+        "page": {
+            "nextCursor": "opaque-bootstrap-cursor",
+            "hasMore": false,
+            "limit": 25
+        }
+    },
+    "changes": {
+        "data": [
+            {
+                "guildId": "fixture-guild-a",
+                "gameId": "wardogs",
+                "resource": "event-summaries",
+                "id": "fixture-event-1",
+                "revision": "9007199254740993",
+                "operation": "upsert"
+            }
+        ],
+        "page": {
+            "nextCursor": "opaque-next-cursor",
+            "hasMore": false,
+            "limit": 25
+        }
+    },
+    "record": {
+        "data": {
+            "guildId": "fixture-guild-a",
+            "gameId": "wardogs",
+            "resource": "event-summaries",
+            "id": "fixture-event-1",
+            "revision": "9007199254740993",
+            "operation": "upsert",
+            "data": {
+                "id": "fixture-event-1",
+                "guildId": "fixture-guild-a",
+                "gameId": "wardogs",
+                "title": "Synthetic match",
+                "kind": "match",
+                "status": null,
+                "startsAt": null,
+                "endsAt": "2026-09-28T20:00:00.000Z",
+                "updatedAt": null
+            }
+        }
+    },
+    "removal": {
+        "data": {
+            "guildId": "fixture-guild-a",
+            "gameId": "wardogs",
+            "resource": "event-summaries",
+            "id": "fixture-event-1",
+            "revision": "9007199254740994",
+            "operation": "remove",
+            "data": null
+        }
+    },
+    "emptyContinuation": {
+        "data": [],
+        "page": {
+            "nextCursor": "opaque-scan-cursor",
+            "hasMore": true,
+            "limit": 25
+        }
+    },
+    "reset": {
+        "error": {
+            "code": "reset_required",
+            "message": "Capture start=now and rebuild this scope before replaying changes."
+        }
+    }
+}

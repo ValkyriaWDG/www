@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-10-02T21:18:58.421Z",
+  "database": "isolated PostgreSQL 18.4 / ICU cs-CZ",
+  "previousRevision": "5c4a1764cdb8f127dd33034048f6511cf914e75a",
+  "migrationSha256": "c2edc2310d2fa05f4f9a8fff2410028dd0c14f557c70dede5b1ef7516006edf8",
+  "checks": [
+    {
+      "name": "previous schema applied through migration 0008",
+      "pass": true
+    },
+    {
+      "name": "additive migration 0009 applies over a nonempty preceding database",
+      "pass": true
+    },
+    {
+      "name": "existing user and session preserved",
+      "pass": true
+    },
+    {
+      "name": "all seven new private bindings start null",
+      "pass": true
+    },
+    {
+      "name": "five integration tables exist",
+      "pass": true
+    },
+    {
+      "name": "second migration run is idempotent",
+      "pass": true
+    }
+  ],
+  "passed": 6
+}

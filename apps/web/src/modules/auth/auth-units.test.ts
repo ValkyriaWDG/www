@@ -4,6 +4,9 @@ import { createHashedBackupCodeStore, isHashedBackupCodeList } from './backup-co
 import { discordAliasEmail, discordDisplayName, mapDiscordProfileToUser } from './discord-profile';
 import { isAllowedAuthRequest, isValidSocialSignInBody } from './endpoint-policy';
 import { loginErrorKey } from './login-errors';
+import { createAuth, isDiscordSignInConfigured } from './auth';
+import type { Database } from '@valkyria/db';
+import { isLogiSignInConfigured, logiProviderConfigFromEnv, resolveLogiConfig } from './logi-provider';
 
 describe('Discord profile mapping', () => {
   it('produces an unverified, non-deliverable alias when Discord supplies no e-mail', () => {
@@ -30,6 +33,7 @@ describe('Discord profile mapping', () => {
 describe('session assurance', () => {
   it('derives assurance from the creating endpoint', () => {
     expect(assuranceForEndpoint({ path: '/callback/:id', params: { id: 'discord' } })).toBe('discord');
+    expect(assuranceForEndpoint({ path: '/callback/:id', params: { id: 'logi' } })).toBe('logi');
     expect(assuranceForEndpoint({ path: '/callback/:id', params: { id: 'github' } })).toBe('unknown');
     expect(assuranceForEndpoint({ path: '/sign-in/email' })).toBe('password');
     expect(assuranceForEndpoint({ path: '/two-factor/verify-totp', context: { session: null } })).toBe('mfa');
@@ -38,6 +42,52 @@ describe('session assurance', () => {
     expect(assuranceForEndpoint({ path: '/two-factor/verify-totp', context: { session: { session: { id: 'x' } } } })).toBe('password');
     expect(assuranceForEndpoint({ path: '/two-factor/disable' })).toBe('unknown');
     expect(assuranceForEndpoint(null)).toBe('unknown');
+  });
+});
+
+describe('Logi sign-in configuration and HTTP surface', () => {
+  const logi = { enabled: true, issuerUrl: 'https://logi.example.test', clientId: 'website', clientSecret: 'synthetic-client-secret', guildId: '100000000000000001' };
+  const flags = { discordEnabled: false, logiEnabled: true, localAdminLoginEnabled: true };
+  const base = 'https://valkyria.cz/api/auth';
+
+  it('is disabled until explicitly configured and never silently enables a fallback', () => {
+    expect(isLogiSignInConfigured(undefined)).toBe(false);
+    expect(isLogiSignInConfigured({ ...logi, enabled: false })).toBe(false);
+    expect(isLogiSignInConfigured({ ...logi, clientSecret: undefined })).toBe(false);
+    expect(isLogiSignInConfigured(logi)).toBe(true);
+    const credentials = { discordClientId: 'discord', discordClientSecret: 'secret', logi };
+    expect(isDiscordSignInConfigured(credentials)).toBe(false);
+    expect(isDiscordSignInConfigured({ ...credentials, logi: { ...logi, discordFallbackEnabled: true } })).toBe(true);
+    expect(logiProviderConfigFromEnv({}).enabled).toBe(false);
+  });
+
+  it.each([undefined, '', 'short-secret'])('requires a stable website secret before initializing Logi SSO (%s)', (secret) => {
+    expect(() => createAuth({} as Database, {
+      nodeEnv: 'development', appUrl: 'http://localhost:3000', secret, logi,
+      access: { DISCORD_API_BASE_URL: 'https://discord.com/api/v10', DISCORD_ROLE_MAPPING_JSON: '{}', LOCAL_ADMIN_LOGIN_ENABLED: false },
+    })).toThrow('BETTER_AUTH_SECRET must be at least 32 characters when Logi SSO is enabled.');
+  });
+
+  it.each(['http://logi.example.test', 'https://user:pass@logi.example.test', 'https://logi.example.test/path', 'https://logi.example.test/?x=1', 'https://logi.example.test/#x'])('rejects unsafe issuer %s', (issuerUrl) => {
+    expect(resolveLogiConfig({ ...logi, issuerUrl, allowLoopbackHttp: true })).toBeNull();
+  });
+
+  it('accepts plain HTTP only with an explicit loopback test option', () => {
+    expect(resolveLogiConfig({ ...logi, issuerUrl: 'http://127.0.0.1:3001' })).toBeNull();
+    expect(resolveLogiConfig({ ...logi, issuerUrl: 'http://127.0.0.1:3001', allowLoopbackHttp: true })?.issuer).toBe('http://127.0.0.1:3001');
+  });
+
+  it('allows the enabled Logi callback without enabling other providers or token shortcuts', () => {
+    expect(isAllowedAuthRequest('GET', `${base}/callback/logi?code=x`, flags)).toBe(true);
+    expect(isAllowedAuthRequest('GET', `${base}/callback/discord`, flags)).toBe(false);
+    expect(isAllowedAuthRequest('POST', `${base}/callback/logi`, flags)).toBe(false);
+    expect(isAllowedAuthRequest('POST', `${base}/sign-in/social`, flags)).toBe(true);
+    const body = { provider: 'logi', callbackURL: '/en/admin', errorCallbackURL: '/en/login', disableRedirect: true };
+    expect(isValidSocialSignInBody(body, flags)).toBe(true);
+    expect(isValidSocialSignInBody({ ...body, provider: 'discord' }, flags)).toBe(false);
+    expect(isValidSocialSignInBody({ ...body, idToken: { token: 'untrusted' } }, flags)).toBe(false);
+    expect(isValidSocialSignInBody({ ...body, additionalParams: { nonce: 'untrusted' } }, flags)).toBe(false);
+    expect(isValidSocialSignInBody({ ...body, callbackURL: 'https://foreign.example/' }, flags)).toBe(false);
   });
 });
 

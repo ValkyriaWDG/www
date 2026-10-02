@@ -7,6 +7,8 @@ import { routing } from '@/i18n/routing';
 import { can } from '@/modules/access/policy';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
+import { LogiMatchPage } from '@/components/admin-community/logi-match-page';
 import { listTournamentOptionsByGame } from '@/modules/tournaments/queries';
 
 export const dynamic = 'force-dynamic';
@@ -25,6 +27,7 @@ export default async function NewMatchPage({ params }: PageProps<'/[locale]/admi
   setRequestLocale(locale);
   const access = await requireAdminPage({ locale, path: '/admin/matches/new', capability: 'matches.edit' });
   if (!access.ok) return access.denied;
+  if (getServerEnv().LOGI_EVENT_WRITE_ENABLED) return <LogiMatchPage actor={access.principal} />;
   const tournaments = await listTournamentOptionsByGame(getDb(), access.principal);
   return <MatchEditor uiLocale={locale} initial={null} canPublish={can(access.principal, 'matches.publish')} tournaments={tournaments} />;
 }

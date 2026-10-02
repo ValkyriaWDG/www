@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
 import { DomainError, ok, toActionError, type ActionResult } from '@/lib/result';
 import type { Capability } from '@/modules/access/capabilities';
 import type { AccessIntent, Principal } from '@/modules/access/types';
@@ -93,6 +94,9 @@ export async function loadMatchAction(input: { id: string }): Promise<ActionResu
 /** Creates a draft fixture; the start is given as local date/time in an explicit IANA zone. */
 export async function createMatchAction(input: CreateMatchInput): Promise<ActionResult<{ id: string }>> {
   return run(input, { capability: 'matches.edit', action: 'match.create' }, async (actor) => {
+    // Once the operational authority is enabled, old action URLs cannot create a
+    // second independent schedule. Existing website archive entries stay editable.
+    if (getServerEnv().LOGI_EVENT_WRITE_ENABLED) throw new DomainError('invalid_state');
     const result = await createMatch(getDb(), actor, input);
     revalidateMatchViews();
     return { id: result.id };

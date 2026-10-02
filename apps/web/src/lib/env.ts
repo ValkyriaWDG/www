@@ -42,6 +42,24 @@ const serverEnvSchema = z.object({
   DATABASE_URL: optionalSecret,
   DISCORD_CLIENT_ID: optionalSecret,
   DISCORD_CLIENT_SECRET: optionalSecret,
+  LOGI_SSO_ENABLED: booleanFlag,
+  LOGI_ISSUER_URL: optionalUrl.optional(),
+  LOGI_CLIENT_ID: optionalSecret,
+  LOGI_CLIENT_SECRET: optionalSecret,
+  LOGI_GUILD_ID: snowflake.optional(),
+  LOGI_DISCORD_FALLBACK_ENABLED: booleanFlag,
+  LOGI_ALLOW_LOOPBACK_HTTP: booleanFlag,
+  LOGI_MEMBERSHIP_SOURCE: z.enum(['discord', 'logi']).default('discord'),
+  LOGI_SOURCES_JSON: z.string().default('[]'),
+  LOGI_DATA_API_KEY_HLL: optionalSecret,
+  LOGI_DATA_API_KEY_WDG: optionalSecret,
+  LOGI_MEMBERSHIP_API_KEY_HLL: optionalSecret,
+  LOGI_MEMBERSHIP_API_KEY_WDG: optionalSecret,
+  LOGI_EVENT_WRITE_ENABLED: booleanFlag,
+  LOGI_EVENT_API_KEY_HLL: optionalSecret,
+  LOGI_EVENT_API_KEY_WDG: optionalSecret,
+  LOGI_WEBHOOK_ENABLED: booleanFlag,
+  LOGI_WEBHOOK_SIGNING_SECRETS_JSON: z.string().default('{}'),
   DISCORD_GUILD_ID: snowflake.optional(),
   DISCORD_ROLE_MAPPING_JSON: z.string().default('{}'),
   DISCORD_BOT_TOKEN: optionalSecret,
@@ -65,7 +83,7 @@ const serverEnvSchema = z.object({
   /** Reviewed HLL stage clip set (JSON array, see modules/hll/media.ts); empty until owner footage is approved. */
   HLL_BACKGROUND_CLIPS_JSON: z.string().default('[]'),
   /** Game-server status source: `none` by default; `crcon` reads HLL_SERVER_SOURCES_JSON; `synthetic-fixture` for development/tests. */
-  SERVER_STATUS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['none', 'crcon', 'synthetic-fixture']).default('none')),
+  SERVER_STATUS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['none', 'logi', 'crcon', 'synthetic-fixture']).default('none')),
   /** HLL servers for the `crcon` source (JSON array, see modules/integrations/servers/crcon.ts). Never commit real hosts. */
   HLL_SERVER_SOURCES_JSON: z.string().default('[]'),
   SERVER_STATUS_FIXTURE_SCENARIO: z.preprocess(emptyToUndefined, z.enum(['mixed', 'unavailable', 'empty']).default('mixed')),
@@ -91,7 +109,7 @@ export function getServerEnv(): ServerEnv {
     throw new Error(`Invalid runtime configuration: ${problems}`);
   }
   const env = parsed.data;
-  if (env.NODE_ENV === 'production') {
+  if (env.NODE_ENV === 'production' || env.LOGI_SSO_ENABLED) {
     if (!env.BETTER_AUTH_SECRET || env.BETTER_AUTH_SECRET.length < 32) {
       throw new Error('Invalid runtime configuration: BETTER_AUTH_SECRET must be at least 32 characters in production.');
     }

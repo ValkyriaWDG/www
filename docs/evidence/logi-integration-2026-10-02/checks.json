@@ -1,0 +1,79 @@
+{
+  "website": {
+    "unit": {
+      "passed": 875,
+      "total": 875,
+      "command": "pnpm --filter @valkyria/web test:unit"
+    },
+    "integration": {
+      "passed": 440,
+      "total": 440,
+      "command": "pnpm --filter @valkyria/web exec vitest run --project integration --maxWorkers=4",
+      "database": "isolated PostgreSQL 18.4 ICU cs-CZ"
+    },
+    "lint": {
+      "kind": "lint",
+      "command": "pnpm --filter @valkyria/web lint",
+      "startedAt": "2026-10-02T21:31:28.616Z",
+      "finishedAt": "2026-10-02T21:32:31.944Z",
+      "exitCode": 0,
+      "localOnly": true
+    },
+    "typecheck": {
+      "kind": "typecheck",
+      "command": "pnpm --filter @valkyria/web typecheck",
+      "startedAt": "2026-10-02T21:35:33.878Z",
+      "finishedAt": "2026-10-02T21:35:55.085Z",
+      "exitCode": 0,
+      "localOnly": true
+    },
+    "build": {
+      "kind": "build",
+      "command": "pnpm --filter @valkyria/web build",
+      "startedAt": "2026-10-02T21:27:44.245Z",
+      "finishedAt": "2026-10-02T21:28:45.362Z",
+      "exitCode": 0,
+      "localOnly": true
+    }
+  },
+  "provider": {
+    "tests": {
+      "mode": "test",
+      "code": 0,
+      "signal": null,
+      "durationMs": 23882,
+      "baseRevision": "61cae6f5e86fe2a20840c452b6ca9c4c32712bf6",
+      "productionConvexLoaded": false,
+      "passed": 696,
+      "total": 696
+    },
+    "typecheck": {
+      "mode": "typecheck",
+      "code": 0,
+      "signal": null,
+      "durationMs": 17315,
+      "baseRevision": "61cae6f5e86fe2a20840c452b6ca9c4c32712bf6",
+      "productionConvexLoaded": false
+    },
+    "lint": {
+      "mode": "lint",
+      "code": 0,
+      "signal": null,
+      "durationMs": 27983,
+      "baseRevision": "61cae6f5e86fe2a20840c452b6ca9c4c32712bf6",
+      "productionConvexLoaded": false,
+      "note": "No errors; one existing unused _genericSuccessResponse warning in OpenAPI route."
+    },
+    "build": {
+      "mode": "build",
+      "code": 0,
+      "signal": null,
+      "durationMs": 114651,
+      "baseRevision": "61cae6f5e86fe2a20840c452b6ca9c4c32712bf6",
+      "productionConvexLoaded": false
+    }
+  },
+  "browserAssertions": 19,
+  "extraVisualChecks": 2,
+  "migrationAssertions": 6
+}

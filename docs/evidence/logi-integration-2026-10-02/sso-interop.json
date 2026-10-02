@@ -1,0 +1,140 @@
+{
+  "testedAt": "2026-10-02T21:26:17.203Z",
+  "passed": true,
+  "sourceStable": true,
+  "checks": [
+    {
+      "name": "actual-discovery-RS256",
+      "passed": true
+    },
+    {
+      "name": "actual-jwks-public-only",
+      "passed": true
+    },
+    {
+      "name": "synthetic-guild-storage-resolved",
+      "passed": true
+    },
+    {
+      "name": "durable-central-session-active",
+      "passed": true
+    },
+    {
+      "name": "website-auth-initiation-4",
+      "passed": true
+    },
+    {
+      "name": "website-emits-pkce-nonce-5",
+      "passed": true
+    },
+    {
+      "name": "real-logi-authorize-6",
+      "passed": true
+    },
+    {
+      "name": "registered-callback-7",
+      "passed": true
+    },
+    {
+      "name": "actual-logi-to-better-auth-login",
+      "passed": true
+    },
+    {
+      "name": "exact-subject-account-created",
+      "passed": true
+    },
+    {
+      "name": "website-session-bound-to-central-session",
+      "passed": true
+    },
+    {
+      "name": "actual-userinfo-closed-allowlist",
+      "passed": true
+    },
+    {
+      "name": "private-token-and-central-sid-not-in-website-dto",
+      "passed": true
+    },
+    {
+      "name": "account-tokens-not-retained",
+      "passed": true
+    },
+    {
+      "name": "central-revalidation-succeeds",
+      "passed": true
+    },
+    {
+      "name": "server-only-actor-token-exact-current-binding",
+      "passed": true
+    },
+    {
+      "name": "callback-state-replay-rejected",
+      "passed": true
+    },
+    {
+      "name": "consumed-code-replay-denied",
+      "passed": true
+    },
+    {
+      "name": "website-auth-initiation-18",
+      "passed": true
+    },
+    {
+      "name": "website-emits-pkce-nonce-19",
+      "passed": true
+    },
+    {
+      "name": "real-logi-authorize-20",
+      "passed": true
+    },
+    {
+      "name": "registered-callback-21",
+      "passed": true
+    },
+    {
+      "name": "actual-provider-wrong-PKCE-denied",
+      "passed": true
+    },
+    {
+      "name": "wrong-verifier-does-not-consume-valid-code",
+      "passed": true
+    },
+    {
+      "name": "website-auth-initiation-24",
+      "passed": true
+    },
+    {
+      "name": "website-emits-pkce-nonce-25",
+      "passed": true
+    },
+    {
+      "name": "unauthenticated-central-login-required",
+      "passed": true
+    },
+    {
+      "name": "signed-but-unregistered-dashboard-cookie-denied",
+      "passed": true
+    },
+    {
+      "name": "actual-central-logout",
+      "passed": true
+    },
+    {
+      "name": "central-logout-invalidates-userinfo-token",
+      "passed": true
+    },
+    {
+      "name": "central-logout-revokes-website-session",
+      "passed": true
+    },
+    {
+      "name": "revoked-session-cannot-release-command-actor-token",
+      "passed": true
+    },
+    {
+      "name": "revoked-dashboard-cookie-cannot-issue-new-code",
+      "passed": true
+    }
+  ],
+  "environment": "Actual isolated local HTTP and databases; synthetic central identity and Discord observations. No production, live Discord, or hosted acceptance."
+}

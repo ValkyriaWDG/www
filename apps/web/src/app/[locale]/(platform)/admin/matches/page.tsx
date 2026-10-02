@@ -11,6 +11,7 @@ import styles from '@/components/admin-community/admin-community.module.css';
 import { EmptyState, FeedbackNotice, GameButton, PageHeader, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
 import { requireAdminPage } from '@/modules/auth/admin-guard';
 import { listMatchesForAdmin } from '@/modules/matches/queries';
 import { DEFAULT_MATCH_TIME_ZONE } from '@/modules/matches/time';
@@ -38,6 +39,7 @@ export default async function AdminMatchesPage({ params, searchParams }: PagePro
 
   const t = await getTranslations({ locale, namespace: 'adminCommunity.matches.list' });
   const tc = await getTranslations({ locale, namespace: 'adminCommunity.common' });
+  const logi = await getTranslations({ locale, namespace: 'logi' });
   const sp = (await searchParams) as SearchParams;
   const filters = {
     q: pickParam(sp, 'q'),
@@ -108,6 +110,7 @@ export default async function AdminMatchesPage({ params, searchParams }: PagePro
         }
       />
       {deleted ? <FeedbackNotice kind="success">{t('deletedNotice')}</FeedbackNotice> : null}
+      {getServerEnv().LOGI_EVENT_WRITE_ENABLED ? <GameButton href="/admin/matches/logi" intent="secondary">{logi('title')}</GameButton> : null}
       <FilterForm
         action={PATH}
         label={t('filters.label')}

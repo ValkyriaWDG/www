@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-30",
+  "recordedAt": "2026-10-02",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -15725,6 +15725,127 @@
       "bytes": 12808,
       "width": 390,
       "height": 360
+    },
+    {
+      "id": "logi-integration-2026-10-02-login-cs",
+      "path": "docs/evidence/logi-integration-2026-10-02/login-cs.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "673db958bd2a8ced1775af11fb4b1c06ff8d18be5192177db3a2d3990b83a92d",
+      "bytes": 291450,
+      "width": 1440,
+      "height": 1120
+    },
+    {
+      "id": "logi-integration-2026-10-02-login-en",
+      "path": "docs/evidence/logi-integration-2026-10-02/login-en.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "8374df2971f9e6ec69665ef0f51a7007b000b8a284de09276b603487712c6c0e",
+      "bytes": 286613,
+      "width": 1440,
+      "height": 1120
+    },
+    {
+      "id": "logi-integration-2026-10-02-editor-en",
+      "path": "docs/evidence/logi-integration-2026-10-02/editor-en.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "5660019e4f01d18f0aaf1051255c8d7884b0669f4f2dc92253c2e09ff4a3baf4",
+      "bytes": 100822,
+      "width": 1440,
+      "height": 1523
+    },
+    {
+      "id": "logi-integration-2026-10-02-editor-en-phone",
+      "path": "docs/evidence/logi-integration-2026-10-02/editor-en-phone.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "fe363170834406790c6ab3fc44f19a850d058b255382d21cd220fd56c8991eea",
+      "bytes": 77761,
+      "width": 390,
+      "height": 1674
+    },
+    {
+      "id": "logi-integration-2026-10-02-saved-cs",
+      "path": "docs/evidence/logi-integration-2026-10-02/saved-cs.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "b672b05fd59fb9816aef1a03a54a652b0599de1e910b9ccfef6486280e539d78",
+      "bytes": 128543,
+      "width": 1440,
+      "height": 1650
+    },
+    {
+      "id": "logi-integration-2026-10-02-matches-cs-desktop",
+      "path": "docs/evidence/logi-integration-2026-10-02/matches-cs-desktop.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "a8c9c5b39783254ccb2b864c98d4c97c672b211694e5eae921e2a3b121a2d6f7",
+      "bytes": 522022,
+      "width": 1440,
+      "height": 1604
+    },
+    {
+      "id": "logi-integration-2026-10-02-match-detail-cs-phone",
+      "path": "docs/evidence/logi-integration-2026-10-02/match-detail-cs-phone.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "4f124ff9eaee8d6c424772fed2809d8e5e2a9aafaf5ce2daf68e4c0490c3f099",
+      "bytes": 132015,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "logi-integration-2026-10-02-match-detail-en",
+      "path": "docs/evidence/logi-integration-2026-10-02/match-detail-en.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "d9f40392a1e02b9d506eba4ceb92a47f49e5011665eb4625909b54f54f573ce5",
+      "bytes": 481647,
+      "width": 1440,
+      "height": 1050
+    },
+    {
+      "id": "logi-integration-2026-10-02-role-denied-cs",
+      "path": "docs/evidence/logi-integration-2026-10-02/role-denied-cs.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "dc9e80b55873d637e6cf7788c221d453002235981fd759b433f372601d7a6bd7",
+      "bytes": 198030,
+      "width": 1440,
+      "height": 1867
+    },
+    {
+      "id": "logi-integration-2026-10-02-cancelled-public-cs",
+      "path": "docs/evidence/logi-integration-2026-10-02/cancelled-public-cs.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "83b365d85c84210ffc1a0b001bc330f2acbf89246ca79b20f5eb632bef53e2da",
+      "bytes": 554365,
+      "width": 1440,
+      "height": 1646
+    },
+    {
+      "id": "logi-integration-2026-10-02-central-logout-cs",
+      "path": "docs/evidence/logi-integration-2026-10-02/central-logout-cs.png",
+      "source": "Actual Playwright capture of optimized Valkyria build dQIO2k_7lNUWYEYPleEPi with isolated local Logi/Convex/PostgreSQL and synthetic identities; source-manifest.json identifies tested files.",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and existing Valkyria artwork/branding; evidence only, excluded from the Apache code license.",
+      "sha256": "736422de5254f0d809ee8a3462a5136da56485b528fd6105d3eaf70b6bc26a23",
+      "bytes": 245635,
+      "width": 1440,
+      "height": 1120
     }
   ]
 }

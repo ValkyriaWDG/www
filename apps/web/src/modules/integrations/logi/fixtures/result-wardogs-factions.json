@@ -1,0 +1,42 @@
+{
+  "data": {
+    "id": "synthetic-event",
+    "eventId": "synthetic-event",
+    "guildId": "synthetic-guild",
+    "gameId": "wardogs",
+    "title": "HLL synthetic result",
+    "updatedAt": "2026-09-29T10:00:00Z",
+    "resultState": "provisional",
+    "result": {
+      "version": 1,
+      "status": "provisional",
+      "participants": [
+        {
+          "id": "a",
+          "label": "Faction A",
+          "score": 0
+        },
+        {
+          "id": "b",
+          "label": "Faction B",
+          "score": null
+        },
+        {
+          "id": "c",
+          "label": "Faction C",
+          "score": 7
+        }
+      ],
+      "provenance": {
+        "origin": "manual",
+        "sources": []
+      },
+      "reviewedAt": null,
+      "supersedesVersion": null,
+      "attribution": {
+        "verified": 0,
+        "unresolved": 0
+      }
+    }
+  }
+}

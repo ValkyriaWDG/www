@@ -14,6 +14,7 @@ export const SECOND_FACTOR_PATHS: ReadonlySet<string> = new Set(['/two-factor/ve
 /**
  * Derives how a new session was established from the Better Auth endpoint that creates it:
  * - Discord OAuth callback → `discord`;
+ * - Logi OIDC callback → `logi` (the session hook additionally requires a verified binding);
  * - credential sign-in (`/sign-in/email`, before any second factor) → `password`;
  * - TOTP/backup-code verification of a pending sign-in challenge → `mfa`;
  * - a second-factor verification inside an existing session (TOTP enrollment) keeps the
@@ -22,7 +23,7 @@ export const SECOND_FACTOR_PATHS: ReadonlySet<string> = new Set(['/two-factor/ve
  */
 export function assuranceForEndpoint(ctx: AssuranceContext): SessionAssurance {
   const path = ctx?.path;
-  if (path === DISCORD_CALLBACK_PATH) return ctx?.params?.id === 'discord' ? 'discord' : 'unknown';
+  if (path === DISCORD_CALLBACK_PATH) return ctx?.params?.id === 'discord' ? 'discord' : ctx?.params?.id === 'logi' ? 'logi' : 'unknown';
   if (path === CREDENTIAL_SIGN_IN_PATH) return 'password';
   if (path && SECOND_FACTOR_PATHS.has(path)) return ctx?.context?.session?.session ? 'password' : 'mfa';
   return 'unknown';

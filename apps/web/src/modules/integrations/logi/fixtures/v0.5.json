@@ -1,0 +1,300 @@
+{
+    "notice": "Synthetic responses; alternative providers, not deployed servers.",
+    "settings": {
+        "sources": [
+            {
+                "ref": "hll-primary",
+                "gameId": "hell_let_loose",
+                "provider": "hll_crcon"
+            },
+            {
+                "ref": "wardogs-primary",
+                "gameId": "wardogs",
+                "provider": "wardogs_rcon"
+            },
+            {
+                "ref": "directory-example",
+                "gameId": "wardogs",
+                "provider": "wardogs_public_directory"
+            }
+        ],
+        "connections": [
+            {
+                "sourceRef": "hll-primary",
+                "configured": true,
+                "snapshot": {
+                    "observedAt": "2026-09-28T11:59:59.000Z",
+                    "providerUpdatedAt": null,
+                    "displayName": "Synthetic HLL server",
+                    "state": "online",
+                    "map": "Carentan",
+                    "players": 0,
+                    "capacity": 100,
+                    "providerInstanceId": null,
+                    "scores": [],
+                    "capabilities": ["server_snapshot", "match_history"],
+                    "id": "fixture-connection-0",
+                    "guildId": "fixture-guild",
+                    "gameId": "hell_let_loose",
+                    "provider": "hll_crcon",
+                    "freshness": "fresh",
+                    "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                    "attribution": null
+                },
+                "health": {
+                    "id": "fixture-connection-0",
+                    "guildId": "fixture-guild",
+                    "gameId": "hell_let_loose",
+                    "provider": "hll_crcon",
+                    "enabled": true,
+                    "capabilities": ["server_snapshot", "match_history"],
+                    "lastAttemptAt": "2026-09-28T12:00:00.000Z",
+                    "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                    "nextAttemptAt": "2026-09-28T12:01:00.000Z",
+                    "errorCategory": null,
+                    "freshness": "fresh",
+                    "collectedSessions": 12,
+                    "lastHistorySuccessAt": "2026-09-28T11:59:40.000Z",
+                    "historyErrorCategory": null
+                }
+            },
+            {
+                "sourceRef": "wardogs-primary",
+                "configured": true,
+                "snapshot": {
+                    "observedAt": "2026-09-28T11:59:59.000Z",
+                    "providerUpdatedAt": null,
+                    "displayName": "Synthetic Wardogs server",
+                    "state": "unknown",
+                    "map": "Dalarna",
+                    "players": 42,
+                    "capacity": 100,
+                    "providerInstanceId": null,
+                    "scores": [
+                        {
+                            "id": "red",
+                            "label": "Red",
+                            "score": 0
+                        },
+                        {
+                            "id": "blue",
+                            "label": "Blue",
+                            "score": 12
+                        },
+                        {
+                            "id": "green",
+                            "label": "Green",
+                            "score": null
+                        }
+                    ],
+                    "capabilities": ["server_snapshot"],
+                    "id": "fixture-connection-1",
+                    "guildId": "fixture-guild",
+                    "gameId": "wardogs",
+                    "provider": "wardogs_rcon",
+                    "freshness": "stale",
+                    "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                    "attribution": null
+                },
+                "health": {
+                    "id": "fixture-connection-1",
+                    "guildId": "fixture-guild",
+                    "gameId": "wardogs",
+                    "provider": "wardogs_rcon",
+                    "enabled": true,
+                    "capabilities": ["server_snapshot"],
+                    "lastAttemptAt": "2026-09-28T12:00:00.000Z",
+                    "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                    "nextAttemptAt": null,
+                    "errorCategory": "unauthorized",
+                    "freshness": "stale",
+                    "collectedSessions": null,
+                    "lastHistorySuccessAt": null,
+                    "historyErrorCategory": null
+                }
+            },
+            {
+                "sourceRef": "directory-example",
+                "configured": true,
+                "snapshot": {
+                    "observedAt": "2026-09-28T11:50:00.000Z",
+                    "providerUpdatedAt": null,
+                    "displayName": "Synthetic public directory",
+                    "state": "unknown",
+                    "map": "Dalarna",
+                    "players": 42,
+                    "capacity": 100,
+                    "providerInstanceId": null,
+                    "scores": [],
+                    "capabilities": ["server_snapshot"],
+                    "id": "fixture-connection-2",
+                    "guildId": "fixture-guild",
+                    "gameId": "wardogs",
+                    "provider": "wardogs_public_directory",
+                    "freshness": "stale",
+                    "lastSuccessAt": "2026-09-28T11:50:00.000Z",
+                    "attribution": {
+                        "label": "Wardog Servers",
+                        "url": "https://wardogservers.com"
+                    }
+                },
+                "health": {
+                    "id": "fixture-connection-2",
+                    "guildId": "fixture-guild",
+                    "gameId": "wardogs",
+                    "provider": "wardogs_public_directory",
+                    "enabled": true,
+                    "capabilities": ["server_snapshot"],
+                    "lastAttemptAt": "2026-09-28T12:00:00.000Z",
+                    "lastSuccessAt": "2026-09-28T11:50:00.000Z",
+                    "nextAttemptAt": "2026-09-28T12:01:00.000Z",
+                    "errorCategory": "not_listed",
+                    "freshness": "stale",
+                    "collectedSessions": null,
+                    "lastHistorySuccessAt": null,
+                    "historyErrorCategory": null
+                }
+            }
+        ]
+    },
+    "snapshots": {
+        "data": [
+            {
+                "observedAt": "2026-09-28T11:59:59.000Z",
+                "providerUpdatedAt": null,
+                "displayName": "Synthetic HLL server",
+                "state": "online",
+                "map": "Carentan",
+                "players": 0,
+                "capacity": 100,
+                "providerInstanceId": null,
+                "scores": [],
+                "capabilities": ["server_snapshot", "match_history"],
+                "id": "fixture-connection-0",
+                "guildId": "fixture-guild",
+                "gameId": "hell_let_loose",
+                "provider": "hll_crcon",
+                "freshness": "fresh",
+                "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                "attribution": null
+            },
+            {
+                "observedAt": "2026-09-28T11:59:59.000Z",
+                "providerUpdatedAt": null,
+                "displayName": "Synthetic Wardogs server",
+                "state": "unknown",
+                "map": "Dalarna",
+                "players": 42,
+                "capacity": 100,
+                "providerInstanceId": null,
+                "scores": [
+                    {
+                        "id": "red",
+                        "label": "Red",
+                        "score": 0
+                    },
+                    {
+                        "id": "blue",
+                        "label": "Blue",
+                        "score": 12
+                    },
+                    {
+                        "id": "green",
+                        "label": "Green",
+                        "score": null
+                    }
+                ],
+                "capabilities": ["server_snapshot"],
+                "id": "fixture-connection-1",
+                "guildId": "fixture-guild",
+                "gameId": "wardogs",
+                "provider": "wardogs_rcon",
+                "freshness": "stale",
+                "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                "attribution": null
+            },
+            {
+                "observedAt": "2026-09-28T11:50:00.000Z",
+                "providerUpdatedAt": null,
+                "displayName": "Synthetic public directory",
+                "state": "unknown",
+                "map": "Dalarna",
+                "players": 42,
+                "capacity": 100,
+                "providerInstanceId": null,
+                "scores": [],
+                "capabilities": ["server_snapshot"],
+                "id": "fixture-connection-2",
+                "guildId": "fixture-guild",
+                "gameId": "wardogs",
+                "provider": "wardogs_public_directory",
+                "freshness": "stale",
+                "lastSuccessAt": "2026-09-28T11:50:00.000Z",
+                "attribution": {
+                    "label": "Wardog Servers",
+                    "url": "https://wardogservers.com"
+                }
+            }
+        ],
+        "page": {
+            "nextCursor": null,
+            "limit": 25
+        }
+    },
+    "health": {
+        "data": [
+            {
+                "id": "fixture-connection-0",
+                "guildId": "fixture-guild",
+                "gameId": "hell_let_loose",
+                "provider": "hll_crcon",
+                "enabled": true,
+                "capabilities": ["server_snapshot", "match_history"],
+                "lastAttemptAt": "2026-09-28T12:00:00.000Z",
+                "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                "nextAttemptAt": "2026-09-28T12:01:00.000Z",
+                "errorCategory": null,
+                "freshness": "fresh",
+                "collectedSessions": 12,
+                "lastHistorySuccessAt": "2026-09-28T11:59:40.000Z",
+                "historyErrorCategory": null
+            },
+            {
+                "id": "fixture-connection-1",
+                "guildId": "fixture-guild",
+                "gameId": "wardogs",
+                "provider": "wardogs_rcon",
+                "enabled": true,
+                "capabilities": ["server_snapshot"],
+                "lastAttemptAt": "2026-09-28T12:00:00.000Z",
+                "lastSuccessAt": "2026-09-28T11:59:59.000Z",
+                "nextAttemptAt": null,
+                "errorCategory": "unauthorized",
+                "freshness": "stale",
+                "collectedSessions": null,
+                "lastHistorySuccessAt": null,
+                "historyErrorCategory": null
+            },
+            {
+                "id": "fixture-connection-2",
+                "guildId": "fixture-guild",
+                "gameId": "wardogs",
+                "provider": "wardogs_public_directory",
+                "enabled": true,
+                "capabilities": ["server_snapshot"],
+                "lastAttemptAt": "2026-09-28T12:00:00.000Z",
+                "lastSuccessAt": "2026-09-28T11:50:00.000Z",
+                "nextAttemptAt": "2026-09-28T12:01:00.000Z",
+                "errorCategory": "not_listed",
+                "freshness": "stale",
+                "collectedSessions": null,
+                "lastHistorySuccessAt": null,
+                "historyErrorCategory": null
+            }
+        ],
+        "page": {
+            "nextCursor": null,
+            "limit": 25
+        }
+    }
+}

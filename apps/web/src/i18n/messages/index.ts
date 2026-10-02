@@ -8,6 +8,7 @@ import csErrors from './cs/errors.json';
 import csGames from './cs/games.json';
 import csHome from './cs/home.json';
 import csMatches from './cs/matches.json';
+import csLogi from './cs/logi.json';
 import csMedia from './cs/media.json';
 import csMembers from './cs/members.json';
 import csNews from './cs/news.json';
@@ -23,6 +24,7 @@ import enErrors from './en/errors.json';
 import enGames from './en/games.json';
 import enHome from './en/home.json';
 import enMatches from './en/matches.json';
+import enLogi from './en/logi.json';
 import enMedia from './en/media.json';
 import enMembers from './en/members.json';
 import enNews from './en/news.json';
@@ -42,6 +44,7 @@ export const enMessages = {
   news: enNews,
   members: enMembers,
   matches: enMatches,
+  logi: enLogi,
   auth: enAuth,
   admin: enAdmin,
   adminEditorial: enAdminEditorial,
@@ -62,6 +65,7 @@ export const csMessages: Messages = {
   news: csNews,
   members: csMembers,
   matches: csMatches,
+  logi: csLogi,
   auth: csAuth,
   admin: csAdmin,
   adminEditorial: csAdminEditorial,

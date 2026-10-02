@@ -2,7 +2,7 @@ import type { AppRole } from '@valkyria/db';
 import type { Capability, GameScope } from './capabilities';
 
 /** How the current session was established (stored on the session by the auth module). */
-export type SessionAssurance = 'discord' | 'password' | 'mfa' | 'unknown';
+export type SessionAssurance = 'discord' | 'logi' | 'password' | 'mfa' | 'unknown';
 
 /** Read operations may use a role snapshot up to 5 minutes old; writes require ≤60 seconds. */
 export type AccessIntent = 'read' | 'write';

@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-02T21:35:49.005Z",
+  "browser": "153.0.8010.12",
+  "desktop": {
+    "width": 1440,
+    "height": 1050
+  },
+  "phone": {
+    "width": 390,
+    "height": 844
+  },
+  "captures": [
+    "login-en.png",
+    "editor-en.png",
+    "editor-en-phone.png"
+  ],
+  "checks": [
+    {
+      "name": "English Logi login and connected editor rendered",
+      "passed": true
+    },
+    {
+      "name": "390px editor has no horizontal page overflow",
+      "passed": true
+    }
+  ],
+  "environment": "Optimized Next 16.3.6 build via next start; NODE_ENV=test for explicit loopback-only configuration; actual local Logi Next/Convex and PostgreSQL; synthetic identities. This does not verify production HTTPS/cookie configuration.",
+  "websiteBuildId": "dQIO2k_7lNUWYEYPleEPi"
+}

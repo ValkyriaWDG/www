@@ -1,0 +1,95 @@
+{
+    "synthetic": true,
+    "settings": [
+        {
+            "apiKeyId": "fixture-reader",
+            "name": "Valkyria website (synthetic)",
+            "gameIds": ["wardogs", "hell_let_loose"],
+            "policy": {
+                "enabled": false,
+                "version": "12",
+                "games": [
+                    { "gameId": "wardogs", "roleIds": ["333333333333333333"] },
+                    { "gameId": "hell_let_loose", "roleIds": [] }
+                ]
+            }
+        }
+    ],
+    "present": {
+        "guildId": "111111111111111111",
+        "discordUserId": "222222222222222222",
+        "gameId": "wardogs",
+        "state": "present",
+        "roleIds": ["333333333333333333"],
+        "assignment": { "type": "member", "status": "active" },
+        "observedAt": "2026-09-28T12:00:00.000Z",
+        "receivedAt": "2026-09-28T12:00:01.000Z",
+        "epoch": "2",
+        "revision": "13",
+        "completeness": "verified_member"
+    },
+    "departed": {
+        "guildId": "111111111111111111",
+        "discordUserId": "222222222222222222",
+        "gameId": "wardogs",
+        "state": "left",
+        "roleIds": [],
+        "assignment": { "type": "member", "status": "active" },
+        "observedAt": "2026-09-28T12:00:02.000Z",
+        "receivedAt": "2026-09-28T12:00:02.000Z",
+        "epoch": "2",
+        "revision": "14",
+        "completeness": "verified_absent"
+    },
+    "unknown": {
+        "guildId": "111111111111111111",
+        "discordUserId": "444444444444444444",
+        "gameId": "wardogs",
+        "state": "unknown",
+        "roleIds": [],
+        "assignment": null,
+        "observedAt": null,
+        "receivedAt": "2026-09-28T12:00:00.000Z",
+        "epoch": "2",
+        "revision": "15",
+        "completeness": "unavailable"
+    },
+    "stale": {
+        "guildId": "111111111111111111",
+        "discordUserId": "222222222222222222",
+        "gameId": "wardogs",
+        "state": "unknown",
+        "roleIds": [],
+        "assignment": { "type": "member", "status": "active" },
+        "observedAt": "2026-09-28T11:00:00.000Z",
+        "receivedAt": "2026-09-28T12:00:00.000Z",
+        "epoch": "2",
+        "revision": "16",
+        "completeness": "unavailable"
+    },
+    "differentGuild": {
+        "guildId": "555555555555555555",
+        "discordUserId": "222222222222222222",
+        "gameId": "wardogs",
+        "state": "present",
+        "roleIds": [],
+        "assignment": null,
+        "observedAt": "2026-09-28T12:00:00.000Z",
+        "receivedAt": "2026-09-28T12:00:01.000Z",
+        "epoch": "8",
+        "revision": "20",
+        "completeness": "verified_member"
+    },
+    "deniedScope": {
+        "error": {
+            "code": "insufficient_scope",
+            "message": "Membership lookup unavailable or not permitted."
+        }
+    },
+    "resetRequired": {
+        "error": {
+            "code": "reset_required",
+            "message": "Capture start=now and rebuild this scope before replaying changes."
+        }
+    }
+}

@@ -21,6 +21,7 @@ export type AccountSummary = {
   /** Provider IDs of every non-credential (social) account. */
   socialProviders: string[];
   discordAccountId: string | null;
+  logiAccountId: string | null;
 };
 
 export async function findLocalGrant(db: Executor, userId: string): Promise<LocalGrant | null> {
@@ -57,6 +58,7 @@ export async function summarizeAccounts(db: Executor, userId: string): Promise<A
     hasCredential: rows.some((row) => row.providerId === CREDENTIAL_PROVIDER_ID),
     socialProviders: rows.filter((row) => row.providerId !== CREDENTIAL_PROVIDER_ID).map((row) => row.providerId),
     discordAccountId: discord?.accountId ?? null,
+    logiAccountId: rows.find((row) => row.providerId === 'logi')?.accountId ?? null,
   };
 }
 
