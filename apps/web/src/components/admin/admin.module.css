@@ -1062,6 +1062,13 @@
     min-height: 44px;
   }
 
+  /* Overview item links (drafts, scheduled publications) as 44 px rows. */
+  .itemList .textLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
   /* Compact sticky action bar: save + preview side by side, the publication action below. */
   .bottomBar {
     gap: var(--space-2);

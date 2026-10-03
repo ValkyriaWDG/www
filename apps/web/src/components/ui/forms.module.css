@@ -99,6 +99,8 @@
   padding: 0;
 }
 
+/* 24 px control in a 44 px row (same as the public auto-refresh checkboxes); the label's
+   first line centres on the control, a hint line stays below it. */
 .choice {
   display: flex;
   align-items: flex-start;
@@ -107,17 +109,27 @@
   padding: 10px 0;
 }
 
+.choice > .label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.3em;
+  min-height: 24px;
+}
+
 .choiceLabel {
   display: grid;
+  align-content: center;
   gap: 2px;
+  min-height: 24px;
 }
 
 .checkbox,
 .radio {
   flex: none;
-  width: 22px;
-  height: 22px;
-  margin: 1px 0 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
   accent-color: var(--color-accent);
 }
 

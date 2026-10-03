@@ -230,7 +230,7 @@ export function MediaPicker({ open, scope, locale, onSelect, onClose, allowUploa
                       <img src={asset.urls.thumb} alt="" loading="lazy" />
                     </span>
                     <span className={styles.mediaInfo}>
-                      <span className={styles.mediaName}>{asset.originalFilename}</span>
+                      <span className={styles.mediaName} title={asset.originalFilename}>{asset.originalFilename}</span>
                       <span className={styles.muted}>
                         {formatNumber(asset.width, uiLocale)} × {formatNumber(asset.height, uiLocale)} px
                       </span>
