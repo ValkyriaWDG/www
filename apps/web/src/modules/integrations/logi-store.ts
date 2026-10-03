@@ -3,17 +3,19 @@ import { randomUUID } from 'node:crypto';
 import { logiProjection, logiSyncScope, type Executor } from '@valkyria/db';
 import { and, eq, isNull, ne, sql } from 'drizzle-orm';
 import type { ConfiguredLogiSource } from './logi-config';
-import { LOGI_COLLECTION_RESOURCES, logiResourceSchemas, logiRevisionSchema } from './logi/contracts';
+import { LOGI_COLLECTION_RESOURCES, LOGI_PEOPLE_RESOURCES, logiResourceSchemas, logiRevisionSchema, type LogiCollectionResource } from './logi/contracts';
 import { logiSyncCheckpointSchema, type LogiSyncStore } from './logi/sync';
 
 /** Stores one configured scope; callers cannot repoint a lease to another source/key/game. */
 export function createPostgresLogiSyncStore(db: Executor, source: ConfiguredLogiSource, now: () => number = Date.now): LogiSyncStore & { recordFailure(code: string, retryAfterMs: number): Promise<void> } {
   const key = source.scopeKey;
+  const resources: readonly LogiCollectionResource[] = source.purpose === 'people' ? LOGI_PEOPLE_RESOURCES : LOGI_COLLECTION_RESOURCES;
+  if (source.purpose !== 'people' && source.purpose !== 'data') throw new Error('Invalid sync source purpose.');
   let lastToken: string | null = null;
   return {
     async acquire(scope, _at, leaseMs) {
       if (scope.guildId !== source.guildId || scope.gameId !== source.gameId || scope.sourceInstanceId !== source.sourceInstanceId || leaseMs < 1 || leaseMs > 120_000
-        || JSON.stringify([...scope.resources].sort()) !== JSON.stringify([...LOGI_COLLECTION_RESOURCES].sort())) throw new Error('Invalid sync scope.');
+        || JSON.stringify([...scope.resources].sort()) !== JSON.stringify([...resources].sort())) throw new Error('Invalid sync scope.');
       return db.transaction(async (tx) => {
         await tx.insert(logiSyncScope).values({ scopeKey: key, sourceInstanceId: source.sourceInstanceId, guildId: source.guildId, gameId: source.gameId }).onConflictDoNothing();
         const [row] = await tx.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, key)).for('update');
@@ -32,7 +34,7 @@ export function createPostgresLogiSyncStore(db: Executor, source: ConfiguredLogi
       if (next.version !== input.expectedVersion + 1 || !Number.isFinite(Date.parse(input.observedAt))) throw new Error('Invalid sync commit.');
       for (const row of input.records) {
         logiRevisionSchema.parse(row.revision);
-        if (row.guildId !== source.guildId || row.gameId !== source.gameId || !LOGI_COLLECTION_RESOURCES.includes(row.resource)
+        if (row.guildId !== source.guildId || row.gameId !== source.gameId || !resources.includes(row.resource)
           || !['upsert', 'remove'].includes(row.operation) || (row.operation === 'remove' && row.data !== null)) throw new Error('Invalid projection scope.');
         if (row.operation === 'upsert') {
           const value = logiResourceSchemas[row.resource].parse(row.data);
@@ -73,10 +75,25 @@ export function createPostgresLogiSyncStore(db: Executor, source: ConfiguredLogi
 }
 
 export async function readActiveLogiProjections(db: Executor, source: ConfiguredLogiSource) {
-  const rows = await db.select({ resource: logiProjection.resource, externalId: logiProjection.externalId, revision: logiProjection.revision, operation: logiProjection.operation, data: logiProjection.data, observedAt: logiProjection.observedAt, lastSuccessAt: logiSyncScope.lastSuccessAt })
+  const limit = source.purpose === 'people' ? 1_000 : 10_000;
+  // Evaluate the generation budget in PostgreSQL before returning any personal JSON.
+  // The window sees the whole selected generation even when the outer result is bounded.
+  const withinBudget = source.purpose === 'people'
+    ? sql<boolean>`count(*) over () <= ${limit} and coalesce(sum(octet_length(${logiProjection.data}::text)) over (), 0) <= ${16 * 1024 * 1024}`
+    : sql<boolean>`true`;
+  const rows = await db.select({ resource: logiProjection.resource, externalId: logiProjection.externalId, revision: logiProjection.revision, operation: logiProjection.operation,
+    data: sql<(typeof logiProjection.$inferSelect)['data']>`case when ${withinBudget} then ${logiProjection.data} else null end`, withinBudget,
+    observedAt: logiProjection.observedAt, lastSuccessAt: logiSyncScope.lastSuccessAt, checkpoint: logiSyncScope.checkpoint, errorCode: logiSyncScope.errorCode })
     .from(logiProjection).innerJoin(logiSyncScope, and(eq(logiSyncScope.scopeKey, logiProjection.scopeKey), eq(logiSyncScope.activeGeneration, logiProjection.generation)))
-    .where(eq(logiProjection.scopeKey, source.scopeKey)).limit(10_001);
+    .where(eq(logiProjection.scopeKey, source.scopeKey)).limit(limit + 1);
   // Fail closed at the bounded single-guild capacity; never publish a silently truncated set.
-  if (rows.length > 10_000) throw new Error('Logi projection capacity exceeded.');
+  if (rows.length > limit || rows.some((row) => !row.withinBudget)) throw new Error('Logi projection capacity exceeded.');
   return rows;
+}
+
+/** Used with active projections; raw checkpoints and grant keys never become browser DTOs. */
+export async function readLogiProjectionState(db: Executor, source: ConfiguredLogiSource) {
+  const [row] = await db.select({ activeGeneration: logiSyncScope.activeGeneration, checkpoint: logiSyncScope.checkpoint, lastSuccessAt: logiSyncScope.lastSuccessAt, errorCode: logiSyncScope.errorCode })
+    .from(logiSyncScope).where(and(eq(logiSyncScope.scopeKey, source.scopeKey), eq(logiSyncScope.sourceInstanceId, source.sourceInstanceId), eq(logiSyncScope.guildId, source.guildId), eq(logiSyncScope.gameId, source.gameId))).limit(1);
+  return row ?? null;
 }

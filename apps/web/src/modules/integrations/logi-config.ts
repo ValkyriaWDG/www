@@ -8,6 +8,8 @@ export type LogiIntegrationEnv = {
   LOGI_SOURCES_JSON?: string;
   LOGI_DATA_API_KEY_HLL?: string;
   LOGI_DATA_API_KEY_WDG?: string;
+  LOGI_PEOPLE_API_KEY_HLL?: string;
+  LOGI_PEOPLE_API_KEY_WDG?: string;
   LOGI_MEMBERSHIP_API_KEY_HLL?: string;
   LOGI_MEMBERSHIP_API_KEY_WDG?: string;
   LOGI_MEMBERSHIP_SOURCE?: 'discord' | 'logi';
@@ -26,19 +28,23 @@ const sourceSchema = z.strictObject({
   gameId: z.enum(['hell_let_loose', 'wardogs']),
   /** Explicit authorization to display safe match projections, never member identities. */
   publishMatches: z.boolean().default(false),
+  /** Private directory, published rosters and verified player facts use a distinct key. */
+  syncPeople: z.boolean().default(false),
   publicServers: z.array(logiPublicServerSchema).max(20).default([]),
 });
 
-export type ConfiguredLogiSource = z.infer<typeof sourceSchema> & {
+export type ConfiguredLogiSource = LogiSourceBinding & {
+  purpose: LogiSourcePurpose;
   apiKey: string;
-  allowLoopbackHttp: boolean;
-  environment: 'production' | 'development' | 'test';
   /** Includes a key fingerprint so a changed grant cannot read a previous key's cache. */
   scopeKey: string;
 };
 
-export function configuredLogiSources(env: LogiIntegrationEnv, purpose: 'data' | 'membership' | 'commands'): ConfiguredLogiSource[] {
-  if (purpose === 'commands' && !env.LOGI_EVENT_WRITE_ENABLED) return [];
+export type LogiSourcePurpose = 'data' | 'people' | 'membership' | 'commands';
+type LogiSourceBinding = z.infer<typeof sourceSchema> & { allowLoopbackHttp: boolean; environment: 'production' | 'development' | 'test' };
+
+/** Nonsecret source binding, also used by signed webhook intake independently of pull keys. */
+export function configuredLogiSourceBindings(env: LogiIntegrationEnv): LogiSourceBinding[] {
   let raw: unknown;
   try { raw = JSON.parse(env.LOGI_SOURCES_JSON ?? '[]'); } catch { throw new Error('Invalid LOGI_SOURCES_JSON.'); }
   const parsed = z.array(sourceSchema).max(2).safeParse(raw);
@@ -51,15 +57,23 @@ export function configuredLogiSources(env: LogiIntegrationEnv, purpose: 'data' |
     if (url.username || url.password || url.hash || url.search || url.pathname !== '/' || (url.protocol !== 'https:' && !(url.protocol === 'http:' && loopback && allowLoopbackHttp))) {
       throw new Error('Invalid Logi source origin.');
     }
+    return { ...source, origin: url.origin, allowLoopbackHttp, environment };
+  });
+}
+
+export function configuredLogiSources(env: LogiIntegrationEnv, purpose: LogiSourcePurpose): ConfiguredLogiSource[] {
+  if (purpose === 'commands' && !env.LOGI_EVENT_WRITE_ENABLED) return [];
+  return configuredLogiSourceBindings(env).filter((source) => purpose !== 'people' || source.syncPeople).map((source) => {
     const hll = source.gameId === 'hell_let_loose';
     const apiKey = purpose === 'data'
       ? (hll ? env.LOGI_DATA_API_KEY_HLL : env.LOGI_DATA_API_KEY_WDG)
+      : purpose === 'people' ? (hll ? env.LOGI_PEOPLE_API_KEY_HLL : env.LOGI_PEOPLE_API_KEY_WDG)
       : purpose === 'membership' ? (hll ? env.LOGI_MEMBERSHIP_API_KEY_HLL : env.LOGI_MEMBERSHIP_API_KEY_WDG)
       : (hll ? env.LOGI_EVENT_API_KEY_HLL : env.LOGI_EVENT_API_KEY_WDG);
     if (!apiKey || apiKey.length < 16) throw new Error('Missing restricted Logi service key.');
     // Authority only: presentation settings (publishMatches, publicServers) must not move
     // the cached sync scope and its projections to a new key.
-    const scopeKey = createHash('sha256').update(JSON.stringify([source.sourceInstanceId, url.origin, source.guildId, source.gameId, purpose, apiKey])).digest('hex');
-    return { ...source, origin: url.origin, apiKey, allowLoopbackHttp, environment, scopeKey };
+    const scopeKey = createHash('sha256').update(JSON.stringify([source.sourceInstanceId, source.origin, source.guildId, source.gameId, purpose, apiKey])).digest('hex');
+    return { ...source, purpose, apiKey, scopeKey };
   });
 }

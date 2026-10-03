@@ -197,6 +197,8 @@
   text-transform: uppercase;
 }
 
+.metadataItem[data-wide] { grid-column: 1 / -1; }
+
 .metadataItem dd {
   margin: 0;
   font-variant-numeric: tabular-nums;

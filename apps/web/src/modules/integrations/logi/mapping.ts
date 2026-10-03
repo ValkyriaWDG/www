@@ -49,6 +49,7 @@ export function mapLogiServerSnapshot(scope: LogiScope, input: LogiServerSnapsho
     players: expired ? null : wire.players, capacity: expired ? null : wire.capacity,
     nextMap: null, timeRemainingSeconds: null, teams: null,
     score: freshness === 'fresh' && scope.gameId === 'hell_let_loose' && typeof allied === 'number' && typeof axis === 'number' ? { allied, axis } : null,
+    teamScores: freshness === 'fresh' && scope.gameId === 'wardogs' ? wire.scores.map(({ id, label, score }) => ({ id, label, score })) : null,
     observedAt: wire.observedAt, freshness,
     connect: config.address ? { kind: 'address', address: config.address } : { kind: 'none' },
     statsUrl: config.statsUrl,

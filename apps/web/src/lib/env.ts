@@ -53,6 +53,8 @@ const serverEnvSchema = z.object({
   LOGI_SOURCES_JSON: z.string().default('[]'),
   LOGI_DATA_API_KEY_HLL: optionalSecret,
   LOGI_DATA_API_KEY_WDG: optionalSecret,
+  LOGI_PEOPLE_API_KEY_HLL: optionalSecret,
+  LOGI_PEOPLE_API_KEY_WDG: optionalSecret,
   LOGI_MEMBERSHIP_API_KEY_HLL: optionalSecret,
   LOGI_MEMBERSHIP_API_KEY_WDG: optionalSecret,
   LOGI_EVENT_WRITE_ENABLED: booleanFlag,
@@ -84,6 +86,8 @@ const serverEnvSchema = z.object({
   HLL_BACKGROUND_CLIPS_JSON: z.string().default('[]'),
   /** Game-server status source: `none` by default; `crcon` reads HLL_SERVER_SOURCES_JSON; `synthetic-fixture` for development/tests. */
   SERVER_STATUS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['none', 'logi', 'crcon', 'synthetic-fixture']).default('none')),
+  /** Wardogs-only override; blank inherits the default source without changing HLL. */
+  SERVER_STATUS_SOURCE_WDG: z.preprocess(emptyToUndefined, z.enum(['none', 'logi', 'synthetic-fixture']).optional()),
   /** HLL servers for the `crcon` source (JSON array, see modules/integrations/servers/crcon.ts). Never commit real hosts. */
   HLL_SERVER_SOURCES_JSON: z.string().default('[]'),
   SERVER_STATUS_FIXTURE_SCENARIO: z.preprocess(emptyToUndefined, z.enum(['mixed', 'unavailable', 'empty']).default('mixed')),

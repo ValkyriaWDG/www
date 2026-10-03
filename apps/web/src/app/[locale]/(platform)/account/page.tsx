@@ -3,7 +3,8 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { can } from '@/modules/access/policy';
+import { can, canForGame } from '@/modules/access/policy';
+import { GAME_REGISTRY, GAME_ROUTES } from '@/modules/games/registry';
 import { getActor } from '@/modules/access/server';
 import type { Principal } from '@/modules/access/types';
 import { refreshMembershipAction, signOutAction } from '@/modules/auth/actions';
@@ -48,6 +49,7 @@ export default async function AccountPage({ params, searchParams }: PageProps<'/
   const query = await searchParams;
   const t = await getTranslations({ locale, namespace: 'auth.account' });
   const tModules = await getTranslations({ locale, namespace: 'admin.overview.modules' });
+  const tPeople = await getTranslations({ locale, namespace: 'logiPeople' });
   const state = accountState(actor);
   const modules = permittedAdminModules(actor);
   const refreshed = query.refreshed === '1';
@@ -91,6 +93,7 @@ export default async function AccountPage({ params, searchParams }: PageProps<'/
         ) : null}
 
         <div className={styles.actions}>
+          {GAME_ROUTES.filter((game) => canForGame(actor, 'team.read', GAME_REGISTRY[game].db)).map((game) => <a key={game} className={styles.secondary} href={`/${locale}/${game}/team`}>{tPeople('openTeam', { game: game === 'hll' ? 'Hell Let Loose' : 'Wardogs' })}</a>)}
           {can(actor, 'admin.access') ? (
             <a className={styles.primary} href={`/${locale}/admin`} data-testid="account-open-admin">
               {t('openAdmin')}

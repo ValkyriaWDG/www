@@ -1,7 +1,8 @@
 import { sql } from 'drizzle-orm';
-import { check, index, integer, jsonb, pgTable, primaryKey, text, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { boolean, check, index, integer, jsonb, pgTable, primaryKey, text, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 import { createdAt, tz, updatedAt } from './common.ts';
 import { authUser } from './auth.ts';
+import { memberProfile } from './community.ts';
 
 /** Separate from Discord REST snapshots: an allowlisted game projection is not a guild-wide role list. */
 export const logiMembership = pgTable('logi_membership', {
@@ -92,4 +93,27 @@ export const logiCommand = pgTable('logi_command', {
 }, (t) => [
   index('logi_command_user_idx').on(t.userId, t.createdAt),
   check('logi_command_state_ck', sql`${t.state} in ('pending', 'confirmed', 'rejected')`),
+]);
+
+/** Explicit publication association; it never grants membership or login authority. */
+export const logiMemberLink = pgTable('logi_member_link', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  profileId: uuid('profile_id').notNull().references(() => memberProfile.id, { onDelete: 'cascade' }),
+  scopeKey: text('scope_key').notNull(),
+  sourceInstanceId: text('source_instance_id').notNull(),
+  guildId: text('guild_id').notNull(),
+  gameId: text('game_id').notNull(),
+  memberId: text('member_id').notNull(),
+  // Bind the immutable source user record as well as its assignment. Reassignment is not the same person.
+  identityId: text('identity_id').notNull(),
+  allowStats: boolean('allow_stats').notNull().default(false),
+  allowRoster: boolean('allow_roster').notNull().default(false),
+  version: integer('version').notNull().default(1),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+}, (t) => [
+  uniqueIndex('logi_member_link_source_member_uq').on(t.sourceInstanceId, t.guildId, t.gameId, t.memberId),
+  uniqueIndex('logi_member_link_profile_game_uq').on(t.profileId, t.gameId),
+  check('logi_member_link_game_ck', sql`${t.gameId} in ('hell_let_loose', 'wardogs')`),
+  check('logi_member_link_version_ck', sql`${t.version} > 0`),
 ]);

@@ -3,7 +3,8 @@ import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { configuredLogiSources } from '@/modules/integrations/logi-config';
 import { createPostgresLogiSyncStore, readActiveLogiProjections } from '@/modules/integrations/logi-store';
-import { LOGI_COLLECTION_RESOURCES, type LogiSyncRecord } from '@/modules/integrations/logi/contracts';
+import { LOGI_COLLECTION_RESOURCES, LOGI_PEOPLE_RESOURCES, type LogiSyncRecord } from '@/modules/integrations/logi/contracts';
+import peopleFixture from '@/modules/integrations/logi/fixtures/v0.14-people.json';
 import type { LogiSyncCheckpoint, LogiSyncCommit } from '@/modules/integrations/logi/sync';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
 
@@ -20,6 +21,21 @@ afterAll(async () => { await database.drop(); });
 beforeEach(async () => { clock = Date.parse('2026-10-02T12:00:00Z'); await database.db.delete(logiSyncScope); });
 
 describe('real PostgreSQL Logi projection store', () => {
+  it('fences people collections from the safe data purpose in both directions', async () => {
+    const people = configuredLogiSources({ LOGI_SOURCES_JSON: JSON.stringify([{ sourceInstanceId: source.sourceInstanceId, origin: source.origin, guildId: source.guildId, gameId: source.gameId, syncPeople: true }]), LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-123456' }, 'people')[0]!;
+    const peopleScope = { ...people, resources: LOGI_PEOPLE_RESOURCES };
+    const peopleStore = createPostgresLogiSyncStore(database.db, people, () => clock);
+    const dataStore = createPostgresLogiSyncStore(database.db, source, () => clock);
+    await expect(peopleStore.acquire({ ...peopleScope, resources: LOGI_COLLECTION_RESOURCES }, clock, 60_000)).rejects.toThrow('Invalid sync scope');
+    const peopleLease = (await peopleStore.acquire(peopleScope, clock, 60_000))!;
+    const dataLease = (await dataStore.acquire(scope, clock, 60_000))!;
+    const member: LogiSyncRecord<'member-summaries'> = { resource: 'member-summaries', id: peopleFixture.member.id, guildId: people.guildId, gameId: people.gameId, revision: '1', operation: 'upsert', data: { ...peopleFixture.member, guildId: people.guildId, gameId: people.gameId, schemaVersion: 1, identityState: 'resolved', type: 'member', status: 'active' } };
+    await expect(dataStore.commit(dataLease, input(0, [member], 'data', true))).rejects.toThrow('Invalid projection scope');
+    await expect(peopleStore.commit(peopleLease, input(0, [record('1')], 'people', true))).rejects.toThrow('Invalid projection scope');
+    expect(await peopleStore.commit(peopleLease, input(0, [member], 'people', true))).toBe(true);
+    expect(await readActiveLogiProjections(database.db, source)).toEqual([]);
+    expect(await readActiveLogiProjections(database.db, people)).toMatchObject([{ resource: 'member-summaries', externalId: member.id }]);
+  });
   it('lets exactly one concurrent worker acquire a scope', async () => {
     const workers = [createPostgresLogiSyncStore(database.db, source, () => clock), createPostgresLogiSyncStore(database.db, source, () => clock)];
     const leases = await Promise.all(workers.map((worker) => worker.acquire(scope, clock, 60_000)));

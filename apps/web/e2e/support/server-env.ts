@@ -49,6 +49,7 @@ export function e2eServerEnv(options: {
     }),
     // Labelled synthetic server snapshots (never real Valkyria server state).
     SERVER_STATUS_SOURCE: 'synthetic-fixture',
+    SERVER_STATUS_SOURCE_WDG: 'synthetic-fixture',
     SERVER_STATUS_FIXTURE_SCENARIO: 'mixed',
     // Scoreboard imports by game ID use the loopback CRCON mock (e2e/support/crcon-mock.mjs)
     // started next to the Discord mock; the servers page keeps the fixture scenario above.

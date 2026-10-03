@@ -1,3 +1,8 @@
+.teamScores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; }
+.teamScores > div { border-left: 2px solid var(--color-border-strong); padding-left: var(--space-2); }
+.teamScores dt { color: var(--color-text-muted); font-size: var(--text-small); overflow-wrap: anywhere; }
+.teamScores dd { margin: 0; font-family: var(--font-display); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+
 /* Server browser (references 12–13): 58:42 list/detail with a 24 px gap from 1280 px. */
 .browser {
   display: grid;
@@ -315,4 +320,16 @@
     justify-items: end;
     text-align: end;
   }
+
+  .table[data-game='wardogs'] :global(tbody tr) {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'server server' 'players status';
+  }
+
+  .table[data-game='wardogs'] :global(tbody tr) > :nth-child(3) {
+    grid-area: status;
+    justify-self: end;
+  }
+
+  .table[data-game='wardogs'] .statusCell { justify-items: end; text-align: end; }
 }

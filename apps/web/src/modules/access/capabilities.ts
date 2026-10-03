@@ -6,6 +6,7 @@ import type { AppRole, Game } from '@valkyria/db';
  * never localized or derived from Discord role names.
  */
 export const CAPABILITIES = [
+  'team.read',
   'admin.access',
   'content.read_private',
   'content.edit',
@@ -32,13 +33,13 @@ const EDITOR: Capability[] = [
   'members.publish',
 ];
 
-const MATCH_MANAGER: Capability[] = ['admin.access', 'matches.edit', 'matches.publish', 'media.match.manage'];
+const MATCH_MANAGER: Capability[] = ['team.read', 'admin.access', 'matches.edit', 'matches.publish', 'media.match.manage'];
 
 const ADMINISTRATOR: Capability[] = [...new Set([...EDITOR, ...MATCH_MANAGER, 'settings.manage', 'audit.read'] as Capability[])];
 
-/** Capability matrix. `member` grants no administrative capability in v1. */
+/** A member can read their game's team operations, without gaining administration. */
 export const ROLE_CAPABILITIES: Record<AppRole, readonly Capability[]> = {
-  member: [],
+  member: ['team.read'],
   editor: EDITOR,
   match_manager: MATCH_MANAGER,
   administrator: ADMINISTRATOR,

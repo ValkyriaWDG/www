@@ -51,6 +51,19 @@ describe('explicit public projections', () => {
     expect(() => mapLogiServerSnapshot(scope, server, { ...published, statsUrl: 'javascript:alert(1)' }, now)).toThrow();
   });
 
+  it('preserves named Wardogs teams, zero and unknown scores only while fresh', () => {
+    const wardogs = logiServerSnapshotSchema.parse(servers.snapshots.data[1]);
+    const scores = [{ id: 'charlie', label: 'Charlie', score: null }, { id: 'alpha', label: 'Alpha', score: 0 }, { id: 'bravo', label: 'Bravo', score: 12 }];
+    const config = { ...published, connectionId: wardogs.id };
+    const source = { ...scope, gameId: 'wardogs' as const };
+    const input = { ...wardogs, scores, observedAt: now.toISOString(), freshness: 'fresh' as const };
+    expect(mapLogiServerSnapshot(source, input, config, now)).toMatchObject({ score: null, teamScores: scores });
+    expect(mapLogiServerSnapshot(source, input, config, new Date(now.getTime() + 121_000))?.teamScores).toBeNull();
+    expect(mapLogiServerSnapshot(source, input, config, now, false)?.teamScores).toBeNull();
+    expect(mapLogiServerSnapshot(source, { ...input, observedAt: null }, config, now)?.teamScores).toBeNull();
+    expect(mapLogiServerSnapshot(source, { ...input, scores: [] }, config, now)?.teamScores).toEqual([]);
+  });
+
   it('requires explicit event publication and preserves unknown schedule and results', () => {
     const event = logiEventSummarySchema.parse(changes.record.data.data);
     const source = { ...scope, gameId: event.gameId, guildId: event.guildId };

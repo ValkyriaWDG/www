@@ -24,6 +24,8 @@
   max-width: 100%;
 }
 
+.updates { display: grid; gap: var(--space-3); width: min(100%, 560px); }
+
 .identity {
   display: flex;
   flex-wrap: wrap;
@@ -238,13 +240,8 @@ a.cta:focus-visible {
 }
 
 @media (min-width: 1280px) {
-  .nextMatch {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: max-content;
-    transform: translateX(-50%);
-  }
+  .stage { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: var(--space-5); }
+  .updates { width: min(48%, 560px); }
 }
 
 @media (max-width: 767px) {

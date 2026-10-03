@@ -11,6 +11,13 @@ const WDG_MATCHES = '200000000000000011';
 const ADMINS = '200000000000000012';
 
 describe('game-scoped role mapping', () => {
+  it('keeps member team reads within the granted game and denies stale authority', () => {
+    const member = testPrincipal(['member'], { games: ['hell-let-loose'] });
+    expect(canForGame(member, 'team.read', 'hell-let-loose')).toBe(true);
+    expect(canForGame(member, 'team.read', 'wardogs')).toBe(false);
+    expect(canForGame(member, 'admin.access', 'hell-let-loose')).toBe(false);
+    expect(canForGame(testPrincipal(['member'], { status: 'stale' }), 'team.read', 'hell-let-loose')).toBe(false);
+  });
   it('keeps the digest of an unscoped v1 mapping unchanged', () => {
     const json = JSON.stringify({ '200000000000000002': 'editor', '200000000000000001': ['member'] });
     const parsed = parseRoleMapping(json);

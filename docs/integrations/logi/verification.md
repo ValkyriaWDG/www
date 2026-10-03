@@ -1,5 +1,22 @@
 # Logi verification record
 
+## Latest people synchronization checkpoint — 2026-10-03
+
+The [people acceptance bundle](../../evidence/logi-people-2026-10-03/README.md) records
+the follow-up to merged PR #83: 894 unit, 476 real PostgreSQL and 199 browser tests
+passed, with 124 opt-in captures skipped. Lint, typecheck and optimized build passed.
+Actual local Logi-to-website browser behavior passed 23 checks, the additive schema
+upgrade passed 7, and eight inspected screenshots show private/public CS/EN flows.
+The producer passed 725 tests, 46 people HTTP checks and 17 native writer HTTP checks.
+The bundle identifies the exact runtime/source hashes and review boundaries.
+
+This adds read-only membership, published rosters, attendance and verified collected
+player statistics; website publication remains explicitly consented. No hosted,
+production, new live Discord login or real Steam proof is implied. Previous evidence
+below is historical and superseded only by an explicitly rerun check.
+
+## Earlier integration checkpoint — 2026-10-02
+
 Local implementation checkpoint, 2026-10-02. This record separates deterministic
 fixtures, real disposable database checks, actual paired-provider HTTP and browser
 behavior. It is not production acceptance. The final source hashes, results and

@@ -1,0 +1,96 @@
+{
+  "runtimeRevision": "b91136c7aa1f9d5a6562af2b206c03cd7d19021d",
+  "buildId": "beGPyg0YqIrP5fRRPtqZQ",
+  "browser": "Chromium 153.0.8010.12",
+  "captureRun": {
+    "startedAt": "2026-10-03T00:55:43.932Z",
+    "finishedAt": "2026-10-03T00:56:09.135Z"
+  },
+  "synthetic": true,
+  "captures": [
+    {
+      "file": "home-cs-1440.png",
+      "route": "/cs/wardogs",
+      "locale": "cs",
+      "viewport": "1440x1050",
+      "fullPage": true,
+      "caption": "Home overview, current population 0/98, named scores 0/12/7 and desktop Servers navigation.",
+      "sha256": "0bf6df01c6eae4dde0ef23d39ecca60b9ea2b255c3c30cd2d6943fd93c38536e",
+      "bytes": 758318,
+      "width": 1440,
+      "height": 1050
+    },
+    {
+      "file": "home-en-390.png",
+      "route": "/en/wardogs",
+      "locale": "en",
+      "viewport": "390x844",
+      "fullPage": true,
+      "caption": "Home overview stacked under the action menu; scores and pause control fit a phone.",
+      "sha256": "a01435eb836811b0a0b89e21967b9f2f3236c233b503bbf2dc9b86eeb8641308",
+      "bytes": 209128,
+      "width": 390,
+      "height": 1160
+    },
+    {
+      "file": "detail-en-1440.png",
+      "route": "/en/wardogs/servers?server=synthetic-wardogs",
+      "locale": "en",
+      "viewport": "1440x1050",
+      "fullPage": true,
+      "caption": "Selected list/detail, full-width three-team scores, explicit observation time and approved statistics link.",
+      "sha256": "9fc5b211b77610c75b9f0a25d89d35498506f212f62105ddac8fcf7bbd707c8b",
+      "bytes": 523391,
+      "width": 1440,
+      "height": 1082
+    },
+    {
+      "file": "detail-cs-390.png",
+      "route": "/cs/wardogs/servers?server=synthetic-wardogs",
+      "locale": "cs",
+      "viewport": "390x844",
+      "fullPage": true,
+      "caption": "Phone detail, named scores, unknown connection instructions and public statistics link.",
+      "sha256": "1c4bee4bda6195713aa035e8aa90eb9cbdf8217cfef592903f3f5dfd68f9544f",
+      "bytes": 181559,
+      "width": 390,
+      "height": 1329
+    },
+    {
+      "file": "list-cs-390.png",
+      "route": "/cs/wardogs/servers",
+      "locale": "cs",
+      "viewport": "390x844",
+      "fullPage": true,
+      "caption": "Phone list after Back; server, population and freshness fit without horizontal overflow.",
+      "sha256": "9a0c0411708d4437d2246438dfa2df050084eea7462bd24f25dbadf2b6827913",
+      "bytes": 153325,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "home-en-stale.png",
+      "route": "/en/wardogs",
+      "locale": "en",
+      "viewport": "1280x720",
+      "fullPage": true,
+      "caption": "Failed browser refresh: stale last-known population, hidden scores and visible failure message.",
+      "sha256": "f07c0da40c3c1197e6e87279a057c4da8e79f575a35d4cf9ce02b47a21c7ac34",
+      "bytes": 479255,
+      "width": 1280,
+      "height": 754
+    },
+    {
+      "file": "home-cs-unconfigured.png",
+      "route": "/cs/wardogs",
+      "locale": "cs",
+      "viewport": "1280x720",
+      "fullPage": true,
+      "caption": "Provider unconfigured after refresh: no server rows, counts or scores are invented.",
+      "sha256": "50338d90f538ef73f73f736d841033093fe8f5708eef163fc6d539596ccb2742",
+      "bytes": 482414,
+      "width": 1280,
+      "height": 720
+    }
+  ]
+}

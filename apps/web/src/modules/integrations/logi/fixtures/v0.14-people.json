@@ -1,0 +1,23 @@
+{
+  "synthetic": true,
+  "member": {
+    "schemaVersion": 1, "id": "assignment-example", "guildId": "910000000000000001", "gameId": "wardogs", "updatedAt": "2026-10-03T10:00:00.000Z",
+    "identityId": "user-record-example", "discordSubject": "910000000000000002", "identityState": "resolved", "displayName": "Synthetic member",
+    "type": "member", "status": "active", "paused": false, "groups": [{"id": "group-example", "name": "Synthetic squad", "primary": true}]
+  },
+  "roster": {
+    "schemaVersion": 1, "id": "roster-example", "guildId": "910000000000000001", "gameId": "wardogs", "updatedAt": "2026-10-03T10:00:00.000Z",
+    "eventId": "event-example", "published": true,
+    "squads": [{"index": 0, "name": "Alpha", "slots": [{"index": 0, "memberId": "assignment-example", "identityId": "user-record-example", "identityState": "resolved", "attendance": "acknowledged"}, {"index": 1, "memberId": null, "identityId": null, "identityState": "unresolved", "attendance": "pending"}]}],
+    "reserves": [], "notAttending": [], "eventParticipation": [{"memberId": "assignment-example", "identityId": "user-record-example", "identityState": "resolved", "status": "attending", "completed": null}]
+  },
+  "statistics": {
+    "schemaVersion": 1, "id": "session-example", "guildId": "910000000000000001", "gameId": "wardogs", "updatedAt": "2026-10-03T10:00:00.000Z",
+    "connectionId": "connection-example", "source": "collected_session", "provider": "wardogs_warcon", "externalSessionId": "round-example",
+    "startedAt": "2026-10-03T09:00:00.000Z", "endedAt": "2026-10-03T09:30:00.000Z", "complete": true,
+    "fetchedAt": "2026-10-03T10:00:00.000Z", "sourceDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "attributionCheckedAt": "2026-10-03T10:00:02.000Z",
+    "players": [{"memberId": "assignment-example", "identityId": "user-record-example", "verifiedAt": "2026-10-03T08:00:00.000Z", "metrics": {"kills": 8, "deaths": 3, "combat": null, "offense": null, "defense": null, "support": null, "seconds": 1800, "cashDelta": -125, "headshots": null, "teamKills": null, "suicides": null, "vehicleKills": null, "longestM": null, "killStreak": null, "deathStreak": null}}],
+    "coverage": {"observedPlayers": 3, "verifiedMembers": 1, "unlinkedPlayers": 2},
+    "eventRefs": [{"eventId": "event-example", "resultVersion": 2, "resultState": "corrected"}]
+  }
+}

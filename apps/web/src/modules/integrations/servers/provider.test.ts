@@ -1,8 +1,11 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { resetServerEnvForTests } from '@/lib/env';
 import type { CrconServerConfig } from './crcon';
 import { syntheticPublicInfo } from './crcon-fixtures';
 import { crconSource, getServerOverview, resetServerStatusForTests } from './provider';
+import { getLogiServerOverview } from '../logi-public';
+
+vi.mock('../logi-public', () => ({ getLogiServerOverview: vi.fn(async () => ({ state: 'not_configured' })) }));
 
 const now = new Date('2026-09-28T12:00:00Z');
 
@@ -15,6 +18,8 @@ function configure(source?: string, scenario?: string) {
 }
 
 afterEach(() => {
+  delete process.env.SERVER_STATUS_SOURCE_WDG;
+  vi.clearAllMocks();
   configure();
   resetServerStatusForTests();
 });
@@ -43,9 +48,30 @@ describe('server status provider', () => {
     expect(overview.servers[0]?.ref.game).toBe('hll');
   });
 
-  it('keeps games separate: a game without a configured set is not configured', async () => {
+  it('keeps the Wardogs three-team observation separate from HLL', async () => {
     configure('synthetic-fixture', 'mixed');
+    const overview = await getServerOverview('wardogs', now);
+    if (overview.state !== 'ok') throw new Error('expected ok');
+    expect(overview.servers).toHaveLength(1);
+    expect(overview.servers[0]).toMatchObject({ ref: { game: 'wardogs' }, players: 0, capacity: 98, score: null, teamScores: [{ id: 'alpha', score: 0 }, { id: 'bravo', score: 12 }, { id: 'charlie', score: 7 }] });
+    configure('synthetic-fixture', 'unavailable');
+    expect(await getServerOverview('wardogs', now)).toMatchObject({ state: 'unavailable', servers: [{ freshness: 'stale', teamScores: null }] });
+  });
+
+  it('routes Wardogs to Logi independently of the HLL source, with explicit disable and inheritance', async () => {
+    process.env.SERVER_STATUS_SOURCE_WDG = 'logi';
+    configure('crcon');
+    await getServerOverview('wardogs', now);
+    expect(getLogiServerOverview).toHaveBeenCalledExactlyOnceWith('wardogs', now);
+    await getServerOverview('hll', now, crconSource([]));
+    expect(getLogiServerOverview).toHaveBeenCalledTimes(1);
+    process.env.SERVER_STATUS_SOURCE_WDG = 'none';
+    configure('synthetic-fixture');
     expect(await getServerOverview('wardogs', now)).toEqual({ state: 'not_configured' });
+    expect(await getServerOverview('hll', now)).toMatchObject({ state: 'ok' });
+    process.env.SERVER_STATUS_SOURCE_WDG = '';
+    configure('synthetic-fixture');
+    expect(await getServerOverview('wardogs', now)).toMatchObject({ state: 'ok' });
   });
 
   it('reports a source failure as unavailable and shows only still-relevant last known rows as stale', async () => {

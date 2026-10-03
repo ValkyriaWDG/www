@@ -122,7 +122,7 @@ export function DetailPane({
   titleId: string;
   eyebrow?: ReactNode;
   media?: ReactNode;
-  metadata?: { label: ReactNode; value: ReactNode }[];
+  metadata?: { label: ReactNode; value: ReactNode; wide?: boolean }[];
   children?: ReactNode;
   actions?: ReactNode;
 }) {
@@ -137,7 +137,7 @@ export function DetailPane({
         {metadata && metadata.length > 0 ? (
           <dl className={styles.metadata}>
             {metadata.map((item, index) => (
-              <div key={index} className={styles.metadataItem}>
+              <div key={index} className={styles.metadataItem} data-wide={item.wide ? '' : undefined}>
                 <dt>{item.label}</dt>
                 <dd>{item.value}</dd>
               </div>

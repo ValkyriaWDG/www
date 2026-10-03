@@ -3,7 +3,7 @@ import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { logiInbox, type Executor } from '@valkyria/db';
 import { and, asc, eq, inArray, isNull, lte } from 'drizzle-orm';
 import { z } from 'zod';
-import { configuredLogiSources, type LogiIntegrationEnv } from './logi-config';
+import { configuredLogiSourceBindings, type LogiIntegrationEnv } from './logi-config';
 import { logiChangeSchema } from './logi/contracts';
 
 const MAX_BODY_BYTES = 65_536;
@@ -31,7 +31,7 @@ function reply(status: number, code?: string): Response {
 
 function configuredWebhook(env: LogiIntegrationEnv, sourceId: string) {
   if (env.LOGI_WEBHOOK_ENABLED !== true || !sourceIdSchema.safeParse(sourceId).success) throw new WebhookError(404, 'not_found');
-  const sources = configuredLogiSources(env, 'data');
+  const sources = configuredLogiSourceBindings(env);
   const matching = sources.filter((source) => source.sourceInstanceId === sourceId);
   if (!matching.length) throw new WebhookError(404, 'not_found');
   const first = matching[0]!;
@@ -41,7 +41,7 @@ function configuredWebhook(env: LogiIntegrationEnv, sourceId: string) {
   const secrets = z.record(sourceIdSchema, z.string().min(32).max(512).regex(/^[\x21-\x7e]+$/)).parse(JSON.parse(rawSecrets));
   if (Object.keys(secrets).length > 2 || Object.keys(secrets).some((id) => !sources.some((source) => source.sourceInstanceId === id))) throw new Error('Invalid webhook configuration.');
   const secret = secrets[sourceId];
-  const serviceKeys = [env.LOGI_DATA_API_KEY_HLL, env.LOGI_DATA_API_KEY_WDG, env.LOGI_MEMBERSHIP_API_KEY_HLL, env.LOGI_MEMBERSHIP_API_KEY_WDG, env.LOGI_EVENT_API_KEY_HLL, env.LOGI_EVENT_API_KEY_WDG];
+  const serviceKeys = [env.LOGI_DATA_API_KEY_HLL, env.LOGI_DATA_API_KEY_WDG, env.LOGI_PEOPLE_API_KEY_HLL, env.LOGI_PEOPLE_API_KEY_WDG, env.LOGI_MEMBERSHIP_API_KEY_HLL, env.LOGI_MEMBERSHIP_API_KEY_WDG, env.LOGI_EVENT_API_KEY_HLL, env.LOGI_EVENT_API_KEY_WDG];
   if (!secret || serviceKeys.includes(secret)) throw new Error('A distinct webhook signing secret is required.');
   return { sourceInstanceId: sourceId, guildId: first.guildId, gameIds: matching.map((source) => source.gameId), secret };
 }

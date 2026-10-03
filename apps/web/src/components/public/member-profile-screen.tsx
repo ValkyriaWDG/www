@@ -12,6 +12,9 @@ import { PageMain } from '@/components/shell/page-main';
 import { PageHeader, SectionFrame } from '@/components/ui/panels';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
+import { readPublicLogiMemberEnrichment } from '@/modules/integrations/logi-people';
+import { PublicLogiMemberActivity } from './logi-people';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
 import { getPublicMember } from '@/modules/members/queries';
@@ -59,6 +62,7 @@ export async function MemberProfileScreen({ locale, slug, game, query }: { local
   const filters = parseMemberFilters(query);
   if (game) filters.game = undefined;
   const t = await getTranslations({ locale, namespace: 'members' });
+  const activity = await readPublicLogiMemberEnrichment(getDb(), getServerEnv(), slug, { game: game ? GAME_REGISTRY[game].db : undefined });
   return (
     <PageMain width="reading" labelledBy="member-title">
       <PageHeader
@@ -109,6 +113,7 @@ export async function MemberProfileScreen({ locale, slug, game, query }: { local
           }}
         />
       </SectionFrame>
+      <PublicLogiMemberActivity locale={locale} items={activity} />
     </PageMain>
   );
 }

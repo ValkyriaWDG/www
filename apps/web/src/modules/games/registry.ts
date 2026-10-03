@@ -44,9 +44,7 @@ export const GAME_REGISTRY: Readonly<Record<GameRoute, GameDefinition>> = {
     db: 'wardogs',
     logi: 'wardogs',
     theme: 'wardogs',
-    // Existing Wardogs menu order, unchanged. Observed Wardogs servers are added once an
-    // approved server source exists (legacy inventory); until then the switch explains it.
-    sections: ['news', 'clan', 'members', 'matches'],
+    sections: ['news', 'clan', 'members', 'matches', 'servers'],
   },
 };
 

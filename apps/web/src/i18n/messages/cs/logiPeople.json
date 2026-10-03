@@ -1,0 +1,16 @@
+{
+  "title": "Přehled týmu", "description": "Členství, publikované sestavy a účast spravované v Logim / Discordu.",
+  "account": "Můj účet", "openTeam": "Tým · {game}", "members": "Členové", "rosters": "Publikované sestavy", "attendance": "Odpovědi k účasti",
+  "name": "Hráč", "membership": "Členství", "groups": "Skupiny", "status": "Stav", "statistics": "Statistiky načtených herních relací", "empty": "Zatím nejsou synchronizované záznamy.",
+  "unknown": "Není k dispozici", "updated": "Zjištěno {date}", "rosterTitle": "Sestava {number}", "reserves": "Náhradníci", "vacant": "Neobsazeno / neurčeno", "paused": "Pozastaveno",
+  "statsNote": "Zahrnuty jsou pouze relace s ověřenou identitou hráče. Nejde o celoživotní součty. Pomlčka znamená, že zdroj údaj neposkytl.",
+  "statsCoverage": "Načtené relace: {sessions} · kompletní: {complete}", "metricCoverage": "Údaj dostupný v {count} relacích", "period": "{from} – {to}",
+  "attendanceNote": "Přihlášení, přijetí sestavy a potvrzení jsou odpovědi hráče, nikoli důkaz odehrané účasti.",
+  "fresh": "Aktuální synchronizovaná data", "stale": "Poslední známá data. Synchronizace má zpoždění.", "unavailable": "Týmová data jsou dočasně nedostupná.", "unconfigured": "Synchronizace týmu není nakonfigurovaná.",
+  "member": "Člen", "reserve_member": "Člen v záloze", "mercenary": "Hostující hráč", "pending": "Čeká", "recruit": "Rekrut", "active": "Aktivní",
+  "attending": "Zúčastní se", "acknowledged": "Sestava přijata", "confirmed": "Potvrzeno", "not_attending": "Nezúčastní se", "accepted": "Přijato", "declined": "Odmítnuto", "tentative": "Předběžně", "registered": "Přihlášen", "passed": "Splněno", "failed": "Nesplněno",
+  "publicTitle": "Aktivita v týmu", "publicNotice": "Schválené údaje z Logiho. Zobrazují se pouze publikované profily se souhlasem člena.", "publicRoster": "Schválená sestava", "source": "Zdroj: Logi", "position": "Pozice", "match": "Zápas",
+  "linkTitle": "Propojení profilů s Logim", "linkDescription": "Přiřaďte ověřeného člena k existujícímu profilu webu. Stále je nutný souhlas člena a publikování profilu. Propojení nemění přihlašovací účty ani data v Logim.",
+  "profile": "Profil webu", "chooseProfile": "Vyberte profil", "chooseMember": "Vyberte ověřeného člena", "loadProfile": "Otevřít propojení", "allowStats": "Zveřejnit ověřené statistiky relací", "allowRoster": "Zveřejnit pozici v sestavě", "save": "Uložit propojení", "remove": "Odstranit propojení", "saved": "Propojení uloženo.", "removed": "Propojení odstraněno.", "noCandidates": "Pro tuto hru nejsou dostupní aktuální ověření členové.", "association": "Propojení pro {game}", "staleLink": "Uložená identita není dostupná. Vyberte aktuálního ověřeného člena, nebo propojení odstraňte.", "linked": "Propojeno", "unlinked": "Nepropojeno",
+  "metrics": { "kills": "Zabití", "deaths": "Úmrtí", "combat": "Boj", "offense": "Útok", "defense": "Obrana", "support": "Podpora", "seconds": "Odehrané sekundy", "cashDelta": "Změna peněz", "headshots": "Zásahy do hlavy", "teamKills": "Zabití spojence", "suicides": "Sebevraždy", "vehicleKills": "Zničená vozidla", "longestM": "Nejdelší vzdálenost (m)", "killStreak": "Nejlepší série zabití", "deathStreak": "Nejdelší série úmrtí" }
+}

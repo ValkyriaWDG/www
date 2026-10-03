@@ -1,0 +1,77 @@
+{
+  "runtimeRevision": "b91136c7aa1f9d5a6562af2b206c03cd7d19021d",
+  "buildId": "beGPyg0YqIrP5fRRPtqZQ",
+  "environment": "Local Windows x64; disposable PostgreSQL 18.4 ICU cs-CZ; synthetic server fixtures; no production provider requests",
+  "checks": [
+    {
+      "kind": "lint",
+      "command": "pnpm lint",
+      "startedAt": "2026-10-03T00:56:19.500Z",
+      "finishedAt": "2026-10-03T00:56:35.525Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "passed"
+    },
+    {
+      "kind": "types",
+      "command": "pnpm typecheck",
+      "startedAt": "2026-10-03T00:56:35.777Z",
+      "finishedAt": "2026-10-03T00:56:48.771Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "passed"
+    },
+    {
+      "kind": "unit",
+      "command": "pnpm test:unit",
+      "startedAt": "2026-10-03T00:56:19.502Z",
+      "finishedAt": "2026-10-03T00:56:37.335Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "897 passed"
+    },
+    {
+      "kind": "integration",
+      "command": "pnpm test:integration",
+      "startedAt": "2026-10-03T00:56:37.601Z",
+      "finishedAt": "2026-10-03T00:57:01.885Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "476 passed"
+    },
+    {
+      "kind": "build",
+      "command": "pnpm build",
+      "startedAt": "2026-10-03T00:55:33.273Z",
+      "finishedAt": "2026-10-03T00:55:43.521Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "passed"
+    },
+    {
+      "kind": "focused",
+      "command": "pnpm test:e2e e2e/wardogs-servers.spec.ts e2e/platform.spec.ts e2e/server-live-players.spec.ts e2e/shell.spec.ts",
+      "startedAt": "2026-10-03T00:55:43.932Z",
+      "finishedAt": "2026-10-03T00:56:09.135Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "47 passed"
+    },
+    {
+      "kind": "e2e",
+      "command": "pnpm test:e2e",
+      "startedAt": "2026-10-03T00:56:57.350Z",
+      "finishedAt": "2026-10-03T00:58:26.998Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true,
+      "result": "208 passed; 124 unrelated opt-in captures skipped"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { classifyFreshness, SERVER_FRESHNESS, sourceKey, type ServerSnapshot } from '../contract';
-import { parseServerParam, populationParts, resolveSelection } from './view';
+import { ageServerBrowserData, parseServerParam, populationParts, resolveSelection } from './view';
+import type { ServerBrowserData } from './browser';
 
 const server = (publicId: string, patch: Partial<ServerSnapshot> = {}): ServerSnapshot => ({
   ref: { source: 'synthetic', sourceInstanceId: 'synthetic', guildId: null, game: 'hll', kind: 'server', externalId: publicId },
@@ -24,6 +25,13 @@ const server = (publicId: string, patch: Partial<ServerSnapshot> = {}): ServerSn
 
 describe('server freshness', () => {
   const now = new Date('2026-09-28T12:00:00Z');
+  it('removes Wardogs scores on age or a failed poll while keeping a labelled last-known population', () => {
+    const data: ServerBrowserData = { overview: { state: 'ok', synthetic: true, partial: false, attemptedAt: now.toISOString(), servers: [server('wardogs', { observedAt: now.toISOString(), freshness: 'fresh', players: 0, teamScores: [{ id: 'a', label: 'Alpha', score: 0 }] })] }, livePlayers: null };
+    for (const [at, failed] of [[new Date(now.getTime() + 121_000), false], [now, true]] as const) {
+      expect(ageServerBrowserData(data, at, failed).overview).toMatchObject({ servers: [{ freshness: 'stale', players: 0, teamScores: null }] });
+    }
+    expect(ageServerBrowserData(data, new Date(now.getTime() + 31 * 60_000)).overview).toMatchObject({ servers: [{ freshness: 'unavailable', players: null, teamScores: null }] });
+  });
   it('classifies current, stale and expired observations', () => {
     expect(classifyFreshness(new Date('2026-09-28T11:59:00Z'), now, SERVER_FRESHNESS)).toBe('fresh');
     expect(classifyFreshness(new Date('2026-09-28T11:45:00Z'), now, SERVER_FRESHNESS)).toBe('stale');

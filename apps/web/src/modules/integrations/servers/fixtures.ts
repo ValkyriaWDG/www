@@ -21,6 +21,7 @@ export type SyntheticServer = {
   timeRemainingSeconds: number | null;
   score: { allied: number; axis: number } | null;
   teams: { allied: number; axis: number } | null;
+  teamScores?: { id: string; label: string; score: number | null }[] | null;
   /** Observation age in seconds, or `null` when the source never reported a time. */
   ageSeconds: number | null;
   address: string | null;
@@ -28,6 +29,13 @@ export type SyntheticServer = {
 };
 
 export const SYNTHETIC_SERVERS: Readonly<Partial<Record<GameRoute, SyntheticServer[]>>> = {
+  wardogs: [{
+    id: 'synthetic-wardogs-1', publicId: 'synthetic-wardogs', name: '[SYNTHETIC] Valkyria Wardogs Test Server',
+    reachability: 'online', map: 'Synthetic Training Ground', mode: null, players: 0, capacity: 98,
+    nextMap: null, timeRemainingSeconds: null, score: null, teams: null,
+    teamScores: [{ id: 'alpha', label: 'Alpha', score: 0 }, { id: 'bravo', label: 'Bravo', score: 12 }, { id: 'charlie', label: 'Charlie', score: 7 }],
+    ageSeconds: 40, address: null, statsUrl: 'https://stats.synthetic-wardogs.invalid/',
+  }],
   hll: [
     {
       id: 'synthetic-hll-1',

@@ -28,6 +28,14 @@ afterAll(async () => { await database.drop(); });
 beforeEach(async () => { await database.db.delete(logiInbox); });
 
 describe('authenticated Logi webhook inbox in real PostgreSQL', () => {
+  it('accepts only a signed people hint with no dependency on a data API key', async () => {
+    const peopleEnv = { ...env, LOGI_DATA_API_KEY_WDG: undefined, LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-123456', LOGI_SOURCES_JSON: JSON.stringify([{ ...config, syncPeople: true }]) };
+    const raw = JSON.stringify(envelope({ resource: { id: 'assignment-1', guildId: GUILD, gameId: 'wardogs', resource: 'member-summaries', revision: '1', operation: 'upsert' } }));
+    expect((await receiveLogiWebhook(database.db, peopleEnv, SOURCE, request(raw), { now: () => NOW })).status).toBe(202);
+    expect(await database.db.select().from(logiProjection)).toEqual([]);
+    const reused = { ...peopleEnv, LOGI_PEOPLE_API_KEY_WDG: SECRET };
+    expect((await receiveLogiWebhook(database.db, reused, SOURCE, request(raw), { now: () => NOW })).status).toBe(503);
+  });
   it('accepts the actual producer envelope without an ID and persists only an invalidation hint', async () => {
     const raw = JSON.stringify(envelope());
     const response = await receive(request(raw));

@@ -56,9 +56,11 @@ false in production.
 | `BETTER_AUTH_SECRET` | Independent website session/token encryption secret of at least 32 characters; not a provider private key |
 | `LOGI_MEMBERSHIP_SOURCE=logi`, `LOGI_MEMBERSHIP_API_KEY_HLL/WDG`, `DISCORD_ROLE_MAPPING_JSON` | Restricted per-game membership reads and reviewed application-role mapping |
 | `LOGI_DATA_API_KEY_HLL/WDG` | Restricted reads for the five collections and their scoped change/refetch operations |
+| `LOGI_PEOPLE_API_KEY_HLL/WDG`, source `syncPeople: true` | Private directory, published rosters and verified player-session reads; see [people synchronization](people.md) |
 | `LOGI_EVENT_WRITE_ENABLED`, `LOGI_EVENT_API_KEY_HLL/WDG` | Separate command credentials, current user session and an explicitly enabled provider application/key/game/role policy |
 | `LOGI_WEBHOOK_ENABLED`, `LOGI_WEBHOOK_SIGNING_SECRETS_JSON` | Map configured source instance ID to a separate signing secret, at least 32 printable characters; never reuse a service key |
 | `SERVER_STATUS_SOURCE=logi` | Read server cards from approved configured Logi connections; this does not publish every collected server |
+| `SERVER_STATUS_SOURCE_WDG=logi` | Select Logi for Wardogs independently; blank inherits `SERVER_STATUS_SOURCE`, `none` disables Wardogs telemetry. HLL may keep `SERVER_STATUS_SOURCE=crcon`. See [Wardogs servers](wardogs-servers.md) |
 | `LOGI_DISCORD_FALLBACK_ENABLED` | Explicit direct-Discord fallback while Logi is primary; default false |
 
 Use a separate key per purpose and game, restricted to the necessary resources.
@@ -88,7 +90,8 @@ Logi data. Local recovery is a separately provisioned MFA account.
 5. Approve public output independently. `publishMatches=true` makes every eligible safe
    match summary in that source/game public. Set `publicServers[].published=true` only
    for individually approved connections; supply only approved public join/statistics
-   values. Select `SERVER_STATUS_SOURCE=logi` and inspect both languages and mobile UI.
+   values. Select `SERVER_STATUS_SOURCE=logi`, or `SERVER_STATUS_SOURCE_WDG=logi`
+   for Wardogs alone, and inspect both languages and mobile UI.
 6. Enable the provider's actor-command policy for the registered application, scoped
    command key and explicit game role IDs. Configure all required games before setting
    `LOGI_EVENT_WRITE_ENABLED=true`: that switch blocks ordinary legacy website match

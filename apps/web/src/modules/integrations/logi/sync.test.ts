@@ -53,6 +53,47 @@ function live(cursor = 'old-cursor'): LogiSyncCheckpoint {
 }
 
 describe('revision-aware bootstrap and replay', () => {
+  it('finishes more than fifty empty people scan pages within the larger bounded pass', async () => {
+    let clock = now;
+    let pages = 0;
+    const store = new MemoryStore();
+    const reader = createLogiClient({ origin: 'https://logi.example', apiKey: 'synthetic-people-key-12345', sourceInstanceId: 'instance', guildId: '910000000000000001', gameId: 'wardogs', resources: ['roster-summaries'] }, { fetchImpl: async (input) => {
+      clock += 100;
+      if (new URL(input).pathname.endsWith('/changes')) return json(changed('boundary'));
+      pages++;
+      return json({ data: [], page: { nextCursor: pages < 55 ? `scan-${pages}` : null, limit: 1 } });
+    } });
+    const result = await synchronizeLogiScope(reader, store, { resources: ['roster-summaries'], now: () => clock, fullRefreshMs: 300_000, maxSteps: 100, maxRunMs: 50_000, leaseMs: 60_000 });
+    expect(result).toMatchObject({ state: 'caught_up', records: 0, committedPages: 57 });
+    expect(pages).toBe(55);
+    expect(clock - now).toBeLessThan(50_000);
+    expect(store.checkpoint).toMatchObject({ mode: 'live', reconciledAt: new Date(clock).toISOString() });
+  });
+  it('periodically rebuilds identity facts even when incremental pulls stay idle', async () => {
+    let clock = now;
+    let captures = 0;
+    const store = new MemoryStore();
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      if (url.pathname.endsWith('/changes')) {
+        if (url.searchParams.has('start')) captures++;
+        return json(changed(`boundary-${captures}`));
+      }
+      return json(list([]));
+    });
+    const refresh = { ...options, now: () => clock, fullRefreshMs: 300_000, newGeneration: () => `refresh-${captures}` };
+    expect((await synchronizeLogiScope(reader, store, refresh)).state).toBe('caught_up');
+    expect(captures).toBe(1);
+    const completed = store.checkpoint!.reconciledAt;
+    clock += 299_999;
+    expect((await synchronizeLogiScope(reader, store, refresh)).state).toBe('caught_up');
+    expect(captures).toBe(1);
+    expect(store.checkpoint!.reconciledAt).toBe(completed);
+    clock++;
+    expect((await synchronizeLogiScope(reader, store, refresh)).state).toBe('caught_up');
+    expect(captures).toBe(2);
+    expect(store.checkpoint!.reconciledAt).not.toBe(completed);
+  });
   it('captures the boundary before lists, follows empty continuations, refetches atomic data and promotes only after replay', async () => {
     const calls: string[] = [];
     const store = new MemoryStore();

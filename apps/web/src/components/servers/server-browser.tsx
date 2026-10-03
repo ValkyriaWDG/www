@@ -18,6 +18,7 @@ import type { ServerBrowserData } from '@/modules/integrations/servers/browser';
 import { parseServerParam, populationParts, resolveSelection } from '@/modules/integrations/servers/view';
 import { CopyAddress } from './copy-address';
 import { LivePlayersTable } from './live-players-table';
+import { TeamScores } from './team-scores';
 import { useServerPolling } from './use-server-polling';
 import styles from './servers.module.css';
 
@@ -129,11 +130,11 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
     list = null;
   } else {
     list = (
-      <div className={styles.table} data-server-table="">
+      <div className={styles.table} data-server-table="" data-game={game}>
         <SelectionTable
           caption={t('caption')}
           captionHidden
-          columns={columns}
+          columns={game === 'wardogs' ? columns.filter((column) => column.key !== 'mode') : columns}
           rows={servers}
           getRowKey={(server) => server.publicId}
           getRowHref={(server) => `${base}?server=${server.publicId}`}
@@ -168,15 +169,20 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
           }
           metadata={[
             { label: t('detail.map'), value: selected.map ?? dash },
-            { label: t('detail.mode'), value: selected.mode ?? dash },
-            { label: t('detail.nextMap'), value: selected.nextMap ?? dash },
-            { label: t('detail.timeRemaining'), value: remaining(selected.timeRemainingSeconds) },
+            ...(game === 'hll' ? [
+              { label: t('detail.mode'), value: selected.mode ?? dash },
+              { label: t('detail.nextMap'), value: selected.nextMap ?? dash },
+              { label: t('detail.timeRemaining'), value: remaining(selected.timeRemainingSeconds) },
+            ] : []),
             {
-              label: t('detail.score'),
-              value: selected.score ? <span data-server-score="">{t('detail.scoreValue', selected.score)}</span> : dash,
+              label: t(game === 'wardogs' ? 'detail.teamScores' : 'detail.score'),
+              wide: game === 'wardogs',
+              value: game === 'wardogs'
+                ? selected.teamScores?.length ? <TeamScores scores={selected.teamScores} locale={locale} /> : dash
+                : selected.score ? <span data-server-score="">{t('detail.scoreValue', selected.score)}</span> : dash,
             },
             { label: t('detail.population'), value: population(selected) },
-            { label: t('detail.teams'), value: selected.teams ? t('detail.teamsValue', selected.teams) : dash },
+            ...(game === 'hll' ? [{ label: t('detail.teams'), value: selected.teams ? t('detail.teamsValue', selected.teams) : dash }] : []),
             { label: t('detail.reachability'), value: t(`reachability.${selected.reachability}`) },
             { label: t('detail.freshness'), value: freshness(selected) },
             {
@@ -281,7 +287,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
           </div>
         ) : null}
       </div>
-      {selected && livePlayers?.publicId === selected.publicId ? <LivePlayersTable snapshot={livePlayers} locale={locale} serverName={selected.name} connectedPlayers={selected.freshness === 'fresh' ? selected.players : null} /> : null}
+      {game === 'hll' && selected && livePlayers?.publicId === selected.publicId ? <LivePlayersTable snapshot={livePlayers} locale={locale} serverName={selected.name} connectedPlayers={selected.freshness === 'fresh' ? selected.players : null} /> : null}
     </PageMain>
   );
 }

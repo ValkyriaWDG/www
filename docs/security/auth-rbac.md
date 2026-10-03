@@ -69,6 +69,7 @@ application grants. All permissions are denied unless a rule grants them.
 | Capability | Visitor / signed-in outsider | Member | Editor | Match manager | Administrator | Owner |
 |---|---|---|---|---|---|---|
 | Read published pages | Yes | Yes | Yes | Yes | Yes | Yes |
+| Read Logi team (`team.read`) | No | Granted game | Only if also member | Granted game | Granted game | Granted game |
 | Edit own profile draft | No / own unpublished request only | Own | Own | Own | Own | Own |
 | Publish pages/news/member profiles | No | No | Yes | No | Yes | Yes |
 | Upload/manage editorial media | No | No | Editorial scope | Match scope only | Yes | Yes |
@@ -88,6 +89,13 @@ Use a central `authorize(actor, capability, resource)` service from every server
 route handler and private query. Middleware/client visibility are convenience only.
 Check object scope to prevent IDOR and cross-match edits. Private roster information
 is not automatically visible to public profile editors.
+The game-scoped `/[locale]/[game]/team` page displays only published native rosters.
+Website profile associations require `members.publish` for every profile affiliation
+and the source game. The final transaction rechecks issuer evidence and the unchanged,
+unexpired interactive session under shared locks. Associations do not link login
+accounts or grant authority. Public statistics and line-up positions require separate
+opt-ins plus current published-profile consent. Internal member types/statuses/groups
+and individual attendance remain private. See [people synchronization](../integrations/logi/people.md).
 
 ## Game-scoped authority
 

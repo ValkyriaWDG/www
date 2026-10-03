@@ -5,7 +5,11 @@ import { LogiMatches } from '@/components/public/logi-matches';
 import { PageMain } from '@/components/shell/page-main';
 import { PageHeader } from '@/components/ui';
 import { routing } from '@/i18n/routing';
-import { isGameRoute } from '@/modules/games/registry';
+import { GAME_REGISTRY, isGameRoute } from '@/modules/games/registry';
+import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
+import { readPublicLogiEventPeople } from '@/modules/integrations/logi-people';
+import { PublicLogiMatchPeople } from '@/components/public/logi-people';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
 
 export const dynamic = 'force-dynamic';
@@ -16,5 +20,6 @@ export default async function ConnectedMatchPage({ params }: { params: Promise<{
   const events = await getPublicLogiEvents(game);
   const selected = events.find((row) => row.ref.externalId === id);
   if (!selected) notFound();
-  return <PageMain width="full" labelledBy="logi-match-title"><PageHeader title={selected.title} titleId="logi-match-title" /><LogiMatches locale={locale} events={events} selected={selected} /></PageMain>;
+  const people = await readPublicLogiEventPeople(getDb(), getServerEnv(), GAME_REGISTRY[game].db, id);
+  return <PageMain width="full" labelledBy="logi-match-title"><PageHeader title={selected.title} titleId="logi-match-title" /><LogiMatches locale={locale} events={events} selected={selected} /><PublicLogiMatchPeople locale={locale} people={people} /></PageMain>;
 }
