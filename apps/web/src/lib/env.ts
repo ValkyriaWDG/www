@@ -62,9 +62,10 @@ const serverEnvSchema = z.object({
   LOGI_EVENT_API_KEY_WDG: optionalSecret,
   LOGI_WEBHOOK_ENABLED: booleanFlag,
   LOGI_WEBHOOK_SIGNING_SECRETS_JSON: z.string().default('{}'),
-  /** Wardogs-only on-demand readers: separate `league-matches` and `warcon-data` grants. */
+  /** Wardogs-only on-demand readers: separate `league-matches`, `warcon-data` and `server-game-history` grants. */
   LOGI_LEAGUE_API_KEY_WDG: optionalSecret,
   LOGI_WARCON_API_KEY_WDG: optionalSecret,
+  LOGI_HISTORY_API_KEY_WDG: optionalSecret,
   /** `synthetic-fixture` serves labelled synthetic League/Warcon reader data (tests and review captures only). */
   LOGI_READERS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['logi', 'synthetic-fixture']).default('logi')),
   DISCORD_GUILD_ID: snowflake.optional(),
