@@ -6,7 +6,7 @@ import { expectNoHorizontalOverflow } from './support/shell-helpers';
  * Administration chrome at desktop and phone widths: the module list must not push the
  * account links onto a ragged second row, and the media library must fit a phone.
  */
-test('the module navigation takes its own row below very wide desktops', async ({ context, page }) => {
+test('the module navigation takes its own row at every desktop width', async ({ context, page }) => {
   await signInAs(context, { roles: ['administrator'] });
   const rows = async () => {
     const brand = (await page.locator('[data-admin-shell] header a').first().boundingBox())!;
@@ -14,19 +14,15 @@ test('the module navigation takes its own row below very wide desktops', async (
     const account = (await page.getByTestId('admin-nav').locator('xpath=following-sibling::div//nav').boundingBox())!;
     return { brand, modules, account };
   };
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/cs/admin/matches');
-  let box = await rows();
-  // Brand and account links share the first row; the modules start below them.
-  expect(Math.abs(box.account.y - box.brand.y)).toBeLessThan(2);
-  expect(box.modules.y).toBeGreaterThanOrEqual(box.brand.y + box.brand.height - 1);
-  expect(box.modules.width).toBeGreaterThan(1200);
-
-  await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto('/en/admin/matches');
-  box = await rows();
-  expect(Math.abs(box.modules.y - box.brand.y)).toBeLessThan(2);
-  expect(Math.abs(box.account.y - box.brand.y)).toBeLessThan(2);
+  for (const [width, height, path] of [[1440, 900, '/cs/admin/matches'], [1920, 1080, '/en/admin/matches']] as const) {
+    await page.setViewportSize({ width, height });
+    await page.goto(path);
+    const box = await rows();
+    // Brand and account links share the first row; the modules start below them.
+    expect(Math.abs(box.account.y - box.brand.y)).toBeLessThan(2);
+    expect(box.modules.y).toBeGreaterThanOrEqual(box.brand.y + box.brand.height - 1);
+    expect(box.modules.width).toBeGreaterThan(width - 200);
+  }
 });
 
 test('the media library fits a phone with two cards per row', async ({ context, page }) => {

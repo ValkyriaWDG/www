@@ -1005,18 +1005,16 @@
   }
 }
 
-/* Below very wide desktops the module list gets its own row under the brand and account
-   links; one row cannot hold every module an administrator may use. */
-@media (max-width: 1599px) {
-  .bar > .nav {
-    order: 3;
-    width: 100%;
-    border-top: var(--border-hairline) solid var(--color-chrome-line);
-  }
+/* The module list gets its own row under the brand and account links at every width;
+   no desktop row holds every module an administrator may use next to them. */
+.bar > .nav {
+  order: 3;
+  width: 100%;
+  border-top: var(--border-hairline) solid var(--color-chrome-line);
+}
 
-  .bar > .nav a {
-    min-height: 48px;
-  }
+.bar > .nav a {
+  min-height: 48px;
 }
 
 @media (max-width: 767px) {
