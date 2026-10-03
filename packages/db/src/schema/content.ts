@@ -262,6 +262,12 @@ export const taxonomyTerm = pgTable(
     key: text('key').notNull(),
     labelCs: text('label_cs').notNull(),
     labelEn: text('label_en').notNull(),
+    /** Admin picker order (lower first); public news filters sort by label. */
+    sortOrder: integer('sort_order').notNull().default(100),
+    descriptionCs: text('description_cs').notNull().default(''),
+    descriptionEn: text('description_en').notNull().default(''),
+    /** Archived terms stay valid for documents that already use them; pickers hide them. */
+    archivedAt: tz('archived_at'),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
@@ -269,5 +275,6 @@ export const taxonomyTerm = pgTable(
     uniqueIndex('taxonomy_term_kind_key_uq').on(t.kind, t.key),
     check('taxonomy_term_kind_ck', sql`${t.kind} in (${sqlList(TAXONOMY_KINDS)})`),
     check('taxonomy_term_key_ck', sql`${t.key} ~ '^[a-z0-9]+(-[a-z0-9]+)*$'`),
+    check('taxonomy_term_description_ck', sql`length(${t.descriptionCs}) <= 300 and length(${t.descriptionEn}) <= 300`),
   ],
 );
