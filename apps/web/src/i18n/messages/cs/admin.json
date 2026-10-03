@@ -26,6 +26,10 @@
         "title": "Stránky a FAQ",
         "description": "Úpravy a zveřejňování FAQ a stránek o klanu, komunitě a ochraně soukromí v obou jazycích."
       },
+      "taxonomy": {
+        "title": "Kategorie a štítky",
+        "description": "Názvy, popisy a pořadí kategorií příručky a kategorií a štítků novinek v obou jazycích."
+      },
       "media": {
         "title": "Média",
         "description": "Nahrávání a správa obrázků v rozsahu vašich oprávnění."

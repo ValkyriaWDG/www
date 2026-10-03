@@ -26,6 +26,10 @@
         "title": "Pages and FAQ",
         "description": "Edit and publish the FAQ, clan, community and privacy pages in both languages."
       },
+      "taxonomy": {
+        "title": "Categories and tags",
+        "description": "Names, descriptions and order of Field Manual categories and news categories and tags in both languages."
+      },
       "media": {
         "title": "Media",
         "description": "Upload and manage images within your permitted scope."

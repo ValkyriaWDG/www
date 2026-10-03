@@ -717,16 +717,25 @@
 
 .mediaGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
   gap: var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* Phones: two narrower cards per row instead of 190 px minimums that overflow the viewport. */
+@media (max-width: 479px) {
+  .mediaGrid {
+    grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+  }
+}
+
 .mediaCard {
   position: relative;
   display: grid;
+  /* The single column must shrink below the longest truncated file name. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   border: var(--border-hairline) solid var(--color-border);
   background: var(--color-panel-solid);
@@ -994,6 +1003,18 @@
   .detail {
     position: static;
   }
+}
+
+/* The module list gets its own row under the brand and account links at every width;
+   no desktop row holds every module an administrator may use next to them. */
+.bar > .nav {
+  order: 3;
+  width: 100%;
+  border-top: var(--border-hairline) solid var(--color-chrome-line);
+}
+
+.bar > .nav a {
+  min-height: 48px;
 }
 
 @media (max-width: 767px) {

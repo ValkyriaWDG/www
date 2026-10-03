@@ -271,6 +271,11 @@ a.cta:focus-visible {
     --cta-height: 96px;
     --secondary-action-height: 48px;
   }
+
+  /* Short windows: less sky above the stage so the utility rail stays within the viewport. */
+  .stage {
+    padding-top: clamp(16px, 10vh, 96px);
+  }
 }
 
 @media (forced-colors: active) {

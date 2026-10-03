@@ -1,7 +1,7 @@
 import { authAccount, authSession, logiMembership } from '@valkyria/db';
 import { symmetricEncrypt } from 'better-auth/crypto';
 import { eq } from 'drizzle-orm';
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadLogiMembershipEvidence, revalidateLogiMembership } from '@/modules/access/logi-membership';
 import { authorizeIssuer, revalidateIssuerFence } from '@/modules/access/issuer';
 import { canForGame, can } from '@/modules/access/policy';
@@ -35,6 +35,12 @@ async function identity() {
     return Response.json({ data: member });
   }) as typeof fetch;
   return { ...id, sid, session, member, calls, fetchImpl, user: { id: id.userId, name: 'Synthetic Member' } };
+}
+/** Barrier on the real row: the departure must land after the concurrent membership persist. */
+async function membershipPersisted(subject: string): Promise<void> {
+  await vi.waitFor(async () => {
+    expect(await database.db.select({ id: logiMembership.id }).from(logiMembership).where(eq(logiMembership.subject, subject)).limit(1)).toHaveLength(1);
+  }, { timeout: 3000, interval: 5 });
 }
 const resolve = (id: Awaited<ReturnType<typeof identity>>, overrides: Partial<Parameters<typeof resolveActor>[1]> = {}) => resolveActor(database.db, { session: id.session, user: id.user, intent: 'write', env, now: NOW, fetchImpl: id.fetchImpl, ...overrides });
 
@@ -107,10 +113,14 @@ describe('Logi authorization with real database sessions and observations', () =
   it('catches a role invalidation after membership fetch but before userinfo completes', async () => {
     const id = await identity();
     const fetchImpl = (async (url, init) => {
-      if (String(url).endsWith('/userinfo')) await database.db.update(logiMembership).set({ state: 'left', roleIds: [], revision: '2' }).where(eq(logiMembership.subject, id.discordUserId));
+      if (String(url).endsWith('/userinfo')) {
+        await membershipPersisted(id.discordUserId);
+        await database.db.update(logiMembership).set({ state: 'left', roleIds: [], revision: '2' }).where(eq(logiMembership.subject, id.discordUserId));
+      }
       return id.fetchImpl(url, init);
     }) as typeof fetch;
     expect(can(await resolve(id, { fetchImpl }), 'matches.edit')).toBe(false);
+    expect(id.calls.filter((path) => path.includes('membership'))).toHaveLength(1);
   });
   it('rechecks row versions inside the scheduled publication transaction without replaying a login', async () => {
     const id = await identity();

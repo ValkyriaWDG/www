@@ -30,6 +30,7 @@ export type FieldMessageKey =
   | 'coverAltDecorative'
   | 'coverMissing'
   | 'taxonomyUnknown'
+  | 'taxonomyArchived'
   | 'scheduleNotInFuture'
   | 'scheduleNonexistent'
   | 'tooLong'
@@ -86,7 +87,7 @@ export function fieldMessageKey(path: string, value: string): FieldMessageKey {
       if (clean === 'cover.alt') return code === 'required' ? 'coverAltRequired' : tooLong ? 'tooLong' : 'invalid';
       return 'invalid';
     case 'taxonomy':
-      return 'taxonomyUnknown';
+      return code.startsWith('archived_') ? 'taxonomyArchived' : 'taxonomyUnknown';
     case 'schedule':
       if (code === 'not_in_future') return 'scheduleNotInFuture';
       if (code === 'nonexistent_local_time') return 'scheduleNonexistent';

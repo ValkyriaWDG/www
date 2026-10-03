@@ -39,6 +39,60 @@ as localized labels. Build and browser suites are still not run on this branch.
 
 Next: run the build and browser suites, attach captioned CS/EN desktop/phone captures
 to the PR and #22, then review.
+## Taxonomy administration (#86) — 2026-10-03
+
+Branch `feat/taxonomy-admin` (on main `c232cdb`) adds **Kategorie a štítky / Categories
+and tags** at `/[locale]/admin/taxonomy`: Field Manual categories per game scope
+(`/admin/taxonomy/manual/hll/<id|new>`, HLL `content.edit`) and shared news
+categories/tags (`/admin/taxonomy/news-category|news-tag/<id|new>`, platform-wide
+`content.edit`), with immutable keys, bilingual labels and descriptions, order,
+optimistic concurrency, archive/restore, reference-aware delete and audit rows
+(`taxonomy.*`). A key counts as referenced by a document's current draft fields and by
+the published revisions of its translations, so a category moved in a draft cannot be
+deleted while the public article still sits under it. Additive migration
+`0011_taxonomy_admin` (order, descriptions and archive columns, description length
+checks). Public manual lists, category cards and article headers read live category
+labels; news labels apply to public filters while article snapshots change on the next
+publication. Workflow and semantics are in the
+[editor guide](operations/editor-guide.md#categories-and-tags) and the
+[taxonomy module](../apps/web/src/modules/taxonomy/README.md).
+
+An independent review corrected the reference counting (published revisions), limited
+manual scopes to games with a Field Manual and the version comparison, and fixed the
+key field spanning the form grid. The full browser suite then showed that the extra
+module pushed the English account links of the administration bar onto a second row at
+1920 px; `c37f5af` keeps the module list on its own row at every width. On `c37f5af`
+lint, typecheck and the optimized build passed with 935 unit, __INTEGRATION__ PostgreSQL
+and 223 + 178 browser tests (the full run on `6f9411d` with the one layout failure, then
+the rerun with the fix; 99 opt-in captures skipped); the seven inspected CS/EN captures
+are in the [evidence](evidence/taxonomy-admin-2026-10-03/README.md). Local synthetic
+verification only. Two opt-in capture tests (`visual.spec.ts` hub focus on the Discord
+action, `visual-hll.spec.ts` players statistics at 390×844) fail in capture mode on this
+branch and on main alike; they are not in CI and go to the next UI round. Next: PR #91
+latest-head CI, merge and publication.
+
+Publication of main `c232cdb`: the first run (37129342056) failed in
+`pnpm test:integration` on a racy membership test, fixed in PR #90 without touching
+application code; the re-run 37129666730 passed verification and its publish job waits
+for the environment approval.
+
+## Public and administration UI round 10 — 2026-10-03
+
+An audit of main `4946cea` (the PR #88 merge) covered the surfaces added since round 9:
+the hub, both landings, the Wardogs servers page, member team pages, the account page and
+eleven administration routes, in cs/en at 1440 and 390 px (60 public and 56 signed-in
+cases). Fixed on `feat/hll-platform-handoff` at `5486473`: the administration module
+list gets its own row below 1600 px instead of pushing the account links onto a ragged
+second row; media library cards fit a phone (two per row, no sideways scroll); the
+servers overview and servers page use 24 px auto-refresh checkboxes and a 44 px browse
+link; windows under 720 px high keep the Wardogs utility rail within the viewport; the
+team pages show quiet placeholders instead of three shouting empty states when the
+synchronization is not configured. Lint, typecheck and the optimized build passed; the
+browser suite passed 218 tests (99 opt-in captures skipped) including the three new
+specs. Before/after captures are in the [round 10 evidence](evidence/ui-round10-2026-10-03/README.md).
+Next: PR, latest-head CI, merge and publication. Taxonomy administration (#86) is in
+progress on `feat/taxonomy-admin`; integration health (#22) and the Logi readers (#87)
+follow.
 
 ## Website/Logi readiness review — 2026-10-03
 
@@ -62,8 +116,9 @@ the [handoff](handoff/claude-logi-web-readiness-2026-10-03.md),
 verification. Production runs `0a94d59` (image published 2026-10-03 10:45 UTC) without
 Logi client/source configuration; nothing was activated.
 
-Next: open the PR for `fix/logi-web-readiness`, verify latest-head CI, merge, publish
-through `container-publish.yml` and verify the promoted digest. Open afterwards: #86
+PR #88 was merged as `4946cea` after a green Quality gate on `b39a9fd`; publication run
+37126821550 passed verification and its publish job waits for the environment approval.
+Open afterwards: #86
 (taxonomy), #87 (approved Wardogs readers), #22 (integration health), hosted acceptance
 #23/#8/#7, and the pre-existing short-window layout of the Wardogs home, where the
 servers overview pushes the utility rail below the fold at 1280×700.

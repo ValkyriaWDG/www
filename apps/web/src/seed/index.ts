@@ -9,7 +9,7 @@ import {
   type Database,
   type Executor,
 } from '@valkyria/db';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import type { Actor } from '../modules/access/types';
 import { recordAudit } from '../modules/audit/audit';
 import { SEED_AUTHOR_LABEL, SEED_DRAFT_ONLY_PAGES, SEED_PAGES } from './pages';
@@ -38,22 +38,31 @@ export async function ensureSeedTaxonomy(
   options: { manual?: boolean } = {},
 ): Promise<SeedReport> {
   for (const category of SEED_CATEGORIES) {
-    const rows = await db
-      .insert(taxonomyTerm)
-      .values({ kind: 'category', key: category.key, labelCs: category.labelCs, labelEn: category.labelEn })
-      .onConflictDoNothing({ target: [taxonomyTerm.kind, taxonomyTerm.key] })
-      .returning({ id: taxonomyTerm.id });
-    (rows.length > 0 ? report.inserted : report.skipped).push(`taxonomy category ${category.key}`);
+    const rows = await insertTaxonomyTerm(db, { kind: 'category', ...category });
+    (rows > 0 ? report.inserted : report.skipped).push(`taxonomy category ${category.key}`);
   }
   for (const category of options.manual === false ? [] : SEED_MANUAL_CATEGORIES) {
-    const rows = await db
-      .insert(manualCategory)
-      .values({ ...category })
-      .onConflictDoNothing({ target: [manualCategory.game, manualCategory.key] })
-      .returning({ id: manualCategory.id });
-    (rows.length > 0 ? report.inserted : report.skipped).push(`manual category ${category.game}/${category.key}`);
+    // Explicit base columns: the previous image's schema lacks the later admin columns (defaults apply).
+    const rows = await db.execute(
+      sql`insert into ${manualCategory} (game, key, sort_order, label_cs, label_en, description_cs, description_en)
+          values (${category.game}, ${category.key}, ${category.sortOrder}, ${category.labelCs}, ${category.labelEn}, ${category.descriptionCs}, ${category.descriptionEn})
+          on conflict (game, key) do nothing returning id`,
+    );
+    (rows.rows.length > 0 ? report.inserted : report.skipped).push(`manual category ${category.game}/${category.key}`);
   }
   return report;
+}
+
+/**
+ * Inserts one shared taxonomy term naming only the base columns, so the same statement
+ * works on the previous image's schema (rollback rehearsal) where the admin columns
+ * (order, descriptions, archive) do not exist yet. Returns the number of inserted rows.
+ */
+export async function insertTaxonomyTerm(db: Executor, term: { kind: 'category' | 'tag'; key: string; labelCs: string; labelEn: string }): Promise<number> {
+  const rows = await db.execute(
+    sql`insert into ${taxonomyTerm} (kind, key, label_cs, label_en) values (${term.kind}, ${term.key}, ${term.labelCs}, ${term.labelEn}) on conflict (kind, key) do nothing returning id`,
+  );
+  return rows.rows.length;
 }
 
 async function seedPage(db: Database, pageKey: (typeof PAGE_KEYS)[number], report: SeedReport, now: Date) {

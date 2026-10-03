@@ -3,7 +3,7 @@ import { can, canForGame } from '@/modules/access/policy';
 import type { Capability } from '@/modules/access/capabilities';
 import type { Actor } from '@/modules/access/types';
 
-export type AdminModuleKey = 'news' | 'manual' | 'content' | 'media' | 'matches' | 'tournaments' | 'members' | 'settings' | 'integrations' | 'audit';
+export type AdminModuleKey = 'news' | 'manual' | 'content' | 'taxonomy' | 'media' | 'matches' | 'tournaments' | 'members' | 'settings' | 'integrations' | 'audit';
 
 export type AdminModule = {
   key: AdminModuleKey;
@@ -25,6 +25,9 @@ export const ADMIN_MODULES: readonly AdminModule[] = [
   { key: 'manual', path: '/admin/manual', anyOf: ['content.edit'], game: 'hell-let-loose' },
   // Core static pages (clan, community, privacy, faq); same editor and publication rules as news.
   { key: 'content', path: '/admin/content', anyOf: ['content.edit'], game: null },
+  // Field Manual categories (per game scope) and shared news categories/tags; the page
+  // shows the parts the actor's scope covers and re-checks each term's scope on every action.
+  { key: 'taxonomy', path: '/admin/taxonomy', anyOf: ['content.edit'] },
   { key: 'media', path: '/admin/media', anyOf: ['media.editorial.manage', 'media.match.manage'] },
   { key: 'matches', path: '/admin/matches', anyOf: ['matches.edit'] },
   // Competitions that matches link to; the same match-manager capabilities and game scope.

@@ -2,6 +2,7 @@ import csAdmin from './cs/admin.json';
 import csAdminCommunity from './cs/adminCommunity.json';
 import csAdminEditorial from './cs/adminEditorial.json';
 import csAdminIntegrations from './cs/adminIntegrations.json';
+import csAdminTaxonomy from './cs/adminTaxonomy.json';
 import csAuth from './cs/auth.json';
 import csCommon from './cs/common.json';
 import csEditor from './cs/editor.json';
@@ -20,6 +21,7 @@ import enAdmin from './en/admin.json';
 import enAdminCommunity from './en/adminCommunity.json';
 import enAdminEditorial from './en/adminEditorial.json';
 import enAdminIntegrations from './en/adminIntegrations.json';
+import enAdminTaxonomy from './en/adminTaxonomy.json';
 import enAuth from './en/auth.json';
 import enCommon from './en/common.json';
 import enEditor from './en/editor.json';
@@ -53,6 +55,7 @@ export const enMessages = {
   auth: enAuth,
   admin: enAdmin,
   adminEditorial: enAdminEditorial,
+  adminTaxonomy: enAdminTaxonomy,
   adminCommunity: enAdminCommunity,
   adminIntegrations: enAdminIntegrations,
   editor: enEditor,
@@ -76,6 +79,7 @@ export const csMessages: Messages = {
   auth: csAuth,
   admin: csAdmin,
   adminEditorial: csAdminEditorial,
+  adminTaxonomy: csAdminTaxonomy,
   adminCommunity: csAdminCommunity,
   adminIntegrations: csAdminIntegrations,
   editor: csEditor,

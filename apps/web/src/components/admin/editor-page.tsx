@@ -67,7 +67,9 @@ export async function EditorPage({
   const manualGame = mode === 'manual' ? (state.document.game ?? 'hell-let-loose') : null;
   const [revisions, taxonomy, publisher, manualMeta] = await Promise.all([
     translation ? listRevisions(db, actor, { translationId: translation.id }) : Promise.resolve([]),
-    manualGame ? listManualCategoryOptions(db, actor, manualGame) : listTaxonomyOptions(db, actor),
+    manualGame
+      ? listManualCategoryOptions(db, actor, manualGame, { include: [state.document.categoryKey, ...state.document.tagKeys] })
+      : listTaxonomyOptions(db, actor, { include: [state.document.categoryKey, ...state.document.tagKeys] }),
     getPublisherStatus(db, actor),
     mode === 'manual' ? getManualMetaForAdmin(db, actor, state.document.id) : Promise.resolve(null),
   ]);

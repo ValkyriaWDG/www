@@ -2,6 +2,7 @@ import 'server-only';
 import { contentDocument, contentRevision, contentTranslation, publicationSchedule, taxonomyTerm, type DocumentKind, type Executor, type Locale, type PageKey, type ScheduleState } from '@valkyria/db';
 import { and, asc, desc, eq, inArray, isNull, ne, or, sql } from 'drizzle-orm';
 import type { Actor } from '@/modules/access/types';
+import { sortTaxonomyOptions } from '@/modules/taxonomy/scope';
 import { authorize, documentScopeCondition } from './guard';
 import { ACTIVE_SCHEDULE_STATES, MAX_SCHEDULE_ATTEMPTS, OVERDUE_GRACE_MS, TRANSIENT_FAILURE_CODES } from './store';
 
@@ -11,18 +12,32 @@ import { ACTIVE_SCHEDULE_STATES, MAX_SCHEDULE_ATTEMPTS, OVERDUE_GRACE_MS, TRANSI
  * `content.read_private`; they return explicit DTOs, never raw rows.
  */
 
-export type TaxonomyOption = { key: string; labelCs: string; labelEn: string };
+export type TaxonomyOption = { key: string; labelCs: string; labelEn: string; /** Hidden from new assignments; listed only because it is currently assigned. */ archived: boolean };
 export type TaxonomyOptions = { categories: TaxonomyOption[]; tags: TaxonomyOption[] };
 
-/** Shared category/tag keys with both localized labels (for selectors and list labels). */
-export async function listTaxonomyOptions(db: Executor, actor: Actor): Promise<TaxonomyOptions> {
+export type TaxonomyOptionsFilter = {
+  /** Keys the current document already uses: archived terms among them stay selectable. */
+  include?: readonly (string | null | undefined)[];
+  /** Lists (label lookups) may include every archived term. */
+  includeArchived?: boolean;
+};
+
+/**
+ * Shared category/tag keys with both localized labels for selectors and list labels, in
+ * editorial order (sort order, then Czech label). Archived terms are left out unless the
+ * caller includes them.
+ */
+export async function listTaxonomyOptions(db: Executor, actor: Actor, filter: TaxonomyOptionsFilter = {}): Promise<TaxonomyOptions> {
   await authorize(db, actor, 'content.read_private', 'read', { action: 'content.read_private', entityType: 'taxonomy_term' });
+  const include = new Set((filter.include ?? []).filter((key): key is string => typeof key === 'string'));
   const rows = await db
-    .select({ kind: taxonomyTerm.kind, key: taxonomyTerm.key, labelCs: taxonomyTerm.labelCs, labelEn: taxonomyTerm.labelEn })
+    .select({ kind: taxonomyTerm.kind, key: taxonomyTerm.key, labelCs: taxonomyTerm.labelCs, labelEn: taxonomyTerm.labelEn, sortOrder: taxonomyTerm.sortOrder, archivedAt: taxonomyTerm.archivedAt })
     .from(taxonomyTerm)
-    .orderBy(asc(taxonomyTerm.kind), asc(taxonomyTerm.key));
-  const option = (row: (typeof rows)[number]): TaxonomyOption => ({ key: row.key, labelCs: row.labelCs, labelEn: row.labelEn });
-  return { categories: rows.filter((row) => row.kind === 'category').map(option), tags: rows.filter((row) => row.kind === 'tag').map(option) };
+    .orderBy(asc(taxonomyTerm.kind), asc(taxonomyTerm.sortOrder), asc(taxonomyTerm.key));
+  const visible = rows.filter((row) => row.archivedAt === null || filter.includeArchived || include.has(row.key));
+  const option = (row: (typeof rows)[number]): TaxonomyOption => ({ key: row.key, labelCs: row.labelCs, labelEn: row.labelEn, archived: row.archivedAt !== null });
+  const ordered = (kind: 'category' | 'tag') => sortTaxonomyOptions(visible.filter((row) => row.kind === kind)).map(option);
+  return { categories: ordered('category'), tags: ordered('tag') };
 }
 
 export type RowVersions = { documents: Record<string, number>; translations: Record<string, number> };
