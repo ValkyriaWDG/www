@@ -1,0 +1,66 @@
+{
+  "sourceRevision": "c1b4a60aadcf2afea8e52c56b4e8ced0dacefe83",
+  "run": "https://github.com/ValkyriaWDG/www/actions/runs/37115320010",
+  "test": "shell.spec.ts:200 missing video fallback",
+  "traceEvents": [
+    {
+      "atMs": 165408.763,
+      "phase": "after",
+      "callId": "call@3916",
+      "states": [
+        {
+          "data-background-state": "paused",
+          "data-background-reason": "pending"
+        }
+      ]
+    },
+    {
+      "atMs": 165505.541,
+      "callId": "call@3920",
+      "result": null,
+      "error": null
+    },
+    {
+      "atMs": 165521.306,
+      "phase": "after",
+      "callId": "call@3920",
+      "states": [
+        {
+          "data-background-state": "loading",
+          "data-background-reason": "allowed"
+        }
+      ]
+    },
+    {
+      "atMs": 165545.125,
+      "phase": "before",
+      "callId": "call@3922",
+      "states": [
+        {
+          "data-background-state": "loading",
+          "data-background-reason": "allowed"
+        }
+      ]
+    },
+    {
+      "atMs": 165550.937,
+      "callId": "call@3922",
+      "result": {
+        "value": "loading"
+      },
+      "error": null
+    },
+    {
+      "atMs": 165561.131,
+      "phase": "after",
+      "callId": "call@3922",
+      "states": [
+        {
+          "data-background-state": "loading",
+          "data-background-reason": "allowed"
+        }
+      ]
+    }
+  ],
+  "diagnosis": "The negative loading assertion accepted the pending SSR state before browser policy; a separate attribute read then observed hydration loading."
+}
