@@ -42,7 +42,7 @@ describe('editorial admin read helpers', () => {
 
   it('lists shared taxonomy keys with both labels', async () => {
     const options = await listTaxonomyOptions(t.db, actors.editorCs);
-    expect(options.categories).toContainEqual({ key: 'announcements', labelCs: 'Oznámení', labelEn: 'Announcements' });
+    expect(options.categories).toContainEqual({ key: 'announcements', labelCs: 'Oznámení', labelEn: 'Announcements', archived: false });
     expect(options.tags.map((tag) => tag.key)).toEqual(['recruitment', 'tournament']);
   });
 

@@ -547,7 +547,11 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
   const status = translationStatus(translation);
   const errorFor = (field: EditorField) => (fieldErrors[field] ? tField(fieldErrors[field]!) : null);
   const coverAltMissing = fields.cover && !fields.cover.decorative && fields.cover.alt.trim() === '';
-  const categoryOptions = [{ value: '', label: t('taxonomy.noCategory') }, ...taxonomy.categories.map((term) => ({ value: term.key, label: uiLocale === 'cs' ? term.labelCs : term.labelEn }))];
+  const termLabel = (term: { labelCs: string; labelEn: string; archived: boolean }) => {
+    const label = uiLocale === 'cs' ? term.labelCs : term.labelEn;
+    return term.archived ? t('taxonomy.archivedOption', { label }) : label;
+  };
+  const categoryOptions = [{ value: '', label: t('taxonomy.noCategory') }, ...taxonomy.categories.map((term) => ({ value: term.key, label: termLabel(term) }))];
 
   const confirmDialog = (() => {
     if (!confirm) return null;
@@ -1011,7 +1015,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
                         key={term.key}
                         name="tags"
                         id={`editor-tag-${term.key}`}
-                        label={uiLocale === 'cs' ? term.labelCs : term.labelEn}
+                        label={termLabel(term)}
                         checked={shared.tagKeys.includes(term.key)}
                         disabled={readOnly}
                         onChange={(event) =>

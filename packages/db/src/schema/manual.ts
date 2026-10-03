@@ -18,6 +18,8 @@ export const manualCategory = pgTable(
     labelEn: text('label_en').notNull(),
     descriptionCs: text('description_cs').notNull().default(''),
     descriptionEn: text('description_en').notNull().default(''),
+    /** Archived categories stay valid for articles that already use them; pickers hide them. */
+    archivedAt: tz('archived_at'),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
@@ -26,6 +28,7 @@ export const manualCategory = pgTable(
     check('manual_category_game_ck', sql`${t.game} in (${sqlList(GAMES)})`),
     check('manual_category_key_ck', sql`${t.key} ~ '^[a-z0-9]+(-[a-z0-9]+)*$' and length(${t.key}) <= 64`),
     check('manual_category_label_ck', sql`length(btrim(${t.labelCs})) between 1 and 80 and length(btrim(${t.labelEn})) between 1 and 80`),
+    check('manual_category_description_ck', sql`length(${t.descriptionCs}) <= 300 and length(${t.descriptionEn}) <= 300`),
   ],
 );
 

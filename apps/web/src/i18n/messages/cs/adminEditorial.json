@@ -252,6 +252,7 @@
       "noCategory": "Bez kategorie",
       "tags": "Štítky",
       "noTags": "Zatím nejsou definované žádné štítky.",
+      "archivedOption": "{label} (archivováno)",
       "game": "Hra",
       "noGame": "Bez konkrétní hry"
     },
@@ -367,6 +368,7 @@
     "coverAltDecorative": "Dekorativní titulní obrázek musí mít prázdný alternativní text.",
     "coverMissing": "Titulní obrázek už není k dispozici. Vyberte jiný.",
     "taxonomyUnknown": "Zvolená kategorie nebo štítek už neexistuje.",
+    "taxonomyArchived": "Zvolená kategorie nebo štítek je archivovaný a nelze ho nově přiřadit.",
     "scheduleNotInFuture": "Čas zveřejnění musí být v budoucnosti.",
     "scheduleNonexistent": "Tento čas ve zvoleném časovém pásmu neexistuje.",
     "tooLong": "Text je příliš dlouhý.",

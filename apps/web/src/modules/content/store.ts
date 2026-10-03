@@ -97,37 +97,46 @@ export async function activeSchedule(tx: Executor, translationId: string, lock =
 
 /**
  * Validates shared taxonomy keys. News categories are shared taxonomy terms; a Field
- * Manual article's category must be a manual category of the article's own game.
+ * Manual article's category must be a manual category of the article's own game. An
+ * archived term stays valid only where it is already assigned (`previous`); assigning
+ * it anew is rejected. The share locks serialize against a concurrent term deletion.
  */
 export async function assertTaxonomyKeys(
   tx: Executor,
   categoryKey: string | null | undefined,
   tagKeys: readonly string[] | undefined,
   scope: { kind: DocumentKind; game: Game | null } = { kind: 'news', game: null },
+  previous: { categoryKey: string | null; tagKeys: readonly string[] } = { categoryKey: null, tagKeys: [] },
 ) {
   const fieldErrors: Record<string, string> = {};
   if (categoryKey && scope.kind === 'manual') {
     const [row] = scope.game
       ? await tx
-          .select({ key: manualCategory.key })
+          .select({ key: manualCategory.key, archivedAt: manualCategory.archivedAt })
           .from(manualCategory)
           .where(and(eq(manualCategory.game, scope.game), eq(manualCategory.key, categoryKey)))
+          .for('share')
       : [];
     if (!row) fieldErrors.categoryKey = 'unknown_category';
+    else if (row.archivedAt && previous.categoryKey !== categoryKey) fieldErrors.categoryKey = 'archived_category';
   } else if (categoryKey) {
     const [row] = await tx
-      .select({ key: taxonomyTerm.key })
+      .select({ key: taxonomyTerm.key, archivedAt: taxonomyTerm.archivedAt })
       .from(taxonomyTerm)
-      .where(and(eq(taxonomyTerm.kind, 'category'), eq(taxonomyTerm.key, categoryKey)));
+      .where(and(eq(taxonomyTerm.kind, 'category'), eq(taxonomyTerm.key, categoryKey)))
+      .for('share');
     if (!row) fieldErrors.categoryKey = 'unknown_category';
+    else if (row.archivedAt && previous.categoryKey !== categoryKey) fieldErrors.categoryKey = 'archived_category';
   }
   if (tagKeys && tagKeys.length > 0) {
     const rows = await tx
-      .select({ key: taxonomyTerm.key })
+      .select({ key: taxonomyTerm.key, archivedAt: taxonomyTerm.archivedAt })
       .from(taxonomyTerm)
-      .where(and(eq(taxonomyTerm.kind, 'tag'), inArray(taxonomyTerm.key, [...tagKeys])));
-    const known = new Set(rows.map((row) => row.key));
+      .where(and(eq(taxonomyTerm.kind, 'tag'), inArray(taxonomyTerm.key, [...tagKeys])))
+      .for('share');
+    const known = new Map(rows.map((row) => [row.key, row.archivedAt]));
     if (tagKeys.some((key) => !known.has(key))) fieldErrors.tagKeys = 'unknown_tag';
+    else if (tagKeys.some((key) => known.get(key) && !previous.tagKeys.includes(key))) fieldErrors.tagKeys = 'archived_tag';
   }
   if (Object.keys(fieldErrors).length > 0) throw new DomainError('validation', 'Unknown taxonomy key.', fieldErrors);
 }

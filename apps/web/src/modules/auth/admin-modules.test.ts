@@ -9,19 +9,20 @@ function keys(actor: Actor) {
 
 describe('administration modules match usable resource scopes', () => {
   it('offers community pages and the HLL manual to a platform-wide editor', () => {
-    expect(keys(testPrincipal(['editor']))).toEqual(['news', 'manual', 'content', 'media', 'members']);
+    expect(keys(testPrincipal(['editor']))).toEqual(['news', 'manual', 'content', 'taxonomy', 'media', 'members']);
   });
 
   it('offers the HLL manual without community pages to an HLL-only editor', () => {
-    expect(keys(testPrincipal(['editor'], { games: ['hell-let-loose'] }))).toEqual(['news', 'manual', 'members']);
+    expect(keys(testPrincipal(['editor'], { games: ['hell-let-loose'] }))).toEqual(['news', 'manual', 'taxonomy', 'members']);
   });
 
   it('offers neither community pages nor the HLL manual to a Wardogs-only editor', () => {
-    expect(keys(testPrincipal(['editor'], { games: ['wardogs'] }))).toEqual(['news', 'members']);
+    // Taxonomy stays listed: the page explains that no manageable section is in this scope.
+    expect(keys(testPrincipal(['editor'], { games: ['wardogs'] }))).toEqual(['news', 'taxonomy', 'members']);
   });
 
   it('does not treat separate grants for both games as a platform-wide page grant', () => {
-    expect(keys(testPrincipal(['editor'], { games: ['hell-let-loose', 'wardogs'] }))).toEqual(['news', 'manual', 'members']);
+    expect(keys(testPrincipal(['editor'], { games: ['hell-let-loose', 'wardogs'] }))).toEqual(['news', 'manual', 'taxonomy', 'members']);
   });
 
   it('retains game-scoped match management without unrelated editorial modules', () => {
