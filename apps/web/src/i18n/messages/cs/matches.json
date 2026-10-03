@@ -134,6 +134,7 @@
     "tacticalMap": "Taktická mapa {map} ({size} kB)",
     "league": {
       "title": "Náhled z League",
+      "matchTitle": "Utkání",
       "note": "Neověřený náhled z Wardogs League. Zobrazuje jen zveřejněný stav utkání; výsledek výše je výsledek zapsaný klanem.",
       "synthetic": "Syntetická ukázková data z League – nejde o skutečné utkání.",
       "unavailable": "Náhled z League není k dispozici.",
@@ -158,7 +159,40 @@
         "not_started": "Nezačalo",
         "unknown": "Neznámé"
       },
-      "source": "Otevřít ve Wardogs League"
+      "source": "Otevřít ve Wardogs League",
+      "values": {
+        "status": {
+          "scheduled": "Naplánováno",
+          "live": "Živě",
+          "completed": "Dokončeno",
+          "cancelled": "Zrušeno"
+        },
+        "type": {
+          "friendly": "Přátelský",
+          "league": "Liga",
+          "cup": "Pohár",
+          "tournament": "Turnaj"
+        },
+        "hosting": {
+          "self_hosted": "Vlastní hostování",
+          "league_hosted": "Hostuje League"
+        },
+        "mapVote": {
+          "open": "Otevřené",
+          "closed": "Uzavřené"
+        },
+        "progress": {
+          "locked": "Uzamčeno",
+          "rules_agreed": "Pravidla dohodnuta",
+          "map_vote": "Hlasování o mapě",
+          "moderator_claimed": "Moderátor přidělen",
+          "host_server": "Hostitelský server",
+          "ready_check": "Kontrola připravenosti",
+          "live": "Živě",
+          "placements": "Umístění",
+          "confirmed": "Potvrzeno"
+        }
+      }
     }
   },
   "legacy": {

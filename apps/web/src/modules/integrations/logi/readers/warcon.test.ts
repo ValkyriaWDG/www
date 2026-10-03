@@ -98,7 +98,7 @@ describe('Warcon last-known cache', () => {
     fetchImpl.mockResolvedValue(new Response(null, { status: 503, headers: { 'retry-after': '30' } }));
     const later = new Date(start.getTime() + 61_000);
     const failed = await observeWarconServer(reader, 'scope', connection, later, true);
-    expect(failed.live).toMatchObject({ freshness: 'unavailable', map: null, scores: [], observedAt: null });
+    expect(failed.live).toMatchObject({ freshness: 'unavailable', map: null, scores: [], observedAt: start.toISOString() });
     expect(failed.recentMatches).toMatchObject({ freshness: 'stale', observedAt: start.toISOString(), matches: [{ id: 8 }, { id: 7 }] });
     expect(warconReaderStatus().lastOutcome).toBe('upstream');
     // Retry-After 30 s keeps the live view from being polled again before that.

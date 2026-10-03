@@ -104,14 +104,15 @@ export function warconReaderStatus(): WarconReaderStatus {
   return { lastAttemptAt: latest && Number.isFinite(latest.lastAttemptAt) ? new Date(latest.lastAttemptAt).toISOString() : null, lastOutcome: latest?.lastOutcome ?? null, cachedViews: cache.size };
 }
 
-export function resetWarconReaderForTests(): void { cache.clear(); }
+export function resetWarconReaderForTests(): void { cache.clear(); reported.clear(); }
 
-type ReaderEnv = LogiIntegrationEnv & { LOGI_READERS_SOURCE?: 'logi' | 'synthetic-fixture' };
+const reported = new Set<string>();
 
-/** Configured Wardogs Warcon source, `null` when the key is absent; configuration errors are reported, not thrown. */
-export function configuredWarconSource(env: ReaderEnv): ConfiguredLogiSource | null {
+/** Configured Wardogs Warcon source, `null` when the key is absent; configuration errors are reported once, not thrown. */
+export function configuredWarconSource(env: LogiIntegrationEnv): ConfiguredLogiSource | null {
   try { return configuredLogiSources(env, 'warcon')[0] ?? null; } catch (error) {
-    console.error(`Warcon reader: ${error instanceof Error ? error.message : 'invalid configuration'}`);
+    const message = `Warcon reader: ${error instanceof Error ? error.message : 'invalid configuration'}`;
+    if (!reported.has(message)) { reported.add(message); console.warn(message); }
     return null;
   }
 }

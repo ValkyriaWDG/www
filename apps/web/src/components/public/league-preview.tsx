@@ -5,6 +5,7 @@ import type { AppLocale } from '@/i18n/routing';
 import { canonicalLeagueMatchUrl } from '@/modules/integrations/logi/readers/league-url';
 import type { LeaguePreviewPublic } from '@/modules/integrations/logi/readers/public';
 import { ExternalLink } from './external-link';
+import { leagueValueKey, type LeagueValueGroup } from './league-labels';
 import styles from './matches.module.css';
 
 const STATE_KIND: Record<LeaguePreviewPublic['state'], StatusKind> = { fresh: 'success', stale: 'warning', unavailable: 'neutral' };
@@ -20,6 +21,11 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
   const t = await getTranslations({ locale, namespace: 'matches.detail.league' });
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const source = canonicalLeagueMatchUrl(preview.sourceUrl)?.url ?? null;
+  // Known League enumerations get localized labels; anything else is shown as published.
+  const label = (group: LeagueValueGroup, raw: string | null): string | null => {
+    const key = leagueValueKey(group, raw);
+    return key ? t(key as Parameters<typeof t>[0]) : raw;
+  };
   const dash = <span aria-hidden="true">—</span>;
   const body = preview.state === 'unavailable' ? (
     <p className={styles.leagueUnavailable} data-league-state="unavailable">
@@ -36,17 +42,17 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
           </div>
         ) : (
           <div>
-            <dt>{t('title')}</dt>
+            <dt>{t('matchTitle')}</dt>
             <dd className={styles.leagueTitle}>{preview.title ?? dash}</dd>
           </div>
         )}
         <div>
           <dt>{t('type')}</dt>
-          <dd>{preview.type ?? dash}</dd>
+          <dd>{label('type', preview.type) ?? dash}</dd>
         </div>
         <div>
           <dt>{t('status')}</dt>
-          <dd>{preview.status ?? dash}</dd>
+          <dd>{label('status', preview.status) ?? dash}</dd>
         </div>
         <div>
           <dt>{t('scheduled')}</dt>
@@ -81,11 +87,11 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
         </div>
         <div>
           <dt>{t('hosting')}</dt>
-          <dd>{preview.hosting && (preview.hosting.mode || preview.hosting.teamCode) ? (preview.hosting.mode && preview.hosting.teamCode ? t('hostingValue', { mode: preview.hosting.mode, team: preview.hosting.teamCode }) : (preview.hosting.mode ?? preview.hosting.teamCode)) : dash}</dd>
+          <dd>{preview.hosting && (preview.hosting.mode || preview.hosting.teamCode) ? (preview.hosting.mode && preview.hosting.teamCode ? t('hostingValue', { mode: label('hosting', preview.hosting.mode) ?? preview.hosting.mode, team: preview.hosting.teamCode }) : (label('hosting', preview.hosting.mode) ?? preview.hosting.teamCode)) : dash}</dd>
         </div>
         <div>
           <dt>{t('mapVote')}</dt>
-          <dd>{preview.mapVote?.status ? (preview.mapVote.closesAt ? t('mapVoteCloses', { status: preview.mapVote.status, time: formatDate(preview.mapVote.closesAt, locale, 'dateTimeZone') }) : preview.mapVote.status) : dash}</dd>
+          <dd>{preview.mapVote?.status ? (preview.mapVote.closesAt ? t('mapVoteCloses', { status: label('mapVote', preview.mapVote.status) ?? preview.mapVote.status, time: formatDate(preview.mapVote.closesAt, locale, 'dateTimeZone') }) : label('mapVote', preview.mapVote.status)) : dash}</dd>
         </div>
       </dl>
       {preview.progress.length > 0 ? (
@@ -93,7 +99,7 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
           {preview.progress.map((step, index) => (
             <li key={`${step.label}-${index}`} data-state={step.state ?? 'unknown'}>
               <StatusBadge kind={PROGRESS_KIND[step.state ?? 'unknown']}>{t(`progressState.${step.state ?? 'unknown'}`)}</StatusBadge>
-              <span className={styles.leagueStepLabel}>{step.label}</span>
+              <span className={styles.leagueStepLabel}>{label('progress', step.label) ?? step.label}</span>
               {step.detail ? <span className={styles.leagueStepDetail}>{step.detail}</span> : null}
             </li>
           ))}

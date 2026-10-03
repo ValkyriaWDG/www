@@ -29,7 +29,7 @@ describe('Warcon public projections', () => {
   });
 
   it('is unavailable after a failed pull, a missing status or a missing observation', () => {
-    expect(toWarconLivePublic('community-one', live, now, false)).toMatchObject({ freshness: 'unavailable', map: null, scores: [], playerCount: null });
+    expect(toWarconLivePublic('community-one', live, now, false)).toMatchObject({ freshness: 'unavailable', map: null, scores: [], playerCount: null, observedAt: '2026-10-02T12:00:00.000Z' });
     expect(toWarconLivePublic('community-one', null, now, true).freshness).toBe('unavailable');
     expect(toWarconLivePublic('community-one', { ...live, status: null }, now, true).freshness).toBe('unavailable');
   });
@@ -45,7 +45,7 @@ describe('Warcon public projections', () => {
     expect(ageWarconLivePublic(dto, now).freshness).toBe('fresh');
     expect(ageWarconLivePublic(dto, new Date(now.getTime() + 30_000))).toMatchObject({ freshness: 'stale', map: 'Bakurani', scores: [], matchSeconds: null });
     expect(ageWarconLivePublic(dto, now, true)).toMatchObject({ freshness: 'stale', scores: [] });
-    expect(ageWarconLivePublic(dto, new Date(now.getTime() + 170_000))).toMatchObject({ freshness: 'unavailable', map: null, observedAt: null });
+    expect(ageWarconLivePublic(dto, new Date(now.getTime() + 170_000))).toMatchObject({ freshness: 'unavailable', map: null, observedAt: dto.observedAt });
     expect(ageWarconLivePublic({ ...dto, freshness: 'stale' }, now).freshness).toBe('stale');
   });
 

@@ -9,7 +9,8 @@ import { configuredWarconSource, warconReaderStatus } from './warcon';
  * approved connection or invalid configuration), `configured` (key and, for Warcon,
  * approved connections exist) and `unsupported` (the deployed producer answered 404 on
  * the last attempt: the route is not deployed). The last attempt outcome comes from the
- * in-process caches and is a safe category, never a response body or key.
+ * in-process caches and is a safe category, never a response body or key; a League read
+ * the producer itself could not refresh is named in the detail.
  */
 
 export const READER_RESOURCES = ['league-matches', 'warcon-data'] as const;
@@ -23,9 +24,7 @@ export type ReaderCapabilityState = {
   lastOutcome: string | null;
 };
 
-type ReaderEnv = LogiIntegrationEnv & { LOGI_READERS_SOURCE?: 'logi' | 'synthetic-fixture' };
-
-export function readerCapabilityStates(env: ReaderEnv): Record<ReaderResource, ReaderCapabilityState> {
+export function readerCapabilityStates(env: LogiIntegrationEnv): Record<ReaderResource, ReaderCapabilityState> {
   const league = leagueReaderStatus();
   const warcon = warconReaderStatus();
   if (env.LOGI_READERS_SOURCE === 'synthetic-fixture') {
@@ -41,7 +40,7 @@ export function readerCapabilityStates(env: ReaderEnv): Record<ReaderResource, R
         ? { state: 'unconfigured', detail: 'no valid Wardogs source in LOGI_SOURCES_JSON', lastAttemptAt: league.lastAttemptAt, lastOutcome: league.lastOutcome }
         : league.lastOutcome === 'not_found'
           ? { state: 'unsupported', detail: 'producer answered 404: league-matches route not deployed', lastAttemptAt: league.lastAttemptAt, lastOutcome: league.lastOutcome }
-          : { state: 'configured', detail: `league-matches grant configured for ${leagueSource.sourceInstanceId}`, lastAttemptAt: league.lastAttemptAt, lastOutcome: league.lastOutcome },
+          : { state: 'configured', detail: `league-matches grant configured for ${leagueSource.sourceInstanceId}${league.lastOutcome === 'ok' && league.lastProducerError ? `; last producer error: ${league.lastProducerError}` : ''}`, lastAttemptAt: league.lastAttemptAt, lastOutcome: league.lastOutcome },
     'warcon-data': !env.LOGI_WARCON_API_KEY_WDG
       ? { state: 'unconfigured', detail: 'LOGI_WARCON_API_KEY_WDG is not set', lastAttemptAt: warcon.lastAttemptAt, lastOutcome: warcon.lastOutcome }
       : !warconSource

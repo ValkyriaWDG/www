@@ -234,16 +234,11 @@
       "rotationValue": "nyní {now} · další {next}",
       "observed": "Pozorováno {time}",
       "neverObserved": "Zatím žádné pozorování",
-      "freshness": "Stav údajů",
       "unavailable": "Živá data teď nejsou k dispozici. Neznamená to, že je server vypnutý nebo prázdný.",
       "recent": {
         "title": "Poslední zápasy",
         "intro": "Posledních {count, plural, one {# kolo} few {# kola} other {# kol}} zaznamenaných Warconem; řádky hráčů se nezobrazují.",
-        "caption": "Poslední kola na tomto serveru",
         "columns": {
-          "started": "Začátek",
-          "map": "Mapa",
-          "mode": "Režim",
           "peak": "Max. hráčů",
           "scores": "Konečné skóre",
           "winner": "Vítěz"

@@ -2,7 +2,7 @@
 
 ## Approved Logi readers: League preview and Warcon — 2026-10-03
 
-Branch `feat/logi-readers` (from main `6fb5009`) implements
+Branch `feat/logi-readers` (merged with main `2faf14a`) implements
 [issue #87](https://github.com/ValkyriaWDG/www/issues/87) against Logi PR #158 at
 `c42ea770c307793494ae159a924f86e3c6ced50d`: server-only `league-matches` and
 `warcon-data` readers with their own Wardogs keys (`LOGI_LEAGUE_API_KEY_WDG`,
@@ -22,7 +22,7 @@ behaviour change. See the
 and [runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
 
 Run from `apps/web` on the branch head: `pnpm lint` passed; `pnpm typecheck` passed;
-`pnpm test:unit` passed 91 files / 1006 tests (58 new reader tests, config, view and
+`pnpm test:unit` passed 93 files / 1015 tests (62 new reader tests, League label, config, view and
 schema additions, dictionary parity); `DATABASE_URL=… npx vitest run --project
 integration tests/integration/matches-league-url.test.ts tests/integration/matches-lifecycle.test.ts
 tests/integration/game-scope.test.ts tests/integration/fixtures-synthetic.test.ts

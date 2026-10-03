@@ -2,7 +2,7 @@ import 'server-only';
 import { getServerEnv } from '@/lib/env';
 import { configuredLogiSources, type ConfiguredLogiSource, type LogiIntegrationEnv } from '../../logi-config';
 import { createLogiTransport, LogiClientError, type LogiErrorCode, type LogiFetch, type LogiRequestOptions } from '../transport';
-import { leagueReadEnvelopeSchema, type LeagueRead } from './contracts';
+import { leagueReadEnvelopeSchema, type LeagueErrorCode, type LeagueRead } from './contracts';
 import { canonicalLeagueMatchUrl } from './league-url';
 import { emptyLeaguePreview, toLeaguePreviewPublic, type LeaguePreviewPublic } from './public';
 import { syntheticLeagueRead } from './synthetic';
@@ -53,6 +53,8 @@ type LeagueCacheEntry = {
   last: LeagueRead | null;
   lastAttemptAt: number;
   lastOutcome: LeagueReadOutcome | null;
+  /** Error the producer itself reported in its last successful answer (it could not refresh). */
+  lastProducerError: LeagueErrorCode | null;
   /** The latest read answered with a snapshot, without stale/error flags. */
   answered: boolean;
   nextAttemptAt: number;
@@ -76,8 +78,10 @@ function backoffAfterFailure(error: LogiClientError, nowMs: number): number {
 
 /**
  * Last-known preview for one canonical URL, refreshed at most once per backoff window
- * with one shared in-flight request. Never throws: a failed pull keeps the previous
- * snapshot as stale, and a missing snapshot is an unavailable preview.
+ * with one shared in-flight request. Only the first read of a URL is awaited; once a
+ * snapshot exists, a due refresh runs in the background and the last-known preview is
+ * returned at once, so a page never waits on the producer. Never throws: a failed pull
+ * keeps the previous snapshot as stale, and a missing snapshot is an unavailable preview.
  */
 export async function observeLeaguePreview(reader: LeagueReader, scopeKey: string, url: string, now = new Date()): Promise<LeaguePreviewPublic> {
   const canonical = canonicalLeagueMatchUrl(url);
@@ -89,7 +93,7 @@ export async function observeLeaguePreview(reader: LeagueReader, scopeKey: strin
       const oldest = [...cache.entries()].sort((left, right) => left[1].lastAttemptAt - right[1].lastAttemptAt)[0];
       if (oldest) cache.delete(oldest[0]);
     }
-    entry = { last: null, lastAttemptAt: Number.NEGATIVE_INFINITY, lastOutcome: null, answered: false, nextAttemptAt: Number.NEGATIVE_INFINITY };
+    entry = { last: null, lastAttemptAt: Number.NEGATIVE_INFINITY, lastOutcome: null, lastProducerError: null, answered: false, nextAttemptAt: Number.NEGATIVE_INFINITY };
     cache.set(key, entry);
   }
   const nowMs = now.getTime();
@@ -100,6 +104,7 @@ export async function observeLeaguePreview(reader: LeagueReader, scopeKey: strin
       try {
         const read = await reader.read(canonical.url);
         current.lastOutcome = 'ok';
+        current.lastProducerError = read.error;
         if (read.snapshot) current.last = read;
         current.answered = read.snapshot !== null && !read.stale && read.error === null;
         current.nextAttemptAt = backoffAfterSuccess(read, nowMs);
@@ -111,27 +116,31 @@ export async function observeLeaguePreview(reader: LeagueReader, scopeKey: strin
       }
     })().finally(() => { current.inflight = undefined; });
   }
-  await entry.inflight;
+  if (entry.last === null) await entry.inflight;
   return toLeaguePreviewPublic(canonical.url, entry.last, now, entry.answered);
 }
 
-export type LeagueReaderStatus = { lastAttemptAt: string | null; lastOutcome: LeagueReadOutcome | null; cachedPreviews: number };
+export type LeagueReaderStatus = { lastAttemptAt: string | null; lastOutcome: LeagueReadOutcome | null; lastProducerError: LeagueErrorCode | null; cachedPreviews: number };
 
 /** Latest attempt outcome across cached previews, for the administration health read model. */
 export function leagueReaderStatus(): LeagueReaderStatus {
   let latest: LeagueCacheEntry | null = null;
   for (const entry of cache.values()) if (entry.lastOutcome !== null && (!latest || entry.lastAttemptAt > latest.lastAttemptAt)) latest = entry;
-  return { lastAttemptAt: latest && Number.isFinite(latest.lastAttemptAt) ? new Date(latest.lastAttemptAt).toISOString() : null, lastOutcome: latest?.lastOutcome ?? null, cachedPreviews: cache.size };
+  return { lastAttemptAt: latest && Number.isFinite(latest.lastAttemptAt) ? new Date(latest.lastAttemptAt).toISOString() : null, lastOutcome: latest?.lastOutcome ?? null, lastProducerError: latest?.lastProducerError ?? null, cachedPreviews: cache.size };
 }
 
-export function resetLeagueReaderForTests(): void { cache.clear(); }
+export function resetLeagueReaderForTests(): void { cache.clear(); reported.clear(); }
+/** Test helper: wait for background refreshes started by `observeLeaguePreview`. */
+export async function settleLeagueReaderForTests(): Promise<void> { await Promise.all([...cache.values()].map((entry) => entry.inflight)); }
 
-type ReaderEnv = LogiIntegrationEnv & { LOGI_READERS_SOURCE?: 'logi' | 'synthetic-fixture' };
+const reported = new Set<string>();
 
 /** Configured Wardogs League source, `null` when the key is absent; configuration errors are reported, not thrown. */
-export function configuredLeagueSource(env: ReaderEnv): ConfiguredLogiSource | null {
+export function configuredLeagueSource(env: LogiIntegrationEnv): ConfiguredLogiSource | null {
   try { return configuredLogiSources(env, 'league')[0] ?? null; } catch (error) {
-    console.error(`League reader: ${error instanceof Error ? error.message : 'invalid configuration'}`);
+    // Reported once per process and message, not on every render.
+    const message = `League reader: ${error instanceof Error ? error.message : 'invalid configuration'}`;
+    if (!reported.has(message)) { reported.add(message); console.warn(message); }
     return null;
   }
 }

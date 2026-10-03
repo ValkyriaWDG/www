@@ -62,8 +62,9 @@ export type WarconServerPublic = {
   recentMatches: WarconRecentMatchesPublic | null;
 };
 
-export function emptyWarconLive(publicId: string): WarconLivePublic {
-  return { publicId, observedAt: null, freshness: 'unavailable', serverName: null, map: null, lighting: null, playerCount: null, maxPlayers: null, matchSeconds: null, scores: [], rotationNow: null, rotationNext: null };
+/** Unavailable view; `observedAt` keeps the last valid observation time so the UI can say how old it is. */
+export function emptyWarconLive(publicId: string, observedAt: string | null = null): WarconLivePublic {
+  return { publicId, observedAt, freshness: 'unavailable', serverName: null, map: null, lighting: null, playerCount: null, maxPlayers: null, matchSeconds: null, scores: [], rotationNow: null, rotationNext: null };
 }
 
 export function emptyWarconMatches(publicId: string): WarconRecentMatchesPublic {
@@ -74,17 +75,18 @@ const worse = (left: Freshness, right: Freshness): Freshness => (left === 'unava
 
 /** Removes round progress from a non-fresh observation and every value from an unavailable one. */
 function boundLive(live: WarconLivePublic, freshness: Freshness): WarconLivePublic {
-  if (freshness === 'unavailable') return emptyWarconLive(live.publicId);
+  if (freshness === 'unavailable') return emptyWarconLive(live.publicId, live.observedAt);
   const fresh = freshness === 'fresh';
   return { ...live, freshness, matchSeconds: fresh ? live.matchSeconds : null, scores: fresh ? live.scores : [], rotationNow: fresh ? live.rotationNow : null, rotationNext: fresh ? live.rotationNext : null };
 }
 
 /**
  * Live view projection. `answered` is false after a failed pull: the view is then
- * unavailable immediately, so a cached live score is never presented as current.
+ * unavailable immediately (keeping only the last valid observation time), so a cached
+ * live score is never presented as current.
  */
 export function toWarconLivePublic(publicId: string, live: WarconLive | null, now: Date, answered: boolean): WarconLivePublic {
-  if (!live || !answered || !live.status) return emptyWarconLive(publicId);
+  if (!live || !answered || !live.status) return emptyWarconLive(publicId, live?.observedAt ?? null);
   const freshness = worse(live.freshness, warconFreshness(live.observedAt, now.getTime(), live.ok));
   const status = live.status;
   return boundLive({

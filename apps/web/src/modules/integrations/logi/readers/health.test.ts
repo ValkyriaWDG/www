@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import leagueFixture from '../fixtures/league-v0.12-stale-http.json';
 import type { LogiFetch } from '../transport';
 import { readerCapabilityStates } from './health';
 import { createLeagueReader, observeLeaguePreview, resetLeagueReaderForTests } from './league';
@@ -34,6 +35,13 @@ describe('readerCapabilityStates', () => {
     expect(states['league-matches']).toMatchObject({ state: 'unsupported', lastOutcome: 'not_found', lastAttemptAt: '2026-10-03T12:00:00.000Z' });
     expect(states['warcon-data']).toMatchObject({ state: 'unsupported', lastOutcome: 'not_found', lastAttemptAt: '2026-10-03T12:00:05.000Z' });
     expect(JSON.stringify(states)).not.toContain('synthetic-league-key');
+  });
+
+  it('names a League read the producer could not refresh while staying configured', async () => {
+    const fetchImpl = vi.fn<LogiFetch>().mockResolvedValue(Response.json({ data: leagueFixture.stale }));
+    await observeLeaguePreview(createLeagueReader(credentials, { fetchImpl }), 'scope', 'https://wardogsleague.net/matches/cmuqt8ep605e1lf018w2nlywu', new Date('2026-10-03T12:00:00Z'));
+    const states = readerCapabilityStates(env({ LOGI_LEAGUE_API_KEY_WDG: 'synthetic-league-key-0123456789' }));
+    expect(states['league-matches']).toMatchObject({ state: 'configured', lastOutcome: 'ok', detail: 'league-matches grant configured for local; last producer error: rate_limited' });
   });
 
   it('does not throw on an invalid configuration', () => {

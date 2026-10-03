@@ -234,16 +234,11 @@
       "rotationValue": "now {now} · next {next}",
       "observed": "Observed {time}",
       "neverObserved": "No observation yet",
-      "freshness": "Data status",
       "unavailable": "Live data is unavailable right now. This does not mean the server is offline or empty.",
       "recent": {
         "title": "Recent matches",
         "intro": "Last {count, plural, one {# round} other {# rounds}} recorded by Warcon; no player rows are shown.",
-        "caption": "Recent rounds on this server",
         "columns": {
-          "started": "Started",
-          "map": "Map",
-          "mode": "Mode",
           "peak": "Peak players",
           "scores": "Final scores",
           "winner": "Winner"

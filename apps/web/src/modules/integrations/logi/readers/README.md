@@ -11,11 +11,11 @@ and [operator runbook](../../../../../../../docs/integrations/logi/runbook.md).
 | `../transport.ts` | Shared bounded transport: fixed origin and path, `game` query, bearer key, `redirect: manual`, `cache: no-store`, 5 s default / 15 s maximum timeout, size-limited JSON, status mapping to stable codes; no body, URL or key is retained |
 | `contracts.ts` | Closed (`z.strictObject`) wire schemas of the League read and of the Warcon `live` and `matches` views only; producer cache lifetimes and freshness rule |
 | `league-url.ts` | The producer's League URL policy (regex, 125-character cap, canonical form); shared with the match schema and editor |
-| `league.ts` | `league-matches` reader, in-process last-known cache per canonical URL with `nextRefreshAt`/`Retry-After` backoff, in-flight dedupe and a quiet unavailable preview |
+| `league.ts` | `league-matches` reader, in-process last-known cache per canonical URL with `nextRefreshAt`/`Retry-After` backoff, in-flight dedupe, background refresh once a snapshot exists (only the first read of a URL is awaited) and a quiet unavailable preview |
 | `warcon.ts` | `warcon-data` reader for approved `warconConnections`, last valid envelope per connection and view (live 10 s, matches 60 s), unavailable live view after a failed pull |
 | `public.ts` | Minimal website DTOs and pure freshness ageing (also used by client components) |
 | `synthetic.ts` | Labelled synthetic observations for `LOGI_READERS_SOURCE=synthetic-fixture` (tests, review captures) |
-| `health.ts` | `readerCapabilityStates(env)`: `unconfigured` / `configured` / `unsupported` per resource with the last attempt outcome, for the administration health page |
+| `health.ts` | `readerCapabilityStates(env)`: `unconfigured` / `configured` / `unsupported` per resource with the last attempt outcome (and the last League error the producer itself reported), for the administration health page |
 
 ## Configuration
 

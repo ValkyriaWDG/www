@@ -78,7 +78,7 @@ describe('Warcon projections age with the browser data', () => {
     expect(ageServerBrowserData(data, now)).toEqual(data);
     expect(ageServerBrowserData(data, new Date(now.getTime() + 50_000)).warcon?.[0]?.live).toMatchObject({ freshness: 'stale', map: 'Synthetic Training Ground', scores: [], matchSeconds: null });
     expect(ageServerBrowserData(data, now, true).warcon?.[0]).toMatchObject({ live: { freshness: 'stale', scores: [] }, recentMatches: { freshness: 'stale', matches: [{ id: 1 }] } });
-    expect(ageServerBrowserData(data, new Date(now.getTime() + 181_000)).warcon?.[0]?.live).toMatchObject({ freshness: 'unavailable', map: null, observedAt: null });
+    expect(ageServerBrowserData(data, new Date(now.getTime() + 181_000)).warcon?.[0]?.live).toMatchObject({ freshness: 'unavailable', map: null, observedAt: now.toISOString() });
     expect(ageServerBrowserData(data, new Date(now.getTime() + 31 * 60_000)).warcon?.[0]?.recentMatches).toMatchObject({ freshness: 'unavailable', matches: [] });
     expect(ageServerBrowserData({ ...data, warcon: null }, now).warcon).toBeNull();
   });

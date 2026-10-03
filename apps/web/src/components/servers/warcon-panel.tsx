@@ -40,7 +40,8 @@ export function WarconLiveFacts({ live, locale }: { live: WarconLivePublic; loca
   if (live.freshness === 'unavailable') {
     return (
       <div className={styles.warconLive} data-warcon-live={live.publicId} data-warcon-freshness={live.freshness}>
-        <p className={styles.warconUnavailable}>{badge} {w('unavailable')}</p>
+        <p className={styles.warconUnavailable}>{badge} <span>{observed}</span></p>
+        <p className={styles.warconUnavailable}>{w('unavailable')}</p>
       </div>
     );
   }

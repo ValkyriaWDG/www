@@ -3,7 +3,7 @@ import { resetServerEnvForTests } from '@/lib/env';
 import leagueFixture from '../fixtures/league-v0.12-stale-http.json';
 import { LogiClientError, type LogiFetch } from '../transport';
 import { leagueReadSchema } from './contracts';
-import { createLeagueReader, getLeagueMatchPreview, leagueReaderStatus, LEAGUE_MIN_REFRESH_MS, observeLeaguePreview, resetLeagueReaderForTests } from './league';
+import { createLeagueReader, getLeagueMatchPreview, leagueReaderStatus, LEAGUE_MIN_REFRESH_MS, observeLeaguePreview, resetLeagueReaderForTests, settleLeagueReaderForTests } from './league';
 
 const source = { origin: 'https://logi.example', apiKey: 'synthetic-league-key-not-a-credential', gameId: 'wardogs' as const, allowLoopbackHttp: false, environment: 'test' as const };
 const url = 'https://wardogsleague.net/matches/cmuqt8ep605e1lf018w2nlywu';
@@ -78,7 +78,12 @@ describe('League last-known cache', () => {
     expect((await observeLeaguePreview(reader, 'scope-a', url, new Date(start.getTime() + 30_000))).state).toBe('fresh');
     expect(fetchImpl).toHaveBeenCalledOnce();
     fetchImpl.mockResolvedValueOnce(new Response(null, { status: 503 }));
-    const failed = await observeLeaguePreview(reader, 'scope-a', url, new Date(start.getTime() + 6 * 60_000));
+    // A due refresh of a known preview runs in the background; the page gets the last-known data at once.
+    const during = await observeLeaguePreview(reader, 'scope-a', url, new Date(start.getTime() + 6 * 60_000));
+    expect(during).toMatchObject({ title: 'VLK · ROG · BAMC', observedAt: first.observedAt });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    await settleLeagueReaderForTests();
+    const failed = await observeLeaguePreview(reader, 'scope-a', url, new Date(start.getTime() + 6 * 60_000 + 1000));
     expect(failed).toMatchObject({ state: 'stale', title: 'VLK · ROG · BAMC', observedAt: first.observedAt });
     expect(leagueReaderStatus().lastOutcome).toBe('upstream');
     fetchImpl.mockResolvedValue(new Response(null, { status: 503 }));
@@ -102,12 +107,33 @@ describe('League last-known cache', () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     await observeLeaguePreview(reader, 'scope-b', url, new Date(start.getTime() + 5 * 60_000 + 1000 + LEAGUE_MIN_REFRESH_MS));
     expect(fetchImpl).toHaveBeenCalledTimes(3);
+    await settleLeagueReaderForTests();
+  });
+
+  it('never blocks a page on the producer once a preview exists', async () => {
+    let release: (response: Response) => void = () => undefined;
+    const pending = new Promise<Response>((resolve) => { release = resolve; });
+    const fetchImpl = vi.fn<LogiFetch>().mockResolvedValueOnce(json({ data: freshRead(new Date(start.getTime() - 30_000)) })).mockReturnValueOnce(pending);
+    const reader = createLeagueReader(source, { fetchImpl });
+    const first = await observeLeaguePreview(reader, 'scope-e', url, start);
+    expect(first.state).toBe('fresh');
+    const later = new Date(start.getTime() + 6 * 60_000);
+    const second = await Promise.race([observeLeaguePreview(reader, 'scope-e', url, later), new Promise<'blocked'>((resolve) => setTimeout(() => resolve('blocked'), 200))]);
+    expect(second).toMatchObject({ observedAt: first.observedAt, title: 'VLK · ROG · BAMC' });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    release(json({ data: freshRead(later) }));
+    await settleLeagueReaderForTests();
+    expect((await observeLeaguePreview(reader, 'scope-e', url, new Date(later.getTime() + 1000))).observedAt).toBe(later.toISOString());
+    // A URL without any snapshot is still awaited so the first visitor sees the producer's answer.
+    const fresh = vi.fn<LogiFetch>().mockResolvedValue(json({ data: freshRead(later) }));
+    expect((await observeLeaguePreview(createLeagueReader(source, { fetchImpl: fresh }), 'scope-f', url, later)).state).toBe('fresh');
   });
 
   it('treats a producer read with stale/error flags as last-known data and a 404 as not deployed', async () => {
     const fetchImpl = vi.fn<LogiFetch>().mockResolvedValueOnce(json({ data: { ...leagueFixture.stale, snapshot: { ...leagueFixture.stale.snapshot, fetchedAt: new Date(start.getTime() - 60_000).toISOString() } } }));
     const reader = createLeagueReader(source, { fetchImpl });
     expect((await observeLeaguePreview(reader, 'scope-c', url, start)).state).toBe('stale');
+    expect(leagueReaderStatus()).toMatchObject({ lastOutcome: 'ok', lastProducerError: 'rate_limited' });
     fetchImpl.mockResolvedValue(new Response(null, { status: 404 }));
     await observeLeaguePreview(reader, 'scope-c', 'https://wardogsleague.net/matches/another', new Date(start.getTime() + 1000));
     expect(leagueReaderStatus()).toMatchObject({ lastOutcome: 'not_found', cachedPreviews: 2 });
