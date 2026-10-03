@@ -63,6 +63,7 @@ false in production.
 | `SERVER_STATUS_SOURCE_WDG=logi` | Select Logi for Wardogs independently; blank inherits `SERVER_STATUS_SOURCE`, `none` disables Wardogs telemetry. HLL may keep `SERVER_STATUS_SOURCE=crcon`. See [Wardogs servers](wardogs-servers.md) |
 | `LOGI_LEAGUE_API_KEY_WDG` | Restricted `league-matches` read grant for the Wardogs source; enables the unverified League preview of matches with an editorial League link |
 | `LOGI_WARCON_API_KEY_WDG`, source `warconConnections` | Restricted `warcon-data` read grant plus individually approved `{connectionId, publicId}` pairs under published `publicServers`; reads the `live` and `matches` views only |
+| `LOGI_HISTORY_API_KEY_WDG`, source `historySources` | Restricted key with the explicit `server-game-history` resource and `wardogs` grant (not inherited by the Warcon or League keys) plus individually approved `{sourceId, publicId, publishPlayers}` entries under published `publicServers`; see [retained history](warcon-history.md) |
 | `LOGI_READERS_SOURCE` | `logi` (default) or `synthetic-fixture` for labelled local reader data; never set the fixture in production |
 | `LOGI_DISCORD_FALLBACK_ENABLED` | Explicit direct-Discord fallback while Logi is primary; default false |
 
@@ -142,8 +143,19 @@ legacy full-access keys are refused by the producer. HLL CRCON settings stay unt
   minutes. Only map, lighting, population, named scores, round time, rotation and the
   last five rounds are published; player rows, Steam IDs, join codes and the
   `health`/`capabilities` views are never read for public output.
+- **Retained game history.** A fourth key with the explicit `server-game-history`
+  grant reads the completed Warcon games Logi retains for approved sources:
+  `"historySources": [{"sourceId": "<64-hex source ID from a returned record>", "publicId": "community-wardogs", "publishPlayers": false}]`.
+  The `publicId` must name a published `publicServers` entry; the `sourceId` is the
+  opaque retained-history source ID, never a connection ID, panel UUID or public ID.
+  The website keeps one complete in-process snapshot per source (refreshed at most every
+  10 minutes, stale after a failed refresh or 30 minutes, 250 pages / 60 s per scan with a
+  180-day window fallback) and computes faction and player reports locally; player names
+  and statistics are published only with `publishPlayers: true`, platform IDs never. The
+  change feed is not consumed yet. Details and the unrun hosted checks are in
+  [retained history](warcon-history.md).
 - **Verification.** Local proof is synthetic. Before activation confirm with the
-  operator that the hosted producer serves both routes (a 404 reports `unsupported`
+  operator that the hosted producer serves the routes (a 404 reports `unsupported`
   in the health read model), that the keys are separate and guild-bound, and that the
   approved connection IDs are Logi connection IDs (as in `server-snapshots`), not panel
   UUIDs. Then check fresh, stale and unavailable states in both languages on the
@@ -231,7 +243,9 @@ page never synthesizes a success for them.
 | Confirmed capabilities | The `integration-health` rows of the active data generation, as reported by the producer: provider, enabled flag, capabilities, freshness, collected sessions and error category. "Unknown" means no successful pull has stored such a report; it is neither success nor failure. |
 | Wardogs readers `Nenastaveno` / not configured | `LOGI_LEAGUE_API_KEY_WDG` or `LOGI_WARCON_API_KEY_WDG` is absent, `LOGI_SOURCES_JSON` has no valid Wardogs source, or (Warcon) the source has no approved `warconConnections`; the count of approved connections is shown, never their IDs. |
 | Wardogs readers `Nastaveno` / configured | Key, Wardogs source and (Warcon) at least one approved connection exist. The last attempt time and its transport category (`ok`, `unauthorized`, `rate_limited`, ...) come from the website's in-process reader caches; a League read the producer itself could not refresh is named in the detail. `LOGI_READERS_SOURCE=synthetic-fixture` reports configured with a synthetic detail. |
-| Wardogs readers `Producent trasu nenasadil` / not deployed on the producer | The deployed producer answered 404 on the last attempt: the `league-matches` or `warcon-data` route is not served by that revision. |
+| Wardogs readers `Producent trasu nenasadil` / not deployed on the producer | The deployed producer answered 404 on the last attempt: the `league-matches`, `league-fixtures`, `warcon-data` or `server-game-history` route is not served by that revision. |
+| History reader `Producent přístup odepřel` / access denied by the producer | The producer answered 401 or 403 on the last scan: `LOGI_HISTORY_API_KEY_WDG` lacks the explicit `server-game-history` grant or was revoked. The cached snapshot is dropped until a scan succeeds. |
+| History reader `Běží první načtení` / first scan running, `K dispozici` / available, `Zastaralé` / stale, `Poslední načtení selhalo` / last scan failed | States of the in-process history snapshot: the first complete scan is still running; a complete snapshot exists and its last refresh succeeded (the detail names the game count, revision, workspace `lastCollectedAt`, website `refreshedAt` and `all`/`window` coverage); the snapshot is kept after a failed refresh or is older than 30 minutes (reason in the detail); no snapshot exists and the last scan failed (reason such as `budget_exceeded`, `revision_mismatch`, `repeated_cursor`, `timeout`). |
 | Webhooks / commands | Intake and write switches, the number of unprocessed hints in `logi_inbox` with the last receipt/processing time, pending commands in `logi_command` and the last outcome time (latest update of a confirmed or rejected command, not the receipt of the newest request). Aggregates only; no payloads, IDs or author identities. |
 | Discord | Whether the guild/bot pair is configured, the number of mapped role IDs (or the generic mapping error) and the selected membership source. |
 

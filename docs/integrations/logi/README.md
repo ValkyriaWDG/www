@@ -5,8 +5,9 @@ API base `/api/v1`. Website adapters are implemented; production activation is a
 separate step. Public API documentation does not demonstrate tenant access or SSO.
 
 Start with the [current capability and readiness audit](readiness-2026-10-03.md),
-then the [operator runbook](runbook.md), [people synchronization](people.md) and
-[Wardogs servers](wardogs-servers.md). The implemented producer is
+then the [operator runbook](runbook.md), [people synchronization](people.md),
+[Wardogs servers](wardogs-servers.md) and the
+[retained Warcon game history](warcon-history.md). The implemented producer is
 [Ninjonik/logi PR #158](https://github.com/Ninjonik/logi/pull/158), reviewed at
 `c42ea770c307793494ae159a924f86e3c6ced50d` on 2026-10-03. Its merge/deployment and
 the hosted grants must be checked again before activation. The older
