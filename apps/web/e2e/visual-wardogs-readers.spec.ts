@@ -52,7 +52,7 @@ for (const [locale, width, height] of [['cs', 1440, 1050], ['en', 1440, 1050], [
     await expect(page.locator('[data-warcon-live="synthetic-wardogs"]')).toHaveAttribute('data-warcon-freshness', 'fresh');
     await expect(page.locator('[data-warcon-matches="synthetic-wardogs"] [data-warcon-match]')).toHaveCount(5);
     await shot(page, `server-detail-warcon-${locale}-${width}x${height}.png`,
-      `Visitor, /${locale}/wardogs/servers?server=synthetic-wardogs at ${width}×${height}: the synthetic Wardogs server detail followed by the "Live (Warcon)" section (synthetic-data note, map, players 12 / 98, named scores Alpha 0 · Bravo 12 · Charlie 7, round time, rotation, "Current" freshness badge with the observation time) and the "Recent matches" list of five synthetic rounds with peak players, final scores and winner; no player rows, Steam IDs or connection identifiers.`,
+      `Visitor, /${locale}/wardogs/servers?server=synthetic-wardogs at ${width}×${height}: the synthetic Wardogs server detail followed by the "Live (Warcon)" section (synthetic-data note, map, players 0 / 98, named scores Alpha 0 · Bravo 12 · Charlie 7, round time, rotation, "Current" freshness badge with the observation time) and the "Recent matches" list of five synthetic rounds with peak players, final scores and winner; no player rows, Steam IDs or connection identifiers.`,
       locale);
     await context.close();
   });

@@ -137,6 +137,15 @@
   outline-offset: 2px;
 }
 
+/* Phones: the title link itself is a 44 px row (the stretched overlay already covers the row). */
+@media (max-width: 767px) {
+  .rowLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
 /* ---- FilterBar ---- */
 .filterBar {
   display: flex;

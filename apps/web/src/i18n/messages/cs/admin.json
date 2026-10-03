@@ -1,6 +1,7 @@
 {
   "shell": {
     "title": "Administrace",
+    "barLabel": "Lišta administrace",
     "navLabel": "Části administrace",
     "overview": "Přehled",
     "account": "Můj účet",

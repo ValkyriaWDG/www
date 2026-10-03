@@ -323,7 +323,7 @@
         "source": "Where the result comes from, e.g. the league website.",
         "internalNotes": "Never shown on the public website, in recaps or in previews.",
         "tournament": "A competition of the same game from the tournaments list; shown publicly once the tournament is published.",
-        "leagueMatchUrl": "Only https://wardogsleague.net/matches/ID, Wardogs matches only. Shown publicly as an unverified League preview; the recorded result below stays the only result."
+        "leagueMatchUrl": "Only https://wardogsleague.net/matches/ID for Wardogs matches; shown publicly as an unverified preview."
       },
       "scheduleIntro": "When the match is played. This is not the time the match page is published.",
       "currentStart": "Scheduled start",

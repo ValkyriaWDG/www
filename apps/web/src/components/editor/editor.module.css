@@ -179,6 +179,77 @@
   box-shadow: inset 0 0 0 2px var(--color-focus);
 }
 
+/* ProseMirror base rules (Tiptap's injected stylesheet is disabled: the CSP allows nonce'd
+   styles only). The canvas element carries both the `ProseMirror` class and `.canvas`. */
+.canvas {
+  position: relative;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: break-spaces;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0;
+}
+
+.canvas [contenteditable='false'] {
+  white-space: normal;
+}
+
+.canvas [contenteditable='false'] [contenteditable='true'] {
+  white-space: pre-wrap;
+}
+
+.canvas pre {
+  white-space: pre-wrap;
+}
+
+.canvas img:global(.ProseMirror-separator) {
+  display: inline !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+.canvas :global(.ProseMirror-gapcursor) {
+  display: none;
+  position: absolute;
+  margin: 0;
+  pointer-events: none;
+}
+
+.canvas :global(.ProseMirror-gapcursor)::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -2px;
+  width: 20px;
+  border-top: 1px solid var(--color-text);
+  animation: gapcursor-blink 1.1s steps(2, start) infinite;
+}
+
+@keyframes gapcursor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.canvas:global(.ProseMirror-focused) :global(.ProseMirror-gapcursor) {
+  display: block;
+}
+
+.canvas:global(.ProseMirror-hideselection) *::selection {
+  background: transparent;
+}
+
+.canvas:global(.ProseMirror-hideselection) * {
+  caret-color: transparent;
+}
+
+.canvas :global(.ProseMirror-selectednode) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .canvas h2,
 .canvas h3 {
   font-family: var(--font-display);

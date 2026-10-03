@@ -237,7 +237,7 @@
       "unavailable": "Live data is unavailable right now. This does not mean the server is offline or empty.",
       "recent": {
         "title": "Recent matches",
-        "intro": "Last {count, plural, one {# round} other {# rounds}} recorded by Warcon; no player rows are shown.",
+        "intro": "The last {count, plural, one {# round} other {# rounds}} recorded by Warcon; individual players are not listed.",
         "columns": {
           "peak": "Peak players",
           "scores": "Final scores",

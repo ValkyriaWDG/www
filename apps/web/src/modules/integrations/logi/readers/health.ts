@@ -18,7 +18,11 @@ export type ReaderResource = (typeof READER_RESOURCES)[number];
 
 export type ReaderCapabilityState = {
   state: 'unconfigured' | 'configured' | 'unsupported';
-  /** Short English operator detail (configuration facts only). */
+  /**
+   * Short English operator detail (configuration facts only), or the code
+   * `synthetic-fixture` when the labelled synthetic reader source is active (the
+   * administration translates that one).
+   */
   detail: string;
   lastAttemptAt: string | null;
   lastOutcome: string | null;
@@ -30,7 +34,7 @@ export function readerCapabilityStates(env: LogiIntegrationEnv): Record<ReaderRe
   const league = leagueReaderStatus();
   const warcon = warconReaderStatus();
   if (env.LOGI_READERS_SOURCE === 'synthetic-fixture') {
-    const synthetic: ReaderCapabilityState = { state: 'configured', detail: 'synthetic fixture source (tests and review captures only)', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 };
+    const synthetic: ReaderCapabilityState = { state: 'configured', detail: 'synthetic-fixture', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 };
     return { 'league-matches': synthetic, 'warcon-data': synthetic };
   }
   const leagueSource = configuredLeagueSource(env);

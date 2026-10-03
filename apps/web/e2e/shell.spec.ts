@@ -332,6 +332,8 @@ test.describe('home control sizes', () => {
     expect(refresh.width).toBeGreaterThanOrEqual(24);
     expect(refresh.height).toBeGreaterThanOrEqual(24);
     expect((await page.locator('[data-home-servers] header a').boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    // The server name link of the overview is a 44 px row as well (round 11).
+    expect((await page.locator('[data-home-servers] a[href*="?server="]').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
     await expectNoHorizontalOverflow(page);
   });
 });

@@ -1,5 +1,5 @@
 import { getLocale, getTranslations } from 'next-intl/server';
-import { formatDate } from '@/i18n/date-format';
+import { formatWeekdayDateTime } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import styles from './home.module.css';
 
@@ -30,7 +30,7 @@ export async function NextMatchStrip({ match }: { match: NextMatch | null }) {
           {t(`game.${match.game}`)}
           {match.competition ? ` · ${match.competition}` : ''}
           {' · '}
-          <time dateTime={start.toISOString()}>{formatDate(start, locale, 'weekdayDateTime')}</time>
+          <time dateTime={start.toISOString()}>{formatWeekdayDateTime(start, locale)}</time>
         </span>
       </span>
     </Link>

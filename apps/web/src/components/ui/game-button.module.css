@@ -59,6 +59,13 @@
   padding: 0 var(--space-5);
 }
 
+/* Phones: compact row actions keep the 44 px touch target. */
+@media (max-width: 767px) {
+  .sm {
+    min-height: 44px;
+  }
+}
+
 .secondary {
   background: var(--color-panel-soft);
 }

@@ -45,9 +45,11 @@ export default async function AdminLayout({ children, params }: LayoutProps<'/[l
   const tModules = await getTranslations({ locale, namespace: 'admin.overview.modules' });
   const modules = permittedAdminModules(actor);
   // Quiet static admin chrome: module navigation (permitted modules only) + account links.
+  // A labelled region, not a second <header>: the public shell already owns the banner landmark,
+  // and the label differs from the overview's own "Administrace" section so landmarks stay unique.
   return (
     <div className={styles.shell} data-admin-shell="">
-      <header className={styles.bar}>
+      <div className={styles.bar} data-admin-bar="" role="region" aria-label={t('barLabel')}>
         <a className={styles.brand} href={`/${locale}/admin`}>
           <span aria-hidden="true">{'//'}</span>
           {t('title')}
@@ -69,7 +71,7 @@ export default async function AdminLayout({ children, params }: LayoutProps<'/[l
             ]}
           />
         </div>
-      </header>
+      </div>
       <main id="main-content" tabIndex={-1} className={styles.main}>
         {children}
       </main>

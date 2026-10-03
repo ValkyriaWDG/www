@@ -47,6 +47,7 @@ export function AccountMenu({ label, menuLabel, links }: AccountMenuProps) {
         aria-expanded={open}
         aria-controls={listId}
         aria-label={`${menuLabel}: ${label}`}
+        title={label}
         onClick={() => setOpen((value) => !value)}
       >
         <UserIcon size={20} />

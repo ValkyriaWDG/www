@@ -571,7 +571,7 @@ export function MatchEditor({ uiLocale, initial, canPublish, created, statistics
                   <TextField name="leagueMatchUrl" type="url" label={t('fields.leagueMatchUrl')} markOptional hint={t('hints.leagueMatchUrl')} value={facts.leagueMatchUrl} maxLength={125} autoComplete="off" onChange={(event) => setFact('leagueMatchUrl', event.target.value)} error={err('leagueMatchUrl')} />
                 ) : null}
               </div>
-              <h3 className={styles.repeatHeading}>{t('vodTitle')}</h3>
+              <h2 className={styles.repeatHeading}>{t('vodTitle')}</h2>
               <p className={styles.groupIntro}>{t('vodIntro', { max: MAX_VOD_ROWS })}</p>
               <ul className={styles.repeatList} hidden={facts.vodLinks.length === 0}>
                 {facts.vodLinks.map((link, index) => (

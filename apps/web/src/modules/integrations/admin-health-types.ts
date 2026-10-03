@@ -119,7 +119,7 @@ export type AdminReader = {
   /** The matching `LogiSourcePurpose` for the label. */
   purpose: Extract<LogiSourcePurpose, 'league' | 'warcon'>;
   state: AdminReaderState;
-  /** Sanitized configuration detail (variable names, instance ID, counts; never a key, origin or connection ID). */
+  /** Sanitized configuration detail (variable names, instance ID, counts; never a key, origin or connection ID) or the code `synthetic-fixture`. */
   detail: string;
   /** Approved Warcon connections, count only. */
   approvedConnections: number;

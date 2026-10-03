@@ -141,7 +141,7 @@ describe('getWarconServersPublic', () => {
     resetServerEnvForTests();
     expect(await getWarconServersPublic(['community-one'], null)).toEqual([]);
     const [entry] = (await getWarconServersPublic([SYNTHETIC_WARCON_PUBLIC_ID], SYNTHETIC_WARCON_PUBLIC_ID)) ?? [];
-    expect(entry).toMatchObject({ publicId: SYNTHETIC_WARCON_PUBLIC_ID, synthetic: true, live: { freshness: 'fresh', map: 'Synthetic Training Ground', playerCount: 12 } });
+    expect(entry).toMatchObject({ publicId: SYNTHETIC_WARCON_PUBLIC_ID, synthetic: true, live: { freshness: 'fresh', map: 'Synthetic Training Ground', playerCount: 0, maxPlayers: 98 } });
     expect(entry?.recentMatches?.matches).toHaveLength(5);
     expect(JSON.stringify(entry)).not.toMatch(/steamId|7656119|Never Public|join-code|serverId/);
     const [withoutRecent] = (await getWarconServersPublic([SYNTHETIC_WARCON_PUBLIC_ID], null)) ?? [];

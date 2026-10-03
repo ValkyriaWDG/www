@@ -30,7 +30,7 @@
 .servers { margin: 0; padding: 0; list-style: none; }
 .servers li { padding: var(--space-3); }
 .servers li + li { border-top: var(--border-hairline) solid var(--color-border); }
-.server { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); color: var(--color-text); text-decoration: none; }
+.server { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 44px; color: var(--color-text); text-decoration: none; }
 .server:hover .name { color: var(--color-accent); text-decoration: underline; }
 .name { font-family: var(--font-display); font-size: 1.125rem; font-weight: 600; overflow-wrap: anywhere; }
 .population { flex-shrink: 0; color: var(--color-accent); font-variant-numeric: tabular-nums; }

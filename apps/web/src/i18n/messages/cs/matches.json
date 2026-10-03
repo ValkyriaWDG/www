@@ -140,10 +140,16 @@
       "unavailable": "Náhled z League není k dispozici.",
       "stale": "Náhled může být zastaralý.",
       "observed": "Pozorováno {time}",
+      "neverObserved": "Zatím žádné pozorování",
+      "freshness": {
+        "fresh": "Aktuální",
+        "stale": "Neaktuální",
+        "unavailable": "Neznámý"
+      },
       "fixture": "Utkání č. {number}",
       "type": "Typ",
       "status": "Stav",
-      "scheduled": "Naplánováno",
+      "scheduled": "Termín",
       "teams": "Týmy",
       "map": "Mapa",
       "zone": "Zóna",

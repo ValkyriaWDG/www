@@ -11,7 +11,8 @@
     'toolbar'
     'list'
     'pane'
-    'extras';
+    'extras'
+    'league';
   gap: var(--space-4);
   align-items: start;
 }
@@ -86,7 +87,8 @@
     grid-template-areas:
       'toolbar .'
       'list pane'
-      'extras extras';
+      'extras extras'
+      'league league';
     column-gap: clamp(16px, 1.6vw, 32px);
   }
 
@@ -584,7 +586,11 @@
 .links li {
   display: flex;
   align-items: center;
-  min-height: 36px;
+  min-height: 44px;
+}
+
+.links a {
+  min-height: 44px;
 }
 
 .rounds {
@@ -922,8 +928,9 @@ span.teamMark {
   }
 }
 
-/* League preview (Wardogs): full width below the detail; unverified state, never a result. */
-.league { grid-column: 1 / -1; min-width: 0; }
+/* League preview (Wardogs): its own full-width row after the detail (the hidden toolbar
+   row would otherwise take an auto-placed block on phones); unverified state, never a result. */
+.league { grid-area: league; min-width: 0; }
 .leagueNote { margin: 0; color: var(--color-text-muted); font-size: var(--text-small); }
 .leagueFacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--space-2) var(--space-3); margin: 0; }
 .leagueFacts > div { min-width: 0; border-left: 2px solid var(--color-border-strong); padding-left: var(--space-2); }
@@ -934,8 +941,10 @@ span.teamMark {
 .leagueTeams { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none; }
 .leagueTeams li { display: inline-flex; align-items: baseline; gap: var(--space-2); }
 .leagueTeamCode { font-family: var(--font-display); font-weight: 600; letter-spacing: var(--tracking-meta); }
-.leagueProgress { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
-.leagueProgress li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); min-width: 0; }
+.leagueProgressLabel { margin: var(--space-3) 0 0; }
+.leagueProgress { display: grid; gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+/* Badge column, step name, detail: the names line up whatever the badge word's width. */
+.leagueProgress li { display: grid; grid-template-columns: max-content minmax(0, 1fr) auto; align-items: center; gap: var(--space-2) var(--space-3); min-width: 0; }
 .leagueStepLabel { font-weight: 600; }
 .leagueStepDetail { color: var(--color-text-muted); font-size: var(--text-small); }
 .leagueMeta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-meta); }

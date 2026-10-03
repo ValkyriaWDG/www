@@ -172,6 +172,19 @@ export function StatusBadge({ kind = 'neutral', children, icon = true }: { kind?
   );
 }
 
+/**
+ * Dashed amber notice for labelled synthetic (fixture) data on public surfaces, so a
+ * demo state is never mistaken for a live Valkyria server, round or League fixture.
+ * `source` names the data for tests (`data-synthetic-data="warcon"`).
+ */
+export function SyntheticNote({ source = '', children }: { source?: string; children: ReactNode }) {
+  return (
+    <p className={styles.syntheticNote} data-synthetic-data={source}>
+      {children}
+    </p>
+  );
+}
+
 export type FeedbackKind = 'info' | 'success' | 'warning' | 'error';
 
 const FEEDBACK_ICONS: Record<FeedbackKind, ReactNode> = {

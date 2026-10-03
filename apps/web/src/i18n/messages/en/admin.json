@@ -1,6 +1,7 @@
 {
   "shell": {
     "title": "Administration",
+    "barLabel": "Administration bar",
     "navLabel": "Administration modules",
     "overview": "Overview",
     "account": "My account",

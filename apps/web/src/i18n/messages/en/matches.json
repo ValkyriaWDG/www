@@ -140,6 +140,12 @@
       "unavailable": "League preview unavailable.",
       "stale": "The preview may be outdated.",
       "observed": "Observed {time}",
+      "neverObserved": "No observation yet",
+      "freshness": {
+        "fresh": "Current",
+        "stale": "Stale",
+        "unavailable": "Unknown"
+      },
       "fixture": "Fixture #{number}",
       "type": "Type",
       "status": "Status",

@@ -100,6 +100,8 @@ export function RichTextEditor({ initialContent, onChange, contentLocale, onRequ
     editable: !readOnly,
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
+    // The page CSP allows nonce'd styles only; the ProseMirror base rules live in editor.module.css.
+    injectCSS: false,
     editorProps: {
       attributes: {
         id: canvasId,
@@ -172,6 +174,10 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
   };
 
   // Roving tabindex: one tab stop for the whole toolbar, arrow keys move between controls.
+  // The stop sits on the first enabled control: a fresh editor has nothing to undo, and a
+  // disabled button cannot take focus (the phone toolbar is a scroll region that must stay
+  // reachable by keyboard).
+  const tabStop = state.canUndo ? 'undo' : state.canRedo ? 'redo' : 'blockType';
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
     if (!keys.includes(event.key) || !ref.current) return;
@@ -190,7 +196,7 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
       key={name}
       type="button"
       data-toolbar-item=""
-      tabIndex={name === 'undo' ? 0 : -1}
+      tabIndex={name === tabStop ? 0 : -1}
       className={styles.toolButton}
       aria-pressed={pressed}
       aria-label={label}
@@ -206,7 +212,7 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
   );
 
   return (
-    <div ref={ref} role="toolbar" aria-label={t('label')} className={styles.toolbar} onKeyDown={onKeyDown}>
+    <div ref={ref} role="toolbar" aria-label={t('label')} className={styles.toolbar} tabIndex={disabled ? 0 : undefined} onKeyDown={onKeyDown}>
       <div className={styles.toolGroup}>
         {button('undo', t('undo'), undefined, () => run((c) => c.undo()), 'Ctrl+Z', !state.canUndo)}
         {button('redo', t('redo'), undefined, () => run((c) => c.redo()), 'Ctrl+Y', !state.canRedo)}
@@ -218,7 +224,7 @@ function Toolbar({ editor, state, disabled, onOpenLink, onRequestImage }: Toolba
         <select
           id={blockTypeId}
           data-toolbar-item=""
-          tabIndex={-1}
+          tabIndex={tabStop === 'blockType' ? 0 : -1}
           className={styles.blockSelect}
           value={state.block}
           disabled={disabled}

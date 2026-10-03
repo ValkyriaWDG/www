@@ -415,3 +415,14 @@
     border-color: CanvasText;
   }
 }
+
+/* Synthetic-data notice (servers page, Warcon panel, League preview): dashed amber, never a badge. */
+.syntheticNote {
+  display: inline-block;
+  margin: 0 0 var(--space-4);
+  padding: 6px 10px;
+  border: 1px dashed var(--color-warning);
+  color: var(--color-warning);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
