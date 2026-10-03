@@ -245,6 +245,8 @@ test('scheduling an update keeps the live article; cancelling leaves title and s
   await page.goBack();
 
   await page.getByTestId('schedule-cancel').click();
+  // The safe choice is not a second "Zrušit" next to "Zrušit plán".
+  await expect(page.getByRole('alertdialog').locator('[data-confirm="cancel"]')).toHaveText('Ponechat plán');
   await page.locator('[data-confirm="confirm"]').click();
   await expect(page.getByTestId('editor-schedule-cancelled')).toBeVisible();
   await expect(page.getByTestId('schedule-form')).toBeVisible();

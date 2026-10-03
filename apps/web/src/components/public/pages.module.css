@@ -157,6 +157,13 @@ a.choice:focus-visible {
   min-height: 44px;
 }
 
+/* The link itself is the touch target, not only its row. */
+.communityLinks li > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
 @media (forced-colors: active) {
   .choice {
     border-color: CanvasText;
