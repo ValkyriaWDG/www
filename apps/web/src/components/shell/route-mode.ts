@@ -17,9 +17,9 @@ export const NAV_SECTIONS = [
   { key: 'matches', href: '/matches' },
 ] as const;
 
-export type NavSection = (typeof NAV_SECTIONS)[number]['key'] | 'servers';
+export type NavSection = (typeof NAV_SECTIONS)[number]['key'] | 'servers' | 'history';
 
-/** Wardogs menu includes its game-scoped server browser. */
+/** Wardogs menu includes its game-scoped server browser and the retained server game history. */
 export const WARDOGS_NAV_SECTIONS: readonly { key: NavSection; href: string }[] = [
   { key: 'home', href: '/wardogs' },
   { key: 'news', href: '/wardogs/news' },
@@ -27,6 +27,7 @@ export const WARDOGS_NAV_SECTIONS: readonly { key: NavSection; href: string }[] 
   { key: 'members', href: '/wardogs/members' },
   { key: 'matches', href: '/wardogs/matches' },
   { key: 'servers', href: '/wardogs/servers' },
+  { key: 'history', href: '/wardogs/history' },
 ];
 
 /** Removes a leading `/cs` or `/en` segment; always returns a path starting with `/`. */

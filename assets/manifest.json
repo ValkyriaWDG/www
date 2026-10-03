@@ -17320,6 +17320,138 @@
       "bytes": 21992,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "warcon-history-history-overview-cs-1440x1050",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-overview-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/history?server=synthetic-wardogs; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "c26aad4d8f187885e722784a414d4a95102c06a88534dfc8dd3734550aec4d4c",
+      "bytes": 243494,
+      "width": 1440,
+      "height": 4835
+    },
+    {
+      "id": "warcon-history-history-ranking-kd-cs-1440x1050",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-ranking-kd-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/history?server=synthetic-wardogs&period=all&sort=kd; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "692039f736a815cdf69e28ce10659a86b773dad469f7da099e9c58e485a947f7",
+      "bytes": 298822,
+      "width": 1440,
+      "height": 6134
+    },
+    {
+      "id": "warcon-history-history-game-expanded-cs-1440x1050",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-game-expanded-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/history?server=synthetic-wardogs&period=all; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f0a4639cbeaabe51e7297556d4de995019325d20d3b4631e96f132ee466bc6de",
+      "bytes": 338300,
+      "width": 1440,
+      "height": 6932
+    },
+    {
+      "id": "warcon-history-server-detail-history-cs-1440x1050",
+      "path": "docs/evidence/warcon-history-2026-10-03/server-detail-history-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/servers?server=synthetic-wardogs; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "79d1c0231f162f1fb13231a5e422700d0b06f866f20dbfb4b1f29f3950a25679",
+      "bytes": 131420,
+      "width": 1440,
+      "height": 2885
+    },
+    {
+      "id": "warcon-history-history-overview-en-1440x1050",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-overview-en-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/history?server=synthetic-wardogs; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "dac24f18bca31e74904299f92b4c3948087d21e37375a289984866ece13f7ab7",
+      "bytes": 255352,
+      "width": 1440,
+      "height": 4859
+    },
+    {
+      "id": "warcon-history-history-overview-cs-390x844",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-overview-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/history?server=synthetic-wardogs; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a4d792ebbe11699f1277eaaf15c25ab916946ccc1d258f02e3fcc87f08e7620d",
+      "bytes": 191918,
+      "width": 390,
+      "height": 7475
+    },
+    {
+      "id": "warcon-history-history-game-expanded-cs-390x844",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-game-expanded-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/history?server=synthetic-wardogs&period=all; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "cbec3902e925d6511598f8265d8f5bbe720a0fada99d7087d851b734ccf521f0",
+      "bytes": 269858,
+      "width": 390,
+      "height": 10624
+    },
+    {
+      "id": "warcon-history-history-empty-cs-390x844",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-empty-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/history?server=synthetic-wardogs&period=7d&map=Synthetic+Nowhere; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "657ca108671ce995261c5e020a86860851160a8099dca46d7bb91e47847f8903",
+      "bytes": 48602,
+      "width": 390,
+      "height": 1518
+    },
+    {
+      "id": "warcon-history-server-detail-history-cs-390x844",
+      "path": "docs/evidence/warcon-history-2026-10-03/server-detail-history-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/servers?server=synthetic-wardogs; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "3d5be65fe7184e6d67e7b6c448b466e167547581e66e8b3877c5c1fb538d22bd",
+      "bytes": 108480,
+      "width": 390,
+      "height": 4253
+    },
+    {
+      "id": "warcon-history-history-overview-en-390x844",
+      "path": "docs/evidence/warcon-history-2026-10-03/history-overview-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/history?server=synthetic-wardogs; visitor; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "79c1883eba56b1bb332189c32d6cfb6d9848e163a77f814f23a481b324b14b72",
+      "bytes": 194354,
+      "width": 390,
+      "height": 7440
+    },
+    {
+      "id": "warcon-history-admin-integrations-cs-1440x900-full",
+      "path": "docs/evidence/warcon-history-2026-10-03/integrations-cs-1440x900-full.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "3bbedf836739b0dab1ae04054faa54882be475afc32ece55a8c98837174bf87e",
+      "bytes": 205118,
+      "width": 1440,
+      "height": 3352
+    },
+    {
+      "id": "warcon-history-admin-integrations-en-390x844-logi",
+      "path": "docs/evidence/warcon-history-2026-10-03/integrations-en-390x844-logi.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/admin/integrations; administrator; source 4ef415f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "52636632e93edd3a12b1ae35b6d57b128264d702ed843ab5ac80dfa4ecdf7d1d",
+      "bytes": 37260,
+      "width": 390,
+      "height": 844
     }
   ]
 }

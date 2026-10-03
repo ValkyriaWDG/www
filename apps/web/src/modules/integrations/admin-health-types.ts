@@ -106,20 +106,24 @@ export type AdminLogiSource = {
   purposes: AdminLogiPurpose[];
 };
 
-export type AdminReaderResource = 'league-matches' | 'league-fixtures' | 'warcon-data';
-export type AdminReaderState = 'unconfigured' | 'configured' | 'unsupported';
+export type AdminReaderResource = 'league-matches' | 'league-fixtures' | 'warcon-data' | 'server-game-history';
+export type AdminReaderState = 'unconfigured' | 'configured' | 'unsupported' | 'denied' | 'preparing' | 'available' | 'stale' | 'error';
 
 /**
- * One approved Wardogs reader (issue #87): `unconfigured` without its key, source or
- * approved connections (or, for the tracked fixtures, when the producer refused the key
- * the explicit `league-fixtures` grant); `configured` with them; `unsupported` when the
- * deployed producer answered 404 on the last attempt. Attempt facts come from the
- * in-process caches.
+ * One approved Wardogs reader (issue #87 and the retained game history): `unconfigured`
+ * without its key, source or approved connections/sources (or, for the tracked
+ * fixtures, when the producer refused the key the explicit `league-fixtures` grant);
+ * `configured` with them; `unsupported` when the deployed producer answered 404 on the
+ * last attempt. The history reader also reports `denied` (401/403: the key lacks the
+ * explicit `server-game-history` grant or was revoked), `preparing` (first scan running),
+ * `available` (complete snapshot, last refresh succeeded), `stale` (snapshot kept after a
+ * failed refresh or past its maximum age) and `error` (no snapshot, last scan failed).
+ * Attempt facts come from the in-process caches.
  */
 export type AdminReader = {
   resource: AdminReaderResource;
   /** The matching `LogiSourcePurpose` (both League readers share the League key). */
-  purpose: Extract<LogiSourcePurpose, 'league' | 'warcon'>;
+  purpose: Extract<LogiSourcePurpose, 'league' | 'warcon' | 'history'>;
   state: AdminReaderState;
   /** Sanitized configuration detail (variable names, instance ID, counts; never a key, origin or connection ID) or the code `synthetic-fixture`. */
   detail: string;
@@ -139,7 +143,7 @@ export type AdminIntegrationHealth = {
     sso: { enabled: boolean; configured: boolean; discordFallback: boolean };
     membershipSource: 'discord' | 'logi';
     sources: AdminLogiSource[];
-    /** Wardogs League preview, tracked League fixtures and Warcon readers, in a fixed order. */
+    /** Wardogs League preview, tracked League fixtures, Warcon and retained game history readers, in a fixed order. */
     readers: AdminReader[];
     webhooks: { enabled: boolean; pendingHints: number; lastReceivedAt: string | null; lastProcessedAt: string | null };
     commands: { enabled: boolean; pending: number; lastReceiptAt: string | null };

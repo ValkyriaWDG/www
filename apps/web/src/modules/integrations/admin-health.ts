@@ -174,12 +174,13 @@ async function logiSources(db: Executor, env: IntegrationAdminEnv, now: Date): P
   return { configError: false, sources };
 }
 
-/** Approved Wardogs readers (issue #87): states and attempt categories only. */
-function readers(env: IntegrationAdminEnv): AdminReader[] {
-  const states = readerCapabilityStates(env);
+/** Approved Wardogs readers (issue #87 and the retained game history): states and attempt categories only. */
+function readers(env: IntegrationAdminEnv, now: Date): AdminReader[] {
+  const states = readerCapabilityStates(env, now);
   return READER_RESOURCES.map((resource) => {
     const state = states[resource];
-    return { resource, purpose: resource === 'warcon-data' ? 'warcon' : 'league', state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
+    const purpose = resource === 'warcon-data' ? 'warcon' : resource === 'server-game-history' ? 'history' : 'league';
+    return { resource, purpose, state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
   });
 }
 
@@ -215,7 +216,7 @@ export async function getIntegrationHealthForAdmin(db: Executor, actor: Actor, e
       sso: { enabled: env.LOGI_SSO_ENABLED === true, configured: isLogiSignInConfigured(logiProviderConfigFromEnv(env)), discordFallback: env.LOGI_DISCORD_FALLBACK_ENABLED === true },
       membershipSource,
       sources: logi.sources,
-      readers: readers(env),
+      readers: readers(env, now),
       webhooks: { enabled: env.LOGI_WEBHOOK_ENABLED === true, pendingHints: inbox?.pending ?? 0, lastReceivedAt: iso(inbox?.lastReceivedAt), lastProcessedAt: iso(inbox?.lastProcessedAt) },
       commands: { enabled: env.LOGI_EVENT_WRITE_ENABLED === true, pending: commands?.pending ?? 0, lastReceiptAt: commands?.lastReceiptAt ? new Date(commands.lastReceiptAt).toISOString() : null },
     },

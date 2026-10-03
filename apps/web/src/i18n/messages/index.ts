@@ -8,6 +8,7 @@ import csCommon from './cs/common.json';
 import csEditor from './cs/editor.json';
 import csErrors from './cs/errors.json';
 import csGames from './cs/games.json';
+import csHistory from './cs/history.json';
 import csHome from './cs/home.json';
 import csMatches from './cs/matches.json';
 import csLogi from './cs/logi.json';
@@ -27,6 +28,7 @@ import enCommon from './en/common.json';
 import enEditor from './en/editor.json';
 import enErrors from './en/errors.json';
 import enGames from './en/games.json';
+import enHistory from './en/history.json';
 import enHome from './en/home.json';
 import enMatches from './en/matches.json';
 import enLogi from './en/logi.json';
@@ -50,6 +52,7 @@ export const enMessages = {
   news: enNews,
   members: enMembers,
   matches: enMatches,
+  history: enHistory,
   logi: enLogi,
   logiPeople: enLogiPeople,
   auth: enAuth,
@@ -74,6 +77,7 @@ export const csMessages: Messages = {
   news: csNews,
   members: csMembers,
   matches: csMatches,
+  history: csHistory,
   logi: csLogi,
   logiPeople: csLogiPeople,
   auth: csAuth,

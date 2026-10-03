@@ -36,6 +36,7 @@ fresh server-side membership and game-scoped capabilities after sign-in.
 | Wardogs League preview | Server-only `league-matches` reader with in-process last-known cache, editorial `leagueMatchUrl` on Wardogs matches and an unverified "League preview" section on the public match page (local synthetic proof only) | Explicit `league-matches` read grant (`LOGI_LEAGUE_API_KEY_WDG`); producer URL policy; read-only preview; `results` stays `null` and the CMS result remains the only result |
 | Wardogs League tracked fixtures | Server-only `league-fixtures` reader (bounded paging, one in-process last-known list per source) and an unverified "Tracked Wardogs League fixtures" section after the Upcoming list of the Wardogs matches page with League, match-page and Logi roster links (local synthetic proof only) | Explicit `league-fixtures` grant on the same League key (the preview grant alone is refused with 403 and reported as `unconfigured`); read-only; the change-feed resource of the same name is not consumed; results stay with the CMS |
 | Warcon advanced reads | Server-only `warcon-data` reader for approved `warconConnections` reading the `live` and `matches` views only; minimal public DTOs on the Wardogs server detail (local synthetic proof only) | Explicit `warcon-data` grant (`LOGI_WARCON_API_KEY_WDG`) and per-connection approval under a published server; no player rows, Steam IDs, panel/join identifiers or health/capabilities views |
+| Retained Warcon game history | Server-only `server-game-history` reader with a complete in-process snapshot per approved source, the producer's calculation rules ported locally, publication DTOs and a health row; no public page yet (see [retained history](warcon-history.md); local synthetic proof only) | Explicit `server-game-history` grant (`LOGI_HISTORY_API_KEY_WDG`, not inherited by the Warcon/League keys) and per-source approval `historySources` under a published server; player names/statistics only with `publishPlayers`, never platform IDs, source/guild IDs or digests; server gameplay history, not clan results or verified members |
 | Signup, roster, attendance, result and server writes | No website controls for these operations | Raw service APIs are not equivalent to actor-backed website commands; management stays in Logi/Discord |
 | News, FAQ and Field Manual | Website editor, translations, revisions and publication | Website-owned CMS; do not synchronize from Logi or add a second editorial writer |
 
@@ -53,7 +54,7 @@ approved readers; the module boundary is described in the
 
 ## Reader capability states
 
-`readerCapabilityStates(env)` (`apps/web/src/modules/integrations/logi/readers/health.ts`)
+`readerCapabilityStates(env, now)` (`apps/web/src/modules/integrations/logi/readers/health.ts`)
 reports one state per resource; `/[locale]/admin/integrations` (issue #22) renders them
 in the Logi section as "Čtečky Wardogs (League, Warcon)" with the approved-connection
 count, the last attempt time and its transport category (see the
@@ -65,10 +66,21 @@ count, the last attempt time and its transport category (see the
 | `configured` | Key and Wardogs source present | Key and Wardogs source present (with the tracked-fixture count of the last successful read) | Key, Wardogs source and at least one approved connection |
 | `unsupported` | The deployed producer answered 404 (`not_found`) on the last attempt: the route is not deployed | Same | Same |
 
+The fourth row, `server-game-history` ([retained history](warcon-history.md)), uses the
+same `unconfigured` (`LOGI_HISTORY_API_KEY_WDG` absent, no valid Wardogs source, no
+approved `historySources`), `configured` (no attempt yet) and `unsupported` (404) states
+and adds `denied` (401/403: the key lacks the explicit `server-game-history` grant or was
+revoked), `preparing` (first scan running), `available` (complete snapshot with the game
+count, revision, `lastCollectedAt`, `refreshedAt` and coverage in the detail), `stale`
+(snapshot kept after a failed refresh or past 30 minutes, with the reason) and `error`
+(no snapshot, last scan failed, with the reason such as `budget_exceeded`).
+
 The last attempt outcome is the in-process cache category (`ok`, `unauthorized`,
 `forbidden`, `not_found`, `rate_limited`, `upstream`, `timeout`, `invalid_response`,
-...), never a body or key. `LOGI_READERS_SOURCE=synthetic-fixture` reports `configured`
-with a synthetic detail and is for local tests and review captures only.
+...; for the history scan also `revision_mismatch`, `repeated_cursor`, `budget_exceeded`
+and `aborted`), never a body, cursor or key. `LOGI_READERS_SOURCE=synthetic-fixture`
+reports `configured` with a synthetic detail and is for local tests and review captures
+only.
 
 The reader implementation was verified against the producer source and fixtures of
 PR #158 at `c42ea770` (recorded local League read, synthetic Warcon generator), the
@@ -85,7 +97,12 @@ permanently empty; the enabled
 `wardogs_warcon` connections and their Logi connection IDs; whether a per-key
 connection allowlist is planned; whether game display names may be public; the
 acceptable shared budgets and recommended timeout for cold League reads; and when
-completed/live League pages will be verified (results stay `null` until then).
+completed/live League pages will be verified (results stay `null` until then). The
+retained history reader was verified against the producer source of `72946e3` and the
+labelled synthetic dataset only; its hosted checks (explicit grant on a real key, real
+page sizes and scan duration, a real 410, the budget window on a large archive, the
+opaque source IDs and whether display names may be public) are listed in
+[retained history](warcon-history.md#activation-steps-and-unrun-hosted-checks).
 
 ## Connector corrections in this patch
 

@@ -122,20 +122,27 @@
       "membership": "Členství (oprávnění)",
       "commands": "Příkazy (zápis událostí)",
       "league": "Wardogs League",
-      "warcon": "Warcon"
+      "warcon": "Warcon",
+      "history": "Historie her serveru (Warcon)"
     },
     "readers": {
       "title": "Čtečky Wardogs (League, Warcon)",
       "resources": {
         "league-matches": "Wardogs League – náhled zápasu",
         "league-fixtures": "Wardogs League – sledovaná utkání",
-        "warcon-data": "Warcon"
+        "warcon-data": "Warcon",
+        "server-game-history": "Warcon – historie her serveru"
       },
-      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhled zápasu z League, utkání ve Wardogs League, která Logi sleduje, a živé údaje či poslední kola ze schválených připojení Warcon. Stavy vycházejí z konfigurace a z posledního čtení webu, nikdy ze stavu hostovaného producenta.",
+      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhled zápasu z League, utkání ve Wardogs League, která Logi sleduje, živé údaje či poslední kola ze schválených připojení Warcon a uchované dohrané hry Warcon ze schválených zdrojů (historie hry na serveru, ne výsledky klanu). Stavy vycházejí z konfigurace a z posledního čtení webu, nikdy ze stavu hostovaného producenta.",
       "state": {
         "unconfigured": "Nenastaveno",
         "configured": "Nastaveno",
-        "unsupported": "Producent trasu nenasadil"
+        "unsupported": "Producent trasu nenasadil",
+        "denied": "Producent přístup odepřel",
+        "preparing": "Běží první načtení",
+        "available": "K dispozici",
+        "stale": "Zastaralé",
+        "error": "Poslední načtení selhalo"
       },
       "connections": "{count, plural, =0 {žádné schválené připojení} one {# schválené připojení} few {# schválená připojení} other {# schválených připojení}}",
       "lastOk": "poslední čtení uspělo",

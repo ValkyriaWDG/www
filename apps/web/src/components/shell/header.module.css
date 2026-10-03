@@ -64,7 +64,7 @@
   display: flex;
 }
 
-/* Keep six translated Wardogs destinations inside the space left by the shared tools. */
+/* Keep seven translated Wardogs destinations inside the space left by the shared tools. */
 .nav .navItem { min-width: 0; }
 
 .navItem {
@@ -470,6 +470,19 @@ a.languageOption:hover {
 
   .mobileGame {
     display: block;
+  }
+}
+
+/* 768–899: the seven Wardogs destinations keep their full labels with tighter tracking and
+   padding (the strip has about 465 px for them beside the flags and the account action). */
+@media (min-width: 768px) and (max-width: 899px) {
+  .nav .navList {
+    gap: 2px;
+  }
+
+  .nav .navItem {
+    padding-inline: 6px;
+    letter-spacing: 0.03em;
   }
 }
 

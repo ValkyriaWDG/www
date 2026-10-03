@@ -1,4 +1,5 @@
 import { leagueFixturesPageSchema, leagueReadSchema, warconEnvelopeSchema, type LeagueFixture, type LeagueRead, type LeagueSnapshot, type WarconEnvelope } from './contracts';
+import { historyPageSchema, type HistoryOutcome, type HistoryPage, type HistoryPlayerFact, type HistoryRecord } from './history-contracts';
 import { canonicalLeagueMatchUrl, type LeagueMatchUrl } from './league-url';
 
 /**
@@ -133,4 +134,108 @@ export function syntheticLeagueFixtures(now: Date): LeagueFixture[] {
     ],
     nextCursor: null,
   }).items;
+}
+
+/** Opaque synthetic retained-history source ID (64 hex); never a producer value. */
+export const SYNTHETIC_HISTORY_SOURCE_ID = '0123456789abcdef'.repeat(4);
+export const SYNTHETIC_HISTORY_GUILD_ID = SYNTHETIC_GUILD_ID;
+/** Workspace revision of the synthetic pages; the corrected record carries revision 6. */
+export const SYNTHETIC_HISTORY_REVISION = '7';
+export const SYNTHETIC_HISTORY_CURSORS = ['synthetic-history-cursor-2', 'synthetic-history-cursor-3'] as const;
+export const SYNTHETIC_HISTORY_GAME_COUNT = 23;
+export const SYNTHETIC_HISTORY_PLAYER_COUNT = 24;
+export const SYNTHETIC_HISTORY_MAPS = ['Synthetic Training Ground', 'Synthetic Harbour', 'Synthetic Ridge'] as const;
+const SYNTHETIC_HISTORY_MODES = ['Synthetic Objective', 'Synthetic Skirmish'] as const;
+const SYNTHETIC_HISTORY_LIGHTING = ['Synthetic Dawn', 'Synthetic Dusk', 'Synthetic Night'] as const;
+const SYNTHETIC_HISTORY_FACTIONS = [{ name: 'Alpha', colorHex: '#ff0000' }, { name: 'Bravo', colorHex: '#00ff00' }, { name: 'Charlie', colorHex: '#0000ff' }] as const;
+/** Game index (0 = most recent) → outcome; every other game is decided. */
+const SYNTHETIC_HISTORY_OUTCOMES: Partial<Record<number, HistoryOutcome>> = { 4: 'draw', 9: 'draw', 15: 'no_result', 20: 'unknown' };
+/** The game observed without a feed: its feed-only metrics are unknown. */
+const SYNTHETIC_HISTORY_NO_FEED_GAME = 6;
+/** Retained first with Charlie as the winner, corrected to Bravo later in the scan (same ID, higher revision). */
+export const SYNTHETIC_HISTORY_CORRECTED_GAME = 2;
+const SYNTHETIC_HISTORY_RENAMED_PLAYER = 3;
+const SYNTHETIC_HISTORY_UNKNOWN_RESULT_PLAYER = 23;
+const SYNTHETIC_HISTORY_ZERO_DEATHS_PLAYER = 24;
+const DAY_MS = 24 * 60 * 60_000;
+const pad = (value: number) => String(value).padStart(2, '0');
+
+function syntheticHistoryPlatform(index: number): HistoryPlayerFact['platform'] {
+  return index % 7 === 0 ? 'unknown' : index % 3 === 0 ? 'xbox' : 'steam';
+}
+
+/** Deterministic synthetic player facts of one game; identities are `synthetic-<platform>-NN`, never real IDs. */
+function syntheticHistoryPlayers(game: number, winner: string | null, outcome: HistoryOutcome): HistoryPlayerFact[] {
+  const hasFeed = game !== SYNTHETIC_HISTORY_NO_FEED_GAME;
+  const members = Array.from({ length: 22 }, (_, i) => i + 1).filter((index) => (index + game) % 2 === 0);
+  if (game === 1 || game === 11) members.push(SYNTHETIC_HISTORY_UNKNOWN_RESULT_PLAYER);
+  if (game === SYNTHETIC_HISTORY_CORRECTED_GAME) members.push(SYNTHETIC_HISTORY_ZERO_DEATHS_PLAYER);
+  return members.map((index) => {
+    const platform = syntheticHistoryPlatform(index);
+    const faction = SYNTHETIC_HISTORY_FACTIONS[(index + game) % 3]!.name;
+    const unknownResult = index === SYNTHETIC_HISTORY_UNKNOWN_RESULT_PLAYER && game === 1;
+    const result = unknownResult || outcome === 'no_result' || outcome === 'unknown' ? null : outcome === 'draw' ? 'draw' : faction === winner ? 'win' : 'loss';
+    const kills = index === SYNTHETIC_HISTORY_ZERO_DEATHS_PLAYER ? 3 : (index * 5 + game * 3) % 23;
+    const metrics: HistoryPlayerFact['metrics'] = {
+      seconds: Math.min(1800 + ((index * 97 + game * 31) % 3000), 45 * 60 + (game % 4) * 15 * 60),
+      kills,
+      deaths: index === SYNTHETIC_HISTORY_ZERO_DEATHS_PLAYER ? 0 : ((index * 3 + game * 7) % 17) + 1,
+      cashDelta: ((index * 13 + game * 11) % 900) - 400,
+      headshots: hasFeed ? (index + game) % 5 : null,
+      teamKills: hasFeed ? ((index + game) % 3 === 0 ? 1 : 0) : null,
+      suicides: hasFeed ? ((index * game) % 11 === 0 ? 1 : 0) : null,
+      vehicleKills: hasFeed ? (index + 2 * game) % 4 : null,
+    };
+    // One missing metric: the cash delta of player 08 in game 8 was not observed.
+    if (index === 8 && game === 8) delete metrics.cashDelta;
+    const name = index === SYNTHETIC_HISTORY_RENAMED_PLAYER && game < 12 ? `[SYNTHETIC] Player ${pad(index)} (renamed)` : `[SYNTHETIC] Player ${pad(index)}`;
+    return { platform, platformId: `synthetic-${platform}-${pad(index)}`, name, faction, result, metrics };
+  });
+}
+
+function syntheticHistoryRecord(now: Date, game: number, overrides: { winner?: string; revision?: string } = {}): HistoryRecord {
+  const outcome = SYNTHETIC_HISTORY_OUTCOMES[game] ?? 'decided';
+  const winner = outcome === 'decided' ? overrides.winner ?? SYNTHETIC_HISTORY_FACTIONS[game % 3]!.name : null;
+  const endedAt = now.getTime() - DAY_MS - game * 2.5 * DAY_MS;
+  const startedAt = endedAt - (45 + (game % 4) * 15) * 60_000;
+  const factions = SYNTHETIC_HISTORY_FACTIONS.map((faction) => ({ name: faction.name, colorHex: faction.colorHex }));
+  const participants = outcome === 'unknown' ? [] : factions.map((faction, index) => ({
+    id: faction.name, label: faction.name,
+    score: outcome === 'decided' ? (faction.name === winner ? 100 : index === 0 ? 60 : 35) : outcome === 'draw' ? [50, 50, 40][index]! : 0,
+  }));
+  return {
+    schemaVersion: 1, id: `synthetic-game-${pad(game + 1)}`, guildId: SYNTHETIC_HISTORY_GUILD_ID, gameId: 'wardogs', provider: 'wardogs_warcon',
+    sourceId: SYNTHETIC_HISTORY_SOURCE_ID, serverName: '[SYNTHETIC] Warcon Test Server', revision: overrides.revision ?? String(1 + (game % 5)),
+    collectedAt: iso(endedAt + 10 * 60_000), updatedAt: iso(endedAt + 10 * 60_000),
+    session: {
+      externalId: `synthetic-match-${pad(game + 1)}`, startedAt: iso(startedAt), endedAt: iso(endedAt), complete: true,
+      map: SYNTHETIC_HISTORY_MAPS[game % 3]!, participants,
+      sourceDigest: (game + 1).toString(16).padStart(4, '0').repeat(16),
+      warcon: { schemaVersion: 1, winner, outcome, hasFeed: game !== SYNTHETIC_HISTORY_NO_FEED_GAME, mode: SYNTHETIC_HISTORY_MODES[game % 2]!, lighting: SYNTHETIC_HISTORY_LIGHTING[game % 3]!, factions },
+      players: syntheticHistoryPlayers(game, winner, outcome),
+    },
+  };
+}
+
+/**
+ * Synthetic `server-game-history` pages of one source for `LOGI_READERS_SOURCE=synthetic-fixture`:
+ * 23 labelled games over the last 60 days on three synthetic maps with modes and
+ * lighting (19 decided, 2 draws, 1 without a result, 1 unknown), 24 players on the
+ * steam/xbox/unknown platforms (one renamed between games, negative cash deltas, one
+ * game without a feed, one player with zero deaths, one unknown player result, one
+ * missing metric), three factions with colours; served as a full page of 20, an empty
+ * continuation page that still carries a cursor, and a last page of three new games plus
+ * a corrected copy of game 3 (same ID, revision 6, Bravo instead of Charlie as the
+ * winner). Every page validates against the closed page schema.
+ */
+export function syntheticHistoryPages(now: Date): HistoryPage[] {
+  const games = Array.from({ length: SYNTHETIC_HISTORY_GAME_COUNT }, (_, game) => syntheticHistoryRecord(now, game));
+  const corrected = syntheticHistoryRecord(now, SYNTHETIC_HISTORY_CORRECTED_GAME, { winner: 'Bravo', revision: '6' });
+  corrected.updatedAt = iso(now.getTime() - 6 * 60_000);
+  const lastCollectedAt = iso(now.getTime() - 5 * 60_000);
+  return [
+    { items: games.slice(0, 20), revision: SYNTHETIC_HISTORY_REVISION, nextCursor: SYNTHETIC_HISTORY_CURSORS[0], lastCollectedAt },
+    { items: [], revision: SYNTHETIC_HISTORY_REVISION, nextCursor: SYNTHETIC_HISTORY_CURSORS[1], lastCollectedAt },
+    { items: [...games.slice(20), corrected], revision: SYNTHETIC_HISTORY_REVISION, nextCursor: null, lastCollectedAt },
+  ].map((page) => historyPageSchema.parse(page));
 }

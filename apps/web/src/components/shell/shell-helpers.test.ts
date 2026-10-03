@@ -39,6 +39,7 @@ describe('route mode and current section', () => {
     expect(getCurrentSection('/cs/wardogs', WARDOGS_NAV_SECTIONS)).toBe('home');
     expect(getCurrentSection('/cs/wardogs/matches/some-match', WARDOGS_NAV_SECTIONS)).toBe('matches');
     expect(getCurrentSection('/en/wardogs/members/someone', WARDOGS_NAV_SECTIONS)).toBe('members');
+    expect(getCurrentSection('/cs/wardogs/history?server=synthetic-wardogs', WARDOGS_NAV_SECTIONS)).toBe('history');
     expect(getCurrentSection('/cs/news', WARDOGS_NAV_SECTIONS)).toBeNull();
     expect(getCurrentSection('/cs/hll/news', WARDOGS_NAV_SECTIONS)).toBeNull();
   });

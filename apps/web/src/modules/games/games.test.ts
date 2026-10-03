@@ -47,8 +47,11 @@ describe('game registry', () => {
       '/wardogs/members',
       '/wardogs/matches',
       '/wardogs/servers',
+      '/wardogs/history',
     ]);
     expect(gameHasSection('wardogs', 'field-manual')).toBe(false);
+    expect(gameHasSection('wardogs', 'history')).toBe(true);
+    expect(gameHasSection('hll', 'history')).toBe(false);
     expect(gameHasSection('wardogs', 'tournaments')).toBe(false);
   });
 });
@@ -86,6 +89,7 @@ describe('game routes', () => {
 
   it('opens the landing for sections the target lacks and for shared utility routes', () => {
     expect(resolveGameSwitch('/cs/hll/field-manual/role', '', 'wardogs')).toBe('/wardogs?switch=section');
+    expect(resolveGameSwitch('/cs/wardogs/history', 'server=synthetic-wardogs&period=all', 'hll')).toBe('/hll?switch=section');
     expect(resolveGameSwitch('/cs/privacy', '', 'hll')).toBe('/hll');
     expect(resolveGameSwitch('/cs/admin/news', '', 'hll')).toBe('/hll');
     expect(resolveGameSwitch('/cs', '', 'hll')).toBe('/hll');

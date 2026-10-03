@@ -25,7 +25,8 @@
     "accountMenu": "Account",
     "menu": "MENU",
     "hub": "COMMUNITY",
-    "servers": "SERVERS"
+    "servers": "SERVERS",
+    "history": "HISTORY"
   },
   "language": {
     "groupLabel": "Website language",

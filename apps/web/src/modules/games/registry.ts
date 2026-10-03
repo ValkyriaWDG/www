@@ -16,7 +16,7 @@ export const LOGI_GAME_IDS = ['hell_let_loose', 'wardogs'] as const;
 export type LogiGameId = (typeof LOGI_GAME_IDS)[number];
 
 /** Public sections a game can expose, in the English route vocabulary. */
-export const GAME_SECTIONS = ['news', 'matches', 'tournaments', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community'] as const;
+export const GAME_SECTIONS = ['news', 'matches', 'tournaments', 'servers', 'history', 'members', 'field-manual', 'faq', 'clan', 'community'] as const;
 export type GameSection = (typeof GAME_SECTIONS)[number];
 
 export type GameTheme = 'hll' | 'wardogs';
@@ -44,7 +44,8 @@ export const GAME_REGISTRY: Readonly<Record<GameRoute, GameDefinition>> = {
     db: 'wardogs',
     logi: 'wardogs',
     theme: 'wardogs',
-    sections: ['news', 'clan', 'members', 'matches', 'servers'],
+    // `history` (retained Warcon server game history) is a Wardogs-only section; HLL never lists it.
+    sections: ['news', 'clan', 'members', 'matches', 'servers', 'history'],
   },
 };
 
