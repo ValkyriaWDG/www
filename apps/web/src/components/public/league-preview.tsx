@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { SectionFrame, StatusBadge, type StatusKind } from '@/components/ui/panels';
+import { SectionFrame, StatusBadge, type StatusKind, SyntheticNote } from '@/components/ui/panels';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import { canonicalLeagueMatchUrl } from '@/modules/integrations/logi/readers/league-url';
@@ -33,7 +33,7 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
     </p>
   ) : (
     <div data-league-state={preview.state}>
-      {preview.synthetic ? <p className={styles.leagueNote} data-synthetic-data="league">{t('synthetic')}</p> : null}
+      {preview.synthetic ? <SyntheticNote source="league">{t('synthetic')}</SyntheticNote> : null}
       <dl className={styles.leagueFacts}>
         {preview.fixtureNumber !== null ? (
           <div>
@@ -95,7 +95,11 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
         </div>
       </dl>
       {preview.progress.length > 0 ? (
-        <ol className={styles.leagueProgress} aria-label={t('progress')} data-league-progress="">
+        <>
+          <p id={`${titleId}-league-progress`} className={`${styles.blockTitle} ${styles.leagueProgressLabel}`}>
+            {t('progress')}
+          </p>
+          <ol className={styles.leagueProgress} aria-labelledby={`${titleId}-league-progress`} data-league-progress="">
           {preview.progress.map((step, index) => (
             <li key={`${step.label}-${index}`} data-state={step.state ?? 'unknown'}>
               <StatusBadge kind={PROGRESS_KIND[step.state ?? 'unknown']}>{t(`progressState.${step.state ?? 'unknown'}`)}</StatusBadge>
@@ -103,11 +107,13 @@ export async function LeaguePreview({ preview, locale, titleId }: { preview: Lea
               {step.detail ? <span className={styles.leagueStepDetail}>{step.detail}</span> : null}
             </li>
           ))}
-        </ol>
+          </ol>
+        </>
       ) : null}
       <p className={styles.leagueMeta}>
-        <StatusBadge kind={STATE_KIND[preview.state]}>{preview.state === 'stale' ? t('stale') : t('observed', { time: preview.observedAt ? formatDate(preview.observedAt, locale, 'dateTimeZone') : '' })}</StatusBadge>
-        {preview.state === 'stale' && preview.observedAt ? <span>{t('observed', { time: formatDate(preview.observedAt, locale, 'dateTimeZone') })}</span> : null}
+        <StatusBadge kind={STATE_KIND[preview.state]}>{t(`freshness.${preview.state}`)}</StatusBadge>
+        <span>{preview.observedAt ? <time dateTime={preview.observedAt}>{t('observed', { time: formatDate(preview.observedAt, locale, 'dateTimeZone') })}</time> : t('neverObserved')}</span>
+        {preview.state === 'stale' ? <span>{t('stale')}</span> : null}
       </p>
     </div>
   );

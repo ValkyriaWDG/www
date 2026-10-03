@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { SyntheticNote } from '@/components/ui';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import type { LivePlayersSnapshot } from '@/modules/integrations/servers/live-players';
@@ -17,7 +18,7 @@ export function LivePlayersTable({ snapshot, locale, serverName, connectedPlayer
       <p>{serverName}</p>
       <p className={styles.connectNote}>{t('description')}</p>
       <p className={styles.observedText}>{snapshot.observedAt ? <time dateTime={snapshot.observedAt}>{t('observed', { time: formatDate(snapshot.observedAt, locale, 'dateTimeZone') })}</time> : t('noTimestamp')}</p>
-      {snapshot.synthetic ? <p className={styles.synthetic}>{t('synthetic')}</p> : null}
+      {snapshot.synthetic ? <SyntheticNote>{t('synthetic')}</SyntheticNote> : null}
       {snapshot.freshness === 'stale' ? <p className={styles.snapshotWarning}>{t('stale')}</p> : null}
       {available && connectedPlayers !== null && connectedPlayers !== snapshot.players.length ? <p className={styles.connectNote}>{t('populationMismatch', { connected: connectedPlayers, rows: snapshot.players.length })}</p> : null}
       {!available ? <p data-live-players-unavailable="">{t(snapshot.state === 'not_configured' ? 'notConfigured' : 'unavailable')}</p> : snapshot.players.length === 0 ? <p data-live-players-empty="">{t('empty')}</p> : (

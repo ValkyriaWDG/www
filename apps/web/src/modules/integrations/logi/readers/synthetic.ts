@@ -8,7 +8,11 @@ import type { LeagueMatchUrl } from './league-url';
  * unchanged. No real server name, player, League team or fixture is represented.
  */
 
-/** Public server ID of the synthetic Wardogs server (`servers/fixtures.ts`). */
+/**
+ * Public server ID of the synthetic Wardogs server (`servers/fixtures.ts`); the live
+ * player count (0 / 98) and the named scores match that server-status fixture so the
+ * detail panel and the Warcon panel of one page agree.
+ */
 export const SYNTHETIC_WARCON_PUBLIC_ID = 'synthetic-wardogs';
 export const SYNTHETIC_WARCON_CONNECTION_ID = 'synthetic-warcon-connection';
 
@@ -25,7 +29,7 @@ export function syntheticWarconLive(now: Date): WarconEnvelope {
         startedAt: iso(observedAt - 25 * 60_000), reservedSlots: 0, throttledUntil: null,
         status: {
           serverName: '[SYNTHETIC] Warcon Test Server', map: 'Synthetic Training Ground', experiences: ['Synthetic Objective'], lighting: 'Synthetic Dusk', alternator: 'Default',
-          scoreTick: 1, scoreTickMin: 1, scoreTickMax: 10, scoreCap: 100, matchSeconds: 25 * 60, playerCount: 12, maxPlayers: 98,
+          scoreTick: 1, scoreTickMin: 1, scoreTickMax: 10, scoreCap: 100, matchSeconds: 25 * 60, playerCount: 0, maxPlayers: 98,
           scores: [{ name: 'Alpha', colorHex: '#ff0000', score: 0 }, { name: 'Bravo', colorHex: '#00ff00', score: 12 }, { name: 'Charlie', colorHex: '#0000ff', score: 7 }],
           rotationNow: 3, rotationNext: 4,
         },

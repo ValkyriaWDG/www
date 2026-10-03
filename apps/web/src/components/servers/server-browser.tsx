@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { ExternalLink } from '@/components/public/external-link';
 import { firstParam, type RawSearchParams } from '@/components/public/query';
 import { PageMain } from '@/components/shell/page-main';
-import { DetailPane, EmptyState, FeedbackNotice, GameButton, PageHeader, SelectionTable, StatusBadge, type SelectionColumn, type StatusKind } from '@/components/ui';
+import { DetailPane, EmptyState, FeedbackNotice, GameButton, PageHeader, SelectionTable, StatusBadge, SyntheticNote, type SelectionColumn, type StatusKind } from '@/components/ui';
 import { RefreshIcon, ServerIcon } from '@/components/ui/icons';
 import { MapScene, MapThumb } from '@/components/hll/map-artwork';
 import { formatDate, formatNumber } from '@/i18n/date-format';
@@ -245,11 +245,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
           <span role="status">{poll.failed ? t('refresh.failed') : null}</span>
         </div>
       ) : null}
-      {overview.state === 'ok' && overview.synthetic ? (
-        <p className={styles.synthetic} data-synthetic-data="">
-          {t('synthetic')}
-        </p>
-      ) : null}
+      {overview.state === 'ok' && overview.synthetic ? <SyntheticNote>{t('synthetic')}</SyntheticNote> : null}
       {overview.state === 'ok' && overview.partial ? (
         <div className={styles.notice} data-server-source="partial">
           <FeedbackNotice kind="warning" title={t('partial.title')} live={false}>
