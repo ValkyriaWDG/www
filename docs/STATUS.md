@@ -13,7 +13,7 @@ them in revision-consistent pages of at most 20 scanned games with signed cursor
 teams, provider players are not verified members and games are not official League
 results.
 
-The website now has the data layer only: `LOGI_HISTORY_API_KEY_WDG` (a separate key with
+The website has the data layer: `LOGI_HISTORY_API_KEY_WDG` (a separate key with
 the explicit `server-game-history` grant; the Warcon/League keys do not inherit it) as the
 `history` reader purpose and the operator association `historySources: [{ sourceId,
 publicId, publishPlayers }]` under published servers (`logi-config.ts`); the closed wire
@@ -38,32 +38,61 @@ correction served as 20 + 0 + 4 records across three pages); and the fourth read
 "Warcon – historie her serveru / Warcon – server game history" of
 `/admin/integrations` with the states `unconfigured`, `configured`, `unsupported`,
 `denied`, `preparing`, `available`, `stale` and `error`. The change feed of the same
-resource is not consumed; this first version keeps complete cached reads. See
-[retained history](integrations/logi/warcon-history.md), the
-[readers README](../apps/web/src/modules/integrations/logi/readers/README.md), the
-[readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states)
+resource is not consumed; this first version keeps complete cached reads.
+
+The public UI is the Wardogs section `history` (`GAME_SECTIONS`, Wardogs `sections`,
+menu item "HISTORIE / HISTORY" in `WARDOGS_NAV_SECTIONS`; HLL has no such section and
+`/hll/history` is not found): `/[locale]/wardogs/history` ("Historie her serveru / Server
+game history", `app/[locale]/[game]/history/page.tsx` →
+`components/public/history-screen.tsx`) with the validated query of
+`components/public/history-query.ts` (`server`, `period` 7d/30d/90d/all → `from` at
+Europe/Prague midnight once per request, `map`, `min` playtime floor, `sort`/`dir` of the
+ranking with unknown values last, `page`, `players=all`; any parameter is `noindex`), the
+state line (synthetic note, `preparing`/`unavailable`/`denied`/`unsupported` notices,
+stale note with `refreshedAt`, window-coverage note, the fixed "not clan teams / members /
+League results" note), a no-JavaScript GET filter form (server names from the server
+presentation; hidden servers are not listed; a changed select auto-submits with scripts),
+summary tiles (games, outcomes, feed coverage, first/last game, `lastCollectedAt`,
+`refreshedAt`), faction win-share bars in the factions' published colours with a hidden
+table equivalent and draws/no-result/unknown listed separately
+(`history-factions.tsx`), the player ranking for a publishing source (link headers with
+`aria-sort`, W/L/D with unknown results, "—" for unknown K/D and win rate, `h:mm`
+playtime, signed cash, "(from N games)" coverage markers, the feed-only group collapsed
+under 768 px, the below-floor count, 50-row cap; `history-players.tsx`), the paginated
+game list with outcome/feed badges and a native `<details>` of the players grouped by
+faction (`history-games.tsx`), one empty state with a reset link, and the "unavailable
+yet" state without any published history server. The Wardogs servers page detail adds
+`components/servers/server-history-summary.tsx` (last 30 days, compact bars, last three
+games, link to the page) below the Warcon panel; the home stays unchanged. The
+768–899 px Wardogs strip tightens the seven menu labels (`header.module.css`). New
+namespace `history` in `src/i18n/messages`. See [retained history](integrations/logi/warcon-history.md#public-views),
+the [readers README](../apps/web/src/modules/integrations/logi/readers/README.md),
+the [screen map](design/screen-map.md#server-game-history-2026-10-03-retained-warcon-history),
+the [readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states)
 and the [runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
 
 Commands and results on the branch head (Node 22.22.2 in this container; the repository
 asks for Node 24): `pnpm lint` passed, `pnpm typecheck` passed, `pnpm test:unit`
-1132 tests passed (104 files; 68 new unit tests for the
-contracts, the aggregation and filters, the reader/scan, the snapshot store, the public
-DTOs, the synthetic dataset, the health states and the configuration),
-`node scripts/check-foundation.mjs` passed (3012 files), `pnpm build` passed.
-PostgreSQL, isolated in `valkyria_test_history`: `DATABASE_URL=… npx vitest run --project
-integration tests/integration/admin-health.test.ts` 7 passed (the fourth reader row:
-unconfigured without key or `historySources`, synthetic, configured, 404 → unsupported,
-403 → denied, completed scan → available with the snapshot facts, no key/source/cursor in
-the DTO). Browser: `admin-integrations` 3 passed against the standalone build
-(`CI=true`, `E2E_PORT=3300`, isolated `valkyria_history_e2e`, chromium 1194,
-`--project=chromium-admin --no-deps`; fourth row configured with the synthetic detail in
-cs/en, four rows). Limitations: data layer only, no public page; implemented and locally
-verified against the synthetic dataset and the producer source of `72946e3`; not
-activated; the hosted producer must serve the route and the key must carry the explicit
-`server-game-history` grant before anything real is read; no recorded hosted response
-exists; the change feed, `id` reads and persistence are not used (complete cached reads
-per process). Still to run by the orchestrator: the public history view, the full browser
-and PostgreSQL suites, review captures and the PR.
+1143 tests passed (105 files; 11 new unit tests for the page query, the Europe/Prague
+period boundaries across the daylight-saving changes, the ranking order with unknown
+values last, hrefs and the playtime format, plus the registry/menu assertions),
+`node scripts/check-foundation.mjs` passed (3025 files), `pnpm build` passed.
+Browser specs against the standalone build (`CI=true`, `E2E_PORT=3300`, isolated
+`valkyria_history_e2e`, chromium 1194, `--project=chromium`): the new `wardogs-history` 18 passed (cs/en × 1440 and 390: default 30-day overview with the form, tiles, faction bars and table, 24 ranking rows and 12 games; whole history with the K/D sort and the unknown K/D last, the 500-minute floor count, `players=all`, pagination 20 + 3; expandable game detail, map filter, 7-day period and the empty state with its reset link; the server detail summary; no forbidden identity in the full HTML; axe clean; no page/console error; the menu entry; no section on HLL pages or the Wardogs home; fallbacks for unknown parameters) together with `wardogs-servers` 9, `wardogs-warcon` 10, `platform` 14, `routing` 6 and `shell` 22 passed (79 in 3.3 min, incl. the Wardogs desktop menu width test with the seventh item).
+The opt-in `visual-wardogs-readers` history captures (`CAPTURE_EVIDENCE=1 … -g history`)
+20 passed (overview, K/D-sorted ranking, expanded game, empty state and the server
+detail summary in cs/en × 1440×1050 and 390×844, inspected locally under
+`.local/evidence/wardogs-readers/`, not committed). The data-layer PostgreSQL and
+`admin-integrations` results of the previous checkpoint are unchanged by this slice.
+Limitations: implemented and locally verified against the synthetic dataset only (its
+games end 1, 3.5, 6, … days before the scan, so the default 30-day period holds 12
+games, 7 days hold 3 and the empty state is reached with a map absent from the period);
+not activated; the hosted producer must serve the route and the key must carry the
+explicit `server-game-history` grant before anything real is read; no recorded hosted
+response exists; the change feed, `id` reads and persistence are not used (complete
+cached reads per process); the ranking cap of 50 rows and the `players=all` toggle are
+exercised by unit tests and the URL only (24 synthetic players). Still to run by the
+orchestrator: the full browser and PostgreSQL suites, review captures and the PR.
 
 ## Wardogs League tracked fixtures reader (#87 follow-up) — 2026-10-03
 

@@ -129,7 +129,60 @@ opaque key (SHA-256 of the provider identity with a per-source salt) and never a
 ID. The source ID, guild ID, source digest, external match ID, provider server name, raw
 record revisions and key material are never projected. The DTOs and policy are described
 in the [readers README](../../../apps/web/src/modules/integrations/logi/readers/README.md).
-No public page consumes them yet.
+
+## Public views
+
+`/{locale}/wardogs/history` ("Historie her serveru / Server game history") is a Wardogs
+section (`GAME_SECTIONS` entry `history`, menu item "HISTORIE / HISTORY"; HLL has no such
+section and `/{locale}/hll/history` is not found). The page is server-rendered from
+`getHistoryReport` and `getHistoryGames` with one period boundary per request and works
+without JavaScript (a GET form; a changed `<select>` submits it at once when scripts run).
+
+Query parameters (anything else selects the default):
+
+| Parameter | Values | Meaning |
+| --- | --- | --- |
+| `server` | published public server ID with an approved source | Selected server; unknown values fall back to the first published history server. A server hidden by the website presentation is not listed. |
+| `period` | `7d`, `30d` (default), `90d`, `all` | Games that **ended** at or after local midnight (Europe/Prague) N days before the request date; `until` is always open. |
+| `map` | exact map name of the period | Narrows games, factions, players and the game list; the map list stays that of the period. |
+| `min` | 0–100 000, default 60 | Playtime floor in minutes for the ranking; never removes games from the faction totals. |
+| `sort` | `kills` (default), `kd`, `winRate`, `seconds`, `cashDelta`, `deaths`, `matches` | Ranking order; unknown values (K/D of a player without a complete kills/deaths record or with zero deaths, unknown win rate) sort last in both directions. |
+| `dir` | `desc` (default), `asc` | Ranking direction. |
+| `players` | `all` | Lifts the 50-row ranking cap. |
+| `page` | 1-based | Game list page of 20 games, newest first. |
+
+Any parameter marks the document `noindex`; the canonical URL stays the unfiltered page.
+Sections, in order: the state line (synthetic note; `preparing`, `unavailable`, `denied`
+and `unsupported` notices instead of empty sections; a stale note with the website scan
+time; the `coverage: window` note; the fixed note that factions are not clan teams,
+players are not verified members, games are not League results and that completed-game
+statistics differ from Warcon's live leaderboard), the filter form with the active
+selection, summary tiles (games; decided / draws / no result and unknown when any; feed
+coverage "22 of 23 games with complete statistics"; first and last game; "Last Logi
+import" = `lastCollectedAt`; "Loaded" = `refreshedAt`), the faction win shares (one bar
+per faction in its published `colorHex`, neutral token without one, labelled wins /
+decided games and the rounded share, appearances; a hidden table with the same values;
+draws, no-result and unknown games listed separately and never attributed), the player
+rankings (only when `playersPublished`, otherwise one line; eligible players only with the
+count below the floor; W/L/D with unknown results separate; "—" for an unknown K/D or
+win rate, never 0 or ∞; `h:mm` playtime; signed cash; a "(from N games)" marker on every
+total whose `knownGames` is below the player's games; the feed-only metrics as a
+secondary group collapsed under 768 px) and the game list (end time, map · mode ·
+lighting, scores with colour chips, an outcome badge with text, a "no combat feed" badge,
+a native `<details>` with the players grouped by faction, or the faction scores only when
+players are not published). No game for the filters renders one empty state with a reset
+link. Without any published history server the page explains that history is not
+available yet.
+
+The Wardogs servers page detail (`/{locale}/wardogs/servers?server=<publicId>`) adds a
+compact "Game history" summary below the Warcon panel when the selected server has an
+approved source: games of the last 30 days, compact faction bars, the last three games
+and a link to the history page of that server. The Wardogs home carries nothing.
+
+As rendered, the policy above holds: player names appear only for a publishing source,
+identified by the opaque key in DOM attributes; the page never contains a platform ID,
+the source ID, the guild ID, the provider server name, external match IDs, digests or
+cursors (asserted on the full HTML by `e2e/wardogs-history.spec.ts`).
 
 ## Health
 
@@ -151,7 +204,9 @@ the reason), `denied` (401/403: the key lacks the explicit grant or was revoked)
 3. Check the health row: `configured` → `available` after the first public read, with a
    plausible game count and `lastCollectedAt`.
 
-Local verification used the synthetic dataset and unit/PostgreSQL/browser tests only. Still
+Local verification used the synthetic dataset and unit/PostgreSQL/browser tests only (the
+synthetic 23 games end 1, 3.5, 6, … days before the scan, so the default 30-day period
+holds 12 of them, 7 days hold 3 and 90 days all 23). Still
 unrun against the hosted producer: the deployed revision serving the route; the explicit
 grant on a real key (403 for the Warcon and League keys); real page sizes, scan duration
 and the page budget against the actual archive; a real 410 during pagination; cursor

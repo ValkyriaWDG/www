@@ -24,6 +24,22 @@ fixture, scheduled time, teams, map, hosting, map vote and progress with the
 observation time and an "unverified preview" note, never a result. All sections are
 Czech-first with English parity and stack without horizontal overflow on phones.
 
+### Server game history (2026-10-03, retained Warcon history)
+
+`/{locale}/wardogs/history` is a Wardogs-only section ("HISTORIE / HISTORY" in the
+Wardogs menu; HLL has none): a GET filter form (server, period 7/30/90 days or all, map
+of the period, minimum playtime), summary tiles, faction win-share bars in the factions'
+published colours with a table equivalent, a sortable player ranking (link headers with
+`aria-sort`, unknown values last and shown as "—", coverage markers, 50-row cap) when the
+source publishes players, and a paginated game list whose native `<details>` opens the
+players of a game grouped by faction. The state line says when the overview is
+preparing, unavailable, denied, unsupported or stale, when only a time window is covered,
+and always that this is server gameplay history (not clan teams, members or League
+results). The servers page detail adds a compact "Game history" summary with a link to
+the page; the home stays unchanged. Czech-first with English parity; phones get the
+collapsed feed-only group, a sticky first column inside scroll regions and 44 px
+controls. See the [public views](../integrations/logi/warcon-history.md#public-views).
+
 The historical initial screen proposal below is superseded by the unified-platform
 ADR and current implementation for game-scoped routes and canonical hostnames.
 

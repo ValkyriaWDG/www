@@ -148,5 +148,17 @@ differ from Warcon's live/session leaderboard, whose playtime has a different co
   carries the same League link (`mapPublishedLeagueMatchSlugs` in `modules/matches/queries.ts`)
   and the Logi roster page when the bound `eventId` is a published Logi event. The results
   view, filtered lists, the HLL matches page and the Wardogs home carry no fixtures.
-- The retained game history has no public page yet: `getHistoryReport`, `getHistoryGames`
-  and `listHistoryPublicIds` are the composition points for it.
+- `app/[locale]/[game]/history/page.tsx` (Wardogs section `history`) renders
+  `components/public/history-screen.tsx`: `listHistoryPublicIds()` intersected with the
+  website server presentation (hidden servers are not listed, names from the overview),
+  then `getHistoryReport` and `getHistoryGames` with the validated query of
+  `components/public/history-query.ts` (server, period → `from` at Europe/Prague
+  midnight, map, floor, sort/dir, page, `players=all`). The page is composed from
+  `components/public/history-factions.tsx` (bars + hidden table), `history-players.tsx`
+  (ranking) and `history-games.tsx` (paginated list with `<details>`); the public views
+  are described in the
+  [retained history design](../../../../../../../docs/integrations/logi/warcon-history.md#public-views).
+- `components/servers/servers-screen.tsx` adds `components/servers/server-history-summary.tsx`
+  below the Warcon panel of a listed Wardogs server (`getHistoryReport` and
+  `getHistoryGames` for the last 30 days; `null` renders nothing). The Wardogs home and
+  the polling route carry no history.
