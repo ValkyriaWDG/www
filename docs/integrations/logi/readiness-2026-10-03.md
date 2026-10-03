@@ -2,8 +2,11 @@
 
 This audit compares website main `0a94d59c32831cfa198a0371bf204523e6555a3a`
 with [Logi PR #158](https://github.com/Ninjonik/logi/pull/158) at
-`c42ea770c307793494ae159a924f86e3c6ced50d`. These are source checkpoints,
-not a claim that the hosted producer runs that revision. Recheck before activation.
+`c42ea770c307793494ae159a924f86e3c6ced50d`; the tracked-fixtures follow-up was reviewed
+against its later head `af5a52a` (durable League discovery, Discord panels and docs;
+the `league-matches`, `warcon-data`, membership, people, SSO and event-command endpoints
+are unchanged). These are source checkpoints, not a claim that the hosted producer runs
+that revision. Recheck before activation.
 
 ## Why the public login did not show Logi
 
@@ -31,6 +34,7 @@ fresh server-side membership and game-scoped capabilities after sign-in.
 | Webhook hints | Raw-body HMAC, scope validation, durable deduplication and authoritative pull | Separate signing secret; payloads never grant roles or directly publish data |
 | Integration health | Summary collected and stored; `/admin/integrations` shows website collector health per source and purpose, the stored producer health rows and the configured server sources, read-only | [Issue #22](https://github.com/ValkyriaWDG/www/issues/22): the read-only screen exists (see the [runbook](runbook.md#administration-health)); hosted runtime, lease or delivery facts are shown only when a stored projection carries them, otherwise unknown; Logi settings writes remain out of scope |
 | Wardogs League preview | Server-only `league-matches` reader with in-process last-known cache, editorial `leagueMatchUrl` on Wardogs matches and an unverified "League preview" section on the public match page (local synthetic proof only) | Explicit `league-matches` read grant (`LOGI_LEAGUE_API_KEY_WDG`); producer URL policy; read-only preview; `results` stays `null` and the CMS result remains the only result |
+| Wardogs League tracked fixtures | Server-only `league-fixtures` reader (bounded paging, one in-process last-known list per source) and an unverified "Tracked Wardogs League fixtures" section after the Upcoming list of the Wardogs matches page with League, match-page and Logi roster links (local synthetic proof only) | Explicit `league-fixtures` grant on the same League key (the preview grant alone is refused with 403 and reported as `unconfigured`); read-only; the change-feed resource of the same name is not consumed; results stay with the CMS |
 | Warcon advanced reads | Server-only `warcon-data` reader for approved `warconConnections` reading the `live` and `matches` views only; minimal public DTOs on the Wardogs server detail (local synthetic proof only) | Explicit `warcon-data` grant (`LOGI_WARCON_API_KEY_WDG`) and per-connection approval under a published server; no player rows, Steam IDs, panel/join identifiers or health/capabilities views |
 | Signup, roster, attendance, result and server writes | No website controls for these operations | Raw service APIs are not equivalent to actor-backed website commands; management stays in Logi/Discord |
 | News, FAQ and Field Manual | Website editor, translations, revisions and publication | Website-owned CMS; do not synchronize from Logi or add a second editorial writer |
@@ -55,11 +59,11 @@ in the Logi section as "Čtečky Wardogs (League, Warcon)" with the approved-con
 count, the last attempt time and its transport category (see the
 [runbook's administration health table](runbook.md#administration-health)):
 
-| State | `league-matches` | `warcon-data` |
-| --- | --- | --- |
-| `unconfigured` | `LOGI_LEAGUE_API_KEY_WDG` absent, no valid Wardogs source or invalid `LOGI_SOURCES_JSON` | Same, or the Wardogs source has no approved `warconConnections` |
-| `configured` | Key and Wardogs source present | Key, Wardogs source and at least one approved connection |
-| `unsupported` | The deployed producer answered 404 (`not_found`) on the last attempt: the route is not deployed | Same |
+| State | `league-matches` | `league-fixtures` | `warcon-data` |
+| --- | --- | --- | --- |
+| `unconfigured` | `LOGI_LEAGUE_API_KEY_WDG` absent, no valid Wardogs source or invalid `LOGI_SOURCES_JSON` | Same, or the producer answered 403 on the last attempt: the League key lacks the explicit `league-fixtures` grant | Same as League, or the Wardogs source has no approved `warconConnections` |
+| `configured` | Key and Wardogs source present | Key and Wardogs source present (with the tracked-fixture count of the last successful read) | Key, Wardogs source and at least one approved connection |
+| `unsupported` | The deployed producer answered 404 (`not_found`) on the last attempt: the route is not deployed | Same | Same |
 
 The last attempt outcome is the in-process cache category (`ok`, `unauthorized`,
 `forbidden`, `not_found`, `rate_limited`, `upstream`, `timeout`, `invalid_response`,
@@ -67,10 +71,17 @@ The last attempt outcome is the in-process cache category (`ok`, `unauthorized`,
 with a synthetic detail and is for local tests and review captures only.
 
 The reader implementation was verified against the producer source and fixtures of
-PR #158 at `c42ea770` (recorded local League read, synthetic Warcon generator) and
-against a labelled synthetic source in the browser. Hosted acceptance remains open
-until the operator confirms: the deployed revision serving these routes (OpenAPI
-1.9.0); two separate restricted keys bound to the canonical guild; the enabled
+PR #158 at `c42ea770` (recorded local League read, synthetic Warcon generator), the
+tracked-fixtures reader against the producer source of `af5a52a` (schema and route
+parsing; no recorded hosted response exists yet), and all three against a labelled
+synthetic source in the browser. Hosted acceptance remains open until the operator
+confirms: the deployed revision serving these routes (OpenAPI 1.9.0); two separate
+restricted keys bound to the canonical guild, the League key carrying both the
+`league-matches` and the explicit `league-fixtures` grant for `wardogs` (a 403
+`insufficient_scope` on the collection shows as "unconfigured" on the health page while
+the preview keeps working); whether League tracking is enabled for the guild in Logi
+(**Wardogs → System → Imports → Wardogs League tracking**) so the collection is not
+permanently empty; the enabled
 `wardogs_warcon` connections and their Logi connection IDs; whether a per-key
 connection allowlist is planned; whether game display names may be public; the
 acceptable shared budgets and recommended timeout for cold League reads; and when

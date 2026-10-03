@@ -1,14 +1,16 @@
 import { z } from 'zod';
 
 /*
- * Wire DTOs of the two approved on-demand read endpoints of Logi PR #158 (c42ea77):
- * `GET /api/v1/clan/league-matches` (`src/domain/wardogs-league/contracts.ts`) and
+ * Wire DTOs of the three approved on-demand read endpoints of Logi PR #158 (af5a52a):
+ * `GET /api/v1/clan/league-matches` (`src/domain/wardogs-league/contracts.ts`),
+ * `GET /api/v1/clan/league-fixtures` (`src/domain/wardogs-league/fixture.ts`) and
  * `GET /api/v1/clan/warcon-data/{connectionId}` (`src/domain/game-data/warcon-contracts.ts`).
  * The producer validates its own output with `z.object` projections, so every served
  * object carries exactly the declared keys; this consumer uses `z.strictObject` so an
  * unexpected field (or a new producer version) is an `invalid_response`, never data.
- * Only the consumed views are modelled: the League read and the Warcon `live` and
- * `matches` views. These are not website publication DTOs (see `public.ts`).
+ * Only the consumed views are modelled: the League read, the tracked-fixture collection
+ * page and the Warcon `live` and `matches` views. These are not website publication
+ * DTOs (see `public.ts`).
  */
 
 export const LEAGUE_PARSER_VERSION = 'wardogs-league-html/1';
@@ -68,6 +70,44 @@ export const leagueReadSchema = z.strictObject({
 });
 export type LeagueRead = z.infer<typeof leagueReadSchema>;
 export const leagueReadEnvelopeSchema = z.strictObject({ data: leagueReadSchema });
+
+/** Producer tracking state of a durable League fixture record (`leagueTrackedMatches.state`). */
+export const leagueFixtureStateSchema = z.enum(['pending', 'tracked', 'unmatched', 'ignored', 'paused', 'archived']);
+export type LeagueFixtureState = z.infer<typeof leagueFixtureStateSchema>;
+
+/** Producer page bounds of `GET /api/v1/clan/league-fixtures` (`parseLeagueFixtureQuery`). */
+export const LEAGUE_FIXTURES_PAGE_LIMIT = 100;
+export const LEAGUE_FIXTURES_CURSOR_MAX_LENGTH = 4096;
+
+/**
+ * One tracked external fixture (`projectLeagueFixture`): the League match ID, the guild
+ * and game scope, an optional native Logi event binding, the tracking state and the same
+ * public snapshot as the preview (results always `null`). `error` is a free producer
+ * string and is bounded here; it never reaches a public DTO.
+ */
+export const leagueFixtureSchema = z.strictObject({
+  /** External League match ID (the `id` of `https://wardogsleague.net/matches/<id>`), never a native event ID. */
+  id: z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/),
+  guildId: z.string().min(1).max(64),
+  gameId: z.literal('wardogs'),
+  /** Native Logi event external ID bound to the fixture, when an administrator linked one. */
+  eventId: z.string().min(1).max(200).nullable(),
+  revision: z.string().min(1).max(40),
+  state: leagueFixtureStateSchema,
+  snapshot: leagueSnapshotSchema,
+  stale: z.boolean(),
+  ageSeconds: z.number().int().nonnegative(),
+  lastAttemptAt: leagueTimestamp.nullable(),
+  error: z.string().max(500).nullable(),
+});
+export type LeagueFixture = z.infer<typeof leagueFixtureSchema>;
+
+export const leagueFixturesPageSchema = z.strictObject({
+  items: z.array(leagueFixtureSchema).max(LEAGUE_FIXTURES_PAGE_LIMIT),
+  nextCursor: z.string().min(1).max(LEAGUE_FIXTURES_CURSOR_MAX_LENGTH).nullable(),
+});
+export type LeagueFixturesPage = z.infer<typeof leagueFixturesPageSchema>;
+export const leagueFixturesEnvelopeSchema = z.strictObject({ data: leagueFixturesPageSchema });
 
 const warconText = z.string().max(200);
 const warconCount = z.number().int().nonnegative().safe();

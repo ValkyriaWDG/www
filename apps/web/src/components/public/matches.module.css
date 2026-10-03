@@ -1004,3 +1004,21 @@ span.teamMark {
 .leagueMeta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-meta); }
 .leagueUnavailable { margin: 0; }
 .leagueSource { margin: var(--space-3) 0 0; }
+
+/* Tracked League fixtures (Wardogs matches page, Upcoming view): a section after the
+   browser with one card per fixture in a responsive grid, single column on phones;
+   unverified state, never a result. */
+.leagueFixtures { margin-top: var(--space-4); min-width: 0; }
+.leagueFixtureList { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.leagueFixtureList > li { min-width: 0; }
+.leagueFixture { display: grid; gap: var(--space-2); min-width: 0; height: 100%; padding: var(--space-3); border: var(--border-hairline) solid var(--color-border); border-left: 3px solid var(--color-border-strong); }
+.leagueFixture > h3 { margin: 0; }
+.leagueFixtureName { margin: 0; overflow-wrap: anywhere; }
+.leagueFixtureLinks { margin-top: var(--space-1); }
+/* Internal rows match the external link style and stay 44 px rows like the match page links. */
+.leagueFixtureLink { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-text); text-decoration-line: underline; text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; text-underline-offset: 0.22em; }
+.leagueFixtureLink:hover { color: var(--color-accent-strong); }
+
+@media (max-width: 767px) {
+  .leagueFixtureList { grid-template-columns: minmax(0, 1fr); }
+}

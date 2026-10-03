@@ -67,4 +67,16 @@ for (const [locale, width, height] of [['cs', 1440, 1050], ['en', 1440, 1050], [
       locale);
     await context.close();
   });
+
+  test(`matches page with the tracked League fixtures (${locale}, ${width}px)`, async ({ browser }) => {
+    const { context, page } = await newContext(browser, width, height, locale);
+    await page.goto(`/${locale}/wardogs/matches`);
+    await expect(page.locator('[data-league-fixtures]')).toHaveAttribute('data-league-fixtures-state', 'fresh');
+    await expect(page.locator('[data-league-fixture]')).toHaveCount(3);
+    await page.locator('[data-league-fixtures]').scrollIntoViewIfNeeded();
+    await shot(page, `matches-league-fixtures-${locale}-${width}x${height}.png`,
+      `Visitor, /${locale}/wardogs/matches at ${width}×${height}: the Upcoming list of the Wardogs section followed by the "Tracked Wardogs League fixtures" section labelled as an unverified overview with synthetic-data note and three synthetic fixtures (two current tracked fixtures with kickoff, three team codes with names, map · zone · lighting, type/status and links to Wardogs League and, for the alpha fixture, to the clan's own match page; one paused fixture without a kickoff marked stale); no result appears.`,
+      locale);
+    await context.close();
+  });
 }

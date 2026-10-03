@@ -5,7 +5,7 @@ import { ensureTestActors, TEST_ACTOR_IDS, type TestActors } from '@/fixtures/te
 import { DomainError } from '@/lib/result';
 import { testPrincipal } from '@/modules/access/testing';
 import { AccessDeniedError, type Principal } from '@/modules/access/types';
-import { getMatchForAdmin, getPublicMatch } from '@/modules/matches/queries';
+import { getMatchForAdmin, getPublicMatch, mapPublishedLeagueMatchSlugs } from '@/modules/matches/queries';
 import { createMatch, publishMatch, updateMatch } from '@/modules/matches/service';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
 
@@ -68,6 +68,15 @@ describe('League match URL (PostgreSQL)', () => {
     expect(audits.map((row) => (row.summary as { fields: string[] }).fields)).toEqual([['leagueMatchUrl']]);
     expect(JSON.stringify(audits)).not.toContain('wardogsleague.net');
     expect(cleared.version).toBe(published.version + 1);
+  });
+
+  it('maps League IDs to the slugs of published Wardogs matches only', async () => {
+    const published = await createMatch(t.db, actors.matchManager, input('wardogs', 'https://wardogsleague.net/matches/map-published/'));
+    await publishMatch(t.db, actors.matchManager, { id: published.id, expectedVersion: published.version });
+    await createMatch(t.db, actors.matchManager, input('wardogs', 'https://wardogsleague.net/matches/map-draft'));
+    const mapped = await mapPublishedLeagueMatchSlugs(t.db, ['map-published', 'map-draft', 'map-unknown', 'bad id', 'map-published']);
+    expect([...mapped.entries()]).toEqual([['map-published', published.slug]]);
+    expect((await mapPublishedLeagueMatchSlugs(t.db, ['bad id', ''])).size).toBe(0);
   });
 
   it('rejects unaccepted links with a stable field code and leaves the stored value unchanged', async () => {

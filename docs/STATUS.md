@@ -86,6 +86,71 @@ moved round's button, the denied and Logi titles). Still to run by
 the orchestrator: the full browser and PostgreSQL suites, the audit rerun with
 before/after captures for the evidence folder, and the PR.
 
+## Wardogs League tracked fixtures reader (#87 follow-up) — 2026-10-03
+
+Branch `feat/logi-league-fixtures` (on main `85c5737`) consumes the new Logi
+`league-fixtures` resource. Upstream Logi PR #158 moved from the reviewed `c42ea770`
+to its head `af5a52a` (durable Wardogs League discovery and tracking, Discord public
+panels, docs); the `league-matches`, `warcon-data`, membership, people, SSO and
+event-command endpoints the website already consumes are unchanged, and
+`GET /api/v1/clan/league-fixtures?game=wardogs&limit=…&cursor=…` (explicit
+`league-fixtures` grant on the League key; the preview grant alone is answered with 403
+`insufficient_scope`) was waiting for a website consumer.
+
+The website now has, next to the two approved readers: the closed wire schema of a
+tracked fixture page (`readers/contracts.ts`), the server-only `readers/fixtures.ts`
+reader (bounded paging of 3 × 100 with `truncated`, per-item guild/game/ID/URL scope
+check, one in-process last-known list per source with the 60 s minimum, producer-lifetime
+re-poll, `Retry-After`/404/failure backoff, in-flight dedupe and background refresh;
+`getLeagueFixtures()` returns `null` without a League key), the `LeagueFixturesPublic`
+DTO (`readers/public.ts`: no progress, map vote, moderator, warnings, revision, guild,
+attempt time or error text; stale per item, 24-hour drop, kickoff order with unscheduled
+last, cap 20), three labelled synthetic fixtures (`readers/synthetic.ts`; the alpha
+fixture is the seeded upcoming match's League link and shares its preview snapshot), the
+third reader row of `readerCapabilityStates` and `/admin/integrations` (403 → "key lacks
+the explicit league-fixtures grant", 404 → unsupported) and the public section
+"Sledovaná utkání ve Wardogs League / Tracked Wardogs League fixtures"
+(`components/public/league-fixtures.tsx`) after the unfiltered Upcoming list of
+`/[locale]/wardogs/matches` only: one card per fixture with kickoff, teams, map · zone ·
+lighting, localized League type/status, freshness and tracking badges, the observation
+time and 44 px link rows to Wardogs League, to the clan's own match page when a published
+Wardogs match carries the same League link (`mapPublishedLeagueMatchSlugs`,
+`modules/matches/league-links.ts`) and to the Logi roster page when the bound event is a
+published Logi event. The change-feed resource of the same name is not consumed. See the
+[readers README](../apps/web/src/modules/integrations/logi/readers/README.md),
+[readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states) and
+[runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
+
+Commands and results on the branch head (Node 22.22.2 in this container; the repository
+asks for Node 24): `pnpm lint` passed, `pnpm typecheck` passed, `pnpm test:unit` 1064
+tests passed (99 files; 25 new unit tests for the contract, reader, projection, synthetic
+data, health states and slug mapping), `node scripts/check-foundation.mjs` passed (2993
+files), `pnpm build` passed. PostgreSQL, isolated in `valkyria_test_fixtures`:
+`DATABASE_URL=… npx vitest run --project integration tests/integration/admin-health.test.ts
+tests/integration/matches-league-url.test.ts` 12 passed (the third reader row incl. the 403
+case and the published-only slug mapping). Browser specs against the standalone build
+(`CI=true`, `E2E_PORT=3200`, `E2E_DATABASE_URL=…/valkyria_fixtures_e2e`, chromium 1194):
+the new `wardogs-league-fixtures` 6 passed together with `wardogs-warcon` and
+`public-matches` 24 passed (`--project=chromium`; the fixtures spec needed one
+strict-mode fix of its own assertion and was rerun), `admin-integrations` 3 passed
+(`--project=chromium-admin --no-deps`), and the opt-in `visual-wardogs-readers` fixtures
+captures 4 passed (cs/en × 1440 and 390, inspected locally, not committed). The
+assertions cover the three synthetic cards in kickoff order with teams, map line,
+localized type/status, the stale and paused badges, the unscheduled kickoff, League hrefs,
+the match-page link of the alpha fixture only, no Logi roster link, no producer-only
+text, the section below the match table, one column and 44 px link rows at 390 px, axe
+on the section, no page/console error, and no section on the results view, filtered or
+paged lists, the shared list, the HLL matches page and the Wardogs home. Limitations: implemented and locally verified against synthetic fixtures
+only; not activated in production; the hosted producer must serve the route and the
+League key needs the explicit `league-fixtures` grant (and League tracking enabled in the
+Logi dashboard) before anything real is listed; no recorded hosted response of the
+collection exists yet. On the branch head the full browser suite passed 249 tests (111
+opt-in captures skipped; `E2E_PORT=3200`, isolated `valkyria_fixtures_e2e`) and the
+PostgreSQL suite 514 tests (50 files, isolated `valkyria_test_fixtures`). Captioned
+review captures are in the [League fixtures evidence](evidence/league-fixtures-2026-10-03/README.md).
+Next: PR, latest-head CI, merge and publication; hosted activation stays with the
+operator inputs above.
+
 ## Public and administration UI round 12 — 2026-10-03
 
 An audit of main `22034ca` (the PR #95 merge) covered the public HLL/Wardogs match

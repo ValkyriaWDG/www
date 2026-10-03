@@ -21,6 +21,7 @@ import { loadAssetDefaults, loadPublicImages } from '@/modules/prose/assets';
 import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from '@/modules/prose/domain';
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
+import { acceptedLeagueMatchIds, leagueMatchUrlForId, mapLeagueMatchSlugs } from './league-links';
 import { adminMatchListSchema, publicMatchListSchema, type AdminMatchListInput, type PublicMatchListInput } from './schemas';
 import { loadMatchStatistics } from './statistics-service';
 import { loadPublicLegacyMatchDetails } from './legacy-details';
@@ -395,6 +396,25 @@ export async function listPublicTournamentMatches(db: Executor, tournamentId: st
     .orderBy(asc(match.startsAt), asc(match.id))
     .limit(200);
   return toSummaries(db, rows);
+}
+
+/**
+ * Slugs of published Wardogs matches whose editorial League link names one of the given
+ * external League match IDs (League ID → slug). Unaccepted IDs are ignored; at most the
+ * lookup limit of IDs is resolved. Lets the tracked-fixtures section link a League
+ * fixture to the clan's own match page without exposing anything unpublished.
+ */
+export async function mapPublishedLeagueMatchSlugs(db: Executor, ids: readonly string[]): Promise<Map<string, string>> {
+  const accepted = acceptedLeagueMatchIds(ids);
+  const urls = accepted.map(leagueMatchUrlForId).filter((url): url is string => url !== null);
+  if (urls.length === 0) return new Map();
+  const rows = await db
+    .select({ slug: match.slug, leagueMatchUrl: match.leagueMatchUrl })
+    .from(match)
+    .where(and(isPublished, eq(match.game, 'wardogs'), inArray(match.leagueMatchUrl, urls)))
+    .orderBy(asc(match.startsAt), asc(match.id))
+    .limit(urls.length * 2);
+  return mapLeagueMatchSlugs(rows, accepted);
 }
 
 /** Game, slug and last-modified time of every published match (sitemap; shared across locales). */

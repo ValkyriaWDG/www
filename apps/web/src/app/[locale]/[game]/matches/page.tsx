@@ -3,6 +3,7 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
+import { LeagueFixtures } from '@/components/public/league-fixtures';
 import { MatchesScreen } from '@/components/public/matches-screen';
 import { bilingualAlternates, OG_LOCALE } from '@/components/public/metadata';
 import { hasMatchFilters, parseMatchFilters } from '@/components/public/query';
@@ -11,6 +12,7 @@ import { PageHeader } from '@/components/ui/panels';
 import { routing } from '@/i18n/routing';
 import { gameHasSection, isGameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
+import { getLeagueFixtures } from '@/modules/integrations/logi/readers/fixtures';
 import { sharingMetadata } from '@/modules/social/metadata';
 
 export async function generateMetadata({ params, searchParams }: PageProps<'/[locale]/[game]/matches'>): Promise<Metadata> {
@@ -41,6 +43,9 @@ export default async function GameMatchesPage({ params, searchParams }: PageProp
     getTranslations({ locale, namespace: 'matches.list' }),
     getTranslations({ locale, namespace: 'games' }),
   ]);
+  // Tracked Wardogs League fixtures (unverified, read on demand) follow the unfiltered
+  // Upcoming list of the Wardogs section only; `null` means the reader is not configured.
+  const leagueFixtures = game === 'wardogs' && filters.view === 'upcoming' && !hasMatchFilters(filters) && filters.page === 1 ? await getLeagueFixtures() : null;
   return (
     <PageMain width="full" labelledBy="matches-title">
       <PageHeader
@@ -52,6 +57,7 @@ export default async function GameMatchesPage({ params, searchParams }: PageProp
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
       <MatchesScreen locale={locale} filters={filters} mode="list" game={game} />
+      {leagueFixtures ? <LeagueFixtures fixtures={leagueFixtures} locale={locale} /> : null}
     </PageMain>
   );
 }

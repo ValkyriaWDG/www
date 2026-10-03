@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import leagueFixture from '../fixtures/league-v0.12-stale-http.json';
 import warconFixture from '../fixtures/warcon-v0.11.json';
-import { leagueReadSchema, warconEnvelopeResponseSchema, type WarconLive, type WarconMatches } from './contracts';
+import { leagueReadSchema, warconEnvelopeResponseSchema, type LeagueFixture, type WarconLive, type WarconMatches } from './contracts';
 import {
-  ageLeaguePreviewPublic, ageWarconLivePublic, ageWarconRecentMatchesPublic, ageWarconServerPublic, READER_PUBLIC_MAX_AGE_MS,
-  toLeaguePreviewPublic, toWarconLivePublic, toWarconRecentMatchesPublic,
+  ageLeagueFixturesPublic, ageLeaguePreviewPublic, ageWarconLivePublic, ageWarconRecentMatchesPublic, ageWarconServerPublic, LEAGUE_FIXTURES_MAX_AGE_MS, LEAGUE_FIXTURES_PUBLIC_LIMIT,
+  READER_PUBLIC_MAX_AGE_MS, toLeagueFixturesPublic, toLeaguePreviewPublic, toWarconLivePublic, toWarconRecentMatchesPublic,
 } from './public';
+import { SYNTHETIC_LEAGUE_FIXTURE_EVENT_ID, syntheticLeagueFixtures } from './synthetic';
 
 const now = new Date('2026-10-02T12:00:20.000Z');
 const liveEnvelope = warconEnvelopeResponseSchema.parse(warconFixture.live).data;
@@ -99,5 +100,63 @@ describe('League preview projection', () => {
     const shown = toLeaguePreviewPublic(url, stale, new Date(fetchedAt + 60_000), true);
     expect(ageLeaguePreviewPublic(shown, new Date(fetchedAt + 2 * 60_000)).state).toBe('stale');
     expect(ageLeaguePreviewPublic(shown, new Date(fetchedAt + READER_PUBLIC_MAX_AGE_MS + 1)).state).toBe('unavailable');
+  });
+});
+
+describe('League fixtures projection', () => {
+  const at = new Date('2026-10-03T12:00:00.000Z');
+  const items = syntheticLeagueFixtures(at);
+
+  it('maps tracked fixtures without producer identities, keeps the paused one stale and sorts unscheduled fixtures last', () => {
+    const dto = toLeagueFixturesPublic(items, at, true, true);
+    expect(dto).toMatchObject({ state: 'fresh', synthetic: true, truncated: false, observedAt: items[0]!.snapshot.fetchedAt });
+    expect(dto.items.map((item) => [item.id, item.state, item.tracking, item.scheduledAt === null])).toEqual([
+      ['synthetic-fixture-alpha', 'fresh', 'tracked', false], ['synthetic-fixture-bravo', 'fresh', 'tracked', false], ['synthetic-fixture-charlie', 'stale', 'paused', true],
+    ]);
+    expect(dto.items[2]).toMatchObject({ eventId: SYNTHETIC_LEAGUE_FIXTURE_EVENT_ID, sourceUrl: 'https://wardogsleague.net/matches/synthetic-fixture-charlie' });
+    expect(dto.items[0]).toMatchObject({ eventId: null, title: '[SYNTHETIC] SYA · SYB · SYC (synthetic-fixture-alpha)', fixtureNumber: 42, type: 'Friendly', status: 'Scheduled', teams: [{ code: 'SYA', name: 'Synthetic Alpha' }, { code: 'SYB', name: 'Synthetic Bravo' }, { code: 'SYC', name: 'Synthetic Charlie' }], map: { name: 'Synthetic Training Ground', zone: 'Synthetic Zone', lighting: 'Synthetic Dusk' }, hosting: { mode: 'Self-hosted', teamCode: 'SYA' } });
+    expect(Object.keys(dto.items[0]!).sort()).toEqual(['eventId', 'fixtureNumber', 'hosting', 'id', 'map', 'observedAt', 'scheduledAt', 'sourceUrl', 'state', 'status', 'teams', 'title', 'tracking', 'type']);
+    expect(JSON.stringify(dto)).not.toMatch(FORBIDDEN);
+    expect(JSON.stringify(dto)).not.toMatch(/revision|guildId|lastAttemptAt|ageSeconds|"error"|timeout|results|"moderator"|readyCheck|"rules"|scoringRule|mapVote|progress|gameId/);
+  });
+
+  it('is stale after a failed website pull and unavailable without any answered list', () => {
+    const failed = toLeagueFixturesPublic(items, at, false);
+    expect(failed.state).toBe('stale');
+    expect(failed.items.map((item) => item.state)).toEqual(['stale', 'stale', 'stale']);
+    expect(toLeagueFixturesPublic(null, at, true)).toEqual({ observedAt: null, state: 'unavailable', synthetic: false, truncated: false, items: [] });
+    expect(toLeagueFixturesPublic(null, at, false, true, true)).toMatchObject({ state: 'unavailable', synthetic: true, truncated: false });
+    expect(toLeagueFixturesPublic([], at, true, false, true)).toMatchObject({ state: 'fresh', observedAt: null, truncated: true, items: [] });
+    expect(toLeagueFixturesPublic(items.map((item) => ({ ...item, error: 'network' })), at, true).items.every((item) => item.state === 'stale')).toBe(true);
+  });
+
+  it('drops snapshots older than the public maximum age or from the future, sorts by kickoff and caps the list', () => {
+    const old: LeagueFixture = { ...items[0]!, snapshot: { ...items[0]!.snapshot, fetchedAt: new Date(at.getTime() - LEAGUE_FIXTURES_MAX_AGE_MS - 1000).toISOString() } };
+    const future: LeagueFixture = { ...items[1]!, snapshot: { ...items[1]!.snapshot, fetchedAt: new Date(at.getTime() + 60_000).toISOString() } };
+    expect(toLeagueFixturesPublic([old, future, items[2]!], at, true).items.map((item) => item.id)).toEqual(['synthetic-fixture-charlie']);
+    const many = Array.from({ length: LEAGUE_FIXTURES_PUBLIC_LIMIT + 5 }, (_, index) => ({
+      ...items[0]!, id: `fx-${String(index).padStart(2, '0')}`,
+      snapshot: { ...items[0]!.snapshot, id: `fx-${String(index).padStart(2, '0')}`, sourceUrl: `https://wardogsleague.net/matches/fx-${String(index).padStart(2, '0')}`, scheduledAt: index % 5 === 0 ? null : new Date(at.getTime() + (30 - index) * 60 * 60_000).toISOString() },
+    }));
+    const dto = toLeagueFixturesPublic(many, at, true);
+    expect(dto.items).toHaveLength(LEAGUE_FIXTURES_PUBLIC_LIMIT);
+    const scheduled = dto.items.map((item) => item.scheduledAt);
+    expect(scheduled.every((value) => value !== null)).toBe(true);
+    expect([...scheduled].sort()).toEqual(scheduled);
+    expect(dto.items[0]!.id).toBe('fx-24');
+    const withUnscheduled = toLeagueFixturesPublic(many.slice(0, 7), at, true).items;
+    expect(withUnscheduled.slice(-2).map((item) => item.scheduledAt)).toEqual([null, null]);
+    expect(withUnscheduled.slice(-2).map((item) => item.id)).toEqual(['fx-00', 'fx-05']);
+  });
+
+  it('ages a list for rendering: fixtures past the maximum age disappear while the collection state is kept', () => {
+    const dto = toLeagueFixturesPublic(items, at, true);
+    expect(ageLeagueFixturesPublic(dto, new Date(at.getTime() + 60_000))).toBe(dto);
+    const later = ageLeagueFixturesPublic(dto, new Date(at.getTime() + LEAGUE_FIXTURES_MAX_AGE_MS - 10 * 60_000));
+    expect(later.items.map((item) => item.id)).toEqual(['synthetic-fixture-alpha', 'synthetic-fixture-bravo']);
+    expect(later).toMatchObject({ state: 'fresh', observedAt: items[0]!.snapshot.fetchedAt });
+    expect(ageLeagueFixturesPublic(dto, new Date(at.getTime() + LEAGUE_FIXTURES_MAX_AGE_MS + 60_000))).toMatchObject({ state: 'fresh', observedAt: null, items: [] });
+    const unavailable = toLeagueFixturesPublic(null, at, true);
+    expect(ageLeagueFixturesPublic(unavailable, at)).toBe(unavailable);
   });
 });
