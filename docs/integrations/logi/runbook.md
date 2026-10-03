@@ -110,10 +110,10 @@ Logi data. Local recovery is a separately provisioned MFA account.
 
 ## Wardogs League and Warcon readers
 
-The two readers of [issue #87](https://github.com/ValkyriaWDG/www/issues/87) are
+The readers of [issue #87](https://github.com/ValkyriaWDG/www/issues/87) are
 on-demand, server-only and separate from the change-feed pull: they do not use the
 data key, the sync CLI or the projection tables. Each has its own restricted key
-(`readAccess` `{resources:["league-matches"],gameIds:["wardogs"]}` and
+(`readAccess` `{resources:["league-matches","league-fixtures"],gameIds:["wardogs"]}` and
 `{resources:["warcon-data"],gameIds:["wardogs"]}`), bound to the canonical guild;
 legacy full-access keys are refused by the producer. HLL CRCON settings stay untouched.
 
@@ -124,6 +124,15 @@ legacy full-access keys are refused by the producer. HLL CRCON settings stay unt
   per producer `nextRefreshAt`/`Retry-After`, last-known data shown as stale after a
   failed pull, nothing shown after 15 minutes without a successful read. The preview
   never carries a result.
+- **Tracked League fixtures.** The same League key reads the fixtures Logi tracks for
+  the guild (`league-fixtures`, explicit grant required: with the preview grant alone the
+  producer answers 403 and the health page shows the row as "Nenastaveno / Not
+  configured" with that reason while the preview keeps working). The Wardogs matches
+  page lists them after the Upcoming list: at most 3 pages of 100 per refresh, one list
+  per source cached in process, re-polled no faster than once a minute, last-known data
+  shown as stale after a failed pull, fixtures with a snapshot older than 24 hours
+  dropped. Tracking itself (watched team codes, pins, channels) is configured by a Logi
+  dashboard administrator, never through the website key.
 - **Warcon.** Add approved connections to the Wardogs source:
   `"warconConnections": [{"connectionId": "<Logi connection id>", "publicId": "community-wardogs"}]`.
   The `publicId` must name a `publicServers` entry with `published: true`; the
