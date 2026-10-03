@@ -38,6 +38,12 @@ function withDatabase() {
   resetServerEnvForTests();
 }
 
+/** CI sets DATABASE_URL for the whole job; the no-database case must not inherit it. */
+function withoutDatabase() {
+  vi.stubEnv('DATABASE_URL', undefined);
+  resetServerEnvForTests();
+}
+
 describe('server presentation overrides', () => {
   it('renames, hides and reorders CRCON servers without touching telemetry or freshness', () => {
     const rows: ServerPresentationRow[] = [
@@ -74,6 +80,7 @@ describe('server presentation overrides', () => {
   });
 
   it('returns the provider overview unchanged without a database', async () => {
+    withoutDatabase();
     vi.mocked(getServerOverview).mockResolvedValue(crcon);
     expect(await getPublicServerOverview('hll', now)).toBe(crcon);
     expect(select).not.toHaveBeenCalled();
