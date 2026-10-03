@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { getDb } from '@/lib/db';
 import { DomainError, ok, toActionError, type ActionResult } from '@/lib/result';
 import { guardServerAction } from '@/modules/audit/action-guard';
+import { resetServerPresentationCache } from '@/modules/integrations/servers/presentation';
 import { parseInput } from '@/modules/prose/domain';
 import { isSettingKey, SETTING_KEYS, settingSchema } from './schemas';
 import { getSettingsForAdmin, updateSetting, type AdminSetting } from './service';
@@ -78,6 +79,8 @@ export async function saveSettingsAction(input: { changes: SettingChange[] }): P
     });
     // The shell (Discord CTA, footer, background) renders these values on every public page.
     revalidatePath('/[locale]', 'layout');
+    // Public server overviews (pages and the polling route) read the presentation through a short cache.
+    if (changes.some((change) => change.key === 'servers.presentation')) resetServerPresentationCache();
     return ok(await getSettingsForAdmin(db, actor));
   } catch (error) {
     return toActionError(error, 'settings.update');

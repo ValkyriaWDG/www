@@ -10,7 +10,8 @@ import { mapLogiEventSummary, mapLogiServerSnapshot, type PublicLogiEvent } from
 import { readActiveLogiProjections } from './logi-store';
 import type { ServerOverview } from './servers/provider';
 
-const PUBLIC_REVALIDATION_MAX_AGE_MS = 15 * 60_000;
+/** A projection is public only while a successful pull is at most this old (also the administration freshness limit). */
+export const PUBLIC_REVALIDATION_MAX_AGE_MS = 15 * 60_000;
 
 export async function readPublicLogiEvents(db: Executor, env: LogiIntegrationEnv, game?: GameRoute, now = new Date()): Promise<PublicLogiEvent[]> {
   const events: PublicLogiEvent[] = [];

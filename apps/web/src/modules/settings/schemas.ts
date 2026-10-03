@@ -7,7 +7,7 @@ import { hasControlCharacters } from '@/modules/prose/text';
  * and never part of this allowlist.
  */
 
-export const SETTING_KEYS = ['community.discordInviteUrl', 'community.links', 'background.media'] as const;
+export const SETTING_KEYS = ['community.discordInviteUrl', 'community.links', 'background.media', 'servers.presentation'] as const;
 export type SettingKey = (typeof SETTING_KEYS)[number];
 
 export function isSettingKey(key: unknown): key is SettingKey {
@@ -120,13 +120,51 @@ export function backgroundMediaSchema(allowedOrigins: readonly string[] = backgr
 }
 export type BackgroundMedia = z.output<ReturnType<typeof backgroundMediaSchema>>;
 
+/*
+ * Website-owned presentation of public game servers (`servers.presentation`). Server
+ * identities, addresses and sources stay in the operator configuration (CRCON/Logi); an
+ * administrator can only rename, hide or reorder the servers that configuration exposes.
+ * Rows for servers that are not configured are ignored at read time.
+ */
+export const SERVER_PRESENTATION_GAMES = ['hll', 'wardogs'] as const;
+export const MAX_SERVER_PRESENTATION_ROWS = 40;
+export const MAX_SERVER_SORT_ORDER = 1000;
+/** Public route identifier, as validated by the CRCON and Logi server configurations. */
+const SERVER_PUBLIC_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+export const serverPresentationRowSchema = z.object({
+  game: z.enum(SERVER_PRESENTATION_GAMES),
+  publicId: z.string().max(64).regex(SERVER_PUBLIC_ID, 'invalid_slug'),
+  /** Display name shown instead of the configured/live name. */
+  name: z
+    .string()
+    .trim()
+    .min(1)
+    .max(120)
+    .refine((value) => !hasControlCharacters(value), 'control_characters')
+    .optional(),
+  /** `false` removes the server from every public overview; omitted keeps the configured value. */
+  published: z.boolean().optional(),
+  /** Lower values first; servers without an order keep their configured position after ordered ones. */
+  sortOrder: z.number().int().min(0).max(MAX_SERVER_SORT_ORDER).optional(),
+});
+export type ServerPresentationRow = z.output<typeof serverPresentationRowSchema>;
+
+export const serverPresentationSchema = z
+  .array(serverPresentationRowSchema)
+  .max(MAX_SERVER_PRESENTATION_ROWS)
+  .refine((rows) => new Set(rows.map((row) => `${row.game}/${row.publicId}`)).size === rows.length, 'duplicates');
+export type ServerPresentation = z.output<typeof serverPresentationSchema>;
+
 export type SettingValue<K extends SettingKey> = K extends 'community.discordInviteUrl'
   ? string
   : K extends 'community.links'
     ? CommunityLink[]
     : K extends 'background.media'
       ? BackgroundMedia
-      : never;
+      : K extends 'servers.presentation'
+        ? ServerPresentation
+        : never;
 
 /** Schema of an allowlisted key, built at call time (background origins come from the environment). */
 export function settingSchema(key: SettingKey): z.ZodType<SettingValue<SettingKey>> {
@@ -137,5 +175,7 @@ export function settingSchema(key: SettingKey): z.ZodType<SettingValue<SettingKe
       return communityLinksSchema as z.ZodType<SettingValue<SettingKey>>;
     case 'background.media':
       return backgroundMediaSchema() as unknown as z.ZodType<SettingValue<SettingKey>>;
+    case 'servers.presentation':
+      return serverPresentationSchema as z.ZodType<SettingValue<SettingKey>>;
   }
 }

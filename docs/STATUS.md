@@ -1,5 +1,37 @@
 # Current status
 
+## Integration health administration — 2026-10-03
+
+Branch `feat/integrations-admin` (merged with main `dbef6e0`) adds the read-only part of
+[issue #22](https://github.com/ValkyriaWDG/www/issues/22): `/[locale]/admin/integrations`
+(module `integrations`, capability `settings.manage`) shows per game the server-status
+source, configured public servers and the current public overview; per Logi source the
+binding facts and one state per purpose (not configured, configured, never ran, no
+successful pull yet, healthy, stale, unavailable with a localized error label, running
+now) from `logi_sync_scope`, the stored `integration-health` producer rows or "unknown",
+webhook/command queue aggregates and the Discord role-mapping summary. The DTO
+(`modules/integrations/admin-health.ts`) holds no key, base URL, hostname, address or raw
+provider error; the page is server-rendered with a refresh link and no client polling. It
+states explicitly that it shows website collector health, not the Logi runtime, bot
+Discord connection or game-server telemetry.
+
+The same page edits the new allowlisted `servers.presentation` site setting (display
+name, visibility, order per configured server, versioned and audited by shape). One
+wrapper (`modules/integrations/servers/presentation.ts`, 15-second per-process cache,
+cleared by a save and guarded against in-flight reads) applies it to every public
+overview read: the servers pages, the Wardogs home overview and `/api/servers/[game]`; a
+hidden server has no public detail and its live-players upstream is never asked.
+Provider contracts and tests are unchanged. An independent review found no blocking
+issue; its fixes are applied.
+
+On `1bfd2af` lint, typecheck and the optimized build passed with 951 unit, 508
+PostgreSQL and 227 browser tests (99 opt-in captures skipped); four inspected CS/EN
+captures are in the [evidence](evidence/integrations-admin-2026-10-03/README.md). Local
+synthetic verification only: no Logi source is configured in the e2e environment, so the
+Logi states are proven by seeded PostgreSQL cases. Logi settings writes, hosted runtime
+facts and production activation stay out of scope. Next: PR, latest-head CI, merge and
+publication; the Logi readers (#87) add their capability states to this page.
+
 ## Taxonomy administration (#86) — 2026-10-03
 
 Branch `feat/taxonomy-admin` (on main `c232cdb`) adds **Kategorie a štítky / Categories

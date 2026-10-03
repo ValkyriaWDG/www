@@ -52,6 +52,7 @@ The site has three zones: public clan presentation, the signed-in member's accou
 | `/admin/matches/[id]` | Edit match | Match-authorized staff | A single match editor, audit-aware save/publication behavior |
 | `/admin/matches/[id]/roster` | Roster | Organizer-authorized staff | Later phase: private lineup, slots, attendance and substitutes |
 | `/admin/settings` | Site settings | Administrator or owner | M2: validated public links and approved background media, with preview before saving |
+| `/admin/integrations` | Integrations and servers | Administrator or owner | M3: read-only website collector health (Logi sources, server sources, Discord mapping) and the website-owned public server presentation |
 | `/admin/access` | Access | Highest permitted administrator | Later phase: controlled role mapping/status; not a casual toggle granting self-access |
 | `/admin/audit` | Audit history | Administrator or owner | M2: scoped, redacted change history with bounded filters and pagination |
 
@@ -279,6 +280,23 @@ Use persistent labels, current values, inline URL/type/size or metadata validati
 Provide an explicitly labelled preview of the proposed poster, video/crop and fallback behavior without changing the live site. Preview has the same pause/reduced-motion controls as the public shell and cannot bypass asset policy. Media loading failure remains distinguishable from validation failure. Show the current published configuration beside or clearly distinct from unsaved preview values.
 
 The `Save settings` action validates and authorizes the change, records a redacted audit event, updates the public configuration atomically and invalidates its relevant cache. Communicate that saving makes these settings live; require a separate explicit publish action only if the implemented settings model supports drafts. Failed or conflicting saves retain entered values and do not report success. Include ready, dirty, preview-loading, preview-failed, pending, saved, validation-error and permission-revoked states.
+
+### Integrations and servers — M3
+
+Route: `/admin/integrations`. Administrator and owner capabilities read the website's
+own integration state: per game the selected server-status source, its configured public
+servers and the current public overview; per Logi source the binding facts and one
+status badge per purpose (not configured, configured, never ran, healthy, stale,
+unavailable with its error code, running now) derived from the stored checkpoints; the
+producer-reported collector health of the active data generation or "unknown"; webhook
+and command queue aggregates; the Discord role-mapping summary. The page states that
+it shows website collector health, not the Logi runtime, bot Discord connection or
+game-server telemetry. It is server-rendered with a refresh link and no client polling;
+no key, base URL, address or raw provider error reaches the browser. The only form is
+the website-owned server presentation (display name, visibility, order) saved as one
+allowlisted setting with an optimistic version, unsaved-changes guard and honest failed
+or conflicting save states. Editors and match managers are denied on the direct URL in
+both languages, independently of navigation visibility.
 
 ### Audit history — M2
 

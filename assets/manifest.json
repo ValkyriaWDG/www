@@ -16440,6 +16440,50 @@
       "bytes": 22056,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "integrations-admin-integrations-cs-1440x900-full",
+      "path": "docs/evidence/integrations-admin-2026-10-03/integrations-cs-1440x900-full.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /cs/admin/integrations; administrator; source 1bfd2af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5d35b8e18ba85054c197a8f6069e9d7fc1371a818e949ff18348ec68d1fd7f34",
+      "bytes": 168670,
+      "width": 1440,
+      "height": 2951
+    },
+    {
+      "id": "integrations-admin-integrations-en-390x844",
+      "path": "docs/evidence/integrations-admin-2026-10-03/integrations-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /en/admin/integrations; administrator; source 1bfd2af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "cba2c6fd5cf3d53e730d2073fe74ecdcb8585092a7e8e5c6cb64587e4a18cdde",
+      "bytes": 34456,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "integrations-admin-integrations-en-390x844-logi",
+      "path": "docs/evidence/integrations-admin-2026-10-03/integrations-en-390x844-logi.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /en/admin/integrations; administrator; source 1bfd2af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "70ebe37e16cbbf4c6c9f1b013cc7f14a2d23b18b8274e713b65fee091f034428",
+      "bytes": 25344,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "integrations-admin-integrations-cs-1440x900-presentation-dirty",
+      "path": "docs/evidence/integrations-admin-2026-10-03/integrations-cs-1440x900-presentation-dirty.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /cs/admin/integrations; administrator; source 1bfd2af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "c5eb423673fcbd310b2e27660dee63d34d0badb5bc5dd6a251d8a6a930aa2ff0",
+      "bytes": 101034,
+      "width": 1368,
+      "height": 1617
     }
   ]
 }

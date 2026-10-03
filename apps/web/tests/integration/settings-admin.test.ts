@@ -86,7 +86,7 @@ describe('site settings administration', () => {
     await expectDomain(updateSetting(t.db, actors.administrator, { key: 'system.publisher_heartbeat', expectedVersion: 1, value: {} }), 'validation', 'key');
     await expectDomain(updateSetting(t.db, actors.administrator, { key: 'arbitrary.setting', expectedVersion: 0, value: 'x' }), 'validation', 'key');
     const settings = await getSettingsForAdmin(t.db, actors.administrator);
-    expect(settings.map((s) => s.key)).toEqual(['community.discordInviteUrl', 'community.links', 'background.media']);
+    expect(settings.map((s) => s.key)).toEqual(['community.discordInviteUrl', 'community.links', 'background.media', 'servers.presentation']);
     expect(JSON.stringify(settings)).not.toContain('system.');
   });
 

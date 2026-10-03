@@ -14,6 +14,7 @@ content translation being edited are separate choices.
 | Public member profiles | `/[locale]/admin/members` | Member-profile editor for every affiliated game |
 | Editorial images | `/[locale]/admin/media` | Platform-wide editorial media permission |
 | Public links and background media | `/[locale]/admin/settings` | Platform-wide administrator or owner |
+| Integration health and public server presentation | `/[locale]/admin/integrations` | Platform-wide administrator or owner |
 
 ## FAQ
 
@@ -87,6 +88,22 @@ Database migration `0011_taxonomy_admin` only adds columns (order, descriptions,
 archive timestamps) and length checks, so an application rollback leaves the data in
 place. Seeds still only add missing definitions and never overwrite edited labels.
 Taxonomy definitions are owned by the website; nothing is synchronized to Logi.
+
+## Integrations and servers
+
+**Integrace a servery / Integrations and servers** shows, read-only, what the website
+itself has configured and collected: the status source and configured public servers
+per game, each Logi source with its purposes (data, people, membership, commands),
+webhook and command queues and the Discord role mapping. The states are website
+collector health; they do not show the Logi runtime, its Discord connection or live
+game servers. The **Obnovit / Refresh** link reloads the page.
+
+The only editable part is the public **server presentation**: a display name, the
+"show on the website" checkbox and an order for each configured server. Saving applies
+immediately to the servers pages and the Wardogs home overview. Server identities,
+addresses and statistics links come from the operator configuration and cannot be
+changed here. See the [runbook](../integrations/logi/runbook.md#administration-health)
+for the meaning of each state.
 
 ## Website and Logi ownership
 
