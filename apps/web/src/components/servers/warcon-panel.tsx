@@ -1,8 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { SectionFrame, StatusBadge, type StatusKind } from '@/components/ui';
-import { formatDate, formatNumber } from '@/i18n/date-format';
+import { SectionFrame, StatusBadge, type StatusKind, SyntheticNote } from '@/components/ui';
+import { formatDate, formatNumber, formatWeekdayDateTime } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
 import type { Freshness } from '@/modules/integrations/contract';
 import type { WarconLivePublic, WarconServerPublic } from '@/modules/integrations/logi/readers/public';
@@ -111,7 +111,7 @@ export function WarconPanel({ entry, locale, serverName }: { entry: WarconServer
   return (
     <div className={styles.warconPanel} data-warcon-panel={entry.publicId}>
       <SectionFrame title={w('title')} titleAs="h3" titleId="warcon-live-title" eyebrow={serverName} description={<p>{w('intro')}</p>}>
-        {entry.synthetic ? <p className={styles.synthetic} data-synthetic-data="warcon">{w('synthetic')}</p> : null}
+        {entry.synthetic ? <SyntheticNote source="warcon">{w('synthetic')}</SyntheticNote> : null}
         <WarconLiveFacts live={entry.live} locale={locale} />
       </SectionFrame>
       {recent ? (
@@ -126,7 +126,7 @@ export function WarconPanel({ entry, locale, serverName }: { entry: WarconServer
                 {recent.matches.map((row) => (
                   <li key={row.id} data-warcon-match={row.id}>
                     <div className={styles.warconMatchHead}>
-                      <time dateTime={row.startedAt}>{formatDate(row.startedAt, locale, 'weekdayDateTime')}</time>
+                      <time dateTime={row.startedAt}>{formatWeekdayDateTime(row.startedAt, locale)}</time>
                       <span className={styles.warconMatchMap}>{row.map ?? t('mapUnknown')}{row.experiences ? ` · ${row.experiences}` : ''}</span>
                       {row.endedAt === null ? <StatusBadge kind="info">{w('recent.inProgress')}</StatusBadge> : null}
                     </div>

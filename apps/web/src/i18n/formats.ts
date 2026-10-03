@@ -15,7 +15,6 @@ export const formats = {
       minute: '2-digit',
       timeZoneName: 'short',
     },
-    weekdayDateTime: { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' },
   },
   number: {
     integer: { maximumFractionDigits: 0 },
