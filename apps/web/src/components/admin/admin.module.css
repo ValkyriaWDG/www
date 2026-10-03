@@ -717,11 +717,18 @@
 
 .mediaGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
   gap: var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Phones: two narrower cards per row instead of 190 px minimums that overflow the viewport. */
+@media (max-width: 479px) {
+  .mediaGrid {
+    grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+  }
 }
 
 .mediaCard {
@@ -993,6 +1000,20 @@
 
   .detail {
     position: static;
+  }
+}
+
+/* Below very wide desktops the module list gets its own row under the brand and account
+   links; one row cannot hold every module an administrator may use. */
+@media (max-width: 1599px) {
+  .bar > .nav {
+    order: 3;
+    width: 100%;
+    border-top: var(--border-hairline) solid var(--color-chrome-line);
+  }
+
+  .bar > .nav a {
+    min-height: 48px;
   }
 }
 
