@@ -1,5 +1,5 @@
-import { leagueReadSchema, warconEnvelopeSchema, type LeagueRead, type WarconEnvelope } from './contracts';
-import type { LeagueMatchUrl } from './league-url';
+import { leagueFixturesPageSchema, leagueReadSchema, warconEnvelopeSchema, type LeagueFixture, type LeagueRead, type LeagueSnapshot, type WarconEnvelope } from './contracts';
+import { canonicalLeagueMatchUrl, type LeagueMatchUrl } from './league-url';
 
 /**
  * Unmistakably synthetic reader observations for `LOGI_READERS_SOURCE=synthetic-fixture`
@@ -57,34 +57,80 @@ export function syntheticWarconMatches(now: Date): WarconEnvelope {
   });
 }
 
+/** Synthetic snapshot of one League detail page; the League id is echoed in the title. */
+function syntheticLeagueSnapshot(url: LeagueMatchUrl, now: Date, options: { fixtureNumber: number; scheduledAt: string | null; fetchedAt: string }): LeagueSnapshot {
+  return {
+    id: url.id, sourceUrl: url.url, parserVersion: 'wardogs-league-html/1',
+    title: `[SYNTHETIC] SYA · SYB · SYC (${url.id})`, fixtureNumber: options.fixtureNumber, type: 'Friendly', status: 'Scheduled',
+    scheduledAt: options.scheduledAt,
+    request: null,
+    teams: [
+      { code: 'SYA', name: 'Synthetic Alpha', profileUrl: 'https://wardogsleague.net/teams/SYA', nations: ['CZE'], displayedMemberCount: 10, faction: 'Synthetic Faction A', readyCheck: 'Ready check not run yet' },
+      { code: 'SYB', name: 'Synthetic Bravo', profileUrl: 'https://wardogsleague.net/teams/SYB', nations: ['SVK'], displayedMemberCount: 11, faction: 'Synthetic Faction B', readyCheck: 'Ready check not run yet' },
+      { code: 'SYC', name: 'Synthetic Charlie', profileUrl: 'https://wardogsleague.net/teams/SYC', nations: null, displayedMemberCount: 12, faction: null, readyCheck: null },
+    ],
+    map: { name: 'Synthetic Training Ground', zone: 'Synthetic Zone', lighting: 'Synthetic Dusk' },
+    hosting: { mode: 'Self-hosted', teamCode: 'SYA' },
+    moderator: 'Awaiting',
+    mapVote: { status: 'Open', closesAt: iso(now.getTime() + 24 * 60 * 60_000), ballots: null },
+    rules: { summary: '0 of 3 picked', choices: null },
+    readyCheck: 'Not started',
+    progress: [
+      { label: 'Locked', state: 'done', detail: 'synthetic' },
+      { label: 'Rules agreed', state: 'current', detail: '0/3' },
+      { label: 'Map vote', state: 'not_started', detail: null },
+      { label: 'Live', state: 'not_started', detail: null },
+    ],
+    scoringRule: '1st 3 · 2nd 2 · 3rd 1', results: null, warnings: ['results_not_supported'], fetchedAt: options.fetchedAt,
+  };
+}
+
 /** A synthetic scheduled League fixture for any accepted detail URL; the League id is echoed in the title. */
 export function syntheticLeagueRead(url: LeagueMatchUrl, now: Date): LeagueRead {
   const fetchedAt = iso(now.getTime() - 60_000);
   return leagueReadSchema.parse({
-    snapshot: {
-      id: url.id, sourceUrl: url.url, parserVersion: 'wardogs-league-html/1',
-      title: `[SYNTHETIC] SYA · SYB · SYC (${url.id})`, fixtureNumber: 42, type: 'Friendly', status: 'Scheduled',
-      scheduledAt: iso(now.getTime() + 7 * 24 * 60 * 60_000),
-      request: null,
-      teams: [
-        { code: 'SYA', name: 'Synthetic Alpha', profileUrl: 'https://wardogsleague.net/teams/SYA', nations: ['CZE'], displayedMemberCount: 10, faction: 'Synthetic Faction A', readyCheck: 'Ready check not run yet' },
-        { code: 'SYB', name: 'Synthetic Bravo', profileUrl: 'https://wardogsleague.net/teams/SYB', nations: ['SVK'], displayedMemberCount: 11, faction: 'Synthetic Faction B', readyCheck: 'Ready check not run yet' },
-        { code: 'SYC', name: 'Synthetic Charlie', profileUrl: 'https://wardogsleague.net/teams/SYC', nations: null, displayedMemberCount: 12, faction: null, readyCheck: null },
-      ],
-      map: { name: 'Synthetic Training Ground', zone: 'Synthetic Zone', lighting: 'Synthetic Dusk' },
-      hosting: { mode: 'Self-hosted', teamCode: 'SYA' },
-      moderator: 'Awaiting',
-      mapVote: { status: 'Open', closesAt: iso(now.getTime() + 24 * 60 * 60_000), ballots: null },
-      rules: { summary: '0 of 3 picked', choices: null },
-      readyCheck: 'Not started',
-      progress: [
-        { label: 'Locked', state: 'done', detail: 'synthetic' },
-        { label: 'Rules agreed', state: 'current', detail: '0/3' },
-        { label: 'Map vote', state: 'not_started', detail: null },
-        { label: 'Live', state: 'not_started', detail: null },
-      ],
-      scoringRule: '1st 3 · 2nd 2 · 3rd 1', results: null, warnings: ['results_not_supported'], fetchedAt,
-    },
+    snapshot: syntheticLeagueSnapshot(url, now, { fixtureNumber: 42, scheduledAt: iso(now.getTime() + 7 * 24 * 60 * 60_000), fetchedAt }),
     stale: false, ageSeconds: 60, lastAttemptAt: fetchedAt, nextRefreshAt: iso(now.getTime() + 4 * 60_000), error: null,
   });
+}
+
+/**
+ * League IDs of the synthetic tracked fixtures. `alpha` is also the editorial League link
+ * of the seeded upcoming Wardogs match (`fixtures/data.ts`), so the list links to that
+ * match page and the preview there shows the same snapshot.
+ */
+export const SYNTHETIC_LEAGUE_FIXTURE_IDS = { alpha: 'synthetic-fixture-alpha', bravo: 'synthetic-fixture-bravo', charlie: 'synthetic-fixture-charlie' } as const;
+/** Native event ID of the paused synthetic fixture; never a published Logi event, so no roster link is rendered. */
+export const SYNTHETIC_LEAGUE_FIXTURE_EVENT_ID = 'synthetic-logi-event-never-published';
+const SYNTHETIC_GUILD_ID = '100000000000000001';
+
+/**
+ * Three tracked synthetic fixtures: the alpha fixture of the seeded match (in 7 days,
+ * same snapshot as its preview), a second tracked fixture in 10 days and a paused one
+ * without a kickoff whose 20-minute-old snapshot the producer flags stale with a
+ * `timeout` error. No seeded public Wardogs Logi event exists in the browser fixtures,
+ * so the tracked fixtures carry no `eventId`.
+ */
+export function syntheticLeagueFixtures(now: Date): LeagueFixture[] {
+  const day = 24 * 60 * 60_000;
+  const fixture = (id: string, overrides: Partial<LeagueFixture> & { fixtureNumber: number; scheduledAt: string | null; fetchedAgoMs: number }): LeagueFixture => {
+    const url = canonicalLeagueMatchUrl(`https://wardogsleague.net/matches/${id}`);
+    if (!url) throw new Error('synthetic League id rejected');
+    const fetchedAt = iso(now.getTime() - overrides.fetchedAgoMs);
+    const { fixtureNumber, scheduledAt, fetchedAgoMs, ...rest } = overrides;
+    return {
+      id: url.id, guildId: SYNTHETIC_GUILD_ID, gameId: 'wardogs', eventId: null, revision: '1', state: 'tracked',
+      snapshot: syntheticLeagueSnapshot(url, now, { fixtureNumber, scheduledAt, fetchedAt }),
+      stale: false, ageSeconds: Math.floor(fetchedAgoMs / 1000), lastAttemptAt: fetchedAt, error: null,
+      ...rest,
+    };
+  };
+  return leagueFixturesPageSchema.parse({
+    items: [
+      fixture(SYNTHETIC_LEAGUE_FIXTURE_IDS.alpha, { fixtureNumber: 42, scheduledAt: iso(now.getTime() + 7 * day), fetchedAgoMs: 60_000 }),
+      fixture(SYNTHETIC_LEAGUE_FIXTURE_IDS.bravo, { fixtureNumber: 43, scheduledAt: iso(now.getTime() + 10 * day), fetchedAgoMs: 90_000, revision: '3' }),
+      fixture(SYNTHETIC_LEAGUE_FIXTURE_IDS.charlie, { fixtureNumber: 44, scheduledAt: null, fetchedAgoMs: 20 * 60_000, state: 'paused', stale: true, error: 'timeout', eventId: SYNTHETIC_LEAGUE_FIXTURE_EVENT_ID, revision: '5' }),
+    ],
+    nextCursor: null,
+  }).items;
 }

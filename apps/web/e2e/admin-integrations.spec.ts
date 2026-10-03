@@ -59,8 +59,11 @@ test('administrator sees website collector health in Czech and English without c
   await expect(logi).toContainText('Čtečky Wardogs (League, Warcon)');
   await expect(readers.locator('[data-reader="league-matches"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="warcon-data"]')).toHaveAttribute('data-state', 'configured');
-  await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Wardogs League');
+  await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Wardogs League – náhled zápasu');
+  await expect(readers.locator('[data-reader="league-fixtures"]')).toHaveAttribute('data-state', 'configured');
+  await expect(readers.locator('[data-reader="league-fixtures"]')).toContainText(/Wardogs League – sledovaná utkání.*Nastaveno.*syntetický zdroj/s);
   await expect(readers.locator('[data-reader="warcon-data"]')).toContainText(/Warcon.*Nastaveno/s);
+  await expect(readers.locator('[data-reader]')).toHaveCount(3);
   // The synthetic source is reported as a code and rendered in the interface language.
   await expect(readers).toContainText('syntetický zdroj – jen testy a kontrolní snímky');
   await expect(readers).not.toContainText('synthetic-fixture');
@@ -87,7 +90,8 @@ test('administrator sees website collector health in Czech and English without c
   await expect(page.getByRole('heading', { level: 1, name: 'Integrations and servers' })).toBeVisible();
   await expect(page.locator('[data-integrations-logi]').getByText('No Logi source is configured.')).toBeVisible();
   await expect(page.locator('[data-integrations-logi]')).toContainText('Wardogs readers (League, Warcon)');
-  await expect(page.locator('[data-logi-readers] [data-reader="league-matches"]')).toContainText(/Wardogs League.*Configured/s);
+  await expect(page.locator('[data-logi-readers] [data-reader="league-matches"]')).toContainText(/Wardogs League – match preview.*Configured/s);
+  await expect(page.locator('[data-logi-readers] [data-reader="league-fixtures"]')).toContainText(/Wardogs League – tracked fixtures.*Configured.*synthetic source/s);
   await expect(page.locator('[data-game-servers="hll"]')).toContainText('Synthetic data');
   await expect(page.locator('[data-integrations-discord]')).toContainText('6 mapped roles');
   await context.close();

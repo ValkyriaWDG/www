@@ -4,6 +4,7 @@ import { ensureTestActors, type TestActors } from '@/fixtures/test-actors';
 import { AccessDeniedError } from '@/modules/access/types';
 import { getIntegrationHealthForAdmin, type IntegrationAdminEnv } from '@/modules/integrations/admin-health';
 import { configuredLogiSources } from '@/modules/integrations/logi-config';
+import { createLeagueFixturesReader, observeLeagueFixtures, resetLeagueFixturesReaderForTests } from '@/modules/integrations/logi/readers/fixtures';
 import { createLeagueReader, observeLeaguePreview, resetLeagueReaderForTests } from '@/modules/integrations/logi/readers/league';
 import { createWarconReader, observeWarcon, resetWarconReaderForTests } from '@/modules/integrations/logi/readers/warcon';
 import type { LogiFetch } from '@/modules/integrations/logi/transport';
@@ -70,6 +71,7 @@ beforeEach(async () => {
   await database.db.delete(logiInbox);
   await database.db.delete(logiCommand);
   resetLeagueReaderForTests();
+  resetLeagueFixturesReaderForTests();
   resetWarconReaderForTests();
 });
 
@@ -191,25 +193,36 @@ describe('integration health for administrators', () => {
     const unconfigured = await getIntegrationHealthForAdmin(database.db, actors.administrator, env, now, { overview: readOverview });
     expect(unconfigured.logi.readers).toEqual([
       { resource: 'league-matches', purpose: 'league', state: 'unconfigured', detail: 'LOGI_LEAGUE_API_KEY_WDG is not set', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
+      { resource: 'league-fixtures', purpose: 'league', state: 'unconfigured', detail: 'LOGI_LEAGUE_API_KEY_WDG is not set', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
       { resource: 'warcon-data', purpose: 'warcon', state: 'unconfigured', detail: 'LOGI_WARCON_API_KEY_WDG is not set', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
     ]);
     const synthetic = await getIntegrationHealthForAdmin(database.db, actors.administrator, { ...env, LOGI_READERS_SOURCE: 'synthetic-fixture' }, now, { overview: readOverview });
-    expect(synthetic.logi.readers.map((reader) => [reader.resource, reader.state])).toEqual([['league-matches', 'configured'], ['warcon-data', 'configured']]);
+    expect(synthetic.logi.readers.map((reader) => [reader.resource, reader.state])).toEqual([['league-matches', 'configured'], ['league-fixtures', 'configured'], ['warcon-data', 'configured']]);
     const configured = await getIntegrationHealthForAdmin(database.db, actors.administrator, readerEnv, now, { overview: readOverview });
     expect(configured.logi.readers).toEqual([
       { resource: 'league-matches', purpose: 'league', state: 'configured', detail: 'league-matches grant configured for primary-logi', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
+      { resource: 'league-fixtures', purpose: 'league', state: 'configured', detail: 'league-fixtures grant configured for primary-logi', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
       { resource: 'warcon-data', purpose: 'warcon', state: 'configured', detail: '1 approved connection(s) on primary-logi', approvedConnections: 1, lastAttemptAt: null, lastOutcome: null },
     ]);
     // A producer that does not serve the routes answers 404; the readers record it and the page reports "unsupported".
     const notDeployed: LogiFetch = async () => new Response(null, { status: 404 });
-    const credentials = { origin: LOGI_ORIGIN, apiKey: LEAGUE_KEY, gameId: 'wardogs' as const, allowLoopbackHttp: false, environment: 'test' as const };
+    const credentials = { origin: LOGI_ORIGIN, apiKey: LEAGUE_KEY, gameId: 'wardogs' as const, guildId: '100000000000000001', allowLoopbackHttp: false, environment: 'test' as const };
     await observeLeaguePreview(createLeagueReader(credentials, { fetchImpl: notDeployed }), 'scope', 'https://wardogsleague.net/matches/abc', minutes(-2));
+    await observeLeagueFixtures(createLeagueFixturesReader(credentials, { fetchImpl: notDeployed }), 'scope', minutes(-3));
     await observeWarcon(createWarconReader({ ...credentials, apiKey: WARCON_KEY }, { fetchImpl: notDeployed }), 'scope', WARCON_CONNECTION, 'live', minutes(-1));
     const unsupported = await getIntegrationHealthForAdmin(database.db, actors.administrator, readerEnv, now, { overview: readOverview });
     expect(unsupported.logi.readers).toEqual([
       { resource: 'league-matches', purpose: 'league', state: 'unsupported', detail: 'producer answered 404: league-matches route not deployed', approvedConnections: 0, lastAttemptAt: minutes(-2).toISOString(), lastOutcome: 'not_found' },
+      { resource: 'league-fixtures', purpose: 'league', state: 'unsupported', detail: 'producer answered 404: league-fixtures route not deployed', approvedConnections: 0, lastAttemptAt: minutes(-3).toISOString(), lastOutcome: 'not_found' },
       { resource: 'warcon-data', purpose: 'warcon', state: 'unsupported', detail: 'producer answered 404: warcon-data route not deployed', approvedConnections: 1, lastAttemptAt: minutes(-1).toISOString(), lastOutcome: 'not_found' },
     ]);
+    // A key without the explicit `league-fixtures` grant is refused with 403: the fixtures reader alone reports it as unconfigured.
+    resetLeagueFixturesReaderForTests();
+    const noGrant: LogiFetch = async () => new Response(JSON.stringify({ error: { code: 'insufficient_scope' } }), { status: 403, headers: { 'content-type': 'application/json' } });
+    await observeLeagueFixtures(createLeagueFixturesReader(credentials, { fetchImpl: noGrant }), 'scope', minutes(-1));
+    const refused = await getIntegrationHealthForAdmin(database.db, actors.administrator, readerEnv, now, { overview: readOverview });
+    expect(refused.logi.readers[1]).toEqual({ resource: 'league-fixtures', purpose: 'league', state: 'unconfigured', detail: 'key lacks the explicit league-fixtures grant (producer answered 403)', approvedConnections: 0, lastAttemptAt: minutes(-1).toISOString(), lastOutcome: 'forbidden' });
+    expect(refused.logi.readers[0]?.state).toBe('unsupported');
     expect(JSON.stringify(unsupported.logi.readers)).not.toMatch(new RegExp(`${LEAGUE_KEY}|${WARCON_KEY}|${WARCON_CONNECTION}|wardogsleague|logi.example`));
   });
 
