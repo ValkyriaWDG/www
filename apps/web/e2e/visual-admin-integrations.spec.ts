@@ -53,6 +53,8 @@ test('integrations overview (cs desktop, full page)', async ({ browser }) => {
   await page.goto('/cs/admin/integrations');
   await expect(page.getByRole('heading', { level: 1, name: 'Integrace a servery' })).toBeVisible();
   await expect(page.locator('[data-integrations-logi]').getByText('Žádný zdroj Logi není nastaven.')).toBeVisible();
+  // Full-page capture: end scrolled to the bottom so the sticky save bar sits at its natural place.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await shot(page, 'integrations-cs-1440x900-full.png',
     'Administrator, /cs/admin/integrations at 1440×900 (full page): website collector health with the scope notice, both games on labelled synthetic fixtures with their current public state, no Logi source configured (nothing shown as healthy), webhooks/commands disabled and the six-entry e2e Discord role mapping. No key, host or URL from the configuration is rendered.',
     { uiLocale: 'cs', role: 'administrator', fullPage: true });
