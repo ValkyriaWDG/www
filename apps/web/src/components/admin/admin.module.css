@@ -734,6 +734,8 @@
 .mediaCard {
   position: relative;
   display: grid;
+  /* The single column must shrink below the longest truncated file name. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   border: var(--border-hairline) solid var(--color-border);
   background: var(--color-panel-solid);
