@@ -65,7 +65,7 @@ test.describe('sign-in page', () => {
     const response = await request.get('/cs/login/recovery');
     expect(response.status()).toBe(404);
     // The disabled route does not announce itself through the page title either.
-    expect(await response.text()).not.toContain('Obnovení přístupu správce');
+    expect(/<title>([^<]*)<\/title>/.exec(await response.text())?.[1]).toBe('Valkyria');
     expect((await request.get('/en/login/recovery')).status()).toBe(404);
   });
 
