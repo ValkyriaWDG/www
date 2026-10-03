@@ -14,7 +14,7 @@ import styles from './admin-integrations.module.css';
  */
 
 const STATE_KIND: Record<ScopeState, StatusKind> = { not_configured: 'neutral', configured: 'info', never_ran: 'warning', bootstrapping: 'warning', healthy: 'success', stale: 'warning', unavailable: 'danger' };
-const READER_STATE_KIND: Record<AdminReaderState, StatusKind> = { unconfigured: 'neutral', configured: 'info', unsupported: 'danger' };
+const READER_STATE_KIND: Record<AdminReaderState, StatusKind> = { unconfigured: 'neutral', configured: 'info', unsupported: 'danger', denied: 'danger', preparing: 'warning', available: 'success', stale: 'warning', error: 'danger' };
 const KNOWN_CAPABILITIES = new Set(['server_snapshot', 'match_history']);
 /** Bounded machine codes with localized labels; anything else falls back to the generic entry. */
 const LOGI_ERROR_CODES = ['configuration', 'unauthorized', 'forbidden', 'not_found', 'reset_required', 'rate_limited', 'upstream', 'network', 'timeout', 'invalid_response', 'redirect', 'scope_mismatch', 'unknown_outcome', 'persistence', 'unavailable'] as const;

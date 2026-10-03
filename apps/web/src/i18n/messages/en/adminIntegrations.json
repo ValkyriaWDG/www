@@ -122,20 +122,27 @@
       "membership": "Membership (permissions)",
       "commands": "Commands (event writes)",
       "league": "Wardogs League",
-      "warcon": "Warcon"
+      "warcon": "Warcon",
+      "history": "Server game history (Warcon)"
     },
     "readers": {
       "title": "Wardogs readers (League, Warcon)",
       "resources": {
         "league-matches": "Wardogs League – match preview",
         "league-fixtures": "Wardogs League – tracked fixtures",
-        "warcon-data": "Warcon"
+        "warcon-data": "Warcon",
+        "server-game-history": "Warcon – server game history"
       },
-      "intro": "On-demand reads with their own restricted keys: the League match preview, the Wardogs League fixtures Logi tracks and the Warcon live/recent-round facts of approved connections. States come from the configuration and the website’s last read, never from the hosted producer’s own health.",
+      "intro": "On-demand reads with their own restricted keys: the League match preview, the Wardogs League fixtures Logi tracks, the Warcon live/recent-round facts of approved connections and the retained completed Warcon games of approved sources (server gameplay history, not clan results). States come from the configuration and the website’s last read, never from the hosted producer’s own health.",
       "state": {
         "unconfigured": "Not configured",
         "configured": "Configured",
-        "unsupported": "Not deployed on the producer"
+        "unsupported": "Not deployed on the producer",
+        "denied": "Access denied by the producer",
+        "preparing": "First scan running",
+        "available": "Available",
+        "stale": "Stale",
+        "error": "Last scan failed"
       },
       "connections": "{count, plural, =0 {no approved connections} one {# approved connection} other {# approved connections}}",
       "lastOk": "last read succeeded",
