@@ -6,12 +6,15 @@ import {
   discordInviteUrlSchema,
   isAllowedBackgroundUrl,
   isSettingKey,
+  MAX_SERVER_PRESENTATION_ROWS,
+  serverPresentationSchema,
 } from './schemas';
 
 describe('settings allowlist', () => {
   it('accepts only allowlisted keys and never system keys', () => {
     expect(isSettingKey('community.discordInviteUrl')).toBe(true);
     expect(isSettingKey('background.media')).toBe(true);
+    expect(isSettingKey('servers.presentation')).toBe(true);
     expect(isSettingKey('system.publisher_heartbeat')).toBe(false);
     expect(isSettingKey('arbitrary.key')).toBe(false);
     expect(isSettingKey(42)).toBe(false);
@@ -72,5 +75,37 @@ describe('background media', () => {
     expect(schema.safeParse({ posterUrl: '/poster.webp', focalX: 50, focalY: 50, provenance: 'Owner-supplied capture, approved 2026-09' }).success).toBe(true);
     expect(schema.safeParse({ focalX: 101, focalY: 50 }).success).toBe(false);
     expect(schema.parse({})).toMatchObject({ posterUrl: null, mp4Url: null, webmUrl: null, focalX: 50, focalY: 50 });
+  });
+});
+
+describe('server presentation', () => {
+  const row = (publicId: string, extra: Record<string, unknown> = {}) => ({ game: 'hll', publicId, ...extra });
+
+  it('accepts optional name, visibility and order per configured server', () => {
+    const parsed = serverPresentationSchema.safeParse([row('valkyria-1', { name: '  Valkyria Main ', published: false, sortOrder: 3 }), { game: 'wardogs', publicId: 'valkyria-1' }]);
+    expect(parsed.success).toBe(true);
+    expect(parsed.data?.[0]).toEqual({ game: 'hll', publicId: 'valkyria-1', name: 'Valkyria Main', published: false, sortOrder: 3 });
+    expect(serverPresentationSchema.safeParse([]).success).toBe(true);
+  });
+
+  it('rejects duplicates, unknown games, bad identifiers, oversize lists and bad values', () => {
+    const issue = (value: unknown) => {
+      const parsed = serverPresentationSchema.safeParse(value);
+      return parsed.success ? null : parsed.error.issues.map((item) => `${item.path.join('.')}:${item.message}`);
+    };
+    expect(issue([row('valkyria-1'), row('valkyria-1', { name: 'Twice' })])).toEqual([':duplicates']);
+    expect(issue([{ game: 'csgo', publicId: 'valkyria-1' }])?.[0]).toMatch(/^0\.game:/);
+    for (const publicId of ['Valkyria', 'valkyria_1', '-valkyria', 'valkyria-', 'a'.repeat(65), '../admin', 'https://evil.example']) {
+      expect(issue([row(publicId)])?.[0], publicId).toMatch(/^0\.publicId:/);
+    }
+    expect(issue(Array.from({ length: MAX_SERVER_PRESENTATION_ROWS + 1 }, (_, index) => row(`server-${index}`)))?.[0]).toMatch(/^:Too big/);
+    expect(issue([row('valkyria-1', { name: '' })])?.[0]).toMatch(/^0\.name:/);
+    expect(issue([row('valkyria-1', { name: 'x'.repeat(121) })])?.[0]).toMatch(/^0\.name:/);
+    expect(issue([row('valkyria-1', { name: 'line\nbreak' })])).toEqual(['0.name:control_characters']);
+    expect(issue([row('valkyria-1', { sortOrder: 1001 })])?.[0]).toMatch(/^0\.sortOrder:/);
+    expect(issue([row('valkyria-1', { sortOrder: 1.5 })])?.[0]).toMatch(/^0\.sortOrder:/);
+    expect(issue([row('valkyria-1', { published: 'yes' })])?.[0]).toMatch(/^0\.published:/);
+    expect(issue([row('valkyria-1', { baseUrl: 'https://private.example' })])).toBeNull();
+    expect(serverPresentationSchema.parse([row('valkyria-1', { baseUrl: 'https://private.example' })])[0]).not.toHaveProperty('baseUrl');
   });
 });

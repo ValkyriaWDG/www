@@ -4,7 +4,8 @@ import { getWarconServersPublic } from '../logi/readers/warcon';
 import type { WarconServerPublic } from '../logi/readers/public';
 import type { LivePlayersSnapshot } from './live-players';
 import { getServerLivePlayers } from './live-players-provider';
-import { getServerOverview, type ServerOverview } from './provider';
+import { getPublicServerOverview, getServerPresentation, isServerPublished } from './presentation';
+import type { ServerOverview } from './provider';
 
 export type ServerBrowserData = {
   overview: ServerOverview;
@@ -20,8 +21,13 @@ export type ServerBrowserData = {
  */
 export async function getServerBrowserData(game: GameRoute, selected: string | null): Promise<ServerBrowserData> {
   const now = new Date();
-  const [overview, livePlayers] = await Promise.all([getServerOverview(game, now), selected ? getServerLivePlayers(game, selected, now) : null]);
-  const listed = overview.state === 'not_configured' ? [] : overview.servers.map((server) => server.publicId);
-  const warcon = game === 'wardogs' && listed.length > 0 ? await getWarconServersPublic(listed, selected, now) : null;
-  return { overview, livePlayers, warcon };
+  const rows = await getServerPresentation(now);
+  // A server hidden by the website presentation has no public detail: its upstream is not asked at all.
+  const detail = selected !== null && isServerPublished(rows, game, selected);
+  const [overview, livePlayers] = await Promise.all([getPublicServerOverview(game, now, rows), detail ? getServerLivePlayers(game, selected, now) : null]);
+  const listed = overview.state === 'not_configured' || selected === null || overview.servers.some((server) => server.publicId === selected);
+  // Warcon follows the presented overview: hidden servers are neither listed nor asked for recent matches.
+  const publicIds = overview.state === 'not_configured' ? [] : overview.servers.map((server) => server.publicId);
+  const warcon = game === 'wardogs' && publicIds.length > 0 ? await getWarconServersPublic(publicIds, listed ? selected : null, now) : null;
+  return { overview, livePlayers: listed ? livePlayers : null, warcon };
 }
