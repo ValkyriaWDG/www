@@ -3,15 +3,22 @@ import { genericTournamentLink } from './link-labels';
 
 describe('generic tournament link labels', () => {
   it('recognises generic labels typed in either language', () => {
-    expect(genericTournamentLink('Website')).toBe('website');
-    expect(genericTournamentLink('  web  soutěže ')).toBe('website');
-    expect(genericTournamentLink('Rules')).toBe('rules');
-    expect(genericTournamentLink('PRAVIDLA')).toBe('rules');
-    expect(genericTournamentLink('Pořadí')).toBe('standings');
-    expect(genericTournamentLink('Registrace')).toBe('registration');
+    expect(genericTournamentLink('Website')).toEqual({ kind: 'website', note: null });
+    expect(genericTournamentLink('Competition website')).toEqual({ kind: 'website', note: null });
+    expect(genericTournamentLink('  web  soutěže ')).toEqual({ kind: 'website', note: null });
+    expect(genericTournamentLink('Rules')).toEqual({ kind: 'rules', note: null });
+    expect(genericTournamentLink('PRAVIDLA')).toEqual({ kind: 'rules', note: null });
+    expect(genericTournamentLink('Pořadí')).toEqual({ kind: 'standings', note: null });
+    expect(genericTournamentLink('Registrace')).toEqual({ kind: 'registration', note: null });
   });
 
-  it('keeps specific labels as written', () => {
-    for (const label of ['Discord', 'ECL Discord', 'Web soutěže (ukázka)', 'Challonge bracket']) expect(genericTournamentLink(label)).toBeNull();
+  it('keeps a trailing note in parentheses beside the localized generic label', () => {
+    expect(genericTournamentLink('Web soutěže (ukázka)')).toEqual({ kind: 'website', note: '(ukázka)' });
+    expect(genericTournamentLink('COMPETITION WEBSITE  (sample)')).toEqual({ kind: 'website', note: '(sample)' });
+    expect(genericTournamentLink('Pravidla (PDF)')).toEqual({ kind: 'rules', note: '(PDF)' });
+  });
+
+  it('keeps specific labels as written, with or without a note', () => {
+    for (const label of ['Discord', 'ECL Discord', 'Challonge bracket', 'Discord (CZ)', '(ukázka)']) expect(genericTournamentLink(label)).toBeNull();
   });
 });

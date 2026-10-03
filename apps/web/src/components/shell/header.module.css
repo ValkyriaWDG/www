@@ -247,6 +247,30 @@ a.languageOption:hover {
   background: var(--color-control-hover);
 }
 
+/* Icon-only account action (label visually hidden below 1280): the label doubles as a
+   hover/focus tooltip like the utility buttons; `display: none` so it never causes overflow. */
+.accountTooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: var(--layer-popover);
+  display: none;
+  width: max-content;
+  max-width: min(260px, 70vw);
+  padding: 5px var(--space-2);
+  border: var(--border-hairline) solid var(--color-border);
+  background: var(--color-chrome-strong);
+  color: var(--color-text);
+  font-size: var(--text-meta);
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+/* Escape dismisses tooltips until the pointer or focus moves (WCAG 1.4.13). */
+:global(:root[data-tooltips='dismissed']) .accountTooltip {
+  display: none !important;
+}
+
 .account[aria-current='page'] {
   border-color: var(--color-accent);
 }
@@ -423,7 +447,13 @@ a.languageOption:hover {
   }
 
   .tools .account {
+    position: relative;
     padding: 0 11px;
+  }
+
+  .tools .account:hover .accountTooltip,
+  .tools .account:focus-visible .accountTooltip {
+    display: block;
   }
 }
 

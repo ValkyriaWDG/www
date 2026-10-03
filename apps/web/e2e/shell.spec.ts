@@ -114,6 +114,26 @@ test.describe('menu shell: navigation and language', () => {
     await expect(news.locator('[aria-hidden="true"]', { hasText: 'Novinky' })).toBeHidden();
     await expect(page.locator('[data-utility="discord"]')).toHaveAccessibleName('Discord (externí odkaz)');
   });
+
+  test('the icon-only account action at 1024 px keeps its name as a title and a focus tooltip', async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 768 });
+    await page.goto('/cs/wardogs');
+    const account = page.locator('[data-account="signed_out"]');
+    await expect(account).toHaveAccessibleName('PŘIHLÁSIT SE');
+    await expect(account).toHaveAttribute('title', 'PŘIHLÁSIT SE');
+    const tooltip = account.locator('[aria-hidden="true"]', { hasText: 'PŘIHLÁSIT SE' });
+    await expect(tooltip).toBeHidden();
+    await tabUntil(page, '[data-account="signed_out"]', 60);
+    await expect(tooltip).toBeVisible();
+    const box = (await tooltip.boundingBox())!;
+    expect(box.x + box.width).toBeLessThanOrEqual(1024);
+    await page.keyboard.press('Escape');
+    await expect(tooltip).toBeHidden();
+    // From 1280 the label is visible text again; no tooltip is needed.
+    await page.setViewportSize({ width: 1280, height: 768 });
+    await expect(account.locator('span').first()).toHaveText('PŘIHLÁSIT SE');
+    await expect(account.locator('span').first()).toBeVisible();
+  });
 });
 
 test.describe('menu shell: mobile', () => {
