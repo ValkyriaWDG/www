@@ -82,9 +82,12 @@ move; `dialogs.test.tsx` covers the dialog's cancel label. The audit scripts
 from the database at runtime) rerun on the fixed build report no axe violation, page error, raw key or
 overflow on 204 static and 202 walkthrough captures and show the fixed behaviour in the
 browser (provenance column 416 px at 1440, "Ponechat plán / Keep schedule", focus on the
-moved round's button, the denied and Logi titles). Still to run by
-the orchestrator: the full browser and PostgreSQL suites, the audit rerun with
-before/after captures for the evidence folder, and the PR.
+moved round's button, the denied and Logi titles). After merging main `5e7a7d9` (the
+League fixtures reader) into the branch, the full browser suite passed 253 tests (111
+opt-in captures skipped), the PostgreSQL suite 514 tests (50 files) and `pnpm test:unit`
+1066 tests (100 files) on the merged head. Before/after captures are in the
+[round 13 evidence](evidence/ui-round13-2026-10-03/README.md). Next: PR #98 latest-head
+CI, merge and publication.
 
 ## Wardogs League tracked fixtures reader (#87 follow-up) — 2026-10-03
 
