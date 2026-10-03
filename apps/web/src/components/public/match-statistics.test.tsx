@@ -1,13 +1,17 @@
 import { createTranslator } from 'next-intl';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import common from '@/i18n/messages/en/common.json';
 import messages from '@/i18n/messages/en/matches.json';
 import { parseCrconScoreboard, summarizeTeams } from '@/modules/matches/statistics';
 import { syntheticScoreboard } from '@/modules/matches/statistics-fixtures';
 import type { MatchStatisticsView } from '@/modules/matches/types';
 import { MatchStatistics } from './match-statistics';
 
-vi.mock('next-intl/server', () => ({ getTranslations: async () => createTranslator({ locale: 'en', messages, namespace: 'statistics' }) }));
+vi.mock('next-intl/server', () => ({
+  getTranslations: async ({ namespace }: { namespace: string }) =>
+    namespace === 'common.a11y' ? createTranslator({ locale: 'en', messages: { common }, namespace: 'common.a11y' }) : createTranslator({ locale: 'en', messages, namespace: 'statistics' }),
+}));
 
 function view(): MatchStatisticsView {
   const parsed = parseCrconScoreboard(syntheticScoreboard())!;
@@ -29,6 +33,15 @@ describe('public match statistics provenance and rounds', () => {
     expect(html).toContain('Game statistics on the game server');
     expect(html).not.toContain('[SYN] Allies Player');
     expect(html).not.toContain('target=');
+  });
+
+  it('names each scrollable table as a region and keeps its first column sticky on phones', async () => {
+    const players = parseCrconScoreboard(syntheticScoreboard())!.players;
+    const html = await render({ ...view(), players, publishPlayers: true });
+    for (const label of ['Team totals', 'Kills by weapon type', 'Player statistics']) expect(html).toContain(`aria-label="${label} – scrollable area"`);
+    expect(html.match(/data-sticky-column=""/g)).toHaveLength(3);
+    expect(html).toContain('data-scroll-table="players"');
+    expect(html).toContain('data-scroll-edges="none"');
   });
 
   it('does not invent a source link for uploads', async () => {

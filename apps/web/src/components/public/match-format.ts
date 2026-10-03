@@ -110,3 +110,12 @@ export function matchFormatLabel(format: string | null, bestOf: number | null, b
   const restated = text ? BEST_OF_TEXT.exec(text) : null;
   return [restated && Number(restated[1]) === bestOf ? null : text, bestOfLabel(bestOf)].filter(Boolean).join(' · ');
 }
+
+/**
+ * The one mode every round was played in (e.g. all "Warfare"), or `null` when rounds
+ * differ or lack a mode. A shared mode is a match fact, not a column repeated per row.
+ */
+export function sharedRoundMode(rounds: readonly { mode: string | null }[]): string | null {
+  const first = rounds[0]?.mode;
+  return first && rounds.every((round) => round.mode === first) ? first : null;
+}

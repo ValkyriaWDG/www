@@ -115,6 +115,7 @@
       "en": "Read the English recap"
     },
     "rounds": "Maps and rounds",
+    "roundsMode": "Mode of every round: {mode}",
     "roundColumns": {
       "ordinal": "#",
       "map": "Map",

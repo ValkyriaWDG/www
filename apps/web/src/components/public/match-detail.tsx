@@ -4,6 +4,7 @@ import { MapScene } from '@/components/hll/map-artwork';
 import { parseExternalHttpsUrl } from '@/components/shell/external-links';
 import { GameButton } from '@/components/ui/game-button';
 import { DetailPane } from '@/components/ui/panels';
+import { ScrollRegion } from '@/components/ui/scroll-region';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
@@ -14,7 +15,7 @@ import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/rou
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
-import { matchFormatLabel } from './match-format';
+import { matchFormatLabel, sharedRoundMode } from './match-format';
 import { getMatchTranslations, MatchBanner, MatchResult, MatchStatusBadge, OpponentMark } from './match-parts';
 import { MatchStatistics } from './match-statistics';
 import { MatchLegacyDetails } from './match-legacy-details';
@@ -30,6 +31,18 @@ function matchMaps(match: PublicMatchDetail): { artwork: HllMapArtwork; name: st
     if (artwork && round.mapName && !maps.some((entry) => entry.artwork.slug === artwork.slug)) maps.push({ artwork, name: round.mapName });
   }
   return maps;
+}
+
+/**
+ * Decorative opponent mark beside a statistics team name. Without a logo the mark would
+ * be the short code the team name already starts with ("SHF" next to "SHF (Osa)"), so it
+ * is omitted rather than shown twice.
+ */
+function opponentMark(match: PublicMatchDetail) {
+  const fallback = (match.opponentShortCode ?? match.opponentName.slice(0, 3)).toUpperCase();
+  const label = (match.opponentShortCode ?? match.opponentName).toUpperCase();
+  if (!match.opponentLogo && label.startsWith(fallback)) return null;
+  return <OpponentMark match={match} className={styles.teamMark} />;
 }
 
 /**
@@ -56,6 +69,7 @@ export async function MatchDetailPane({
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const competition = [t(`competition.${match.competitionType}`), match.competitionName].filter(Boolean).join(' – ');
   const format = matchFormatLabel(match.format, match.bestOf, (count) => t('detail.bestOf', { count }));
+  const roundMode = sharedRoundMode(match.rounds);
 
   const metadata = [
     { label: t('detail.competition'), value: competition },
@@ -96,6 +110,8 @@ export async function MatchDetailPane({
     ...(match.season ? [{ label: t('detail.season'), value: match.season }] : []),
     ...(format ? [{ label: t('detail.format'), value: format }] : []),
     ...(match.teamSize ? [{ label: t('detail.teamSize'), value: formatNumber(match.teamSize, locale) }] : []),
+    // One mode for every round is a match fact; the rounds table then omits the column.
+    ...(roundMode ? [{ label: t('detail.roundColumns.mode'), value: <span data-match-mode="">{roundMode}</span> }] : []),
   ];
 
   const eventUrl = parseExternalHttpsUrl(match.eventUrl);
@@ -192,10 +208,13 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
   if (match.rounds.length === 0 && !match.statistics && !match.legacyDetails) return null;
   const t = await getMatchTranslations(locale);
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
+  const scrollLabel = (await getTranslations({ locale, namespace: 'common.a11y' }))('scrollRegion', { label: t('detail.rounds') });
   const maps = matchMaps(match);
+  const roundMode = sharedRoundMode(match.rounds);
   const showRoundColumn = {
     map: match.rounds.some((round) => round.mapName),
-    mode: match.rounds.some((round) => round.mode),
+    // A mode shared by every round sits in the match facts (and the table caption) instead.
+    mode: roundMode === null && match.rounds.some((round) => round.mode),
     side: match.rounds.some((round) => round.side),
   };
   return (
@@ -220,8 +239,9 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
               ))}
             </ul>
           ) : null}
-          <div className={styles.rounds} role="region" aria-labelledby={`${titleId}-rounds`} tabIndex={0}>
+          <ScrollRegion label={scrollLabel} className={styles.rounds} data-scroll-table="rounds">
             <table>
+              {roundMode ? <caption className="visually-hidden">{t('detail.roundsMode', { mode: roundMode })}</caption> : null}
               <thead>
                 <tr>
                   <th scope="col">{t('detail.roundColumns.ordinal')}</th>
@@ -255,7 +275,7 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
                 })}
               </tbody>
             </table>
-          </div>
+          </ScrollRegion>
         </section>
       ) : null}
       {match.statistics ? (
@@ -266,7 +286,7 @@ export async function MatchDetailExtras({ match, locale, titleId }: { match: Pub
           opponentLabel={match.opponentShortCode ?? match.opponentName}
           marks={{
             valkyria: <Image src={emblem} alt="" className={styles.teamMark} sizes="24px" data-team-mark="valkyria" />,
-            opponent: <OpponentMark match={match} className={styles.teamMark} />,
+            opponent: opponentMark(match),
           }}
         />
       ) : null}
