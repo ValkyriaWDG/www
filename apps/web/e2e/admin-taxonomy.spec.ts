@@ -82,8 +82,10 @@ for (const locale of ['cs', 'en'] as const) {
     await expect(page.locator('[data-manual-grid="categories"] > li').first()).toContainText(labelCs);
     await page.goto('/cs/hll/field-manual?category=vehicles');
     await expect(page.locator('[data-manual-article]').first()).toContainText(labelCs);
-    await page.goto('/en/hll/field-manual');
-    await expect(page.locator('[data-manual-category="vehicles"]')).toContainText(labelEn);
+    // The English manual has no published article in this category, so its card does not
+    // exist there; the live English label is checked in the English administration list.
+    await page.goto('/en/admin/taxonomy');
+    await expect(page.getByTestId('taxonomy-row-manual-hll-vehicles')).toContainText(labelEn);
 
     // Restore the seeded definition through the same form.
     await page.goto(`/${locale}/admin/taxonomy/manual/hll/${await manualCategoryId('vehicles')}`);
