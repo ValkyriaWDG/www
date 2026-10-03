@@ -1,5 +1,62 @@
 # Current status
 
+## Public and administration UI round 11 — 2026-10-03
+
+An audit of main `e46c67c` (the PR #94 merge) covered 28 public cases (hub, both
+landings, the Wardogs servers page with the Warcon panel, the matches list and the
+upcoming fixture with the League preview, HLL servers/manual/FAQ, news, members, clan,
+community) and 56 signed-in administration cases, in cs/en at 1440 and 390 px with axe,
+console/page-error and sub-44 px control scans. Fixed on `feat/hll-platform-handoff`:
+
+- React hydration error #418 on `/en/wardogs/servers?server=synthetic-wardogs`: the Warcon
+  round times used the ICU `weekdayDateTime` pattern, which Node renders as "Sat 3 Oct"
+  and Chromium as "Sat, 3 Oct", so React discarded the server tree. `formatWeekdayDateTime`
+  (`src/i18n/date-format.ts`) now joins `formatToParts()` values with fixed separators in
+  both locales (unit-tested for summer/winter time); the next-match strip uses it too.
+- The League preview is its own grid row after the match detail on phones (it was
+  auto-placed into the hidden toolbar row above the match card); its freshness is a
+  `StatusBadge` word plus a muted "Pozorováno …" line like the Warcon panel, the progress
+  steps align in a badge/name/detail grid under a visible "Postup / Progress" label, the
+  synthetic note uses the shared dashed amber `SyntheticNote` (also used by the servers
+  page and the Warcon panel) and the Czech "Naplánováno" label became "Termín".
+- The administration bar is a labelled `region` ("Lišta administrace" / "Administration
+  bar") instead of a second `<header>`; axe reports one banner landmark and the label
+  differs from the overview page's own "Administrace" section.
+- Tiptap no longer injects a nonce-less `<style>` (`injectCSS: false`); the ProseMirror
+  base rules live in `editor.module.css`. The toolbar's roving tab stop sits on the first
+  enabled control (undo is disabled in a fresh editor, which left the phone toolbar's
+  scroll region without a tabbable child).
+- The readers block of `/admin/integrations` reports the synthetic source as the code
+  `synthetic-fixture` and renders it in the interface language; the Czech purpose label
+  is "Wardogs League". Warcon copy: unverified in-game team names, "jednotlivé hráče
+  neuvádíme / individual players are not listed"; uppercase tracked `dt` labels as in the
+  detail panel; the three round facts read as one group from 768 px; the synthetic live
+  player count is 0 / 98 like the server-status fixture of the same server.
+- Match editor: the "Veřejná prezentace" inputs align on their bottom edge and the League
+  URL hint is one sentence; "Odkazy na videa (VOD)" and the settings "Další komunitní
+  odkazy" are h2 (no skipped level). Header account label fits 16em with a `title`;
+  media-picker file names carry `title`.
+- Touch targets at 390 px: shared checkboxes/radios are 24 px in a 44 px row, compact
+  (`sm`) buttons, list title links, overview item links, the home server name link and
+  the match page external links are 44 px rows on phones.
+
+`/cs/hll/manual` is a 404 by design (the route is `/hll/field-manual`; nothing links the
+old path).
+
+Commands and results on the branch head (Node 22.22.2 in this container; the repository
+asks for Node 24): `pnpm lint` passed, `pnpm typecheck` passed, `pnpm test:unit` 1035
+tests passed (96 files), `node scripts/check-foundation.mjs` passed (2942 files),
+`pnpm build` passed; no PostgreSQL test file was touched. Targeted browser specs against
+the standalone build (`CI=true`, chromium 1194): `wardogs-warcon`, `wardogs-servers` and
+`shell` 40 passed (`--project=chromium --no-deps`); `admin-shell-layout` 5 passed and
+`admin-integrations` 3 passed (`--project=chromium-admin --no-deps`). The new assertions
+cover no page/console error on the Warcon and League pages in both locales, the preview
+below the match detail, the one-banner/labelled-region administration page with axe, the
+44 px controls, the reader detail translation and no "Refused to apply inline style"
+console error on the match and news editors with axe on the editor at 390 px. Still to
+run by the delivery orchestrator: push, the full browser suite, before/after captures,
+PR and evidence.
+
 ## Approved Logi readers: League preview and Warcon — 2026-10-03
 
 Branch `feat/logi-readers` (merged with main `2faf14a`) implements
