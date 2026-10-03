@@ -58,8 +58,12 @@ paged lists, the shared list, the HLL matches page and the Wardogs home. Limitat
 only; not activated in production; the hosted producer must serve the route and the
 League key needs the explicit `league-fixtures` grant (and League tracking enabled in the
 Logi dashboard) before anything real is listed; no recorded hosted response of the
-collection exists yet. Still to run by the orchestrator: the full browser and PostgreSQL
-suites, review captures and the PR.
+collection exists yet. On the branch head the full browser suite passed 249 tests (111
+opt-in captures skipped; `E2E_PORT=3200`, isolated `valkyria_fixtures_e2e`) and the
+PostgreSQL suite 514 tests (50 files, isolated `valkyria_test_fixtures`). Captioned
+review captures are in the [League fixtures evidence](evidence/league-fixtures-2026-10-03/README.md).
+Next: PR, latest-head CI, merge and publication; hosted activation stays with the
+operator inputs above.
 
 ## Public and administration UI round 12 — 2026-10-03
 
