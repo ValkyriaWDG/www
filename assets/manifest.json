@@ -16792,6 +16792,248 @@
       "bytes": 18608,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "ui-round12-before-hll-match-players-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/hll-match-players-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/matches/<historical fixture> (Players tab); anonymous; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "04ef01af9958324a98a8a38f1e8d1775e0b8c92b335bbaef18cd7cc01b10ea4c",
+      "bytes": 108996,
+      "width": 390,
+      "height": 3582
+    },
+    {
+      "id": "ui-round12-after-hll-match-players-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/hll-match-players-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/matches/<historical fixture> (Players tab); anonymous; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5fd5dbe56c826f750e2f31fca01dc61bafc66351b41a0dd454b2b8bfc3f24595",
+      "bytes": 110410,
+      "width": 390,
+      "height": 3871
+    },
+    {
+      "id": "ui-round12-before-hll-match-detail-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/hll-match-detail-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/matches/<historical fixture>; anonymous; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a70d20c79be4cad6a6390562311ce8d0fdf09108d9ddc78ec1c71a887d3a9c2b",
+      "bytes": 111050,
+      "width": 390,
+      "height": 4160
+    },
+    {
+      "id": "ui-round12-after-hll-match-detail-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/hll-match-detail-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/matches/<historical fixture>; anonymous; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "67c3af3bb471f4c5f9e22b547814add1fe472a048a09e8a1010d4daba3cda1e2",
+      "bytes": 112546,
+      "width": 390,
+      "height": 4268
+    },
+    {
+      "id": "ui-round12-before-wardogs-match-detail-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/wardogs-match-detail-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/<verified result fixture>; anonymous; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "28dbc294970a128dafbf3a6f9995e2d550e7827875649ca4de0829e8f808ecd6",
+      "bytes": 43912,
+      "width": 390,
+      "height": 2048
+    },
+    {
+      "id": "ui-round12-after-wardogs-match-detail-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/wardogs-match-detail-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/<verified result fixture>; anonymous; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f138645c6081401dbc55fd456a3f76d4aba1ef1c8adb86d23d224cca0920ed81",
+      "bytes": 43554,
+      "width": 390,
+      "height": 2096
+    },
+    {
+      "id": "ui-round12-before-hll-match-detail-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/hll-match-detail-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/matches/<historical fixture>; anonymous; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "2dd65f1cebff7475340f12a40fb98195c6478b3a26420abd7b77e7a3a9fdff44",
+      "bytes": 148842,
+      "width": 1440,
+      "height": 3230
+    },
+    {
+      "id": "ui-round12-after-hll-match-detail-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/hll-match-detail-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/matches/<historical fixture>; anonymous; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "38e3a48e88bb0afce6981cc15176e7e3bd400652d2f18662b1f2eacdf5b5727e",
+      "bytes": 148874,
+      "width": 1440,
+      "height": 3302
+    },
+    {
+      "id": "ui-round12-before-login-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/login-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/login; anonymous; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1826bacbaea9d06c9d6d5e542aa9fa2f8b878530c7f78dbc0bdf9fa470d71295",
+      "bytes": 26940,
+      "width": 390,
+      "height": 972
+    },
+    {
+      "id": "ui-round12-after-login-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/login-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/login; anonymous; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9eed27bb06249dc2e7a19caebb04a2d9d243398cb28976f3e53a58478b0d8ab4",
+      "bytes": 25672,
+      "width": 390,
+      "height": 972
+    },
+    {
+      "id": "ui-round12-before-hll-tournament-en-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/hll-tournament-en-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/hll/tournaments/<league fixture>; anonymous; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "082ba8ff231b8c5a567020916df1d4ebeb86ade238f60c5d11383b6b6a83930d",
+      "bytes": 52316,
+      "width": 1440,
+      "height": 1088
+    },
+    {
+      "id": "ui-round12-after-hll-tournament-en-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/hll-tournament-en-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/hll/tournaments/<league fixture>; anonymous; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1d0c53292bbc9bb3469e4455b0cc6fa2ab118321cf54419f115ed51a09466f9e",
+      "bytes": 52880,
+      "width": 1440,
+      "height": 1107
+    },
+    {
+      "id": "ui-round12-before-admin-audit-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/admin-audit-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/audit; administrator; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "c7b74316babda30b5e08f1dcfda888af4f10f66cb0670274de0e78782eaa5776",
+      "bytes": 48376,
+      "width": 390,
+      "height": 2679
+    },
+    {
+      "id": "ui-round12-after-admin-audit-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/admin-audit-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/audit; administrator; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a8c4ea5a63ab135b754dc5fa3b2c1e6ba475243d692cad51aa51e204f2e2672d",
+      "bytes": 42320,
+      "width": 390,
+      "height": 1830
+    },
+    {
+      "id": "ui-round12-before-admin-tournament-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/admin-tournament-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/tournaments/<id>; match_manager; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5db6b68b7bfff46381bda440bf203d7b81d09e7e49c0d23b21eae687c1429422",
+      "bytes": 123416,
+      "width": 1440,
+      "height": 2868
+    },
+    {
+      "id": "ui-round12-after-admin-tournament-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/admin-tournament-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/tournaments/<id>; match_manager; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1e667ed902c69b7bb7b079fee91a6d6119394fd2bcb0a814599c45b1917c3841",
+      "bytes": 128510,
+      "width": 1440,
+      "height": 2887
+    },
+    {
+      "id": "ui-round12-before-admin-hll-match-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/admin-hll-match-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/matches/<hll id>; match_manager; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "37d8ec1a78789001b17dc894dbe48b3ef28d5cba960995c11ab19afb55c39d97",
+      "bytes": 282866,
+      "width": 1440,
+      "height": 6425
+    },
+    {
+      "id": "ui-round12-after-admin-hll-match-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/admin-hll-match-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/matches/<hll id>; match_manager; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "efa7529ca07a765e497456fc17afceac5451ab203dbaf2af8d770e96414f2e3b",
+      "bytes": 283432,
+      "width": 1440,
+      "height": 6425
+    },
+    {
+      "id": "ui-round12-before-admin-manual-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/admin-manual-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/manual/<id>; editor; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d1c3a083dd31613bdc8a720e20a1019c37895ebc32fe3f9b256794a91d0e340e",
+      "bytes": 170096,
+      "width": 1440,
+      "height": 4275
+    },
+    {
+      "id": "ui-round12-after-admin-manual-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/admin-manual-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/manual/<id>; editor; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "51a6efb2f4810361cc59bbc50e98dab973015376c1299a5a6a75b4b01c4353e0",
+      "bytes": 168792,
+      "width": 1440,
+      "height": 4242
+    },
+    {
+      "id": "ui-round12-before-admin-news-editor-image-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/before/admin-news-editor-image-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news/<id>?lang=en; editor; source 22034ca",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "adddd84dabed17d7f146b4d8198a1f950728d956a2b157d36fafb6d87f9d3f78",
+      "bytes": 146396,
+      "width": 390,
+      "height": 5642
+    },
+    {
+      "id": "ui-round12-after-admin-news-editor-image-cs-390x844",
+      "path": "docs/evidence/ui-round12-2026-10-03/after/admin-news-editor-image-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news/<id>?lang=en; editor; source 6a5922f",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5cdb64583040beb80327a2881c8e44b0e332ed53220bb6e961753172b93d8e61",
+      "bytes": 151878,
+      "width": 390,
+      "height": 5696
     }
   ]
 }

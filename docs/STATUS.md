@@ -60,9 +60,13 @@ passed (`--project=chromium --no-deps`) and `admin-shell-layout` 6 passed
 (result column on screen, summary fits, sticky player cell of readable width after
 scrolling, edge state), axe on the HLL match detail and on the tournament and member
 editors, the audit time cell, one-line keys and row link at 390 px, the login provider
-order, the 1024 px account tooltip and the team page titles. Still to run by the
-orchestrator: the full browser and PostgreSQL suites, the audit rerun with before/after
-captures for the evidence folder, and the PR.
+order, the 1024 px account tooltip and the team page titles. On the rebuilt head the full
+browser suite passed 243 tests (107 opt-in captures skipped) and the PostgreSQL suite 513
+tests (50 files); the audit scripts rerun on the fixed build report no axe violation, page
+error or overflow on 220 cases (the e2e seed assigns new document ids per run, so the
+signed-in rerun resolves the editor ids from the database). Before/after captures are in
+the [round 12 evidence](evidence/ui-round12-2026-10-03/README.md). Next: PR #96
+latest-head CI, merge and publication.
 
 ## Public and administration UI round 11 — 2026-10-03
 
