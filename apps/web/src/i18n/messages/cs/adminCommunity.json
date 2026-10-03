@@ -323,7 +323,7 @@
         "source": "Odkud výsledek pochází, např. web ligy.",
         "internalNotes": "Nikdy se nezobrazí na veřejném webu, v reportážích ani v náhledech.",
         "tournament": "Soutěž z přehledu turnajů stejné hry; veřejně se zobrazí až po zveřejnění turnaje.",
-        "leagueMatchUrl": "Jen https://wardogsleague.net/matches/ID, pouze u zápasů Wardogs. Veřejně se zobrazí jako neověřený náhled z League; jediným výsledkem zůstává výsledek zapsaný níže."
+        "leagueMatchUrl": "Jen https://wardogsleague.net/matches/ID u zápasů Wardogs; veřejně jako neověřený náhled."
       },
       "scheduleIntro": "Kdy se zápas hraje. Nejde o čas zveřejnění stránky zápasu.",
       "currentStart": "Plánovaný začátek",

@@ -289,7 +289,7 @@ export function SettingsForm({ uiLocale, initial, defaults, allowedOrigins, fall
               {live(t('fields.discordShort'), liveDiscord ?? t('none'), changedKeys.includes(DISCORD), 'discord')}
               <p className={styles.actionNote}>{updated(storedDiscord)}</p>
 
-              <h3 className={styles.repeatHeading}>{t('linksTitle')}</h3>
+              <h2 className={styles.repeatHeading}>{t('linksTitle')}</h2>
               <p className={styles.groupIntro}>{t('linksIntro', { max: MAX_COMMUNITY_LINKS })}</p>
               <ol className={styles.repeatList} hidden={values.links.length === 0}>
                 {values.links.map((link, index) => (

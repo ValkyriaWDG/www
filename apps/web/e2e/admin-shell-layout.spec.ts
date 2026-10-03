@@ -1,15 +1,20 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { FIXTURE_SLUGS } from '../src/fixtures/data';
+import { matchBySlug } from './admin-community-support';
 import { signInAs } from './support/auth';
 import { expectNoHorizontalOverflow } from './support/shell-helpers';
 
 /**
  * Administration chrome at desktop and phone widths: the module list must not push the
- * account links onto a ragged second row, and the media library must fit a phone.
+ * account links onto a ragged second row, the media library must fit a phone, the admin
+ * bar is a labelled region (one banner landmark per page), phone controls are 44 px
+ * touch targets and the rich-text editor injects no inline stylesheet (page CSP).
  */
 test('the module navigation takes its own row at every desktop width', async ({ context, page }) => {
   await signInAs(context, { roles: ['administrator'] });
   const rows = async () => {
-    const brand = (await page.locator('[data-admin-shell] header a').first().boundingBox())!;
+    const brand = (await page.locator('[data-admin-bar] a').first().boundingBox())!;
     const modules = (await page.getByTestId('admin-nav').boundingBox())!;
     const account = (await page.getByTestId('admin-nav').locator('xpath=following-sibling::div//nav').boundingBox())!;
     return { brand, modules, account };
@@ -25,6 +30,20 @@ test('the module navigation takes its own row at every desktop width', async ({ 
   }
 });
 
+test('the admin bar is a labelled region, the page keeps one banner and the account label is not clipped at 1440', async ({ context, page }) => {
+  await signInAs(context, { roles: ['administrator'], name: 'Synthetic administrator' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/cs/admin');
+  await expect(page.getByRole('region', { name: 'Lišta administrace' })).toBeVisible();
+  await expect(page.locator('[data-admin-shell] header')).toHaveCount(0);
+  await expect(page.getByRole('banner')).toHaveCount(1);
+  // The whole account name fits the header label; the button also carries it as a tooltip.
+  const account = page.getByRole('button', { name: /Synthetic administrator/ });
+  await expect(account).toHaveAttribute('title', 'Synthetic administrator');
+  expect(await account.locator('span').first().evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+});
+
 test('the media library fits a phone with two cards per row', async ({ context, page }) => {
   await signInAs(context, { roles: ['administrator'] });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -35,4 +54,83 @@ test('the media library fits a phone with two cards per row', async ({ context, 
   expect(Math.abs(cards[0].y - cards[1].y)).toBeLessThan(1);
   expect(cards[1].x + cards[1].width).toBeLessThanOrEqual(390);
   await expectNoHorizontalOverflow(page);
+});
+
+async function height(page: Page, selector: string): Promise<number> {
+  const box = await page.locator(selector).first().boundingBox();
+  expect(box, selector).not.toBeNull();
+  return box!.height;
+}
+
+test('phone administration controls are 44 px touch targets', async ({ context, page }) => {
+  await signInAs(context, { roles: ['administrator'] });
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  // Integrations: the shared checkbox is 24 px inside a 44 px label row.
+  await page.goto('/cs/admin/integrations');
+  const checkbox = (await page.locator('[data-game-servers="wardogs"] input[type="checkbox"]').first().boundingBox())!;
+  expect(checkbox.width).toBeGreaterThanOrEqual(24);
+  expect(checkbox.height).toBeGreaterThanOrEqual(24);
+  expect(await height(page, '[data-game-servers="wardogs"] input[type="checkbox"] + label')).toBeGreaterThanOrEqual(24);
+  await expect(page.getByRole('heading', { name: 'Čtečky Wardogs (League, Warcon)' })).toBeVisible();
+
+  // Settings: compact row actions and the radio controls.
+  await page.goto('/cs/admin/settings');
+  expect(await height(page, 'button:has-text("Přidat odkaz")')).toBeGreaterThanOrEqual(44);
+  expect((await page.locator('input[type="radio"]').first().boundingBox())!.height).toBeGreaterThanOrEqual(24);
+  // The community links heading follows the page heading directly (no skipped level).
+  await expect(page.getByRole('heading', { level: 2, name: 'Další komunitní odkazy' })).toBeVisible();
+
+  // Lists: title links and "Akce" buttons.
+  await page.goto('/cs/admin/news');
+  expect(await height(page, '[data-testid="admin-news"] tbody th a')).toBeGreaterThanOrEqual(44);
+  expect(await height(page, '[data-testid="row-actions"]')).toBeGreaterThanOrEqual(44);
+  await page.goto('/cs/admin/manual');
+  expect(await height(page, '[data-testid="admin-manual"] tbody th a')).toBeGreaterThanOrEqual(44);
+
+  // Overview: scheduled publications (the fixtures schedule one article).
+  await page.goto('/cs/admin');
+  const schedules = page.getByTestId('overview-schedules').locator('a');
+  if ((await schedules.count()) > 0) expect((await schedules.first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await expectNoHorizontalOverflow(page);
+});
+
+function collectBrowserErrors(page: Page): string[] {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(`console: ${message.text()}`);
+  });
+  return errors;
+}
+
+test('the rich-text editor injects no inline stylesheet and its toolbar stays keyboard-reachable on phones', async ({ context, page }) => {
+  await signInAs(context, { roles: ['administrator'] });
+  const errors = collectBrowserErrors(page);
+  const fixture = await matchBySlug(FIXTURE_SLUGS.matches.upcoming);
+  expect(fixture).not.toBeNull();
+
+  // Match editor at 390 px: recap editor mounted, no "Refused to apply inline style", no axe violation
+  // (scrollable toolbar with a tabbable control, VOD heading at level 2).
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`/cs/admin/matches/${fixture!.id}`);
+  const presentation = page.locator('[data-group="presentation"]');
+  await expect(presentation.getByRole('toolbar').first()).toBeVisible();
+  await expect(presentation.getByRole('heading', { level: 2, name: 'Odkazy na videa (VOD)' })).toBeVisible();
+  expect(await presentation.getByRole('toolbar').first().locator('[tabindex="0"]').count()).toBeGreaterThanOrEqual(1);
+  expect((await new AxeBuilder({ page }).include('[data-group="presentation"]').analyze()).violations).toEqual([]);
+  expect(await page.locator('style:not([nonce])').count()).toBe(0);
+  // The league URL field reads the short hint; the long explanation is gone.
+  await expect(presentation).toContainText('Jen https://wardogsleague.net/matches/ID u zápasů Wardogs; veřejně jako neověřený náhled.');
+
+  // News editor, Czech language tab, desktop.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/cs/admin/news');
+  await page.getByTestId('row-edit').first().click();
+  await expect(page).toHaveURL(/\/cs\/admin\/news\/[0-9a-f-]{36}\?lang=cs$/);
+  await expect(page.getByRole('toolbar').first()).toBeVisible();
+  expect(await page.locator('style:not([nonce])').count()).toBe(0);
+
+  expect(errors.filter((error) => /inline style|Content Security Policy/i.test(error))).toEqual([]);
+  expect(errors.filter((error) => error.startsWith('pageerror'))).toEqual([]);
 });

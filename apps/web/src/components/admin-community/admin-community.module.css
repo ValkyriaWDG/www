@@ -168,6 +168,12 @@
   align-items: start;
 }
 
+/* Public presentation: the League URL hint is longer than its neighbours, so the inputs
+   line up on their bottom edge instead of the labels. */
+.group[data-group='presentation'] > .groupBody > .grid {
+  align-items: end;
+}
+
 .gridWide {
   grid-column: 1 / -1;
 }
@@ -305,6 +311,9 @@
   text-transform: uppercase;
 }
 
+/* Sub-headings inside a fieldset: the page has no h2 above these groups (legends are not
+   headings), so the first one is an h2 and nested ones h3. Same size either way. */
+h2.repeatHeading,
 h3.repeatHeading {
   margin-top: var(--space-4);
 }
