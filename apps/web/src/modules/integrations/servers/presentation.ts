@@ -40,10 +40,13 @@ function applyToServers(game: GameRoute, servers: readonly ServerSnapshot[], row
 
 /** Pure: applies overrides to one provider overview without changing its state or freshness. */
 export function applyServerPresentation(game: GameRoute, overview: ServerOverview, rows: readonly ServerPresentationRow[]): ServerOverview {
-  if (overview.state === 'not_configured' || rows.length === 0) return overview;
+  // Rows of another game never touch this overview (same reference, nothing rebuilt).
+  if (overview.state === 'not_configured' || !rows.some((row) => row.game === game)) return overview;
   const servers = applyToServers(game, overview.servers, rows);
+  // `partial` marks servers that did not answer (CRCON: unknown reachability; Logi: unavailable
+  // freshness). Hiding every such server makes the remaining overview complete.
   return overview.state === 'ok'
-    ? { ...overview, servers, partial: overview.partial && servers.some((server) => server.freshness !== 'fresh') }
+    ? { ...overview, servers, partial: overview.partial && servers.some((server) => server.freshness === 'unavailable' || server.reachability === 'unknown') }
     : { ...overview, servers };
 }
 
@@ -61,6 +64,8 @@ export async function readServerPresentation(db: Executor): Promise<ServerPresen
 
 let cache: { at: number; rows: ServerPresentation } | null = null;
 let inflight: Promise<ServerPresentation> | null = null;
+/** Incremented by every reset so a read started before a save cannot repopulate the cache afterwards. */
+let generation = 0;
 
 /**
  * Cached override rows. A database failure keeps the last known rows (or none) for the
@@ -71,30 +76,34 @@ export async function getServerPresentation(now: Date = new Date()): Promise<Ser
   const age = now.getTime() - (cache?.at ?? Number.NEGATIVE_INFINITY);
   if (cache && age >= 0 && age < SERVER_PRESENTATION_CACHE_MS) return cache.rows;
   if (!inflight) {
-    inflight = readServerPresentation(getDb())
+    const started = generation;
+    // A synchronous failure of the database handle degrades like a failed query.
+    inflight = Promise.resolve()
+      .then(() => readServerPresentation(getDb()))
       .catch((error: unknown) => {
         console.warn(`[settings] servers.presentation unavailable: ${error instanceof Error ? error.name : 'unknown'}`);
         return cache?.rows ?? [];
       })
       .then((rows) => {
-        cache = { at: now.getTime(), rows };
+        if (started === generation) cache = { at: now.getTime(), rows };
         return rows;
       })
       .finally(() => {
-        inflight = null;
+        if (started === generation) inflight = null;
       });
   }
   return inflight;
 }
 
-/** Public server overview for a game with the website presentation applied. */
-export async function getPublicServerOverview(game: GameRoute, now: Date = new Date()): Promise<ServerOverview> {
-  const [overview, rows] = await Promise.all([getServerOverview(game, now), getServerPresentation(now)]);
-  return applyServerPresentation(game, overview, rows);
+/** Public server overview for a game with the website presentation applied (the only place it is applied). */
+export async function getPublicServerOverview(game: GameRoute, now: Date = new Date(), rows?: ServerPresentation): Promise<ServerOverview> {
+  const [overview, presentation] = await Promise.all([getServerOverview(game, now), rows ?? getServerPresentation(now)]);
+  return applyServerPresentation(game, overview, presentation);
 }
 
 /** Forget cached rows (after an administrator saved the setting, and in tests). */
 export function resetServerPresentationCache(): void {
   cache = null;
   inflight = null;
+  generation += 1;
 }

@@ -64,7 +64,8 @@ describe('server presentation setting', () => {
     const applied = applyServerPresentation('hll', overview, stored);
     if (applied.state !== 'ok') throw new Error('expected ok');
     expect(applied.servers.map((server) => server.name)).toEqual(['Valkyria Main']);
-    expect(applyServerPresentation('wardogs', { ...overview, servers: overview.servers.map((server) => ({ ...server, ref: { ...server.ref, game: 'wardogs' as const } })) }, stored).state === 'ok' && applyServerPresentation('wardogs', overview, stored)).toMatchObject({ servers: overview.servers });
+    // Rows of one game never touch the other game's overview (no Wardogs rows → same reference).
+    expect(applyServerPresentation('wardogs', overview, stored)).toBe(overview);
     const admin = (await getSettingsForAdmin(t.db, actors.administrator)).find((setting) => setting.key === KEY);
     expect(admin).toMatchObject({ version: 1, invalid: false });
     const events = await t.db.select().from(auditEvent).where(eq(auditEvent.entityId, KEY));
