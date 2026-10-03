@@ -34,6 +34,22 @@ type Shot = {
   prepare?: (page: Page) => Promise<void>;
 };
 
+/**
+ * Waits for the images that can be in the capture. A lazily loaded image far below the
+ * viewport never starts loading on a long phone page, so only images near the viewport
+ * are awaited; `prepare` may scroll, so the wait runs again afterwards.
+ */
+async function settledImages(page: Page) {
+  await page.waitForFunction(() => [...document.images]
+    .filter((image) => image.getClientRects().length > 0)
+    .filter((image) => {
+      if (image.loading !== 'lazy') return true;
+      const rect = image.getBoundingClientRect();
+      return rect.bottom > -window.innerHeight && rect.top < window.innerHeight * 2;
+    })
+    .every((image) => image.complete));
+}
+
 async function capture(browser: Browser, shot: Shot) {
   const mobile = shot.width < 768;
   const context = await browser.newContext({
@@ -70,8 +86,9 @@ async function capture(browser: Browser, shot: Shot) {
     });
     await page.waitForLoadState('networkidle');
   }
-  await page.waitForFunction(() => [...document.images].filter((image) => image.getClientRects().length > 0).every((image) => image.complete));
+  await settledImages(page);
   await shot.prepare?.(page);
+  await settledImages(page);
   await page.screenshot({ path: path.join(outDir, shot.file), animations: 'disabled', caret: 'hide', fullPage: shot.fullPage ?? false });
   captures.push({ file: shot.file, caption: shot.caption, path: shot.path, viewport: `${shot.width}x${shot.height}`, locale: shot.locale, fullPage: shot.fullPage ?? false });
   await context.close();
