@@ -24,8 +24,10 @@ import { escapeLike, foldSearchTerm } from '@/modules/prose/text';
 /**
  * Published-only Field Manual queries. Articles are content documents of kind `manual`;
  * every query is bounded to one locale and one game and reads the PUBLISHED revision
- * snapshot (title, summary, body, category label, game). Drafts, unpublished
- * translations and archived documents never appear, including in search.
+ * snapshot (title, summary, body, category key, game). Category labels, descriptions and
+ * order come from the live `manual_category` row (taxonomy administration applies
+ * immediately), falling back to the snapshot label only when the category row is gone.
+ * Drafts, unpublished translations and archived documents never appear, including in search.
  */
 
 export const MANUAL_SEARCH_MAX = 80;
@@ -156,6 +158,8 @@ export async function listPublishedManual(
       taxonomy: contentRevision.taxonomy,
       coverVariants: asset.variants,
       categoryOrder: manualCategory.sortOrder,
+      categoryLabelCs: manualCategory.labelCs,
+      categoryLabelEn: manualCategory.labelEn,
       articleOrder: manualArticle.sortOrder,
     })
     .from(contentTranslation)
@@ -181,12 +185,24 @@ export async function listPublishedManual(
       slug: row.slug!,
       title: row.title,
       excerpt: row.excerpt,
-      category: row.taxonomy.category ?? null,
+      category: row.taxonomy.category
+        ? { key: row.taxonomy.category.key, label: (input.locale === 'cs' ? row.categoryLabelCs : row.categoryLabelEn) ?? row.taxonomy.category.label }
+        : null,
       cover: row.cover && full ? { assetId: row.cover.assetId, alt: row.cover.decorative ? '' : row.cover.alt, width: full.width, height: full.height } : null,
       updatedAt: row.publishedAt!,
     };
   });
   return { items, total: count?.total ?? 0 };
+}
+
+/** Current label of the article's category (admin edits apply immediately); the snapshot label is the fallback. */
+async function liveCategoryLabel(db: Executor, game: Game, locale: Locale, category: { key: string; label: string } | null): Promise<{ key: string; label: string } | null> {
+  if (!category) return null;
+  const [row] = await db
+    .select({ labelCs: manualCategory.labelCs, labelEn: manualCategory.labelEn })
+    .from(manualCategory)
+    .where(and(eq(manualCategory.game, game), eq(manualCategory.key, category.key)));
+  return row ? { key: category.key, label: locale === 'cs' ? row.labelCs : row.labelEn } : category;
 }
 
 async function loadMeta(db: Executor, documentId: string): Promise<ManualMeta> {
@@ -214,7 +230,7 @@ export async function getPublishedManualBySlug(db: Executor, input: { locale: st
     .where(and(liveManual(input.locale, input.game), eq(contentTranslation.namespace, 'manual'), eq(contentTranslation.liveSlug, input.slug)));
   if (row) {
     const [article, meta] = await Promise.all([buildArticle(db, { ...row, isPreview: false }), loadMeta(db, row.document.id)]);
-    return { kind: 'article', article, meta };
+    return { kind: 'article', article: { ...article, category: await liveCategoryLabel(db, input.game, input.locale, article.category) }, meta };
   }
   const [redirect] = await db
     .select({ liveSlug: contentTranslation.liveSlug })

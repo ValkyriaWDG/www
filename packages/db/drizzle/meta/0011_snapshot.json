@@ -1,5 +1,5 @@
 {
-  "id": "843675d3-abbf-4a25-b44b-ce679704319c",
+  "id": "88206c9a-88c5-480d-bbc7-72c0258357c3",
   "prevId": "7efb6291-b3de-477e-a8a3-99c1f45bdb1f",
   "version": "7",
   "dialect": "postgresql",
@@ -2356,6 +2356,33 @@
           "primaryKey": false,
           "notNull": true
         },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 100
+        },
+        "description_cs": {
+          "name": "description_cs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "description_en": {
+          "name": "description_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "archived_at": {
+          "name": "archived_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -2406,6 +2433,10 @@
         "taxonomy_term_key_ck": {
           "name": "taxonomy_term_key_ck",
           "value": "\"taxonomy_term\".\"key\" ~ '^[a-z0-9]+(-[a-z0-9]+)*$'"
+        },
+        "taxonomy_term_description_ck": {
+          "name": "taxonomy_term_description_ck",
+          "value": "length(\"taxonomy_term\".\"description_cs\") <= 300 and length(\"taxonomy_term\".\"description_en\") <= 300"
         }
       },
       "isRLSEnabled": false
@@ -2544,12 +2575,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'[]'::jsonb"
-        },
-        "league_match_url": {
-          "name": "league_match_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         },
         "cover_asset_id": {
           "name": "cover_asset_id",
@@ -2709,10 +2734,6 @@
       },
       "policies": {},
       "checkConstraints": {
-        "match_league_url_ck": {
-          "name": "match_league_url_ck",
-          "value": "\"match\".\"league_match_url\" is null or (\"match\".\"game\" = 'wardogs' and length(\"match\".\"league_match_url\") <= 125 and \"match\".\"league_match_url\" ~ '^https://wardogsleague\\.net/matches/[A-Za-z0-9_-]{1,80}$')"
-        },
         "match_game_ck": {
           "name": "match_game_ck",
           "value": "\"match\".\"game\" in ('wardogs', 'hell-let-loose')"
@@ -4201,6 +4222,12 @@
           "notNull": true,
           "default": "''"
         },
+        "archived_at": {
+          "name": "archived_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -4255,6 +4282,10 @@
         "manual_category_label_ck": {
           "name": "manual_category_label_ck",
           "value": "length(btrim(\"manual_category\".\"label_cs\")) between 1 and 80 and length(btrim(\"manual_category\".\"label_en\")) between 1 and 80"
+        },
+        "manual_category_description_ck": {
+          "name": "manual_category_description_ck",
+          "value": "length(\"manual_category\".\"description_cs\") <= 300 and length(\"manual_category\".\"description_en\") <= 300"
         }
       },
       "isRLSEnabled": false

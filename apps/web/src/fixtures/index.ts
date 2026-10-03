@@ -26,7 +26,7 @@ import type { PgTable } from 'drizzle-orm/pg-core';
 import { parseCrconScoreboard, summarizeTeams } from '../modules/matches/statistics';
 import { syntheticScoreboard } from '../modules/matches/statistics-fixtures';
 import { DEFAULT_MATCH_TIME_ZONE, zonedDate, zonedLocalToInstant } from '../modules/matches/time';
-import { ensureSeedTaxonomy } from '../seed/index';
+import { ensureSeedTaxonomy, insertTaxonomyTerm } from '../seed/index';
 import { imageAssetIds, SEED_RICH_TEXT_SCHEMA_VERSION } from '../seed/rich-text';
 import { SEED_CATEGORIES, SEED_MANUAL_CATEGORIES } from '../seed/taxonomy';
 import {
@@ -550,10 +550,7 @@ export async function loadFixtures(
   await resetFixtures(db, { mediaRoot });
   await db.transaction(async (tx) => {
     await ensureSeedTaxonomy(tx, undefined, { manual: manualSchema });
-    await tx
-      .insert(taxonomyTerm)
-      .values(FIXTURE_TAGS.map((tag) => ({ kind: 'tag' as const, key: tag.key, labelCs: tag.labelCs, labelEn: tag.labelEn })))
-      .onConflictDoNothing({ target: [taxonomyTerm.kind, taxonomyTerm.key] });
+    for (const tag of FIXTURE_TAGS) await insertTaxonomyTerm(tx, { kind: 'tag', key: tag.key, labelCs: tag.labelCs, labelEn: tag.labelEn });
   });
   // Files are written before the rows that reference them; a failed load is cleaned by --reset.
   await db.transaction(async (tx) => {

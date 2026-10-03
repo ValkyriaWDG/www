@@ -252,6 +252,7 @@
       "noCategory": "No category",
       "tags": "Tags",
       "noTags": "No tags are defined yet.",
+      "archivedOption": "{label} (archived)",
       "game": "Game",
       "noGame": "No specific game"
     },
@@ -367,6 +368,7 @@
     "coverAltDecorative": "A decorative cover must have empty alternative text.",
     "coverMissing": "The cover image is no longer available. Choose another cover.",
     "taxonomyUnknown": "The selected category or tag no longer exists.",
+    "taxonomyArchived": "The selected category or tag is archived and cannot be assigned again.",
     "scheduleNotInFuture": "The publication time must be in the future.",
     "scheduleNonexistent": "This time does not exist in the selected time zone.",
     "tooLong": "The text is too long.",

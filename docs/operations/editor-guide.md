@@ -9,6 +9,7 @@ content translation being edited are separate choices.
 |---|---|---|
 | FAQ, clan, community and privacy pages | `/[locale]/admin/content` | Platform-wide content editor or administrator |
 | HLL Field Manual articles | `/[locale]/admin/manual` | HLL content editor or platform-wide editor |
+| Field Manual categories, news categories and tags | `/[locale]/admin/taxonomy` | HLL content editor for HLL manual categories; news categories/tags need platform-wide authority |
 | News | `/[locale]/admin/news` | Content editor for the article's game; community news needs platform-wide authority |
 | Public member profiles | `/[locale]/admin/members` | Member-profile editor for every affiliated game |
 | Editorial images | `/[locale]/admin/media` | Platform-wide editorial media permission |
@@ -45,10 +46,47 @@ applies them immediately to both languages. Administration links and language
 switches ask to stay, save or discard when this form has unsaved changes. Failed
 saves keep the entered values and do not continue navigation.
 
-Article categories can be selected in the editor. Category definitions, their
-localized descriptions/order and news category/tag definitions currently have no
-administration editor. Changes require reviewed operator maintenance; seeds only
-add missing definitions and never overwrite existing labels.
+Article categories are selected in the editor; their definitions are managed under
+**Categories and tags / Kategorie a štítky** (below).
+
+## Categories and tags
+
+Open **Categories and tags / Kategorie a štítky**. The page lists the Field Manual
+categories of every game in your editing scope (Hell Let Loose today) and, for
+platform-wide editors, the shared news categories and news tags. Each row shows order,
+key, Czech and English names, the number of assigned articles and the state. Direct
+links to a section outside your scope are denied and audited; an HLL-only editor sees
+an explanation instead of the news sections.
+
+1. Choose **Edit / Upravit** on a row, or **New category / Nová kategorie** and **New
+   tag / Nový štítek** in a section. A new record needs an internal key (lower-case
+   words joined by hyphens, at most 64 characters) that is unique in its section and
+   never changes afterwards; articles refer to that key.
+2. Fill in both Czech and English names (1–80 characters), optional descriptions (at
+   most 300 characters; manual descriptions appear on the public category card, news
+   descriptions are internal notes) and the order (0–10000, lower first). Save
+   explicitly. Invalid values are reported per field; a failed save keeps your values
+   for a retry, and navigation asks before leaving unsaved changes. If someone else
+   saved the same record meanwhile, the form says so and offers to load the current
+   version without discarding your edits.
+3. **When changes take effect** is stated on every form: manual category names,
+   descriptions and order apply to the public Field Manual immediately (category
+   overview, list cards and article headers). News category/tag names apply
+   immediately to the public news filters, while the labels printed on an article
+   come from its published revision and change when that language version is next
+   published. News order affects only the editor's selector. Every change is written
+   to the audit log; no article revision is created.
+4. **Archive / Archivovat** hides a record from the editor's selectors. Articles that
+   already use it keep it and stay public; assigning it to another article is
+   rejected until it is restored. **Delete / Odstranit** is available only for a record
+   without assigned articles; the form shows how many articles use it and the server
+   refuses deletion otherwise. Content is never deleted or reassigned automatically;
+   change the articles' category or tags in the editor first.
+
+Database migration `0011_taxonomy_admin` only adds columns (order, descriptions,
+archive timestamps) and length checks, so an application rollback leaves the data in
+place. Seeds still only add missing definitions and never overwrite edited labels.
+Taxonomy definitions are owned by the website; nothing is synchronized to Logi.
 
 ## Wardogs League link on a match
 

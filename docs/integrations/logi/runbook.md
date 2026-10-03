@@ -81,7 +81,7 @@ Logi data. Local recovery is a separately provisioned MFA account.
 2. Back up the target PostgreSQL database using the approved operational process. Run
    the explicit migration runner against the intended target. `0009_aspiring_klaw`
    adds five Logi tables and seven nullable private session columns; it does not import
-   private production data or migrate old matches. `0011_nervous_wasp` adds the nullable
+   private production data or migrate old matches. `0012_league_match_url` adds the nullable
    `match.league_match_url` column with its Wardogs-only check constraint.
 3. Configure restricted data sources with `publishMatches=false`, no published servers
    and commands/webhooks/SSO still disabled. Run bounded pulls until every configured

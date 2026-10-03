@@ -326,7 +326,7 @@ export async function saveDraft(db: Executor, actor: Actor, rawInput: SaveDraftI
           tagKeys: input.shared.tagKeys !== undefined ? [...new Set(input.shared.tagKeys)] : document.tagKeys,
           game: input.shared.game !== undefined ? input.shared.game : document.game,
         };
-        await assertTaxonomyKeys(tx, next.categoryKey, next.tagKeys, { kind: document.kind, game: next.game });
+        await assertTaxonomyKeys(tx, next.categoryKey, next.tagKeys, { kind: document.kind, game: next.game }, { categoryKey: document.categoryKey, tagKeys: document.tagKeys });
         if (document.kind === 'manual' && next.game === null) throw new DomainError('validation', 'A manual article needs a game.', { game: 'required' });
         const [updated] = await tx
           .update(contentDocument)

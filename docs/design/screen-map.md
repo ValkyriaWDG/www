@@ -55,6 +55,9 @@ The site has three zones: public clan presentation, the signed-in member's accou
 | `/admin/news` | Posts | Editorial-authorized staff | M2: search/filter/manage posts and create new news/blog entries |
 | `/admin/news/new` | New post | Editorial-authorized staff | M2: visual rich-text authoring, media, draft/autosave, preview and publication |
 | `/admin/news/[id]` | Edit post | Editorial-authorized staff | M2: edit, revisions, preview, publish/update/unpublish and scheduling |
+| `/admin/taxonomy` | Categories and tags | Editorial-authorized staff | Field Manual categories per game scope; news categories/tags for platform-wide editors; counts, archive state and edit links |
+| `/admin/taxonomy/manual/[game]/[id]` | Field Manual category | Editorial staff of that game | Create/edit labels, descriptions and order; archive/restore; delete only when unreferenced |
+| `/admin/taxonomy/[scope]/[id]` | News category or tag | Platform-wide editorial staff | `news-category` / `news-tag`; same form, publication note and archive/delete policy |
 | `/admin/media` | Media library | Staff with media capabilities | M2: validated editorial image upload, metadata and approved asset selection; permissions follow the security matrix |
 | `/admin/members` | Members | Member-content-authorized staff | Manage public profile publication and approved profile fields |
 | `/admin/matches` | Matches | Match-authorized staff | M2: overview, creation, scheduling and management of fixtures/results |

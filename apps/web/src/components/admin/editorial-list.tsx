@@ -44,7 +44,7 @@ export async function EditorialListScreen({ locale, actor, raw, kind }: { locale
   const db = getDb();
   const [list, taxonomy, publisher] = await Promise.all([
     listDocumentsForAdmin(db, actor, { kind, q: filters.q, state: filters.state, locale: filters.locale, page: filters.page, pageSize: 20 }),
-    kind === 'news' ? listTaxonomyOptions(db, actor) : listManualCategoryOptions(db, actor, 'hell-let-loose'),
+    kind === 'news' ? listTaxonomyOptions(db, actor, { includeArchived: true }) : listManualCategoryOptions(db, actor, 'hell-let-loose', { includeArchived: true }),
     getPublisherStatus(db, actor),
   ]);
   const versions = await listRowVersions(db, actor, list.items.map((item) => item.documentId));
