@@ -319,10 +319,19 @@ test.describe('home control sizes', () => {
     await page.setViewportSize({ width: 1280, height: 700 });
     await page.goto('/cs/wardogs');
     expect(await metrics()).toMatchObject({ cta: 96, action: 48 });
+    // The whole menu, including the utility rail under the servers overview, fits a short window.
+    await expect(page.locator('[data-home-servers]')).toBeVisible();
+    const rail = (await page.locator('[data-utility="discord"]').boundingBox())!;
+    expect(rail.y + rail.height).toBeLessThanOrEqual(700);
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/cs/wardogs');
     expect(await metrics()).toMatchObject({ cta: 96, action: 52, utility: 48 });
+    // Servers overview controls are touch targets: a 24 px checkbox and a 44 px link.
+    const refresh = (await page.locator('[data-home-servers] input[type="checkbox"]').boundingBox())!;
+    expect(refresh.width).toBeGreaterThanOrEqual(24);
+    expect(refresh.height).toBeGreaterThanOrEqual(24);
+    expect((await page.locator('[data-home-servers] header a').boundingBox())!.height).toBeGreaterThanOrEqual(44);
     await expectNoHorizontalOverflow(page);
   });
 });

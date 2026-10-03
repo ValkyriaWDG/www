@@ -84,6 +84,8 @@ export async function LogiTeamScreen({
   eventTitles?: Record<string, string>;
 }) {
   const t = await getTranslations({ locale, namespace: 'logiPeople' });
+  // Without a configured synchronization the sections only name what would appear here.
+  const empty = view.state === 'unconfigured' ? <p className={styles.muted}>{t('empty')}</p> : <EmptyState title={t('empty')} />;
   const response = (value: string | null) => {
     const key = responses.find((key) => key === value);
     return key ? t(key) : t('unknown');
@@ -136,7 +138,7 @@ export async function LogiTeamScreen({
             </table>
           </div>
         ) : (
-          <EmptyState title={t('empty')} />
+          empty
         )}
         {view.members.flatMap((member) => member.statistics ? [
           <details key={member.memberId} className={styles.statistics}>
@@ -169,7 +171,7 @@ export async function LogiTeamScreen({
               </article>
             ))
           ) : (
-            <EmptyState title={t('empty')} />
+            empty
           )}
         </div>
       </SectionFrame>
@@ -202,7 +204,7 @@ export async function LogiTeamScreen({
             </table>
           </div>
         ) : (
-          <EmptyState title={t('empty')} />
+          empty
         )}
       </SectionFrame>
     </div>

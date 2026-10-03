@@ -1,5 +1,23 @@
 # Current status
 
+## Public and administration UI round 10 — 2026-10-03
+
+An audit of main `4946cea` (the PR #88 merge) covered the surfaces added since round 9:
+the hub, both landings, the Wardogs servers page, member team pages, the account page and
+eleven administration routes, in cs/en at 1440 and 390 px (60 public and 56 signed-in
+cases). Fixed on `feat/hll-platform-handoff` at `5486473`: the administration module
+list gets its own row below 1600 px instead of pushing the account links onto a ragged
+second row; media library cards fit a phone (two per row, no sideways scroll); the
+servers overview and servers page use 24 px auto-refresh checkboxes and a 44 px browse
+link; windows under 720 px high keep the Wardogs utility rail within the viewport; the
+team pages show quiet placeholders instead of three shouting empty states when the
+synchronization is not configured. Lint, typecheck and the optimized build passed; the
+browser suite passed 218 tests (99 opt-in captures skipped) including the three new
+specs. Before/after captures are in the [round 10 evidence](evidence/ui-round10-2026-10-03/README.md).
+Next: PR, latest-head CI, merge and publication. Taxonomy administration (#86) is in
+progress on `feat/taxonomy-admin`; integration health (#22) and the Logi readers (#87)
+follow.
+
 ## Website/Logi readiness review — 2026-10-03
 
 The handoff branch `fix/logi-web-readiness` (candidate `ce0db5e`: visible Logi login
@@ -22,8 +40,9 @@ the [handoff](handoff/claude-logi-web-readiness-2026-10-03.md),
 verification. Production runs `0a94d59` (image published 2026-10-03 10:45 UTC) without
 Logi client/source configuration; nothing was activated.
 
-Next: open the PR for `fix/logi-web-readiness`, verify latest-head CI, merge, publish
-through `container-publish.yml` and verify the promoted digest. Open afterwards: #86
+PR #88 was merged as `4946cea` after a green Quality gate on `b39a9fd`; publication run
+37126821550 passed verification and its publish job waits for the environment approval.
+Open afterwards: #86
 (taxonomy), #87 (approved Wardogs readers), #22 (integration health), hosted acceptance
 #23/#8/#7, and the pre-existing short-window layout of the Wardogs home, where the
 servers overview pushes the utility rail below the fold at 1280×700.

@@ -16220,6 +16220,149 @@
       "bytes": 41816,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "ui-round10-before-admin-matches-logi-cs-1440x900",
+      "path": "docs/evidence/ui-round10-2026-10-03/before/admin-matches-logi-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/matches/logi; source 4946ceae106b7972243c95f25fc0b0a1691fe8f0",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "93ea4907bdae7f6b8648e5acda5bcee3c15ec848f710fceb76a1a90cfa2b44a2",
+      "bytes": 28860,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "ui-round10-after-admin-matches-logi-cs-1440x900",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/admin-matches-logi-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/matches/logi; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "9f6ca69f4e87dd396f7be0d39cd398b564d1bd59da776e4e57350926d303f941",
+      "bytes": 26998,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "ui-round10-before-admin-media-cs-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/before/admin-media-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/media; source 4946ceae106b7972243c95f25fc0b0a1691fe8f0",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "0f4552ba1e678965332c6e5ed358bf07a09d3bc0e7c4da3b9e630252edc03683",
+      "bytes": 67982,
+      "width": 392,
+      "height": 2060
+    },
+    {
+      "id": "ui-round10-after-admin-media-cs-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/admin-media-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/media; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "2cdb340e93496bf31283a4e267f6bfdd5c92beb418ff90e5cd22f5154d5195c1",
+      "bytes": 67126,
+      "width": 390,
+      "height": 2021
+    },
+    {
+      "id": "ui-round10-before-wardogs-cs-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/before/wardogs-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs; source 4946ceae106b7972243c95f25fc0b0a1691fe8f0",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "9d2c91ca12c3e948ad7454e27955c6985bbee2bdf7049e8bd00dd241dfb5b7e2",
+      "bytes": 31214,
+      "width": 390,
+      "height": 1182
+    },
+    {
+      "id": "ui-round10-after-wardogs-cs-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/wardogs-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "be8205e0b7e534ab16d7512abad871660cf8c11bdba4d64dfb7952c42a31b4c9",
+      "bytes": 32056,
+      "width": 390,
+      "height": 1207
+    },
+    {
+      "id": "ui-round10-before-wardogs-servers-cs-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/before/wardogs-servers-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs/servers; source 4946ceae106b7972243c95f25fc0b0a1691fe8f0",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "43712bebac8635445e5a7b157b1d51643fa954c15d8c9390417ac7e30ec95c03",
+      "bytes": 23674,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "ui-round10-after-wardogs-servers-cs-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/wardogs-servers-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs/servers; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "f55339573d435a8a67f53e913e58c3e7d75b8f54cf20a8abd3c8f4d167969aae",
+      "bytes": 23746,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "ui-round10-before-hll-team-cs-1440x900",
+      "path": "docs/evidence/ui-round10-2026-10-03/before/hll-team-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/hll/team; source 4946ceae106b7972243c95f25fc0b0a1691fe8f0",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "8a67b6046b7aa3f67768e73345eef6c278eb5f83c926f16d88d3840ef66772a6",
+      "bytes": 55888,
+      "width": 1440,
+      "height": 1141
+    },
+    {
+      "id": "ui-round10-after-hll-team-cs-1440x900",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/hll-team-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/hll/team; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "99d6f2660fe0f369b10435a644a92fe28347885b324c43be23f15aec174753df",
+      "bytes": 36570,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "ui-round10-before-wardogs-team-en-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/before/wardogs-team-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /en/wardogs/team; source 4946ceae106b7972243c95f25fc0b0a1691fe8f0",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "61699e49f0972bd46f0deafcfc954215389399c09648b6b59e63e2be52c310d0",
+      "bytes": 29520,
+      "width": 390,
+      "height": 1188
+    },
+    {
+      "id": "ui-round10-after-wardogs-team-en-390x844",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/wardogs-team-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /en/wardogs/team; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "7e5ff723d7985884d753303b15f6af1ac3344526210d6f90d7d6a6ea53734b9e",
+      "bytes": 22726,
+      "width": 390,
+      "height": 1035
+    },
+    {
+      "id": "ui-round10-after-wardogs-cs-1280x700",
+      "path": "docs/evidence/ui-round10-2026-10-03/after/wardogs-cs-1280x700.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs; source 5486473ea79c3f0a73bc4d16db823e6f843ed56a",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding (scene fallback: owner-supplied illustration); excluded from the Apache code license",
+      "sha256": "c6bbfc738f176a0cc1a3edb988eda3f46467f8bc75c6e82a738fb9e131c0d3dc",
+      "bytes": 41154,
+      "width": 1280,
+      "height": 700
     }
   ]
 }
