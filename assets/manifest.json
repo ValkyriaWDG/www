@@ -17034,6 +17034,72 @@
       "bytes": 151878,
       "width": 390,
       "height": 5696
+    },
+    {
+      "id": "league-fixtures-matches-league-fixtures-cs-1440x1050",
+      "path": "docs/evidence/league-fixtures-2026-10-03/matches-league-fixtures-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches; visitor; source 66ba8a6",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9f93b014542e2182897d889f366f0d01a1abd376710eb2adedef41a5291c2cfa",
+      "bytes": 112138,
+      "width": 1440,
+      "height": 2024
+    },
+    {
+      "id": "league-fixtures-matches-league-fixtures-en-1440x1050",
+      "path": "docs/evidence/league-fixtures-2026-10-03/matches-league-fixtures-en-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/matches; visitor; source 66ba8a6",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d4123450dd66a677b4d70af9b9549fd73867e58e432f2f263b83bb2e894bdee9",
+      "bytes": 108534,
+      "width": 1440,
+      "height": 2024
+    },
+    {
+      "id": "league-fixtures-matches-league-fixtures-cs-390x844",
+      "path": "docs/evidence/league-fixtures-2026-10-03/matches-league-fixtures-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches; visitor; source 66ba8a6",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "c8a1bc83ecb86e1527dc204d970f74fdd2038b42ea323783c86ec06076df683f",
+      "bytes": 85692,
+      "width": 390,
+      "height": 3314
+    },
+    {
+      "id": "league-fixtures-matches-league-fixtures-en-390x844",
+      "path": "docs/evidence/league-fixtures-2026-10-03/matches-league-fixtures-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/matches; visitor; source 66ba8a6",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "b387855204801d0407b6034c80e195a0bf8d6687a5af797d6096ccf834d5dfd9",
+      "bytes": 82988,
+      "width": 390,
+      "height": 3317
+    },
+    {
+      "id": "league-fixtures-admin-integrations-cs-1440x900-full",
+      "path": "docs/evidence/league-fixtures-2026-10-03/integrations-cs-1440x900-full.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source 66ba8a6",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "2dc618d12d12be040ff24e03c017a6f20c8c176660ba5d322cf8a1abfabcb776",
+      "bytes": 196684,
+      "width": 1440,
+      "height": 3275
+    },
+    {
+      "id": "league-fixtures-admin-integrations-en-390x844-logi",
+      "path": "docs/evidence/league-fixtures-2026-10-03/integrations-en-390x844-logi.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/admin/integrations; administrator; source 66ba8a6",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "87e957f8166b162872ebeed052d3ff1353f6c040e164c4c22b09ef2c7ad7afee",
+      "bytes": 35944,
+      "width": 390,
+      "height": 844
     }
   ]
 }

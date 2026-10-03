@@ -126,7 +126,12 @@
     },
     "readers": {
       "title": "Wardogs readers (League, Warcon)",
-      "intro": "On-demand reads with their own restricted keys: the League match preview and the Warcon live/recent-round facts of approved connections. States come from the configuration and the website’s last read, never from the hosted producer’s own health.",
+      "resources": {
+        "league-matches": "Wardogs League – match preview",
+        "league-fixtures": "Wardogs League – tracked fixtures",
+        "warcon-data": "Warcon"
+      },
+      "intro": "On-demand reads with their own restricted keys: the League match preview, the Wardogs League fixtures Logi tracks and the Warcon live/recent-round facts of approved connections. States come from the configuration and the website’s last read, never from the hosted producer’s own health.",
       "state": {
         "unconfigured": "Not configured",
         "configured": "Configured",

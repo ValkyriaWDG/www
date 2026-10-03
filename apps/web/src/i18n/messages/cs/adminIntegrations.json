@@ -126,7 +126,12 @@
     },
     "readers": {
       "title": "Čtečky Wardogs (League, Warcon)",
-      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhled zápasu z League a živé údaje či poslední kola ze schválených připojení Warcon. Stavy vycházejí z konfigurace a z posledního čtení webu, nikdy ze stavu hostovaného producenta.",
+      "resources": {
+        "league-matches": "Wardogs League – náhled zápasu",
+        "league-fixtures": "Wardogs League – sledovaná utkání",
+        "warcon-data": "Warcon"
+      },
+      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhled zápasu z League, utkání ve Wardogs League, která Logi sleduje, a živé údaje či poslední kola ze schválených připojení Warcon. Stavy vycházejí z konfigurace a z posledního čtení webu, nikdy ze stavu hostovaného producenta.",
       "state": {
         "unconfigured": "Nenastaveno",
         "configured": "Nastaveno",

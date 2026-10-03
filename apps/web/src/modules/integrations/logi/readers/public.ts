@@ -1,5 +1,5 @@
 import { classifyFreshness, SERVER_FRESHNESS, type Freshness } from '../../contract';
-import { type LeagueRead, type WarconLive, type WarconMatches, warconFreshness } from './contracts';
+import { type LeagueFixture, type LeagueFixtureState, type LeagueRead, type WarconLive, type WarconMatches, warconFreshness } from './contracts';
 
 /*
  * Minimal website publication DTOs of the approved readers. Pure module (usable by client
@@ -184,4 +184,107 @@ export function ageLeaguePreviewPublic(preview: LeaguePreviewPublic, now: Date):
   if (preview.state === 'unavailable' || preview.observedAt === null) return preview;
   const age = now.getTime() - Date.parse(preview.observedAt);
   return !Number.isFinite(age) || age > READER_PUBLIC_MAX_AGE_MS ? emptyLeaguePreview(preview.sourceUrl, preview.synthetic) : preview;
+}
+
+/** Tracked fixtures shown on the Wardogs matches page at most. */
+export const LEAGUE_FIXTURES_PUBLIC_LIMIT = 20;
+/**
+ * A tracked fixture whose snapshot is older than this is no longer shown: the producer
+ * refreshes tracked fixtures about every 5 minutes, so an older snapshot means the
+ * fixture is no longer being refreshed (paused, archived or past its horizon).
+ */
+export const LEAGUE_FIXTURES_MAX_AGE_MS = 24 * 60 * 60_000;
+
+export type LeagueFixtureItemState = 'fresh' | 'stale';
+
+/** One unverified tracked Wardogs League fixture; never carries a result. */
+export type LeagueFixturePublic = {
+  /** External League match ID. */
+  id: string;
+  /** Canonical public League page of the fixture. */
+  sourceUrl: string;
+  /** Native Logi event external ID (a public `/[game]/matches/logi/[id]` route parameter), when bound. */
+  eventId: string | null;
+  /** Producer tracking state. */
+  tracking: LeagueFixtureState;
+  state: LeagueFixtureItemState;
+  /** When the producer observed the League page (`fetchedAt`). */
+  observedAt: string;
+  title: string;
+  fixtureNumber: number | null;
+  type: string | null;
+  status: string | null;
+  scheduledAt: string | null;
+  teams: { code: string; name: string | null }[];
+  map: { name: string | null; zone: string | null; lighting: string | null } | null;
+  hosting: { mode: string | null; teamCode: string | null } | null;
+};
+
+export type LeagueFixturesPublic = {
+  /** Newest observation among the listed fixtures, null when nothing is listed. */
+  observedAt: string | null;
+  /** `unavailable` without any answered list, `stale` after a failed website pull, else `fresh`. */
+  state: LeaguePreviewState;
+  synthetic: boolean;
+  /** More producer pages remained beyond the website's page bound. */
+  truncated: boolean;
+  items: LeagueFixturePublic[];
+};
+
+export function emptyLeagueFixtures(synthetic = false): LeagueFixturesPublic {
+  return { observedAt: null, state: 'unavailable', synthetic, truncated: false, items: [] };
+}
+
+function withinFixtureAge(observedAt: string, now: Date): boolean {
+  const age = now.getTime() - Date.parse(observedAt);
+  return Number.isFinite(age) && age >= -30_000 && age <= LEAGUE_FIXTURES_MAX_AGE_MS;
+}
+
+/** Kickoff ascending, unscheduled fixtures last, then by League ID for a stable order. */
+function compareFixtures(left: LeagueFixturePublic, right: LeagueFixturePublic): number {
+  if (left.scheduledAt === null || right.scheduledAt === null) {
+    if (left.scheduledAt === right.scheduledAt) return left.id.localeCompare(right.id);
+    return left.scheduledAt === null ? 1 : -1;
+  }
+  return left.scheduledAt.localeCompare(right.scheduledAt) || left.id.localeCompare(right.id);
+}
+
+function newestObservation(items: readonly LeagueFixturePublic[]): string | null {
+  let newest: string | null = null;
+  for (const item of items) if (newest === null || item.observedAt > newest) newest = item.observedAt;
+  return newest;
+}
+
+/**
+ * Collection projection. `items` is `null` without any answered list (unavailable);
+ * `answered` is false when the last website pull failed, which keeps every item and the
+ * collection stale. The producer's own `stale`/`error` flags keep an item stale. Fixtures
+ * whose snapshot is older than the public maximum age are dropped, the rest sorted by
+ * kickoff with unscheduled ones last and capped at the public limit.
+ */
+export function toLeagueFixturesPublic(items: readonly LeagueFixture[] | null, now: Date, answered: boolean, synthetic = false, truncated = false): LeagueFixturesPublic {
+  if (items === null) return emptyLeagueFixtures(synthetic);
+  const rows: LeagueFixturePublic[] = [];
+  for (const item of items) {
+    const snapshot = item.snapshot;
+    if (!withinFixtureAge(snapshot.fetchedAt, now)) continue;
+    rows.push({
+      id: item.id, sourceUrl: snapshot.sourceUrl, eventId: item.eventId, tracking: item.state,
+      state: item.stale || item.error !== null || !answered ? 'stale' : 'fresh',
+      observedAt: snapshot.fetchedAt,
+      title: snapshot.title, fixtureNumber: snapshot.fixtureNumber, type: snapshot.type, status: snapshot.status, scheduledAt: snapshot.scheduledAt,
+      teams: snapshot.teams?.map(({ code, name }) => ({ code, name })) ?? [],
+      map: snapshot.map ? { name: snapshot.map.name, zone: snapshot.map.zone, lighting: snapshot.map.lighting } : null,
+      hosting: snapshot.hosting ? { mode: snapshot.hosting.mode, teamCode: snapshot.hosting.teamCode } : null,
+    });
+  }
+  const shown = rows.sort(compareFixtures).slice(0, LEAGUE_FIXTURES_PUBLIC_LIMIT);
+  return { observedAt: newestObservation(shown), state: answered ? 'fresh' : 'stale', synthetic, truncated, items: shown };
+}
+
+/** Ages a collection for rendering: fixtures past the public maximum age disappear; the collection state is kept. */
+export function ageLeagueFixturesPublic(list: LeagueFixturesPublic, now: Date): LeagueFixturesPublic {
+  if (list.state === 'unavailable') return list;
+  const items = list.items.filter((item) => withinFixtureAge(item.observedAt, now));
+  return items.length === list.items.length ? list : { ...list, observedAt: newestObservation(items), items };
 }

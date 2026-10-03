@@ -45,7 +45,45 @@
     "showResults": "Zobrazit výsledky",
     "showUpcoming": "Zobrazit nadcházející zápasy",
     "loadError": "Zápasy se nepodařilo načíst.",
-    "retry": "Zkusit znovu"
+    "retry": "Zkusit znovu",
+    "leagueFixtures": {
+      "title": "Sledovaná utkání ve Wardogs League",
+      "note": "Neověřený přehled utkání, která Logi sleduje na wardogsleague.net: termíny, týmy a mapy tak, jak je League zveřejňuje. Výsledky zveřejňuje pouze klan v seznamu výsledků.",
+      "synthetic": "Syntetická ukázková data z League – nejde o skutečná utkání.",
+      "unavailable": "Přehled sledovaných utkání není k dispozici.",
+      "empty": "Logi právě nesleduje žádné utkání.",
+      "truncated": "Zobrazena je jen část sledovaných utkání; úplný seznam najdete ve Wardogs League.",
+      "stale": "Přehled může být zastaralý.",
+      "fixture": "Utkání č. {number}",
+      "matchTitle": "Utkání",
+      "scheduled": "Termín",
+      "unscheduled": "Termín zatím nestanoven",
+      "teams": "Týmy",
+      "map": "Mapa",
+      "type": "Typ",
+      "status": "Stav",
+      "hosting": "Hostování",
+      "hostingValue": "{mode} · {team}",
+      "observed": "Pozorováno {time}",
+      "freshness": {
+        "fresh": "Aktuální",
+        "stale": "Neaktuální"
+      },
+      "tracking": {
+        "pending": "Čeká na sledování",
+        "tracked": "Sledováno",
+        "unmatched": "Nepřiřazeno",
+        "ignored": "Ignorováno",
+        "paused": "Pozastaveno",
+        "archived": "Archivováno"
+      },
+      "links": {
+        "label": "Odkazy",
+        "source": "Otevřít ve Wardogs League",
+        "detail": "Detail zápasu",
+        "logi": "Sestava a účast v Logi"
+      }
+    }
   },
   "row": {
     "valkyria": "Valkyria",

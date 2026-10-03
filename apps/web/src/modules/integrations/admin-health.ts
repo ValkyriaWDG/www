@@ -179,7 +179,7 @@ function readers(env: IntegrationAdminEnv): AdminReader[] {
   const states = readerCapabilityStates(env);
   return READER_RESOURCES.map((resource) => {
     const state = states[resource];
-    return { resource, purpose: resource === 'league-matches' ? 'league' : 'warcon', state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
+    return { resource, purpose: resource === 'warcon-data' ? 'warcon' : 'league', state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
   });
 }
 

@@ -45,7 +45,45 @@
     "showResults": "Show results",
     "showUpcoming": "Show upcoming matches",
     "loadError": "The matches could not be loaded.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "leagueFixtures": {
+      "title": "Tracked Wardogs League fixtures",
+      "note": "Unverified overview of the fixtures Logi follows on wardogsleague.net: kickoff times, teams and maps as League publishes them. Results are published by the clan only, in the results list.",
+      "synthetic": "Synthetic League demo data – not real fixtures.",
+      "unavailable": "The tracked fixtures overview is unavailable.",
+      "empty": "Logi is not tracking any fixture right now.",
+      "truncated": "Only part of the tracked fixtures is shown; the full list is on Wardogs League.",
+      "stale": "The overview may be outdated.",
+      "fixture": "Fixture #{number}",
+      "matchTitle": "Fixture",
+      "scheduled": "Scheduled",
+      "unscheduled": "Kickoff not set yet",
+      "teams": "Teams",
+      "map": "Map",
+      "type": "Type",
+      "status": "Status",
+      "hosting": "Hosting",
+      "hostingValue": "{mode} · {team}",
+      "observed": "Observed {time}",
+      "freshness": {
+        "fresh": "Current",
+        "stale": "Stale"
+      },
+      "tracking": {
+        "pending": "Awaiting tracking",
+        "tracked": "Tracked",
+        "unmatched": "Unmatched",
+        "ignored": "Ignored",
+        "paused": "Paused",
+        "archived": "Archived"
+      },
+      "links": {
+        "label": "Links",
+        "source": "Open on Wardogs League",
+        "detail": "Match detail",
+        "logi": "Roster and attendance in Logi"
+      }
+    }
   },
   "row": {
     "valkyria": "Valkyria",

@@ -106,17 +106,19 @@ export type AdminLogiSource = {
   purposes: AdminLogiPurpose[];
 };
 
-export type AdminReaderResource = 'league-matches' | 'warcon-data';
+export type AdminReaderResource = 'league-matches' | 'league-fixtures' | 'warcon-data';
 export type AdminReaderState = 'unconfigured' | 'configured' | 'unsupported';
 
 /**
  * One approved Wardogs reader (issue #87): `unconfigured` without its key, source or
- * approved connections; `configured` with them; `unsupported` when the deployed producer
- * answered 404 on the last attempt. Attempt facts come from the in-process caches.
+ * approved connections (or, for the tracked fixtures, when the producer refused the key
+ * the explicit `league-fixtures` grant); `configured` with them; `unsupported` when the
+ * deployed producer answered 404 on the last attempt. Attempt facts come from the
+ * in-process caches.
  */
 export type AdminReader = {
   resource: AdminReaderResource;
-  /** The matching `LogiSourcePurpose` for the label. */
+  /** The matching `LogiSourcePurpose` (both League readers share the League key). */
   purpose: Extract<LogiSourcePurpose, 'league' | 'warcon'>;
   state: AdminReaderState;
   /** Sanitized configuration detail (variable names, instance ID, counts; never a key, origin or connection ID) or the code `synthetic-fixture`. */
@@ -137,7 +139,7 @@ export type AdminIntegrationHealth = {
     sso: { enabled: boolean; configured: boolean; discordFallback: boolean };
     membershipSource: 'discord' | 'logi';
     sources: AdminLogiSource[];
-    /** Wardogs League and Warcon readers, in a fixed order. */
+    /** Wardogs League preview, tracked League fixtures and Warcon readers, in a fixed order. */
     readers: AdminReader[];
     webhooks: { enabled: boolean; pendingHints: number; lastReceivedAt: string | null; lastProcessedAt: string | null };
     commands: { enabled: boolean; pending: number; lastReceiptAt: string | null };
