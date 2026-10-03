@@ -8,12 +8,13 @@ import { GAME_REGISTRY, GAME_ROUTES, gameRouteFromLogi, type GameRoute } from '@
 import { authorize } from '@/modules/prose/domain';
 import {
   classifyScopeState, scopeFreshness,
-  type AdminConfiguredServer, type AdminGameServers, type AdminIntegrationHealth, type AdminLogiHealth, type AdminLogiPurpose, type AdminLogiScope, type AdminLogiSource, type AdminServerOverview,
+  type AdminConfiguredServer, type AdminGameServers, type AdminIntegrationHealth, type AdminLogiHealth, type AdminLogiPurpose, type AdminLogiScope, type AdminLogiSource, type AdminReader, type AdminServerOverview,
 } from './admin-health-types';
 import { INTEGRATION_CONTRACT_VERSION } from './contract';
 import { configuredLogiSourceBindings, configuredLogiSources, type ConfiguredLogiSource, type LogiIntegrationEnv, type LogiSourcePurpose } from './logi-config';
 import { PUBLIC_REVALIDATION_MAX_AGE_MS } from './logi-public';
 import { logiIntegrationHealthSchema } from './logi/contracts';
+import { READER_RESOURCES, readerCapabilityStates } from './logi/readers/health';
 import { logiSyncCheckpointSchema } from './logi/sync';
 import { parseCrconConfig } from './servers/crcon';
 import { SYNTHETIC_SERVERS } from './servers/fixtures';
@@ -173,6 +174,15 @@ async function logiSources(db: Executor, env: IntegrationAdminEnv, now: Date): P
   return { configError: false, sources };
 }
 
+/** Approved Wardogs readers (issue #87): states and attempt categories only. */
+function readers(env: IntegrationAdminEnv): AdminReader[] {
+  const states = readerCapabilityStates(env);
+  return READER_RESOURCES.map((resource) => {
+    const state = states[resource];
+    return { resource, purpose: resource === 'league-matches' ? 'league' : 'warcon', state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
+  });
+}
+
 /**
  * Website-side integration health and configuration facts for the administration.
  * Requires `settings.manage` (administrators/owners); editors and match managers are
@@ -205,6 +215,7 @@ export async function getIntegrationHealthForAdmin(db: Executor, actor: Actor, e
       sso: { enabled: env.LOGI_SSO_ENABLED === true, configured: isLogiSignInConfigured(logiProviderConfigFromEnv(env)), discordFallback: env.LOGI_DISCORD_FALLBACK_ENABLED === true },
       membershipSource,
       sources: logi.sources,
+      readers: readers(env),
       webhooks: { enabled: env.LOGI_WEBHOOK_ENABLED === true, pendingHints: inbox?.pending ?? 0, lastReceivedAt: iso(inbox?.lastReceivedAt), lastProcessedAt: iso(inbox?.lastProcessedAt) },
       commands: { enabled: env.LOGI_EVENT_WRITE_ENABLED === true, pending: commands?.pending ?? 0, lastReceiptAt: commands?.lastReceiptAt ? new Date(commands.lastReceiptAt).toISOString() : null },
     },

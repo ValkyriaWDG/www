@@ -34,7 +34,10 @@ e2e/visual-wardogs-readers.spec.ts` → `.local/evidence/wardogs-readers/`). The
 environment uses `LOGI_READERS_SOURCE=synthetic-fixture`; this is local synthetic
 proof, not hosted acceptance. Open operator questions before activation are listed in
 the readiness map. Next: build and browser verification, PR with captioned captures,
-wiring `readerCapabilityStates` into the #22 administration page after both branches merge.
+the orchestrator's build/browser/PostgreSQL runs on the merged head. The readers appear
+on `/[locale]/admin/integrations` as the "Čtečky Wardogs (League, Warcon)" block of the
+Logi section (state, approved-connection count, last attempt and its category).
+
 ## Integration health administration — 2026-10-03
 
 Branch `feat/integrations-admin` (merged with main `dbef6e0`) adds the read-only part of

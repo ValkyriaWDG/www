@@ -50,7 +50,10 @@ approved readers; the module boundary is described in the
 ## Reader capability states
 
 `readerCapabilityStates(env)` (`apps/web/src/modules/integrations/logi/readers/health.ts`)
-reports one state per resource for the administration health page of issue #22:
+reports one state per resource; `/[locale]/admin/integrations` (issue #22) renders them
+in the Logi section as "Čtečky Wardogs (League, Warcon)" with the approved-connection
+count, the last attempt time and its transport category (see the
+[runbook's administration health table](runbook.md#administration-health)):
 
 | State | `league-matches` | `warcon-data` |
 | --- | --- | --- |

@@ -54,6 +54,14 @@ test('administrator sees website collector health in Czech and English without c
   await expect(logi).toContainText('Vypnuto');
   await expect(logi.locator('[data-state="healthy"]')).toHaveCount(0);
   await expect(logi).toContainText('zatím žádné doručení');
+  // Wardogs readers: the e2e server runs the labelled synthetic reader source, so both are "configured" without any key.
+  const readers = logi.locator('[data-logi-readers]');
+  await expect(logi).toContainText('Čtečky Wardogs (League, Warcon)');
+  await expect(readers.locator('[data-reader="league-matches"]')).toHaveAttribute('data-state', 'configured');
+  await expect(readers.locator('[data-reader="warcon-data"]')).toHaveAttribute('data-state', 'configured');
+  await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Liga Wardogs');
+  await expect(readers.locator('[data-reader="warcon-data"]')).toContainText(/Warcon.*Nastaveno/s);
+  await expect(readers).toContainText('synthetic fixture source');
 
   // Discord: the e2e role mapping has six entries.
   await expect(page.locator('[data-integrations-discord]')).toContainText('6 mapovaných rolí');
@@ -76,6 +84,8 @@ test('administrator sees website collector health in Czech and English without c
   await page.goto('/en/admin/integrations');
   await expect(page.getByRole('heading', { level: 1, name: 'Integrations and servers' })).toBeVisible();
   await expect(page.locator('[data-integrations-logi]').getByText('No Logi source is configured.')).toBeVisible();
+  await expect(page.locator('[data-integrations-logi]')).toContainText('Wardogs readers (League, Warcon)');
+  await expect(page.locator('[data-logi-readers] [data-reader="league-matches"]')).toContainText(/Wardogs League.*Configured/s);
   await expect(page.locator('[data-game-servers="hll"]')).toContainText('Synthetic data');
   await expect(page.locator('[data-integrations-discord]')).toContainText('6 mapped roles');
   await context.close();

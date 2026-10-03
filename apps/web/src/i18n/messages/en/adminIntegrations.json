@@ -120,7 +120,20 @@
       "data": "Data (events, matches, results, servers)",
       "people": "People (directory, rosters, statistics)",
       "membership": "Membership (permissions)",
-      "commands": "Commands (event writes)"
+      "commands": "Commands (event writes)",
+      "league": "Wardogs League",
+      "warcon": "Warcon"
+    },
+    "readers": {
+      "title": "Wardogs readers (League, Warcon)",
+      "intro": "On-demand reads with their own restricted keys: the League match preview and the Warcon live/recent-round facts of approved connections. States come from the configuration and the website’s last read, never from the hosted producer’s own health.",
+      "state": {
+        "unconfigured": "Not configured",
+        "configured": "Configured",
+        "unsupported": "Not deployed on the producer"
+      },
+      "connections": "{count, plural, =0 {no approved connections} one {# approved connection} other {# approved connections}}",
+      "lastOk": "last read succeeded"
     },
     "state": {
       "not_configured": "Not configured",

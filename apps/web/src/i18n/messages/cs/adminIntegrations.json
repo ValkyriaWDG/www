@@ -120,7 +120,20 @@
       "data": "Data (události, zápasy, výsledky, servery)",
       "people": "Lidé (adresář, soupisky, statistiky)",
       "membership": "Členství (oprávnění)",
-      "commands": "Příkazy (zápis událostí)"
+      "commands": "Příkazy (zápis událostí)",
+      "league": "Liga Wardogs",
+      "warcon": "Warcon"
+    },
+    "readers": {
+      "title": "Čtečky Wardogs (League, Warcon)",
+      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhled zápasu z League a živé údaje či poslední kola ze schválených připojení Warcon. Stavy vycházejí z konfigurace a z posledního čtení webu, nikdy ze stavu hostovaného producenta.",
+      "state": {
+        "unconfigured": "Nenastaveno",
+        "configured": "Nastaveno",
+        "unsupported": "Producent trasu nenasadil"
+      },
+      "connections": "{count, plural, =0 {žádné schválené připojení} one {# schválené připojení} few {# schválená připojení} other {# schválených připojení}}",
+      "lastOk": "poslední čtení uspělo"
     },
     "state": {
       "not_configured": "Nenastaveno",

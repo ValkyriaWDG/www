@@ -17,12 +17,12 @@ afterEach(() => {
 
 describe('readerCapabilityStates', () => {
   it('reports unconfigured without keys, without a Wardogs source and without approved connections', () => {
-    expect(readerCapabilityStates(env())).toMatchObject({ 'league-matches': { state: 'unconfigured', detail: 'LOGI_LEAGUE_API_KEY_WDG is not set', lastAttemptAt: null, lastOutcome: null }, 'warcon-data': { state: 'unconfigured' } });
+    expect(readerCapabilityStates(env())).toMatchObject({ 'league-matches': { state: 'unconfigured', detail: 'LOGI_LEAGUE_API_KEY_WDG is not set', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 }, 'warcon-data': { state: 'unconfigured', approvedConnections: 0 } });
     const keys = { LOGI_LEAGUE_API_KEY_WDG: 'synthetic-league-key-0123456789', LOGI_WARCON_API_KEY_WDG: 'synthetic-warcon-key-0123456789' };
     const hllOnly = { ...env(keys), LOGI_SOURCES_JSON: JSON.stringify([{ ...wardogs, gameId: 'hell_let_loose' }]) };
     expect(readerCapabilityStates(hllOnly)).toMatchObject({ 'league-matches': { state: 'unconfigured', detail: 'no valid Wardogs source in LOGI_SOURCES_JSON' }, 'warcon-data': { state: 'unconfigured' } });
     expect(readerCapabilityStates(env(keys, { publicServers: published }))).toMatchObject({ 'league-matches': { state: 'configured' }, 'warcon-data': { state: 'unconfigured', detail: 'no approved warconConnections on the Wardogs source' } });
-    expect(readerCapabilityStates(env(keys, { publicServers: published, warconConnections: [{ connectionId: 'conn-a', publicId: 'community-one' }] }))).toMatchObject({ 'warcon-data': { state: 'configured', detail: '1 approved connection(s) on local' } });
+    expect(readerCapabilityStates(env(keys, { publicServers: published, warconConnections: [{ connectionId: 'conn-a', publicId: 'community-one' }] }))).toMatchObject({ 'warcon-data': { state: 'configured', detail: '1 approved connection(s) on local', approvedConnections: 1 }, 'league-matches': { approvedConnections: 0 } });
     expect(readerCapabilityStates({ ...env(), LOGI_READERS_SOURCE: 'synthetic-fixture' })['warcon-data'].state).toBe('configured');
   });
 
