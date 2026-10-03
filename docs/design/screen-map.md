@@ -11,6 +11,19 @@ freshness and timestamp; the detail adds approved join/statistics links. Polling
 can be paused. Missing/stale observations do not invent scores or players. See the
 [source and activation contract](../integrations/logi/wardogs-servers.md).
 
+### Approved reader additions (2026-10-03, issue #87)
+
+Where a Warcon connection is approved for a published Wardogs server, its detail
+(`?server=<publicId>`) adds a "Live (Warcon)" section (server name, map, lighting,
+players, round time, named scores, rotation, observation time, freshness badge) and a
+"Recent matches" list of the last five rounds (start, map, peak players, final scores,
+winner); the home overview adds a compact live row under the same server. Unavailable
+reads say so and never invent an empty server. A published Wardogs match with an
+editorial League link adds a full-width "League preview" section below the detail:
+fixture, scheduled time, teams, map, hosting, map vote and progress with the
+observation time and an "unverified preview" note, never a result. All sections are
+Czech-first with English parity and stack without horizontal overflow on phones.
+
 The historical initial screen proposal below is superseded by the unified-platform
 ADR and current implementation for game-scoped routes and canonical hostnames.
 

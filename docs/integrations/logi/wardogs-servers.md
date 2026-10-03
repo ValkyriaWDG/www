@@ -28,6 +28,8 @@ not an instantaneous stream. Operational source-health checks may mark data stal
 sooner. A configured but never observed server has unknown values.
 
 The public statistics button opens the operator-approved Warcon scoreboard URL.
+Approved `warconConnections` additionally add live facts and recent rounds through the
+separate `warcon-data` reader described in the [runbook](runbook.md#wardogs-league-and-warcon-readers).
 **Individual live Wardogs player rows are not yet imported into the website server
 browser.** The separate [people projections](people.md) serve verified collected-session
 statistics for linked members; they neither enumerate current server occupants nor

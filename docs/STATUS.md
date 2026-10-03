@@ -1,5 +1,40 @@
 # Current status
 
+## Approved Logi readers: League preview and Warcon — 2026-10-03
+
+Branch `feat/logi-readers` (from main `6fb5009`) implements
+[issue #87](https://github.com/ValkyriaWDG/www/issues/87) against Logi PR #158 at
+`c42ea770c307793494ae159a924f86e3c6ced50d`: server-only `league-matches` and
+`warcon-data` readers with their own Wardogs keys (`LOGI_LEAGUE_API_KEY_WDG`,
+`LOGI_WARCON_API_KEY_WDG`), approved `warconConnections` under published servers,
+closed wire schemas for the League read and the Warcon `live`/`matches` views, an
+in-process last-known cache per URL/connection with `Retry-After`/`nextRefreshAt`
+backoff, minimal public DTOs (no player rows, Steam IDs, panel/join identifiers or
+connection IDs), a `readerCapabilityStates(env)` health read model for #22, the
+editorial `match.league_match_url` column (`0011_nervous_wasp`, Wardogs-only check),
+the match editor field, the "League preview" section on Wardogs match pages, and
+"Live (Warcon)" plus "Recent matches" on the Wardogs server detail and home overview.
+The shared bounded transport was extracted from the collection client without
+behaviour change. See the
+[readers README](../apps/web/src/modules/integrations/logi/readers/README.md),
+[readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states)
+and [runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
+
+Run from `apps/web` on the branch head: `pnpm lint` passed; `pnpm typecheck` passed;
+`pnpm test:unit` passed 91 files / 1006 tests (58 new reader tests, config, view and
+schema additions, dictionary parity); `DATABASE_URL=… npx vitest run --project
+integration tests/integration/matches-league-url.test.ts tests/integration/matches-lifecycle.test.ts
+tests/integration/game-scope.test.ts tests/integration/fixtures-synthetic.test.ts
+tests/integration/fixtures-schema-compat.test.ts tests/integration/migrations.test.ts
+tests/integration/schema-invariants.test.ts` passed 62 tests; `node scripts/check-foundation.mjs`
+passed. Not run yet: `pnpm build`, the browser suites (`e2e/wardogs-warcon.spec.ts`,
+the regression suite) and the opt-in captures (`CAPTURE_EVIDENCE=1 pnpm test:e2e
+e2e/visual-wardogs-readers.spec.ts` → `.local/evidence/wardogs-readers/`). The browser
+environment uses `LOGI_READERS_SOURCE=synthetic-fixture`; this is local synthetic
+proof, not hosted acceptance. Open operator questions before activation are listed in
+the readiness map. Next: build and browser verification, PR with captioned captures,
+wiring `readerCapabilityStates` into the #22 administration page after both branches merge.
+
 ## Public and administration UI round 10 — 2026-10-03
 
 An audit of main `4946cea` (the PR #88 merge) covered the surfaces added since round 9:

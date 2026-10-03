@@ -61,6 +61,9 @@ false in production.
 | `LOGI_WEBHOOK_ENABLED`, `LOGI_WEBHOOK_SIGNING_SECRETS_JSON` | Map configured source instance ID to a separate signing secret, at least 32 printable characters; never reuse a service key |
 | `SERVER_STATUS_SOURCE=logi` | Read server cards from approved configured Logi connections; this does not publish every collected server |
 | `SERVER_STATUS_SOURCE_WDG=logi` | Select Logi for Wardogs independently; blank inherits `SERVER_STATUS_SOURCE`, `none` disables Wardogs telemetry. HLL may keep `SERVER_STATUS_SOURCE=crcon`. See [Wardogs servers](wardogs-servers.md) |
+| `LOGI_LEAGUE_API_KEY_WDG` | Restricted `league-matches` read grant for the Wardogs source; enables the unverified League preview of matches with an editorial League link |
+| `LOGI_WARCON_API_KEY_WDG`, source `warconConnections` | Restricted `warcon-data` read grant plus individually approved `{connectionId, publicId}` pairs under published `publicServers`; reads the `live` and `matches` views only |
+| `LOGI_READERS_SOURCE` | `logi` (default) or `synthetic-fixture` for labelled local reader data; never set the fixture in production |
 | `LOGI_DISCORD_FALLBACK_ENABLED` | Explicit direct-Discord fallback while Logi is primary; default false |
 
 Use a separate key per purpose and game, restricted to the necessary resources.
@@ -78,7 +81,8 @@ Logi data. Local recovery is a separately provisioned MFA account.
 2. Back up the target PostgreSQL database using the approved operational process. Run
    the explicit migration runner against the intended target. `0009_aspiring_klaw`
    adds five Logi tables and seven nullable private session columns; it does not import
-   private production data or migrate old matches.
+   private production data or migrate old matches. `0011_nervous_wasp` adds the nullable
+   `match.league_match_url` column with its Wardogs-only check constraint.
 3. Configure restricted data sources with `publishMatches=false`, no published servers
    and commands/webhooks/SSO still disabled. Run bounded pulls until every configured
    game reports `caught_up`. Inspect safe source identities, revisions and freshness.
@@ -103,6 +107,38 @@ Logi data. Local recovery is a separately provisioned MFA account.
    durable acknowledgment. Keep polling enabled regardless of webhook coverage.
 8. Record the actual hosted/domain, callback, role, collector, scheduler and UI outcomes
    in the activation record. Local proof in this PR does not fill in those results.
+
+## Wardogs League and Warcon readers
+
+The two readers of [issue #87](https://github.com/ValkyriaWDG/www/issues/87) are
+on-demand, server-only and separate from the change-feed pull: they do not use the
+data key, the sync CLI or the projection tables. Each has its own restricted key
+(`readAccess` `{resources:["league-matches"],gameIds:["wardogs"]}` and
+`{resources:["warcon-data"],gameIds:["wardogs"]}`), bound to the canonical guild;
+legacy full-access keys are refused by the producer. HLL CRCON settings stay untouched.
+
+- **League preview.** A match manager with Wardogs scope stores a canonical
+  `https://wardogsleague.net/matches/<id>` link in the match editor (see the
+  [editor guide](../../operations/editor-guide.md)). The public match page then reads
+  the preview with an in-process cache per link: at most one request per minute and
+  per producer `nextRefreshAt`/`Retry-After`, last-known data shown as stale after a
+  failed pull, nothing shown after 15 minutes without a successful read. The preview
+  never carries a result.
+- **Warcon.** Add approved connections to the Wardogs source:
+  `"warconConnections": [{"connectionId": "<Logi connection id>", "publicId": "community-wardogs"}]`.
+  The `publicId` must name a `publicServers` entry with `published: true`; the
+  configuration is rejected otherwise, on duplicates and on an HLL source. The live
+  view is cached 10 s and recent matches 60 s per connection; a failed pull makes the
+  live view unavailable immediately and keeps recent matches as stale for up to 30
+  minutes. Only map, lighting, population, named scores, round time, rotation and the
+  last five rounds are published; player rows, Steam IDs, join codes and the
+  `health`/`capabilities` views are never read for public output.
+- **Verification.** Local proof is synthetic. Before activation confirm with the
+  operator that the hosted producer serves both routes (a 404 reports `unsupported`
+  in the health read model), that the keys are separate and guild-bound, and that the
+  approved connection IDs are Logi connection IDs (as in `server-snapshots`), not panel
+  UUIDs. Then check fresh, stale and unavailable states in both languages on the
+  Wardogs server detail, the home overview and a linked match page.
 
 ## Migration and scheduled pull commands
 
