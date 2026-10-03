@@ -2,43 +2,36 @@
 
 ## Integration health administration — 2026-10-03
 
-Branch `feat/integrations-admin` (base main `4946cea`) adds the read-only part of
+Branch `feat/integrations-admin` (merged with main `dbef6e0`) adds the read-only part of
 [issue #22](https://github.com/ValkyriaWDG/www/issues/22): `/[locale]/admin/integrations`
 (module `integrations`, capability `settings.manage`) shows per game the server-status
 source, configured public servers and the current public overview; per Logi source the
-binding facts and one state per purpose (not configured, configured, never ran, healthy,
-stale, unavailable with error code, running now) from `logi_sync_scope`, the stored
-`integration-health` producer rows or "unknown", webhook/command queue aggregates and
-the Discord role-mapping summary. The DTO (`modules/integrations/admin-health.ts`) holds
-no key, base URL, address or raw provider error; the page is server-rendered with a
-refresh link and no client polling. It states explicitly that it shows website collector
-health, not the Logi runtime, bot Discord connection or game-server telemetry.
+binding facts and one state per purpose (not configured, configured, never ran, no
+successful pull yet, healthy, stale, unavailable with a localized error label, running
+now) from `logi_sync_scope`, the stored `integration-health` producer rows or "unknown",
+webhook/command queue aggregates and the Discord role-mapping summary. The DTO
+(`modules/integrations/admin-health.ts`) holds no key, base URL, hostname, address or raw
+provider error; the page is server-rendered with a refresh link and no client polling. It
+states explicitly that it shows website collector health, not the Logi runtime, bot
+Discord connection or game-server telemetry.
 
 The same page edits the new allowlisted `servers.presentation` site setting (display
 name, visibility, order per configured server, versioned and audited by shape). One
 wrapper (`modules/integrations/servers/presentation.ts`, 15-second per-process cache,
-cleared by a save) applies it to every public overview read: the servers pages, the
-Wardogs home overview and `/api/servers/[game]`; a hidden server also has no public
-detail. Provider contracts and tests are unchanged.
+cleared by a save and guarded against in-flight reads) applies it to every public
+overview read: the servers pages, the Wardogs home overview and `/api/servers/[game]`; a
+hidden server has no public detail and its live-players upstream is never asked.
+Provider contracts and tests are unchanged. An independent review found no blocking
+issue; its fixes are applied.
 
-Local checks on this branch: `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`
-(87 files, 941 tests), `DATABASE_URL=… npx vitest run --project integration`
-(48 files, 492 tests) and `node scripts/check-foundation.mjs` passed. Not run here:
-`pnpm build`, `pnpm test:e2e` (new `e2e/admin-integrations.spec.ts`; opt-in captures in
-`e2e/visual-admin-integrations.spec.ts` with `CAPTURE_EVIDENCE=1`, output
-`.local/evidence/admin-integrations/`). Browser evidence, the PR acceptance table and the
-issue summary remain open until those run. Logi settings writes, hosted runtime facts
-and production activation stay out of scope.
+On `1bfd2af` lint, typecheck and the optimized build passed with 951 unit, 508
+PostgreSQL and 227 browser tests (99 opt-in captures skipped); four inspected CS/EN
+captures are in the [evidence](evidence/integrations-admin-2026-10-03/README.md). Local
+synthetic verification only: no Logi source is configured in the e2e environment, so the
+Logi states are proven by seeded PostgreSQL cases. Logi settings writes, hosted runtime
+facts and production activation stay out of scope. Next: PR, latest-head CI, merge and
+publication; the Logi readers (#87) add their capability states to this page.
 
-An independent review found no blocking issue; its fixes are applied: the Logi origin
-host left the DTO, a save cannot be overwritten by an in-flight presentation read, a
-hidden server's live-players upstream is never asked, Wardogs inheriting CRCON reports
-no source, membership reads follow `LOGI_MEMBERSHIP_SOURCE`, a distinct "no successful
-pull yet" state exists, freshness uses the public strict limit and error codes render
-as localized labels. Build and browser suites are still not run on this branch.
-
-Next: run the build and browser suites, attach captioned CS/EN desktop/phone captures
-to the PR and #22, then review.
 ## Taxonomy administration (#86) — 2026-10-03
 
 Branch `feat/taxonomy-admin` (on main `c232cdb`) adds **Kategorie a štítky / Categories
