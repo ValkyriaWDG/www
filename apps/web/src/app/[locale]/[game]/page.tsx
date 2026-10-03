@@ -15,7 +15,7 @@ import { getServerEnv } from '@/lib/env';
 import { GAME_REGISTRY, isGameRoute } from '@/modules/games/registry';
 import { canonicalMatchPath, gamePath } from '@/modules/games/routes';
 import { getNextPublicMatch } from '@/modules/matches/queries';
-import { getServerOverview } from '@/modules/integrations/servers/provider';
+import { getPublicServerOverview } from '@/modules/integrations/servers/presentation';
 import { sharingMetadata } from '@/modules/social/metadata';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/[game]'>): Promise<Metadata> {
@@ -40,7 +40,7 @@ export default async function GameLandingPage({ params, searchParams }: PageProp
   setRequestLocale(locale);
   const query = await searchParams;
   if (game === 'hll') return <HllLanding locale={locale} notice={<GameSwitchNotice locale={locale} game={game} query={query} />} />;
-  const [{ discordUrl }, nextMatch, overview] = await Promise.all([getShellLinks(), loadNextMatch(), getServerOverview('wardogs')]);
+  const [{ discordUrl }, nextMatch, overview] = await Promise.all([getShellLinks(), loadNextMatch(), getPublicServerOverview('wardogs')]);
   return <HomeMenu discordUrl={discordUrl} nextMatch={nextMatch} base={gamePath(game)} serverSummary={<ServerSummary initialOverview={overview} locale={locale} />} notice={<GameSwitchNotice locale={locale} game={game} query={query} />} />;
 }
 

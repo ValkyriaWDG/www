@@ -49,10 +49,10 @@ const updateSettingSchema = z.object({
 });
 export type UpdateSettingInput = z.input<typeof updateSettingSchema>;
 
-/** Shape-only description for the audit log: never URLs, labels or provenance text. */
+/** Shape-only description for the audit log: never URLs, labels, server names or provenance text. */
 function redactedShape(value: unknown): Record<string, unknown> {
   if (value === null || value === undefined) return { cleared: true };
-  if (Array.isArray(value)) return { items: value.length, kinds: value.map((item) => (item as { kind?: unknown }).kind ?? null) };
+  if (Array.isArray(value)) return { items: value.length, kinds: value.map((item) => (item as { kind?: unknown; game?: unknown }).kind ?? (item as { game?: unknown }).game ?? null) };
   if (typeof value === 'object') {
     const fields = Object.entries(value as Record<string, unknown>).filter(([, item]) => item !== null && item !== '').map(([field]) => field);
     return { fields };
