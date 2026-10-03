@@ -30,6 +30,13 @@ Local checks on this branch: `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`
 issue summary remain open until those run. Logi settings writes, hosted runtime facts
 and production activation stay out of scope.
 
+An independent review found no blocking issue; its fixes are applied: the Logi origin
+host left the DTO, a save cannot be overwritten by an in-flight presentation read, a
+hidden server's live-players upstream is never asked, Wardogs inheriting CRCON reports
+no source, membership reads follow `LOGI_MEMBERSHIP_SOURCE`, a distinct "no successful
+pull yet" state exists, freshness uses the public strict limit and error codes render
+as localized labels. Build and browser suites are still not run on this branch.
+
 Next: run the build and browser suites, attach captioned CS/EN desktop/phone captures
 to the PR and #22, then review.
 

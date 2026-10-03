@@ -7,7 +7,8 @@ import { signInAs } from './support/auth';
  * administrators. The e2e server runs labelled synthetic HLL/Wardogs fixtures without
  * any Logi configuration, so the page must show honest "not configured" states and no
  * synthesized success. The override this file saves is removed again at the end so the
- * shared public fixtures stay as seeded for the other specs.
+ * shared public fixtures stay as seeded for the other specs. (A killed local run with
+ * `reuseExistingServer` can leave the row behind; `beforeAll` clears it. CI starts fresh.)
  */
 
 const KEY = 'servers.presentation';

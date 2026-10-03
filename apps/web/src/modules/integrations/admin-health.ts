@@ -24,8 +24,8 @@ import { getServerOverview, serverStatusSourceForGame, type ServerOverview, type
  * from the website database and the validated runtime configuration; the only outbound
  * call is the existing bounded, cached server-status provider. Credentials, private
  * service destinations and raw provider errors never enter the DTO: keys become
- * booleans, origins become hosts, CRCON base URLs are omitted and configuration
- * failures are reported as generic reasons. Absent producer health means unknown.
+ * booleans, Logi origins and CRCON base URLs are omitted and configuration failures are
+ * reported as generic reasons. Absent producer health means unknown.
  */
 
 export type IntegrationAdminEnv = LogiIntegrationEnv & ServerStatusSourceEnv & {
@@ -62,7 +62,9 @@ function sanitizeOverview(overview: ServerOverview): AdminServerOverview {
 }
 
 async function gameServers(game: GameRoute, env: IntegrationAdminEnv, now: Date, readOverview: NonNullable<IntegrationHealthDeps['overview']>): Promise<AdminGameServers> {
-  const source = serverStatusSourceForGame(game, env);
+  const selected = serverStatusSourceForGame(game, env);
+  // CRCON is an HLL-only source; Wardogs inheriting it has no source at all.
+  const source = selected === 'crcon' && game !== 'hll' ? 'none' : selected;
   let configError: AdminGameServers['configError'] = null;
   let configured: AdminConfiguredServer[] = [];
   if (source === 'crcon' && game === 'hll') {
@@ -150,7 +152,7 @@ async function logiSources(db: Executor, env: IntegrationAdminEnv, now: Date): P
     if (!game || !rawSource) continue;
     const purposes: AdminLogiPurpose[] = [];
     for (const purpose of PURPOSES) {
-      const enabled = purpose === 'people' ? binding.syncPeople : purpose === 'commands' ? env.LOGI_EVENT_WRITE_ENABLED === true : true;
+      const enabled = purpose === 'people' ? binding.syncPeople : purpose === 'commands' ? env.LOGI_EVENT_WRITE_ENABLED === true : purpose === 'membership' ? env.LOGI_MEMBERSHIP_SOURCE === 'logi' : true;
       const source = enabled ? purposeSource(env, rawSource, purpose) : null;
       const configured = source !== null;
       if (!source || (purpose !== 'data' && purpose !== 'people')) {
@@ -161,8 +163,9 @@ async function logiSources(db: Executor, env: IntegrationAdminEnv, now: Date): P
       const health = purpose === 'data' && stored?.activeGeneration && stored.scope.lastSuccessAt ? await readHealth(db, source, stored.activeGeneration) : null;
       purposes.push({ purpose, enabled, configured, state: classifyScopeState(configured, stored?.scope ?? null), scope: stored?.scope ?? null, health });
     }
+    // Instance, guild and game identify the binding; the origin (even its host) stays in the configuration.
     sources.push({
-      sourceInstanceId: binding.sourceInstanceId, game, guildId: binding.guildId, originHost: new URL(binding.origin).hostname,
+      sourceInstanceId: binding.sourceInstanceId, game, guildId: binding.guildId,
       publishMatches: binding.publishMatches, syncPeople: binding.syncPeople,
       publicServers: binding.publicServers.length, publishedServers: binding.publicServers.filter((server) => server.published).length, purposes,
     });

@@ -70,7 +70,7 @@
       "sortOrderHint": "0–1000, nižší číslo je výš. Prázdné pole ponechá pořadí z konfigurace."
     },
     "hiddenNote": "Skrytý server zmizí ze stránky serverů i z přehledu v hlavním menu. Konfigurace provozovatele se tím nemění.",
-    "staleRows": "{count, plural, one {# uložená položka patří serveru} few {# uložené položky patří serverům} many {# uložené položky patří serverům} other {# uložených položek patří serverům}}, které už nejsou v konfiguraci; při příštím uložení se odstraní.",
+    "staleRows": "{count, plural, one {# uložená položka patří serveru, který už není v konfiguraci} few {# uložené položky patří serverům, které už nejsou v konfiguraci} many {# uložené položky patří serverům, které už nejsou v konfiguraci} other {# uložených položek patří serverům, které už nejsou v konfiguraci}}; při příštím uložení se odstraní.",
     "storedInvalid": "Uložené nastavení zobrazení neprochází kontrolou a ignoruje se; platí názvy a pořadí z konfigurace.",
     "dirtyStatus": "{count, plural, one {# server změněn} few {# servery změněny} many {# serveru změněno} other {# serverů změněno}} – neuloženo",
     "save": "Uložit zobrazení serverů",
@@ -108,7 +108,6 @@
     "source": {
       "instance": "Instance",
       "guild": "Discord guild",
-      "host": "Server Logi",
       "publishMatches": "Zveřejňování zápasů",
       "syncPeople": "Synchronizace lidí",
       "publicServers": "Veřejné servery",
@@ -127,11 +126,12 @@
       "not_configured": "Nenastaveno",
       "configured": "Nastaveno",
       "never_ran": "Zatím neběželo",
+      "bootstrapping": "Zatím bez úspěšného stažení",
       "healthy": "V pořádku",
       "stale": "Zastaralé",
       "unavailable": "Nedostupné"
     },
-    "errorCode": "chyba {code}",
+    "errorCode": "chyba: {label}",
     "disabledBySwitch": "vypnuto konfigurací",
     "leaseActive": "Právě běží",
     "mode": {
@@ -158,7 +158,18 @@
       "enabled": "Zapnuto",
       "disabled": "Vypnuto",
       "sessions": "{count, plural, one {# sběrná relace} few {# sběrné relace} many {# sběrné relace} other {# sběrných relací}}",
-      "error": "chyba {category}"
+      "error": "chyba: {label}",
+      "errorCategories": {
+        "timeout": "vypršel časový limit",
+        "network": "síťová chyba",
+        "rate_limited": "omezení počtu požadavků",
+        "unauthorized": "přístup odepřen",
+        "invalid_response": "neplatná odpověď",
+        "unsupported": "nepodporováno",
+        "configuration": "chyba konfigurace",
+        "not_listed": "server není v seznamu",
+        "other": "neznámá chyba ({category})"
+      }
     },
     "webhooks": {
       "label": "Webhooky",
@@ -176,6 +187,24 @@
       "pending": "{count, plural, one {# čekající} few {# čekající} many {# čekajícího} other {# čekajících}}",
       "lastReceipt": "poslední potvrzení {time}",
       "none": "zatím žádný příkaz"
+    },
+    "errorCodes": {
+      "configuration": "neplatná konfigurace zdroje",
+      "unauthorized": "klíč odmítnut (401)",
+      "forbidden": "přístup odepřen (403)",
+      "not_found": "zdroj nenalezen (404)",
+      "reset_required": "vyžadován nový počáteční sběr (410)",
+      "rate_limited": "omezení počtu požadavků (429)",
+      "upstream": "chyba na straně Logi",
+      "network": "síťová chyba",
+      "timeout": "vypršel časový limit",
+      "invalid_response": "neplatná odpověď",
+      "redirect": "nepovolené přesměrování",
+      "scope_mismatch": "odpověď pro jiný rozsah",
+      "unknown_outcome": "neznámý výsledek",
+      "persistence": "chyba ukládání ve webu",
+      "unavailable": "zdroj nedostupný",
+      "other": "neznámá chyba ({code})"
     }
   },
   "discord": {
@@ -190,7 +219,17 @@
       "label": "Mapování rolí",
       "count": "{count, plural, one {# mapovaná role} few {# mapované role} many {# mapované role} other {# mapovaných rolí}}",
       "none": "Žádná role není mapována; z Discordu nikdo nezíská oprávnění.",
-      "error": "Mapování neprošlo kontrolou ({error}); žádná role Discordu neuděluje oprávnění."
+      "error": "Mapování neprošlo kontrolou ({label}); žádná role Discordu neuděluje oprávnění.",
+      "errors": {
+        "invalid_json": "neplatný JSON",
+        "not_an_object": "není objekt",
+        "invalid_role_id": "neplatné ID role",
+        "invalid_role": "neznámá role webu",
+        "empty_roles": "prázdný seznam rolí",
+        "invalid_games": "neplatný rozsah her",
+        "too_many_entries": "příliš mnoho položek",
+        "other": "neznámá chyba ({error})"
+      }
     },
     "membership": {
       "label": "Zdroj členství",

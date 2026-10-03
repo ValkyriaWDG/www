@@ -50,8 +50,12 @@ export type AdminGameServers = {
   overview: AdminServerOverview;
 };
 
-/** `configured`: a key is present for a purpose without a scheduled collector (membership reads at sign-in, commands on demand). */
-export type ScopeState = 'not_configured' | 'configured' | 'never_ran' | 'healthy' | 'stale' | 'unavailable';
+/**
+ * `configured`: a key is present for a purpose without a scheduled collector (membership
+ * reads at sign-in, commands on demand). `bootstrapping`: passes ran but none completed
+ * a successful pull yet.
+ */
+export type ScopeState = 'not_configured' | 'configured' | 'never_ran' | 'bootstrapping' | 'healthy' | 'stale' | 'unavailable';
 
 /** Website collector checkpoint of one source/purpose (`logi_sync_scope`), sanitized. */
 export type AdminLogiScope = {
@@ -95,7 +99,6 @@ export type AdminLogiSource = {
   sourceInstanceId: string;
   game: GameRoute;
   guildId: string;
-  originHost: string;
   publishMatches: boolean;
   syncPeople: boolean;
   publicServers: number;
@@ -124,22 +127,26 @@ export type AdminIntegrationHealth = {
   };
 };
 
-/** Collector freshness from the last successful pull, against the public revalidation limit. */
+/**
+ * Collector freshness from the last successful pull, with the same strict limit the public
+ * reads use (`logi-public.ts`): the administration never reads "healthy" while the public
+ * page already drops the projection.
+ */
 export function scopeFreshness(lastSuccessAt: Date | string | null, now: Date, maxAgeMs: number): Freshness {
   if (!lastSuccessAt) return 'unavailable';
   const at = new Date(lastSuccessAt).getTime();
   if (Number.isNaN(at)) return 'unavailable';
-  return now.getTime() - at <= maxAgeMs ? 'fresh' : 'stale';
+  return now.getTime() - at < maxAgeMs ? 'fresh' : 'stale';
 }
 
 /**
- * One badge per purpose. A persisted error supersedes a recent success; an attempt
- * without any success is "never ran" (bootstrap still in progress), never healthy.
+ * One badge per purpose. A persisted error supersedes a recent success; attempts
+ * without any success are "bootstrapping", never healthy.
  */
 export function classifyScopeState(configured: boolean, scope: AdminLogiScope | null): ScopeState {
   if (!configured) return 'not_configured';
   if (!scope || !scope.lastAttemptAt) return 'never_ran';
   if (scope.errorCode) return 'unavailable';
-  if (!scope.lastSuccessAt) return 'never_ran';
+  if (!scope.lastSuccessAt) return 'bootstrapping';
   return scope.freshness === 'fresh' ? 'healthy' : 'stale';
 }

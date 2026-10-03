@@ -11,8 +11,9 @@ describe('collector freshness', () => {
   it('measures the last successful pull against the public revalidation limit', () => {
     expect(scopeFreshness(null, now, limit)).toBe('unavailable');
     expect(scopeFreshness('not a date', now, limit)).toBe('unavailable');
-    expect(scopeFreshness(new Date(now.getTime() - limit), now, limit)).toBe('fresh');
-    expect(scopeFreshness(new Date(now.getTime() - limit - 1), now, limit)).toBe('stale');
+    // Strict like the public reads: at exactly the limit the projection is already dropped.
+    expect(scopeFreshness(new Date(now.getTime() - limit + 1), now, limit)).toBe('fresh');
+    expect(scopeFreshness(new Date(now.getTime() - limit), now, limit)).toBe('stale');
     expect(scopeFreshness(now.toISOString(), now, limit)).toBe('fresh');
   });
 });
@@ -22,7 +23,8 @@ describe('purpose state', () => {
     expect(classifyScopeState(false, scope({}))).toBe('not_configured');
     expect(classifyScopeState(true, null)).toBe('never_ran');
     expect(classifyScopeState(true, scope({ lastAttemptAt: null, lastSuccessAt: null, freshness: 'unavailable' }))).toBe('never_ran');
-    expect(classifyScopeState(true, scope({ lastSuccessAt: null, mode: 'bootstrap', freshness: 'unavailable' }))).toBe('never_ran');
+    expect(classifyScopeState(true, scope({ lastSuccessAt: null, mode: 'bootstrap', freshness: 'unavailable' }))).toBe('bootstrapping');
+    expect(classifyScopeState(true, scope({ lastSuccessAt: null, errorCode: 'timeout', freshness: 'unavailable' }))).toBe('unavailable');
   });
 
   it('lets a persisted error supersede a recent success and ages successes', () => {

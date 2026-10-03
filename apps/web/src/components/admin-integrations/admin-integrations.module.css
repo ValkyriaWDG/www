@@ -185,7 +185,8 @@
 }
 
 .purpose[data-state='stale'],
-.purpose[data-state='never_ran'] {
+.purpose[data-state='never_ran'],
+.purpose[data-state='bootstrapping'] {
   border-left-color: var(--color-warning);
 }
 
@@ -242,6 +243,10 @@
 }
 
 @media (max-width: 767px) {
+  .refresh {
+    min-height: 44px;
+  }
+
   .facts {
     grid-template-columns: minmax(0, 1fr);
     gap: 2px;

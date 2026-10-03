@@ -174,16 +174,17 @@ page never synthesizes a success for them.
 
 | Section | What the state means |
 | --- | --- |
-| Game servers per game | The selected status source (`none`, `crcon`, `logi`, synthetic), a generic configuration error if the source JSON is invalid, the configured public identities (name, public ID, address/statistics presence, Logi publication flag) and the current public overview with per-server freshness and reachability. CRCON base URLs, keys and addresses are not shown. |
+| Game servers per game | The selected status source (`none`, `crcon`, `logi`, synthetic), a generic configuration error if the source JSON is invalid, the configured public identities (name, public ID, address/statistics presence, Logi publication flag) and the current public overview with per-server freshness and reachability. CRCON base URLs, Logi origins, keys and addresses are not shown; a Logi source is identified by instance, guild and game only. |
 | Logi purpose `Nenastaveno` / not configured | No restricted key of the required length for that purpose and game, or its switch (`syncPeople`, `LOGI_EVENT_WRITE_ENABLED`) is off. |
 | `Nastaveno` / configured | A key is present for a purpose without a scheduled collector (membership reads happen at sign-in, commands on demand). |
-| `Zatím neběželo` / never ran | A data/people key exists but `logi_sync_scope` has no attempt yet, or attempts have not produced a successful pull (bootstrap still in progress). |
+| `Zatím neběželo` / never ran | A data/people key exists but `logi_sync_scope` records no attempt yet. |
+| `Zatím bez úspěšného stažení` / no successful pull yet | Passes ran but none completed a successful pull (bootstrap still in progress) and no failure is persisted. |
 | `V pořádku` / healthy | The last successful pull is at most 15 minutes old (the public revalidation limit) and no failure is persisted. |
 | `Zastaralé` / stale | The last successful pull is older than 15 minutes; public projections of that scope are no longer served. |
 | `Nedostupné` / unavailable (code) | `logi_sync_scope.error_code` is set from the last pass (for example `unauthorized`, `rate_limited`, `timeout`); it supersedes a recent success. `nextAttemptAt` shows the persisted backoff. |
 | `Právě běží` / running now | A pass currently holds the lease (`lease_expires_at` in the future). |
 | Confirmed capabilities | The `integration-health` rows of the active data generation, as reported by the producer: provider, enabled flag, capabilities, freshness, collected sessions and error category. "Unknown" means no successful pull has stored such a report; it is neither success nor failure. |
-| Webhooks / commands | Intake and write switches, the number of unprocessed hints in `logi_inbox`, the last receipt/processing time, pending commands in `logi_command` and the last receipt time. Aggregates only; no payloads, IDs or author identities. |
+| Webhooks / commands | Intake and write switches, the number of unprocessed hints in `logi_inbox` with the last receipt/processing time, pending commands in `logi_command` and the last outcome time (latest update of a confirmed or rejected command, not the receipt of the newest request). Aggregates only; no payloads, IDs or author identities. |
 | Discord | Whether the guild/bot pair is configured, the number of mapped role IDs (or the generic mapping error) and the selected membership source. |
 
 The same page holds the website-owned **server presentation** (`servers.presentation`

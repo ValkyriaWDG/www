@@ -81,7 +81,7 @@ describe('integration health for administrators', () => {
     const dto = await getIntegrationHealthForAdmin(database.db, actors.administrator, env, now, { overview: readOverview });
     expect(dto.logi.sso).toEqual({ enabled: true, configured: true, discordFallback: false });
     expect(dto.logi.membershipSource).toBe('logi');
-    expect(dto.logi.sources.map((source) => [source.game, source.originHost, source.publicServers, source.publishedServers])).toEqual([['hll', 'logi.example.test', 0, 0], ['wardogs', 'logi.example.test', 2, 1]]);
+    expect(dto.logi.sources.map((source) => [source.game, source.sourceInstanceId, source.guildId, source.publicServers, source.publishedServers])).toEqual([['hll', 'primary-logi', '100000000000000001', 0, 0], ['wardogs', 'primary-logi', '100000000000000001', 2, 1]]);
     const hll = dto.logi.sources[0]!;
     expect(hll.purposes.map((purpose) => [purpose.purpose, purpose.enabled, purpose.configured, purpose.state, purpose.health])).toEqual([
       ['data', true, true, 'never_ran', null],
@@ -92,6 +92,15 @@ describe('integration health for administrators', () => {
     const wardogs = dto.logi.sources[1]!;
     expect(wardogs.purposes.find((purpose) => purpose.purpose === 'people')).toMatchObject({ enabled: true, configured: true, state: 'never_ran' });
     expect(wardogs.purposes.find((purpose) => purpose.purpose === 'membership')).toMatchObject({ enabled: true, configured: false, state: 'not_configured' });
+    // Membership reads are disabled while Discord is the membership source, even with a key present.
+    const discordMembership = await getIntegrationHealthForAdmin(database.db, actors.administrator, { ...env, LOGI_MEMBERSHIP_SOURCE: 'discord' }, now, { overview: readOverview });
+    expect(discordMembership.logi.sources[0]!.purposes.find((purpose) => purpose.purpose === 'membership')).toMatchObject({ enabled: false, configured: false, state: 'not_configured' });
+    expect(discordMembership.logi.membershipSource).toBe('discord');
+    // A bootstrap with attempts but no completed pull is neither "never ran" nor healthy.
+    const hllData = scopeFor('hell_let_loose', 'data');
+    await database.db.insert(logiSyncScope).values({ scopeKey: hllData.scopeKey, sourceInstanceId: hllData.sourceInstanceId, guildId: hllData.guildId, gameId: hllData.gameId, checkpoint: { version: 1, mode: 'bootstrap', generation: 'shadow', resourceIndex: 0, listCursor: null, boundaryCursor: 'b', cursor: 'c' }, version: 1, lastAttemptAt: minutes(-1) });
+    const bootstrapping = await getIntegrationHealthForAdmin(database.db, actors.administrator, env, now, { overview: readOverview });
+    expect(bootstrapping.logi.sources[0]!.purposes[0]).toMatchObject({ purpose: 'data', state: 'bootstrapping', scope: { mode: 'bootstrap', lastSuccessAt: null, freshness: 'unavailable' }, health: null });
     expect(dto.logi.webhooks).toEqual({ enabled: true, pendingHints: 0, lastReceivedAt: null, lastProcessedAt: null });
     expect(dto.logi.commands).toEqual({ enabled: false, pending: 0, lastReceiptAt: null });
     expect(dto.discord).toEqual({ guildConfigured: true, roleMappingConfigured: true, mappedRoles: 2, roleMappingError: null, membershipSource: 'logi' });
@@ -150,6 +159,9 @@ describe('integration health for administrators', () => {
         { publicId: 'community-two', name: 'Community two', published: false, hasAddress: false, hasStatsUrl: true, origin: 'logi' },
       ], overview: { state: 'unavailable', attemptedAt: now.toISOString(), servers: [] } },
     ]);
+    // Wardogs inheriting the HLL-only CRCON source has no source of its own.
+    const inherited = await getIntegrationHealthForAdmin(database.db, actors.administrator, { ...env, SERVER_STATUS_SOURCE_WDG: undefined }, now, { overview: readOverview });
+    expect(inherited.servers[1]).toMatchObject({ game: 'wardogs', source: 'none', configError: null, configured: [] });
     const broken = await getIntegrationHealthForAdmin(database.db, actors.administrator, { ...env, HLL_SERVER_SOURCES_JSON: '{not json', SERVER_STATUS_SOURCE_WDG: 'synthetic-fixture' }, now, { overview: async () => { throw new Error('provider exploded'); } });
     expect(broken.servers[0]).toMatchObject({ source: 'crcon', configError: 'invalid_json', configured: [], overview: { state: 'unavailable', servers: [] } });
     expect(broken.servers[1]).toMatchObject({ source: 'synthetic-fixture', configured: [{ publicId: 'synthetic-wardogs', origin: 'synthetic' }] });
@@ -164,7 +176,7 @@ describe('integration health for administrators', () => {
     await database.db.insert(logiSyncScope).values({ scopeKey: hllData.scopeKey, sourceInstanceId: hllData.sourceInstanceId, guildId: hllData.guildId, gameId: hllData.gameId, version: 0, lastAttemptAt: minutes(-1), errorCode: 'upstream' });
     const dto = await getIntegrationHealthForAdmin(database.db, actors.administrator, env, now, { overview: readOverview });
     const json = JSON.stringify(dto);
-    for (const secret of [HLL_KEY, WDG_KEY, PEOPLE_KEY, MEMBERSHIP_KEY, CRCON_BASE, LOGI_ORIGIN, 'https://', 'crcon-stats-key', 'synthetic-client-secret', 'synthetic-bot-token', 'one.example.invalid:7777', 'play.example.invalid', hllData.scopeKey, 'leaseToken']) {
+    for (const secret of [HLL_KEY, WDG_KEY, PEOPLE_KEY, MEMBERSHIP_KEY, CRCON_BASE, LOGI_ORIGIN, 'logi.example.test', 'crcon-private', 'https://', 'crcon-stats-key', 'synthetic-client-secret', 'synthetic-bot-token', 'one.example.invalid:7777', 'play.example.invalid', hllData.scopeKey, 'leaseToken']) {
       expect(json, secret).not.toContain(secret);
     }
     expect(JSON.parse(json)).toEqual(dto);

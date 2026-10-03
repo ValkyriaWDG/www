@@ -108,7 +108,6 @@
     "source": {
       "instance": "Instance",
       "guild": "Discord guild",
-      "host": "Logi host",
       "publishMatches": "Match publication",
       "syncPeople": "People synchronisation",
       "publicServers": "Public servers",
@@ -127,11 +126,12 @@
       "not_configured": "Not configured",
       "configured": "Configured",
       "never_ran": "Never ran",
+      "bootstrapping": "No successful pull yet",
       "healthy": "Healthy",
       "stale": "Stale",
       "unavailable": "Unavailable"
     },
-    "errorCode": "error {code}",
+    "errorCode": "error: {label}",
     "disabledBySwitch": "disabled by configuration",
     "leaseActive": "Running now",
     "mode": {
@@ -158,7 +158,18 @@
       "enabled": "Enabled",
       "disabled": "Disabled",
       "sessions": "{count, plural, one {# collected session} other {# collected sessions}}",
-      "error": "error {category}"
+      "error": "error: {label}",
+      "errorCategories": {
+        "timeout": "timed out",
+        "network": "network error",
+        "rate_limited": "rate limited",
+        "unauthorized": "access denied",
+        "invalid_response": "invalid response",
+        "unsupported": "unsupported",
+        "configuration": "configuration error",
+        "not_listed": "server not listed",
+        "other": "unknown error ({category})"
+      }
     },
     "webhooks": {
       "label": "Webhooks",
@@ -176,6 +187,24 @@
       "pending": "{count, plural, one {# pending} other {# pending}}",
       "lastReceipt": "last receipt {time}",
       "none": "no commands yet"
+    },
+    "errorCodes": {
+      "configuration": "invalid source configuration",
+      "unauthorized": "key rejected (401)",
+      "forbidden": "access denied (403)",
+      "not_found": "resource not found (404)",
+      "reset_required": "new initial import required (410)",
+      "rate_limited": "rate limited (429)",
+      "upstream": "error on the Logi side",
+      "network": "network error",
+      "timeout": "timed out",
+      "invalid_response": "invalid response",
+      "redirect": "redirect not allowed",
+      "scope_mismatch": "response for another scope",
+      "unknown_outcome": "unknown outcome",
+      "persistence": "website storage error",
+      "unavailable": "source unavailable",
+      "other": "unknown error ({code})"
     }
   },
   "discord": {
@@ -190,7 +219,17 @@
       "label": "Role mapping",
       "count": "{count, plural, one {# mapped role} other {# mapped roles}}",
       "none": "No role is mapped; nobody gains permissions from Discord.",
-      "error": "The mapping failed validation ({error}); no Discord role grants permissions."
+      "error": "The mapping failed validation ({label}); no Discord role grants permissions.",
+      "errors": {
+        "invalid_json": "invalid JSON",
+        "not_an_object": "not an object",
+        "invalid_role_id": "invalid role ID",
+        "invalid_role": "unknown website role",
+        "empty_roles": "empty role list",
+        "invalid_games": "invalid game scope",
+        "too_many_entries": "too many entries",
+        "other": "unknown error ({error})"
+      }
     },
     "membership": {
       "label": "Membership source",

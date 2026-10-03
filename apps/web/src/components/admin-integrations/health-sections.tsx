@@ -13,8 +13,13 @@ import styles from './admin-integrations.module.css';
  * about the hosted Logi runtime or its Discord connection.
  */
 
-const STATE_KIND: Record<ScopeState, StatusKind> = { not_configured: 'neutral', configured: 'info', never_ran: 'warning', healthy: 'success', stale: 'warning', unavailable: 'danger' };
+const STATE_KIND: Record<ScopeState, StatusKind> = { not_configured: 'neutral', configured: 'info', never_ran: 'warning', bootstrapping: 'warning', healthy: 'success', stale: 'warning', unavailable: 'danger' };
 const KNOWN_CAPABILITIES = new Set(['server_snapshot', 'match_history']);
+/** Bounded machine codes with localized labels; anything else falls back to the generic entry. */
+const LOGI_ERROR_CODES = ['configuration', 'unauthorized', 'forbidden', 'not_found', 'reset_required', 'rate_limited', 'upstream', 'network', 'timeout', 'invalid_response', 'redirect', 'scope_mismatch', 'unknown_outcome', 'persistence', 'unavailable'] as const;
+const HEALTH_ERROR_CATEGORIES = ['timeout', 'network', 'rate_limited', 'unauthorized', 'invalid_response', 'unsupported', 'configuration', 'not_listed'] as const;
+const MAPPING_ERRORS = ['invalid_json', 'not_an_object', 'invalid_role_id', 'invalid_role', 'empty_roles', 'invalid_games', 'too_many_entries'] as const;
+const known = <T extends string>(values: readonly T[], value: string): value is T => (values as readonly string[]).includes(value);
 
 function Fact({ label, children }: { label: ReactNode; children: ReactNode }) {
   return (
@@ -30,6 +35,9 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
   const tGames = await getTranslations({ locale, namespace: 'adminIntegrations.games' });
   const when = (value: string | null) => (value ? formatDate(value, locale, 'dateTimeZone') : t('logi.never'));
   const onOff = (value: boolean) => (value ? t('logi.source.on') : t('logi.source.off'));
+  const errorCodeLabel = (code: string) => (known(LOGI_ERROR_CODES, code) ? t(`logi.errorCodes.${code}`) : t('logi.errorCodes.other', { code }));
+  const errorCategoryLabel = (category: string) => (known(HEALTH_ERROR_CATEGORIES, category) ? t(`logi.health.errorCategories.${category}`) : t('logi.health.errorCategories.other', { category }));
+  const mappingErrorLabel = (error: string) => (known(MAPPING_ERRORS, error) ? t(`discord.mapping.errors.${error}`) : t('discord.mapping.errors.other', { error }));
   const { logi, discord } = health;
 
   const purposeDetails = (purpose: AdminLogiPurpose) => {
@@ -104,9 +112,6 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
                 <Fact label={t('logi.source.guild')}>
                   <span className={styles.code}>{source.guildId}</span>
                 </Fact>
-                <Fact label={t('logi.source.host')}>
-                  <span className={styles.code}>{source.originHost}</span>
-                </Fact>
                 <Fact label={t('logi.source.publishMatches')}>{onOff(source.publishMatches)}</Fact>
                 <Fact label={t('logi.source.syncPeople')}>{onOff(source.syncPeople)}</Fact>
                 <Fact label={t('logi.source.publicServers')}>{t('logi.source.publicServersValue', { published: source.publishedServers, total: source.publicServers })}</Fact>
@@ -123,7 +128,7 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
                         <StatusBadge kind={STATE_KIND[purpose.state]}>{t(`logi.state.${purpose.state}`)}</StatusBadge>
                         {purpose.scope?.errorCode ? (
                           <StatusBadge kind="danger" icon={false}>
-                            {t('logi.errorCode', { code: purpose.scope.errorCode })}
+                            {t('logi.errorCode', { label: errorCodeLabel(purpose.scope.errorCode) })}
                           </StatusBadge>
                         ) : null}
                         {purpose.scope?.leaseActive ? <StatusBadge kind="accent">{t('logi.leaseActive')}</StatusBadge> : null}
@@ -152,7 +157,7 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
                                   {row.capabilities.length === 0 ? t('logi.health.noCapabilities') : row.capabilities.map((capability) => (KNOWN_CAPABILITIES.has(capability) ? t(`logi.health.capabilities.${capability as 'server_snapshot' | 'match_history'}`) : capability)).join(', ')}
                                   {row.collectedSessions !== null ? ` · ${t('logi.health.sessions', { count: row.collectedSessions })}` : ''}
                                   {row.lastSuccessAt ? ` · ${t('logi.lastSuccessAt')}: ${when(row.lastSuccessAt)}` : ''}
-                                  {row.errorCategory ? ` · ${t('logi.health.error', { category: row.errorCategory })}` : ''}
+                                  {row.errorCategory ? ` · ${t('logi.health.error', { label: errorCategoryLabel(row.errorCategory) })}` : ''}
                                 </span>
                               </li>
                             ))}
@@ -180,7 +185,7 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
           </Fact>
           <Fact label={t('discord.mapping.label')}>
             {discord.roleMappingError ? (
-              <StatusBadge kind="danger">{t('discord.mapping.error', { error: discord.roleMappingError })}</StatusBadge>
+              <StatusBadge kind="danger">{t('discord.mapping.error', { label: mappingErrorLabel(discord.roleMappingError) })}</StatusBadge>
             ) : discord.roleMappingConfigured ? (
               <StatusBadge kind="success">{t('discord.mapping.count', { count: discord.mappedRoles })}</StatusBadge>
             ) : (
