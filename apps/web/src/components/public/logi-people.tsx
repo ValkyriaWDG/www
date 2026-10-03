@@ -138,7 +138,7 @@ export async function LogiTeamScreen({
             </table>
           </div>
         ) : (
-          {empty}
+          empty
         )}
         {view.members.flatMap((member) => member.statistics ? [
           <details key={member.memberId} className={styles.statistics}>
@@ -171,7 +171,7 @@ export async function LogiTeamScreen({
               </article>
             ))
           ) : (
-            {empty}
+            empty
           )}
         </div>
       </SectionFrame>
@@ -204,7 +204,7 @@ export async function LogiTeamScreen({
             </table>
           </div>
         ) : (
-          {empty}
+          empty
         )}
       </SectionFrame>
     </div>
