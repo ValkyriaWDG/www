@@ -91,8 +91,13 @@ not activated; the hosted producer must serve the route and the key must carry t
 explicit `server-game-history` grant before anything real is read; no recorded hosted
 response exists; the change feed, `id` reads and persistence are not used (complete
 cached reads per process); the ranking cap of 50 rows and the `players=all` toggle are
-exercised by unit tests and the URL only (24 synthetic players). Still to run by the
-orchestrator: the full browser and PostgreSQL suites, review captures and the PR.
+exercised by unit tests and the URL only (24 synthetic players). After merging main
+`f26c235` (UI round 13) into the branch, the full browser suite passed 271 tests (131 opt-in captures skipped) on the merged
+head `4ef415f`, the PostgreSQL suite 514 tests (50 files) (isolated `valkyria_test_history`) and
+`pnpm test:unit` 1145 tests (106 files); lint, typecheck, foundation and build passed. Captioned review
+captures are in the [Warcon history evidence](evidence/warcon-history-2026-10-03/README.md).
+Next: PR, latest-head CI, merge and publication; hosted activation stays behind the gate
+above.
 
 ## Public and administration UI round 13 — 2026-10-03
 
