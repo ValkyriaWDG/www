@@ -1,5 +1,91 @@
 # Current status
 
+## Public and administration UI round 13 — 2026-10-03
+
+A functional audit of main `85c5737` (the PR #96 merge) walked the administration
+workflows as the role would and checked the public result: FAQ (editor: add/remove
+questions, save, preview, publish Czech and English, `/cs/faq`, `/cs/hll/faq`, `/en/hll/faq`,
+manual search), Field Manual (editor: new article, metadata, category, publish Czech,
+English translation, public list/detail/search, archive/unarchive), news (editor: cover
+and inline image, category/tags/game, schedule and cancel, preview, publish, sharing
+meta, list filters and row actions), media (editor: upload, details, delete, blocked
+delete of a referenced image), server presentation (administrator: rename, hide,
+reorder, public servers pages, polling, hidden detail), taxonomy (editor: create/edit/
+archive/restore/delete for manual categories, news categories and tags, blocked delete
+with references), members (administrator: new profile with avatar, consent, publish,
+public lists and profile, hide, Logi associations), matches and tournaments (match
+manager: Wardogs match with League URL, HLL match with rounds, verified result, VOD
+links, scoreboard upload and CRCON import by game id, tournament with links and a
+linked match, public lists/details, `/admin/matches/logi`), settings (administrator:
+Discord invite, community links, background media, public footer/community page) and
+account (member: `/account`, `/account/security`, `/login/recovery`, sign-out, denied
+states for member and editor), in cs at 1440 and en at 390 px, plus static passes
+(axe, console/page errors, overflow, raw keys, sub-44 px controls) on the routes no
+round covered: `/admin/news` with filters, `/admin/matches/new`, `/admin/manual/new`,
+`/admin/matches/logi`, `/admin/members/logi` (with and without a profile), the news,
+manual and page previews, `/login/recovery` and the other admin lists at 1440, 1024 and
+390 px in cs/en (captures under the gitignored `.local/audit/r13/`). The public Logi
+match detail has no fixture (`LOGI_SOURCES_JSON` is empty in the e2e environment) and
+`/login/recovery` is a designed 404 there; the media library has no "replace file"
+action, so that step is N/A.
+
+Of 11 findings, 9 are fixed on `feat/hll-platform-handoff`:
+
+- A Field Manual article without a table of contents (one heading or none) fell into
+  the 220–280 px navigation track of the article grid at 1024 px and above: the text
+  panel was ~250 px wide and every "Zdroj a autoři" value broke one character per line.
+  `.articleLayout` without `data-manual-toc-present` is a single reading column.
+- A denied admin page kept the module's `<title>` ("Správa novinek", "Zápasy · Správa").
+  `adminPageMetadata` (`modules/auth/admin-guard.tsx`) makes the same decision as
+  `requireAdminPage` from the request-cached actor and returns "Přístup odepřen /
+  Access denied"; every admin page's `generateMetadata` uses it.
+- The Logi profile association editor used native 13 px checkboxes; it uses the shared
+  labelled `Checkbox` (24 px control in a 44 px row). `/admin/matches/logi` and
+  `/admin/members/logi` carry their own titles (`logi.metaTitle`,
+  `logiPeople.linkMetaTitle`); the disabled `/login/recovery` 404 no longer announces
+  "Obnovení přístupu správce" in its metadata.
+- `SelectionTable` (admin lists, public rosters, match and tournament tables) wraps its
+  region in the round-12 `ScrollRegion`, so a table wider than the viewport (the news
+  list at 1024 px hides its actions column) fades its trailing edge until scrolled.
+- Community links on `/community` are 44 px targets on phones (the link, not only its
+  row). The schedule-cancel dialog's safe choice reads "Ponechat plán / Keep schedule"
+  instead of a second "Zrušit" beside "Zrušit plán" (`ConfirmDialog` `cancelLabel`).
+- Rounds editor: moving a round to the first or last position dropped keyboard focus to
+  the body (the moved row's own button becomes disabled); the focus falls back to the
+  opposite button, then the row's first input.
+
+Open: the upload progress list of the media library still shows a deleted file as
+"Připraveno" (per-session upload state, cosmetic), and switching the editor's content
+language logs three `linkifyjs: already initialized` console warnings from the Tiptap
+link extension (no functional effect). Everything else walked through correctly:
+validation and server errors are localized and keep entered values, hidden servers have
+no public detail ("Vybraný server už v seznamu není"), the server browser polls
+`/api/servers/hll` every 30 s, deletion of a referenced taxonomy term is disabled with
+the reason, publication without member consent is refused server-side, the League URL
+accepts only `https://wardogsleague.net/matches/<id>`, no axe violation, hydration or
+page error appeared on any of the 204 static and 182 walkthrough captures.
+
+Commands and results on the branch head (Node 22.22.2 in this container; the
+repository asks for Node 24): `pnpm lint` passed, `pnpm typecheck` passed,
+`pnpm test:unit` 1041 tests passed (97 files), `node scripts/check-foundation.mjs`
+passed (2987 files), `pnpm build` passed; no PostgreSQL test file was touched.
+Targeted browser specs against the standalone build (`CI=true`, chromium 1194):
+`auth` 17 passed (`--project=chromium`); `admin-manual`, `admin-shell-layout`,
+`admin-community-matches`, `admin-community-settings` and `admin-editorial-posts` 27 passed
+(`--project=chromium-admin --no-deps`). The new assertions cover the denied-page titles (member and editor), the
+recovery 404 body, the 1024 px news list fade and reachable row actions, the Logi page
+titles and the shared checkbox in the Logi association editor, the "Ponechat plán"
+safe choice, the short-article reading column and provenance width on the public
+manual page, the 44 px community link on a phone and the rounds-editor focus after a
+move; `dialogs.test.tsx` covers the dialog's cancel label. The audit scripts
+(`.local/audit/r13/signed-r13.ts`, `audit-r13.mjs`, `walkthrough-r13.ts`, ids resolved
+from the database at runtime) rerun on the fixed build report no axe violation, page error, raw key or
+overflow on 204 static and 202 walkthrough captures and show the fixed behaviour in the
+browser (provenance column 416 px at 1440, "Ponechat plán / Keep schedule", focus on the
+moved round's button, the denied and Logi titles). Still to run by
+the orchestrator: the full browser and PostgreSQL suites, the audit rerun with
+before/after captures for the evidence folder, and the PR.
+
 ## Public and administration UI round 12 — 2026-10-03
 
 An audit of main `22034ca` (the PR #95 merge) covered the public HLL/Wardogs match
