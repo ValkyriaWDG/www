@@ -19,7 +19,7 @@ not an implemented migration or an instruction to duplicate existing production 
 | ContentRevision | Exact translation ID + locale, immutable schema-versioned rich-text JSON and title/excerpt/slug/cover/alt/caption/taxonomy-label/author/SEO metadata snapshot, actor, createdAt; restoring creates a draft in the same translation |
 | PublicationSchedule | Exact translation ID + locale + immutable revision, dueAt, issuer/grant ID+version, exact resource/capability and delegation assurance metadata, pending/claimed/blocked/completed/cancelled/failed, claim lease/attempt metadata, idempotency key and audit reference |
 | SlugRedirect | Locale + route namespace + previous published slug -> stable entity/translation identity, bounded redirect to its current published slug without loops |
-| TaxonomyTerm | Stable category/tag key and localized draft/approved labels; a post revision snapshots the selected keys and effective localized labels |
+| TaxonomyTerm | Stable immutable category/tag key, localized labels and descriptions, admin order and archive timestamp; a post revision snapshots the selected keys and effective localized labels. Field Manual categories use the per-game `manual_category` table with the same fields |
 | Game | Stable slug `wardogs` / `hell-let-loose`, display label |
 | Match | Shared game, opponent name/code/asset, competition/type/season, format/bestOf/teamSize, startsAt, display time zone, scheduled/live/completed/postponed/cancelled, global draft/published gate and version |
 | MatchTranslation | Unique `(matchId, locale)`; optional preview/recap with independent immutable draft/published revisions and localized media presentation; does not duplicate match facts |

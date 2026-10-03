@@ -1,5 +1,42 @@
 # Current status
 
+## Taxonomy administration (#86) — 2026-10-03
+
+Branch `feat/taxonomy-admin` (on main `c232cdb`) adds **Kategorie a štítky / Categories
+and tags** at `/[locale]/admin/taxonomy`: Field Manual categories per game scope
+(`/admin/taxonomy/manual/hll/<id|new>`, HLL `content.edit`) and shared news
+categories/tags (`/admin/taxonomy/news-category|news-tag/<id|new>`, platform-wide
+`content.edit`), with immutable keys, bilingual labels and descriptions, order,
+optimistic concurrency, archive/restore, reference-aware delete and audit rows
+(`taxonomy.*`). A key counts as referenced by a document's current draft fields and by
+the published revisions of its translations, so a category moved in a draft cannot be
+deleted while the public article still sits under it. Additive migration
+`0011_taxonomy_admin` (order, descriptions and archive columns, description length
+checks). Public manual lists, category cards and article headers read live category
+labels; news labels apply to public filters while article snapshots change on the next
+publication. Workflow and semantics are in the
+[editor guide](operations/editor-guide.md#categories-and-tags) and the
+[taxonomy module](../apps/web/src/modules/taxonomy/README.md).
+
+An independent review corrected the reference counting (published revisions), limited
+manual scopes to games with a Field Manual and the version comparison, and fixed the
+key field spanning the form grid. The full browser suite then showed that the extra
+module pushed the English account links of the administration bar onto a second row at
+1920 px; `c37f5af` keeps the module list on its own row at every width. On `c37f5af`
+lint, typecheck and the optimized build passed with 935 unit, __INTEGRATION__ PostgreSQL
+and 223 + 178 browser tests (the full run on `6f9411d` with the one layout failure, then
+the rerun with the fix; 99 opt-in captures skipped); the seven inspected CS/EN captures
+are in the [evidence](evidence/taxonomy-admin-2026-10-03/README.md). Local synthetic
+verification only. Two opt-in capture tests (`visual.spec.ts` hub focus on the Discord
+action, `visual-hll.spec.ts` players statistics at 390×844) fail in capture mode on this
+branch and on main alike; they are not in CI and go to the next UI round. Next: PR #91
+latest-head CI, merge and publication.
+
+Publication of main `c232cdb`: the first run (37129342056) failed in
+`pnpm test:integration` on a racy membership test, fixed in PR #90 without touching
+application code; the re-run 37129666730 passed verification and its publish job waits
+for the environment approval.
+
 ## Public and administration UI round 10 — 2026-10-03
 
 An audit of main `4946cea` (the PR #88 merge) covered the surfaces added since round 9:
