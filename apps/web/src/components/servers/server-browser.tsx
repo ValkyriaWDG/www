@@ -15,11 +15,12 @@ import { hllMapArtwork } from '@/modules/games/hll-maps';
 import { gamePath } from '@/modules/games/routes';
 import type { Freshness, ServerSnapshot } from '@/modules/integrations/contract';
 import type { ServerBrowserData } from '@/modules/integrations/servers/browser';
-import { parseServerParam, populationParts, resolveSelection } from '@/modules/integrations/servers/view';
+import { parseServerParam, populationParts, resolveSelection, warconFor } from '@/modules/integrations/servers/view';
 import { CopyAddress } from './copy-address';
 import { LivePlayersTable } from './live-players-table';
 import { TeamScores } from './team-scores';
 import { useServerPolling } from './use-server-polling';
+import { WarconPanel } from './warcon-panel';
 import styles from './servers.module.css';
 
 const FRESHNESS_KIND: Record<Freshness, StatusKind> = { fresh: 'success', stale: 'warning', unavailable: 'neutral' };
@@ -42,6 +43,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
   const servers = overview.state === 'not_configured' ? [] : overview.servers;
   const selection = resolveSelection(servers, selectedParam);
   const selected = selection.kind === 'selected' ? selection.server : null;
+  const warcon = game === 'wardogs' && selected ? warconFor(poll.data, selected.publicId) : null;
 
   const dash = (
     <>
@@ -288,6 +290,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
         ) : null}
       </div>
       {game === 'hll' && selected && livePlayers?.publicId === selected.publicId ? <LivePlayersTable snapshot={livePlayers} locale={locale} serverName={selected.name} connectedPlayers={selected.freshness === 'fresh' ? selected.players : null} /> : null}
+      {warcon && selected ? <WarconPanel entry={warcon} locale={locale} serverName={selected.name} /> : null}
     </PageMain>
   );
 }

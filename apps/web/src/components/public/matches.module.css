@@ -921,3 +921,23 @@ span.teamMark {
     justify-self: center;
   }
 }
+
+/* League preview (Wardogs): full width below the detail; unverified state, never a result. */
+.league { grid-column: 1 / -1; min-width: 0; }
+.leagueNote { margin: 0; color: var(--color-text-muted); font-size: var(--text-small); }
+.leagueFacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--space-2) var(--space-3); margin: 0; }
+.leagueFacts > div { min-width: 0; border-left: 2px solid var(--color-border-strong); padding-left: var(--space-2); }
+.leagueFacts dt { color: var(--color-text-muted); font-size: var(--text-small); }
+.leagueFacts dd { margin: 0; overflow-wrap: anywhere; }
+.leagueWide { grid-column: 1 / -1; }
+.leagueTitle { font-family: var(--font-display); font-size: 1.125rem; }
+.leagueTeams { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none; }
+.leagueTeams li { display: inline-flex; align-items: baseline; gap: var(--space-2); }
+.leagueTeamCode { font-family: var(--font-display); font-weight: 600; letter-spacing: var(--tracking-meta); }
+.leagueProgress { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+.leagueProgress li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); min-width: 0; }
+.leagueStepLabel { font-weight: 600; }
+.leagueStepDetail { color: var(--color-text-muted); font-size: var(--text-small); }
+.leagueMeta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-meta); }
+.leagueUnavailable { margin: 0; }
+.leagueSource { margin: var(--space-3) 0 0; }

@@ -1,5 +1,38 @@
 # Current status
 
+## Approved Logi readers: League preview and Warcon — 2026-10-03
+
+Branch `feat/logi-readers` (merged with main `2faf14a`) implements
+[issue #87](https://github.com/ValkyriaWDG/www/issues/87) against Logi PR #158 at
+`c42ea770c307793494ae159a924f86e3c6ced50d`: server-only `league-matches` and
+`warcon-data` readers with their own Wardogs keys (`LOGI_LEAGUE_API_KEY_WDG`,
+`LOGI_WARCON_API_KEY_WDG`), approved `warconConnections` under published servers,
+closed wire schemas for the League read and the Warcon `live`/`matches` views, an
+in-process last-known cache per URL/connection with `Retry-After`/`nextRefreshAt`
+backoff, minimal public DTOs (no player rows, Steam IDs, panel/join identifiers or
+connection IDs), a `readerCapabilityStates(env)` health read model for #22, the
+editorial `match.league_match_url` column (`0012_league_match_url`, Wardogs-only check),
+the match editor field, the "League preview" section on Wardogs match pages, and
+"Live (Warcon)" plus "Recent matches" on the Wardogs server detail (the home overview
+stays unchanged so the utility rail fits short windows).
+The shared bounded transport was extracted from the collection client without
+behaviour change. See the
+[readers README](../apps/web/src/modules/integrations/logi/readers/README.md),
+[readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states)
+and [runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
+
+On `1342841` (merged with main `86b6061`) lint, typecheck and the optimized build passed
+with 1033 unit, 513 PostgreSQL and 237 browser tests (107 opt-in captures
+skipped); the first full browser run had put the Warcon panel on the Wardogs home as
+well, which broke the short-window layout, so the panel stays on the server detail only.
+Eight inspected CS/EN captures of the server detail and the match page at 1440 and 390 px
+plus the administration page with the readers block are in the
+[evidence](evidence/logi-readers-2026-10-03/README.md). The browser environment uses
+`LOGI_READERS_SOURCE=synthetic-fixture`: this is local synthetic proof, not hosted
+acceptance; the operator questions before activation are in the readiness map. Next: PR,
+latest-head CI, merge and publication; then the hosted keys, connection ids and the
+deployed producer revision from the operator.
+
 ## Integration health administration — 2026-10-03
 
 Branch `feat/integrations-admin` (merged with main `dbef6e0`) adds the read-only part of
@@ -29,8 +62,9 @@ PostgreSQL and 227 browser tests (99 opt-in captures skipped); four inspected CS
 captures are in the [evidence](evidence/integrations-admin-2026-10-03/README.md). Local
 synthetic verification only: no Logi source is configured in the e2e environment, so the
 Logi states are proven by seeded PostgreSQL cases. Logi settings writes, hosted runtime
-facts and production activation stay out of scope. Next: PR, latest-head CI, merge and
-publication; the Logi readers (#87) add their capability states to this page.
+facts and production activation stay out of scope. Merged as `86b6061` (PR #93); the
+publication of that main passed verification and its publish job waits for the
+environment approval. The Logi readers (#87) add their capability states to this page.
 
 ## Taxonomy administration (#86) — 2026-10-03
 

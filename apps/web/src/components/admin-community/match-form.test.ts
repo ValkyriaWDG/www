@@ -46,6 +46,7 @@ const baseMatch = {
   bestOf: 3,
   teamSize: null,
   eventUrl: null,
+  leagueMatchUrl: null,
   vodLinks: [{ url: 'https://example.org/vod', label: 'VOD' }],
   coverAssetId: null,
   internalNotes: 'private',

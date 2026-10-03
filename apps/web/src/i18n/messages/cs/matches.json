@@ -131,7 +131,69 @@
       "axis": "Osa"
     },
     "mapImageAlt": "{map} – herní scéna mapy (ilustrační)",
-    "tacticalMap": "Taktická mapa {map} ({size} kB)"
+    "tacticalMap": "Taktická mapa {map} ({size} kB)",
+    "league": {
+      "title": "Náhled z League",
+      "matchTitle": "Utkání",
+      "note": "Neověřený náhled z Wardogs League. Zobrazuje jen zveřejněný stav utkání; výsledek výše je výsledek zapsaný klanem.",
+      "synthetic": "Syntetická ukázková data z League – nejde o skutečné utkání.",
+      "unavailable": "Náhled z League není k dispozici.",
+      "stale": "Náhled může být zastaralý.",
+      "observed": "Pozorováno {time}",
+      "fixture": "Utkání č. {number}",
+      "type": "Typ",
+      "status": "Stav",
+      "scheduled": "Naplánováno",
+      "teams": "Týmy",
+      "map": "Mapa",
+      "zone": "Zóna",
+      "lighting": "Osvětlení",
+      "hosting": "Hostování",
+      "hostingValue": "{mode} · {team}",
+      "mapVote": "Hlasování o mapě",
+      "mapVoteCloses": "{status} · končí {time}",
+      "progress": "Postup",
+      "progressState": {
+        "done": "Hotovo",
+        "current": "Právě probíhá",
+        "not_started": "Nezačalo",
+        "unknown": "Neznámé"
+      },
+      "source": "Otevřít ve Wardogs League",
+      "values": {
+        "status": {
+          "scheduled": "Naplánováno",
+          "live": "Živě",
+          "completed": "Dokončeno",
+          "cancelled": "Zrušeno"
+        },
+        "type": {
+          "friendly": "Přátelský",
+          "league": "Liga",
+          "cup": "Pohár",
+          "tournament": "Turnaj"
+        },
+        "hosting": {
+          "self_hosted": "Vlastní hostování",
+          "league_hosted": "Hostuje League"
+        },
+        "mapVote": {
+          "open": "Otevřené",
+          "closed": "Uzavřené"
+        },
+        "progress": {
+          "locked": "Uzamčeno",
+          "rules_agreed": "Pravidla dohodnuta",
+          "map_vote": "Hlasování o mapě",
+          "moderator_claimed": "Moderátor přidělen",
+          "host_server": "Hostitelský server",
+          "ready_check": "Kontrola připravenosti",
+          "live": "Živě",
+          "placements": "Umístění",
+          "confirmed": "Potvrzeno"
+        }
+      }
+    }
   },
   "legacy": {
     "title": "Podrobnosti zápasu",

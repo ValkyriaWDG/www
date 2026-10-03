@@ -11,10 +11,14 @@ import { TeamScores } from './team-scores';
 import { useServerPolling } from './use-server-polling';
 import styles from './server-summary.module.css';
 
-/** The Wardogs menu uses the same scoped, ageing public read model as its server browser. */
+/**
+ * The Wardogs menu uses the same scoped, ageing public read model as its server browser.
+ * Warcon facts carried by the polling route are not rendered here: the home keeps the
+ * compact overview so the utility rail stays within short windows (shell layout spec).
+ */
 export function ServerSummary({ initialOverview, locale }: { initialOverview: ServerOverview; locale: AppLocale }) {
   const t = useTranslations('games.servers');
-  const poll = useServerPolling('wardogs', null, { overview: initialOverview, livePlayers: null });
+  const poll = useServerPolling('wardogs', null, { overview: initialOverview, livePlayers: null, warcon: null });
   const { overview } = poll.data;
   const servers = overview.state === 'not_configured' ? [] : overview.servers;
   const emptyMessage = overview.state === 'not_configured' ? t('notConfigured.title')

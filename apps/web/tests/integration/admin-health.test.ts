@@ -4,6 +4,9 @@ import { ensureTestActors, type TestActors } from '@/fixtures/test-actors';
 import { AccessDeniedError } from '@/modules/access/types';
 import { getIntegrationHealthForAdmin, type IntegrationAdminEnv } from '@/modules/integrations/admin-health';
 import { configuredLogiSources } from '@/modules/integrations/logi-config';
+import { createLeagueReader, observeLeaguePreview, resetLeagueReaderForTests } from '@/modules/integrations/logi/readers/league';
+import { createWarconReader, observeWarcon, resetWarconReaderForTests } from '@/modules/integrations/logi/readers/warcon';
+import type { LogiFetch } from '@/modules/integrations/logi/transport';
 import fixtures from '@/modules/integrations/logi/fixtures/v0.5.json';
 import type { ServerOverview } from '@/modules/integrations/servers/provider';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
@@ -17,6 +20,9 @@ const HLL_KEY = 'synthetic-hll-data-key-0123456789';
 const WDG_KEY = 'synthetic-wdg-data-key-0123456789';
 const PEOPLE_KEY = 'synthetic-wdg-people-key-0123456789';
 const MEMBERSHIP_KEY = 'synthetic-hll-membership-key-0123456789';
+const LEAGUE_KEY = 'synthetic-wdg-league-key-0123456789';
+const WARCON_KEY = 'synthetic-wdg-warcon-key-0123456789';
+const WARCON_CONNECTION = 'fixture-warcon-connection';
 const CRCON_BASE = 'https://crcon-private.example.invalid';
 const LOGI_ORIGIN = 'https://logi.example.test';
 const sources = [
@@ -63,7 +69,17 @@ beforeEach(async () => {
   await database.db.delete(logiSyncScope);
   await database.db.delete(logiInbox);
   await database.db.delete(logiCommand);
+  resetLeagueReaderForTests();
+  resetWarconReaderForTests();
 });
+
+/** Wardogs source with the reader keys and one approved Warcon connection under the published server. */
+const readerEnv: IntegrationAdminEnv = {
+  ...env,
+  LOGI_LEAGUE_API_KEY_WDG: LEAGUE_KEY,
+  LOGI_WARCON_API_KEY_WDG: WARCON_KEY,
+  LOGI_SOURCES_JSON: JSON.stringify([sources[0], { ...sources[1], warconConnections: [{ connectionId: WARCON_CONNECTION, publicId: 'community-one' }] }]),
+};
 
 function scopeFor(game: 'hell_let_loose' | 'wardogs', purpose: 'data' | 'people') {
   return configuredLogiSources(env, purpose).find((source) => source.gameId === game)!;
@@ -171,12 +187,38 @@ describe('integration health for administrators', () => {
     expect(invalidLogi.discord).toMatchObject({ roleMappingConfigured: false, mappedRoles: 0, roleMappingError: 'invalid_role_id' });
   });
 
+  it('reports the Wardogs readers: unconfigured by default, configured with the synthetic source, unsupported after a recorded 404', async () => {
+    const unconfigured = await getIntegrationHealthForAdmin(database.db, actors.administrator, env, now, { overview: readOverview });
+    expect(unconfigured.logi.readers).toEqual([
+      { resource: 'league-matches', purpose: 'league', state: 'unconfigured', detail: 'LOGI_LEAGUE_API_KEY_WDG is not set', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
+      { resource: 'warcon-data', purpose: 'warcon', state: 'unconfigured', detail: 'LOGI_WARCON_API_KEY_WDG is not set', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
+    ]);
+    const synthetic = await getIntegrationHealthForAdmin(database.db, actors.administrator, { ...env, LOGI_READERS_SOURCE: 'synthetic-fixture' }, now, { overview: readOverview });
+    expect(synthetic.logi.readers.map((reader) => [reader.resource, reader.state])).toEqual([['league-matches', 'configured'], ['warcon-data', 'configured']]);
+    const configured = await getIntegrationHealthForAdmin(database.db, actors.administrator, readerEnv, now, { overview: readOverview });
+    expect(configured.logi.readers).toEqual([
+      { resource: 'league-matches', purpose: 'league', state: 'configured', detail: 'league-matches grant configured for primary-logi', approvedConnections: 0, lastAttemptAt: null, lastOutcome: null },
+      { resource: 'warcon-data', purpose: 'warcon', state: 'configured', detail: '1 approved connection(s) on primary-logi', approvedConnections: 1, lastAttemptAt: null, lastOutcome: null },
+    ]);
+    // A producer that does not serve the routes answers 404; the readers record it and the page reports "unsupported".
+    const notDeployed: LogiFetch = async () => new Response(null, { status: 404 });
+    const credentials = { origin: LOGI_ORIGIN, apiKey: LEAGUE_KEY, gameId: 'wardogs' as const, allowLoopbackHttp: false, environment: 'test' as const };
+    await observeLeaguePreview(createLeagueReader(credentials, { fetchImpl: notDeployed }), 'scope', 'https://wardogsleague.net/matches/abc', minutes(-2));
+    await observeWarcon(createWarconReader({ ...credentials, apiKey: WARCON_KEY }, { fetchImpl: notDeployed }), 'scope', WARCON_CONNECTION, 'live', minutes(-1));
+    const unsupported = await getIntegrationHealthForAdmin(database.db, actors.administrator, readerEnv, now, { overview: readOverview });
+    expect(unsupported.logi.readers).toEqual([
+      { resource: 'league-matches', purpose: 'league', state: 'unsupported', detail: 'producer answered 404: league-matches route not deployed', approvedConnections: 0, lastAttemptAt: minutes(-2).toISOString(), lastOutcome: 'not_found' },
+      { resource: 'warcon-data', purpose: 'warcon', state: 'unsupported', detail: 'producer answered 404: warcon-data route not deployed', approvedConnections: 1, lastAttemptAt: minutes(-1).toISOString(), lastOutcome: 'not_found' },
+    ]);
+    expect(JSON.stringify(unsupported.logi.readers)).not.toMatch(new RegExp(`${LEAGUE_KEY}|${WARCON_KEY}|${WARCON_CONNECTION}|wardogsleague|logi.example`));
+  });
+
   it('never serializes keys, secrets, base URLs, addresses or raw provider errors', async () => {
     const hllData = scopeFor('hell_let_loose', 'data');
     await database.db.insert(logiSyncScope).values({ scopeKey: hllData.scopeKey, sourceInstanceId: hllData.sourceInstanceId, guildId: hllData.guildId, gameId: hllData.gameId, version: 0, lastAttemptAt: minutes(-1), errorCode: 'upstream' });
-    const dto = await getIntegrationHealthForAdmin(database.db, actors.administrator, env, now, { overview: readOverview });
+    const dto = await getIntegrationHealthForAdmin(database.db, actors.administrator, readerEnv, now, { overview: readOverview });
     const json = JSON.stringify(dto);
-    for (const secret of [HLL_KEY, WDG_KEY, PEOPLE_KEY, MEMBERSHIP_KEY, CRCON_BASE, LOGI_ORIGIN, 'logi.example.test', 'crcon-private', 'https://', 'crcon-stats-key', 'synthetic-client-secret', 'synthetic-bot-token', 'one.example.invalid:7777', 'play.example.invalid', hllData.scopeKey, 'leaseToken']) {
+    for (const secret of [HLL_KEY, WDG_KEY, PEOPLE_KEY, MEMBERSHIP_KEY, LEAGUE_KEY, WARCON_KEY, WARCON_CONNECTION, CRCON_BASE, LOGI_ORIGIN, 'logi.example.test', 'crcon-private', 'https://', 'crcon-stats-key', 'synthetic-client-secret', 'synthetic-bot-token', 'one.example.invalid:7777', 'play.example.invalid', hllData.scopeKey, 'leaseToken']) {
       expect(json, secret).not.toContain(secret);
     }
     expect(JSON.parse(json)).toEqual(dto);

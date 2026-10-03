@@ -274,6 +274,7 @@ async function insertMatches(tx: Executor, now: Date, options: { statistics: boo
         publication: fixture.published ? 'published' : 'draft',
         publishedAt: fixture.published ? new Date(now.getTime() - DAY) : null,
         eventUrl: fixture.eventUrl,
+        leagueMatchUrl: fixture.leagueMatchUrl ?? null,
         vodLinks: fixture.vodLinks,
         coverAssetId: fixture.cover ? FIXTURE_ASSET_IDS.matchCover : null,
         internalNotes: fixture.internalNotes,

@@ -1,0 +1,2 @@
+ALTER TABLE "match" ADD COLUMN "league_match_url" text;--> statement-breakpoint
+ALTER TABLE "match" ADD CONSTRAINT "match_league_url_ck" CHECK ("match"."league_match_url" is null or ("match"."game" = 'wardogs' and length("match"."league_match_url") <= 125 and "match"."league_match_url" ~ '^https://wardogsleague\.net/matches/[A-Za-z0-9_-]{1,80}$'));

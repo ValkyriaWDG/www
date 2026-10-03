@@ -56,7 +56,7 @@ test('integrations overview (cs desktop, full page)', async ({ browser }) => {
   // Full-page capture: end scrolled to the bottom so the sticky save bar sits at its natural place.
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await shot(page, 'integrations-cs-1440x900-full.png',
-    'Administrator, /cs/admin/integrations at 1440×900 (full page): website collector health with the scope notice, both games on labelled synthetic fixtures with their current public state, no Logi source configured (nothing shown as healthy), webhooks/commands disabled and the six-entry e2e Discord role mapping. No key, host or URL from the configuration is rendered.',
+    'Administrator, /cs/admin/integrations at 1440×900 (full page): website collector health with the scope notice, both games on labelled synthetic fixtures with their current public state, no Logi source configured (nothing shown as healthy), the "Čtečky Wardogs (League, Warcon)" block showing both readers as Nastaveno on the synthetic fixture source with their last-attempt facts, webhooks/commands disabled and the six-entry e2e Discord role mapping. No key, host, URL or connection ID from the configuration is rendered.',
     { uiLocale: 'cs', role: 'administrator', fullPage: true });
   await context.close();
 });
@@ -70,7 +70,7 @@ test('integrations overview (en phone)', async ({ browser }) => {
     { uiLocale: 'en', role: 'administrator' });
   await page.locator('[data-integrations-logi]').scrollIntoViewIfNeeded();
   await shot(page, 'integrations-en-390x844-logi.png',
-    'Administrator, /en/admin/integrations on a 390×844 phone, scrolled to the Logi section: SSO disabled/not configured, Discord membership source, webhooks and commands disabled, and the honest "No Logi source is configured" empty state.',
+    'Administrator, /en/admin/integrations on a 390×844 phone, scrolled to the Logi section: SSO disabled/not configured, Discord membership source, webhooks and commands disabled, the honest "No Logi source is configured" empty state and the "Wardogs readers (League, Warcon)" block with both readers Configured on the synthetic fixture source, stacked without horizontal overflow.',
     { uiLocale: 'en', role: 'administrator' });
   await context.close();
 });

@@ -111,6 +111,11 @@ function assertRoundsForGame(game: Game, rounds: NormalizedRound[]) {
   if (Object.keys(issues).length > 0) throw new DomainError('validation', 'Rounds do not match the game rules.', issues);
 }
 
+/** The League preview link is Wardogs editorial data; HLL matches never carry one. */
+function assertLeagueUrlForGame(game: Game, leagueMatchUrl: string | null) {
+  if (leagueMatchUrl !== null && game !== 'wardogs') throw new DomainError('validation', 'League match links are limited to Wardogs matches.', { leagueMatchUrl: 'wardogs_only' });
+}
+
 function roundsHaveScores(rounds: NormalizedRound[]) {
   return rounds.some((round) => round.scoreValkyria !== null || round.scoreOpponent !== null || (round.outcome !== null && round.outcome !== 'unknown'));
 }
@@ -120,6 +125,7 @@ export async function createMatch(db: Executor, actor: Actor, input: CreateMatch
   await guard(db, actor, 'matches.edit', 'match.create', null);
   const data = parseInput(createMatchSchema, input);
   await authorizeGames(db, actor, 'matches.edit', [data.game], { action: 'match.create', entityType: 'match' });
+  assertLeagueUrlForGame(data.game, data.leagueMatchUrl ?? null);
   const start = resolveStartsAt(data.startsAt);
   const timeZone = data.timeZone ?? start.zone ?? DEFAULT_MATCH_TIME_ZONE;
   await assertUsableAssets(
@@ -157,6 +163,7 @@ export async function createMatch(db: Executor, actor: Actor, input: CreateMatch
           status: 'scheduled',
           publication: 'draft',
           eventUrl: data.eventUrl ?? null,
+          leagueMatchUrl: data.leagueMatchUrl ?? null,
           vodLinks: data.vodLinks ?? [],
           coverAssetId: data.coverAssetId ?? null,
           internalNotes: data.internalNotes ?? '',
@@ -198,6 +205,8 @@ export async function updateMatch(db: Executor, actor: Actor, input: UpdateMatch
       const games = data.game !== undefined && data.game !== current.game ? [current.game, data.game] : [current.game];
       await authorizeGames(db, actor, 'matches.edit', games, { action: 'match.update', entityType: 'match', entityId: current.id });
       if (data.rounds) assertRoundsForGame(data.game ?? current.game, data.rounds);
+      // A League link belongs to Wardogs matches only; moving a linked match to HLL must clear it in the same edit.
+      assertLeagueUrlForGame(data.game ?? current.game, data.leagueMatchUrl === undefined ? current.leagueMatchUrl : data.leagueMatchUrl);
       if (data.rounds && current.status !== 'completed' && roundsHaveScores(data.rounds)) {
         throw new DomainError('validation', 'Round scores require a completed match.', { rounds: 'scores_require_completed' });
       }
@@ -222,6 +231,7 @@ export async function updateMatch(db: Executor, actor: Actor, input: UpdateMatch
         'bestOf',
         'teamSize',
         'eventUrl',
+        'leagueMatchUrl',
         'vodLinks',
         'coverAssetId',
         'internalNotes',

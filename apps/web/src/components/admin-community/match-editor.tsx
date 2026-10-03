@@ -567,6 +567,9 @@ export function MatchEditor({ uiLocale, initial, canPublish, created, statistics
                   </div>
                 )}
                 <TextField name="eventUrl" type="url" label={t('fields.eventUrl')} markOptional hint={t('hints.httpsOnly')} value={facts.eventUrl} maxLength={2048} onChange={(event) => setFact('eventUrl', event.target.value)} error={err('eventUrl')} />
+                {facts.game === 'wardogs' || facts.leagueMatchUrl !== '' ? (
+                  <TextField name="leagueMatchUrl" type="url" label={t('fields.leagueMatchUrl')} markOptional hint={t('hints.leagueMatchUrl')} value={facts.leagueMatchUrl} maxLength={125} autoComplete="off" onChange={(event) => setFact('leagueMatchUrl', event.target.value)} error={err('leagueMatchUrl')} />
+                ) : null}
               </div>
               <h3 className={styles.repeatHeading}>{t('vodTitle')}</h3>
               <p className={styles.groupIntro}>{t('vodIntro', { max: MAX_VOD_ROWS })}</p>

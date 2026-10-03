@@ -2,6 +2,7 @@ import { COMPETITION_TYPES, GAMES, MATCH_OUTCOMES, MATCH_STATUSES, RESULT_VERIFI
 import { z } from 'zod';
 import { codePointLength, hasControlCharacters } from '@/modules/prose/text';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
+import { canonicalLeagueMatchUrl, LEAGUE_MATCH_URL_MAX_LENGTH } from '@/modules/integrations/logi/readers/league-url';
 import { isValidTimeZone } from './time';
 
 /*
@@ -48,6 +49,21 @@ export const httpsUrlSchema = z
   }, 'credentials_not_allowed');
 
 export const timeZoneSchema = z.string().trim().refine(isValidTimeZone, 'invalid_time_zone');
+
+/**
+ * Editorial Wardogs League detail link: exactly the producer's URL policy
+ * (`https://wardogsleague.net/matches/<id>`), canonicalised without a trailing slash.
+ * `''`/`null` clear it. The Wardogs-only rule is enforced by the service against the
+ * match's effective game.
+ */
+export const leagueMatchUrlSchema = z
+  .string()
+  .trim()
+  .max(LEAGUE_MATCH_URL_MAX_LENGTH, 'invalid_league_url')
+  .refine((value) => value === '' || canonicalLeagueMatchUrl(value) !== null, 'invalid_league_url')
+  .transform((value) => (value === '' ? null : canonicalLeagueMatchUrl(value)!.url))
+  .nullable()
+  .optional();
 
 export const matchSlugSchema = z.string().trim().max(MATCH_SLUG_MAX).regex(SLUG_PATTERN, 'invalid_slug');
 
@@ -140,6 +156,7 @@ const matchFacts = {
   bestOf: z.number().int().min(1).max(99).nullable().optional(),
   teamSize: z.number().int().min(1).max(200).nullable().optional(),
   eventUrl: httpsUrlSchema.nullable().optional().or(z.literal('').transform(() => null)),
+  leagueMatchUrl: leagueMatchUrlSchema,
   vodLinks: z.array(vodLinkSchema).max(MAX_VOD_LINKS).optional(),
   coverAssetId: z.uuid().nullable().optional(),
   internalNotes: z.string().max(5000).optional(),
@@ -166,6 +183,7 @@ export const updateMatchSchema = z.object({
   bestOf: matchFacts.bestOf,
   teamSize: matchFacts.teamSize,
   eventUrl: matchFacts.eventUrl,
+  leagueMatchUrl: matchFacts.leagueMatchUrl,
   vodLinks: matchFacts.vodLinks,
   coverAssetId: matchFacts.coverAssetId,
   internalNotes: matchFacts.internalNotes,

@@ -34,6 +34,8 @@ export const FIELD_ERROR_CODES = [
   'invalid_scoreboard',
   'unknown_server',
   'hll_only',
+  'wardogs_only',
+  'invalid_league_url',
   'ends_before_start',
   'has_matches',
   'game_mismatch',

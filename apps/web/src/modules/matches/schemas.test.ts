@@ -69,3 +69,23 @@ describe('match fact validation', () => {
     expect(parsed.season).toBeUndefined();
   });
 });
+
+describe('League match URL field', () => {
+  const base = { game: 'wardogs' as const, opponentName: 'Synthetic', competitionType: 'friendly' as const, startsAt: '2026-10-10T18:00:00Z' };
+  const target = { id: '0f000000-0000-4000-8000-000000000001', expectedVersion: 1 };
+
+  it('canonicalises the producer URL shape and clears on empty input', () => {
+    expect(createMatchSchema.parse({ ...base, leagueMatchUrl: ' https://wardogsleague.net/matches/abc_-1/ ' }).leagueMatchUrl).toBe('https://wardogsleague.net/matches/abc_-1');
+    expect(createMatchSchema.parse({ ...base, leagueMatchUrl: '' }).leagueMatchUrl).toBeNull();
+    expect(createMatchSchema.parse({ ...base, leagueMatchUrl: null }).leagueMatchUrl).toBeNull();
+    expect(createMatchSchema.parse(base).leagueMatchUrl).toBeUndefined();
+    expect(updateMatchSchema.parse({ ...target, leagueMatchUrl: 'https://wardogsleague.net/matches/xyz' }).leagueMatchUrl).toBe('https://wardogsleague.net/matches/xyz');
+    expect(updateMatchSchema.parse(target).leagueMatchUrl).toBeUndefined();
+  });
+
+  it.each(['http://wardogsleague.net/matches/abc', 'https://wardogsleague.net/matches/abc?x=1', 'https://wardogsleague.net/teams/VLK', 'https://evil.example/matches/abc', `https://wardogsleague.net/matches/${'a'.repeat(81)}`])('rejects %s with a stable field code', (value) => {
+    const result = createMatchSchema.safeParse({ ...base, leagueMatchUrl: value });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues.map((issue) => issue.message)).toContain('invalid_league_url');
+  });
+});

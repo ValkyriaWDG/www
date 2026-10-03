@@ -89,6 +89,21 @@ archive timestamps) and length checks, so an application rollback leaves the dat
 place. Seeds still only add missing definitions and never overwrite edited labels.
 Taxonomy definitions are owned by the website; nothing is synchronized to Logi.
 
+## Wardogs League link on a match
+
+The match editor's **Public presentation** group offers **Wardogs League match URL**
+for Wardogs matches (match managers with Wardogs scope; HLL-only managers are denied
+and the field is rejected on HLL matches). Paste the public detail link in the form
+`https://wardogsleague.net/matches/<id>`; a trailing slash is removed, and queries,
+fragments, other hosts or request pages are rejected. Leave it empty to remove it.
+
+When the readers are configured, the public match page shows a **League preview**
+section with the fixture number, title, type, status, scheduled time, team codes and
+names, map, hosting, map vote and progress steps, the observation time and a visible
+"unverified preview from Wardogs League" note. The preview never fills in CMS fields
+and never shows a result: record the result in the editor as before. When the League
+read fails or the reader is not configured, the page shows a quiet "League preview
+unavailable" line; cached data older than 15 minutes is not shown as current.
 ## Integrations and servers
 
 **Integrace a servery / Integrations and servers** shows, read-only, what the website

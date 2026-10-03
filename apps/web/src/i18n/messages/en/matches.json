@@ -131,7 +131,69 @@
       "axis": "Axis"
     },
     "mapImageAlt": "{map} — in-game scene of the map (illustrative)",
-    "tacticalMap": "Tactical map of {map} ({size} kB)"
+    "tacticalMap": "Tactical map of {map} ({size} kB)",
+    "league": {
+      "title": "League preview",
+      "matchTitle": "Fixture",
+      "note": "Unverified preview from Wardogs League. It shows the published fixture state only; the result above is the clan’s recorded result.",
+      "synthetic": "Synthetic League demo data – not a real fixture.",
+      "unavailable": "League preview unavailable.",
+      "stale": "The preview may be outdated.",
+      "observed": "Observed {time}",
+      "fixture": "Fixture #{number}",
+      "type": "Type",
+      "status": "Status",
+      "scheduled": "Scheduled",
+      "teams": "Teams",
+      "map": "Map",
+      "zone": "Zone",
+      "lighting": "Lighting",
+      "hosting": "Hosting",
+      "hostingValue": "{mode} · {team}",
+      "mapVote": "Map vote",
+      "mapVoteCloses": "{status} · closes {time}",
+      "progress": "Progress",
+      "progressState": {
+        "done": "Done",
+        "current": "Current",
+        "not_started": "Not started",
+        "unknown": "Unknown"
+      },
+      "source": "Open on Wardogs League",
+      "values": {
+        "status": {
+          "scheduled": "Scheduled",
+          "live": "Live",
+          "completed": "Completed",
+          "cancelled": "Cancelled"
+        },
+        "type": {
+          "friendly": "Friendly",
+          "league": "League",
+          "cup": "Cup",
+          "tournament": "Tournament"
+        },
+        "hosting": {
+          "self_hosted": "Self-hosted",
+          "league_hosted": "League-hosted"
+        },
+        "mapVote": {
+          "open": "Open",
+          "closed": "Closed"
+        },
+        "progress": {
+          "locked": "Locked",
+          "rules_agreed": "Rules agreed",
+          "map_vote": "Map vote",
+          "moderator_claimed": "Moderator claimed",
+          "host_server": "Host server",
+          "ready_check": "Ready check",
+          "live": "Live",
+          "placements": "Placements",
+          "confirmed": "Confirmed"
+        }
+      }
+    }
   },
   "legacy": {
     "title": "Match details",

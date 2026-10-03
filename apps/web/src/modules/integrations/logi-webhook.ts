@@ -41,7 +41,7 @@ function configuredWebhook(env: LogiIntegrationEnv, sourceId: string) {
   const secrets = z.record(sourceIdSchema, z.string().min(32).max(512).regex(/^[\x21-\x7e]+$/)).parse(JSON.parse(rawSecrets));
   if (Object.keys(secrets).length > 2 || Object.keys(secrets).some((id) => !sources.some((source) => source.sourceInstanceId === id))) throw new Error('Invalid webhook configuration.');
   const secret = secrets[sourceId];
-  const serviceKeys = [env.LOGI_DATA_API_KEY_HLL, env.LOGI_DATA_API_KEY_WDG, env.LOGI_PEOPLE_API_KEY_HLL, env.LOGI_PEOPLE_API_KEY_WDG, env.LOGI_MEMBERSHIP_API_KEY_HLL, env.LOGI_MEMBERSHIP_API_KEY_WDG, env.LOGI_EVENT_API_KEY_HLL, env.LOGI_EVENT_API_KEY_WDG];
+  const serviceKeys = [env.LOGI_DATA_API_KEY_HLL, env.LOGI_DATA_API_KEY_WDG, env.LOGI_PEOPLE_API_KEY_HLL, env.LOGI_PEOPLE_API_KEY_WDG, env.LOGI_MEMBERSHIP_API_KEY_HLL, env.LOGI_MEMBERSHIP_API_KEY_WDG, env.LOGI_EVENT_API_KEY_HLL, env.LOGI_EVENT_API_KEY_WDG, env.LOGI_LEAGUE_API_KEY_WDG, env.LOGI_WARCON_API_KEY_WDG];
   if (!secret || serviceKeys.includes(secret)) throw new Error('A distinct webhook signing secret is required.');
   return { sourceInstanceId: sourceId, guildId: first.guildId, gameIds: matching.map((source) => source.gameId), secret };
 }

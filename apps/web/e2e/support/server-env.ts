@@ -52,6 +52,8 @@ export function e2eServerEnv(options: {
     SERVER_STATUS_SOURCE: 'synthetic-fixture',
     SERVER_STATUS_SOURCE_WDG: 'synthetic-fixture',
     SERVER_STATUS_FIXTURE_SCENARIO: 'mixed',
+    // Labelled synthetic League preview and Warcon facts for the synthetic Wardogs server (no Logi mock, no key).
+    LOGI_READERS_SOURCE: 'synthetic-fixture',
     // Scoreboard imports by game ID use the loopback CRCON mock (e2e/support/crcon-mock.mjs)
     // started next to the Discord mock; the servers page keeps the fixture scenario above.
     E2E_CRCON_MOCK_PORT: String(crconMockPort),

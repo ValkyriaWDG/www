@@ -4,7 +4,7 @@ import { formatDate } from '@/components/admin-community/format';
 import base from '@/components/admin-community/admin-community.module.css';
 import { EmptyState, FeedbackNotice, StatusBadge, type StatusKind } from '@/components/ui/panels';
 import type { AppLocale } from '@/i18n/routing';
-import type { AdminIntegrationHealth, AdminLogiPurpose, ScopeState } from '@/modules/integrations/admin-health-types';
+import type { AdminIntegrationHealth, AdminLogiPurpose, AdminReaderState, ScopeState } from '@/modules/integrations/admin-health-types';
 import styles from './admin-integrations.module.css';
 
 /*
@@ -14,6 +14,7 @@ import styles from './admin-integrations.module.css';
  */
 
 const STATE_KIND: Record<ScopeState, StatusKind> = { not_configured: 'neutral', configured: 'info', never_ran: 'warning', bootstrapping: 'warning', healthy: 'success', stale: 'warning', unavailable: 'danger' };
+const READER_STATE_KIND: Record<AdminReaderState, StatusKind> = { unconfigured: 'neutral', configured: 'info', unsupported: 'danger' };
 const KNOWN_CAPABILITIES = new Set(['server_snapshot', 'match_history']);
 /** Bounded machine codes with localized labels; anything else falls back to the generic entry. */
 const LOGI_ERROR_CODES = ['configuration', 'unauthorized', 'forbidden', 'not_found', 'reset_required', 'rate_limited', 'upstream', 'network', 'timeout', 'invalid_response', 'redirect', 'scope_mismatch', 'unknown_outcome', 'persistence', 'unavailable'] as const;
@@ -172,6 +173,33 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
             </article>
           ))
         )}
+
+        <h3 className={styles.sourceTitle} id="integrations-readers-title">
+          {t('logi.readers.title')}
+        </h3>
+        <p className={base.actionNote}>{t('logi.readers.intro')}</p>
+        <ul className={styles.purposeList} aria-labelledby="integrations-readers-title" data-logi-readers="">
+          {logi.readers.map((reader) => (
+            <li key={reader.resource} className={styles.purpose} data-reader={reader.resource} data-state={reader.state}>
+              <div className={styles.purposeHead}>
+                <span className={styles.purposeName}>{t(`logi.purposes.${reader.purpose}`)}</span>
+                <span className={styles.badges}>
+                  <StatusBadge kind={READER_STATE_KIND[reader.state]}>{t(`logi.readers.state.${reader.state}`)}</StatusBadge>
+                  {reader.lastOutcome && reader.lastOutcome !== 'ok' ? (
+                    <StatusBadge kind="danger" icon={false}>
+                      {t('logi.errorCode', { label: errorCodeLabel(reader.lastOutcome) })}
+                    </StatusBadge>
+                  ) : null}
+                </span>
+              </div>
+              <p className={styles.detail}>
+                {reader.resource === 'warcon-data' ? <span>{t('logi.readers.connections', { count: reader.approvedConnections })}</span> : null}
+                <span>{t('logi.lastAttemptAt')}: {when(reader.lastAttemptAt)}{reader.lastOutcome === 'ok' ? ` · ${t('logi.readers.lastOk')}` : ''}</span>
+                <span className={styles.code}>{reader.detail}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className={base.panel} aria-labelledby="integrations-discord-title" data-integrations-discord="">

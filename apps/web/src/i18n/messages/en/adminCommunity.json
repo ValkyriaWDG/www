@@ -126,7 +126,9 @@
     "ends_before_start": "The end cannot be before the start.",
     "has_matches": "Matches are linked to this tournament; unlink them before changing the game.",
     "game_mismatch": "The tournament belongs to a different game than the match.",
-    "tournament_missing": "The selected tournament no longer exists."
+    "tournament_missing": "The selected tournament no longer exists.",
+    "wardogs_only": "This field applies to Wardogs matches only.",
+    "invalid_league_url": "Enter the match detail address in the form https://wardogsleague.net/matches/ID."
   },
   "media": {
     "none": "No image",
@@ -302,7 +304,8 @@
         "internalNotes": "Internal notes",
         "newDate": "New date",
         "newTime": "New time",
-        "tournament": "Tournament"
+        "tournament": "Tournament",
+        "leagueMatchUrl": "Wardogs League match URL"
       },
       "hints": {
         "opponentShortCode": "E.g. a clan tag. Letters, digits, dots and hyphens.",
@@ -319,7 +322,8 @@
         "verified": "Confirmed by an official source.",
         "source": "Where the result comes from, e.g. the league website.",
         "internalNotes": "Never shown on the public website, in recaps or in previews.",
-        "tournament": "A competition of the same game from the tournaments list; shown publicly once the tournament is published."
+        "tournament": "A competition of the same game from the tournaments list; shown publicly once the tournament is published.",
+        "leagueMatchUrl": "Only https://wardogsleague.net/matches/ID, Wardogs matches only. Shown publicly as an unverified League preview; the recorded result below stays the only result."
       },
       "scheduleIntro": "When the match is played. This is not the time the match page is published.",
       "currentStart": "Scheduled start",

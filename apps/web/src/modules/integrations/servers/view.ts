@@ -1,4 +1,5 @@
 import { classifyFreshness, SERVER_FRESHNESS, type ServerSnapshot } from '../contract';
+import { ageWarconServerPublic } from '../logi/readers/public';
 import type { ServerBrowserData } from './browser';
 
 /** Public server IDs in the URL are short lowercase slugs; anything else selects nothing. */
@@ -38,7 +39,13 @@ export function ageServerBrowserData(data: ServerBrowserData, now: Date, failed 
       return { ...server, freshness: state, reachability: failed || state === 'unavailable' ? 'unknown' as const : server.reachability, map: state === 'unavailable' ? null : server.map, players: state === 'unavailable' ? null : server.players, mode: state === 'unavailable' ? null : server.mode, score: state === 'fresh' ? server.score : null, teams: state === 'fresh' ? server.teams : null, ...(server.teamScores !== undefined ? { teamScores: state === 'fresh' ? server.teamScores : null } : {}), nextMap: state === 'fresh' ? server.nextMap : null, timeRemainingSeconds: state === 'fresh' ? server.timeRemainingSeconds : null };
     }),
   };
-  if (!data.livePlayers) return { overview, livePlayers: null };
+  const warcon = data.warcon ? data.warcon.map((entry) => ageWarconServerPublic(entry, now, failed)) : (data.warcon ?? null);
+  if (!data.livePlayers) return { overview, livePlayers: null, warcon };
   const state = freshness(data.livePlayers.observedAt, data.livePlayers.freshness);
-  return { overview, livePlayers: { ...data.livePlayers, freshness: state, state: state === 'unavailable' && data.livePlayers.state === 'ok' ? 'unavailable' : data.livePlayers.state, players: state === 'unavailable' ? [] : data.livePlayers.players } };
+  return { overview, livePlayers: { ...data.livePlayers, freshness: state, state: state === 'unavailable' && data.livePlayers.state === 'ok' ? 'unavailable' : data.livePlayers.state, players: state === 'unavailable' ? [] : data.livePlayers.players }, warcon };
+}
+
+/** Warcon projection composed under one listed server, or `null`. */
+export function warconFor(data: Pick<ServerBrowserData, 'warcon'>, publicId: string) {
+  return data.warcon?.find((entry) => entry.publicId === publicId) ?? null;
 }

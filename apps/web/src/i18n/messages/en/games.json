@@ -218,6 +218,36 @@
     "summary": {
       "title": "Our servers",
       "browse": "Browse servers"
+    },
+    "warcon": {
+      "title": "Live (Warcon)",
+      "intro": "Current round facts from the approved Warcon connection, read through Logi. Team names are game observations, not verified identities.",
+      "synthetic": "Synthetic Warcon demo data – not the live state of a Valkyria server.",
+      "serverName": "Server name",
+      "map": "Map",
+      "lighting": "Lighting",
+      "players": "Players",
+      "populationValue": "{players} / {capacity}",
+      "matchTime": "Round time",
+      "scores": "Scores",
+      "rotation": "Rotation",
+      "rotationValue": "now {now} · next {next}",
+      "observed": "Observed {time}",
+      "neverObserved": "No observation yet",
+      "unavailable": "Live data is unavailable right now. This does not mean the server is offline or empty.",
+      "recent": {
+        "title": "Recent matches",
+        "intro": "Last {count, plural, one {# round} other {# rounds}} recorded by Warcon; no player rows are shown.",
+        "columns": {
+          "peak": "Peak players",
+          "scores": "Final scores",
+          "winner": "Winner"
+        },
+        "inProgress": "In progress",
+        "empty": "No recent rounds are recorded.",
+        "unavailable": "Recent rounds are unavailable right now.",
+        "observed": "List as of {time}"
+      }
     }
   },
   "manual": {
