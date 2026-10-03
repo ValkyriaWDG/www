@@ -47,3 +47,49 @@ describe('separate people source authorization', () => {
     expect(() => configuredLogiSources({ ...enabled, LOGI_SOURCES_JSON: JSON.stringify([{ ...source, syncPeople: true, origin: 'http://logi.example.test' }]) }, 'people')).toThrow('Invalid Logi source origin');
   });
 });
+
+const readerKeys = { LOGI_LEAGUE_API_KEY_WDG: 'synthetic-league-key-12345', LOGI_WARCON_API_KEY_WDG: 'synthetic-warcon-key-12345' };
+const published = [{ connectionId: 'conn-a', publicId: 'community-one', name: 'Approved', published: true, address: null, statsUrl: null }];
+
+describe('Wardogs-only reader purposes', () => {
+  it('select the league and warcon readers by their own keys and never borrow another grant', () => {
+    expect(configuredLogiSources({ ...env(), LOGI_SOURCES_JSON: JSON.stringify([source]) }, 'league')).toEqual([]);
+    expect(configuredLogiSources({ ...env(), LOGI_SOURCES_JSON: JSON.stringify([source]) }, 'warcon')).toEqual([]);
+    const league = configuredLogiSources({ ...env(), ...readerKeys }, 'league')[0]!;
+    const warcon = configuredLogiSources({ ...env(), ...readerKeys }, 'warcon')[0]!;
+    expect(league).toMatchObject({ purpose: 'league', apiKey: readerKeys.LOGI_LEAGUE_API_KEY_WDG, gameId: 'wardogs' });
+    expect(warcon).toMatchObject({ purpose: 'warcon', apiKey: readerKeys.LOGI_WARCON_API_KEY_WDG });
+    const data = configuredLogiSources(env(), 'data')[0]!;
+    expect(new Set([league.scopeKey, warcon.scopeKey, data.scopeKey]).size).toBe(3);
+    expect(() => configuredLogiSources({ ...env(), LOGI_LEAGUE_API_KEY_WDG: 'short' }, 'league')).toThrow('Missing restricted Logi service key');
+  });
+
+  it('ignore HLL sources for the readers', () => {
+    const hll = { ...source, gameId: 'hell_let_loose', LOGI_DATA_API_KEY_HLL: undefined };
+    const both = { NODE_ENV: 'test', ...readerKeys, LOGI_SOURCES_JSON: JSON.stringify([hll, source]) };
+    expect(configuredLogiSources(both, 'league').map((row) => row.gameId)).toEqual(['wardogs']);
+    expect(configuredLogiSources(both, 'warcon').map((row) => row.gameId)).toEqual(['wardogs']);
+  });
+});
+
+describe('approved Warcon connections', () => {
+  const withConnections = (warconConnections: unknown, extra: Record<string, unknown> = {}) => ({ ...env({ publicServers: published, warconConnections, ...extra }), ...readerKeys });
+
+  it('accept unique connections under published servers and expose them on the warcon source', () => {
+    const [row] = configuredLogiSources(withConnections([{ connectionId: 'conn-a', publicId: 'community-one' }]), 'warcon');
+    expect(row!.warconConnections).toEqual([{ connectionId: 'conn-a', publicId: 'community-one' }]);
+    expect(configuredLogiSources(withConnections([]), 'warcon')[0]!.warconConnections).toEqual([]);
+  });
+
+  it.each([
+    ['a duplicate connection ID', [{ connectionId: 'conn-a', publicId: 'community-one' }, { connectionId: 'conn-a', publicId: 'community-two' }], { publicServers: [...published, { ...published[0], connectionId: 'conn-b', publicId: 'community-two' }] }],
+    ['a duplicate public ID', [{ connectionId: 'conn-a', publicId: 'community-one' }, { connectionId: 'conn-b', publicId: 'community-one' }], {}],
+    ['an unknown public ID', [{ connectionId: 'conn-a', publicId: 'community-two' }], {}],
+    ['an unpublished server', [{ connectionId: 'conn-a', publicId: 'community-one' }], { publicServers: [{ ...published[0], published: false }] }],
+    ['an unsafe connection ID', [{ connectionId: '../admin', publicId: 'community-one' }], {}],
+    ['an extra field', [{ connectionId: 'conn-a', publicId: 'community-one', view: 'players' }], {}],
+    ['an HLL source', [{ connectionId: 'conn-a', publicId: 'community-one' }], { gameId: 'hell_let_loose' }],
+  ])('reject %s', (_label, warconConnections, extra) => {
+    expect(() => configuredLogiSources(withConnections(warconConnections, extra), 'warcon')).toThrow('Invalid LOGI_SOURCES_JSON');
+  });
+});

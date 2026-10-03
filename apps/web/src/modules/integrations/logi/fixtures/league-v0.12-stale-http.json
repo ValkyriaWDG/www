@@ -1,0 +1,170 @@
+{
+  "at": "2026-10-02T19:16:21.153Z",
+  "scenario": "Synthetic rate_limited result injected through authenticated local internal finish after actual five-minute TTL; not a real upstream 429",
+  "staleStatus": 200,
+  "otherMatchStatus": 429,
+  "stale": {
+    "snapshot": {
+      "id": "cmuqt8ep605e1lf018w2nlywu",
+      "sourceUrl": "https://wardogsleague.net/matches/cmuqt8ep605e1lf018w2nlywu",
+      "parserVersion": "wardogs-league-html/1",
+      "title": "VLK · ROG · BAMC",
+      "fixtureNumber": 38,
+      "type": "Friendly",
+      "status": "Scheduled",
+      "scheduledAt": "2026-10-10T18:30:00.000Z",
+      "request": {
+        "number": 65,
+        "url": "https://wardogsleague.net/matches/requests/cmuptshpx058rlf01e7vmmnqz"
+      },
+      "teams": [
+        {
+          "code": "VLK",
+          "name": "Valkyria",
+          "profileUrl": "https://wardogsleague.net/teams/VLK",
+          "nations": [
+            "CZE",
+            "SVK"
+          ],
+          "displayedMemberCount": 48,
+          "faction": "Valkyra",
+          "readyCheck": "Ready check not run yet"
+        },
+        {
+          "code": "ROG",
+          "name": "Team Rogue",
+          "profileUrl": "https://wardogsleague.net/teams/ROG",
+          "nations": [
+            "FRA"
+          ],
+          "displayedMemberCount": 53,
+          "faction": "Manticore",
+          "readyCheck": "Ready check not run yet"
+        },
+        {
+          "code": "BAMC",
+          "name": "Batallón de Asalto, Maniobra y Combate",
+          "profileUrl": "https://wardogsleague.net/teams/BAMC",
+          "nations": [
+            "ESP"
+          ],
+          "displayedMemberCount": 123,
+          "faction": "Lonestar",
+          "readyCheck": "Ready check not run yet"
+        }
+      ],
+      "map": {
+        "name": "Zestafona",
+        "zone": "SmallFactory",
+        "lighting": "DayLateGrayFog"
+      },
+      "hosting": {
+        "mode": "Self-hosted",
+        "teamCode": "VLK"
+      },
+      "moderator": "Awaiting",
+      "mapVote": {
+        "status": "Open",
+        "closesAt": "2026-10-03T10:19:33.154Z",
+        "ballots": [
+          {
+            "teamCode": "VLK",
+            "value": "Not voted"
+          },
+          {
+            "teamCode": "ROG",
+            "value": "Not voted"
+          },
+          {
+            "teamCode": "BAMC",
+            "value": "Not voted"
+          }
+        ]
+      },
+      "rules": {
+        "summary": "0 of 3 picked",
+        "choices": [
+          {
+            "teamCode": "VLK",
+            "value": "Not picked yet"
+          },
+          {
+            "teamCode": "ROG",
+            "value": "Not picked yet"
+          },
+          {
+            "teamCode": "BAMC",
+            "value": "Not picked yet"
+          }
+        ]
+      },
+      "readyCheck": "Not started",
+      "progress": [
+        {
+          "label": "Locked",
+          "state": "done",
+          "detail": "from REQ #65"
+        },
+        {
+          "label": "Rules agreed",
+          "state": "current",
+          "detail": "0/3"
+        },
+        {
+          "label": "Map vote",
+          "state": "not_started",
+          "detail": "15h left"
+        },
+        {
+          "label": "Moderator claimed",
+          "state": "not_started",
+          "detail": "Awaiting"
+        },
+        {
+          "label": "Host server",
+          "state": "not_started",
+          "detail": "VLK hosts"
+        },
+        {
+          "label": "Ready check",
+          "state": "not_started",
+          "detail": "Not started"
+        },
+        {
+          "label": "Live",
+          "state": "not_started",
+          "detail": null
+        },
+        {
+          "label": "Placements",
+          "state": "not_started",
+          "detail": "0/3"
+        },
+        {
+          "label": "Confirmed",
+          "state": "not_started",
+          "detail": null
+        }
+      ],
+      "scoringRule": "1st 3 · 2nd 2 · 3rd 1",
+      "results": null,
+      "warnings": [
+        "results_not_supported"
+      ],
+      "fetchedAt": "2026-10-02T19:11:02.212Z"
+    },
+    "stale": true,
+    "ageSeconds": 318,
+    "lastAttemptAt": "2026-10-02T19:16:20.982Z",
+    "nextRefreshAt": "2026-10-02T19:18:21.011Z",
+    "error": "rate_limited"
+  },
+  "cooldown": {
+    "snapshot": null,
+    "stale": true,
+    "ageSeconds": null,
+    "lastAttemptAt": null,
+    "nextRefreshAt": "2026-10-02T19:18:21.011Z",
+    "error": "rate_limited"
+  }
+}

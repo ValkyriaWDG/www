@@ -1,0 +1,136 @@
+{
+  "source": "Assembled from the synthetic generator src/infrastructure/testing/warcon.ts of Logi PR #158 (c42ea770) in the envelope shape of src/lib/api/warcon-route.ts; no captured hosted HTTP exchange",
+  "live": {
+    "data": {
+      "connectionId": "synthetic-warcon-connection",
+      "gameId": "wardogs",
+      "provider": "wardogs_warcon",
+      "fetchedAt": "2026-10-02T12:00:00.000Z",
+      "cacheUntil": "2026-10-02T12:00:10.000Z",
+      "result": {
+        "view": "live",
+        "data": {
+          "serverId": "11111111-1111-4111-8111-111111111111",
+          "ok": true,
+          "tier": "watched",
+          "build": "test-build",
+          "gameServerId": "22222222-2222-4222-8222-222222222222",
+          "startedAt": "2026-10-02T12:00:00.000Z",
+          "reservedSlots": 5,
+          "throttledUntil": null,
+          "status": {
+            "serverName": "Synthetic Wardogs",
+            "map": "Bakurani",
+            "experiences": [
+              "KingOfTheHill"
+            ],
+            "lighting": "Day",
+            "alternator": "Default",
+            "scoreTick": 1,
+            "scoreTickMin": 1,
+            "scoreTickMax": 10,
+            "scoreCap": null,
+            "matchSeconds": null,
+            "playerCount": 1,
+            "maxPlayers": 100,
+            "scores": [
+              {
+                "name": "Alpha",
+                "colorHex": "#ff0000",
+                "score": 0
+              },
+              {
+                "name": "Bravo",
+                "colorHex": "#00ff00",
+                "score": 12
+              },
+              {
+                "name": "Charlie",
+                "colorHex": "#0000ff",
+                "score": 7
+              }
+            ],
+            "rotationNow": 0,
+            "rotationNext": 1
+          },
+          "players": [
+            {
+              "name": "Synthetic Ranger",
+              "steamId": "76561198000000001",
+              "faction": "Alpha",
+              "kills": 0,
+              "deaths": 2,
+              "cash": 350,
+              "ping": 42
+            }
+          ],
+          "statusAt": "2026-10-02T12:00:00.000Z",
+          "playersAt": "2026-10-02T12:00:00.000Z",
+          "observedAt": "2026-10-02T12:00:00.000Z",
+          "freshness": "fresh",
+          "playersFreshness": "fresh"
+        }
+      }
+    }
+  },
+  "matches": {
+    "data": {
+      "connectionId": "synthetic-warcon-connection",
+      "gameId": "wardogs",
+      "provider": "wardogs_warcon",
+      "fetchedAt": "2026-10-02T12:00:00.000Z",
+      "cacheUntil": "2026-10-02T12:01:00.000Z",
+      "result": {
+        "view": "matches",
+        "data": {
+          "matches": [
+            {
+              "id": 7,
+              "startedAt": "2026-10-02T11:00:00.000Z",
+              "endedAt": "2026-10-02T12:00:00.000Z",
+              "map": "Bakurani",
+              "experiences": "KingOfTheHill",
+              "lighting": "Day",
+              "peakPlayers": 1,
+              "players": 1,
+              "finalScores": [
+                {
+                  "name": "Alpha",
+                  "score": 0
+                },
+                {
+                  "name": "Bravo",
+                  "score": 100
+                }
+              ],
+              "winner": "Bravo"
+            },
+            {
+              "id": 8,
+              "startedAt": "2026-10-02T11:00:00.000Z",
+              "endedAt": null,
+              "map": "Bakurani",
+              "experiences": "KingOfTheHill",
+              "lighting": "Day",
+              "peakPlayers": 1,
+              "players": 1,
+              "finalScores": null,
+              "winner": null
+            }
+          ],
+          "live": [
+            {
+              "name": "Alpha",
+              "colorHex": "#ff0000",
+              "score": 0
+            }
+          ],
+          "page": 1,
+          "pageSize": 50,
+          "total": 2,
+          "pages": 1
+        }
+      }
+    }
+  }
+}
