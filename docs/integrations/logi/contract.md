@@ -84,7 +84,7 @@ or `corrected` as supplied; a concluded event is not automatic result confirmati
 | `/{locale}/{game}/matches` | Connected match list alongside the historical local archive | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
 | `/{locale}/{game}/matches/logi/{id}` | Connected detail, schedule and supplied participant/result rows | Uses the same published, current projection; unavailable/unpublished IDs are not public |
 | `/{locale}/admin/matches/logi` | Load authoritative editable facts; create, update or cancel an eligible connected match | Current Logi session, game capability, write flag/key and provider command policy |
-| Existing server pages and `/api/servers/{game}` | Safe Logi server cards when `SERVER_STATUS_SOURCE=logi` | Each configured `publicServers` entry needs `published=true` |
+| Server pages, Wardogs home overview and `/api/servers/{game}` | Safe Logi server cards with `SERVER_STATUS_SOURCE=logi`, or Wardogs only with `SERVER_STATUS_SOURCE_WDG=logi` | Each configured `publicServers` entry needs `published=true` |
 
 `publishMatches` is a **source/game-wide approval**, not a per-event moderation UI.
 Leave it false until the operator approves exposing every safe match summary in that
@@ -96,9 +96,19 @@ The match DTO supports the supplied participant array, including three factions 
 actually returned. It does not infer participants, placement, scores or faction names
 from array order. Public Logi server summaries currently provide name, reachability,
 map, player count, capacity and observation freshness. HLL side scores require explicit
-configured source-side IDs. Mode, next map, round timer and per-team player counts stay
+configured source-side IDs. Wardogs preserves the supplied named `scores` array as
+`teamScores`, including all three teams when reported; it does not infer factions,
+clan affiliation or HLL sides from position. Unknown scores stay null and zero stays
+zero. Both score formats are removed when stale, expired or the source is unavailable.
+Mode, next map, round timer and per-team player counts stay
 null in this adapter; live player names and advanced statistics are not exported.
 A separately approved statistics URL can be linked.
+
+The Wardogs home panel previews up to three approved servers and links to the complete
+list/detail. Both views refresh the website's local projection every 30 seconds while
+visible, offer a pause control, and age retained data even while paused/offline. This
+is polling, not a real-time stream or a direct browser request to Warcon. See the
+[Wardogs server operator notes](wardogs-servers.md).
 
 Public match eligibility expires after 15 minutes without successful source
 revalidation. Server observations are fresh for 2 minutes, stale for up to 30 minutes,

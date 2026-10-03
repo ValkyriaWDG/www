@@ -1,5 +1,29 @@
 # Current status
 
+## Wardogs server browser and home overview — 2026-10-03
+
+Wardogs now exposes Servers in the desktop/mobile menu and a compact home overview,
+with map, population, all supplied named team scores, freshness and links to each
+server's details. The approved public statistics link can open the Warcon scoreboard.
+The Wardogs-only `SERVER_STATUS_SOURCE_WDG=logi` setting lets HLL retain its current
+CRCON source. Polling is every 30 seconds, can be paused and removes stale scores.
+Public server data still requires individually approved Logi connection mappings.
+
+Lint, typecheck, optimized build, 897 unit, 476 PostgreSQL and 208 browser tests passed
+locally; 124 unrelated opt-in captures were skipped. The focused visual/accessibility/
+polling/navigation suite passed 47 tests. Review repaired actual menu wiring and the
+missing pause control; inspected screenshots led to a full-width score row and a
+regression check for header overlap at 768–1920 px. Exact runtime/build, captions,
+source/artifact hashes and reproduction are in the
+[acceptance bundle](evidence/wardogs-servers-2026-10-03/README.md).
+
+This is local synthetic acceptance, not production activation or a new live Warcon
+test. Individual live Wardogs player rows are still on the approved external scoreboard;
+linked-member collected-session facts remain the separate people integration below.
+Next: qualify the deployed Logi producer, data grant, public connection configuration
+and sync schedule using the [operator notes](integrations/logi/wardogs-servers.md).
+No production database, deployment, SSO activation or Discord command change was made.
+
 ## Logi membership, rosters, attendance and statistics — 2026-10-03
 
 The follow-up to merged PR #83 adds read-only team views for HLL/Wardogs, with Logi

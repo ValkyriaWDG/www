@@ -70,6 +70,8 @@ export type ServerSnapshot = {
   /** Sectors held per side and players per team at `observedAt` (only while fresh). */
   score: { allied: number; axis: number } | null;
   teams: { allied: number; axis: number } | null;
+  /** Named Wardogs teams from the source; no inferred HLL-side or clan assignment. Fresh observations only. */
+  teamScores?: { id: string; label: string; score: number | null }[] | null;
   /** When the source observed these values (ISO 8601). */
   observedAt: string | null;
   freshness: Freshness;

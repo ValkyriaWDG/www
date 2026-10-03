@@ -102,10 +102,16 @@ export function crconSource(servers: readonly CrconServerConfig[], fetchImpl: Fe
   };
 }
 
-function configuredSource(): ServerStatusSource | null {
+export function serverStatusSourceForGame(game: GameRoute): ReturnType<typeof getServerEnv>['SERVER_STATUS_SOURCE'] {
   const env = getServerEnv();
-  if (env.SERVER_STATUS_SOURCE === 'synthetic-fixture') return syntheticSource(env.SERVER_STATUS_FIXTURE_SCENARIO);
-  if (env.SERVER_STATUS_SOURCE === 'crcon') {
+  return game === 'wardogs' ? env.SERVER_STATUS_SOURCE_WDG ?? env.SERVER_STATUS_SOURCE : env.SERVER_STATUS_SOURCE;
+}
+
+function configuredSource(game: GameRoute): ServerStatusSource | null {
+  const env = getServerEnv();
+  const source = serverStatusSourceForGame(game);
+  if (source === 'synthetic-fixture') return syntheticSource(env.SERVER_STATUS_FIXTURE_SCENARIO);
+  if (source === 'crcon') {
     const { servers, error } = parseCrconConfig(env.HLL_SERVER_SOURCES_JSON);
     if (error) console.error(`Server status: HLL_SERVER_SOURCES_JSON is ${error}; the source is disabled.`);
     return crconSource(servers);
@@ -138,6 +144,7 @@ function toSnapshot(game: GameRoute, row: Observation, now: Date, synthetic: boo
     timeRemainingSeconds: live ? row.timeRemainingSeconds : null,
     score: live ? row.score : null,
     teams: live ? row.teams : null,
+    teamScores: live ? row.teamScores ?? null : null,
     observedAt: row.observedAt?.toISOString() ?? null,
     freshness,
     connect: row.address ? { kind: 'address', address: row.address } : { kind: 'none' },
@@ -156,11 +163,11 @@ function unknownSnapshot(game: GameRoute, result: Extract<ServerResult, { kind: 
 }
 
 export async function getServerOverview(game: GameRoute, now: Date = new Date(), source?: ServerStatusSource | null): Promise<ServerOverview> {
-  if (source === undefined && getServerEnv().SERVER_STATUS_SOURCE === 'logi') {
+  if (source === undefined && serverStatusSourceForGame(game) === 'logi') {
     const { getLogiServerOverview } = await import('../logi-public');
     return getLogiServerOverview(game, now);
   }
-  if (source === undefined) source = configuredSource();
+  if (source === undefined) source = configuredSource(game);
   if (!source) return { state: 'not_configured' };
   const attemptedAt = now.toISOString();
   const known = (id: string) => lastKnown.get(`${game}/${id}`);
@@ -195,8 +202,8 @@ export async function getServerOverview(game: GameRoute, now: Date = new Date(),
 }
 
 /** Whether the configured source is synthetic (for the visible "synthetic data" label). */
-export function isSyntheticServerSource(): boolean {
-  return configuredSource()?.synthetic ?? false;
+export function isSyntheticServerSource(game: GameRoute = 'hll'): boolean {
+  return configuredSource(game)?.synthetic ?? false;
 }
 
 /** Test helper: forget cached upstream responses and last known observations. */

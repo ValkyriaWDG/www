@@ -20,6 +20,7 @@ test.describe('menu shell: navigation and language', () => {
       ['KLAN', '/cs/wardogs/clan'],
       ['ČLENOVÉ', '/cs/wardogs/members'],
       ['ZÁPASY', '/cs/wardogs/matches'],
+      ['SERVERY', '/cs/wardogs/servers'],
     ] as const) {
       const link = nav.getByRole('link', { name: label, exact: true });
       await expect(link).toBeVisible();
@@ -133,6 +134,7 @@ test.describe('menu shell: mobile', () => {
     const nav = panel.getByRole('navigation', { name: 'Hlavní navigace' });
     await expect(nav.getByRole('link', { name: 'NOVINKY' })).toBeVisible();
     await expect(nav.getByRole('link', { name: 'NOVINKY' })).toHaveAttribute('href', '/cs/wardogs/news');
+    await expect(nav.getByRole('link', { name: 'SERVERY' })).toHaveAttribute('href', '/cs/wardogs/servers');
     await expect(panel.locator('[data-mobile-link="signIn"]')).toHaveAttribute('href', '/cs/login');
     await expect(panel.locator('[data-mobile-link="hll"]')).toHaveCount(0);
 

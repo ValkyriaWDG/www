@@ -174,7 +174,8 @@
       "teamsValue": "Spojenci {allied} · Osa {axis}",
       "liveStats": "Živé statistiky serveru",
       "mapImageAlt": "{map} – herní scéna mapy (ilustrační, ne aktuální stav hry)",
-      "tacticalMap": "Taktická mapa {map} ({size} kB)"
+      "tacticalMap": "Taktická mapa {map} ({size} kB)",
+      "teamScores": "Skóre týmů"
     },
     "partial": {
       "title": "Některé servery teď neodpovídají.",
@@ -213,6 +214,10 @@
         "axis": "Osa",
         "unknown": "Neznámá"
       }
+    },
+    "summary": {
+      "title": "Naše servery",
+      "browse": "Přehled serverů"
     }
   },
   "manual": {

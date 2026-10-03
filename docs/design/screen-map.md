@@ -1,5 +1,19 @@
 # Valkyria screen and interaction map
 
+## Implemented Wardogs server addition (2026-10-03)
+
+Under the unified canonical `valkyria.cz` platform, `/{locale}/wardogs/servers`
+exposes a public list and `?server=<publicId>` detail. Desktop and mobile Wardogs
+menus include the active Servers entry. The game homepage keeps the open scene and
+bottom-left actions, with a compact server overview and next-match strip on the
+right (stacked on phones). Observations show map, population, named team scores,
+freshness and timestamp; the detail adds approved join/statistics links. Polling
+can be paused. Missing/stale observations do not invent scores or players. See the
+[source and activation contract](../integrations/logi/wardogs-servers.md).
+
+The historical initial screen proposal below is superseded by the unified-platform
+ADR and current implementation for game-scoped routes and canonical hostnames.
+
 Status: proposed implementation contract for the cloud agent. The website is Czech-first and bilingual (`cs` / `en`), including account/admin UI, validation and accessible labels. Code identifiers, system route segments, documentation, AI prompts and GitHub descriptions remain English. The production domain is `valkyriawdg.cz`. Follow the canonical [localization contract](../product/localization.md). English labels below are logical label examples with Czech/English translations, not a requirement to display English on Czech pages.
 
 All public/account/admin UI routes carry `/cs` or `/en`. Except for explicit `/{locale}` or bare-root entries, unprefixed routes below are logical suffixes: `/news` means `/cs/news` and `/en/news`, and `/admin/news/new` means `/cs/admin/news/new` and `/en/admin/news/new`. The URL determines the locale; do not translate English system segments. `/api/auth`, health and static-asset routes stay unprefixed. Bare `/` always returns HTTP 307 to `/cs`, without browser-language detection or a locale cookie. Unprefixed known UI suffixes return HTTP 307 to their Czech counterpart, retaining only safe supported query parameters; unsupported explicit locales return 404.

@@ -15,6 +15,7 @@ export async function HomeMenu({
   nextMatch,
   base = '',
   notice,
+  serverSummary,
 }: {
   discordUrl: string | null;
   nextMatch: NextMatch | null;
@@ -22,6 +23,7 @@ export async function HomeMenu({
   base?: string;
   /** Optional game-switch explanation shown above the stage. */
   notice?: ReactNode;
+  serverSummary?: ReactNode;
 }) {
   const t = await getTranslations('home');
   const common = await getTranslations('common');
@@ -55,7 +57,10 @@ export async function HomeMenu({
             {t('cta.matches')}
           </GameButton>
         </section>
-        <NextMatchStrip match={nextMatch} />
+        <div className={styles.updates}>
+          {serverSummary}
+          <NextMatchStrip match={nextMatch} />
+        </div>
       </div>
     </main>
   );

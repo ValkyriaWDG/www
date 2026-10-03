@@ -64,6 +64,9 @@
   display: flex;
 }
 
+/* Keep six translated Wardogs destinations inside the space left by the shared tools. */
+.nav .navItem { min-width: 0; }
+
 .navItem {
   display: flex;
   align-items: center;
@@ -400,6 +403,10 @@ a.languageOption:hover {
 }
 
 @media (max-width: 1439px) {
+  .nav .navItem {
+    padding-inline: 8px;
+  }
+
   .languageName {
     display: none;
   }

@@ -174,7 +174,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'game-switch-notice-en-1366x768.png',
-    caption: 'Game switch from /en/hll/servers to Wardogs (no servers section there): lands on /en/wardogs?switch=section with an explanatory notice; locale kept.',
+    caption: 'Game switch from /en/hll/field-manual to Wardogs (no field manual there): lands on /en/wardogs?switch=section with an explanatory notice; locale kept.',
     locale: 'en',
     path: '/en/wardogs?switch=section',
     width: 1366,

@@ -35,7 +35,7 @@ export function ageServerBrowserData(data: ServerBrowserData, now: Date, failed 
     ...data.overview,
     servers: data.overview.servers.map((server) => {
       const state = freshness(server.observedAt, server.freshness);
-      return { ...server, freshness: state, reachability: failed || state === 'unavailable' ? 'unknown' as const : server.reachability, map: state === 'unavailable' ? null : server.map, players: state === 'unavailable' ? null : server.players, mode: state === 'unavailable' ? null : server.mode, score: state === 'fresh' ? server.score : null, teams: state === 'fresh' ? server.teams : null, nextMap: state === 'fresh' ? server.nextMap : null, timeRemainingSeconds: state === 'fresh' ? server.timeRemainingSeconds : null };
+      return { ...server, freshness: state, reachability: failed || state === 'unavailable' ? 'unknown' as const : server.reachability, map: state === 'unavailable' ? null : server.map, players: state === 'unavailable' ? null : server.players, mode: state === 'unavailable' ? null : server.mode, score: state === 'fresh' ? server.score : null, teams: state === 'fresh' ? server.teams : null, ...(server.teamScores !== undefined ? { teamScores: state === 'fresh' ? server.teamScores : null } : {}), nextMap: state === 'fresh' ? server.nextMap : null, timeRemainingSeconds: state === 'fresh' ? server.timeRemainingSeconds : null };
     }),
   };
   if (!data.livePlayers) return { overview, livePlayers: null };

@@ -49,7 +49,7 @@ test.describe('platform routing', () => {
     await expect(nav.getByRole('link', { name: 'HLAVNÍ MENU' })).toHaveAttribute('href', '/cs/wardogs');
     await expect(nav.getByRole('link', { name: 'NOVINKY', exact: true })).toHaveAttribute('href', '/cs/wardogs/news');
 
-    for (const path of ['/cs/wardogs/servers', '/cs/wardogs/field-manual', '/cs/wardogs/faq', '/cs/unknown-game/news', '/de/hll']) {
+    for (const path of ['/cs/wardogs/field-manual', '/cs/wardogs/faq', '/cs/unknown-game/news', '/de/hll']) {
       expect((await page.goto(path))?.status(), path).toBe(404);
     }
   });
@@ -214,6 +214,11 @@ test.describe('platform routing', () => {
     await expect(page.locator('[data-game-switch-notice]')).toHaveCount(0);
 
     await page.goto('/en/hll/servers');
+    await gameSwitch(page).locator('[data-game-option="wardogs"]').click();
+    await expect(page).toHaveURL(/\/en\/wardogs\/servers$/);
+    await expect(page.locator('[data-game-switch-notice]')).toHaveCount(0);
+
+    await page.goto('/en/hll/field-manual');
     await gameSwitch(page).locator('[data-game-option="wardogs"]').click();
     await expect(page).toHaveURL(/\/en\/wardogs\?switch=section$/);
     await expect(page.locator('[data-game-switch-notice="section"]')).toContainText('Switched to Wardogs');

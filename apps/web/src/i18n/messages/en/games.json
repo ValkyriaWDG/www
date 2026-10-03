@@ -174,7 +174,8 @@
       "teamsValue": "Allies {allied} · Axis {axis}",
       "liveStats": "Live server statistics",
       "mapImageAlt": "{map} — in-game scene of the map (illustrative, not the live game state)",
-      "tacticalMap": "Tactical map of {map} ({size} kB)"
+      "tacticalMap": "Tactical map of {map} ({size} kB)",
+      "teamScores": "Team scores"
     },
     "partial": {
       "title": "Some servers are not responding right now.",
@@ -213,6 +214,10 @@
         "axis": "Axis",
         "unknown": "Unknown"
       }
+    },
+    "summary": {
+      "title": "Our servers",
+      "browse": "Browse servers"
     }
   },
   "manual": {

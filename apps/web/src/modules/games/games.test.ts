@@ -46,6 +46,7 @@ describe('game registry', () => {
       '/wardogs/clan',
       '/wardogs/members',
       '/wardogs/matches',
+      '/wardogs/servers',
     ]);
     expect(gameHasSection('wardogs', 'field-manual')).toBe(false);
     expect(gameHasSection('wardogs', 'tournaments')).toBe(false);
@@ -74,7 +75,7 @@ describe('game routes', () => {
     expect(resolveGameSwitch('/cs/hll', '', 'wardogs')).toBe('/wardogs');
     expect(resolveGameSwitch('/cs/hll/news', 'q=ecl&page=3&category=x', 'wardogs')).toBe('/wardogs/news?q=ecl');
     expect(resolveGameSwitch('/en/wardogs/matches', 'view=results&game=wardogs', 'hll')).toBe('/hll/matches?view=results');
-    expect(resolveGameSwitch('/cs/hll/servers', 'server=srv-1', 'wardogs')).toBe('/wardogs?switch=section');
+    expect(resolveGameSwitch('/cs/hll/servers', 'server=srv-1', 'wardogs')).toBe('/wardogs/servers');
   });
 
   it('never invents a same-slug counterpart for a detail page', () => {
