@@ -52,6 +52,7 @@ The scoped reader work is tracked in
    shadow generation with a fresh change boundary. It cannot leave a persisted
    invalid cursor retrying forever, mix abandoned rows into the replacement or
    publish a partial snapshot. The regression spans several bounded sync passes.
+   Rows of the abandoned generation are deleted as soon as the replacement begins.
 2. A persisted collector failure supersedes a recent successful observation.
    Public HLL/WDG servers immediately become unknown/stale and omit live scores;
    last-known map and population remain explicitly historical.
@@ -89,7 +90,8 @@ FAQ already uses the shared Pages editor; Field Manual already supports rich-tex
 articles, translations, sources, revisions and publication. The patch makes FAQ
 discoverable in the Pages label, repairs manual search navigation, protects unsaved
 manual metadata and restricts fixed-scope modules consistently with resource
-permissions. See the [editor guide](../../operations/editor-guide.md).
+permissions, on the lists, the creation page and the direct editor routes. See the
+[editor guide](../../operations/editor-guide.md).
 
 Editable taxonomy remains a real gap: category names/descriptions/order and news
 taxonomy currently come from seeds. Category assignment in article editing already

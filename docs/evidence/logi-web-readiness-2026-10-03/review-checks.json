@@ -1,0 +1,47 @@
+{
+  "base": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+  "reviewedCandidate": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+  "runtimeCommit": "0f4bd4a211391edb3743daa80cee84ce997ebd90",
+  "environment": {
+    "os": "Linux x64 (cloud container)",
+    "node": "22.22.2",
+    "pnpm": "10.34.5",
+    "postgres": "16",
+    "browser": "Chromium (Playwright)",
+    "timezone": "Europe/Prague",
+    "data": "Disposable synthetic fixtures"
+  },
+  "results": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "optimizedBuild": "passed",
+    "unit": {
+      "files": 85,
+      "passed": 930
+    },
+    "postgresIntegration": {
+      "files": 46,
+      "passed": 483
+    },
+    "browser": {
+      "projects": ["chromium", "chromium-admin"],
+      "passed": 215,
+      "skipped": 99,
+      "flaky": 0,
+      "note": "CI=true; skipped cases are opt-in captures."
+    },
+    "foundation": "passed"
+  },
+  "corrections": [
+    "Wardogs home and home footer re-declare the tokens.css phone/short-window reductions",
+    "Manual and page editor routes pass the module's fixed game scope",
+    "Sign-in note follows the available action",
+    "Unused auth.login.purpose and auth.login.providerUnavailable removed",
+    "Logi store deletes an abandoned shadow generation when its replacement begins"
+  ],
+  "limits": [
+    "Local synthetic verification only; no hosted Logi SSO/grant acceptance",
+    "No production database mutation, deployment or private admin session",
+    "Pre-existing: the Wardogs home utility rail sits below the fold in short desktop windows (1280×700) because of the servers overview"
+  ]
+}
