@@ -1,6 +1,6 @@
 import 'server-only';
-import { contentDocument, manualCategory, taxonomyTerm, type Executor, type Game } from '@valkyria/db';
-import { and, asc, eq, ne, sql } from 'drizzle-orm';
+import { manualCategory, taxonomyTerm, type Executor, type Game } from '@valkyria/db';
+import { and, asc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { DomainError } from '@/lib/result';
 import { canForGame, capabilityScope } from '@/modules/access/policy';
@@ -57,7 +57,8 @@ const description = z
   .pipe(z.string().max(TAXONOMY_LIMITS.description, 'too_long'));
 
 export const taxonomyScopeSchema = z.discriminatedUnion('scope', [
-  z.object({ scope: z.literal('manual-category'), game: gameSchema }),
+  // Only games with a public Field Manual have manual categories (a Wardogs-only editor cannot create hidden rows).
+  z.object({ scope: z.literal('manual-category'), game: gameSchema.refine((game) => manualGames().includes(game), 'invalid') }),
   z.object({ scope: z.literal('news-category') }),
   z.object({ scope: z.literal('news-tag') }),
 ]);
@@ -132,42 +133,56 @@ function termDto(row: TermRow, referenceCount: number): TaxonomyTermDTO {
 
 /* ------------------------------- references ------------------------------- */
 
+/*
+ * A key is referenced by a document's current shared fields (drafts included) and by the
+ * published revision of any of its translations: an article moved to another category in
+ * a draft stays public under its old key until that translation is republished. Both
+ * sides count, per distinct document.
+ */
+
+async function countsByKey(db: Executor, query: ReturnType<typeof sql>): Promise<Map<string, number>> {
+  const rows = await db.execute<{ key: string; count: number }>(sql`select refs.key as key, count(distinct refs.document_id)::int as count from (${query}) as refs where refs.key is not null group by refs.key`);
+  return new Map(rows.rows.map((row) => [row.key, Number(row.count)]));
+}
+
 /** Manual articles of `game` per category key. */
-async function manualReferenceCounts(db: Executor, game: Game): Promise<Map<string, number>> {
-  const rows = await db
-    .select({ key: contentDocument.categoryKey, count: sql<number>`count(*)::int` })
-    .from(contentDocument)
-    .where(and(eq(contentDocument.kind, 'manual'), eq(contentDocument.game, game)))
-    .groupBy(contentDocument.categoryKey);
-  return new Map(rows.filter((row) => row.key !== null).map((row) => [row.key!, row.count]));
+function manualReferenceCounts(db: Executor, game: Game): Promise<Map<string, number>> {
+  return countsByKey(db, sql`
+    select d.id as document_id, d.category_key as key from content_document d where d.kind = 'manual' and d.game = ${game}
+    union all
+    select d.id, r.taxonomy->'category'->>'key' from content_document d
+      join content_translation t on t.document_id = d.id
+      join content_revision r on r.id = t.published_revision_id
+     where d.kind = 'manual' and d.game = ${game}`);
 }
 
 /** Non-manual documents (news posts) per shared category key. */
-async function newsCategoryReferenceCounts(db: Executor): Promise<Map<string, number>> {
-  const rows = await db
-    .select({ key: contentDocument.categoryKey, count: sql<number>`count(*)::int` })
-    .from(contentDocument)
-    .where(ne(contentDocument.kind, 'manual'))
-    .groupBy(contentDocument.categoryKey);
-  return new Map(rows.filter((row) => row.key !== null).map((row) => [row.key!, row.count]));
+function newsCategoryReferenceCounts(db: Executor): Promise<Map<string, number>> {
+  return countsByKey(db, sql`
+    select d.id as document_id, d.category_key as key from content_document d where d.kind <> 'manual'
+    union all
+    select d.id, r.taxonomy->'category'->>'key' from content_document d
+      join content_translation t on t.document_id = d.id
+      join content_revision r on r.id = t.published_revision_id
+     where d.kind <> 'manual'`);
 }
 
 /** Documents of any kind per tag key. */
-async function tagReferenceCounts(db: Executor): Promise<Map<string, number>> {
-  const rows = await db.execute<{ key: string; count: number }>(
-    sql`select tag.key as key, count(*)::int as count from ${contentDocument}, unnest(${contentDocument.tagKeys}) as tag(key) group by tag.key`,
-  );
-  return new Map(rows.rows.map((row) => [row.key, row.count]));
+function tagReferenceCounts(db: Executor): Promise<Map<string, number>> {
+  return countsByKey(db, sql`
+    select d.id as document_id, tag.key as key from content_document d, unnest(d.tag_keys) as tag(key)
+    union all
+    select d.id, tag->>'key' from content_document d
+      join content_translation t on t.document_id = d.id
+      join content_revision r on r.id = t.published_revision_id,
+      jsonb_array_elements(coalesce(r.taxonomy->'tags', '[]'::jsonb)) as tag`);
 }
 
 async function referenceCountFor(db: Executor, scope: TaxonomyScope, key: string): Promise<number> {
-  if (scope.scope === 'manual-category') return (await manualReferenceCounts(db, scope.game)).get(key) ?? 0;
-  if (scope.scope === 'news-category') return (await newsCategoryReferenceCounts(db)).get(key) ?? 0;
-  const [row] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(contentDocument)
-    .where(sql`${key} = any(${contentDocument.tagKeys})`);
-  return row?.count ?? 0;
+  const counts = scope.scope === 'manual-category'
+    ? await manualReferenceCounts(db, scope.game)
+    : scope.scope === 'news-category' ? await newsCategoryReferenceCounts(db) : await tagReferenceCounts(db);
+  return counts.get(key) ?? 0;
 }
 
 /* --------------------------------- reads ---------------------------------- */
@@ -280,7 +295,7 @@ export async function saveTaxonomyTerm(db: Executor, actor: Actor, rawInput: Sav
       }
 
       const current = await lockedTerm(tx, scope, input.id);
-      if (current.row.updatedAt.toISOString() !== input.expectedUpdatedAt) throw new DomainError('conflict', 'The term changed meanwhile.', { _: 'conflict' });
+      if (current.row.updatedAt.getTime() !== Date.parse(input.expectedUpdatedAt!)) throw new DomainError('conflict', 'The term changed meanwhile.', { _: 'conflict' });
       let row: AnyRow;
       if (current.kind === 'manual') {
         const [updated] = await tx.update(manualCategory).set(values).where(eq(manualCategory.id, current.row.id)).returning();

@@ -115,7 +115,7 @@
     "deleteBlocked": "{count, plural, one {Odstranění není možné: záznam používá # článek.} few {Odstranění není možné: záznam používají # články.} other {Odstranění není možné: záznam používá # článků.}} Nejprve změňte kategorii nebo štítky těchto článků v editoru, nebo záznam archivujte.",
     "deleteReferenced": "Záznam mezitím někdo přiřadil článku, proto ho nelze odstranit. Místo toho ho archivujte.",
     "confirmArchiveTitle": "Archivovat „{label}“?",
-    "confirmArchiveBody": "{count, plural, =0 {Záznam zmizí z výběru v editoru. Žádný článek ho nepoužívá.} one {Záznam zmizí z výběru v editoru. # článek, který ho používá, si ho ponechá a na veřejném webu zůstane.} few {Záznam zmizí z výběru v editoru. # články, které ho používají, si ho ponechají a na veřejném webu zůstanou.} other {Záznam zmizí z výběru v editoru. # článků, které ho používají, si ho ponechá a na veřejném webu zůstanou.}}",
+    "confirmArchiveBody": "{count, plural, =0 {Záznam zmizí z výběru v editoru. Žádný článek ho nepoužívá.} one {Záznam zmizí z výběru v editoru. # článek (koncept nebo zveřejněná verze), který ho používá, si ho ponechá; zveřejněné články zůstanou na webu.} few {Záznam zmizí z výběru v editoru. # články (koncepty i zveřejněné verze), které ho používají, si ho ponechají; zveřejněné články zůstanou na webu.} other {Záznam zmizí z výběru v editoru. # článků (koncepty i zveřejněné verze), které ho používají, si ho ponechá; zveřejněné články zůstanou na webu.}}",
     "confirmRestoreTitle": "Obnovit „{label}“?",
     "confirmRestoreBody": "Záznam bude znovu k dispozici ve výběru v editoru.",
     "confirmDeleteTitle": "Odstranit „{label}“?",

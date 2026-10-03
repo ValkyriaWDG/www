@@ -7,6 +7,7 @@ import { testPrincipal } from '@/modules/access/testing';
 import { AccessDeniedError, type Principal } from '@/modules/access/types';
 import { listTaxonomyOptions } from '@/modules/content/admin-queries';
 import { createDocument, saveDraft } from '@/modules/content/editor';
+import { publishTranslation } from '@/modules/content/publication';
 import { getAvailableTaxonomy } from '@/modules/content/public';
 import { sampleBody } from '@/modules/content/testing';
 import { listManualCategoryOptions } from '@/modules/field-manual/admin';
@@ -320,6 +321,29 @@ describe('manual categories and the public manual', () => {
     await expect(deleteTaxonomyTerm(t.db, actors.editor, { scope: MANUAL, id: category.id })).resolves.toEqual({ id: category.id, key: 'synthetic-delete' });
     expect(await t.db.select().from(manualCategory).where(eq(manualCategory.id, category.id))).toEqual([]);
     expect((await auditRows('taxonomy.delete', 'success')).find((row) => row.entityId === category.id)?.summary).toMatchObject({ scope: 'manual-category', game: HLL, key: 'synthetic-delete' });
+  });
+
+  it('keeps a category referenced while a published version still uses it after the draft moved on', async () => {
+    const category = await saveTaxonomyTerm(t.db, actors.editor, base({ scope: MANUAL, key: 'synthetic-moved', labelCs: 'Přesunuto', labelEn: 'Moved', sortOrder: 91 }));
+    const created = await createDocument(t.db, actors.editor, { kind: 'manual', locale: 'cs', title: '[Synthetic] Přesunutý návod', game: HLL, categoryKey: 'synthetic-moved' });
+    const saved = await saveDraft(t.db, actors.editor, {
+      translationId: created.translationId,
+      expectedVersion: created.version,
+      fields: { excerpt: 'Syntetické shrnutí přesunutého návodu.', body: sampleBody('Syntetický návod, který se přesune.') },
+    });
+    const published = await publishTranslation(t.db, actors.editor, { translationId: created.translationId, expectedVersion: saved.version });
+    // The draft moves to another category; the public article still sits under the old key.
+    const moved = await saveDraft(t.db, actors.editor, {
+      translationId: created.translationId,
+      expectedVersion: published.version,
+      shared: { expectedDocumentVersion: saved.documentVersion, categoryKey: 'leadership' },
+    });
+    expect((await getTaxonomyTermForAdmin(t.db, actors.editor, { scope: MANUAL, id: category.id }))?.referenceCount).toBe(1);
+    expect((await failure(deleteTaxonomyTerm(t.db, actors.editor, { scope: MANUAL, id: category.id })))?.fieldErrors?._).toBe('referenced');
+    // Republishing moves the public article as well; only then is the key unreferenced.
+    await publishTranslation(t.db, actors.editor, { translationId: created.translationId, expectedVersion: moved.version });
+    expect((await getTaxonomyTermForAdmin(t.db, actors.editor, { scope: MANUAL, id: category.id }))?.referenceCount).toBe(0);
+    await expect(deleteTaxonomyTerm(t.db, actors.editor, { scope: MANUAL, id: category.id })).resolves.toMatchObject({ key: 'synthetic-moved' });
   });
 });
 

@@ -115,7 +115,7 @@
     "deleteBlocked": "{count, plural, one {Deletion is not possible: # article uses this record.} other {Deletion is not possible: # articles use this record.}} Change the category or tags of those articles in the editor first, or archive the record instead.",
     "deleteReferenced": "The record was assigned to an article meanwhile, so it cannot be deleted. Archive it instead.",
     "confirmArchiveTitle": "Archive “{label}”?",
-    "confirmArchiveBody": "{count, plural, =0 {The record disappears from the editor's selector. No article uses it.} one {The record disappears from the editor's selector. The # article that uses it keeps it and stays public.} other {The record disappears from the editor's selector. The # articles that use it keep it and stay public.}}",
+    "confirmArchiveBody": "{count, plural, =0 {The record disappears from the editor's selector. No article uses it.} one {The record disappears from the editor's selector. The # article that uses it (draft or published version) keeps it; published articles stay online.} other {The record disappears from the editor's selector. The # articles that use it (drafts and published versions) keep it; published articles stay online.}}",
     "confirmRestoreTitle": "Restore “{label}”?",
     "confirmRestoreBody": "The record becomes available in the editor's selector again.",
     "confirmDeleteTitle": "Delete “{label}”?",
