@@ -9,7 +9,7 @@ import { GET } from '@/app/api/servers/[game]/route';
 
 const now = new Date('2026-09-29T12:00:00Z');
 const server: ServerSnapshot = { ref: { source: 'synthetic', sourceInstanceId: 'synthetic', guildId: null, game: 'hll', kind: 'server', externalId: 'alpha' }, publicId: 'alpha', name: '[SYN] Alpha', observedAt: now.toISOString(), freshness: 'fresh', reachability: 'online', map: 'Synthetic Map', mode: 'Warfare', players: 0, capacity: 100, score: { allied: 3, axis: 2 }, teams: { allied: 0, axis: 0 }, nextMap: 'Synthetic Next', timeRemainingSeconds: 300, connect: { kind: 'none' }, statsUrl: null };
-const data: ServerBrowserData = { overview: { state: 'ok', servers: [server], synthetic: true, partial: false, attemptedAt: now.toISOString() }, livePlayers: { state: 'ok', publicId: 'alpha', observedAt: now.toISOString(), freshness: 'fresh', synthetic: true, refreshAfterSeconds: 30, players: [{ name: '[SYN] Previously connected', side: 'unknown', kills: 3, deaths: null, combat: null, offense: null, defense: null, support: null }] } };
+const data: ServerBrowserData = { overview: { state: 'ok', servers: [server], synthetic: true, partial: false, attemptedAt: now.toISOString() }, livePlayers: { state: 'ok', publicId: 'alpha', observedAt: now.toISOString(), freshness: 'fresh', synthetic: true, refreshAfterSeconds: 30, players: [{ name: '[SYN] Previously connected', side: 'unknown', kills: 3, deaths: null, combat: null, offense: null, defense: null, support: null }] }, warcon: null };
 
 describe('server polling projection', () => {
   it('ages paused snapshots and removes expired rows while preserving true zero population', () => {

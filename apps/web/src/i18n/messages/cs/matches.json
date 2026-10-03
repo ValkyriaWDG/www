@@ -131,7 +131,35 @@
       "axis": "Osa"
     },
     "mapImageAlt": "{map} – herní scéna mapy (ilustrační)",
-    "tacticalMap": "Taktická mapa {map} ({size} kB)"
+    "tacticalMap": "Taktická mapa {map} ({size} kB)",
+    "league": {
+      "title": "Náhled z League",
+      "note": "Neověřený náhled z Wardogs League. Zobrazuje jen zveřejněný stav utkání; výsledek výše je výsledek zapsaný klanem.",
+      "synthetic": "Syntetická ukázková data z League – nejde o skutečné utkání.",
+      "unavailable": "Náhled z League není k dispozici.",
+      "stale": "Náhled může být zastaralý.",
+      "observed": "Pozorováno {time}",
+      "fixture": "Utkání č. {number}",
+      "type": "Typ",
+      "status": "Stav",
+      "scheduled": "Naplánováno",
+      "teams": "Týmy",
+      "map": "Mapa",
+      "zone": "Zóna",
+      "lighting": "Osvětlení",
+      "hosting": "Hostování",
+      "hostingValue": "{mode} · {team}",
+      "mapVote": "Hlasování o mapě",
+      "mapVoteCloses": "{status} · končí {time}",
+      "progress": "Postup",
+      "progressState": {
+        "done": "Hotovo",
+        "current": "Právě probíhá",
+        "not_started": "Nezačalo",
+        "unknown": "Neznámé"
+      },
+      "source": "Otevřít ve Wardogs League"
+    }
   },
   "legacy": {
     "title": "Podrobnosti zápasu",

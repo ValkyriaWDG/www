@@ -6,15 +6,18 @@ import { ServerIcon } from '@/components/ui/icons';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
-import type { ServerOverview } from '@/modules/integrations/servers/provider';
+import type { ServerBrowserData } from '@/modules/integrations/servers/browser';
+import { warconFor } from '@/modules/integrations/servers/view';
 import { TeamScores } from './team-scores';
 import { useServerPolling } from './use-server-polling';
+import { WarconLiveFacts } from './warcon-panel';
 import styles from './server-summary.module.css';
 
 /** The Wardogs menu uses the same scoped, ageing public read model as its server browser. */
-export function ServerSummary({ initialOverview, locale }: { initialOverview: ServerOverview; locale: AppLocale }) {
+export function ServerSummary({ initialData, locale }: { initialData: ServerBrowserData; locale: AppLocale }) {
   const t = useTranslations('games.servers');
-  const poll = useServerPolling('wardogs', null, { overview: initialOverview, livePlayers: null });
+  const w = useTranslations('games.servers.warcon');
+  const poll = useServerPolling('wardogs', null, initialData);
   const { overview } = poll.data;
   const servers = overview.state === 'not_configured' ? [] : overview.servers;
   const emptyMessage = overview.state === 'not_configured' ? t('notConfigured.title')
@@ -39,6 +42,16 @@ export function ServerSummary({ initialOverview, locale }: { initialOverview: Se
                 <StatusBadge kind={server.freshness === 'fresh' ? 'success' : server.freshness === 'stale' ? 'warning' : 'neutral'}>{t(`freshness.${server.freshness}`)}</StatusBadge>
               </div>
               {server.teamScores?.length ? <TeamScores scores={server.teamScores} locale={locale} /> : null}
+              {(() => {
+                const warcon = warconFor(poll.data, server.publicId);
+                return warcon ? (
+                  <div className={styles.warcon} data-home-warcon={server.publicId}>
+                    <p className={styles.warconTitle}>{w('title')}</p>
+                    {warcon.synthetic ? <p className={styles.notice} data-synthetic-data="warcon">{w('synthetic')}</p> : null}
+                    <WarconLiveFacts live={warcon.live} locale={locale} compact />
+                  </div>
+                ) : null;
+              })()}
               <p className={styles.observed}>{server.observedAt ? <time dateTime={server.observedAt}>{t('observed', { time: formatDate(server.observedAt, locale, 'dateTimeZone') })}</time> : t('neverObserved')}</p>
             </li>
           ))}

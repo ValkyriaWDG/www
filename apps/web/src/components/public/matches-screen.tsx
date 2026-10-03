@@ -13,6 +13,8 @@ import { getMatchTranslations, MatchResult, MatchStart, MatchStatusBadge, MatchT
 import { hasMatchFilters, matchDetailHref, matchesListHref, type MatchFilters, type MatchView } from './query';
 import { TagList } from './tags';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
+import { getLeagueMatchPreview } from '@/modules/integrations/logi/readers/league';
+import { LeaguePreview } from './league-preview';
 import { LogiMatchBrowser } from './logi-matches';
 import styles from './matches.module.css';
 
@@ -68,6 +70,8 @@ export async function MatchesScreen({
   if (mode === 'list' && page && page.items[0]) {
     pane = await getPublicMatch(db, page.items[0].slug, locale).catch(() => null);
   }
+  // Editorial League link of a published Wardogs match: an unverified preview, read on demand, never a result.
+  const league = mode === 'detail' && pane?.game === 'wardogs' && pane.leagueMatchUrl ? await getLeagueMatchPreview(pane.leagueMatchUrl) : null;
 
   const filtered = hasMatchFilters(filters);
   const listFilters = { game: filters.game, q: filters.q };
@@ -225,6 +229,7 @@ export async function MatchesScreen({
         </div>
       ) : null}
       {mode === 'detail' && pane ? <MatchDetailExtras match={pane} locale={locale} titleId="match-overview-title" /> : null}
+      {mode === 'detail' && league ? <LeaguePreview preview={league} locale={locale} titleId="match-overview-title" /> : null}
     </div></>
   );
 }

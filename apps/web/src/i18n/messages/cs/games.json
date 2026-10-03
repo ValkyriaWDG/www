@@ -218,6 +218,41 @@
     "summary": {
       "title": "Naše servery",
       "browse": "Přehled serverů"
+    },
+    "warcon": {
+      "title": "Živě (Warcon)",
+      "intro": "Aktuální údaje o kole ze schváleného připojení Warcon, načtené přes Logi. Názvy týmů jsou pozorování ze hry, ne ověřené identity.",
+      "synthetic": "Syntetická ukázková data z Warconu – nejde o živý stav serveru Valkyria.",
+      "serverName": "Název serveru",
+      "map": "Mapa",
+      "lighting": "Osvětlení",
+      "players": "Hráči",
+      "populationValue": "{players} / {capacity}",
+      "matchTime": "Čas kola",
+      "scores": "Skóre",
+      "rotation": "Rotace",
+      "rotationValue": "nyní {now} · další {next}",
+      "observed": "Pozorováno {time}",
+      "neverObserved": "Zatím žádné pozorování",
+      "freshness": "Stav údajů",
+      "unavailable": "Živá data teď nejsou k dispozici. Neznamená to, že je server vypnutý nebo prázdný.",
+      "recent": {
+        "title": "Poslední zápasy",
+        "intro": "Posledních {count, plural, one {# kolo} few {# kola} other {# kol}} zaznamenaných Warconem; řádky hráčů se nezobrazují.",
+        "caption": "Poslední kola na tomto serveru",
+        "columns": {
+          "started": "Začátek",
+          "map": "Mapa",
+          "mode": "Režim",
+          "peak": "Max. hráčů",
+          "scores": "Konečné skóre",
+          "winner": "Vítěz"
+        },
+        "inProgress": "Probíhá",
+        "empty": "Žádná poslední kola nejsou zaznamenána.",
+        "unavailable": "Poslední kola teď nejsou k dispozici.",
+        "observed": "Seznam k {time}"
+      }
     }
   },
   "manual": {
