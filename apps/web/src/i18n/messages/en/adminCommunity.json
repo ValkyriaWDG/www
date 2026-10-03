@@ -459,6 +459,7 @@
         "gameLocked": "The game cannot change while matches are linked to the tournament.",
         "slug": "Leave empty to derive the address from the name and season.",
         "httpsOnly": "https:// addresses only.",
+        "linkLabel": "Generic labels (Website, Rules, Standings, Schedule, Registration) are shown to visitors in their language; a note in parentheses stays as written.",
         "internalNotes": "Never shown on the public website."
       },
       "linksTitle": "Links",

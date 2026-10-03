@@ -40,6 +40,8 @@ type ProseTabsProps = {
   onDirtyChange: (locale: ContentLocale, dirty: boolean) => void;
   /** Explains why the owner itself is not public (e.g. unpublished match) — prose then stays private too. */
   ownerNotPublicNote?: string | null;
+  /** Level of each locale's title: `h2` directly under the page title, `h3` where an h2 precedes it (default). */
+  headingLevel?: 'h2' | 'h3';
 };
 
 /** Match recap, member biography or tournament description; selects the editor's labels. */
@@ -61,7 +63,7 @@ export const STATUS_KIND: Record<ProseStatus, StatusKind> = {
  * editor, dirty state, draft revision, live revision and version: saving or publishing
  * one locale never changes the other, and absence is an explicit, honest state.
  */
-export function ProseTabs({ kind, uiLocale, details, canPublish, coverAssetId, mediaScope, actions, onDirtyChange, ownerNotPublicNote }: ProseTabsProps) {
+export function ProseTabs({ kind, uiLocale, details, canPublish, coverAssetId, mediaScope, actions, onDirtyChange, ownerNotPublicNote, headingLevel = 'h3' }: ProseTabsProps) {
   const t = useTranslations('adminCommunity.prose');
   const tStatus = useTranslations('adminCommunity.common.proseStatus');
   const tLang = useTranslations('adminCommunity.common.language');
@@ -105,6 +107,7 @@ export function ProseTabs({ kind, uiLocale, details, canPublish, coverAssetId, m
         actions={actions}
         onDirty={onLocaleDirty}
         onStatus={onLocaleStatus}
+        headingLevel={headingLevel}
       />
     ),
   }));
@@ -133,6 +136,7 @@ type LocaleEditorProps = {
   actions: ProseActions;
   onDirty: (locale: ContentLocale, dirty: boolean) => void;
   onStatus: (locale: ContentLocale, status: ProseStatus) => void;
+  headingLevel: 'h2' | 'h3';
 };
 
 type Notice = { kind: 'success' | 'error' | 'warning'; text: string } | null;
@@ -145,7 +149,7 @@ function coverFrom(detail: ProseAdminDetail, coverAssetId: string | null) {
   return { alt: '', caption: '', decorative: false };
 }
 
-function ProseLocaleEditor({ kind, uiLocale, locale, initial, otherStatus, canPublish, coverAssetId, mediaScope, actions, onDirty, onStatus }: LocaleEditorProps) {
+function ProseLocaleEditor({ kind, uiLocale, locale, initial, otherStatus, canPublish, coverAssetId, mediaScope, actions, onDirty, onStatus, headingLevel: Heading }: LocaleEditorProps) {
   const t = useTranslations('adminCommunity.prose');
   const tStatus = useTranslations('adminCommunity.common.proseStatus');
   const fieldError = useFieldError();
@@ -233,9 +237,9 @@ function ProseLocaleEditor({ kind, uiLocale, locale, initial, otherStatus, canPu
   return (
     <section aria-labelledby={headingId} data-prose-locale={locale} data-prose-status={detail.status} data-prose-dirty={dirty || undefined}>
       <div className={styles.proseHeader}>
-        <h3 id={headingId} className={styles.proseTitle}>
+        <Heading id={headingId} className={styles.proseTitle}>
           {t(`editing${LABEL_SUFFIX[kind]}`, { lang: locale, code: locale.toUpperCase() })}
-        </h3>
+        </Heading>
         <div className={styles.badges}>
           <StatusBadge kind={STATUS_KIND[detail.status]}>{tStatus(detail.status)}</StatusBadge>
           {dirty ? <StatusBadge kind="warning">{t('unsaved')}</StatusBadge> : null}

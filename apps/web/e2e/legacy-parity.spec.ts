@@ -53,7 +53,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(facts.locator('[data-legacy-fact="home"]')).toContainText(locale === 'cs' ? 'Domácí tým' : 'Home team');
       await expect(facts.locator('[data-legacy-fact="capturePoint"]')).toContainText('Synthetic Capture Point');
       await expect(facts.locator('[data-legacy-fact="duration"]')).toContainText(locale === 'cs' ? '90 minut' : '90 minutes');
-      await expect(facts.locator('[data-legacy-fact="points"]')).toContainText('3 · 2');
+      await expect(facts.locator('[data-legacy-fact="points"]')).toContainText('3 : 2');
       await expect(facts.locator('[data-legacy-fact="firstCapture"]')).toContainText(locale === 'cs' ? 'Spojenci' : 'Allies');
       // Conflicting duplicate values and raw source timestamps stay stored, not shown; nothing
       // refers visitors to where the record came from.

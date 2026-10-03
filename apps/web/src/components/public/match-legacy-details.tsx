@@ -46,7 +46,7 @@ export function MatchLegacyDetails({ details, locale, t, titleId, externalLabel 
     },
   ];
   if (details.capturePoint) facts.push({ key: 'capturePoint', label: t('legacy.capturePoint'), value: details.capturePoint });
-  if (details.points.length) facts.push({ key: 'points', label: t('legacy.points'), value: details.points.join(' · ') });
+  if (details.points.length) facts.push({ key: 'points', label: t('legacy.points'), value: details.points.join(' : ') });
   if (details.durationMinutes !== null) facts.push({ key: 'duration', label: t('legacy.duration'), value: t('legacy.minutes', { count: details.durationMinutes }) });
   if (details.firstCapture) facts.push({ key: 'firstCapture', label: t('legacy.firstCapture'), value: t(`detail.sides.${details.firstCapture}`) });
   const sourceLinks = details.sourceLinks.flatMap((link) => {

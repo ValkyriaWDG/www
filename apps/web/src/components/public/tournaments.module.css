@@ -171,10 +171,21 @@
 
 .links {
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-1);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Each link is a 44 px row, as on the match detail. */
+.links li {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.links a {
+  min-height: 44px;
 }
 
 .muted {

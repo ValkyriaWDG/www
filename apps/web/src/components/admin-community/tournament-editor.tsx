@@ -346,7 +346,7 @@ export function TournamentEditor({ uiLocale, initial, canPublish, games, created
                   </div>
                 )}
               </div>
-              <h3 className={styles.repeatHeading}>{t('linksTitle')}</h3>
+              <h2 className={styles.repeatHeading}>{t('linksTitle')}</h2>
               <p className={styles.groupIntro}>{t('linksIntro', { max: MAX_TOURNAMENT_LINK_ROWS })}</p>
               <ul className={styles.repeatList} hidden={values.links.length === 0}>
                 {values.links.map((link, index) => (
@@ -358,6 +358,7 @@ export function TournamentEditor({ uiLocale, initial, canPublish, games, created
                           name={`link-${link.key}-label`}
                           label={t('fields.linkLabel')}
                           required
+                          hint={t('hints.linkLabel')}
                           value={link.label}
                           maxLength={80}
                           onChange={(event) => set('links', values.links.map((item) => (item.key === link.key ? { ...item, label: event.target.value } : item)))}
@@ -400,6 +401,7 @@ export function TournamentEditor({ uiLocale, initial, canPublish, games, created
               {server && descriptionActions ? (
                 <ProseTabs
                   kind="description"
+                  headingLevel="h2"
                   uiLocale={uiLocale}
                   details={server.descriptionDetail}
                   canPublish={canPublish}

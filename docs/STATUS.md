@@ -1,5 +1,69 @@
 # Current status
 
+## Public and administration UI round 12 — 2026-10-03
+
+An audit of main `22034ca` (the PR #95 merge) covered the public HLL/Wardogs match
+details with the statistics tabs, tournaments, members, login and team pages and the
+signed-in audit log, member, tournament, match, news, page, field-manual and media
+screens, in cs/en at 1440, 1024 and 390 px with axe, console/page-error and sub-44 px
+control scans (captures under the gitignored `.local/audit/r12/`). Of 17 findings, 16
+are fixed on `feat/hll-platform-handoff`; the raw audit action keys stay as they are
+(technical read-only log, owner decision):
+
+- Match statistics and rounds tables scroll inside a `ScrollRegion`
+  (`src/components/ui/scroll-region.tsx`): a labelled, focusable region whose frame fades
+  the trailing edge while more columns hide (measured after hydration and on
+  scroll/resize). Below 768 px headers wrap, cells tighten and the player/metric column
+  is sticky with an opaque row background; the summary and weapons tables fit a 314 px
+  region, the players table keeps every column. The rounds region uses the
+  `common.a11y.scrollRegion` label, so the section and its region no longer share a name
+  (axe `landmark-unique`).
+- A mode shared by every round ("Warfare", "Synthetic mode") is a match fact
+  (`data-match-mode`) plus a visually hidden table caption instead of a repeated column,
+  so score and result stay on a 390 px screen. Recorded points read "3 : 2" like the
+  result; the opponent short-code badge is omitted beside a team name that already starts
+  with it ("SHF (Osa)").
+- Admin heading outline (axe `heading-order`): "Odkazy" in the tournament editor and the
+  `ProseTabs` titles of the tournament and member editors are h2 (`headingLevel` prop;
+  the match editor keeps h3 after its VOD h2). The audit table keeps a 44rem minimum
+  width inside its scroll region with a one-line time cell (44 px row link on phones).
+- Rich-text image node: shared 24 px checkbox in a 44 px row, 44 px inputs/select/buttons
+  and 44 px-wide toolbar buttons on phones. Round editor: the map name gets a wider first
+  track (full row below 480 px). Field-manual "Zdroj a řazení" is a panel with the panel
+  title inside the editor grid column; media library names carry `title`.
+- Touch targets: tournament links, HLL recording links, auth text links ("Jak
+  zpracováváme vaše údaje", "Zpět do hlavního menu", "Zpět na můj účet") and admin inline
+  links (public address, linked matches, list/live links) are 44 px rows.
+- Login: when Logi is not configured and the approved Discord action is, the Discord form
+  comes first and the Logi notice follows without a disabled button; Logi stays first when
+  it works. Team pages have a localized title with the game name ("Přehled týmu – Hell Let
+  Loose · Valkyria"). A generic tournament link label keeps a trailing note in parentheses
+  while the label localizes ("Web soutěže (ukázka)" → "Tournament website (ukázka)"), with
+  a hint on the link label field. The icon-only header account control below 1280 px
+  carries `title` and a hover/focus tooltip like the utility buttons.
+
+Local after-fix captures of the rebuilt pages showed two follow-ups, fixed in the last
+commit: the sticky player-name column had collapsed to one character per line
+(`overflow-wrap: anywhere` in a compressed table) and now keeps 7–9 rem, and audit keys
+still broke at their `<wbr>` opportunities under `white-space: nowrap`, so the phone code
+cells reserve the key's width instead.
+
+Commands and results on the branch head (Node 22.22.2 in this container; the repository
+asks for Node 24): `pnpm lint` passed, `pnpm typecheck` passed, `pnpm test:unit` 1039
+tests passed (96 files), `node scripts/check-foundation.mjs` passed (2963 files),
+`pnpm build` passed; no PostgreSQL test file was touched. Targeted browser specs against
+the standalone build (`CI=true`, chromium 1194): on the final head `public-matches` 11
+passed (`--project=chromium --no-deps`) and `admin-shell-layout` 6 passed
+(`--project=chromium-admin --no-deps`); on the same changes before the CSS-only follow-up
+`legacy-parity`, `shell` and `team-pages` 29 passed, `auth` 17 passed, `admin-hll-matches`
+2 and `admin-tournaments` 4 passed. The new assertions cover the 390 px match tables
+(result column on screen, summary fits, sticky player cell of readable width after
+scrolling, edge state), axe on the HLL match detail and on the tournament and member
+editors, the audit time cell, one-line keys and row link at 390 px, the login provider
+order, the 1024 px account tooltip and the team page titles. Still to run by the
+orchestrator: the full browser and PostgreSQL suites, the audit rerun with before/after
+captures for the evidence folder, and the PR.
+
 ## Public and administration UI round 11 — 2026-10-03
 
 An audit of main `e46c67c` (the PR #94 merge) covered 28 public cases (hub, both

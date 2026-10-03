@@ -35,6 +35,11 @@ export async function matchByOpponent(opponent: string) {
   return result.rows[0] ?? null;
 }
 
+export async function tournamentBySlug(slug: string) {
+  const result = await e2eDb().query<{ id: string; slug: string; game: string }>('select id, slug, game from tournament where slug = $1', [slug]);
+  return result.rows[0] ?? null;
+}
+
 export async function memberBySlug(slug: string) {
   const result = await e2eDb().query<{ id: string; display_name: string; state: string; consent_confirmed_at: Date | null }>(
     'select id, display_name, state, consent_confirmed_at from member_profile where slug = $1',

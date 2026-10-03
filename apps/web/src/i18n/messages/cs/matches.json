@@ -115,6 +115,7 @@
       "en": "Přečíst anglickou reportáž"
     },
     "rounds": "Mapy a kola",
+    "roundsMode": "Režim všech kol: {mode}",
     "roundColumns": {
       "ordinal": "#",
       "map": "Mapa",

@@ -23,9 +23,12 @@ export async function AccountSlot({ account }: { account: ShellAccount }) {
   const t = await getTranslations('common.nav');
   if (account.state === 'signed_out') {
     return (
-      <GuardedLink href="/login" className={styles.account} data-account="signed_out">
+      <GuardedLink href="/login" className={styles.account} title={t('signIn')} data-account="signed_out">
         <UserIcon size={20} />
         <span className={styles.accountLabel}>{t('signIn')}</span>
+        <span className={styles.accountTooltip} aria-hidden="true">
+          {t('signIn')}
+        </span>
       </GuardedLink>
     );
   }

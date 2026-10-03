@@ -16,7 +16,14 @@ import { readLogiTeam } from '@/modules/integrations/logi-people';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { robots: { index: false, follow: false } };
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; game: string }> }): Promise<Metadata> {
+  const { locale, game } = await params;
+  if (!hasLocale(routing.locales, locale) || !isGameRoute(game)) return {};
+  const [t, games] = await Promise.all([getTranslations({ locale, namespace: 'logiPeople' }), getTranslations({ locale, namespace: 'games' })]);
+  return { title: games('sectionTitle', { section: t('title'), game: games(`names.${game}`) }), robots: { index: false, follow: false } };
+}
+
 export default async function TeamPage({ params }: { params: Promise<{ locale: string; game: string }> }) {
   const { locale, game } = await params;
   if (!hasLocale(routing.locales, locale) || !isGameRoute(game)) notFound();

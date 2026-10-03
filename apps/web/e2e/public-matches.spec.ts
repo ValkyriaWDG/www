@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, type Page, test } from '@playwright/test';
 import { FIXTURE_SLUGS } from '../src/fixtures/data';
 import { expectNoHorizontalOverflow, tabUntil } from './support/shell-helpers';
@@ -185,6 +186,60 @@ test.describe('public matches: detail', () => {
     await expect(page).toHaveURL(/\/cs\/wardogs\/matches\?view=results$/);
     await expect(page.locator('[data-match-table="results"]')).toBeVisible();
     await expect(page.locator('[data-detail-mode="preview"]')).toBeHidden();
+  });
+
+  test('phone match tables keep the result in view, pin the first statistics column and pass axe', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`/cs/hll/matches/${M.hllHistorical}`);
+    const extras = page.locator(`[data-match-extras="${M.hllHistorical}"]`);
+    // Maps and rounds: the mode shared by every round is a match fact, so the table fits
+    // without scrolling and the result column ends inside the viewport.
+    const rounds = extras.locator('[data-scroll-table="rounds"]');
+    await expect(rounds.locator('thead')).not.toContainText('Režim');
+    await expect(rounds.locator('caption')).toHaveText('Režim všech kol: Warfare');
+    await expect(page.locator(`[data-match-detail="${M.hllHistorical}"] [data-match-mode]`)).toHaveText('Warfare');
+    expect(await rounds.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+    const outcome = (await rounds.locator('tbody tr').first().locator('td').last().boundingBox())!;
+    expect(outcome.x + outcome.width).toBeLessThanOrEqual(390);
+    await expect(rounds).toHaveAttribute('aria-label', 'Mapy a kola – posuvná oblast');
+    await expect(page.locator('[data-match-rounds] [aria-labelledby]')).toHaveCount(0);
+
+    // Summary fits the region; the players table scrolls behind a sticky name column with an edge fade.
+    const summary = extras.locator('[data-scroll-table="summary"]');
+    expect(await summary.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+    await expect(summary).toHaveAttribute('aria-label', 'Souhrn týmů – posuvná oblast');
+    await page.getByRole('tab', { name: 'Hráči' }).click();
+    const players = extras.locator('[data-scroll-table="players"]');
+    const frame = players.locator('xpath=..');
+    await expect(frame).toHaveAttribute('data-scroll-edges', 'end');
+    const name = players.locator('tbody th').first();
+    const kills = players.locator('tbody tr').first().locator('td').nth(1);
+    const before = { name: (await name.boundingBox())!, kills: (await kills.boundingBox())! };
+    await players.evaluate((element) => {
+      element.scrollLeft = 400;
+    });
+    await expect(frame).toHaveAttribute('data-scroll-edges', /^(start|both)$/);
+    const after = { name: (await name.boundingBox())!, kills: (await kills.boundingBox())! };
+    expect(after.kills.x).toBeLessThan(before.kills.x - 100);
+    expect(Math.abs(after.name.x - before.name.x)).toBeLessThan(1);
+    // The name column keeps a readable width (7 rem) instead of collapsing to one character per line.
+    expect(after.name.width).toBeGreaterThanOrEqual(110);
+    expect(after.name.height).toBeLessThan(70);
+    expect(after.name.x).toBeGreaterThanOrEqual(0);
+    expect(after.name.x + after.name.width).toBeLessThanOrEqual(390);
+    expect(await name.evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
+    await expectNoHorizontalOverflow(page);
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+
+    // Wardogs rounds share one synthetic mode: no mode column, score and result on screen.
+    await page.goto(`/cs/wardogs/matches/${M.completedVerified}`);
+    const wardogsRounds = page.locator(`[data-match-extras="${M.completedVerified}"] [data-scroll-table="rounds"]`);
+    await expect(wardogsRounds.locator('thead')).not.toContainText('Režim');
+    await expect(page.locator(`[data-match-detail="${M.completedVerified}"] [data-match-mode]`)).toHaveText('Synthetic mode');
+    const wardogsOutcome = (await wardogsRounds.locator('tbody tr').first().locator('td').last().boundingBox())!;
+    expect(wardogsOutcome.x + wardogsOutcome.width).toBeLessThanOrEqual(390);
+    await expect(wardogsRounds.locator('tbody tr').first()).toContainText('1 : 0');
+    await expect(wardogsRounds.locator('tbody tr').first()).toContainText('Výhra');
   });
 
   test('missing English recap is an explicit absence with a link to the Czech recap', async ({ page }) => {

@@ -67,11 +67,12 @@ describe('login provider availability at the page boundary', () => {
     configureLogi(false);
     configureDiscord();
     const html = await render();
-    expect(button(html, 'logi')).toContain('disabled=""');
+    // The working Discord action comes first; the Logi notice follows without a disabled button.
+    expect(button(html, 'logi')).toBeNull();
     expect(button(html, 'discord')).not.toBeNull();
     expect(button(html, 'discord')).not.toContain('disabled=""');
     expect(html).toContain(cs.login.logiUnavailable);
-    expect(html.indexOf('data-testid="login-logi"')).toBeLessThan(html.indexOf('data-testid="login-discord"'));
+    expect(html.indexOf('data-testid="login-discord"')).toBeLessThan(html.indexOf('data-testid="login-provider-unavailable"'));
     expect(html).not.toContain('synthetic-logi-secret');
     expect(html).not.toContain('synthetic-discord-secret');
   });
@@ -86,16 +87,18 @@ describe('login provider availability at the page boundary', () => {
     expect(button(html, 'discord')).toBeNull();
   });
 
-  it('explains unavailable Logi even when the explicit Discord fallback can be used', async () => {
+  it('explains unavailable Logi after the explicit Discord fallback when that can be used', async () => {
     configureLogi();
     configureDiscord();
     vi.stubEnv('LOGI_CLIENT_SECRET', '');
     vi.stubEnv('LOGI_DISCORD_FALLBACK_ENABLED', 'true');
     const html = await render('en');
-    expect(button(html, 'logi')).toContain('disabled=""');
+    expect(button(html, 'logi')).toBeNull();
+    expect(html).not.toContain(en.login.continueLogi);
     expect(button(html, 'discord')).not.toBeNull();
     expect(button(html, 'discord')).not.toContain('disabled=""');
     expect(html).toContain(en.login.logiUnavailable);
+    expect(html.indexOf('data-testid="login-discord"')).toBeLessThan(html.indexOf('data-testid="login-provider-unavailable"'));
   });
 
   it('enables configured Logi and suppresses unapproved direct Discord', async () => {
@@ -106,6 +109,17 @@ describe('login provider availability at the page boundary', () => {
     expect(button(html, 'logi')).not.toContain('disabled=""');
     expect(html).not.toContain(cs.login.logiUnavailable);
     expect(button(html, 'discord')).toBeNull();
+  });
+
+  it('keeps Logi first when it works beside the approved Discord fallback', async () => {
+    configureLogi();
+    configureDiscord();
+    vi.stubEnv('LOGI_DISCORD_FALLBACK_ENABLED', 'true');
+    const html = await render();
+    expect(button(html, 'logi')).not.toContain('disabled=""');
+    expect(button(html, 'discord')).not.toBeNull();
+    expect(html.indexOf('data-testid="login-logi"')).toBeLessThan(html.indexOf('data-testid="login-discord"'));
+    expect(html).not.toContain('data-testid="login-provider-unavailable"');
   });
 
   it('explains the separate Discord steps only while Discord is the available action', async () => {

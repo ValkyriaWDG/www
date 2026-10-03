@@ -44,14 +44,14 @@ test.afterAll(() => {
 test('sign-in (cs desktop, en phone)', async ({ browser }) => {
   await capture(browser, {
     file: 'login-cs-1440x900.png',
-    caption: 'Anonymous visitor, /cs/login: Logi stays visible with a disabled action and an explicit unavailable explanation. The synthetic configured Discord sign-in remains available; signing in does not grant administrative roles.',
+    caption: 'Anonymous visitor, /cs/login: the synthetic configured Discord sign-in is the first action, followed by the explicit notice that Logi is unavailable (no disabled Logi button). Signing in does not grant administrative roles.',
     path: '/cs/login',
     width: 1440,
     height: 900,
   });
   await capture(browser, {
     file: 'login-en-390x844.png',
-    caption: 'Anonymous visitor, /en/login on a 390×844 phone: unavailable Logi and the synthetic configured Discord sign-in in English, with the language switcher and menu trigger in the header.',
+    caption: 'Anonymous visitor, /en/login on a 390×844 phone: the synthetic configured Discord sign-in first and the unavailable-Logi notice after it in English, with the language switcher and menu trigger in the header.',
     path: '/en/login',
     width: 390,
     height: 844,

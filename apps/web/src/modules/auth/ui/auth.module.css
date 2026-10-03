@@ -166,7 +166,11 @@
   background: var(--color-accent-wash);
 }
 
+/* Standalone text links (privacy, back to the menu/account) are 44 px rows on every screen. */
 .textLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--color-text-muted);
   text-decoration: underline;
   text-underline-offset: 3px;

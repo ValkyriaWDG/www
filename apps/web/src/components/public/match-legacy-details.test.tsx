@@ -30,7 +30,7 @@ function render(details: LegacyMatchDetails, locale: 'cs' | 'en' = 'en') {
 describe('public match facts', () => {
   it.each(['cs', 'en'] as const)('renders recorded facts in %s independently of the recap', (locale) => {
     const html = render(detail(), locale);
-    for (const value of ['VLK + Synthetic Ally', 'Synthetic Opponent', 'Synthetic Capture Point', '3 · 2']) expect(html).toContain(value);
+    for (const value of ['VLK + Synthetic Ally', 'Synthetic Opponent', 'Synthetic Capture Point', '3 : 2']) expect(html).toContain(value);
     expect(html).toContain(locale === 'cs' ? '90 minut' : '90 minutes');
     expect(html).toContain(locale === 'cs' ? 'Domácí tým' : 'Home team');
     expect(html).toContain(locale === 'cs' ? 'První obsazení' : 'First capture');

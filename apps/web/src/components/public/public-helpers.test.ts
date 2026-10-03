@@ -2,7 +2,7 @@ import { IntlMessageFormat } from 'intl-messageformat';
 import { describe, expect, it } from 'vitest';
 import { formatNumber } from '@/i18n/date-format';
 import { csMessages, enMessages } from '@/i18n/messages';
-import { describeResult, formatScore, matchFormatLabel, outcomeKind, statusKind, viewForStatus, zoneName } from './match-format';
+import { describeResult, formatScore, matchFormatLabel, outcomeKind, sharedRoundMode, statusKind, viewForStatus, zoneName } from './match-format';
 import { initialsOf } from './member-format';
 import { bilingualAlternates, publishedAlternates, seoTitle } from './metadata';
 import {
@@ -81,6 +81,15 @@ describe('match format line', () => {
     expect(matchFormatLabel(' Bo3 ', 3, bestOf)).toBe('Best of 3 (Bo3)');
     expect(matchFormatLabel('BEST OF 5', 5, bestOf)).toBe('Best of 5 (Bo5)');
     expect(matchFormatLabel('Best of 3 (Bo3)', 3, bestOf)).toBe('Best of 3 (Bo3)');
+  });
+
+  it('reports the mode shared by every round and nothing when rounds differ or lack one', () => {
+    expect(sharedRoundMode([{ mode: 'Warfare' }, { mode: 'Warfare' }])).toBe('Warfare');
+    expect(sharedRoundMode([{ mode: 'Warfare' }])).toBe('Warfare');
+    expect(sharedRoundMode([{ mode: 'Warfare' }, { mode: 'Offensive' }])).toBeNull();
+    expect(sharedRoundMode([{ mode: 'Warfare' }, { mode: null }])).toBeNull();
+    expect(sharedRoundMode([{ mode: null }])).toBeNull();
+    expect(sharedRoundMode([])).toBeNull();
   });
 
   it('keeps a distinct format text beside the best-of label', () => {
