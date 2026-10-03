@@ -204,7 +204,7 @@ test('a referenced category cannot be deleted; the consequence is shown and arch
 
   await page.getByTestId('taxonomy-archive').click();
   const dialog = page.getByRole('alertdialog');
-  await expect(dialog).toContainText(/článk[ya]?.*(ponechá|ponechají)/);
+  await expect(dialog).toContainText(/člán(ek|ky|ků).*(ponechá|ponechají)/);
   await dialog.locator('[data-confirm="confirm"]').click();
   await expect(page.getByTestId('taxonomy-form-page').getByRole('status').first()).toContainText('Záznam je archivovaný.');
   await page.goto('/cs/hll/field-manual');
