@@ -195,7 +195,7 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
               <p className={styles.detail}>
                 {reader.resource === 'warcon-data' ? <span>{t('logi.readers.connections', { count: reader.approvedConnections })}</span> : null}
                 <span>{t('logi.lastAttemptAt')}: {when(reader.lastAttemptAt)}{reader.lastOutcome === 'ok' ? ` · ${t('logi.readers.lastOk')}` : ''}</span>
-                <span className={styles.code}>{reader.detail}</span>
+                {reader.detail === 'synthetic-fixture' ? <span>{t('logi.readers.detail.synthetic')}</span> : <span className={styles.code}>{reader.detail}</span>}
               </p>
             </li>
           ))}

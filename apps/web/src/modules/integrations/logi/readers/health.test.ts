@@ -23,7 +23,9 @@ describe('readerCapabilityStates', () => {
     expect(readerCapabilityStates(hllOnly)).toMatchObject({ 'league-matches': { state: 'unconfigured', detail: 'no valid Wardogs source in LOGI_SOURCES_JSON' }, 'warcon-data': { state: 'unconfigured' } });
     expect(readerCapabilityStates(env(keys, { publicServers: published }))).toMatchObject({ 'league-matches': { state: 'configured' }, 'warcon-data': { state: 'unconfigured', detail: 'no approved warconConnections on the Wardogs source' } });
     expect(readerCapabilityStates(env(keys, { publicServers: published, warconConnections: [{ connectionId: 'conn-a', publicId: 'community-one' }] }))).toMatchObject({ 'warcon-data': { state: 'configured', detail: '1 approved connection(s) on local', approvedConnections: 1 }, 'league-matches': { approvedConnections: 0 } });
-    expect(readerCapabilityStates({ ...env(), LOGI_READERS_SOURCE: 'synthetic-fixture' })['warcon-data'].state).toBe('configured');
+    const synthetic = readerCapabilityStates({ ...env(), LOGI_READERS_SOURCE: 'synthetic-fixture' });
+    expect(synthetic['warcon-data']).toMatchObject({ state: 'configured', detail: 'synthetic-fixture', approvedConnections: 0 });
+    expect(synthetic['league-matches']).toMatchObject({ state: 'configured', detail: 'synthetic-fixture' });
   });
 
   it('reports unsupported after the deployed producer answered 404 and carries the last outcome', async () => {

@@ -121,7 +121,7 @@
       "people": "Lidé (adresář, soupisky, statistiky)",
       "membership": "Členství (oprávnění)",
       "commands": "Příkazy (zápis událostí)",
-      "league": "Liga Wardogs",
+      "league": "Wardogs League",
       "warcon": "Warcon"
     },
     "readers": {
@@ -133,7 +133,10 @@
         "unsupported": "Producent trasu nenasadil"
       },
       "connections": "{count, plural, =0 {žádné schválené připojení} one {# schválené připojení} few {# schválená připojení} other {# schválených připojení}}",
-      "lastOk": "poslední čtení uspělo"
+      "lastOk": "poslední čtení uspělo",
+      "detail": {
+        "synthetic": "syntetický zdroj – jen testy a kontrolní snímky"
+      }
     },
     "state": {
       "not_configured": "Nenastaveno",

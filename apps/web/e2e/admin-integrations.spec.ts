@@ -59,9 +59,11 @@ test('administrator sees website collector health in Czech and English without c
   await expect(logi).toContainText('Čtečky Wardogs (League, Warcon)');
   await expect(readers.locator('[data-reader="league-matches"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="warcon-data"]')).toHaveAttribute('data-state', 'configured');
-  await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Liga Wardogs');
+  await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Wardogs League');
   await expect(readers.locator('[data-reader="warcon-data"]')).toContainText(/Warcon.*Nastaveno/s);
-  await expect(readers).toContainText('synthetic fixture source');
+  // The synthetic source is reported as a code and rendered in the interface language.
+  await expect(readers).toContainText('syntetický zdroj – jen testy a kontrolní snímky');
+  await expect(readers).not.toContainText('synthetic-fixture');
 
   // Discord: the e2e role mapping has six entries.
   await expect(page.locator('[data-integrations-discord]')).toContainText('6 mapovaných rolí');
