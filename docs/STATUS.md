@@ -1,5 +1,70 @@
 # Current status
 
+## Warcon retained game history reader — 2026-10-03
+
+Branch `feat/logi-warcon-history` (on main `5e7a7d9`) consumes the fourth explicit
+Wardogs read grant of Logi PR #158: `GET /api/v1/clan/server-game-history?game=wardogs`
+at the delivery head `72946e3915af2216f97f8c167ea02ea20308555c` (retained-history
+implementation `051457a`, duplicate-faction fix `424e118`). Logi durably retains the
+completed Warcon games it observed (UTC start/end, map, final scores, winner/outcome,
+faction names and colours, mode/lighting, feed coverage and per-player facts) and serves
+them in revision-consistent pages of at most 20 scanned games with signed cursors and 410
+`reset_required` on a fact change. This is server gameplay history: factions are not clan
+teams, provider players are not verified members and games are not official League
+results.
+
+The website now has the data layer only: `LOGI_HISTORY_API_KEY_WDG` (a separate key with
+the explicit `server-game-history` grant; the Warcon/League keys do not inherit it) as the
+`history` reader purpose and the operator association `historySources: [{ sourceId,
+publicId, publishPlayers }]` under published servers (`logi-config.ts`); the closed wire
+schemas (`readers/history-contracts.ts`); the producer's calculation rules ported into
+`readers/history-report.ts` (dedupe by ID keeping the highest revision, outcomes, faction
+wins/shares, players keyed by platform ID with the latest name, known-only metric sums,
+feed rule, playtime floor, K/D and win-rate rules) plus local `[from, until)`/exact-map
+filtering and map lists; the complete-scan helper (`readers/history-scan.ts`: one
+revision per scan, repeated-cursor/newer-record rejection, page and time budgets, caller
+abort, at most two restarts after 410, never a partial result); the server-only reader
+with the canonical query only (`readers/history.ts`); the in-process snapshot store
+(`readers/history-store.ts`: one complete snapshot per approved source, refreshed at most
+every 10 minutes in the background, atomic replacement, stale after a failed refresh or
+30 minutes, 2 s first wait then `preparing`, denied/unsupported invalidation, 250-page /
+60 s budgets with a 180-day window fallback, memoized reports); the pure publication DTOs
+`HistoryReportPublic` and `HistoryGamesPublic` with opaque salted player keys and the
+`publishPlayers` policy (`readers/history-public.ts`); the entry points
+`getHistoryReport`, `getHistoryGames` and `listHistoryPublicIds`; a labelled synthetic
+dataset (23 games over 60 days on three maps, 19 decided / 2 draws / 1 no result / 1
+unknown, 24 players incl. a rename, a feed-less game, a zero-deaths player and a
+correction served as 20 + 0 + 4 records across three pages); and the fourth reader row
+"Warcon – historie her serveru / Warcon – server game history" of
+`/admin/integrations` with the states `unconfigured`, `configured`, `unsupported`,
+`denied`, `preparing`, `available`, `stale` and `error`. The change feed of the same
+resource is not consumed; this first version keeps complete cached reads. See
+[retained history](integrations/logi/warcon-history.md), the
+[readers README](../apps/web/src/modules/integrations/logi/readers/README.md), the
+[readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states)
+and the [runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
+
+Commands and results on the branch head (Node 22.22.2 in this container; the repository
+asks for Node 24): `pnpm lint` passed, `pnpm typecheck` passed, `pnpm test:unit`
+1132 tests passed (104 files; 68 new unit tests for the
+contracts, the aggregation and filters, the reader/scan, the snapshot store, the public
+DTOs, the synthetic dataset, the health states and the configuration),
+`node scripts/check-foundation.mjs` passed (3012 files), `pnpm build` passed.
+PostgreSQL, isolated in `valkyria_test_history`: `DATABASE_URL=… npx vitest run --project
+integration tests/integration/admin-health.test.ts` 7 passed (the fourth reader row:
+unconfigured without key or `historySources`, synthetic, configured, 404 → unsupported,
+403 → denied, completed scan → available with the snapshot facts, no key/source/cursor in
+the DTO). Browser: `admin-integrations` 3 passed against the standalone build
+(`CI=true`, `E2E_PORT=3300`, isolated `valkyria_history_e2e`, chromium 1194,
+`--project=chromium-admin --no-deps`; fourth row configured with the synthetic detail in
+cs/en, four rows). Limitations: data layer only, no public page; implemented and locally
+verified against the synthetic dataset and the producer source of `72946e3`; not
+activated; the hosted producer must serve the route and the key must carry the explicit
+`server-game-history` grant before anything real is read; no recorded hosted response
+exists; the change feed, `id` reads and persistence are not used (complete cached reads
+per process). Still to run by the orchestrator: the public history view, the full browser
+and PostgreSQL suites, review captures and the PR.
+
 ## Wardogs League tracked fixtures reader (#87 follow-up) — 2026-10-03
 
 Branch `feat/logi-league-fixtures` (on main `85c5737`) consumes the new Logi
