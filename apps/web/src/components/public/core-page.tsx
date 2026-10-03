@@ -8,6 +8,7 @@ import { getSiteOrigin } from '@/lib/site';
 import { RichText } from '@/modules/content/rich-text/render';
 import type { ArticleDTO } from '@/modules/content/types';
 import { legacyLinkRewrite } from '@/modules/legacy/public-links';
+import { faqSummary } from './faq-summary';
 import styles from './pages.module.css';
 
 /**
@@ -42,6 +43,7 @@ export async function CorePage({
   const tr = await getTranslations({ locale, namespace: 'news.richText' });
   const titleId = `${pageKey}-title`;
   const navLabel = t(`${pageKey}.navLabel`);
+  const excerpt = page && pageKey === 'faq' ? faqSummary(page, t('faq.meta.description')) : page?.excerpt;
   return (
     <PageMain width="reading" labelledBy={titleId}>
       <PageHeader
@@ -49,7 +51,7 @@ export async function CorePage({
         eyebrow={eyebrow ?? t('shared.eyebrow')}
         title={page ? <span lang={page.locale}>{page.title}</span> : navLabel}
         titleId={titleId}
-        description={page?.excerpt ? <p lang={page.locale}>{page.excerpt}</p> : undefined}
+        description={page && excerpt ? <p lang={page.locale}>{excerpt}</p> : undefined}
       />
       <div className={styles.content} data-core-page={pageKey} data-published={page ? 'true' : 'false'}>
         {before}

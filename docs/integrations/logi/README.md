@@ -1,7 +1,23 @@
 # Hosted Logi integration
 
-Both HLL and Wardogs use Ninjonik's hosted instance at https://logi.igportals.eu, API base /api/v1. [Documentation](https://logi.igportals.eu/api/v1/docs) and [OpenAPI](https://logi.igportals.eu/api/v1/openapi.json) were publicly reachable on 2026-09-28; docs availability is not tenant/SSO acceptance.
+Both HLL and Wardogs target Ninjonik's hosted instance at https://logi.igportals.eu,
+API base `/api/v1`. Website adapters are implemented; production activation is a
+separate step. Public API documentation does not demonstrate tenant access or SSO.
 
-Use [contract 0.2](contract.md). The companion upstream work is prepared on [Ninjonik/logi feat/valkyria-integration](https://github.com/Ninjonik/logi/tree/feat/valkyria-integration), refreshed at `6fbfe4e7d9c41e9a5bdc004c65f1e2d935c86e0b`. Branch creation alone contains no integration implementation. The earlier source audit was at `70b141477e0726e73ee1ec5b16366d1c085672be`; refresh before changes.
+Start with the [current capability and readiness audit](readiness-2026-10-03.md),
+then the [operator runbook](runbook.md), [people synchronization](people.md) and
+[Wardogs servers](wardogs-servers.md). The implemented producer is
+[Ninjonik/logi PR #158](https://github.com/Ninjonik/logi/pull/158), reviewed at
+`c42ea770c307793494ae159a924f86e3c6ced50d` on 2026-10-03. Its merge/deployment and
+the hosted grants must be checked again before activation. The older
+[contract 0.2](contract.md) records initial architectural decisions; use the
+versioned producer contract and current consumer schemas for exact wire shapes.
 
-Existing signup/roster/announcement workflows should be reused. Website public projections and local game-scoped permissions remain separate from broad clan-key access. Keep source/guild/game identity explicit, use fixtures until authorized live inputs arrive, and keep unresolved authentication findings in authorized private coordination. Upstream Issues were disabled; use real tracker references when available and do not invent issue numbers.
+Logi owns connected events, signup/roster/attendance and Discord workflows. The
+website owns news, FAQ, Field Manual, historical editorial content and profile
+publication consent. See the [editor guide](../../operations/editor-guide.md).
+Public projections and game-scoped permissions are separate from service-key
+access: retain exact source/guild/game identity and never infer access from a
+directory, nickname, Steam ID or published roster. Use synthetic fixtures until
+approved live inputs arrive. Keep unresolved authentication findings in authorized
+private coordination.

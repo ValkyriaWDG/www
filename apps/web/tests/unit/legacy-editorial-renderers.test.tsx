@@ -48,6 +48,48 @@ function article(kind: 'page' | 'manual', locale: AppLocale, slug: 'clan' | 'faq
 
 beforeEach(() => vi.clearAllMocks());
 
+describe('FAQ introduction at the public page renderer', () => {
+  for (const locale of ['cs', 'en'] as const) {
+    it(`keeps an independent authored summary in ${locale}`, async () => {
+      const page = article('page', locale, 'faq');
+      const html = renderToStaticMarkup(await CorePage({ locale, pageKey: 'faq', page }));
+      const header = html.split('data-core-page=')[0]!;
+      expect(header).toContain('Current published excerpt');
+      expect(header).not.toContain('faq.meta.description');
+    });
+
+    it(`replaces a long copied question/answer prefix with the localized introduction in ${locale}`, async () => {
+      const page = article('page', locale, 'faq');
+      const question = locale === 'cs' ? 'Jak se přidat?' : 'How do I join?';
+      const answer = (locale === 'cs' ? 'Syntetická odpověď na otázku. ' : 'Synthetic answer to the question. ').repeat(30).trim();
+      page.body = { type: 'doc', content: [
+        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: question }] },
+        { type: 'paragraph', content: [{ type: 'text', text: answer }] },
+      ] };
+      page.excerpt = `${`${question} ${answer}`.slice(0, 590).trim()}${locale === 'cs' ? '…' : '...'}`;
+      const html = renderToStaticMarkup(await CorePage({ locale, pageKey: 'faq', page }));
+      const header = html.split('data-core-page=')[0]!;
+      expect(header).toContain('faq.meta.description');
+      expect(header).not.toContain(question);
+      expect(html).toContain(question);
+      expect(html).toContain(answer);
+    });
+
+    it(`uses the localized introduction for an empty published summary in ${locale}`, async () => {
+      const page = { ...article('page', locale, 'faq'), excerpt: '  ' };
+      const html = renderToStaticMarkup(await CorePage({ locale, pageKey: 'faq', page }));
+      expect(html.split('data-core-page=')[0]).toContain('faq.meta.description');
+    });
+  }
+
+  it('does not change another core page summary', async () => {
+    const page = article('page', 'cs', 'clan');
+    page.excerpt = 'Current cs editorial body remains unchanged.';
+    const html = renderToStaticMarkup(await CorePage({ locale: 'cs', pageKey: 'clan', page }));
+    expect(html.split('data-core-page=')[0]).toContain(page.excerpt);
+  });
+});
+
 describe('published archive metadata at the actual page renderers', () => {
   for (const pageKey of ['clan', 'faq'] as const) {
     it(`${pageKey} renders the unchanged Czech editorial body without referring to the former website`, async () => {

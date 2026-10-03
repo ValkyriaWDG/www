@@ -16011,6 +16011,215 @@
       "bytes": 482414,
       "width": 1280,
       "height": 720
+    },
+    {
+      "id": "logi-web-readiness-after-faq-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/after-faq-cs-1440x900.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; local-synthetic-fixtures-missing-video-fallback; /cs/hll/faq; source ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "0b9a13c566d932fa5d0930e1317af5fda4dc0f7ffe7f1387198b64c0c45f72af",
+      "bytes": 75990,
+      "width": 1425,
+      "height": 891
+    },
+    {
+      "id": "logi-web-readiness-after-login-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/after-login-cs-1440x900.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; local-synthetic-fixtures-missing-video-fallback; /cs/login; source ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "ea90b9d36dec0451dbd353e9cb9ff29a85652ece051528a29e89faa5fac08d47",
+      "bytes": 62241,
+      "width": 1425,
+      "height": 891
+    },
+    {
+      "id": "logi-web-readiness-after-login-en-390x844",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/after-login-en-390x844.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; local-synthetic-fixtures-missing-video-fallback; /en/login; source ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "8b77c4775cb5ec0736000ff402d2794f4a2160ad1cea50792701945c57d41688",
+      "bytes": 45551,
+      "width": 375,
+      "height": 812
+    },
+    {
+      "id": "logi-web-readiness-after-wardogs-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/after-wardogs-cs-1440x900.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; local-synthetic-fixtures-missing-video-fallback; /cs/wardogs; source ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "4a9b06df0e4bedd48e9c584554a9f4642ebcf0ba1f7c65d29f2442e59d0216d4",
+      "bytes": 90660,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-after-wardogs-en-390x844",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/after-wardogs-en-390x844.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; local-synthetic-fixtures-missing-video-fallback; /en/wardogs; source ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "c73ba32937840dac69e7517a7050e63e7c4f8796cc77399395ac5b3b0c99d756",
+      "bytes": 35141,
+      "width": 375,
+      "height": 812
+    },
+    {
+      "id": "logi-web-readiness-after-wardogs-en-footer-390x844",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/after-wardogs-en-footer-390x844.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; local-synthetic-fixtures-missing-video-fallback; /en/wardogs; source ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "b5b709a644f434ab52a6a0cc6738ac3973895d1164e9ffa9087b2a69ab17a417",
+      "bytes": 41678,
+      "width": 375,
+      "height": 812
+    },
+    {
+      "id": "logi-web-readiness-before-live-faq-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/before-live-faq-cs-1440x900.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; live-public-read-only; /cs/hll/faq; source 0a94d59c32831cfa198a0371bf204523e6555a3a",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "67cadbe19f4ccf86412897317774c94b9ed441a04836e8b817b7699bd3901f5e",
+      "bytes": 97049,
+      "width": 1425,
+      "height": 891
+    },
+    {
+      "id": "logi-web-readiness-before-live-login-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/before-live-login-cs-1440x900.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; live-public-read-only; /cs/login; source 0a94d59c32831cfa198a0371bf204523e6555a3a",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "8dacfe8582e0417d7cec0831164c08e018d52f25d0caa552443c50e418c7cf4b",
+      "bytes": 58169,
+      "width": 1425,
+      "height": 891
+    },
+    {
+      "id": "logi-web-readiness-before-live-wardogs-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/before-live-wardogs-cs-1440x900.jpg",
+      "source": "Actual Chromium browser capture, 2026-10-03; live-public-read-only; /cs/wardogs; source 0a94d59c32831cfa198a0371bf204523e6555a3a",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "6dfd2f5fede0bbc4ec0f080edb76b63ea0c51d045774ad12a8f4cc4812abe3ae",
+      "bytes": 154939,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-admin-home-hll-editor-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/admin-home-hll-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "07583e42b7993ccba2e253f7493e0944564f3a54a0a56c607724cf42a94cd8a2",
+      "bytes": 35010,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-manual-search-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/manual-search-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/manual?q=První nastavení&state=published&locale=cs; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "74201477885ccf7761be2594761f54d2b42ba6a280cd30de719a68c6f3e3c9d6",
+      "bytes": 37556,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-manual-meta-unsaved-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/manual-meta-unsaved-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/manual/<id>; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "b533401ca3d390919dd0ca7e0c6418da3db27bc862457afcb0bb583af790f086",
+      "bytes": 15300,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-manual-meta-unsaved-en-390x844",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/manual-meta-unsaved-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /en/admin/manual/<id>; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "cd9b7ff571f3fcebae59ae6ac9783a2f78a955db6e58898bdb7147f537bcad6f",
+      "bytes": 9870,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "logi-web-readiness-review-content-denied-hll-editor-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/content-denied-hll-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/admin/content; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "94d20379016758bd1429899dd42249bb0a304c609f3db35c100bf5b4306e5f66",
+      "bytes": 20542,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-manual-denied-wdg-editor-en-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/manual-denied-wdg-editor-en-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /en/admin/manual; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "b19d73e582e188bbf0dcacb8f572c9ec142e46ff68d60a4ae42f9986657ce2b1",
+      "bytes": 20606,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-wardogs-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/wardogs-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "efad5514b9e735e3171fa03e47983677fed7c1e483a18f4eb68c57cd87512414",
+      "bytes": 48306,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "logi-web-readiness-review-wardogs-cs-1280x700",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/wardogs-cs-1280x700.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/wardogs; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "9b5b8dce1a9571d85657525b9e0797c37f1a290a60f9f9c51121ee6ffda47fa2",
+      "bytes": 40906,
+      "width": 1280,
+      "height": 700
+    },
+    {
+      "id": "logi-web-readiness-review-wardogs-en-390x844",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/wardogs-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /en/wardogs; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "01d906e5ae663a9c7529a6e9a967bf3f44dc16164c96f5589d53f0ecc8a4883a",
+      "bytes": 21498,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "logi-web-readiness-review-hll-cs-1440x900",
+      "path": "docs/evidence/logi-web-readiness-2026-10-03/review/hll-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and missing-video fallback; /cs/hll; source 0f4bd4a211391edb3743daa80cee84ce997ebd90",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "455679361660bc67436c4deabed64f4194e9f3a7ce6b4ee387edf37e390f5414",
+      "bytes": 41816,
+      "width": 1440,
+      "height": 900
     }
   ]
 }

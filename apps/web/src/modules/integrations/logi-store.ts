@@ -1,7 +1,7 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
 import { logiProjection, logiSyncScope, type Executor } from '@valkyria/db';
-import { and, eq, isNull, ne, sql } from 'drizzle-orm';
+import { and, eq, isNull, notInArray, sql } from 'drizzle-orm';
 import type { ConfiguredLogiSource } from './logi-config';
 import { LOGI_COLLECTION_RESOURCES, LOGI_PEOPLE_RESOURCES, logiResourceSchemas, logiRevisionSchema, type LogiCollectionResource } from './logi/contracts';
 import { logiSyncCheckpointSchema, type LogiSyncStore } from './logi/sync';
@@ -54,10 +54,11 @@ export function createPostgresLogiSyncStore(db: Executor, source: ConfiguredLogi
             setWhere: sql`excluded.revision::numeric > ${logiProjection.revision}::numeric`,
           });
         }
-        if (input.promoteGeneration) {
-          if (next.mode !== 'live' || input.targetGeneration !== input.promoteGeneration) throw new Error('Invalid generation promotion.');
-          await tx.delete(logiProjection).where(and(eq(logiProjection.scopeKey, key), ne(logiProjection.generation, input.promoteGeneration)));
-        }
+        if (input.promoteGeneration && (next.mode !== 'live' || input.targetGeneration !== input.promoteGeneration)) throw new Error('Invalid generation promotion.');
+        // Only the visible generation and the one still being built are referenced. Rows of a
+        // shadow generation abandoned by a reset are dropped as soon as its replacement begins.
+        const retained = [...new Set([input.promoteGeneration ?? state.activeGeneration, next.generation].filter((value): value is string => typeof value === 'string'))];
+        if (retained.length) await tx.delete(logiProjection).where(and(eq(logiProjection.scopeKey, key), notInArray(logiProjection.generation, retained)));
         await tx.update(logiSyncScope).set({ checkpoint: next, version: next.version, ...(input.promoteGeneration ? { activeGeneration: input.promoteGeneration } : {}), lastSuccessAt: next.mode === 'live' ? at : state.lastSuccessAt, nextAttemptAt: null, errorCode: null, updatedAt: at }).where(eq(logiSyncScope.scopeKey, key));
         return true;
       });

@@ -158,28 +158,28 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
         if (!await beginBootstrap()) return outcome;
         continue;
       }
-      if (current.mode === 'bootstrap') {
-        const resource = resources[current.resourceIndex];
-        if (!resource) throw new LogiClientError('invalid_response');
-        const page = await reader.list(resource, { cursor: current.listCursor, limit: 10, signal });
-        if (page.page.nextCursor && page.page.nextCursor === current.listCursor) throw new LogiClientError('invalid_response');
-        const records = await refetch(page.data, async (item) => {
-          try { return await reader.syncRecord(resource, item.id, { signal }); }
-          catch (error) {
-            // An identity discovered in a baseline can move/delete before refetch.
-            // Its change is covered by the captured boundary. Never invent a tombstone.
-            if (!(error instanceof LogiClientError && error.code === 'not_found')) throw error;
-            return null;
-          }
-        });
-        const resourceIndex = page.page.nextCursor === null ? current.resourceIndex + 1 : current.resourceIndex;
-        if (!await commit({
-          ...current, version: current.version + 1, resourceIndex, listCursor: page.page.nextCursor,
-          mode: resourceIndex === resources.length ? 'replay' : 'bootstrap',
-        }, records)) return outcome;
-        continue;
-      }
       try {
+        if (current.mode === 'bootstrap') {
+          const resource = resources[current.resourceIndex];
+          if (!resource) throw new LogiClientError('invalid_response');
+          const page = await reader.list(resource, { cursor: current.listCursor, limit: 10, signal });
+          if (page.page.nextCursor && page.page.nextCursor === current.listCursor) throw new LogiClientError('invalid_response');
+          const records = await refetch(page.data, async (item) => {
+            try { return await reader.syncRecord(resource, item.id, { signal }); }
+            catch (error) {
+              // An identity discovered in a baseline can move/delete before refetch.
+              // Its change is covered by the captured boundary. Never invent a tombstone.
+              if (!(error instanceof LogiClientError && error.code === 'not_found')) throw error;
+              return null;
+            }
+          });
+          const resourceIndex = page.page.nextCursor === null ? current.resourceIndex + 1 : current.resourceIndex;
+          if (!await commit({
+            ...current, version: current.version + 1, resourceIndex, listCursor: page.page.nextCursor,
+            mode: resourceIndex === resources.length ? 'replay' : 'bootstrap',
+          }, records)) return outcome;
+          continue;
+        }
         const page = await reader.changes(resources, current.cursor, { signal });
         if (page.page.hasMore && page.page.nextCursor === current.cursor) throw new LogiClientError('invalid_response');
         const identities = new Map<string, typeof page.data[number]>();
@@ -201,7 +201,10 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
         }, records, promote)) return outcome;
         if (!page.page.hasMore) return { ...outcome, state: 'caught_up' };
       } catch (error) {
-        if (!(error instanceof LogiClientError && (error.code === 'reset_required' || error.code === 'not_found'))) throw error;
+        // People dependency changes invalidate collection cursors as well as the
+        // change feed. Restart the whole shadow generation, never that page alone.
+        if (!(error instanceof LogiClientError && (error.code === 'reset_required'
+          || current.mode !== 'bootstrap' && error.code === 'not_found'))) throw error;
         outcome.reset = true;
         if (!await beginBootstrap()) return outcome;
       }

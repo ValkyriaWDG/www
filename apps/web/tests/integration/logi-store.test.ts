@@ -70,6 +70,21 @@ describe('real PostgreSQL Logi projection store', () => {
     expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ revision: '6' }]);
     expect(await database.db.select().from(logiProjection)).toHaveLength(1);
   });
+  it('drops an abandoned shadow generation as soon as a reset starts its replacement', async () => {
+    const store = createPostgresLogiSyncStore(database.db, source, () => clock);
+    const lease = (await store.acquire(scope, clock, 60_000))!;
+    await store.commit(lease, input(0, [record('5')], 'first', true));
+    await store.commit(lease, input(1, [record('6')], 'replacement'));
+    // A 410 during pagination restarts from a new generation and a fresh change boundary.
+    expect(await store.commit(lease, input(2, [], 'replacement-2'))).toBe(true);
+    expect((await database.db.select({ generation: logiProjection.generation }).from(logiProjection)).map((row) => row.generation)).toEqual(['first']);
+    expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ revision: '5' }]);
+    await store.commit(lease, input(3, [record('7')], 'replacement-2'));
+    expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ revision: '5' }]);
+    await store.commit(lease, input(4, [], 'replacement-2', true));
+    expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ revision: '7' }]);
+    expect(await database.db.select().from(logiProjection)).toHaveLength(1);
+  });
   it('uses exact decimal revisions and retains tombstones against older upserts', async () => {
     const store = createPostgresLogiSyncStore(database.db, source, () => clock);
     const lease = (await store.acquire(scope, clock, 60_000))!;

@@ -1,11 +1,12 @@
 import 'server-only';
+import type { Game } from '@valkyria/db';
 import { redirect } from 'next/navigation';
 import type { ReactElement } from 'react';
 import { cache } from 'react';
 import { getDb } from '@/lib/db';
 import type { AppLocale } from '@/i18n/routing';
 import type { Capability } from '@/modules/access/capabilities';
-import { denialCode } from '@/modules/access/policy';
+import { canForGame, denialCode } from '@/modules/access/policy';
 import { sanitizeReturnPath } from '@/modules/access/return-path';
 import { getActor } from '@/modules/access/server';
 import type { AccessDeniedCode, AccessIntent, Actor, Principal } from '@/modules/access/types';
@@ -20,6 +21,8 @@ export type AdminPageOptions = {
   path: string;
   /** Capability required by the page; defaults to `admin.access`. */
   capability?: Capability;
+  /** Optional fixed resource scope; null requires a platform-wide capability. */
+  game?: Game | null;
   /** `write` for pages whose render performs privileged mutations (rare); default `read`. */
   intent?: AccessIntent;
 };
@@ -32,7 +35,7 @@ export function adminReturnPath(locale: AppLocale, path: string): string {
 }
 
 /** One denied-access audit record per request, actor and capability. */
-const auditDenied = cache(async (userId: string | null, label: string, source: string, capability: Capability, code: AccessDeniedCode) => {
+const auditDenied = cache(async (userId: string | null, label: string, source: string, capability: Capability, code: AccessDeniedCode, reason?: 'game_scope') => {
   await auditAuthEvent(getDb(), {
     actor:
       userId === null
@@ -55,12 +58,12 @@ const auditDenied = cache(async (userId: string | null, label: string, source: s
     action: 'access.denied',
     outcome: 'denied',
     capability,
-    summary: { code, area: 'admin' },
+    summary: { code, area: 'admin', ...(reason ? { reason } : {}) },
   });
 });
 
-export async function recordAdminDenial(actor: Actor, capability: Capability, code: AccessDeniedCode): Promise<void> {
-  if (actor.kind === 'principal') await auditDenied(actor.userId, actor.label, actor.source, capability, code);
+export async function recordAdminDenial(actor: Actor, capability: Capability, code: AccessDeniedCode, reason?: 'game_scope'): Promise<void> {
+  if (actor.kind === 'principal') await auditDenied(actor.userId, actor.label, actor.source, capability, code, reason);
 }
 
 /**
@@ -85,11 +88,13 @@ export async function requireAdminPage(options: AdminPageOptions): Promise<Admin
     redirect(`/${locale}/login?returnTo=${encodeURIComponent(adminReturnPath(locale, options.path))}`);
   }
   const adminCode = denialCode(actor, 'admin.access');
-  const code = adminCode ?? denialCode(actor, capability);
+  const capabilityCode = denialCode(actor, capability);
+  const gameDenied = !adminCode && !capabilityCode && options.game !== undefined && !canForGame(actor, capability, options.game);
+  const code = adminCode ?? capabilityCode ?? (gameDenied ? 'forbidden' : null);
   if (code || actor.kind !== 'principal') {
     const reason = code ?? 'forbidden';
     // Same (actor, capability) key as the layout check so one request yields one record.
-    await recordAdminDenial(actor, adminCode ? 'admin.access' : capability, reason);
+    await recordAdminDenial(actor, adminCode ? 'admin.access' : capability, reason, gameDenied ? 'game_scope' : undefined);
     return { ok: false, code: reason, denied: <AccessDeniedPanel locale={locale} code={reason} as="section" /> };
   }
   return { ok: true, principal: actor };

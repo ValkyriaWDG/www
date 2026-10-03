@@ -99,6 +99,19 @@
   margin: var(--space-5) 0 0;
 }
 
+.providers {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.providers form > button {
+  width: 100%;
+}
+
+.providers .notice {
+  margin-bottom: 0;
+}
+
 .primary,
 .secondary,
 .linkButton {

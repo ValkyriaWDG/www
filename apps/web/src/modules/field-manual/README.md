@@ -1,7 +1,25 @@
 # Editable Field Manual boundary
 
-Reserved implementation location. Reuse the existing rich-text editor, localized revisions/publication, media authorization and scheduling rather than creating a Markdown-only authoring system.
+Field Manual articles use the shared content editor, localized revisions/publication,
+media authorization and scheduling. Editors open `/[locale]/admin/manual` to search,
+create or edit articles in their authorized game scope. Search keeps the manual
+workspace and selected publication/language filters.
 
-Model stable categories, ordered articles, locale-specific slugs/content, search over published locale/game content, related guides and reviewed legacy redirects. Track source provenance and review date for imported mechanics. Keep draft, restricted clan tactics and operational rosters out of public search/exports/SEO.
+Each article has independent Czech/English drafts and published revisions. Its shared
+metadata form edits ordering, source URL/date/language, credits and the last editorial
+review; administration links and locale switches ask to save or discard unsaved
+metadata. These fields are saved
+explicitly and apply immediately to both languages. The server checks `content.edit`
+and the article's game scope on every metadata save.
 
-The [legacy inventory](../../../../../docs/product/hll/legacy-migration.md) defines source URLs and observed fields. The [design spec](../../../../../docs/design/hll/visual-spec.md) defines category grid, article layout and accessible empty/error states. Database changes and migration tests are future implementation work.
+Public lists, category counts, search, locale counterparts and sitemap
+entries read only published content in the requested game/language. The active public
+manual belongs to HLL. Article category selection is editable; category definitions
+(localized labels/descriptions/order) are currently seeded and have no admin editor.
+Manual content is owned by the website CMS and is not synchronized from Logi.
+
+The [legacy inventory](../../../../../docs/product/hll/legacy-migration.md) defines
+source URLs and observed fields. The [design spec](../../../../../docs/design/hll/visual-spec.md)
+defines category grid, article layout and accessible empty/error states. Integration
+coverage lives in `tests/integration/field-manual.test.ts`; browser coverage includes
+`e2e/admin-manual.spec.ts`, `e2e/admin-game-scope.spec.ts` and the public manual journeys.

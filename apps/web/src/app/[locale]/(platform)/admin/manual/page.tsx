@@ -20,7 +20,7 @@ export default async function AdminManualPage({ params, searchParams }: PageProp
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const access = await requireAdminPage({ locale, path: '/admin/manual', capability: 'content.edit' });
+  const access = await requireAdminPage({ locale, path: '/admin/manual', capability: 'content.edit', game: 'hell-let-loose' });
   if (!access.ok) return access.denied;
   return <EditorialListScreen locale={locale} actor={access.principal} raw={await searchParams} kind="manual" />;
 }

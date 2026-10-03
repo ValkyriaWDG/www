@@ -1,5 +1,33 @@
 # Current status
 
+## Website/Logi readiness review — 2026-10-03
+
+The handoff branch `fix/logi-web-readiness` (candidate `ce0db5e`: visible Logi login
+readiness, larger Wardogs home controls, manual search/unsaved metadata, fixed-scope
+admin modules, FAQ introduction, Logi pagination reset and failed-collector freshness)
+was reviewed independently against main `0a94d59` and corrected in `0f4bd4a`: the
+enlarged home controls keep the phone/short-window reductions of `tokens.css`, the
+manual and page editor routes carry the same fixed module scope as their lists, the
+sign-in note follows the available action, two unused login messages are removed, and
+the Logi store drops an abandoned shadow generation as soon as its replacement begins.
+The candidate's login, scoping, form, sync and freshness behavior was confirmed.
+
+On `0f4bd4a` lint, typecheck and the optimized build passed with 930 unit, 483 PostgreSQL
+and 215 browser tests (99 opt-in captures skipped, 0 flaky). Inspected CS/EN admin
+captures, three Wardogs home viewports and the unchanged HLL landing are in the
+[review evidence](evidence/logi-web-readiness-2026-10-03/README.md#independent-review-and-corrections);
+the [handoff](handoff/claude-logi-web-readiness-2026-10-03.md),
+[readiness map](integrations/logi/readiness-2026-10-03.md) and
+[editor guide](operations/editor-guide.md) describe the slice. This is local synthetic
+verification. Production runs `0a94d59` (image published 2026-10-03 10:45 UTC) without
+Logi client/source configuration; nothing was activated.
+
+Next: open the PR for `fix/logi-web-readiness`, verify latest-head CI, merge, publish
+through `container-publish.yml` and verify the promoted digest. Open afterwards: #86
+(taxonomy), #87 (approved Wardogs readers), #22 (integration health), hosted acceptance
+#23/#8/#7, and the pre-existing short-window layout of the Wardogs home, where the
+servers overview pushes the utility rail below the fold at 1280×700.
+
 ## Background test hydration wait — 2026-10-03
 
 The publication qualification for merged PR #84 stopped before image publication:

@@ -295,3 +295,34 @@ test.describe('background media', () => {
     expect(afterReload).toEqual([]);
   });
 });
+
+test.describe('home control sizes', () => {
+  test('Wardogs actions and utility controls are larger on desktop and keep the phone reductions', async ({ page }) => {
+    const metrics = () => page.evaluate(() => {
+      const px = (element: Element | null, property: string) => Math.round(parseFloat(getComputedStyle(element!).getPropertyValue(property)));
+      return {
+        stack: px(document.querySelector('[data-cta="discord"]')!.closest('section'), 'width'),
+        cta: px(document.querySelector('[data-cta="discord"]'), 'min-height'),
+        action: px(document.querySelector('[data-home-action="clan"]'), 'min-height'),
+        utility: px(document.querySelector('[data-utility="discord"]'), 'height'),
+      };
+    });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/cs/wardogs');
+    const desktop = await metrics();
+    expect(desktop.stack).toBeGreaterThanOrEqual(340);
+    expect(desktop.cta).toBeGreaterThanOrEqual(112);
+    expect(desktop.action).toBeGreaterThanOrEqual(52);
+    expect(desktop.utility).toBeGreaterThanOrEqual(52);
+
+    // Short desktop windows and phones keep the reduced heights of tokens.css.
+    await page.setViewportSize({ width: 1280, height: 700 });
+    await page.goto('/cs/wardogs');
+    expect(await metrics()).toMatchObject({ cta: 96, action: 48 });
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/cs/wardogs');
+    expect(await metrics()).toMatchObject({ cta: 96, action: 52, utility: 48 });
+    await expectNoHorizontalOverflow(page);
+  });
+});

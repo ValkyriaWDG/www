@@ -1,4 +1,10 @@
+/* The Wardogs menu uses larger actions than the shared tokens (reference 09); the phone and
+   short-window reductions from tokens.css are mirrored below because a value declared here
+   would otherwise override them. */
 .home {
+  --action-stack-width: clamp(320px, 24vw, 470px);
+  --cta-height: clamp(112px, 14vh, 160px);
+  --secondary-action-height: clamp(52px, 5.5vh, 64px);
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -19,6 +25,7 @@
 
 .actions {
   display: grid;
+  flex-shrink: 0;
   gap: var(--action-gap);
   width: var(--action-stack-width);
   max-width: 100%;
@@ -245,12 +252,24 @@ a.cta:focus-visible {
 }
 
 @media (max-width: 767px) {
+  .home {
+    --cta-height: 96px;
+    --secondary-action-height: 52px;
+  }
+
   .stage {
     padding-top: clamp(96px, 34svh, 320px);
   }
 
   .actions {
     width: min(100%, 440px);
+  }
+}
+
+@media (max-height: 719px) and (min-width: 768px) {
+  .home {
+    --cta-height: 96px;
+    --secondary-action-height: 48px;
   }
 }
 

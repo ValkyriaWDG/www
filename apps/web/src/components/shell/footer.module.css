@@ -18,6 +18,8 @@
 
 /* Home: utility rail under the action stack (reference 09 bottom rows), no strip. */
 [data-route-mode='home'] .footer {
+  --utility-size: clamp(52px, 3.6vw, 64px);
+  --utility-icon-size: clamp(28px, 2vw, 36px);
   padding-top: clamp(16px, 1.8vh, 28px);
   padding-bottom: calc(clamp(16px, 2.1vh, 30px) + env(safe-area-inset-bottom));
 }
@@ -28,6 +30,14 @@
 
 [data-route-mode='home'] .textLink {
   min-height: var(--utility-size);
+}
+
+/* Phones keep the tokens.css reduction; the value above would otherwise override it. */
+@media (max-width: 767px) {
+  [data-route-mode='home'] .footer {
+    --utility-size: 48px;
+    --utility-icon-size: 24px;
+  }
 }
 
 /* Subpages/admin: slim charcoal strip at the end of the document. */

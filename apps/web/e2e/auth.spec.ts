@@ -1,14 +1,26 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 import { ageMembershipSnapshot, countSessions, setDiscordMember, signInAs } from './support/auth';
 
+/** Editor routes deny a wrongly scoped editor before any document lookup, so no fixture is needed. */
+const UNKNOWN_DOCUMENT_ID = '00000000-0000-4000-8000-000000000000';
+
+async function expectReturnTargets(page: Page, value: string) {
+  const targets = page.locator('input[name="returnTo"]');
+  await expect(targets).toHaveCount(2);
+  for (const target of await targets.all()) await expect(target).toHaveValue(value);
+}
+
 test.describe('sign-in page', () => {
-  test('Czech login renders the Discord action, purpose and privacy link', async ({ page }) => {
+  test('Czech login shows unavailable Logi, the configured Discord action and privacy link', async ({ page }) => {
     await page.goto('/cs/login');
     await expect(page.locator('html')).toHaveAttribute('lang', 'cs');
     await expect(page.getByRole('heading', { level: 1, name: 'Přihlásit se' })).toBeVisible();
     const action = page.getByRole('button', { name: 'POKRAČOVAT PŘES DISCORD' });
     await expect(action).toBeVisible();
     await expect(action).toBeEnabled();
+    await expect(page.getByTestId('login-logi')).toBeVisible();
+    await expect(page.getByTestId('login-logi')).toBeDisabled();
+    await expect(page.getByTestId('login-provider-unavailable')).toHaveText('Přihlášení přes Logi teď není k dispozici. Veřejný web funguje jako obvykle.');
     await expect(page.getByText('Vstup na Discord server Valkyria a přihlášení zde jsou dva samostatné kroky.', { exact: false })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Jak zpracováváme vaše údaje' })).toHaveAttribute('href', '/cs/privacy');
     // Local recovery is disabled in this environment and is not advertised.
@@ -20,6 +32,8 @@ test.describe('sign-in page', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.getByRole('heading', { level: 1, name: 'Sign in' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'CONTINUE WITH DISCORD' })).toBeEnabled();
+    await expect(page.getByRole('button', { name: 'CONTINUE WITH LOGI' })).toBeDisabled();
+    await expect(page.getByTestId('login-provider-unavailable')).toHaveText('Signing in through Logi is not available at the moment. The public website works as usual.');
     await expect(page.getByText('Joining the Valkyria Discord server and signing in here are two separate steps.', { exact: false })).toBeVisible();
   });
 
@@ -37,10 +51,10 @@ test.describe('sign-in page', () => {
   test('malicious returnTo values are replaced by the account page', async ({ page }) => {
     for (const malicious of ['https://evil.example/', '//evil.example', '/\\evil.example', 'javascript:alert(1)', '/de/admin', '/api/auth/sign-out']) {
       await page.goto(`/cs/login?returnTo=${encodeURIComponent(malicious)}`);
-      await expect(page.locator('input[name="returnTo"]')).toHaveValue('/cs/account');
+      await expectReturnTargets(page, '/cs/account');
     }
     await page.goto(`/en/login?returnTo=${encodeURIComponent('/en/admin')}`);
-    await expect(page.locator('input[name="returnTo"]')).toHaveValue('/en/admin');
+    await expectReturnTargets(page, '/en/admin');
   });
 
   test('local recovery sign-in does not exist unless enabled', async ({ request }) => {
@@ -69,7 +83,7 @@ test.describe('protected routes', () => {
 
     await page.goto('/cs/admin/news');
     await expect(page).toHaveURL(/\/cs\/login\?returnTo=%2Fcs%2Fadmin%2Fnews$/);
-    await expect(page.locator('input[name="returnTo"]')).toHaveValue('/cs/admin/news');
+    await expectReturnTargets(page, '/cs/admin/news');
   });
 
   test('anonymous account request redirects to login', async ({ request }) => {
@@ -106,6 +120,36 @@ test.describe('protected routes', () => {
 
     await page.goto('/en/admin');
     await expect(page.getByTestId('admin-module-news')).toContainText('News');
+  });
+
+  test('an HLL-only editor sees the manual but cannot open community pages', async ({ context, page }) => {
+    await signInAs(context, { roles: ['hll_editor'] });
+    for (const locale of ['cs', 'en']) {
+      await page.goto(`/${locale}/admin`);
+      await expect(page.getByTestId('admin-module-manual')).toBeVisible();
+      await expect(page.getByTestId('admin-module-content')).toHaveCount(0);
+      await expect(page.getByTestId('admin-nav').locator(`a[href="/${locale}/admin/content"]`)).toHaveCount(0);
+      for (const path of ['/admin/content', `/admin/content/${UNKNOWN_DOCUMENT_ID}`]) {
+        await page.goto(`/${locale}${path}`);
+        await expect(page.getByTestId('access-denied')).toHaveAttribute('data-reason', 'forbidden');
+        await expect(page.getByTestId('admin-content')).toHaveCount(0);
+      }
+    }
+  });
+
+  test('a Wardogs-only editor cannot open the HLL manual or community pages', async ({ context, page }) => {
+    await signInAs(context, { roles: ['wdg_editor'] });
+    for (const locale of ['cs', 'en']) {
+      await page.goto(`/${locale}/admin`);
+      await expect(page.getByTestId('admin-module-news')).toBeVisible();
+      await expect(page.getByTestId('admin-module-manual')).toHaveCount(0);
+      await expect(page.getByTestId('admin-module-content')).toHaveCount(0);
+      await expect(page.getByTestId('admin-nav').locator(`a[href="/${locale}/admin/manual"]`)).toHaveCount(0);
+      for (const path of ['/admin/manual', '/admin/manual/new', `/admin/manual/${UNKNOWN_DOCUMENT_ID}`, '/admin/content', `/admin/content/${UNKNOWN_DOCUMENT_ID}`]) {
+        await page.goto(`/${locale}${path}`);
+        await expect(page.getByTestId('access-denied')).toHaveAttribute('data-reason', 'forbidden');
+      }
+    }
   });
 
   test('a removed role is enforced at the next write-intent verification', async ({ context, page }) => {

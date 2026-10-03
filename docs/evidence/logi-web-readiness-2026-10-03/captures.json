@@ -1,0 +1,146 @@
+[
+  {
+    "file": "after-faq-cs-1440x900.jpg",
+    "sha256": "0b9a13c566d932fa5d0930e1317af5fda4dc0f7ffe7f1387198b64c0c45f72af",
+    "bytes": 75990,
+    "width": 1425,
+    "height": 891,
+    "route": "/cs/hll/faq",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "environment": "local-synthetic-fixtures-missing-video-fallback",
+    "source": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "after-login-cs-1440x900.jpg",
+    "sha256": "ea90b9d36dec0451dbd353e9cb9ff29a85652ece051528a29e89faa5fac08d47",
+    "bytes": 62241,
+    "width": 1425,
+    "height": 891,
+    "route": "/cs/login",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "environment": "local-synthetic-fixtures-missing-video-fallback",
+    "source": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "after-login-en-390x844.jpg",
+    "sha256": "8b77c4775cb5ec0736000ff402d2794f4a2160ad1cea50792701945c57d41688",
+    "bytes": 45551,
+    "width": 375,
+    "height": 812,
+    "route": "/en/login",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "environment": "local-synthetic-fixtures-missing-video-fallback",
+    "source": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "after-wardogs-cs-1440x900.jpg",
+    "sha256": "4a9b06df0e4bedd48e9c584554a9f4642ebcf0ba1f7c65d29f2442e59d0216d4",
+    "bytes": 90660,
+    "width": 1440,
+    "height": 900,
+    "route": "/cs/wardogs",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "environment": "local-synthetic-fixtures-missing-video-fallback",
+    "source": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "after-wardogs-en-390x844.jpg",
+    "sha256": "c73ba32937840dac69e7517a7050e63e7c4f8796cc77399395ac5b3b0c99d756",
+    "bytes": 35141,
+    "width": 375,
+    "height": 812,
+    "route": "/en/wardogs",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "environment": "local-synthetic-fixtures-missing-video-fallback",
+    "source": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "after-wardogs-en-footer-390x844.jpg",
+    "sha256": "b5b709a644f434ab52a6a0cc6738ac3973895d1164e9ffa9087b2a69ab17a417",
+    "bytes": 41678,
+    "width": 375,
+    "height": 812,
+    "route": "/en/wardogs",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "environment": "local-synthetic-fixtures-missing-video-fallback",
+    "source": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "before-live-faq-cs-1440x900.jpg",
+    "sha256": "67cadbe19f4ccf86412897317774c94b9ed441a04836e8b817b7699bd3901f5e",
+    "bytes": 97049,
+    "width": 1425,
+    "height": 891,
+    "route": "/cs/hll/faq",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "environment": "live-public-read-only",
+    "source": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "before-live-login-cs-1440x900.jpg",
+    "sha256": "8dacfe8582e0417d7cec0831164c08e018d52f25d0caa552443c50e418c7cf4b",
+    "bytes": 58169,
+    "width": 1425,
+    "height": 891,
+    "route": "/cs/login",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "environment": "live-public-read-only",
+    "source": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+    "inspected": true,
+    "redacted": false
+  },
+  {
+    "file": "before-live-wardogs-cs-1440x900.jpg",
+    "sha256": "6dfd2f5fede0bbc4ec0f080edb76b63ea0c51d045774ad12a8f4cc4812abe3ae",
+    "bytes": 154939,
+    "width": 1440,
+    "height": 900,
+    "route": "/cs/wardogs",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "environment": "live-public-read-only",
+    "source": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+    "inspected": true,
+    "redacted": false
+  }
+]

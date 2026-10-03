@@ -13,6 +13,8 @@ import { createTestDatabase, type TestDatabase } from '../support/test-db';
 import { createDiscordFetch, insertDiscordUser, insertSession, ROLE, ROLE_MAPPING_JSON, TEST_SECRET, type DiscordMemberState } from './auth-harness';
 
 const requestHeaders = { current: new Headers() };
+const HLL_EDITOR_ROLE = '200000000000000005';
+const WDG_EDITOR_ROLE = '200000000000000006';
 
 vi.mock('next/headers', () => ({
   headers: async () => requestHeaders.current,
@@ -36,7 +38,11 @@ beforeAll(async () => {
     DISCORD_CLIENT_ID: '100000000000000099',
     DISCORD_CLIENT_SECRET: 'synthetic-client-secret',
     DISCORD_API_BASE_URL: 'https://discord.test/api/v10',
-    DISCORD_ROLE_MAPPING_JSON: ROLE_MAPPING_JSON,
+    DISCORD_ROLE_MAPPING_JSON: JSON.stringify({
+      ...JSON.parse(ROLE_MAPPING_JSON),
+      [HLL_EDITOR_ROLE]: { roles: ['editor'], games: ['hell-let-loose'] },
+      [WDG_EDITOR_ROLE]: { roles: ['editor'], games: ['wardogs'] },
+    }),
     LOCAL_ADMIN_LOGIN_ENABLED: 'false',
   });
   resetServerEnvForTests();
@@ -143,6 +149,35 @@ describe('admin page guard', () => {
     await signedInAs([ROLE.administrator]);
     const access = await requireAdminPage({ locale: 'cs', path: '/admin/audit', capability: 'audit.read' });
     expect(access.ok).toBe(true);
+  });
+
+  it.each(['cs', 'en'] as const)('denies an HLL-only editor on community pages in %s and audits the denial', async (locale) => {
+    const editor = await signedInAs([HLL_EDITOR_ROLE]);
+    const access = await requireAdminPage({ locale, path: '/admin/content', capability: 'content.edit', game: null });
+    expect(access).toMatchObject({ ok: false, code: 'forbidden' });
+    const audits = await database.db.select().from(auditEvent).where(and(eq(auditEvent.action, 'access.denied'), eq(auditEvent.actorUserId, editor.userId)));
+    expect(audits).toHaveLength(1);
+    expect(audits[0]).toMatchObject({ capability: 'content.edit', outcome: 'denied', summary: { reason: 'game_scope' } });
+  });
+
+  it.each(['cs', 'en'] as const)('denies a Wardogs-only editor on the HLL manual in %s', async (locale) => {
+    await signedInAs([WDG_EDITOR_ROLE]);
+    for (const path of ['/admin/manual', '/admin/manual/new']) {
+      const access = await requireAdminPage({ locale, path, capability: 'content.edit', game: 'hell-let-loose' });
+      expect(access).toMatchObject({ ok: false, code: 'forbidden' });
+    }
+  });
+
+  it('allows an HLL-only editor into the manual while retaining broader content capability checks', async () => {
+    await signedInAs([HLL_EDITOR_ROLE]);
+    expect((await requireAdminPage({ locale: 'cs', path: '/admin/manual', capability: 'content.edit', game: 'hell-let-loose' })).ok).toBe(true);
+    expect((await requireAdminPage({ locale: 'cs', path: '/admin/news', capability: 'content.edit' })).ok).toBe(true);
+  });
+
+  it('allows a platform-wide editor into both community pages and the manual', async () => {
+    await signedInAs([ROLE.editor]);
+    expect((await requireAdminPage({ locale: 'en', path: '/admin/content', capability: 'content.edit', game: null })).ok).toBe(true);
+    expect((await requireAdminPage({ locale: 'en', path: '/admin/manual', capability: 'content.edit', game: 'hell-let-loose' })).ok).toBe(true);
   });
 });
 
