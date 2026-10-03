@@ -1,5 +1,38 @@
 # Current status
 
+## Integration health administration — 2026-10-03
+
+Branch `feat/integrations-admin` (base main `4946cea`) adds the read-only part of
+[issue #22](https://github.com/ValkyriaWDG/www/issues/22): `/[locale]/admin/integrations`
+(module `integrations`, capability `settings.manage`) shows per game the server-status
+source, configured public servers and the current public overview; per Logi source the
+binding facts and one state per purpose (not configured, configured, never ran, healthy,
+stale, unavailable with error code, running now) from `logi_sync_scope`, the stored
+`integration-health` producer rows or "unknown", webhook/command queue aggregates and
+the Discord role-mapping summary. The DTO (`modules/integrations/admin-health.ts`) holds
+no key, base URL, address or raw provider error; the page is server-rendered with a
+refresh link and no client polling. It states explicitly that it shows website collector
+health, not the Logi runtime, bot Discord connection or game-server telemetry.
+
+The same page edits the new allowlisted `servers.presentation` site setting (display
+name, visibility, order per configured server, versioned and audited by shape). One
+wrapper (`modules/integrations/servers/presentation.ts`, 15-second per-process cache,
+cleared by a save) applies it to every public overview read: the servers pages, the
+Wardogs home overview and `/api/servers/[game]`; a hidden server also has no public
+detail. Provider contracts and tests are unchanged.
+
+Local checks on this branch: `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`
+(87 files, 941 tests), `DATABASE_URL=… npx vitest run --project integration`
+(48 files, 492 tests) and `node scripts/check-foundation.mjs` passed. Not run here:
+`pnpm build`, `pnpm test:e2e` (new `e2e/admin-integrations.spec.ts`; opt-in captures in
+`e2e/visual-admin-integrations.spec.ts` with `CAPTURE_EVIDENCE=1`, output
+`.local/evidence/admin-integrations/`). Browser evidence, the PR acceptance table and the
+issue summary remain open until those run. Logi settings writes, hosted runtime facts
+and production activation stay out of scope.
+
+Next: run the build and browser suites, attach captioned CS/EN desktop/phone captures
+to the PR and #22, then review.
+
 ## Website/Logi readiness review — 2026-10-03
 
 The handoff branch `fix/logi-web-readiness` (candidate `ce0db5e`: visible Logi login
