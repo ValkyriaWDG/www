@@ -1,0 +1,133 @@
+{
+  "metaTitle": "Categories and tags",
+  "eyebrow": "Administration",
+  "title": "Categories and tags",
+  "lead": "Names, descriptions and order of Field Manual categories and of news categories and tags in both languages. Internal keys and article assignments stay as they are.",
+  "loadFailed": "Categories and tags could not be loaded. Try reloading the page.",
+  "sections": {
+    "manual": {
+      "title": "{game} Field Manual – categories",
+      "lead": "Categories of the public Field Manual. Saved names, descriptions and order take effect in the public manual immediately, in the category overview and in article headers.",
+      "new": "NEW CATEGORY",
+      "caption": "{game} Field Manual categories with the number of assigned articles",
+      "emptyTitle": "The Field Manual has no categories yet",
+      "emptyBody": "Create the first category; it appears in the public manual once it has a published article."
+    },
+    "newsCategories": {
+      "title": "News – categories",
+      "lead": "Shared news categories for both games and the community. A renamed category shows immediately in the public news filters; the label on an article itself updates when that language version is next published. Order only affects the editor's selector.",
+      "new": "NEW CATEGORY",
+      "caption": "News categories with the number of assigned posts",
+      "emptyTitle": "No news categories yet",
+      "emptyBody": "Create the first category; editors can then assign it to posts."
+    },
+    "newsTags": {
+      "title": "News – tags",
+      "lead": "Shared news tags. A renamed tag shows immediately in the public news filters; the tags on an article itself update when that language version is next published. Order only affects the editor's selector.",
+      "new": "NEW TAG",
+      "caption": "News tags with the number of tagged posts",
+      "emptyTitle": "No tags yet",
+      "emptyBody": "Create the first tag; editors can then assign it to posts."
+    }
+  },
+  "newsDenied": {
+    "title": "News categories and tags are managed by platform-wide editors",
+    "body": "Your role covers selected games only. News categories and tags are shared by the whole website, so they cannot be edited here."
+  },
+  "manualDenied": {
+    "title": "No Field Manual in your scope",
+    "body": "Field Manual categories can be edited only by editors of a game that has a manual (Hell Let Loose)."
+  },
+  "columns": {
+    "order": "Order",
+    "key": "Key",
+    "labelCs": "Name (Czech)",
+    "labelEn": "Name (English)",
+    "references": "Articles",
+    "state": "State",
+    "actions": "Actions"
+  },
+  "states": {
+    "active": "Active",
+    "archived": "Archived"
+  },
+  "edit": "Edit",
+  "editLabel": "Edit {label}",
+  "form": {
+    "backToList": "Categories and tags",
+    "titles": {
+      "manual-category": "Field Manual category",
+      "news-category": "News category",
+      "news-tag": "News tag"
+    },
+    "newTitles": {
+      "manual-category": "New Field Manual category",
+      "news-category": "New news category",
+      "news-tag": "New news tag"
+    },
+    "scope": {
+      "manual-category": "{game} Field Manual",
+      "news-category": "News – categories",
+      "news-tag": "News – tags"
+    },
+    "semanticsTitle": "When the change takes effect",
+    "semantics": {
+      "manual-category": "The name, description and order take effect in the public Field Manual as soon as they are saved (category overview and article headers). This is not an editorial revision of the articles; every change is written to the audit log.",
+      "news-category": "The name shows immediately in the public news list filters once saved. The category label on an article is part of its published revision and updates when that language version is next published. Order only affects the editor's selector. Every change is written to the audit log.",
+      "news-tag": "The name shows immediately in the public news list filters once saved. The tags on an article are part of its published revision and update when that language version is next published. Order only affects the editor's selector. Every change is written to the audit log."
+    },
+    "notFoundTitle": "No such record",
+    "notFoundBody": "There is no category or tag with this address in this section, or it has been deleted.",
+    "key": "Key",
+    "keyHint": "Permanent internal identifier: lowercase letters without accents, digits and single hyphens (for example game-modes). It cannot be changed after creation.",
+    "keyLocked": "The key cannot change after creation; articles refer to it.",
+    "labelCs": "Name (Czech)",
+    "labelEn": "Name (English)",
+    "labelHint": "1 to 80 characters.",
+    "descriptionCs": "Description (Czech)",
+    "descriptionEn": "Description (English)",
+    "descriptionHintManual": "At most 300 characters. Shown on the category card in the public Field Manual.",
+    "descriptionHintNews": "At most 300 characters. Internal note for editors; not shown on the public website.",
+    "sortOrder": "Order",
+    "sortOrderHintManual": "0 to 10000; lower numbers appear first in the public manual.",
+    "sortOrderHintNews": "0 to 10000; lower numbers are offered first in the editor.",
+    "references": "{count, plural, =0 {No assigned articles} one {# assigned article} other {# assigned articles}}",
+    "scopeLabel": "Section",
+    "state": "State",
+    "referencesLabel": "Assigned articles",
+    "save": "SAVE",
+    "create": "CREATE",
+    "saving": "Saving…",
+    "saved": "Changes are saved.",
+    "created": "The record is created.",
+    "conflictTitle": "Someone else changed this record meanwhile",
+    "conflictBody": "Your edits are still in the form. Load the current version, compare it and save again.",
+    "reload": "Load current version",
+    "reloaded": "The current version is loaded; your unsaved edits stayed in the form.",
+    "archiveTitle": "Archiving and deletion",
+    "archiveLead": "An archived record disappears from the editor's selector, but articles that use it keep it and stay public. Only a record without assigned articles can be deleted; content is never deleted or reassigned automatically.",
+    "archive": "ARCHIVE",
+    "restore": "RESTORE",
+    "delete": "DELETE",
+    "archived": "The record is archived.",
+    "restored": "The record is restored.",
+    "deleted": "The record is deleted.",
+    "deleteBlocked": "{count, plural, one {Deletion is not possible: # article uses this record.} other {Deletion is not possible: # articles use this record.}} Change the category or tags of those articles in the editor first, or archive the record instead.",
+    "deleteReferenced": "The record was assigned to an article meanwhile, so it cannot be deleted. Archive it instead.",
+    "confirmArchiveTitle": "Archive “{label}”?",
+    "confirmArchiveBody": "{count, plural, =0 {The record disappears from the editor's selector. No article uses it.} one {The record disappears from the editor's selector. The # article that uses it keeps it and stays public.} other {The record disappears from the editor's selector. The # articles that use it keep it and stay public.}}",
+    "confirmRestoreTitle": "Restore “{label}”?",
+    "confirmRestoreBody": "The record becomes available in the editor's selector again.",
+    "confirmDeleteTitle": "Delete “{label}”?",
+    "confirmDeleteBody": "No article uses this record. Deletion is permanent; the key {key} can be created again later.",
+    "fieldErrors": {
+      "required": "Fill in this field.",
+      "too_long": "The text is too long.",
+      "invalid_key": "Use lowercase letters without accents, digits and single hyphens.",
+      "duplicate_key": "This key already exists in this section.",
+      "invalid_number": "Enter a whole number.",
+      "out_of_range": "Enter a number from 0 to 10000.",
+      "invalid": "Check this field."
+    }
+  }
+}

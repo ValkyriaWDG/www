@@ -1,0 +1,133 @@
+{
+  "metaTitle": "Kategorie a štítky",
+  "eyebrow": "Administrace",
+  "title": "Kategorie a štítky",
+  "lead": "Názvy, popisy a pořadí kategorií příručky a kategorií a štítků novinek v obou jazycích. Interní klíče a přiřazení článků se nemění.",
+  "loadFailed": "Kategorie a štítky se nepodařilo načíst. Zkuste stránku obnovit.",
+  "sections": {
+    "manual": {
+      "title": "Příručka {game} – kategorie",
+      "lead": "Kategorie veřejné příručky. Název, popis a pořadí se po uložení projeví ve veřejné příručce okamžitě – v přehledu kategorií i v hlavičce článků.",
+      "new": "NOVÁ KATEGORIE",
+      "caption": "Kategorie příručky {game} s počtem přiřazených článků",
+      "emptyTitle": "Příručka zatím nemá žádné kategorie",
+      "emptyBody": "Vytvořte první kategorii; ve veřejné příručce se zobrazí, jakmile bude mít zveřejněný článek."
+    },
+    "newsCategories": {
+      "title": "Novinky – kategorie",
+      "lead": "Sdílené kategorie novinek pro obě hry i komunitu. Název se okamžitě projeví ve filtrech veřejného seznamu novinek; popisek u samotného článku se aktualizuje až při příštím zveřejnění jeho jazykové verze. Pořadí platí jen pro výběr v editoru.",
+      "new": "NOVÁ KATEGORIE",
+      "caption": "Kategorie novinek s počtem přiřazených příspěvků",
+      "emptyTitle": "Zatím žádné kategorie novinek",
+      "emptyBody": "Vytvořte první kategorii; redakce ji pak může přiřadit příspěvkům."
+    },
+    "newsTags": {
+      "title": "Novinky – štítky",
+      "lead": "Sdílené štítky novinek. Název se okamžitě projeví ve filtrech veřejného seznamu novinek; štítky u samotného článku se aktualizují až při příštím zveřejnění jeho jazykové verze. Pořadí platí jen pro výběr v editoru.",
+      "new": "NOVÝ ŠTÍTEK",
+      "caption": "Štítky novinek s počtem označených příspěvků",
+      "emptyTitle": "Zatím žádné štítky",
+      "emptyBody": "Vytvořte první štítek; redakce ho pak může přiřadit příspěvkům."
+    }
+  },
+  "newsDenied": {
+    "title": "Kategorie a štítky novinek spravuje redakce s oprávněním pro celý web",
+    "body": "Vaše role pokrývá jen vybrané hry. Kategorie a štítky novinek jsou společné pro celý web, proto je zde nemůžete upravovat."
+  },
+  "manualDenied": {
+    "title": "Ve vašem rozsahu není žádná příručka",
+    "body": "Kategorie příručky může upravovat jen redakce hry, která příručku má (Hell Let Loose)."
+  },
+  "columns": {
+    "order": "Pořadí",
+    "key": "Klíč",
+    "labelCs": "Název (čeština)",
+    "labelEn": "Název (angličtina)",
+    "references": "Články",
+    "state": "Stav",
+    "actions": "Akce"
+  },
+  "states": {
+    "active": "Aktivní",
+    "archived": "Archivováno"
+  },
+  "edit": "Upravit",
+  "editLabel": "Upravit {label}",
+  "form": {
+    "backToList": "Kategorie a štítky",
+    "titles": {
+      "manual-category": "Kategorie příručky",
+      "news-category": "Kategorie novinek",
+      "news-tag": "Štítek novinek"
+    },
+    "newTitles": {
+      "manual-category": "Nová kategorie příručky",
+      "news-category": "Nová kategorie novinek",
+      "news-tag": "Nový štítek novinek"
+    },
+    "scope": {
+      "manual-category": "Příručka {game}",
+      "news-category": "Novinky – kategorie",
+      "news-tag": "Novinky – štítky"
+    },
+    "semanticsTitle": "Kdy se změna projeví",
+    "semantics": {
+      "manual-category": "Název, popis a pořadí se po uložení projeví ve veřejné příručce okamžitě (přehled kategorií i hlavička článků). Nejde o redakční revizi článků; každá změna se zapisuje do auditního záznamu.",
+      "news-category": "Název se po uložení projeví okamžitě ve filtrech veřejného seznamu novinek. Popisek kategorie u článku je součástí jeho zveřejněné revize a aktualizuje se až při příštím zveřejnění dané jazykové verze. Pořadí ovlivňuje jen výběr v editoru. Každá změna se zapisuje do auditního záznamu.",
+      "news-tag": "Název se po uložení projeví okamžitě ve filtrech veřejného seznamu novinek. Štítky u článku jsou součástí jeho zveřejněné revize a aktualizují se až při příštím zveřejnění dané jazykové verze. Pořadí ovlivňuje jen výběr v editoru. Každá změna se zapisuje do auditního záznamu."
+    },
+    "notFoundTitle": "Záznam neexistuje",
+    "notFoundBody": "Kategorie nebo štítek s touto adresou v této části neexistuje, nebo byl odstraněn.",
+    "key": "Klíč",
+    "keyHint": "Neměnný interní identifikátor: malá písmena bez diakritiky, číslice a jednoduché pomlčky (například herni-rezimy). Po vytvoření ho nelze změnit.",
+    "keyLocked": "Klíč se po vytvoření nemění; články na něj odkazují.",
+    "labelCs": "Název (čeština)",
+    "labelEn": "Název (angličtina)",
+    "labelHint": "1 až 80 znaků.",
+    "descriptionCs": "Popis (čeština)",
+    "descriptionEn": "Popis (angličtina)",
+    "descriptionHintManual": "Nejvýše 300 znaků. Zobrazuje se na kartě kategorie ve veřejné příručce.",
+    "descriptionHintNews": "Nejvýše 300 znaků. Interní poznámka pro redakci; na veřejném webu se nezobrazuje.",
+    "sortOrder": "Pořadí",
+    "sortOrderHintManual": "0 až 10000; nižší číslo se ve veřejné příručce zobrazí dříve.",
+    "sortOrderHintNews": "0 až 10000; nižší číslo se v editoru nabídne dříve.",
+    "references": "{count, plural, =0 {Žádný přiřazený článek} one {# přiřazený článek} few {# přiřazené články} other {# přiřazených článků}}",
+    "scopeLabel": "Část",
+    "state": "Stav",
+    "referencesLabel": "Přiřazené články",
+    "save": "ULOŽIT",
+    "create": "VYTVOŘIT",
+    "saving": "Ukládání…",
+    "saved": "Změny jsou uložené.",
+    "created": "Záznam je vytvořený.",
+    "conflictTitle": "Záznam mezitím změnil někdo jiný",
+    "conflictBody": "Vaše úpravy zůstaly ve formuláři. Načtěte aktuální verzi, porovnejte ji a uložte znovu.",
+    "reload": "Načíst aktuální verzi",
+    "reloaded": "Aktuální verze je načtená; vaše neuložené úpravy zůstaly ve formuláři.",
+    "archiveTitle": "Archivace a odstranění",
+    "archiveLead": "Archivovaný záznam zmizí z výběru v editoru, ale články, které ho používají, si ho ponechají a na veřejném webu zůstanou. Odstranit lze jen záznam bez přiřazených článků; obsah se nikdy nemaže ani automaticky nepřeřazuje.",
+    "archive": "ARCHIVOVAT",
+    "restore": "OBNOVIT",
+    "delete": "ODSTRANIT",
+    "archived": "Záznam je archivovaný.",
+    "restored": "Záznam je obnovený.",
+    "deleted": "Záznam je odstraněný.",
+    "deleteBlocked": "{count, plural, one {Odstranění není možné: záznam používá # článek.} few {Odstranění není možné: záznam používají # články.} other {Odstranění není možné: záznam používá # článků.}} Nejprve změňte kategorii nebo štítky těchto článků v editoru, nebo záznam archivujte.",
+    "deleteReferenced": "Záznam mezitím někdo přiřadil článku, proto ho nelze odstranit. Místo toho ho archivujte.",
+    "confirmArchiveTitle": "Archivovat „{label}“?",
+    "confirmArchiveBody": "{count, plural, =0 {Záznam zmizí z výběru v editoru. Žádný článek ho nepoužívá.} one {Záznam zmizí z výběru v editoru. # článek, který ho používá, si ho ponechá a na veřejném webu zůstane.} few {Záznam zmizí z výběru v editoru. # články, které ho používají, si ho ponechají a na veřejném webu zůstanou.} other {Záznam zmizí z výběru v editoru. # článků, které ho používají, si ho ponechá a na veřejném webu zůstanou.}}",
+    "confirmRestoreTitle": "Obnovit „{label}“?",
+    "confirmRestoreBody": "Záznam bude znovu k dispozici ve výběru v editoru.",
+    "confirmDeleteTitle": "Odstranit „{label}“?",
+    "confirmDeleteBody": "Záznam nepoužívá žádný článek. Odstranění je trvalé; klíč {key} bude možné znovu vytvořit.",
+    "fieldErrors": {
+      "required": "Vyplňte toto pole.",
+      "too_long": "Text je příliš dlouhý.",
+      "invalid_key": "Použijte malá písmena bez diakritiky, číslice a jednoduché pomlčky.",
+      "duplicate_key": "Tento klíč už v této části existuje.",
+      "invalid_number": "Zadejte celé číslo.",
+      "out_of_range": "Zadejte číslo od 0 do 10000.",
+      "invalid": "Zkontrolujte toto pole."
+    }
+  }
+}
