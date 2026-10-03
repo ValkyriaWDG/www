@@ -20,9 +20,19 @@ publication. Workflow and semantics are in the
 
 An independent review corrected the reference counting (published revisions), limited
 manual scopes to games with a Field Manual and the version comparison, and fixed the
-key field spanning the form grid. Verification and captures are recorded in the
-[evidence](evidence/taxonomy-admin-2026-10-03/README.md). Next: PR, latest-head CI,
-merge and publication.
+key field spanning the form grid. The full browser suite then showed that the extra
+module pushed the English account links of the administration bar onto a second row at
+1920 px; `c37f5af` keeps the module list on its own row at every width. On `c37f5af`
+lint, typecheck and the optimized build passed with 935 unit, __INTEGRATION__ PostgreSQL
+and 223 + 178 browser tests (the full run on `6f9411d` with the one layout failure, then
+the rerun with the fix; 99 opt-in captures skipped); the seven inspected CS/EN captures
+are in the [evidence](evidence/taxonomy-admin-2026-10-03/README.md). Local synthetic
+verification only. Next: PR, latest-head CI, merge and publication.
+
+Publication of main `c232cdb`: the first run (37129342056) failed in
+`pnpm test:integration` on a racy membership test, fixed in PR #90 without touching
+application code; the re-run 37129666730 passed verification and its publish job waits
+for the environment approval.
 
 ## Public and administration UI round 10 — 2026-10-03
 

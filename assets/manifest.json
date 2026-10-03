@@ -16363,6 +16363,83 @@
       "bytes": 41154,
       "width": 1280,
       "height": 700
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-list-editor-cs-1440x900",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-list-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /cs/admin/taxonomy; editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "258b445a0d8577eb7da46400d30f97944162f72f9f95b7f5d58007afa1cac263",
+      "bytes": 92246,
+      "width": 1440,
+      "height": 1797
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-edit-manual-vehicles-cs-1440x900",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-edit-manual-vehicles-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /cs/admin/taxonomy/manual/hll/<id>; editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "e05760e027338344081494b5a310cb0ecb9421211e45dc7cf892492b3e60fae0",
+      "bytes": 71778,
+      "width": 1440,
+      "height": 1622
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-edit-manual-roles-en-390x844",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-edit-manual-roles-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /en/admin/taxonomy/manual/hll/<id>; hll_editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "310a9645358d887370369b434bb22456f015b4c3d8eda1e7b6d11e93c032de33",
+      "bytes": 60760,
+      "width": 390,
+      "height": 2400
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-list-hll-editor-en-390x844",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-list-hll-editor-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /en/admin/taxonomy; hll_editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "3d60d6cbcbbd935ebc6ac72de67213d1294aa89f3b1e42979b7c6c49ffbc4723",
+      "bytes": 63048,
+      "width": 390,
+      "height": 2539
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-delete-referenced-cs-1440x900",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-delete-referenced-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /cs/admin/taxonomy/manual/hll/<id>; editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1ff89938f93d4ede1c492db35407f1db789686866c851ab4141cd7cf95c4ec57",
+      "bytes": 71948,
+      "width": 1440,
+      "height": 1622
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-archive-consequence-cs-1440x900",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-archive-consequence-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /cs/admin/taxonomy/manual/hll/<id>; editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "e321f11fdeff45cabab64aa7f95f34f5cf9b0a822abb6184fcd2a7f45e467d37",
+      "bytes": 14564,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "taxonomy-admin-taxonomy-denied-wdg-editor-en-1440x900",
+      "path": "docs/evidence/taxonomy-admin-2026-10-03/taxonomy-denied-wdg-editor-en-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures; /en/admin/taxonomy/manual/hll/<id>; wdg_editor; source c37f5af",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "bfe28e7ac07852e0a3b507e9c487c1953173f73ec4bc4016c3589229366025b2",
+      "bytes": 22056,
+      "width": 1440,
+      "height": 900
     }
   ]
 }
