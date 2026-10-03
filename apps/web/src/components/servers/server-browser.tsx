@@ -32,7 +32,7 @@ const FRESHNESS_KIND: Record<Freshness, StatusKind> = { fresh: 'success', stale:
  * distinct: source not configured, configured but empty, source unavailable (with last
  * known rows marked stale), no selection, a removed selection, and selected.
  */
-export function ServerBrowser({ locale, game, query, initialData, switchNotice }: { locale: AppLocale; game: GameRoute; query: RawSearchParams | undefined; initialData: ServerBrowserData; switchNotice: ReactNode }) {
+export function ServerBrowser({ locale, game, query, initialData, switchNotice, historySummary = null }: { locale: AppLocale; game: GameRoute; query: RawSearchParams | undefined; initialData: ServerBrowserData; switchNotice: ReactNode; /** Server-rendered retained game history of the selected Wardogs server (below the Warcon panel). */ historySummary?: ReactNode }) {
   const t = useTranslations('games.servers');
   const games = useTranslations('games');
   const common = useTranslations('common.external');
@@ -287,6 +287,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice }
       </div>
       {game === 'hll' && selected && livePlayers?.publicId === selected.publicId ? <LivePlayersTable snapshot={livePlayers} locale={locale} serverName={selected.name} connectedPlayers={selected.freshness === 'fresh' ? selected.players : null} /> : null}
       {warcon && selected ? <WarconPanel entry={warcon} locale={locale} serverName={selected.name} /> : null}
+      {selected ? historySummary : null}
     </PageMain>
   );
 }

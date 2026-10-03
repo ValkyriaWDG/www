@@ -1,0 +1,180 @@
+{
+  "meta": {
+    "title": "Server game history",
+    "description": "Completed games on the Wardogs server from the Warcon records retained by Logi: faction results, player rankings and the game list."
+  },
+  "title": "Server game history",
+  "intro": "Completed games on the Wardogs server from the Warcon records retained by Logi: faction win shares, player rankings and the list of games with their scores.",
+  "note": "This is server gameplay history, not clan results: factions are not clan teams, players are not verified members and games are not official Wardogs League results. Completed-game statistics differ from Warcon's live leaderboard, which counts time differently.",
+  "synthetic": "Synthetic demo data – not real games on a Valkyria server.",
+  "unavailable": {
+    "title": "Game history is not available yet.",
+    "body": "No Valkyria server publishes its game history yet. It will appear here once available; nothing is estimated until then."
+  },
+  "state": {
+    "preparing": {
+      "title": "The overview is being prepared, try again in a moment.",
+      "body": "The games are being read from Logi for the first time."
+    },
+    "unavailable": {
+      "title": "The game history could not be loaded right now.",
+      "body": "This does not mean nobody is playing on the server. Try again later."
+    },
+    "denied": {
+      "title": "Game history is not available.",
+      "body": "The website is not allowed to read the history of this server."
+    },
+    "unsupported": {
+      "title": "Game history is not available.",
+      "body": "The Logi source does not provide the history of this server yet."
+    },
+    "stale": "The previous complete overview loaded {time} is shown; newer data could not be retrieved."
+  },
+  "coverage": "Games that ended from {date} on are shown; older games are not included.",
+  "filters": {
+    "title": "Filters",
+    "server": "Server",
+    "period": "Period",
+    "periods": {
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      "90d": "Last 90 days",
+      "all": "Whole history"
+    },
+    "map": "Map",
+    "allMaps": "All maps",
+    "mapOption": "{name} ({count, plural, one {# game} few {# games} other {# games}})",
+    "min": "Minimum playtime (min)",
+    "minHint": "The ranking counts players with at least this many minutes played in the period; 0 shows everyone. The default is 60.",
+    "submit": "Show",
+    "summary": "Showing: {server} · {period} · {map} · {floor}",
+    "floor": "at least {min} min played"
+  },
+  "summary": {
+    "title": "Summary",
+    "games": "Games",
+    "outcomes": "Outcomes",
+    "outcomesValue": "{decided} decided · {draw} draws · {noResult} without a result",
+    "outcomesUnknown": " · {unknown} unknown",
+    "feed": "Complete statistics",
+    "feedValue": "{feed} of {games, plural, one {# game} few {# games} other {# games}} with complete statistics",
+    "range": "First and last game",
+    "rangeValue": "{first} – {last}",
+    "lastCollected": "Last Logi import",
+    "refreshed": "Loaded",
+    "unknown": "unknown"
+  },
+  "factions": {
+    "title": "Faction win shares",
+    "description": "Each faction's wins out of the decided games in the selected period. Factions are in-game sides, not clan teams; draws and games without a result are not attributed to any faction.",
+    "caption": "Faction wins out of decided games",
+    "columns": {
+      "faction": "Faction",
+      "wins": "Wins / decided games",
+      "share": "Share",
+      "appearances": "Appearances"
+    },
+    "wins": "{wins} / {decided}",
+    "appearances": "{count, plural, one {# appearance} few {# appearances} other {# appearances}}",
+    "shareUnknown": "share unknown",
+    "other": "Draws {draw} · No result {noResult}",
+    "otherUnknown": "Draws {draw} · No result {noResult} · Unknown {unknown}",
+    "none": "No faction was recorded in this period."
+  },
+  "players": {
+    "title": "Player rankings",
+    "description": "Totals from the completed games in the selected period. Players are not verified clan members; names are as the server reported them in the latest game.",
+    "notPublished": "This server does not publish player statistics.",
+    "caption": "Player rankings",
+    "columns": {
+      "rank": "Rank",
+      "player": "Player",
+      "matches": "Games",
+      "record": "W / L / D",
+      "winRate": "Win rate",
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "kd": "K/D",
+      "playtime": "Time (h:mm)",
+      "cashDelta": "Cash",
+      "headshots": "Headshots",
+      "teamKills": "Team kills",
+      "suicides": "Suicides",
+      "vehicleKills": "Vehicle kills"
+    },
+    "unknownPlayer": "Unknown player",
+    "platform": {
+      "steam": "Steam",
+      "xbox": "Xbox",
+      "unknown": "Platform unknown"
+    },
+    "record": "{wins} / {losses} / {draws}",
+    "unknownResults": "+{count} unkn.",
+    "unknownResultsLong": "{count, plural, one {# game without a known result} few {# games without a known result} other {# games without a known result}}",
+    "coverage": "(from {count, plural, one {# game} few {# games} other {# games}})",
+    "unknownValue": "unknown",
+    "belowFloor": "{count, plural, one {# more player is} few {# more players are} other {# more players are}} below the {min} min minimum.",
+    "capped": "Showing the first {shown} of {total} players.",
+    "showAll": "Show all ({count})",
+    "showTop": "Show the first {count} only",
+    "empty": "No player meets the minimum in this period.",
+    "sortBy": "Sort by: {column}",
+    "sortedDesc": "sorted descending",
+    "sortedAsc": "sorted ascending",
+    "secondary": "Further statistics (games with a combat feed only)"
+  },
+  "games": {
+    "title": "Game history",
+    "description": "Completed games, newest first. Final scores and the winner come from Warcon; a game without a combat feed has no detailed statistics.",
+    "count": "Showing {from}–{to} of {total, plural, one {# game} few {# games} other {# games}}",
+    "pageEmpty": "There are no games on this page.",
+    "firstPage": "Go to the first page",
+    "ended": "Ended {time}",
+    "mapUnknown": "Map unknown",
+    "outcome": {
+      "decided": "Winner: {winner}",
+      "draw": "Draw",
+      "no_result": "No result",
+      "unknown": "Unknown result"
+    },
+    "noFeed": "no combat feed",
+    "scores": "Final score",
+    "scoreUnknown": "score unknown",
+    "players": "Players ({count})",
+    "factionScores": "Faction scores",
+    "noPlayers": "No players were recorded for this game.",
+    "noFaction": "No faction",
+    "result": {
+      "win": "Win",
+      "loss": "Loss",
+      "draw": "Draw",
+      "unknown": "Unknown"
+    },
+    "columns": {
+      "player": "Player",
+      "result": "Result",
+      "playtime": "Time (h:mm)",
+      "kills": "Kills",
+      "deaths": "Deaths",
+      "cashDelta": "Cash",
+      "headshots": "Headshots",
+      "teamKills": "Team kills",
+      "suicides": "Suicides",
+      "vehicleKills": "Vehicle kills"
+    }
+  },
+  "empty": {
+    "title": "No games match the selected filters.",
+    "body": "Try a longer period or another map.",
+    "reset": "Reset filters"
+  },
+  "server": {
+    "title": "Game history",
+    "intro": "Completed games of the last 30 days from the Warcon records retained by Logi. Factions are not clan teams and games are not League results.",
+    "games": "{count, plural, =0 {No games} one {# game} few {# games} other {# games}} in the last 30 days",
+    "factions": "Faction win shares",
+    "recent": "Latest games",
+    "none": "No completed game was recorded in the last 30 days.",
+    "link": "Full server history"
+  }
+}

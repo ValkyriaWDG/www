@@ -28,7 +28,8 @@ export async function ClanScreen({ locale, game }: { locale: AppLocale; game: Ga
   const base = sectionBase(game);
   const nextSteps =
     game === 'hll'
-      ? gameMenu('hll').filter((item) => item.section !== 'clan')
+      // The HLL registry never lists the Wardogs-only retained history; the guard keeps the label lookup typed.
+      ? gameMenu('hll').flatMap((item) => (item.section === 'clan' || item.section === 'history' ? [] : [{ section: item.section, href: item.href }]))
       : (['members', 'matches', 'news'] as const).map((section) => ({ section, href: `${base}/${section}` }));
   return (
     <CorePage

@@ -1,0 +1,180 @@
+{
+  "meta": {
+    "title": "Historie her serveru",
+    "description": "Dokončené hry na serveru Wardogs podle záznamů Warconu uchovaných v Logi: výsledky frakcí, žebříček hráčů a seznam her."
+  },
+  "title": "Historie her serveru",
+  "intro": "Dokončené hry na serveru Wardogs podle záznamů Warconu, které uchovává Logi: podíl vítězství frakcí, žebříček hráčů a seznam her se skóre.",
+  "note": "Jde o herní historii serveru, ne o výsledky klanu: frakce nejsou týmy klanu, hráči nejsou ověření členové a hry nejsou oficiální výsledky Wardogs League. Statistiky dokončených her se liší od živého žebříčku Warconu, který počítá čas jinak.",
+  "synthetic": "Syntetická ukázková data – nejde o skutečné hry na serveru Valkyria.",
+  "unavailable": {
+    "title": "Historie her zatím není k dispozici.",
+    "body": "Žádný server Valkyria zatím nemá zveřejněnou historii her. Doplníme ji, jakmile bude k dispozici; do té doby nic neodhadujeme."
+  },
+  "state": {
+    "preparing": {
+      "title": "Přehled se připravuje, zkus to za chvíli.",
+      "body": "Hry se právě poprvé načítají z Logi."
+    },
+    "unavailable": {
+      "title": "Historii her se teď nepodařilo načíst.",
+      "body": "Neznamená to, že se na serveru nehraje. Zkus to později."
+    },
+    "denied": {
+      "title": "Historie her není dostupná.",
+      "body": "Web nemá oprávnění číst historii tohoto serveru."
+    },
+    "unsupported": {
+      "title": "Historie her není dostupná.",
+      "body": "Zdroj Logi historii tohoto serveru zatím neposkytuje."
+    },
+    "stale": "Zobrazen je předchozí úplný přehled načtený {time}; novější data se nepodařilo získat."
+  },
+  "coverage": "Zobrazeny jsou hry ukončené od {date}; starší hry přehled nezahrnuje.",
+  "filters": {
+    "title": "Filtry",
+    "server": "Server",
+    "period": "Období",
+    "periods": {
+      "7d": "Posledních 7 dní",
+      "30d": "Posledních 30 dní",
+      "90d": "Posledních 90 dní",
+      "all": "Celá historie"
+    },
+    "map": "Mapa",
+    "allMaps": "Všechny mapy",
+    "mapOption": "{name} ({count, plural, one {# hra} few {# hry} other {# her}})",
+    "min": "Minimální čas ve hře (min)",
+    "minHint": "Do žebříčku se počítají hráči s alespoň tolika odehranými minutami v období; 0 zobrazí všechny. Výchozí hodnota je 60.",
+    "submit": "Zobrazit",
+    "summary": "Zobrazeno: {server} · {period} · {map} · {floor}",
+    "floor": "minimálně {min} min ve hře"
+  },
+  "summary": {
+    "title": "Souhrn",
+    "games": "Hry",
+    "outcomes": "Výsledky",
+    "outcomesValue": "{decided} rozhodnuto · {draw} remíz · {noResult} bez výsledku",
+    "outcomesUnknown": " · {unknown} neznámých",
+    "feed": "Úplné statistiky",
+    "feedValue": "{feed} z {games, plural, one {# hry} few {# her} other {# her}} s úplnými statistikami",
+    "range": "První a poslední hra",
+    "rangeValue": "{first} – {last}",
+    "lastCollected": "Poslední import Logi",
+    "refreshed": "Načteno",
+    "unknown": "není známo"
+  },
+  "factions": {
+    "title": "Podíl vítězství frakcí",
+    "description": "Výhry každé frakce z rozhodnutých her ve zvoleném období. Frakce jsou strany ze hry, ne týmy klanu; remízy a hry bez výsledku se žádné frakci nepřipisují.",
+    "caption": "Výhry frakcí z rozhodnutých her",
+    "columns": {
+      "faction": "Frakce",
+      "wins": "Výhry / rozhodnuté hry",
+      "share": "Podíl",
+      "appearances": "Účasti"
+    },
+    "wins": "{wins} / {decided}",
+    "appearances": "{count, plural, one {# účast} few {# účasti} other {# účastí}}",
+    "shareUnknown": "podíl neznámý",
+    "other": "Remízy {draw} · Bez výsledku {noResult}",
+    "otherUnknown": "Remízy {draw} · Bez výsledku {noResult} · Neznámé {unknown}",
+    "none": "V tomto období nebyla zaznamenána žádná frakce."
+  },
+  "players": {
+    "title": "Žebříček hráčů",
+    "description": "Součty z dokončených her ve zvoleném období. Hráči nejsou ověření členové klanu; jména jsou tak, jak je nahlásil server, podle poslední hry.",
+    "notPublished": "Tento server statistiky hráčů nezveřejňuje.",
+    "caption": "Žebříček hráčů",
+    "columns": {
+      "rank": "Pořadí",
+      "player": "Hráč",
+      "matches": "Hry",
+      "record": "V / P / R",
+      "winRate": "Výhry",
+      "kills": "Zabití",
+      "deaths": "Úmrtí",
+      "kd": "K/D",
+      "playtime": "Čas (h:mm)",
+      "cashDelta": "Hotovost",
+      "headshots": "Headshoty",
+      "teamKills": "Zabití spoluhráčů",
+      "suicides": "Sebevraždy",
+      "vehicleKills": "Zničená vozidla"
+    },
+    "unknownPlayer": "Neznámý hráč",
+    "platform": {
+      "steam": "Steam",
+      "xbox": "Xbox",
+      "unknown": "Platforma neznámá"
+    },
+    "record": "{wins} / {losses} / {draws}",
+    "unknownResults": "+{count} nezn.",
+    "unknownResultsLong": "{count, plural, one {# hra bez známého výsledku} few {# hry bez známého výsledku} other {# her bez známého výsledku}}",
+    "coverage": "(z {count, plural, one {# hry} few {# her} other {# her}})",
+    "unknownValue": "neznámé",
+    "belowFloor": "{count, plural, one {Další # hráč je} few {Další # hráči jsou} other {Dalších # hráčů je}} pod minimem {min} min.",
+    "capped": "Zobrazeno prvních {shown} z {total} hráčů.",
+    "showAll": "Zobrazit všechny ({count})",
+    "showTop": "Zobrazit jen prvních {count}",
+    "empty": "V tomto období nesplňuje minimum žádný hráč.",
+    "sortBy": "Seřadit podle: {column}",
+    "sortedDesc": "seřazeno sestupně",
+    "sortedAsc": "seřazeno vzestupně",
+    "secondary": "Další statistiky (jen hry s bojovým feedem)"
+  },
+  "games": {
+    "title": "Historie her",
+    "description": "Dokončené hry od nejnovější. Konečné skóre a vítěz pocházejí z Warconu; hra bez bojového feedu nemá podrobné statistiky.",
+    "count": "Zobrazeno {from}–{to} z {total, plural, one {# hry} few {# her} other {# her}}",
+    "pageEmpty": "Na této stránce nejsou žádné hry.",
+    "firstPage": "Přejít na první stránku",
+    "ended": "Konec {time}",
+    "mapUnknown": "Mapa neznámá",
+    "outcome": {
+      "decided": "Vítěz: {winner}",
+      "draw": "Remíza",
+      "no_result": "Bez výsledku",
+      "unknown": "Neznámý výsledek"
+    },
+    "noFeed": "bez bojového feedu",
+    "scores": "Konečné skóre",
+    "scoreUnknown": "skóre neznámé",
+    "players": "Hráči ({count})",
+    "factionScores": "Skóre frakcí",
+    "noPlayers": "Hra nemá zaznamenané hráče.",
+    "noFaction": "Bez frakce",
+    "result": {
+      "win": "Výhra",
+      "loss": "Prohra",
+      "draw": "Remíza",
+      "unknown": "Neznámý"
+    },
+    "columns": {
+      "player": "Hráč",
+      "result": "Výsledek",
+      "playtime": "Čas (h:mm)",
+      "kills": "Zabití",
+      "deaths": "Úmrtí",
+      "cashDelta": "Hotovost",
+      "headshots": "Headshoty",
+      "teamKills": "Zabití spoluhráčů",
+      "suicides": "Sebevraždy",
+      "vehicleKills": "Zničená vozidla"
+    }
+  },
+  "empty": {
+    "title": "Pro zvolené filtry nejsou žádné hry.",
+    "body": "Zkus delší období nebo jinou mapu.",
+    "reset": "Zrušit filtry"
+  },
+  "server": {
+    "title": "Historie her",
+    "intro": "Dokončené hry za posledních 30 dní podle záznamů Warconu uchovaných v Logi. Frakce nejsou týmy klanu a hry nejsou výsledky League.",
+    "games": "{count, plural, =0 {Žádná hra} one {# hra} few {# hry} other {# her}} za posledních 30 dní",
+    "factions": "Podíl vítězství frakcí",
+    "recent": "Poslední hry",
+    "none": "Za posledních 30 dní není zaznamenaná žádná dokončená hra.",
+    "link": "Celá historie serveru"
+  }
+}

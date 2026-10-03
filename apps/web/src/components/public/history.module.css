@@ -1,0 +1,502 @@
+/*
+ * Server game history (`/[game]/history`) and the compact summary on the Wardogs server
+ * detail. Panel frames, tracked uppercase titles, status badges and the round-12 statistics
+ * tables come from the shared primitives; the faction bars follow the dataviz mark specs
+ * (thin bars, rounded data end, text in text tokens, a table equivalent) in the site's own
+ * tokens. Faction colours are the factions' published colours from the game; a faction
+ * without one gets the neutral strong border token.
+ */
+
+.section {
+  min-width: 0;
+  margin-top: var(--space-4);
+}
+
+.notes {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+}
+
+.notes p {
+  margin: 0;
+}
+
+.note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+/* ---- Filters (GET form; native controls, 44 px) ---- */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0 var(--space-4);
+  align-items: start;
+}
+
+.filters > * {
+  min-width: 0;
+}
+
+.filterActions {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  /* Same vertical position as the controls: label line + gap above them. */
+  padding-top: calc(1.35em + 6px);
+}
+
+.summaryLine {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  overflow-wrap: anywhere;
+}
+
+/* ---- Summary tiles ---- */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--space-3) var(--space-4);
+  margin: 0;
+}
+
+.tile {
+  min-width: 0;
+  border-left: 2px solid var(--color-border-strong);
+  padding-left: var(--space-2);
+}
+
+.tile dt {
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.tile dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.tileValue {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tileDetail {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+/* ---- Faction win shares ---- */
+.factionChart {
+  --history-faction-fallback: var(--color-border-strong);
+  margin: 0;
+}
+
+.factionRows {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.factionRow {
+  display: grid;
+  grid-template-columns: minmax(6rem, 11rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+}
+
+.factionName {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.swatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--history-faction-fallback);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.4);
+}
+
+/* Track: one step off the panel surface; the fill is the faction's colour and ends rounded. */
+.factionBar {
+  position: relative;
+  display: block;
+  height: 16px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.07);
+}
+
+.factionFill {
+  display: block;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--history-faction-fallback);
+}
+
+.factionValue {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.factionMeta {
+  grid-column: 2 / -1;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.otherOutcomes {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.factionChart[data-compact] .factionRows {
+  gap: var(--space-2);
+}
+
+.factionChart[data-compact] .factionRow {
+  grid-template-columns: minmax(5rem, 8rem) minmax(0, 1fr) auto;
+}
+
+.factionChart[data-compact] .factionBar {
+  height: 10px;
+}
+
+.factionChart[data-compact] .factionMeta {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .factionRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .factionName {
+    grid-column: 1 / -1;
+  }
+
+  .factionMeta {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---- Rankings ---- */
+.sortLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.sortLink:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+th[aria-sort='ascending'] .sortLink,
+th[aria-sort='descending'] .sortLink {
+  color: var(--color-accent-strong);
+}
+
+.sortGlyph {
+  font-size: 0.75em;
+}
+
+.rank {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.playerCell {
+  display: grid;
+  gap: 2px;
+  min-width: 7rem;
+  font-weight: 600;
+}
+
+.playerName {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.platform {
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.coverage {
+  margin-left: 4px;
+  color: var(--color-text-muted);
+  font-size: var(--text-meta);
+  white-space: nowrap;
+}
+
+.unknownResults {
+  margin-left: 4px;
+  color: var(--color-text-muted);
+  font-size: var(--text-meta);
+}
+
+.secondaryGroup {
+  color: var(--color-text-muted);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  text-align: start;
+  text-transform: uppercase;
+}
+
+.foot {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.foot p {
+  margin: 0;
+}
+
+.footLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+.footLink:hover {
+  color: var(--color-accent-strong);
+}
+
+.phoneNote {
+  display: none;
+}
+
+/* Phones: stacked fields (the submit follows them directly), the feed-only group collapses
+   and the first column stays in view while the rest scrolls. */
+@media (max-width: 767px) {
+  .filterActions {
+    padding-top: 0;
+  }
+
+  .secondary {
+    display: none;
+  }
+
+  .phoneNote {
+    display: block;
+  }
+}
+
+/* ---- Game list ---- */
+.games {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-left: 3px solid var(--color-border-strong);
+}
+
+.gameHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+
+.gameHead time {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.gameMap {
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.gameBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.scores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scores li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scoreName {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  overflow-wrap: anywhere;
+}
+
+.scoreValue {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.details {
+  min-width: 0;
+  border-top: var(--border-hairline) solid var(--color-border);
+}
+
+.details > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-nav);
+  text-transform: uppercase;
+}
+
+.details > summary::marker {
+  color: var(--color-accent);
+}
+
+.details > summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.detailBody {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-2) 0 var(--space-1);
+}
+
+.factionGroup {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.factionGroupTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.count {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+/* ---- Compact summary on the server detail ---- */
+.serverPanel {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.serverGames {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.serverSubtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.serverRecent {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.serverRecent li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-small);
+}
+
+.serverRecent time {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.serverLink {
+  margin: 0;
+}
