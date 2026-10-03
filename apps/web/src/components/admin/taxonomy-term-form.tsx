@@ -229,7 +229,7 @@ export function TaxonomyTermForm({ uiLocale, scope, term, gameLabel }: { uiLocal
             spellCheck={false}
             error={creating ? fieldError('key') : null}
             onChange={(event) => set({ key: event.target.value.toLowerCase() })}
-            data-span=""
+            className={local.span}
           />
           <TextField
             name="labelCs"
