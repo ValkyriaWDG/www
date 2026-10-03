@@ -28,6 +28,12 @@ describe('administration modules match usable resource scopes', () => {
     expect(keys(testPrincipal(['match_manager'], { games: ['wardogs'] }))).toEqual(['matches', 'tournaments']);
   });
 
+  it('offers integration health and settings only with platform-wide settings authority', () => {
+    expect(keys(testPrincipal(['administrator']))).toEqual(['news', 'manual', 'content', 'media', 'matches', 'tournaments', 'members', 'settings', 'integrations', 'audit']);
+    expect(keys(testPrincipal(['editor']))).not.toContain('integrations');
+    expect(keys(testPrincipal(['match_manager']))).not.toContain('integrations');
+  });
+
   it('offers no modules without current administrative authority', () => {
     expect(keys({ kind: 'anonymous' })).toEqual([]);
     expect(keys(testPrincipal(['member']))).toEqual([]);

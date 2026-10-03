@@ -102,8 +102,10 @@ export function crconSource(servers: readonly CrconServerConfig[], fetchImpl: Fe
   };
 }
 
-export function serverStatusSourceForGame(game: GameRoute): ReturnType<typeof getServerEnv>['SERVER_STATUS_SOURCE'] {
-  const env = getServerEnv();
+export type ServerStatusSourceKind = ReturnType<typeof getServerEnv>['SERVER_STATUS_SOURCE'];
+export type ServerStatusSourceEnv = { SERVER_STATUS_SOURCE: ServerStatusSourceKind; SERVER_STATUS_SOURCE_WDG?: Exclude<ServerStatusSourceKind, 'crcon'> | undefined };
+
+export function serverStatusSourceForGame(game: GameRoute, env: ServerStatusSourceEnv = getServerEnv()): ServerStatusSourceKind {
   return game === 'wardogs' ? env.SERVER_STATUS_SOURCE_WDG ?? env.SERVER_STATUS_SOURCE : env.SERVER_STATUS_SOURCE;
 }
 

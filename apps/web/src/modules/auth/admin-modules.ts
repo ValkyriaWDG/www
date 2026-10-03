@@ -3,7 +3,7 @@ import { can, canForGame } from '@/modules/access/policy';
 import type { Capability } from '@/modules/access/capabilities';
 import type { Actor } from '@/modules/access/types';
 
-export type AdminModuleKey = 'news' | 'manual' | 'content' | 'media' | 'matches' | 'tournaments' | 'members' | 'settings' | 'audit';
+export type AdminModuleKey = 'news' | 'manual' | 'content' | 'media' | 'matches' | 'tournaments' | 'members' | 'settings' | 'integrations' | 'audit';
 
 export type AdminModule = {
   key: AdminModuleKey;
@@ -31,6 +31,8 @@ export const ADMIN_MODULES: readonly AdminModule[] = [
   { key: 'tournaments', path: '/admin/tournaments', anyOf: ['matches.edit'] },
   { key: 'members', path: '/admin/members', anyOf: ['members.edit'] },
   { key: 'settings', path: '/admin/settings', anyOf: ['settings.manage'] },
+  // Read-only integration health (Logi collector, game-server sources, Discord mapping) and server presentation.
+  { key: 'integrations', path: '/admin/integrations', anyOf: ['settings.manage'] },
   { key: 'audit', path: '/admin/audit', anyOf: ['audit.read'] },
 ];
 

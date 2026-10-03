@@ -1,0 +1,201 @@
+{
+  "metaTitle": "Integrations and servers · Administration",
+  "eyebrow": "Administration",
+  "title": "Integrations and servers",
+  "description": "Health of the website's connections to Logi, the game servers and Discord, and how servers are shown on the website. Logi settings cannot be changed here; only the server presentation is editable.",
+  "scopeNotice": {
+    "title": "What this page shows",
+    "body": "The health of the website's own data collection: pulled projections, configuration and queues. It does not show the Logi runtime, its Discord connection, the Logi database or live game-server telemetry. Those are visible only in Logi."
+  },
+  "refresh": "Refresh",
+  "generatedAt": "Loaded {time}",
+  "contract": "Interface contract {version}",
+  "loadErrorTitle": "Integration health could not be loaded",
+  "loadErrorBody": "Try reloading the page. If the problem persists, check the website database.",
+  "games": {
+    "hll": "Hell Let Loose",
+    "wardogs": "Wardogs"
+  },
+  "servers": {
+    "title": "Game servers",
+    "intro": "Server identities, addresses and the status source are set by the operator configuration (CRCON or Logi). Only the website presentation can be changed here: name, visibility and order.",
+    "sourceLabel": "Status source",
+    "source": {
+      "none": "Not configured",
+      "crcon": "CRCON",
+      "logi": "Logi",
+      "synthetic-fixture": "Synthetic data"
+    },
+    "configError": {
+      "invalid_json": "The server configuration is not valid JSON; the source is disabled.",
+      "invalid_config": "The server configuration failed validation; the source is disabled."
+    },
+    "overview": {
+      "not_configured": "Public overview: not configured.",
+      "unavailable": "Public overview: the source is not answering (attempt {time}).",
+      "ok": "Public overview: OK (attempt {time}).",
+      "partial": "Public overview: some servers are not answering (attempt {time}).",
+      "synthetic": "Synthetic sample data, not real servers."
+    },
+    "empty": "No server is configured for this game.",
+    "origin": {
+      "crcon": "CRCON",
+      "logi": "Logi",
+      "synthetic": "Synthetic"
+    },
+    "configuredPublished": "Approved for publication",
+    "configuredUnpublished": "Not published in configuration",
+    "hasAddress": "Join address",
+    "noAddress": "No address",
+    "hasStats": "Statistics link",
+    "reachability": {
+      "online": "Online",
+      "offline": "Offline",
+      "unknown": "Reachability unknown"
+    },
+    "freshness": {
+      "fresh": "Current",
+      "stale": "Stale",
+      "unavailable": "No data"
+    },
+    "observed": "Observed {time}",
+    "neverObserved": "Not observed yet",
+    "notInOverview": "Currently missing from the public overview",
+    "publicId": "Public identifier",
+    "fields": {
+      "name": "Name on the website",
+      "nameHint": "Leave empty to keep the configured name.",
+      "published": "Show on the website",
+      "sortOrder": "Order",
+      "sortOrderHint": "0–1000, lower numbers first. Leave empty to keep the configured order."
+    },
+    "hiddenNote": "A hidden server disappears from the servers page and from the main-menu overview. The operator configuration is not changed.",
+    "staleRows": "{count, plural, one {# stored row belongs to a server} other {# stored rows belong to servers}} no longer in the configuration; the next save removes them.",
+    "storedInvalid": "The stored presentation no longer passes validation and is ignored; the configured names and order apply.",
+    "dirtyStatus": "{count, plural, one {# server changed} other {# servers changed}} — not saved",
+    "save": "Save server presentation",
+    "savedTitle": "Server presentation saved",
+    "savedBody": "The changes are live on the public website now.",
+    "saveGoesLive": "Saving makes the presentation live on the public website immediately. Name, visibility and order are the only values the website changes; server identities stay in the configuration.",
+    "conflictTitle": "Changed by someone else",
+    "conflictBody": "Another administrator saved the server presentation in the meantime, so nothing was saved. Your entered values are kept.",
+    "reloadLatest": "Load latest saved presentation (keep my values)",
+    "reloadedNotice": "The latest saved presentation was loaded as the base. Review your values and save again.",
+    "lastSaved": "Last saved {date}",
+    "neverSaved": "No presentation changes saved; the configuration applies."
+  },
+  "logi": {
+    "title": "Logi",
+    "intro": "Health of the website's data collection from the hosted Logi. “Healthy” means the website recently pulled projections successfully. It says nothing about the Logi runtime itself.",
+    "configError": "The Logi source configuration failed validation; no source is active.",
+    "sso": {
+      "label": "Sign-in through Logi (SSO)",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "configured": "Configured",
+      "notConfigured": "Not configured",
+      "fallback": "Discord fallback sign-in is allowed"
+    },
+    "membership": {
+      "label": "Membership source",
+      "discord": "Discord",
+      "logi": "Logi"
+    },
+    "noSources": {
+      "title": "No Logi source is configured.",
+      "body": "The website does not pull any data from Logi yet. Sources are set in the operator configuration."
+    },
+    "source": {
+      "instance": "Instance",
+      "guild": "Discord guild",
+      "host": "Logi host",
+      "publishMatches": "Match publication",
+      "syncPeople": "People synchronisation",
+      "publicServers": "Public servers",
+      "publicServersValue": "{published} of {total} published",
+      "on": "On",
+      "off": "Off"
+    },
+    "purposesTitle": "Purposes and keys",
+    "purposes": {
+      "data": "Data (events, matches, results, servers)",
+      "people": "People (directory, rosters, statistics)",
+      "membership": "Membership (permissions)",
+      "commands": "Commands (event writes)"
+    },
+    "state": {
+      "not_configured": "Not configured",
+      "configured": "Configured",
+      "never_ran": "Never ran",
+      "healthy": "Healthy",
+      "stale": "Stale",
+      "unavailable": "Unavailable"
+    },
+    "errorCode": "error {code}",
+    "disabledBySwitch": "disabled by configuration",
+    "leaseActive": "Running now",
+    "mode": {
+      "bootstrap": "initial import",
+      "replay": "replaying changes",
+      "live": "continuous collection"
+    },
+    "lastAttemptAt": "Last attempt",
+    "lastSuccessAt": "Last success",
+    "nextAttemptAt": "Next attempt",
+    "never": "never yet",
+    "generation": "Active generation",
+    "yes": "yes",
+    "no": "no",
+    "health": {
+      "title": "Confirmed collector capabilities (reported by Logi)",
+      "unknown": "Unknown. The website has not pulled any collector health report yet; this means neither success nor failure.",
+      "none": "Logi reports no collector connection for this source.",
+      "capabilities": {
+        "server_snapshot": "server snapshots",
+        "match_history": "match history"
+      },
+      "noCapabilities": "no confirmed capabilities",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "sessions": "{count, plural, one {# collected session} other {# collected sessions}}",
+      "error": "error {category}"
+    },
+    "webhooks": {
+      "label": "Webhooks",
+      "enabled": "Intake enabled",
+      "disabled": "Intake disabled",
+      "pending": "{count, plural, one {# unprocessed hint} other {# unprocessed hints}}",
+      "lastReceived": "last received {time}",
+      "lastProcessed": "last processed {time}",
+      "none": "no deliveries yet"
+    },
+    "commands": {
+      "label": "Commands",
+      "enabled": "Writes enabled",
+      "disabled": "Writes disabled",
+      "pending": "{count, plural, one {# pending} other {# pending}}",
+      "lastReceipt": "last receipt {time}",
+      "none": "no commands yet"
+    }
+  },
+  "discord": {
+    "title": "Discord",
+    "intro": "Mapping of Discord roles to website roles and the membership source. The mapping is set in the operator configuration; it cannot be changed here.",
+    "guild": {
+      "label": "Guild and bot",
+      "configured": "Configured",
+      "notConfigured": "Not configured"
+    },
+    "mapping": {
+      "label": "Role mapping",
+      "count": "{count, plural, one {# mapped role} other {# mapped roles}}",
+      "none": "No role is mapped; nobody gains permissions from Discord.",
+      "error": "The mapping failed validation ({error}); no Discord role grants permissions."
+    },
+    "membership": {
+      "label": "Membership source",
+      "discord": "Discord",
+      "logi": "Logi"
+    }
+  }
+}

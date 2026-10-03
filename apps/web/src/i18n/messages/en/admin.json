@@ -46,6 +46,10 @@
         "title": "Settings",
         "description": "Manage public website settings."
       },
+      "integrations": {
+        "title": "Integrations and servers",
+        "description": "Health of the Logi, game-server and Discord connections, and how servers are shown on the website."
+      },
       "audit": {
         "title": "Audit log",
         "description": "Review privileged changes and denied access."

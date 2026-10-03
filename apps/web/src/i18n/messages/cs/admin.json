@@ -46,6 +46,10 @@
         "title": "Nastavení",
         "description": "Správa nastavení veřejného webu."
       },
+      "integrations": {
+        "title": "Integrace a servery",
+        "description": "Stav napojení na Logi, herní servery a Discord a zobrazení serverů na webu."
+      },
       "audit": {
         "title": "Auditní záznam",
         "description": "Přehled privilegovaných změn a odepřených přístupů."

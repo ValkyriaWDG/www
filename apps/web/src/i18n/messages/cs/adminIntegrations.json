@@ -1,0 +1,201 @@
+{
+  "metaTitle": "Integrace a servery · Správa",
+  "eyebrow": "Správa",
+  "title": "Integrace a servery",
+  "description": "Stav napojení webu na Logi, herní servery a Discord a nastavení, jak se servery zobrazují na webu. Nastavení Logi se zde nemění; měnit lze jen zobrazení serverů.",
+  "scopeNotice": {
+    "title": "Co tato stránka ukazuje",
+    "body": "Stav vlastního sběru dat webem: stažené projekce, konfiguraci a fronty. Neukazuje běh samotného Logi, jeho spojení s Discordem, stav databáze Logi ani živou telemetrii herních serverů. Ty najdete jen v Logi."
+  },
+  "refresh": "Obnovit",
+  "generatedAt": "Načteno {time}",
+  "contract": "Kontrakt rozhraní {version}",
+  "loadErrorTitle": "Stav integrací se nepodařilo načíst",
+  "loadErrorBody": "Zkuste stránku obnovit. Pokud problém trvá, zkontrolujte databázi webu.",
+  "games": {
+    "hll": "Hell Let Loose",
+    "wardogs": "Wardogs"
+  },
+  "servers": {
+    "title": "Herní servery",
+    "intro": "Identity serverů, adresy a zdroj stavu určuje provozovatel v konfiguraci (CRCON nebo Logi). Zde lze změnit jen zobrazení na webu: název, viditelnost a pořadí.",
+    "sourceLabel": "Zdroj stavu",
+    "source": {
+      "none": "Nenastaveno",
+      "crcon": "CRCON",
+      "logi": "Logi",
+      "synthetic-fixture": "Syntetická data"
+    },
+    "configError": {
+      "invalid_json": "Konfigurace serverů není platný JSON; zdroj je vypnutý.",
+      "invalid_config": "Konfigurace serverů neprošla kontrolou; zdroj je vypnutý."
+    },
+    "overview": {
+      "not_configured": "Veřejný přehled: není nastaven.",
+      "unavailable": "Veřejný přehled: zdroj teď neodpovídá (pokus {time}).",
+      "ok": "Veřejný přehled: v pořádku (pokus {time}).",
+      "partial": "Veřejný přehled: některé servery neodpovídají (pokus {time}).",
+      "synthetic": "Syntetická ukázková data, nejde o skutečné servery."
+    },
+    "empty": "Pro tuto hru není v konfiguraci žádný server.",
+    "origin": {
+      "crcon": "CRCON",
+      "logi": "Logi",
+      "synthetic": "Syntetický"
+    },
+    "configuredPublished": "Schváleno ke zveřejnění",
+    "configuredUnpublished": "V konfiguraci nezveřejněno",
+    "hasAddress": "Adresa pro připojení",
+    "noAddress": "Bez adresy",
+    "hasStats": "Odkaz na statistiky",
+    "reachability": {
+      "online": "Dostupný",
+      "offline": "Nedostupný",
+      "unknown": "Dostupnost neznámá"
+    },
+    "freshness": {
+      "fresh": "Aktuální",
+      "stale": "Neaktuální",
+      "unavailable": "Bez údajů"
+    },
+    "observed": "Pozorováno {time}",
+    "neverObserved": "Zatím nepozorováno",
+    "notInOverview": "Ve veřejném přehledu teď chybí",
+    "publicId": "Veřejný identifikátor",
+    "fields": {
+      "name": "Název na webu",
+      "nameHint": "Prázdné pole ponechá název z konfigurace.",
+      "published": "Zobrazit na webu",
+      "sortOrder": "Pořadí",
+      "sortOrderHint": "0–1000, nižší číslo je výš. Prázdné pole ponechá pořadí z konfigurace."
+    },
+    "hiddenNote": "Skrytý server zmizí ze stránky serverů i z přehledu v hlavním menu. Konfigurace provozovatele se tím nemění.",
+    "staleRows": "{count, plural, one {# uložená položka patří serveru} few {# uložené položky patří serverům} many {# uložené položky patří serverům} other {# uložených položek patří serverům}}, které už nejsou v konfiguraci; při příštím uložení se odstraní.",
+    "storedInvalid": "Uložené nastavení zobrazení neprochází kontrolou a ignoruje se; platí názvy a pořadí z konfigurace.",
+    "dirtyStatus": "{count, plural, one {# server změněn} few {# servery změněny} many {# serveru změněno} other {# serverů změněno}} – neuloženo",
+    "save": "Uložit zobrazení serverů",
+    "savedTitle": "Zobrazení serverů uloženo",
+    "savedBody": "Změny jsou na veřejném webu účinné ihned.",
+    "saveGoesLive": "Uložením se zobrazení ihned projeví na veřejném webu. Název, viditelnost a pořadí jsou jediné hodnoty, které web mění; identity serverů zůstávají v konfiguraci.",
+    "conflictTitle": "Změněno někým jiným",
+    "conflictBody": "Jiný administrátor mezitím uložil zobrazení serverů, proto se nic neuložilo. Vaše zadané hodnoty zůstaly zachovány.",
+    "reloadLatest": "Načíst poslední uložené zobrazení (ponechat mé hodnoty)",
+    "reloadedNotice": "Poslední uložené zobrazení bylo načteno jako základ. Zkontrolujte své hodnoty a uložte znovu.",
+    "lastSaved": "Naposledy uloženo {date}",
+    "neverSaved": "Žádné uložené změny zobrazení; platí konfigurace."
+  },
+  "logi": {
+    "title": "Logi",
+    "intro": "Stav sběru dat webem z hostovaného Logi. Stav „V pořádku“ znamená, že web nedávno úspěšně stáhl projekce. O běhu samotného Logi nic neříká.",
+    "configError": "Konfigurace zdrojů Logi neprošla kontrolou; žádný zdroj není aktivní.",
+    "sso": {
+      "label": "Přihlášení přes Logi (SSO)",
+      "enabled": "Zapnuto",
+      "disabled": "Vypnuto",
+      "configured": "Nastaveno",
+      "notConfigured": "Nenastaveno",
+      "fallback": "Záložní přihlášení přes Discord je povoleno"
+    },
+    "membership": {
+      "label": "Zdroj členství",
+      "discord": "Discord",
+      "logi": "Logi"
+    },
+    "noSources": {
+      "title": "Žádný zdroj Logi není nastaven.",
+      "body": "Web zatím nestahuje z Logi žádná data. Zdroje nastavuje provozovatel v konfiguraci."
+    },
+    "source": {
+      "instance": "Instance",
+      "guild": "Discord guild",
+      "host": "Server Logi",
+      "publishMatches": "Zveřejňování zápasů",
+      "syncPeople": "Synchronizace lidí",
+      "publicServers": "Veřejné servery",
+      "publicServersValue": "{published} z {total} zveřejněno",
+      "on": "Zapnuto",
+      "off": "Vypnuto"
+    },
+    "purposesTitle": "Účely a klíče",
+    "purposes": {
+      "data": "Data (události, zápasy, výsledky, servery)",
+      "people": "Lidé (adresář, soupisky, statistiky)",
+      "membership": "Členství (oprávnění)",
+      "commands": "Příkazy (zápis událostí)"
+    },
+    "state": {
+      "not_configured": "Nenastaveno",
+      "configured": "Nastaveno",
+      "never_ran": "Zatím neběželo",
+      "healthy": "V pořádku",
+      "stale": "Zastaralé",
+      "unavailable": "Nedostupné"
+    },
+    "errorCode": "chyba {code}",
+    "disabledBySwitch": "vypnuto konfigurací",
+    "leaseActive": "Právě běží",
+    "mode": {
+      "bootstrap": "počáteční stažení",
+      "replay": "dohrávání změn",
+      "live": "průběžný sběr"
+    },
+    "lastAttemptAt": "Poslední pokus",
+    "lastSuccessAt": "Poslední úspěch",
+    "nextAttemptAt": "Další pokus",
+    "never": "zatím nikdy",
+    "generation": "Aktivní generace",
+    "yes": "ano",
+    "no": "ne",
+    "health": {
+      "title": "Potvrzené schopnosti sběru (hlásí Logi)",
+      "unknown": "Neznámé. Web zatím nestáhl žádné hlášení o stavu sběru; neznamená to úspěch ani selhání.",
+      "none": "Logi pro tento zdroj nehlásí žádné připojení sběru.",
+      "capabilities": {
+        "server_snapshot": "snímky serverů",
+        "match_history": "historie zápasů"
+      },
+      "noCapabilities": "bez potvrzených schopností",
+      "enabled": "Zapnuto",
+      "disabled": "Vypnuto",
+      "sessions": "{count, plural, one {# sběrná relace} few {# sběrné relace} many {# sběrné relace} other {# sběrných relací}}",
+      "error": "chyba {category}"
+    },
+    "webhooks": {
+      "label": "Webhooky",
+      "enabled": "Příjem zapnut",
+      "disabled": "Příjem vypnut",
+      "pending": "{count, plural, one {# nezpracované upozornění} few {# nezpracovaná upozornění} many {# nezpracovaného upozornění} other {# nezpracovaných upozornění}}",
+      "lastReceived": "poslední přijato {time}",
+      "lastProcessed": "poslední zpracováno {time}",
+      "none": "zatím žádné doručení"
+    },
+    "commands": {
+      "label": "Příkazy",
+      "enabled": "Zápis zapnut",
+      "disabled": "Zápis vypnut",
+      "pending": "{count, plural, one {# čekající} few {# čekající} many {# čekajícího} other {# čekajících}}",
+      "lastReceipt": "poslední potvrzení {time}",
+      "none": "zatím žádný příkaz"
+    }
+  },
+  "discord": {
+    "title": "Discord",
+    "intro": "Mapování rolí Discordu na role webu a zdroj členství. Mapování nastavuje provozovatel v konfiguraci; zde se nemění.",
+    "guild": {
+      "label": "Guild a bot",
+      "configured": "Nastaveno",
+      "notConfigured": "Nenastaveno"
+    },
+    "mapping": {
+      "label": "Mapování rolí",
+      "count": "{count, plural, one {# mapovaná role} few {# mapované role} many {# mapované role} other {# mapovaných rolí}}",
+      "none": "Žádná role není mapována; z Discordu nikdo nezíská oprávnění.",
+      "error": "Mapování neprošlo kontrolou ({error}); žádná role Discordu neuděluje oprávnění."
+    },
+    "membership": {
+      "label": "Zdroj členství",
+      "discord": "Discord",
+      "logi": "Logi"
+    }
+  }
+}
