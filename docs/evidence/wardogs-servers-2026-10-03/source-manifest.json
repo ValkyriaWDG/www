@@ -1,0 +1,495 @@
+{
+  "runtimeRevision": "b91136c7aa1f9d5a6562af2b206c03cd7d19021d",
+  "previousDelivery": "f0ba0962d2a42e357bff62cd027a306baad277da",
+  "buildId": "beGPyg0YqIrP5fRRPtqZQ",
+  "node": "v24.21.0",
+  "browser": "Chromium 153.0.8010.12",
+  "files": [
+    {
+      "path": "apps/web/e2e/platform.spec.ts",
+      "testedSha256": "dddf97b62ec8773e54d551bf7427409ce6f35ac674fb251eeae73b10c1cd9b6e",
+      "gitSha256": "dddf97b62ec8773e54d551bf7427409ce6f35ac674fb251eeae73b10c1cd9b6e",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/e2e/shell.spec.ts",
+      "testedSha256": "82d80f29dbdf04f1dc2a9b1f3aeecd33ca1579508285ff3b6cb4c5132a966480",
+      "gitSha256": "82d80f29dbdf04f1dc2a9b1f3aeecd33ca1579508285ff3b6cb4c5132a966480",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/e2e/support/server-env.ts",
+      "testedSha256": "02ae428eb1f81f5d185f85812bdfae6dcc61cd98d8d12d9c9f7c4fa8669a4ca9",
+      "gitSha256": "02ae428eb1f81f5d185f85812bdfae6dcc61cd98d8d12d9c9f7c4fa8669a4ca9",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/e2e/visual-hll.spec.ts",
+      "testedSha256": "1a30438a715b97804ab29473c6be6f629846f0fdb14af16e2fd13d9027d3899d",
+      "gitSha256": "1a30438a715b97804ab29473c6be6f629846f0fdb14af16e2fd13d9027d3899d",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/e2e/wardogs-servers.spec.ts",
+      "testedSha256": "786d605ded24e5a0a329fadb7789723b31d0ae672d90a15b0e1bec073d460c9d",
+      "gitSha256": "786d605ded24e5a0a329fadb7789723b31d0ae672d90a15b0e1bec073d460c9d",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/account/page.tsx",
+      "testedSha256": "8c8dc989ddc84d447fb1c0114614ff92806e4becaf2d0351fa4de2ca7832086d",
+      "gitSha256": "8c8dc989ddc84d447fb1c0114614ff92806e4becaf2d0351fa4de2ca7832086d",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/admin/members/logi/page.tsx",
+      "testedSha256": "9b5d687a62291a478000e8811c22246479ad78e91063f4433eb1dfa7c8b872ad",
+      "gitSha256": "9b5d687a62291a478000e8811c22246479ad78e91063f4433eb1dfa7c8b872ad",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/admin/members/page.tsx",
+      "testedSha256": "b91b77c3511b1dec9da562d374d3c4f65e382834499db151882c7fcebcee66b0",
+      "gitSha256": "b91b77c3511b1dec9da562d374d3c4f65e382834499db151882c7fcebcee66b0",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/[game]/matches/logi/[id]/page.tsx",
+      "testedSha256": "07495a26a175a9ceb77447e2bee4a3accb504789554b9ca80636005797636d87",
+      "gitSha256": "07495a26a175a9ceb77447e2bee4a3accb504789554b9ca80636005797636d87",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/[game]/page.tsx",
+      "testedSha256": "6e61c54292cc552e8e98a0f9f031edf4c43be634caa7ebe1a2cbb5948d518651",
+      "gitSha256": "6e61c54292cc552e8e98a0f9f031edf4c43be634caa7ebe1a2cbb5948d518651",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/[game]/team/page.tsx",
+      "testedSha256": "ad9f34c29e7ce1c881cc02557f2265e956b98749f1b4822f8725c7ab56bdc246",
+      "gitSha256": "ad9f34c29e7ce1c881cc02557f2265e956b98749f1b4822f8725c7ab56bdc246",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/admin-community/logi-match-editor.tsx",
+      "testedSha256": "0b01494523d0063ee4dedd49b88b98cd24f54fbbc78000f4ca7dbf775778e347",
+      "gitSha256": "0b01494523d0063ee4dedd49b88b98cd24f54fbbc78000f4ca7dbf775778e347",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/admin-community/logi-member-link-editor.tsx",
+      "testedSha256": "aae8b1d88dd085ff7dcd134bb66b0f0173ca93806849bdac15a4bd6b48c00272",
+      "gitSha256": "aae8b1d88dd085ff7dcd134bb66b0f0173ca93806849bdac15a4bd6b48c00272",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/public/logi-people.module.css",
+      "testedSha256": "e7330a3e798f3990ca82bebd9fe980899493d4e7fbac821ace462ac64d88efa0",
+      "gitSha256": "e7330a3e798f3990ca82bebd9fe980899493d4e7fbac821ace462ac64d88efa0",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/public/logi-people.tsx",
+      "testedSha256": "b2413049b8f3d53858004ac86b4e0eea64619ceae05c360d1e8b67eaebca1565",
+      "gitSha256": "b2413049b8f3d53858004ac86b4e0eea64619ceae05c360d1e8b67eaebca1565",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/public/member-profile-screen.tsx",
+      "testedSha256": "ee2169d708a071d9a08369c06c51990e1bef50d91766a11898f62329d8edfc8f",
+      "gitSha256": "ee2169d708a071d9a08369c06c51990e1bef50d91766a11898f62329d8edfc8f",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/servers/server-browser.tsx",
+      "testedSha256": "24179ab85b0f6a1d7beaf2e1ecbc33a31fe631a5a5f335285c0cdb3d6df94fb9",
+      "gitSha256": "24179ab85b0f6a1d7beaf2e1ecbc33a31fe631a5a5f335285c0cdb3d6df94fb9",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/servers/server-summary.module.css",
+      "testedSha256": "a873c42ff4c3d291294e8330d197912c82b6bb0e2a059f2e3880448fbaccd116",
+      "gitSha256": "a873c42ff4c3d291294e8330d197912c82b6bb0e2a059f2e3880448fbaccd116",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/servers/server-summary.tsx",
+      "testedSha256": "1c89cb1b96bce147aa9d99ae0ba4fb6a592114284e61aa046a7162f1dea68e21",
+      "gitSha256": "1c89cb1b96bce147aa9d99ae0ba4fb6a592114284e61aa046a7162f1dea68e21",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/servers/servers.module.css",
+      "testedSha256": "d085c390d8b8a48139e570239e844220d56a5ca86844718c4c72eae9c0cb2596",
+      "gitSha256": "d085c390d8b8a48139e570239e844220d56a5ca86844718c4c72eae9c0cb2596",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/servers/team-scores.tsx",
+      "testedSha256": "11db47d7d5ae05f2b0d2c3f325b2e1558ecd088e203157fd7209b83c238007b2",
+      "gitSha256": "11db47d7d5ae05f2b0d2c3f325b2e1558ecd088e203157fd7209b83c238007b2",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/shell/header.module.css",
+      "testedSha256": "c45f06212352f3765a03004c000ecf78ffd3a445a2eb4138e6006bb3e5b8e101",
+      "gitSha256": "c45f06212352f3765a03004c000ecf78ffd3a445a2eb4138e6006bb3e5b8e101",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/shell/home/home-menu.tsx",
+      "testedSha256": "4f272ad40a88ffc3e6e28666a1cd6b6539256f10ea26ebd59c0743be9d9e3eb7",
+      "gitSha256": "4f272ad40a88ffc3e6e28666a1cd6b6539256f10ea26ebd59c0743be9d9e3eb7",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/shell/home/home.module.css",
+      "testedSha256": "a6d7eccc3a638527c37f984a2c7aba63ae4454c39727a86c3969b1ea45864f7a",
+      "gitSha256": "a6d7eccc3a638527c37f984a2c7aba63ae4454c39727a86c3969b1ea45864f7a",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/shell/route-mode.ts",
+      "testedSha256": "f30015e1d4ec8021980e3af43ebdbcb06a4685e7ce9ec393a2e2b37f36cff63e",
+      "gitSha256": "f30015e1d4ec8021980e3af43ebdbcb06a4685e7ce9ec393a2e2b37f36cff63e",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/ui/panels.module.css",
+      "testedSha256": "efb727b0b5eeed376637d79318f3cde06ded541d354e748ef26f17687293f77c",
+      "gitSha256": "efb727b0b5eeed376637d79318f3cde06ded541d354e748ef26f17687293f77c",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/components/ui/panels.tsx",
+      "testedSha256": "d8bf7ce8a8f7bad7ebee9cc892a6954b0c7607c270db99938de8d56399d5113e",
+      "gitSha256": "d8bf7ce8a8f7bad7ebee9cc892a6954b0c7607c270db99938de8d56399d5113e",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/cs/games.json",
+      "testedSha256": "3423d77c17aa09c218c72ec878d0cea52d353058172b6043804d3b6092451930",
+      "gitSha256": "450ff020a1542ee8a687591c77c21f250e6f04649e047a45155f066cbc742743",
+      "lineEndingsNormalizedByGit": true
+    },
+    {
+      "path": "apps/web/src/i18n/messages/cs/logiPeople.json",
+      "testedSha256": "417a35f67962eb0a4999f1fee1ed30ba3aee74f31a1891bd9b61897e8f504773",
+      "gitSha256": "417a35f67962eb0a4999f1fee1ed30ba3aee74f31a1891bd9b61897e8f504773",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/en/games.json",
+      "testedSha256": "06ffc28d2f04bfd7dab02c1816163c457e502d63364db862532ca41462f11149",
+      "gitSha256": "bdb3f11bad6be2e85457a540f477e667f15377113308ed0daadb0a7439399bde",
+      "lineEndingsNormalizedByGit": true
+    },
+    {
+      "path": "apps/web/src/i18n/messages/en/logiPeople.json",
+      "testedSha256": "df9c42a836f1ef901cee548f2f67a2d7fe9129cee181784b51ba5e64699583e0",
+      "gitSha256": "df9c42a836f1ef901cee548f2f67a2d7fe9129cee181784b51ba5e64699583e0",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/index.ts",
+      "testedSha256": "ee30efff69baf5c851ff2b1a17666c6c72cc7ec709001f8302548b2bdaee6873",
+      "gitSha256": "ee30efff69baf5c851ff2b1a17666c6c72cc7ec709001f8302548b2bdaee6873",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/lib/env.ts",
+      "testedSha256": "794c43960b95840a19c4f585c32861f91a35c0f741cc68513f601061a3bc8e21",
+      "gitSha256": "794c43960b95840a19c4f585c32861f91a35c0f741cc68513f601061a3bc8e21",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/access/capabilities.ts",
+      "testedSha256": "ad78a4a242b7baf10e9f3344f4d76f1786f2f68b56f53d1fa28de24d19262e61",
+      "gitSha256": "ad78a4a242b7baf10e9f3344f4d76f1786f2f68b56f53d1fa28de24d19262e61",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/access/game-scope.test.ts",
+      "testedSha256": "2a4492a8c29dd8d88ff8eb52777a27adab39f5cc43fb9645b8377c7e905194c5",
+      "gitSha256": "2a4492a8c29dd8d88ff8eb52777a27adab39f5cc43fb9645b8377c7e905194c5",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/access/logi-membership.ts",
+      "testedSha256": "651e3e7fcfa519a5853bb45de9555bbe9e410259190512685da45c9c646b108d",
+      "gitSha256": "651e3e7fcfa519a5853bb45de9555bbe9e410259190512685da45c9c646b108d",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/access/policy.test.ts",
+      "testedSha256": "34e04476bedda3ba32d2033374256d76f34dc94d861e990fc1f24a1d6acfcedb",
+      "gitSha256": "34e04476bedda3ba32d2033374256d76f34dc94d861e990fc1f24a1d6acfcedb",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/access/resolve-actor.ts",
+      "testedSha256": "7c37c28837d867f15d80aad05aa119e87a06b08aa2f7bc66b09238bfe30e26fd",
+      "gitSha256": "7c37c28837d867f15d80aad05aa119e87a06b08aa2f7bc66b09238bfe30e26fd",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/assurance.ts",
+      "testedSha256": "d98c6453e5560ad74708bd782bc497558ece56f32f5187d8c6b3d3240f981542",
+      "gitSha256": "d98c6453e5560ad74708bd782bc497558ece56f32f5187d8c6b3d3240f981542",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/auth-units.test.ts",
+      "testedSha256": "46b1662f5023d1303e4fda9b8a540fb3effa5868d9f9c6db03eb0e4593354c5e",
+      "gitSha256": "46b1662f5023d1303e4fda9b8a540fb3effa5868d9f9c6db03eb0e4593354c5e",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/auth.ts",
+      "testedSha256": "f04b5c54209b9b7ce91821b3ec6f0eeb5cea9b64f61918b714d92fb71c2ecacd",
+      "gitSha256": "f04b5c54209b9b7ce91821b3ec6f0eeb5cea9b64f61918b714d92fb71c2ecacd",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/games/games.test.ts",
+      "testedSha256": "ad68db6948c69033a2308441fa905534914d587f57ff687c6863861837df51d3",
+      "gitSha256": "ad68db6948c69033a2308441fa905534914d587f57ff687c6863861837df51d3",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/games/registry.ts",
+      "testedSha256": "44df483b3127a7aeb06292aa23a290265cbbd19d76b644bffe607e8b97b213d7",
+      "gitSha256": "44df483b3127a7aeb06292aa23a290265cbbd19d76b644bffe607e8b97b213d7",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/contract.ts",
+      "testedSha256": "6c4836f7fd3fff659887a448596a2e893ccdadf58b77d9a8395371a0677ab2ad",
+      "gitSha256": "6c4836f7fd3fff659887a448596a2e893ccdadf58b77d9a8395371a0677ab2ad",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-command-service.ts",
+      "testedSha256": "bcbb4431025819d1b4fadee47809ecb53f3571380db923207c4298d2382eb454",
+      "gitSha256": "bcbb4431025819d1b4fadee47809ecb53f3571380db923207c4298d2382eb454",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-config.test.ts",
+      "testedSha256": "4dd721356189c0fd0f2c553862b9d10c29ba4a3c656a4acca872c2a9ce8251ee",
+      "gitSha256": "4dd721356189c0fd0f2c553862b9d10c29ba4a3c656a4acca872c2a9ce8251ee",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-config.ts",
+      "testedSha256": "9263cb7f28addca47999d3772d5270d1c50d00b138191921b81ab56d4942e3d6",
+      "gitSha256": "9263cb7f28addca47999d3772d5270d1c50d00b138191921b81ab56d4942e3d6",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-member-link-actions.ts",
+      "testedSha256": "fed13951f8e5158eccd6df095f9d9f4df0387f318c8663fdab76e848e9b86006",
+      "gitSha256": "fed13951f8e5158eccd6df095f9d9f4df0387f318c8663fdab76e848e9b86006",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-member-link-schemas.ts",
+      "testedSha256": "f021c79563cdfcd6d57b0ef3592230f35387b0273cd73dd147cd6681c4a61ff7",
+      "gitSha256": "f021c79563cdfcd6d57b0ef3592230f35387b0273cd73dd147cd6681c4a61ff7",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-member-links.ts",
+      "testedSha256": "d3c1212db07dbf71b45f4602a89ead029cee576b59fcd83096ff401177b6c626",
+      "gitSha256": "d3c1212db07dbf71b45f4602a89ead029cee576b59fcd83096ff401177b6c626",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-people-types.ts",
+      "testedSha256": "db5d1848f5966b93215f410c4e3ae7410c687250213bfdee31597a8b0ae62d7c",
+      "gitSha256": "db5d1848f5966b93215f410c4e3ae7410c687250213bfdee31597a8b0ae62d7c",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-people.ts",
+      "testedSha256": "999e6dfc34cb5f28d8cd2d030a6dfca5dd7a217ca24d948b028339679fb4c554",
+      "gitSha256": "999e6dfc34cb5f28d8cd2d030a6dfca5dd7a217ca24d948b028339679fb4c554",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-runner.ts",
+      "testedSha256": "5f36ed302cbbcf127c2ec054dafaf639af9e787747b805886a2d3fc803e80f48",
+      "gitSha256": "5f36ed302cbbcf127c2ec054dafaf639af9e787747b805886a2d3fc803e80f48",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-store.ts",
+      "testedSha256": "1617b9cd7b72442fd681c3be53c8f3bb2c8495c21f09079c3df1e88082725dbf",
+      "gitSha256": "1617b9cd7b72442fd681c3be53c8f3bb2c8495c21f09079c3df1e88082725dbf",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-webhook.ts",
+      "testedSha256": "e696a5591f1a185623ebb4702978c5991588f7c374f2bcb7753aaf9b7c65dba6",
+      "gitSha256": "e696a5591f1a185623ebb4702978c5991588f7c374f2bcb7753aaf9b7c65dba6",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/client.ts",
+      "testedSha256": "ab40d62df558695fdf8cff987b17318091671bce4a252a929d0d9fdad3a601c4",
+      "gitSha256": "ab40d62df558695fdf8cff987b17318091671bce4a252a929d0d9fdad3a601c4",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/contracts.ts",
+      "testedSha256": "3988aef68e090881787852ea71e59f1030c5dd93f49e8398ee196dffcf68cd2e",
+      "gitSha256": "3988aef68e090881787852ea71e59f1030c5dd93f49e8398ee196dffcf68cd2e",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/fixtures/v0.14-people.json",
+      "testedSha256": "d8733b9c5e3fc4e4693cf0883d002a5302ac87ae7d784333dfc82a4dde986fac",
+      "gitSha256": "d8733b9c5e3fc4e4693cf0883d002a5302ac87ae7d784333dfc82a4dde986fac",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/mapping.test.ts",
+      "testedSha256": "29edd8c532defd35917f12756cb62a254de0519e302097c130b0d6821be66408",
+      "gitSha256": "29edd8c532defd35917f12756cb62a254de0519e302097c130b0d6821be66408",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/mapping.ts",
+      "testedSha256": "b2b732babf0524236d6c106db0c73d54f168d68ad4e08ebc24b8621ba054c4cb",
+      "gitSha256": "b2b732babf0524236d6c106db0c73d54f168d68ad4e08ebc24b8621ba054c4cb",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/people-contracts.test.ts",
+      "testedSha256": "4e53723718838751243f0b1f98984c9d65124cb27221218f77d59c88688dbbe0",
+      "gitSha256": "4e53723718838751243f0b1f98984c9d65124cb27221218f77d59c88688dbbe0",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/people-contracts.ts",
+      "testedSha256": "efe5d5d8aa6f042236ed905b47de119130bd10c1cc9f01c3740c337fbc17ffe7",
+      "gitSha256": "efe5d5d8aa6f042236ed905b47de119130bd10c1cc9f01c3740c337fbc17ffe7",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/people-mapping.test.ts",
+      "testedSha256": "f251cbe003511ba2de33edcd0bf5fef718c3e2aaa9ceaa0d4a1cc5cb043e07ba",
+      "gitSha256": "f251cbe003511ba2de33edcd0bf5fef718c3e2aaa9ceaa0d4a1cc5cb043e07ba",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/people-mapping.ts",
+      "testedSha256": "a8d44954270fbcc13ca785cb451828c3cee623d90d8b054e95c63d1d92f9966e",
+      "gitSha256": "a8d44954270fbcc13ca785cb451828c3cee623d90d8b054e95c63d1d92f9966e",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/sync.test.ts",
+      "testedSha256": "af3b89343ab084ab9005350b2d4b9cb9267f74e1987dca31050528100d5f383b",
+      "gitSha256": "af3b89343ab084ab9005350b2d4b9cb9267f74e1987dca31050528100d5f383b",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/sync.ts",
+      "testedSha256": "c18c32d375dad9ce378d66a3c7d0e9545b7ef0c8d028eb132111fd19d77f28e0",
+      "gitSha256": "c18c32d375dad9ce378d66a3c7d0e9545b7ef0c8d028eb132111fd19d77f28e0",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/servers/fixtures.ts",
+      "testedSha256": "7738cb58b02a41795d78bcc3224c3f6ff47de67338948d868d1e267b5ef4f135",
+      "gitSha256": "7738cb58b02a41795d78bcc3224c3f6ff47de67338948d868d1e267b5ef4f135",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/servers/provider.test.ts",
+      "testedSha256": "9719f6a68166c4256cd5f0f931a7cc3c2e3c7d72a7aa93a7fae76dc83bae0b9a",
+      "gitSha256": "9719f6a68166c4256cd5f0f931a7cc3c2e3c7d72a7aa93a7fae76dc83bae0b9a",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/servers/provider.ts",
+      "testedSha256": "09932b95146cc614caa8bd50904814a0b3590d52627fc7ade6b59046f0c64ee8",
+      "gitSha256": "09932b95146cc614caa8bd50904814a0b3590d52627fc7ade6b59046f0c64ee8",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/servers/view.test.ts",
+      "testedSha256": "f05a3d484feb0f785d3a1d31b137ccb261cf9decb6a80bd27f7b2d7634446ae4",
+      "gitSha256": "f05a3d484feb0f785d3a1d31b137ccb261cf9decb6a80bd27f7b2d7634446ae4",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/servers/view.ts",
+      "testedSha256": "e6f56491fc2daa72c07ef6011d562d2f429a4d3b974630449e88231b70eb733f",
+      "gitSha256": "e6f56491fc2daa72c07ef6011d562d2f429a4d3b974630449e88231b70eb733f",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/tests/integration/logi-member-links.test.ts",
+      "testedSha256": "66e44bbeaf9b184a89ee6b81989faa0a989f47f62618e54d256fb3dfbf9b9b08",
+      "gitSha256": "66e44bbeaf9b184a89ee6b81989faa0a989f47f62618e54d256fb3dfbf9b9b08",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/tests/integration/logi-membership.test.ts",
+      "testedSha256": "988fa7acc3842add649d531e4d13927be0a5c3156039de7b9503f71bee374ed2",
+      "gitSha256": "988fa7acc3842add649d531e4d13927be0a5c3156039de7b9503f71bee374ed2",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/tests/integration/logi-people.test.ts",
+      "testedSha256": "201a1e58f055a4bc11560eb82e53449e2baab5ec096f6b0e16c4d44bc10cc606",
+      "gitSha256": "201a1e58f055a4bc11560eb82e53449e2baab5ec096f6b0e16c4d44bc10cc606",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/tests/integration/logi-runner.test.ts",
+      "testedSha256": "3c59b3e5887922d127f65c2b068cfe962e2a1322cc6dba77f806f40c0e26a547",
+      "gitSha256": "3c59b3e5887922d127f65c2b068cfe962e2a1322cc6dba77f806f40c0e26a547",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/tests/integration/logi-store.test.ts",
+      "testedSha256": "a16b2defaeb70c7e688b3f7701b406f917b743ec897899a137d79cb388f8c80b",
+      "gitSha256": "a16b2defaeb70c7e688b3f7701b406f917b743ec897899a137d79cb388f8c80b",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "apps/web/tests/integration/logi-webhook.test.ts",
+      "testedSha256": "cbce3bf0c646a940f06ff9286729e6d3619c9958a07a0a0cbb12fef0d82839fb",
+      "gitSha256": "cbce3bf0c646a940f06ff9286729e6d3619c9958a07a0a0cbb12fef0d82839fb",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "packages/db/drizzle/0010_bizarre_gambit.sql",
+      "testedSha256": "ac55c527fdfc3b36d1037fc779d4fd059b0166dbce9d7e62c70be7c1f724890d",
+      "gitSha256": "ac55c527fdfc3b36d1037fc779d4fd059b0166dbce9d7e62c70be7c1f724890d",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "packages/db/drizzle/meta/0010_snapshot.json",
+      "testedSha256": "7ff288596b6373e32adb116cb60da6f69368056c96cfa0dc09803b137a31095f",
+      "gitSha256": "7ff288596b6373e32adb116cb60da6f69368056c96cfa0dc09803b137a31095f",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "packages/db/drizzle/meta/_journal.json",
+      "testedSha256": "7d5560fdda95ac68c125d6f8243338a650b8c25a1800315d21b3df9cb39b0efb",
+      "gitSha256": "7d5560fdda95ac68c125d6f8243338a650b8c25a1800315d21b3df9cb39b0efb",
+      "lineEndingsNormalizedByGit": false
+    },
+    {
+      "path": "packages/db/src/schema/logi.ts",
+      "testedSha256": "70a44e56c575f871963dadf60ccb5b25443657739065a780303b25c1200fbcd9",
+      "gitSha256": "70a44e56c575f871963dadf60ccb5b25443657739065a780303b25c1200fbcd9",
+      "lineEndingsNormalizedByGit": false
+    }
+  ]
+}
