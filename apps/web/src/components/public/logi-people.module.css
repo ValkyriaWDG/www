@@ -16,5 +16,4 @@
 .form label { display: grid; gap: var(--space-2); }
 .form select { color: var(--color-text); background: var(--color-scene-base); border: 1px solid var(--color-border); padding: var(--space-3); max-width: 100%; min-width: 0; width: 100%; }
 .form fieldset { display: grid; gap: var(--space-3); border: 0; margin: 0; padding: 0; min-width: 0; }
-.form .check { display: flex; align-items: center; gap: var(--space-3); }
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }

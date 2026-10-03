@@ -37,7 +37,17 @@ export function RoundsEditor({ rounds, onChange, errors, disabled, game }: Round
   const listRef = useRef<HTMLOListElement>(null);
 
   const update = (index: number, patch: Partial<RoundValues>) => onChange(rounds.map((round, position) => (position === index ? { ...round, ...patch } : round)));
-  const focusLater = (selector: string) => requestAnimationFrame(() => listRef.current?.querySelector<HTMLElement>(selector)?.focus());
+  /** Focuses the first selector that matches after the re-render; keyboard focus must never fall back to the body. */
+  const focusLater = (...selectors: string[]) =>
+    requestAnimationFrame(() => {
+      for (const selector of selectors) {
+        const element = listRef.current?.querySelector<HTMLElement>(selector);
+        if (element) {
+          element.focus();
+          return;
+        }
+      }
+    });
   const move = (index: number, delta: -1 | 1) => {
     const target = index + delta;
     if (target < 0 || target >= rounds.length) return;
@@ -45,7 +55,9 @@ export function RoundsEditor({ rounds, onChange, errors, disabled, game }: Round
     const [item] = next.splice(index, 1);
     next.splice(target, 0, item!);
     onChange(next);
-    focusLater(`[data-round-key="${item!.key}"] [data-round-move="${delta < 0 ? 'up' : 'down'}"]:not([disabled])`);
+    // The same-direction button is disabled once the row reaches an edge: stay on the moved row.
+    const row = `[data-round-key="${item!.key}"]`;
+    focusLater(`${row} [data-round-move="${delta < 0 ? 'up' : 'down'}"]:not([disabled])`, `${row} [data-round-move="${delta < 0 ? 'down' : 'up'}"]:not([disabled])`, `${row} input`);
   };
   const remove = (index: number) => {
     onChange(rounds.filter((_, position) => position !== index));

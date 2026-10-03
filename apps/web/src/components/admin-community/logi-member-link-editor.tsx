@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState, useSyncExternalStore } from 'react';
-import { FeedbackNotice, GameButton, SectionFrame } from '@/components/ui';
+import { Checkbox, FeedbackNotice, GameButton, SectionFrame } from '@/components/ui';
 import type { GameRoute } from '@/modules/games/registry';
 import type { LogiMemberCandidate } from '@/modules/integrations/logi-people-types';
 import type { LogiMemberLinkView } from '@/modules/integrations/logi-member-link-schemas';
@@ -91,14 +91,8 @@ export function LogiMemberLinkEditor({
             </select>
           </label>
           {!candidates.length ? <p>{t('noCandidates')}</p> : null}
-          <label className={styles.check}>
-            <input type="checkbox" checked={stats} onChange={(event) => setStats(event.target.checked)} />
-            {t('allowStats')}
-          </label>
-          <label className={styles.check}>
-            <input type="checkbox" checked={roster} onChange={(event) => setRoster(event.target.checked)} />
-            {t('allowRoster')}
-          </label>
+          <Checkbox name={`logi-${game}-stats`} label={t('allowStats')} checked={stats} onChange={(event) => setStats(event.target.checked)} />
+          <Checkbox name={`logi-${game}-roster`} label={t('allowRoster')} checked={roster} onChange={(event) => setRoster(event.target.checked)} />
           <div className={styles.actions}>
             <GameButton type="submit" intent="primary" disabled={!selected}>
               {t('save')}
