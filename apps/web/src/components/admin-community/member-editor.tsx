@@ -319,6 +319,7 @@ export function MemberEditor({ uiLocale, initial, canPublish, created }: { uiLoc
               <div className={styles.groupBody}>
                 <ProseTabs
                   kind="biography"
+                  headingLevel="h2"
                   uiLocale={uiLocale}
                   details={server.biographyDetail}
                   canPublish={canPublish}
@@ -366,7 +367,7 @@ export function MemberEditor({ uiLocale, initial, canPublish, created }: { uiLoc
                   <dt>{t('publicPage')}</dt>
                   <dd>
                     {isPublic ? (
-                      <Link href={`/members/${server.slug}`} data-public-link="">
+                      <Link href={`/members/${server.slug}`} className={styles.textLink} data-public-link="">
                         /{uiLocale}/members/{server.slug}
                       </Link>
                     ) : (

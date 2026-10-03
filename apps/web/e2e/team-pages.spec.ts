@@ -11,6 +11,7 @@ test('team pages explain the unconfigured synchronization quietly in both langua
   for (const [locale, path, width] of [['cs', '/cs/hll/team', 1440], ['en', '/en/wardogs/team', 390]] as const) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(path);
+    await expect(page).toHaveTitle(locale === 'cs' ? 'Přehled týmu – Hell Let Loose · Valkyria' : 'Team overview – Wardogs · Valkyria');
     const team = page.locator('[data-logi-team="unconfigured"]');
     await expect(team).toBeVisible();
     await expect(team).toContainText(locale === 'cs' ? 'Synchronizace týmu není nakonfigurovaná.' : 'Team synchronization is not configured.');

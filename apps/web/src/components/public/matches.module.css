@@ -555,6 +555,11 @@
   overflow-wrap: anywhere;
 }
 
+/* Recording links are 44 px rows like the event/VOD links above. */
+.legacySourceLinks li > a {
+  min-height: 44px;
+}
+
 .legacySourceLinks p {
   margin: var(--space-2) 0;
   font-size: var(--text-small);
@@ -642,6 +647,56 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Phones: wrapped headers and tighter cells so the rounds, summary and weapons tables fit
+   a 314 px region; the first (player/metric) column stays in view while the rest scrolls. */
+@media (max-width: 767px) {
+  .rounds table {
+    font-size: 0.875rem;
+  }
+
+  .rounds th,
+  .rounds td {
+    padding: var(--space-1) 6px;
+    white-space: normal;
+  }
+
+  .rounds thead th {
+    vertical-align: bottom;
+  }
+
+  .rounds td[data-numeric] {
+    white-space: nowrap;
+  }
+
+  .rounds[data-sticky-column] thead th:first-child,
+  .rounds[data-sticky-column] tbody th[scope='row'] {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    /* Opaque: the translucent row colour over the panel base, so scrolled cells never show through. */
+    background-color: var(--color-panel-solid);
+    background-image: linear-gradient(var(--color-row), var(--color-row));
+    box-shadow: inset calc(-1 * var(--border-hairline)) 0 var(--color-border);
+  }
+
+  .rounds[data-sticky-column] thead th:first-child {
+    background-image: linear-gradient(rgb(58 59 54 / 0.72), rgb(58 59 54 / 0.72));
+  }
+
+  .rounds[data-sticky-column] tbody tr:nth-child(even) th[scope='row'] {
+    background-image: linear-gradient(var(--color-row-alt), var(--color-row-alt));
+  }
+
+  /* The name column keeps 7–9 rem (cells ignore max-width; `anywhere` would let the compressed
+     table shrink it to one character per line) and a long name wraps inside it. */
+  .playerNameText {
+    display: block;
+    min-width: 7rem;
+    max-width: 9rem;
+    overflow-wrap: break-word;
+  }
+}
+
 .detailAction {
   width: 100%;
 }
@@ -678,7 +733,6 @@
 .playerName {
   font-weight: 600;
   text-align: start;
-  white-space: nowrap;
 }
 
 .statsWeaponGrid {

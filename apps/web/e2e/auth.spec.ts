@@ -4,10 +4,12 @@ import { ageMembershipSnapshot, countSessions, setDiscordMember, signInAs } from
 /** Editor routes deny a wrongly scoped editor before any document lookup, so no fixture is needed. */
 const UNKNOWN_DOCUMENT_ID = '00000000-0000-4000-8000-000000000000';
 
+/** Logi is not configured in e2e, so the only provider form on the page is the Discord one. */
 async function expectReturnTargets(page: Page, value: string) {
-  const targets = page.locator('input[name="returnTo"]');
-  await expect(targets).toHaveCount(2);
-  for (const target of await targets.all()) await expect(target).toHaveValue(value);
+  const targets = page.locator('form:has([data-testid="login-discord"]) input[name="returnTo"]');
+  await expect(targets).toHaveCount(1);
+  await expect(page.locator('input[name="returnTo"]')).toHaveCount(1);
+  await expect(targets.first()).toHaveValue(value);
 }
 
 test.describe('sign-in page', () => {
@@ -18,9 +20,11 @@ test.describe('sign-in page', () => {
     const action = page.getByRole('button', { name: 'POKRAČOVAT PŘES DISCORD' });
     await expect(action).toBeVisible();
     await expect(action).toBeEnabled();
-    await expect(page.getByTestId('login-logi')).toBeVisible();
-    await expect(page.getByTestId('login-logi')).toBeDisabled();
-    await expect(page.getByTestId('login-provider-unavailable')).toHaveText('Přihlášení přes Logi teď není k dispozici. Veřejný web funguje jako obvykle.');
+    // Logi is not configured here: no disabled Logi button; the working action comes first and the notice follows it.
+    await expect(page.getByTestId('login-logi')).toHaveCount(0);
+    const notice = page.getByTestId('login-provider-unavailable');
+    await expect(notice).toHaveText('Přihlášení přes Logi teď není k dispozici. Veřejný web funguje jako obvykle.');
+    expect((await notice.boundingBox())!.y).toBeGreaterThan((await action.boundingBox())!.y);
     await expect(page.getByText('Vstup na Discord server Valkyria a přihlášení zde jsou dva samostatné kroky.', { exact: false })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Jak zpracováváme vaše údaje' })).toHaveAttribute('href', '/cs/privacy');
     // Local recovery is disabled in this environment and is not advertised.
@@ -32,7 +36,7 @@ test.describe('sign-in page', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.getByRole('heading', { level: 1, name: 'Sign in' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'CONTINUE WITH DISCORD' })).toBeEnabled();
-    await expect(page.getByRole('button', { name: 'CONTINUE WITH LOGI' })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'CONTINUE WITH LOGI' })).toHaveCount(0);
     await expect(page.getByTestId('login-provider-unavailable')).toHaveText('Signing in through Logi is not available at the moment. The public website works as usual.');
     await expect(page.getByText('Joining the Valkyria Discord server and signing in here are two separate steps.', { exact: false })).toBeVisible();
   });

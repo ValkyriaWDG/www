@@ -63,8 +63,8 @@ export async function TournamentDetailScreen({ locale, game, slug }: { locale: A
   ]);
   const base = sectionBase(game);
   const linkLabel = (label: string) => {
-    const kind = genericTournamentLink(label);
-    return kind ? t(`detail.linkLabels.${kind}`) : label;
+    const generic = genericTournamentLink(label);
+    return generic ? [t(`detail.linkLabels.${generic.kind}`), generic.note].filter(Boolean).join(' ') : label;
   };
   return (
     <PageMain width="full" labelledBy="tournament-title">

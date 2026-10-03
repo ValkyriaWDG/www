@@ -765,7 +765,7 @@ export function MatchEditor({ uiLocale, initial, canPublish, created, statistics
                     <dt>{t('publicPage')}</dt>
                     <dd>
                       {publicHref ? (
-                        <Link href={publicHref} data-public-link="">
+                        <Link href={publicHref} className={styles.textLink} data-public-link="">
                           /{uiLocale}
                           {publicHref}
                         </Link>

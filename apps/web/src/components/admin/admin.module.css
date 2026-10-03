@@ -170,6 +170,15 @@
   color: var(--color-accent-strong);
 }
 
+/* Phones: inline text links (list link above the title, live/published addresses) are 44 px rows. */
+@media (max-width: 767px) {
+  .textLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
 .panel {
   border: var(--border-hairline) solid var(--color-border);
   background: var(--color-panel-solid);

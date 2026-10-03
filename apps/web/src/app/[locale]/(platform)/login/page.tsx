@@ -42,6 +42,21 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
   const current = await getRequestSession().catch(() => null);
   const t = await getTranslations({ locale, namespace: 'auth.login' });
   const recoveryHref = `/${locale}/login/recovery${returnTo !== defaultReturnPath(locale) ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`;
+  const logiNotice = !logiReady ? (
+    <Notice tone="warning" role="status" testId="login-provider-unavailable">
+      {t('logiUnavailable')}
+    </Notice>
+  ) : null;
+  const discordForm = discordReady ? (
+    <form action={startDiscordSignIn}>
+      <input type="hidden" name="locale" value={locale} />
+      <input type="hidden" name="returnTo" value={returnTo} />
+      <SubmitButton className={styles.primary} pendingLabel={t('redirecting')} testId="login-discord">
+        <DiscordIcon size={22} />
+        {t('continueDiscord')}
+      </SubmitButton>
+    </form>
+  ) : null;
 
   return (
     <AuthScene>
@@ -67,26 +82,26 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
               </Notice>
             ) : null}
             <div className={styles.providers}>
-              <form action={startLogiSignIn}>
-                <input type="hidden" name="locale" value={locale} />
-                <input type="hidden" name="returnTo" value={returnTo} />
-                <SubmitButton className={styles.primary} pendingLabel={t('logiRedirecting')} disabled={!logiReady} testId="login-logi">
-                  {t('continueLogi')}
-                </SubmitButton>
-              </form>
-              {!logiReady ? (
-                <Notice tone="warning" role="status" testId="login-provider-unavailable">
-                  {t('logiUnavailable')}
-                </Notice>
-              ) : null}
-              {discordReady ? <form action={startDiscordSignIn}>
-                <input type="hidden" name="locale" value={locale} />
-                <input type="hidden" name="returnTo" value={returnTo} />
-                <SubmitButton className={styles.primary} pendingLabel={t('redirecting')} testId="login-discord">
-                  <DiscordIcon size={22} />
-                  {t('continueDiscord')}
-                </SubmitButton>
-              </form> : null}
+              {/* Logi first while it works. When only the approved Discord fallback works, the working
+                  action comes first and the Logi notice follows alone, without a disabled button. */}
+              {!logiReady && discordReady ? (
+                <>
+                  {discordForm}
+                  {logiNotice}
+                </>
+              ) : (
+                <>
+                  <form action={startLogiSignIn}>
+                    <input type="hidden" name="locale" value={locale} />
+                    <input type="hidden" name="returnTo" value={returnTo} />
+                    <SubmitButton className={styles.primary} pendingLabel={t('logiRedirecting')} disabled={!logiReady} testId="login-logi">
+                      {t('continueLogi')}
+                    </SubmitButton>
+                  </form>
+                  {logiNotice}
+                  {discordForm}
+                </>
+              )}
             </div>
             <p className={styles.note}>{t(!logiReady && discordReady ? 'separate' : 'logiSeparate')}</p>
           </>

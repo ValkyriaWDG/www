@@ -69,7 +69,7 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
 
   return (
     <form
-      className={`${styles.panel} ${styles.panelBody} ${styles.stack}`}
+      className={styles.panel}
       noValidate
       aria-labelledby="manual-meta-title"
       onSubmit={(event) => {
@@ -78,82 +78,86 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
       }}
       data-testid="manual-meta-form"
     >
-      <h2 id="manual-meta-title">{t('title')}</h2>
-      <p className={styles.lead}>{t('lead')}</p>
-      {status ? (
-        <FeedbackNotice kind={status.kind} live>
-          {status.message}
-        </FeedbackNotice>
-      ) : null}
-      <TextField
-        name="sortOrder"
-        id="manual-sort-order"
-        label={t('sortOrder')}
-        hint={t('sortOrderHint')}
-        inputMode="numeric"
-        value={values.sortOrder}
-        disabled={disabled}
-        onChange={(event) => set({ sortOrder: event.target.value.replace(/[^0-9]/g, '').slice(0, 5) })}
-      />
-      <TextField
-        name="sourceUrl"
-        id="manual-source-url"
-        label={t('sourceUrl')}
-        hint={t('sourceUrlHint')}
-        type="url"
-        value={values.sourceUrl}
-        disabled={disabled}
-        error={fieldErrors.sourceUrl ? t('invalidUrl') : null}
-        onChange={(event) => set({ sourceUrl: event.target.value })}
-      />
-      <TextField
-        name="sourcePublishedOn"
-        id="manual-source-date"
-        label={t('sourceDate')}
-        type="date"
-        value={values.sourcePublishedOn}
-        disabled={disabled}
-        error={fieldErrors.sourcePublishedOn ? t('invalidDate') : null}
-        onChange={(event) => set({ sourcePublishedOn: event.target.value })}
-      />
-      <Select
-        name="sourceLanguage"
-        id="manual-source-language"
-        label={t('sourceLanguage')}
-        value={values.sourceLanguage}
-        disabled={disabled}
-        onChange={(event) => set({ sourceLanguage: event.target.value as Values['sourceLanguage'] })}
-        options={[
-          { value: '', label: t('languages.none') },
-          { value: 'cs', label: t('languages.cs') },
-          { value: 'sk', label: t('languages.sk') },
-          { value: 'en', label: t('languages.en') },
-        ]}
-      />
-      <TextField
-        name="credits"
-        id="manual-credits"
-        label={t('credits')}
-        hint={t('creditsHint')}
-        maxLength={500}
-        value={values.credits}
-        disabled={disabled}
-        onChange={(event) => set({ credits: event.target.value })}
-      />
-      <Checkbox
-        name="markReviewed"
-        id="manual-reviewed"
-        label={t('markReviewed')}
-        hint={reviewedAt ? t('reviewedAt', { date: format.dateTime(new Date(reviewedAt), { dateStyle: 'medium' }) }) : t('neverReviewed')}
-        checked={values.markReviewed}
-        disabled={disabled}
-        onChange={(event) => set({ markReviewed: event.target.checked })}
-      />
-      <FormActions sticky={false} status={pending ? t('saving') : null}>
-        <GameButton type="submit" intent="secondary" pending={pending} pendingLabel={t('saving')} disabled={disabled} data-testid="manual-meta-save">
-          {t('save')}
-        </GameButton>
-      </FormActions>
+      <h2 id="manual-meta-title" className={styles.panelTitle}>
+        {t('title')}
+      </h2>
+      <div className={`${styles.panelBody} ${styles.stack}`}>
+        <p className={styles.lead}>{t('lead')}</p>
+        {status ? (
+          <FeedbackNotice kind={status.kind} live>
+            {status.message}
+          </FeedbackNotice>
+        ) : null}
+        <TextField
+          name="sortOrder"
+          id="manual-sort-order"
+          label={t('sortOrder')}
+          hint={t('sortOrderHint')}
+          inputMode="numeric"
+          value={values.sortOrder}
+          disabled={disabled}
+          onChange={(event) => set({ sortOrder: event.target.value.replace(/[^0-9]/g, '').slice(0, 5) })}
+        />
+        <TextField
+          name="sourceUrl"
+          id="manual-source-url"
+          label={t('sourceUrl')}
+          hint={t('sourceUrlHint')}
+          type="url"
+          value={values.sourceUrl}
+          disabled={disabled}
+          error={fieldErrors.sourceUrl ? t('invalidUrl') : null}
+          onChange={(event) => set({ sourceUrl: event.target.value })}
+        />
+        <TextField
+          name="sourcePublishedOn"
+          id="manual-source-date"
+          label={t('sourceDate')}
+          type="date"
+          value={values.sourcePublishedOn}
+          disabled={disabled}
+          error={fieldErrors.sourcePublishedOn ? t('invalidDate') : null}
+          onChange={(event) => set({ sourcePublishedOn: event.target.value })}
+        />
+        <Select
+          name="sourceLanguage"
+          id="manual-source-language"
+          label={t('sourceLanguage')}
+          value={values.sourceLanguage}
+          disabled={disabled}
+          onChange={(event) => set({ sourceLanguage: event.target.value as Values['sourceLanguage'] })}
+          options={[
+            { value: '', label: t('languages.none') },
+            { value: 'cs', label: t('languages.cs') },
+            { value: 'sk', label: t('languages.sk') },
+            { value: 'en', label: t('languages.en') },
+          ]}
+        />
+        <TextField
+          name="credits"
+          id="manual-credits"
+          label={t('credits')}
+          hint={t('creditsHint')}
+          maxLength={500}
+          value={values.credits}
+          disabled={disabled}
+          onChange={(event) => set({ credits: event.target.value })}
+        />
+        <Checkbox
+          name="markReviewed"
+          id="manual-reviewed"
+          label={t('markReviewed')}
+          hint={reviewedAt ? t('reviewedAt', { date: format.dateTime(new Date(reviewedAt), { dateStyle: 'medium' }) }) : t('neverReviewed')}
+          checked={values.markReviewed}
+          disabled={disabled}
+          onChange={(event) => set({ markReviewed: event.target.checked })}
+        />
+        <FormActions sticky={false} status={pending ? t('saving') : null}>
+          <GameButton type="submit" intent="secondary" pending={pending} pendingLabel={t('saving')} disabled={disabled} data-testid="manual-meta-save">
+            {t('save')}
+          </GameButton>
+        </FormActions>
+      </div>
     </form>
   );
 }

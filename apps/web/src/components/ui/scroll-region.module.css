@@ -1,0 +1,28 @@
+/* ---- ScrollRegion: trailing-edge fade while more columns hide behind it ---- */
+.frame {
+  position: relative;
+  min-width: 0;
+}
+
+/* Inside the region's hairline border; never catches pointer events or focus. */
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: var(--border-hairline) var(--border-hairline) var(--border-hairline) auto;
+  width: 48px;
+  background: linear-gradient(to right, rgb(17 17 15 / 0), rgb(17 17 15 / 0.92));
+  opacity: 0;
+  transition: opacity var(--motion-fast) ease-out;
+  pointer-events: none;
+}
+
+.frame[data-scroll-edges='end']::after,
+.frame[data-scroll-edges='both']::after {
+  opacity: 1;
+}
+
+@media (forced-colors: active) {
+  .frame::after {
+    display: none;
+  }
+}

@@ -143,7 +143,7 @@ export default async function AdminAuditPage({ params, searchParams }: PageProps
       {result && (result.items.length > 0 || detail || detailMissing) ? (
         <div className={styles.listDetail} data-has-detail={detail || detailMissing ? '' : undefined}>
           {result.items.length > 0 ? (
-            <div className={styles.stack}>
+            <div className={`${styles.stack} ${styles.auditTable}`}>
               <SelectionTable<AuditEventView>
                 caption={t('caption')}
                 captionHidden

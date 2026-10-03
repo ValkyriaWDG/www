@@ -322,7 +322,7 @@ const SHOTS: Shot[] = [
   },
   {
     file: 'hll-match-statistics-cs-1440x900.png',
-    caption: `HLL match detail /cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical} at 1440×900 (full page): rounds with map, Warfare mode and Spojenci side, then the imported game statistics (source, game ID, import time) with the Souhrn tab: team totals and kills by weapon type. Synthetic scoreboard and player names.`,
+    caption: `HLL match detail /cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical} at 1440×900 (full page): rounds with map and Spojenci side (the Warfare mode shared by every round sits in the match facts), then the imported game statistics (source, game ID, import time) with the Souhrn tab: team totals and kills by weapon type. Synthetic scoreboard and player names.`,
     locale: 'cs',
     path: `/cs/hll/matches/${FIXTURE_SLUGS.matches.hllHistorical}`,
     width: 1440,

@@ -53,6 +53,9 @@ export function AccountMenu({ label, menuLabel, links }: AccountMenuProps) {
         <UserIcon size={20} />
         <span className={styles.accountLabel}>{label}</span>
         <ChevronDownIcon size={16} />
+        <span className={styles.accountTooltip} aria-hidden="true">
+          {label}
+        </span>
       </button>
       <ul id={listId} className={styles.accountList} hidden={!open}>
         {links.map((link) => (

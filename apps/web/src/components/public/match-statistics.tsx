@@ -2,6 +2,7 @@ import type { StatisticsSide } from '@valkyria/db/schema';
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { CombatIcon, DeathsIcon, DefenseIcon, KillsIcon, MembersIcon, OffenseIcon, SupportIcon, type IconProps } from '@/components/ui/icons';
+import { ScrollRegion } from '@/components/ui/scroll-region';
 import { Tabs } from '@/components/ui/tabs';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
@@ -56,6 +57,7 @@ export async function MatchStatistics({
   marks?: StatisticsTeamMarks | null;
 }) {
   const t = await getTranslations({ locale, namespace: 'matches.statistics' });
+  const tA11y = await getTranslations({ locale, namespace: 'common.a11y' });
   if (statistics.rounds?.length) {
     const { rounds, ...primary } = statistics;
     const snapshots = [{ ordinal: 1, statistics: primary }, ...rounds];
@@ -82,10 +84,11 @@ export async function MatchStatistics({
       <span>{name}</span>
     </span>
   );
-  const scrollable = (label: string, table: ReactNode) => (
-    <div className={styles.rounds} role="region" aria-label={label} tabIndex={0}>
+  // Phones keep the first (metric/player) column in view while the rest scrolls.
+  const scrollable = (id: 'summary' | 'weapons' | 'players', label: string, table: ReactNode) => (
+    <ScrollRegion label={tA11y('scrollRegion', { label })} className={styles.rounds} data-scroll-table={id} data-sticky-column="">
       {table}
-    </div>
+    </ScrollRegion>
   );
 
   const types = [...new Set([...KNOWN_TYPES.filter((type) => statistics.teams[valkyria].killsByType[type] || statistics.teams[opponent].killsByType[type]), ...Object.keys(statistics.teams[valkyria].killsByType), ...Object.keys(statistics.teams[opponent].killsByType)])];
@@ -144,6 +147,7 @@ export async function MatchStatistics({
     <div className={styles.statsPanel} data-statistics-summary="">
       {chart}
       {scrollable(
+        'summary',
         t('summaryCaption'),
         <table>
           <caption className="visually-hidden">{t('summaryCaption')}</caption>
@@ -171,6 +175,7 @@ export async function MatchStatistics({
         <>
           <h4 className={styles.statsSubtitle}>{t('killsByType')}</h4>
           {scrollable(
+            'weapons',
             t('killsByType'),
             <table>
               <thead>
@@ -199,6 +204,7 @@ export async function MatchStatistics({
   const players = statistics.players ? (
     <div className={styles.statsPanel} data-statistics-players="">
       {scrollable(
+        'players',
         t('playersCaption'),
         <table>
           <caption className="visually-hidden">{t('playersCaption')}</caption>
@@ -233,7 +239,7 @@ export async function MatchStatistics({
             {statistics.players.map((player, index) => (
               <tr key={`${player.name}-${index}`} data-player-side={player.side}>
                 <th scope="row" className={styles.playerName}>
-                  {player.name}
+                  <span className={styles.playerNameText}>{player.name}</span>
                 </th>
                 <td>
                   {player.side === 'unknown'
