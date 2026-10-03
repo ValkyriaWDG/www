@@ -101,7 +101,7 @@ export async function ManualArticleScreen({ locale, game, slug }: { locale: AppL
             </dl>
           }
         />
-        <div className={styles.articleLayout}>
+        <div className={styles.articleLayout} data-manual-toc-present={outline.length > 1 ? '' : undefined}>
           {outline.length > 1 ? (
             <nav className={styles.toc} aria-labelledby="manual-toc-title" data-manual-toc="">
               <h2 id="manual-toc-title" className={styles.tocTitle}>
