@@ -21,9 +21,17 @@ export async function expectNoHorizontalOverflow(page: Page): Promise<void> {
   expect(scrollWidth, `scrollWidth ${scrollWidth} > clientWidth ${clientWidth}`).toBeLessThanOrEqual(clientWidth);
 }
 
-/** Waits until the background media left its transient loading state. */
+/** Waits for browser policy and media to settle; SSR's pending/paused pair is transient. */
 export async function settledBackgroundState(page: Page): Promise<string | null> {
   const media = page.locator('[data-background-state]');
-  await expect(media).not.toHaveAttribute('data-background-state', 'loading');
-  return media.getAttribute('data-background-state');
+  let state: string | null = null;
+  await expect.poll(async () => {
+    const snapshot = await media.evaluate((element) => ({
+      reason: element.getAttribute('data-background-reason'),
+      state: element.getAttribute('data-background-state'),
+    }));
+    state = snapshot.state;
+    return snapshot.reason !== null && snapshot.reason !== 'pending' && state !== null && state !== 'loading';
+  }).toBe(true);
+  return state;
 }

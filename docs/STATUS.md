@@ -1,5 +1,16 @@
 # Current status
 
+## Background test hydration wait — 2026-10-03
+
+The publication qualification for merged PR #84 stopped before image publication:
+the missing-video test accepted SSR's `pending`/`paused` state and then read
+`loading` after hydration. The helper now waits for browser policy and a settled
+media state in one observation. Product playback code, timeouts and retries are
+unchanged. The [trace proof](evidence/background-settle-2026-10-03/README.md)
+records the original failure and local verification: 10 repeated missing-video
+checks, all 20 shell checks, scoped ESLint, TypeScript and Foundation passed.
+Next: qualify the follow-up commit and resume the authorized publication/deployment.
+
 ## Wardogs server browser and home overview — 2026-10-03
 
 Wardogs now exposes Servers in the desktop/mobile menu and a compact home overview,
