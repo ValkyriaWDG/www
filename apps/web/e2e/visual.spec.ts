@@ -109,12 +109,12 @@ test('keyboard focus on a navigation item', async ({ browser }) => {
 test('keyboard focus on the primary CTA', async ({ browser }) => {
   await capture(browser, {
     file: 'focus-cta-cs-1920x1080.png',
-    caption: 'Keyboard focus on the Discord CTA (outer pale ring outside the amber outline).',
+    caption: 'Keyboard focus on the hub Discord link (outer pale ring outside the amber outline).',
     locale: 'cs',
     width: 1920,
     height: 1080,
     prepare: async (page) => {
-      await tabUntil(page, '[data-cta="discord"]');
+      await tabUntil(page, '[data-hub-shared="discord"]');
     },
   });
 });
