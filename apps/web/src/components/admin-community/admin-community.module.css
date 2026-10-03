@@ -731,6 +731,16 @@ h3.repeatHeading {
   white-space: nowrap;
 }
 
+/* Phones scroll the table anyway: keys and ids stay whole on one line instead of towers of
+   broken tokens (`<wbr>` still breaks under nowrap, so the cell reserves the key's width). */
+@media (max-width: 767px) {
+  .auditTable td .code {
+    display: inline-block;
+    min-width: 16rem;
+    white-space: nowrap;
+  }
+}
+
 .code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.875rem;

@@ -97,6 +97,9 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   const lineHeight = await time.evaluate((element) => Number.parseFloat(getComputedStyle(element).lineHeight) || 24);
   expect((await time.boundingBox())!.height).toBeLessThan(lineHeight * 2);
   expect(await height(page, '[data-admin-audit] tbody th a')).toBeGreaterThanOrEqual(44);
+  // Action keys and entity ids stay on one line each, so a row is not a tower of broken tokens.
+  for (const code of await audit.locator('tbody tr').first().locator('[data-code-text]').all()) expect((await code.boundingBox())!.height).toBeLessThan(lineHeight * 2);
+  expect(await height(page, '[data-admin-audit] tbody tr')).toBeLessThan(120);
   expect(await audit.getByRole('region').first().evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
   await expectNoHorizontalOverflow(page);
 

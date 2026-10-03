@@ -687,11 +687,13 @@
     background-image: linear-gradient(var(--color-row-alt), var(--color-row-alt));
   }
 
-  /* A long player name wraps instead of taking most of the viewport (cells ignore max-width). */
+  /* The name column keeps 7–9 rem (cells ignore max-width; `anywhere` would let the compressed
+     table shrink it to one character per line) and a long name wraps inside it. */
   .playerNameText {
     display: block;
+    min-width: 7rem;
     max-width: 9rem;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 }
 

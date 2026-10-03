@@ -222,6 +222,9 @@ test.describe('public matches: detail', () => {
     const after = { name: (await name.boundingBox())!, kills: (await kills.boundingBox())! };
     expect(after.kills.x).toBeLessThan(before.kills.x - 100);
     expect(Math.abs(after.name.x - before.name.x)).toBeLessThan(1);
+    // The name column keeps a readable width (7 rem) instead of collapsing to one character per line.
+    expect(after.name.width).toBeGreaterThanOrEqual(110);
+    expect(after.name.height).toBeLessThan(70);
     expect(after.name.x).toBeGreaterThanOrEqual(0);
     expect(after.name.x + after.name.width).toBeLessThanOrEqual(390);
     expect(await name.evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
