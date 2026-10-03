@@ -12,7 +12,7 @@ import { EmptyState, FeedbackNotice, GameButton, PageHeader, Pagination, Selecti
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { listMatchesForAdmin } from '@/modules/matches/queries';
 import { DEFAULT_MATCH_TIME_ZONE } from '@/modules/matches/time';
 import type { AdminMatchListItem, AdminMatchPage } from '@/modules/matches/types';
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ma
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.matches.list' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'matches.edit' });
 }
 
 /** Match overview for match managers/administrators: URL filters, explicit zones, status vs publication. */

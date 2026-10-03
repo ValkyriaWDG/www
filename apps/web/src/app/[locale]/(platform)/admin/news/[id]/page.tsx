@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import { EditorPage, loadEditorState, selectedContentLocale } from '@/components/admin/editor-page';
 import { routing } from '@/i18n/routing';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ne
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminEditorial.editor' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'content.edit' });
 }
 
 /** Post editor for one translation (`?lang=cs|en`); requires `content.edit`. */

@@ -8,7 +8,7 @@ import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
 import { canForGame } from '@/modules/access/policy';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { GAME_REGISTRY, GAME_ROUTES } from '@/modules/games/registry';
 import { readLogiMemberLinks } from '@/modules/integrations/logi-member-links';
 import { readLogiMemberCandidates } from '@/modules/integrations/logi-people';
@@ -16,7 +16,12 @@ import { getMemberForAdmin, listMembersForAdmin } from '@/modules/members/querie
 import styles from '@/components/public/logi-people.module.css';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { robots: { index: false, follow: false } };
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  const t = await getTranslations({ locale, namespace: 'logiPeople' });
+  return adminPageMetadata({ locale, title: t('linkMetaTitle'), capability: 'members.publish' });
+}
 const PATH = '/admin/members/logi';
 export default async function LogiMemberLinksPage({
   params,

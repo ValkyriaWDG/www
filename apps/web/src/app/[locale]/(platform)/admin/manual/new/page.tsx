@@ -7,7 +7,7 @@ import { NewPostForm } from '@/components/admin/new-post-form';
 import { creatableScopes } from '@/components/admin/scope-options';
 import { GuardedLink } from '@/components/shell/guarded-link';
 import { routing } from '@/i18n/routing';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ma
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminEditorial.manual' });
-  return { title: t('newTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('newTitle'), capability: 'content.edit', game: 'hell-let-loose' });
 }
 
 /** New Field Manual article: content language, game and title; the editor opens on the draft. */

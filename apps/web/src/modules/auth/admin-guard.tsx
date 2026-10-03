@@ -1,5 +1,7 @@
 import 'server-only';
 import type { Game } from '@valkyria/db';
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import type { ReactElement } from 'react';
 import { cache } from 'react';
@@ -26,6 +28,32 @@ export type AdminPageOptions = {
   /** `write` for pages whose render performs privileged mutations (rare); default `read`. */
   intent?: AccessIntent;
 };
+
+/**
+ * Page metadata of an admin page: its own title for an authorized actor, the localized
+ * "access denied" title when `requireAdminPage` will render the denial instead (the actor
+ * is resolved once per request, so this adds no second verification). Anonymous visitors
+ * are redirected by the page itself and keep the page title.
+ */
+export async function adminPageMetadata(options: {
+  locale: AppLocale;
+  title: string;
+  capability?: Capability;
+  game?: Game | null;
+}): Promise<Metadata> {
+  const actor = await getActor('read');
+  const capability = options.capability ?? 'admin.access';
+  let denied = false;
+  if (actor.kind !== 'anonymous') {
+    // Same decision as requireAdminPage: platform access, the capability, then the game scope.
+    const adminCode = denialCode(actor, 'admin.access');
+    const capabilityCode = denialCode(actor, capability);
+    const gameDenied = !adminCode && !capabilityCode && options.game !== undefined && !canForGame(actor, capability, options.game);
+    denied = Boolean(adminCode ?? capabilityCode) || gameDenied || actor.kind !== 'principal';
+  }
+  const t = await getTranslations({ locale: options.locale, namespace: 'admin.denied' });
+  return { title: denied ? t('metaTitle') : options.title, robots: { index: false, follow: false } };
+}
 
 /** Localized path of an admin page, validated as a safe post-login destination. */
 export function adminReturnPath(locale: AppLocale, path: string): string {

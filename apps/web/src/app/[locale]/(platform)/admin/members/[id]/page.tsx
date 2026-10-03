@@ -6,7 +6,7 @@ import { MemberEditor } from '@/components/admin-community/member-editor';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { can } from '@/modules/access/policy';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { getMemberForAdmin } from '@/modules/members/queries';
 
 export const dynamic = 'force-dynamic';
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/me
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.members.editor' });
-  return { title: t('editMetaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('editMetaTitle'), capability: 'members.edit' });
 }
 
 /** Member publication editor. The linked account (user ID) is never sent to the browser. */

@@ -7,7 +7,7 @@ import { NewPostForm } from '@/components/admin/new-post-form';
 import { creatableScopes } from '@/components/admin/scope-options';
 import { GuardedLink } from '@/components/shell/guarded-link';
 import { routing } from '@/i18n/routing';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ne
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminEditorial.new' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'content.edit' });
 }
 
 /** New post: choose the content language and title; the editor opens on the created draft. */

@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TaxonomyTermScreen } from '@/components/admin/taxonomy-term-screen';
 import { routing } from '@/i18n/routing';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { isNewsScopeSegment, parseTaxonomyScope } from '@/modules/taxonomy/scope';
 
 export const dynamic = 'force-dynamic';
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ta
   const { locale, scope, id } = await params;
   if (!hasLocale(routing.locales, locale) || !isNewsScopeSegment(scope)) return {};
   const t = await getTranslations({ locale, namespace: 'adminTaxonomy.form' });
-  return { title: id === 'new' ? t(`newTitles.${scope}`) : t(`titles.${scope}`), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: id === 'new' ? t(`newTitles.${scope}`) : t(`titles.${scope}`), capability: 'content.edit', game: null });
 }
 
 /**

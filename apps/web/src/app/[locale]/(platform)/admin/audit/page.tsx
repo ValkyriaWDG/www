@@ -12,7 +12,7 @@ import styles from '@/components/admin-community/admin-community.module.css';
 import { DetailPane, EmptyState, FeedbackNotice, GameButton, PageHeader, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import {
   AUDIT_MAX_RANGE_DAYS,
   auditFilterErrorCode,
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/au
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.audit' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'audit.read' });
 }
 
 /** Read-only, redacted audit history (administrators/owners; `audit.read`). */

@@ -11,7 +11,7 @@ import styles from '@/components/admin-community/admin-community.module.css';
 import { EmptyState, FeedbackNotice, GameButton, PageHeader, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { listTournamentsForAdmin } from '@/modules/tournaments/queries';
 import type { AdminTournamentListItem, AdminTournamentPage } from '@/modules/tournaments/types';
 
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/to
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.tournaments.list' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'matches.edit' });
 }
 
 /** Tournament overview for match managers/administrators within their game scope. */

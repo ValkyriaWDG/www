@@ -8,7 +8,7 @@ import { SceneFallback } from '@/components/shell/scene-fallback';
 import { FeedbackNotice, PageHeader } from '@/components/ui';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { siteConfigDefaultsFromEnv } from '@/modules/settings/public';
 import { backgroundAllowedOrigins } from '@/modules/settings/schemas';
 import { getSettingsForAdmin, type AdminSetting } from '@/modules/settings/service';
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/se
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.settings' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'settings.manage' });
 }
 
 /** Public site settings (administrators/owners only; `settings.manage`). */

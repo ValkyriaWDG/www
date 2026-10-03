@@ -6,7 +6,7 @@ import { MatchEditor } from '@/components/admin-community/match-editor';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { can } from '@/modules/access/policy';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { getMatchForAdmin } from '@/modules/matches/queries';
 import { statisticsSources } from '@/modules/matches/statistics-service';
 import { listTournamentOptionsByGame } from '@/modules/tournaments/queries';
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ma
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.matches.editor' });
-  return { title: t('editMetaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('editMetaTitle'), capability: 'matches.edit' });
 }
 
 /** Edit one match: facts, schedule, recaps per locale, result and status transitions. */
