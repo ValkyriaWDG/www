@@ -16594,6 +16594,204 @@
       "bytes": 35308,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "ui-round11-before-wardogs-match-league-cs-390x844",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/wardogs-match-league-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/<upcoming fixture>; anonymous; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a27779d49575bc381d3ce0bcbc0a9b54482554e0b94115ad5915573c6daf0102",
+      "bytes": 54994,
+      "width": 390,
+      "height": 2183
+    },
+    {
+      "id": "ui-round11-after-wardogs-match-league-cs-390x844",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/wardogs-match-league-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/<upcoming fixture>; anonymous; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ee59140c9982073a46d13815e50f7b592493db8c41bcc3878ec531a2cc41af31",
+      "bytes": 58218,
+      "width": 390,
+      "height": 2266
+    },
+    {
+      "id": "ui-round11-before-wardogs-match-league-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/wardogs-match-league-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/<upcoming fixture>; anonymous; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9826a08305fa7106b1dd16ed23cf17c26a5f68fd48877d2b3b1d9cc7e817076f",
+      "bytes": 85072,
+      "width": 1440,
+      "height": 1700
+    },
+    {
+      "id": "ui-round11-after-wardogs-match-league-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/wardogs-match-league-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/<upcoming fixture>; anonymous; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d03a9f8163d2c521d758253822e36a3acf492ff5a1f9395072852f50704f4b6e",
+      "bytes": 88316,
+      "width": 1440,
+      "height": 1783
+    },
+    {
+      "id": "ui-round11-before-wardogs-server-warcon-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/wardogs-server-warcon-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/servers?server=synthetic-wardogs; anonymous; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "173cb475e8b9f729bd6b905e954d3673fa671050e012a0bb82e302572fff42e1",
+      "bytes": 100788,
+      "width": 1440,
+      "height": 2255
+    },
+    {
+      "id": "ui-round11-after-wardogs-server-warcon-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/wardogs-server-warcon-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/servers?server=synthetic-wardogs; anonymous; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f179bfdec448b6ccd1202ea2a9a238e0a6eb24a396feb5bb3c9bf391c8f5f3f9",
+      "bytes": 102480,
+      "width": 1440,
+      "height": 2244
+    },
+    {
+      "id": "ui-round11-before-wardogs-server-warcon-en-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/wardogs-server-warcon-en-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/servers?server=synthetic-wardogs; anonymous; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "038e1f44d6bebf256d5b316d45b7003ba7d95b6b67daf709097e5d50c538f07c",
+      "bytes": 98588,
+      "width": 1440,
+      "height": 2235
+    },
+    {
+      "id": "ui-round11-after-wardogs-server-warcon-en-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/wardogs-server-warcon-en-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/servers?server=synthetic-wardogs; anonymous; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9b00e8d3d7859a6b9c14ab10ca436027e84ef7c81e0c7f15518d99b48ffe2dec",
+      "bytes": 99930,
+      "width": 1440,
+      "height": 2224
+    },
+    {
+      "id": "ui-round11-before-wardogs-home-cs-390x844",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/wardogs-home-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs; anonymous; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "bb908befcf000c95e0a1a1cc91e35a2c450c6cc1a33d5e402bea48967b518a82",
+      "bytes": 32056,
+      "width": 390,
+      "height": 1207
+    },
+    {
+      "id": "ui-round11-after-wardogs-home-cs-390x844",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/wardogs-home-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs; anonymous; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "386652f25614422ee213f7c4b4db4cd12360ad70b0a19e8c0b4eef9bb509ac7d",
+      "bytes": 31816,
+      "width": 390,
+      "height": 1223
+    },
+    {
+      "id": "ui-round11-before-admin-integrations-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/admin-integrations-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "0411c4962c517c5701b913e0065fc758a589f6af62dea990833756aee6e21123",
+      "bytes": 185428,
+      "width": 1440,
+      "height": 3199
+    },
+    {
+      "id": "ui-round11-after-admin-integrations-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/admin-integrations-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "14e4930d56a9d6215ccabd463265dd94f0d076f5a0a1f8d13b4fe0fb9319254e",
+      "bytes": 184620,
+      "width": 1440,
+      "height": 3199
+    },
+    {
+      "id": "ui-round11-before-admin-integrations-cs-390x844",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/admin-integrations-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "d8554fd57e8821e3259cf2c058f7e5ccbeeca27ad4e79585b7c573274fc190e8",
+      "bytes": 171182,
+      "width": 390,
+      "height": 5366
+    },
+    {
+      "id": "ui-round11-after-admin-integrations-cs-390x844",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/admin-integrations-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5f50d09a2709aa22799f7ce23e7cd28194ba0670d4c971cec609f0060b90a999",
+      "bytes": 167770,
+      "width": 390,
+      "height": 5322
+    },
+    {
+      "id": "ui-round11-before-admin-overview-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/admin-overview-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin; administrator; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "862370afdbd05f88750425e0c6084a8896d7b91a7746a67ca9a85fb38f49ad58",
+      "bytes": 71620,
+      "width": 1440,
+      "height": 1115
+    },
+    {
+      "id": "ui-round11-after-admin-overview-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/admin-overview-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin; administrator; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ca1030cd3f04fdd00151aba7e47c1126a16dd5680e8d80a59da8238c697cfc94",
+      "bytes": 71846,
+      "width": 1440,
+      "height": 1115
+    },
+    {
+      "id": "ui-round11-before-admin-match-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/before/admin-match-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/matches/<id>; administrator; source e46c67c",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ba8d88cd126342cd7c0137fd526eac5ff41e5b504a7e5ad8d203b839c5765262",
+      "bytes": 210596,
+      "width": 1440,
+      "height": 4411
+    },
+    {
+      "id": "ui-round11-after-admin-match-editor-cs-1440x900",
+      "path": "docs/evidence/ui-round11-2026-10-03/after/admin-match-editor-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/matches/<id>; administrator; source b5a40d9",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9661f1d46004cfd1537ad63c1ee282f38eee8fd27dc489051c1ad9b80c669f53",
+      "bytes": 18608,
+      "width": 1440,
+      "height": 900
     }
   ]
 }

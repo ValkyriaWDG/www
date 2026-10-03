@@ -53,9 +53,12 @@ the standalone build (`CI=true`, chromium 1194): `wardogs-warcon`, `wardogs-serv
 cover no page/console error on the Warcon and League pages in both locales, the preview
 below the match detail, the one-banner/labelled-region administration page with axe, the
 44 px controls, the reader detail translation and no "Refused to apply inline style"
-console error on the match and news editors with axe on the editor at 390 px. Still to
-run by the delivery orchestrator: push, the full browser suite, before/after captures,
-PR and evidence.
+console error on the match and news editors with axe on the editor at 390 px. On the
+rebuilt head the full browser suite passed 240 tests (107 opt-in captures skipped) and
+the PostgreSQL suite 513 tests; the audit scripts rerun on the fixed build report no axe
+violation, page error or overflow on 122 cases. Before/after captures are in the
+[round 11 evidence](evidence/ui-round11-2026-10-03/README.md). Next: PR #95 latest-head
+CI, merge and publication.
 
 ## Approved Logi readers: League preview and Warcon — 2026-10-03
 
