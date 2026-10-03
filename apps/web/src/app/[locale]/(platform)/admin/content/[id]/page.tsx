@@ -20,7 +20,7 @@ export default async function EditCorePage({ params, searchParams }: PageProps<'
   const { locale, id } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const access = await requireAdminPage({ locale, path: `/admin/content/${encodeURIComponent(id)}`, capability: 'content.edit' });
+  const access = await requireAdminPage({ locale, path: `/admin/content/${encodeURIComponent(id)}`, capability: 'content.edit', game: null });
   if (!access.ok) return access.denied;
   const state = await loadEditorState(access.principal, id, locale);
   if ('denied' in state) return state.denied;

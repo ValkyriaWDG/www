@@ -39,7 +39,6 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
   const authConfig = authConfigFromEnv(env);
   const discordReady = isDiscordSignInConfigured(authConfig);
   const logiReady = isLogiSignInConfigured(authConfig.logi);
-  const preferLogi = authConfig.logi?.enabled === true;
   const current = await getRequestSession().catch(() => null);
   const t = await getTranslations({ locale, namespace: 'auth.login' });
   const recoveryHref = `/${locale}/login/recovery${returnTo !== defaultReturnPath(locale) ? `?returnTo=${encodeURIComponent(returnTo)}` : ''}`;
@@ -89,7 +88,7 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
                 </SubmitButton>
               </form> : null}
             </div>
-            <p className={styles.note}>{t(preferLogi ? 'logiSeparate' : 'separate')}</p>
+            <p className={styles.note}>{t(!logiReady && discordReady ? 'separate' : 'logiSeparate')}</p>
           </>
         )}
         <hr className={styles.divider} />

@@ -20,7 +20,7 @@ export default async function EditManualArticlePage({ params, searchParams }: Pa
   const { locale, id } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const access = await requireAdminPage({ locale, path: `/admin/manual/${encodeURIComponent(id)}`, capability: 'content.edit' });
+  const access = await requireAdminPage({ locale, path: `/admin/manual/${encodeURIComponent(id)}`, capability: 'content.edit', game: 'hell-let-loose' });
   if (!access.ok) return access.denied;
   const state = await loadEditorState(access.principal, id, locale);
   if ('denied' in state) return state.denied;

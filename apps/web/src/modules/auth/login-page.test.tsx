@@ -108,6 +108,27 @@ describe('login provider availability at the page boundary', () => {
     expect(button(html, 'discord')).toBeNull();
   });
 
+  it('explains the separate Discord steps only while Discord is the available action', async () => {
+    configureDiscord();
+    expect(await render()).toContain(cs.login.separate);
+
+    vi.stubEnv('DISCORD_CLIENT_ID', '');
+    resetServerEnvForTests();
+    const neither = await render();
+    expect(neither).toContain(cs.login.logiSeparate);
+    expect(neither).not.toContain(cs.login.separate);
+
+    configureLogi();
+    configureDiscord();
+    vi.stubEnv('LOGI_DISCORD_FALLBACK_ENABLED', 'true');
+    resetServerEnvForTests();
+    const both = await render();
+    expect(button(both, 'logi')).not.toContain('disabled=""');
+    expect(button(both, 'discord')).not.toBeNull();
+    expect(both).toContain(cs.login.logiSeparate);
+    expect(both).not.toContain(cs.login.separate);
+  });
+
   it('keeps both approved provider return paths localized and sanitized', async () => {
     configureLogi();
     configureDiscord();

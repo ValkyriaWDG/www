@@ -1,6 +1,9 @@
 import { expect, type Page, test } from '@playwright/test';
 import { ageMembershipSnapshot, countSessions, setDiscordMember, signInAs } from './support/auth';
 
+/** Editor routes deny a wrongly scoped editor before any document lookup, so no fixture is needed. */
+const UNKNOWN_DOCUMENT_ID = '00000000-0000-4000-8000-000000000000';
+
 async function expectReturnTargets(page: Page, value: string) {
   const targets = page.locator('input[name="returnTo"]');
   await expect(targets).toHaveCount(2);
@@ -126,9 +129,11 @@ test.describe('protected routes', () => {
       await expect(page.getByTestId('admin-module-manual')).toBeVisible();
       await expect(page.getByTestId('admin-module-content')).toHaveCount(0);
       await expect(page.getByTestId('admin-nav').locator(`a[href="/${locale}/admin/content"]`)).toHaveCount(0);
-      await page.goto(`/${locale}/admin/content`);
-      await expect(page.getByTestId('access-denied')).toHaveAttribute('data-reason', 'forbidden');
-      await expect(page.getByTestId('admin-content')).toHaveCount(0);
+      for (const path of ['/admin/content', `/admin/content/${UNKNOWN_DOCUMENT_ID}`]) {
+        await page.goto(`/${locale}${path}`);
+        await expect(page.getByTestId('access-denied')).toHaveAttribute('data-reason', 'forbidden');
+        await expect(page.getByTestId('admin-content')).toHaveCount(0);
+      }
     }
   });
 
@@ -140,7 +145,7 @@ test.describe('protected routes', () => {
       await expect(page.getByTestId('admin-module-manual')).toHaveCount(0);
       await expect(page.getByTestId('admin-module-content')).toHaveCount(0);
       await expect(page.getByTestId('admin-nav').locator(`a[href="/${locale}/admin/manual"]`)).toHaveCount(0);
-      for (const path of ['/admin/manual', '/admin/manual/new', '/admin/content']) {
+      for (const path of ['/admin/manual', '/admin/manual/new', `/admin/manual/${UNKNOWN_DOCUMENT_ID}`, '/admin/content', `/admin/content/${UNKNOWN_DOCUMENT_ID}`]) {
         await page.goto(`/${locale}${path}`);
         await expect(page.getByTestId('access-denied')).toHaveAttribute('data-reason', 'forbidden');
       }

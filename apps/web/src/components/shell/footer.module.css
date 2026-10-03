@@ -32,6 +32,14 @@
   min-height: var(--utility-size);
 }
 
+/* Phones keep the tokens.css reduction; the value above would otherwise override it. */
+@media (max-width: 767px) {
+  [data-route-mode='home'] .footer {
+    --utility-size: 48px;
+    --utility-icon-size: 24px;
+  }
+}
+
 /* Subpages/admin: slim charcoal strip at the end of the document. */
 [data-route-mode='public'] .footer,
 [data-route-mode='admin'] .footer {
