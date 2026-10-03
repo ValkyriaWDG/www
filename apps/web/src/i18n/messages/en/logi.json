@@ -52,5 +52,6 @@
   "locked": "This match can no longer be edited from the website.",
   "legacyBlocked": "Create this game's new matches using the connected match editor.",
   "hll": "Hell Let Loose",
-  "wardogs": "Wardogs"
+  "wardogs": "Wardogs",
+  "metaTitle": "Connected matches · Administration"
 }

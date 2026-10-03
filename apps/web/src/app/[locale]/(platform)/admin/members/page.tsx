@@ -11,7 +11,7 @@ import { FilterForm } from '@/components/admin-community/filter-form';
 import { EmptyState, FeedbackNotice, GameButton, PageHeader, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { listMembersForAdmin } from '@/modules/members/queries';
 import type { AdminMemberListItem, AdminMemberPage } from '@/modules/members/types';
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/me
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.members.list' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'members.edit' });
 }
 
 /** Public member profiles: state filter, search, consent and biography availability. */

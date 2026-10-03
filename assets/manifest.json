@@ -17100,6 +17100,226 @@
       "bytes": 35944,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "ui-round13-before-manual-article-short-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/manual-article-short-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/field-manual/<new short article>; anonymous; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "320f2fe2325c0b1b8c2557b86aedcfb5f1f88bea654c11a37543123463f568bc",
+      "bytes": 47174,
+      "width": 1440,
+      "height": 2637
+    },
+    {
+      "id": "ui-round13-after-manual-article-short-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/manual-article-short-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/hll/field-manual/<new short article>; anonymous; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "dffe1559fd47821fb4259c2dda88798b39ac0ead86657fbdca8915e2222cc272",
+      "bytes": 40222,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "ui-round13-before-manual-article-short-en-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/manual-article-short-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/hll/field-manual/<new short article>; anonymous; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a05c615c5f62f23fef2f9dc63b88a7206120824362afe6871b5c03ad985a1045",
+      "bytes": 22878,
+      "width": 390,
+      "height": 985
+    },
+    {
+      "id": "ui-round13-after-manual-article-short-en-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/manual-article-short-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/hll/field-manual/<new short article>; anonymous; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f64f4e0d8b9f399d40352e370d3678a96ad0dc5783e47e20db3d195b93644d0a",
+      "bytes": 23548,
+      "width": 390,
+      "height": 985
+    },
+    {
+      "id": "ui-round13-before-admin-news-denied-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/admin-news-denied-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news; member; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "abf3ec61da9ee7040375a0dde614f6c5f30ad36ca2ab38bd0a1064a41d95dcd9",
+      "bytes": 19354,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "ui-round13-after-admin-news-denied-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/admin-news-denied-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news; member; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "abf3ec61da9ee7040375a0dde614f6c5f30ad36ca2ab38bd0a1064a41d95dcd9",
+      "bytes": 19354,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "ui-round13-before-admin-logi-association-cs-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/admin-logi-association-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/members/logi?profile=<id>; administrator; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f023ae057ab56846f45fa2155f88366760853f53241f13e1f145f728d6f17edb",
+      "bytes": 31596,
+      "width": 390,
+      "height": 1336
+    },
+    {
+      "id": "ui-round13-after-admin-logi-association-cs-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/admin-logi-association-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/members/logi?profile=<id>; administrator; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "600205adee66bf709ec027a152231de84123129e307dd92bb8a2d85689ed4f62",
+      "bytes": 32112,
+      "width": 390,
+      "height": 1407
+    },
+    {
+      "id": "ui-round13-before-admin-news-list-cs-1024x768",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/admin-news-list-cs-1024x768.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news; editor; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f499f2f51690d0daac826f76f9a4bf4ee094ec7519016753260eb11ec10cb7c5",
+      "bytes": 145228,
+      "width": 1024,
+      "height": 2241
+    },
+    {
+      "id": "ui-round13-after-admin-news-list-cs-1024x768",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/admin-news-list-cs-1024x768.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news; editor; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "23ebd44ca6b1ee665ab720d3911238ab0d9b82a7692dc83f5ee10aa58c405658",
+      "bytes": 145856,
+      "width": 1024,
+      "height": 2241
+    },
+    {
+      "id": "ui-round13-before-admin-matches-logi-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/admin-matches-logi-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/matches/logi; match_manager; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a3b2319a22c6afa9e5bba16b18fad18193f5740b9bbf8e4be75f904767946afd",
+      "bytes": 25134,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "ui-round13-after-admin-matches-logi-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/admin-matches-logi-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/matches/logi; match_manager; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "a3b2319a22c6afa9e5bba16b18fad18193f5740b9bbf8e4be75f904767946afd",
+      "bytes": 25134,
+      "width": 1440,
+      "height": 970
+    },
+    {
+      "id": "ui-round13-before-admin-news-schedule-dialog-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/admin-news-schedule-dialog-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news/<id> (schedule cancel dialog); editor; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "e59fe16b33a85c201d8714a5a91f87de5bb3c60fce33bdd3368cfd5792124377",
+      "bytes": 95672,
+      "width": 1440,
+      "height": 3229
+    },
+    {
+      "id": "ui-round13-after-admin-news-schedule-dialog-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/admin-news-schedule-dialog-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/news/<id> (schedule cancel dialog); editor; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "c54cba588c7701190603c39e6713d366b9137c4d00f69af5d30ea311eed5d24a",
+      "bytes": 96316,
+      "width": 1440,
+      "height": 3341
+    },
+    {
+      "id": "ui-round13-before-admin-news-schedule-dialog-en-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/admin-news-schedule-dialog-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/admin/news/<id> (schedule cancel dialog); editor; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "53db6bdf9a7f298e1dc74fe7eef35180e43a2c11ce46c3b0702f2e9b7c4643ed",
+      "bytes": 88670,
+      "width": 390,
+      "height": 4589
+    },
+    {
+      "id": "ui-round13-after-admin-news-schedule-dialog-en-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/admin-news-schedule-dialog-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/admin/news/<id> (schedule cancel dialog); editor; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "f640de25d656e46ea6470a914e973edfb4e22fe0a5a600773b73d246bf905c46",
+      "bytes": 89050,
+      "width": 390,
+      "height": 4701
+    },
+    {
+      "id": "ui-round13-before-community-links-en-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/community-links-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/community; anonymous; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "89be12a754a24a3f70a9e2311d84d061445eea5709c7f0a43cc02bf6adab1216",
+      "bytes": 81316,
+      "width": 390,
+      "height": 2945
+    },
+    {
+      "id": "ui-round13-after-community-links-en-390x844",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/community-links-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/community; anonymous; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "8cd4c1bf8d151d153841d25df9cf4e7e4416626f563ab9b5db2e037e8face64d",
+      "bytes": 81474,
+      "width": 390,
+      "height": 2945
+    },
+    {
+      "id": "ui-round13-before-login-recovery-404-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/before/login-recovery-404-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/login/recovery; anonymous; source 85c5737",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4bb02f2fe3941322fbfbff45782f902590341c3b12ff2a807b8afc5f72a989ea",
+      "bytes": 21992,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "id": "ui-round13-after-login-recovery-404-cs-1440x900",
+      "path": "docs/evidence/ui-round13-2026-10-03/after/login-recovery-404-cs-1440x900.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/login/recovery; anonymous; source f9330fb",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "4bb02f2fe3941322fbfbff45782f902590341c3b12ff2a807b8afc5f72a989ea",
+      "bytes": 21992,
+      "width": 1440,
+      "height": 900
     }
   ]
 }

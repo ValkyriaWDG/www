@@ -103,3 +103,28 @@ test('settings and audit are denied to match managers and editors', async ({ bro
     await context.close();
   }
 });
+
+test('a saved community link is a 44 px target on the community page at phone width', async ({ browser }) => {
+  const context = await browser.newContext();
+  await signInAs(context, { roles: ['administrator'] });
+  const page = await context.newPage();
+  const label = `Syntetický odkaz ${uniqueSuffix()}`;
+  await page.goto('/cs/admin/settings');
+  await page.getByRole('button', { name: /Přidat odkaz/ }).click();
+  await page.locator('select[name^="link-"][name$="-kind"]').last().selectOption('steam');
+  await page.locator('input[name^="link-"][name$="-label"]').last().fill(label);
+  await page.locator('input[name^="link-"][name$="-url"]').last().fill('https://example.org/synthetic-community-link');
+  await page.locator('[data-action="save-settings"]').click();
+  await expect(page.getByText('Nastavení uloženo')).toBeVisible();
+
+  const visitor = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await visitor.goto('/cs/community');
+  const link = visitor.locator('[data-community-links]').getByRole('link', { name: new RegExp(label) });
+  await expect(link).toBeVisible();
+  expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await visitor.close();
+
+  // Restore the operator default so the shared public fixtures stay as seeded.
+  await e2eDb().query(`delete from site_setting where key = 'community.links'`);
+  await context.close();
+});

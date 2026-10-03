@@ -289,3 +289,25 @@ test('client and server validation: DST gap, required fields and localized messa
   expect(await matchByOpponent('Synthetic Validation Opponent')).toBeNull();
   await context.close();
 });
+
+test('moving a round to the top keeps keyboard focus inside the moved row', async ({ browser }) => {
+  const context = await browser.newContext();
+  await signInAs(context, { roles: ['match_manager'], name: 'Syntetický správce zápasů' });
+  const page = await context.newPage();
+  await page.goto('/cs/admin/matches/new');
+  await fillNewMatch(page, { opponent: `Syntetický soupeř kol ${uniqueSuffix()}`, date: pragueDate(-1), time: '20:00', zone: 'Europe/Prague' });
+  await page.locator('[data-action="save"]').click();
+  await expect(page).toHaveURL(/\/cs\/admin\/matches\/[0-9a-f-]{36}\?created=1$/);
+  await page.locator('[data-round-add]').click();
+  await page.locator('[data-round-add]').click();
+  await page.locator('[data-round-index="0"]').getByLabel(/^Mapa/).fill('Mapa A');
+  await page.locator('[data-round-index="1"]').getByLabel(/^Mapa/).fill('Mapa B');
+  await page.locator('[data-round-index="1"] [data-round-move="up"]').click();
+  await expect(page.locator('[data-round-index="0"]').getByLabel(/^Mapa/)).toHaveValue('Mapa B');
+  // The moved row's "up" button is now disabled; focus stays on its "down" button instead of the body.
+  await expect(page.locator('[data-round-index="0"] [data-round-move="down"]')).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-round-index="1"]').getByLabel(/^Mapa/)).toHaveValue('Mapa B');
+  await expect(page.locator('[data-round-index="1"] [data-round-move="up"]')).toBeFocused();
+  await context.close();
+});
