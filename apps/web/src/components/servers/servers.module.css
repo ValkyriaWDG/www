@@ -353,5 +353,11 @@
 .warconMatchHead { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); font-size: var(--text-small); }
 .warconMatchHead time { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
 .warconMatchMap { overflow-wrap: anywhere; }
-.warconMatchFacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: var(--space-2) var(--space-3); margin: 0; }
+.warconMatchFacts { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2) var(--space-4); margin: 0; }
 .warconMatchFacts > div { min-width: 0; }
+
+/* Wider windows read one round as a row: peak players, the scores, the winner. */
+@media (min-width: 768px) {
+  .warconMatchFacts { grid-template-columns: max-content minmax(0, 1fr) max-content; align-items: start; }
+  .warconMatchFacts .warconScoresItem { grid-column: auto; }
+}
