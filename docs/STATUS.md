@@ -1,5 +1,30 @@
 # Current status
 
+## Logi membership, rosters, attendance and statistics — 2026-10-03
+
+The follow-up to merged PR #83 adds read-only team views for HLL/Wardogs, with Logi
+owning membership, published rosters, attendance responses and verified collected-session
+facts. Fresh exact-subject role checks remain the access authority. News and CMS content
+stay on the website; roster/attendance management stays in Logi/Discord.
+
+The separate people grant and `syncPeople` opt-in default off. Public profile/match
+enrichment requires an explicit immutable native-member association, current consent,
+profile publication and separate stats/roster opt-ins. The additive migration
+`0010_bizarre_gambit` stores these mappings; no production migration was performed.
+
+On runtime `b47796c`, rebased onto main `f13332e`, lint, typecheck and optimized build
+passed, with 894 unit, 476 PostgreSQL and 199 browser tests; 124 opt-in captures were
+skipped. The actual paired local flow passed 23 checks and the schema upgrade 7. Logi
+passed 725 tests, 46 people HTTP and 17 native roster HTTP checks. Eight actual synthetic
+screenshots, hashes, reproduction steps, review scope and limits are in the
+[acceptance bundle](evidence/logi-people-2026-10-03/README.md). See also
+[people synchronization](integrations/logi/people.md).
+
+This is implemented and locally verified, not activated in production. Next: qualify
+the deployed producer, explicit grants, scheduler, hosted identity flow and reviewed
+publication configuration. Discord command redesign follows this milestone. Preserve
+the separate pre-activation follow-ups from PR #83 below.
+
 ## Logi integration source checkpoint — 2026-10-02
 
 The current integration branch wires Logi SSO through maintained Better Auth, fresh

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "context": {
+    "sourceRevision": "b47796c913d9d65ba3952adafd6462c26f1ec71a",
+    "baseRevision": "f13332e334eda7c0db75077412f8c72c4e08d271",
+    "buildId": "7RwlYoJbvvirW8MEZoocO",
+    "node": "v24.21.0",
+    "pnpm": "10.33.0",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12",
+    "os": "Windows x64",
+    "database": "Isolated PostgreSQL 18.4 / ICU cs-CZ",
+    "dateTimeZone": "Europe/Prague",
+    "syntheticIdentities": true,
+    "productionUsed": false
+  },
+  "checks": {
+    "lint": {
+      "kind": "lint",
+      "command": "pnpm lint",
+      "startedAt": "2026-10-02T23:49:35.594Z",
+      "finishedAt": "2026-10-02T23:50:06.259Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true
+    },
+    "unit": {
+      "kind": "unit",
+      "command": "pnpm test:unit",
+      "startedAt": "2026-10-02T23:49:35.595Z",
+      "finishedAt": "2026-10-02T23:49:54.997Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true
+    },
+    "integration": {
+      "kind": "integration",
+      "command": "pnpm test:integration",
+      "startedAt": "2026-10-02T23:49:35.594Z",
+      "finishedAt": "2026-10-02T23:50:05.694Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true
+    },
+    "build": {
+      "kind": "build",
+      "command": "pnpm build",
+      "startedAt": "2026-10-02T23:50:24.631Z",
+      "finishedAt": "2026-10-02T23:50:41.241Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true
+    },
+    "types": {
+      "kind": "types",
+      "command": "pnpm typecheck",
+      "startedAt": "2026-10-02T23:52:01.159Z",
+      "finishedAt": "2026-10-02T23:52:10.745Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true
+    },
+    "e2e": {
+      "kind": "e2e",
+      "command": "pnpm test:e2e",
+      "startedAt": "2026-10-02T23:52:56.769Z",
+      "finishedAt": "2026-10-02T23:54:30.105Z",
+      "exitCode": 0,
+      "sourceStable": true,
+      "localOnly": true
+    }
+  },
+  "counts": {
+    "unitPassed": 894,
+    "integrationPassed": 476,
+    "browserPassed": 199,
+    "browserOptInSkipped": 0,
+    "pairedBrowserPassed": 23,
+    "migrationPassed": 7
+  },
+  "limitations": {
+    "hostedAcceptance": false,
+    "liveDiscordOAuth": false,
+    "liveSteamOpenId": false,
+    "productionCollectors": false,
+    "localContainerRun": false
+  }
+}

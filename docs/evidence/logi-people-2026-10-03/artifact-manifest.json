@@ -1,0 +1,65 @@
+{
+  "algorithm": "SHA-256",
+  "artifacts": [
+    {
+      "file": "association-cs-desktop.png",
+      "sha256": "d542fe0b7a51cf502c91260c917ed76604dc29b298344d6d13cf15748a72c6c6",
+      "bytes": 111904
+    },
+    {
+      "file": "browser-proof.json",
+      "sha256": "98a6941ceeff33d79810dbe0749f88cb0df8da658078b97d3632768e77ce5818",
+      "bytes": 3523
+    },
+    {
+      "file": "checks.json",
+      "sha256": "f10089ec1a6a012cf143eedeff5a1ed5a5dd2638744f77b8077bc69a1636904e",
+      "bytes": 2375
+    },
+    {
+      "file": "match-people-en-desktop.png",
+      "sha256": "690c24d7f4d9dd739cab6d56e07e809b8a11b90a6072da7d4b4c67ee9d81b712",
+      "bytes": 466473
+    },
+    {
+      "file": "migration-proof.json",
+      "sha256": "4c6dd4e3d1c6be6f5c4e482d297e4536a185c8e4eef904885a4e04c154e2c26b",
+      "bytes": 886
+    },
+    {
+      "file": "profile-cs-desktop.png",
+      "sha256": "9489c0eb69a3cbd648596291deb3ca813b16bdfb04e4184a9015c1ce8b8acc25",
+      "bytes": 457331
+    },
+    {
+      "file": "profile-cs-phone.png",
+      "sha256": "4b059349c360ca6fab99fb95f807197c0c49ee4eb786da9473790aee3b8c5661",
+      "bytes": 174142
+    },
+    {
+      "file": "source-manifest.json",
+      "sha256": "6f52110f82d0d169bed32d07db9cdb22fb7bb3df2b7fe1b9023af4c0fde082d8",
+      "bytes": 7217
+    },
+    {
+      "file": "team-cs-desktop.png",
+      "sha256": "4bc7274a1211b9fc4754a3223f1939fb56ffec80cd6ea282b5bf978ad1dfde1a",
+      "bytes": 324713
+    },
+    {
+      "file": "team-cs-phone.png",
+      "sha256": "e77f79b31db01572bdd465ee4f2baf9268b6364833de0a16d53ed9577ff6129d",
+      "bytes": 210970
+    },
+    {
+      "file": "team-en-desktop.png",
+      "sha256": "c8d1a7d2396abffdebf9ff344655a6003d638a04329d44bb10e4642bb62bb0f5",
+      "bytes": 428698
+    },
+    {
+      "file": "team-role-removed-cs.png",
+      "sha256": "8e7426a0fd16f53e75122ae0f7a605101881f01805ac5eddaa8c7908d1acb69e",
+      "bytes": 333612
+    }
+  ]
+}

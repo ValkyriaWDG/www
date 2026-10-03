@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-10-02T23:29:51.665Z",
+  "database": "isolated PostgreSQL18.4 / ICU cs-CZ",
+  "previousRevision": "79e0486faad16818e1318f24ec8f9501ec934f43",
+  "migrationSha256": "ac55c527fdfc3b36d1037fc779d4fd059b0166dbce9d7e62c70be7c1f724890d",
+  "checks": [
+    {
+      "name": "previous schema0009 applied",
+      "pass": true
+    },
+    {
+      "name": "migration0010 applied over nonempty baseline",
+      "pass": true
+    },
+    {
+      "name": "prior published profile and consent retained",
+      "pass": true
+    },
+    {
+      "name": "publication opt-ins default off",
+      "pass": true
+    },
+    {
+      "name": "prior-schema query remains usable",
+      "pass": true
+    },
+    {
+      "name": "second migration run is idempotent",
+      "pass": true
+    },
+    {
+      "name": "profile removal cascades association",
+      "pass": true
+    }
+  ],
+  "passed": 7
+}

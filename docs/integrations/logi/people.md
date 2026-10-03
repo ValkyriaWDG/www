@@ -83,6 +83,9 @@ history/window or throughput contract before activation; do not weaken freshness
 
 ## Verification boundary
 
+The [2026-10-03 acceptance bundle](../../evidence/logi-people-2026-10-03/README.md)
+contains actual paired-runtime checks, inspected screenshots and tested source hashes.
+
 Contract, scope, consent, expiry, cursor and real PostgreSQL tests cover success and
 denial. Local paired-runtime evidence and screenshots are recorded separately with
 source hashes. Synthetic fixtures do not prove a real Steam login, new live Discord

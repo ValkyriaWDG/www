@@ -1,0 +1,135 @@
+{
+  "timestamp": "2026-10-02T23:52:49.343Z",
+  "kind": "actual loopback Next/Convex/HTTP sync/PostgreSQL/browser; synthetic native and verified-platform fixtures",
+  "checks": [
+    {
+      "name": "actual producer cursor/list synchronization catches up both scopes",
+      "pass": true
+    },
+    {
+      "name": "anonymous team request redirects to login",
+      "pass": true
+    },
+    {
+      "name": "unassociated profile has no player statistics",
+      "pass": true
+    },
+    {
+      "name": "existing synthetic central login establishes scoped team session",
+      "pass": true
+    },
+    {
+      "name": "native member is rendered",
+      "pass": true
+    },
+    {
+      "name": "published native roster is rendered",
+      "pass": true
+    },
+    {
+      "name": "native attending response is localized",
+      "pass": true
+    },
+    {
+      "name": "collected verified player metric rendered",
+      "pass": true
+    },
+    {
+      "name": "team page has no operational write controls",
+      "pass": true
+    },
+    {
+      "name": "team phone has no page overflow",
+      "pass": true
+    },
+    {
+      "name": "English team view uses same data",
+      "pass": true
+    },
+    {
+      "name": "same login cannot read a different game",
+      "pass": true
+    },
+    {
+      "name": "exact source member can be selected for publication",
+      "pass": true
+    },
+    {
+      "name": "statistics and roster opt-ins initially off",
+      "pass": true
+    },
+    {
+      "name": "browser save persists exact immutable source binding and opt-ins",
+      "pass": true
+    },
+    {
+      "name": "public profile keeps approved website name",
+      "pass": true
+    },
+    {
+      "name": "public profile excludes private native identity and service credentials",
+      "pass": true
+    },
+    {
+      "name": "profile phone has no page overflow",
+      "pass": true
+    },
+    {
+      "name": "public match shows exact reviewed-session stats",
+      "pass": true
+    },
+    {
+      "name": "browser session remains Logi backed without upstream binding fields",
+      "pass": true
+    },
+    {
+      "name": "withdrawn consent hides profile immediately",
+      "pass": true
+    },
+    {
+      "name": "withdrawn consent removes public match player rows",
+      "pass": true
+    },
+    {
+      "name": "current role removal denies protected team immediately",
+      "pass": true
+    }
+  ],
+  "captures": [
+    "team-cs-desktop.png",
+    "team-cs-phone.png",
+    "team-en-desktop.png",
+    "association-cs-desktop.png",
+    "profile-cs-desktop.png",
+    "profile-cs-phone.png",
+    "match-people-en-desktop.png",
+    "team-role-removed-cs.png"
+  ],
+  "passed": 23,
+  "failed": 0,
+  "context": {
+    "sourceRevision": "b47796c913d9d65ba3952adafd6462c26f1ec71a",
+    "baseRevision": "f13332e334eda7c0db75077412f8c72c4e08d271",
+    "buildId": "7RwlYoJbvvirW8MEZoocO",
+    "node": "v24.21.0",
+    "pnpm": "10.33.0",
+    "playwright": "1.63.0",
+    "chromium": "153.0.8010.12",
+    "os": "Windows x64",
+    "database": "Isolated PostgreSQL 18.4 / ICU cs-CZ",
+    "dateTimeZone": "Europe/Prague",
+    "syntheticIdentities": true,
+    "productionUsed": false
+  },
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 1050
+    },
+    "phone": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "note": "Actual optimized website and Next/Convex provider, HTTP sync and PostgreSQL; central session and verified Steam ownership are trusted synthetic fixtures. Secrets/private helpers are not included."
+}
