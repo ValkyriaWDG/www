@@ -154,7 +154,8 @@ test('presentation overrides rename a Wardogs server and hide an HLL server publ
   await page.route('**/cs/admin/integrations', (route) => (route.request().method() === 'POST' ? route.abort() : route.continue()));
   await wardogsRow.getByLabel(/^Název na webu/).fill('[E2E] Neuložený název');
   await save.click();
-  await expect(page.getByRole('alert')).toContainText('Došlo k neočekávané chybě');
+  // The unsaved-changes guard announces its own alert; read the form's notice.
+  await expect(page.locator('[data-server-presentation-form]').getByRole('alert')).toContainText('Došlo k neočekávané chybě');
   await expect(wardogsRow.getByLabel(/^Název na webu/)).toHaveValue('[E2E] Neuložený název');
   expect((await storedPresentation())?.version).toBe(1);
   await page.unroute('**/cs/admin/integrations');
