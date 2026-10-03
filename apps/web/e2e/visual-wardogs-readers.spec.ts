@@ -50,7 +50,7 @@ for (const [locale, width, height] of [['cs', 1440, 1050], ['en', 1440, 1050], [
     await page.goto(`/${locale}/wardogs/servers?server=synthetic-wardogs`);
     await expect(page.locator('[data-server-refresh]')).toHaveAttribute('aria-busy', 'false');
     await expect(page.locator('[data-warcon-live="synthetic-wardogs"]')).toHaveAttribute('data-warcon-freshness', 'fresh');
-    await expect(page.locator('[data-warcon-matches="synthetic-wardogs"] ul > li')).toHaveCount(5);
+    await expect(page.locator('[data-warcon-matches="synthetic-wardogs"] [data-warcon-match]')).toHaveCount(5);
     await shot(page, `server-detail-warcon-${locale}-${width}x${height}.png`,
       `Visitor, /${locale}/wardogs/servers?server=synthetic-wardogs at ${width}×${height}: the synthetic Wardogs server detail followed by the "Live (Warcon)" section (synthetic-data note, map, players 12 / 98, named scores Alpha 0 · Bravo 12 · Charlie 7, round time, rotation, "Current" freshness badge with the observation time) and the "Recent matches" list of five synthetic rounds with peak players, final scores and winner; no player rows, Steam IDs or connection identifiers.`,
       locale);
@@ -68,14 +68,3 @@ for (const [locale, width, height] of [['cs', 1440, 1050], ['en', 1440, 1050], [
     await context.close();
   });
 }
-
-test('home overview with the compact Warcon row (cs, 1440px)', async ({ browser }) => {
-  const { context, page } = await newContext(browser, 1440, 1050, 'cs');
-  await page.goto('/cs/wardogs');
-  await expect(page.locator('[data-home-servers]')).toHaveAttribute('aria-busy', 'false');
-  await expect(page.locator('[data-home-warcon="synthetic-wardogs"] [data-warcon-live]')).toHaveAttribute('data-warcon-freshness', 'fresh');
-  await shot(page, 'home-warcon-cs-1440x1050.png',
-    'Visitor, /cs/wardogs at 1440×1050: the Wardogs main menu with the server overview panel showing the synthetic server, its team scores and the added compact "Živě (Warcon)" row (map, players, scores, freshness badge and observation time) under the same server; nothing else on the menu changed.',
-    'cs', false);
-  await context.close();
-});

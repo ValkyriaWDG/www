@@ -55,6 +55,8 @@ text, member counts, nations, request links, warnings and parser diagnostics. Th
 
 - `../../servers/browser.ts` adds `warcon` to `ServerBrowserData` for Wardogs: live
   projections for the listed approved servers and recent matches for the selected one.
+  Only the servers page detail renders them; the Wardogs home overview keeps its compact
+  server rows without a Warcon section so the utility rail fits short windows.
   The existing `/api/servers/wardogs` polling route therefore includes these DTOs; it
   accepts no connection or view parameters.
 - `components/public/matches-screen.tsx` reads `getLeagueMatchPreview(match.leagueMatchUrl)`

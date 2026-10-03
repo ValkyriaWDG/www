@@ -26,11 +26,12 @@ function roundTime(seconds: number, locale: AppLocale): string {
 }
 
 /**
- * Compact "Live (Warcon)" fact row of one approved connection: map, players, named
- * scores, rotation, observation time and freshness. Scores and round time appear for
- * fresh observations only; an unavailable view says so without inventing an empty server.
+ * "Live (Warcon)" fact row of one approved connection on the server detail: server name,
+ * map, lighting, players, round time, rotation, named scores, observation time and
+ * freshness. Scores and round time appear for fresh observations only; an unavailable
+ * view says so without inventing an empty server.
  */
-export function WarconLiveFacts({ live, locale, compact = false }: { live: WarconLivePublic; locale: AppLocale; compact?: boolean }) {
+export function WarconLiveFacts({ live, locale }: { live: WarconLivePublic; locale: AppLocale }) {
   const t = useTranslations('games.servers');
   const w = useTranslations('games.servers.warcon');
   const dash = <Dash label={t('notAvailable')} />;
@@ -46,7 +47,7 @@ export function WarconLiveFacts({ live, locale, compact = false }: { live: Warco
   return (
     <div className={styles.warconLive} data-warcon-live={live.publicId} data-warcon-freshness={live.freshness}>
       <dl className={styles.warconFacts}>
-        {!compact && live.serverName ? (
+        {live.serverName ? (
           <div>
             <dt>{w('serverName')}</dt>
             <dd>{live.serverName}</dd>
@@ -56,12 +57,10 @@ export function WarconLiveFacts({ live, locale, compact = false }: { live: Warco
           <dt>{w('map')}</dt>
           <dd>{live.map ?? dash}</dd>
         </div>
-        {!compact ? (
-          <div>
-            <dt>{w('lighting')}</dt>
-            <dd>{live.lighting ?? dash}</dd>
-          </div>
-        ) : null}
+        <div>
+          <dt>{w('lighting')}</dt>
+          <dd>{live.lighting ?? dash}</dd>
+        </div>
         <div>
           <dt>{w('players')}</dt>
           <dd className={styles.warconNumber}>{live.playerCount === null && live.maxPlayers === null ? dash : w('populationValue', { players: live.playerCount === null ? '—' : formatNumber(live.playerCount, locale), capacity: live.maxPlayers === null ? '—' : formatNumber(live.maxPlayers, locale) })}</dd>
@@ -124,7 +123,7 @@ export function WarconPanel({ entry, locale, serverName }: { entry: WarconServer
             ) : (
               <ul className={styles.warconMatches}>
                 {recent.matches.map((row) => (
-                  <li key={row.id}>
+                  <li key={row.id} data-warcon-match={row.id}>
                     <div className={styles.warconMatchHead}>
                       <time dateTime={row.startedAt}>{formatDate(row.startedAt, locale, 'weekdayDateTime')}</time>
                       <span className={styles.warconMatchMap}>{row.map ?? t('mapUnknown')}{row.experiences ? ` · ${row.experiences}` : ''}</span>

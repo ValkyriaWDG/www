@@ -5,8 +5,9 @@ import { FIXTURE_SLUGS } from '../src/fixtures/data';
 /*
  * Approved Logi readers (issue #87) against the labelled synthetic reader source
  * (`LOGI_READERS_SOURCE=synthetic-fixture`, e2e/support/server-env.ts): the Warcon live
- * facts and recent rounds of the synthetic Wardogs server, the home overview row and the
- * unverified League preview of the upcoming Wardogs fixture, in cs/en at 1440 and 390 px.
+ * facts and recent rounds of the synthetic Wardogs server and the unverified League preview
+ * of the upcoming Wardogs fixture, in cs/en at 1440 and 390 px. The home overview carries
+ * no Warcon section by design (short-window utility rail).
  * No Logi request, key or real server/League data is involved.
  */
 
@@ -36,7 +37,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(panel.getByRole('heading', { name: LABELS[locale].recent })).toBeVisible();
       const recent = panel.locator('[data-warcon-matches="synthetic-wardogs"]');
       await expect(recent).toHaveAttribute('data-warcon-freshness', 'fresh');
-      await expect(recent.locator('ul > li')).toHaveCount(5);
+      await expect(recent.locator('[data-warcon-match]')).toHaveCount(5);
       // Player rows, Steam IDs, join codes and panel/connection identifiers never reach the page.
       expect(await page.locator('main').innerText()).not.toMatch(FORBIDDEN_TEXT);
       expect(await page.content()).not.toMatch(FORBIDDEN_TEXT);
@@ -67,16 +68,13 @@ for (const locale of ['cs', 'en'] as const) {
   }
 }
 
-test('Wardogs home overview adds the compact Warcon row under the synthetic server', async ({ page }) => {
+test('the Wardogs home keeps the compact server overview without a Warcon section', async ({ page }) => {
   await page.goto('/cs/wardogs');
   const banner = page.locator('[data-home-servers]');
   await expect(banner).toHaveAttribute('aria-busy', 'false');
-  const row = banner.locator('[data-home-warcon="synthetic-wardogs"]');
-  await expect(row).toBeVisible();
-  await expect(row).toContainText('Živě (Warcon)');
-  await expect(row.locator('[data-warcon-live]')).toHaveAttribute('data-warcon-freshness', 'fresh');
-  await expect(row.locator('[data-warcon-scores] li')).toHaveCount(3);
-  expect(await banner.innerText()).not.toMatch(FORBIDDEN_TEXT);
+  await expect(banner.locator('[data-synthetic-data]')).toHaveCount(1);
+  await expect(banner.locator('[data-warcon-live], [data-warcon-panel]')).toHaveCount(0);
+  await expect(banner).not.toContainText('Warcon');
 });
 
 test('the polling route carries the Warcon DTO only for listed approved servers and no identities', async ({ request }) => {
@@ -87,7 +85,9 @@ test('the polling route carries the Warcon DTO only for listed approved servers 
   expect(body.warcon[0]).toMatchObject({ publicId: 'synthetic-wardogs', synthetic: true, live: { freshness: 'fresh', map: 'Synthetic Training Ground', playerCount: 12, maxPlayers: 98 } });
   expect(body.warcon[0].recentMatches.matches).toHaveLength(5);
   expect(Object.keys(body.warcon[0].live).sort()).toEqual(['freshness', 'lighting', 'map', 'matchSeconds', 'maxPlayers', 'observedAt', 'playerCount', 'publicId', 'rotationNext', 'rotationNow', 'scores', 'serverName']);
-  expect(JSON.stringify(body)).not.toMatch(/steamId|serverId|gameServerId|connectionId|7656119|players"/);
+  // The HLL live-players DTO legitimately has a `players` array; the Warcon projection never does.
+  expect(JSON.stringify(body.warcon)).not.toMatch(/steamId|serverId|gameServerId|connectionId|7656119|players"/);
+  expect(JSON.stringify(body)).not.toMatch(/steamId|7656119|gameServerId|connectionId/);
   const list = await request.get('/api/servers/wardogs');
   expect((await list.json()).warcon[0].recentMatches).toBeNull();
   expect((await request.get('/api/servers/wardogs?connection=synthetic-warcon-connection')).status()).toBe(400);

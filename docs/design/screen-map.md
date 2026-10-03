@@ -17,7 +17,7 @@ Where a Warcon connection is approved for a published Wardogs server, its detail
 (`?server=<publicId>`) adds a "Live (Warcon)" section (server name, map, lighting,
 players, round time, named scores, rotation, observation time, freshness badge) and a
 "Recent matches" list of the last five rounds (start, map, peak players, final scores,
-winner); the home overview adds a compact live row under the same server. Unavailable
+winner); the home overview deliberately stays unchanged. Unavailable
 reads say so and never invent an empty server. A published Wardogs match with an
 editorial League link adds a full-width "League preview" section below the detail:
 fixture, scheduled time, teams, map, hosting, map vote and progress with the

@@ -13,7 +13,8 @@ backoff, minimal public DTOs (no player rows, Steam IDs, panel/join identifiers 
 connection IDs), a `readerCapabilityStates(env)` health read model for #22, the
 editorial `match.league_match_url` column (`0012_league_match_url`, Wardogs-only check),
 the match editor field, the "League preview" section on Wardogs match pages, and
-"Live (Warcon)" plus "Recent matches" on the Wardogs server detail and home overview.
+"Live (Warcon)" plus "Recent matches" on the Wardogs server detail (the home overview
+stays unchanged so the utility rail fits short windows).
 The shared bounded transport was extracted from the collection client without
 behaviour change. See the
 [readers README](../apps/web/src/modules/integrations/logi/readers/README.md),

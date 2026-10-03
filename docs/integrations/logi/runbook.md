@@ -138,7 +138,7 @@ legacy full-access keys are refused by the producer. HLL CRCON settings stay unt
   in the health read model), that the keys are separate and guild-bound, and that the
   approved connection IDs are Logi connection IDs (as in `server-snapshots`), not panel
   UUIDs. Then check fresh, stale and unavailable states in both languages on the
-  Wardogs server detail, the home overview and a linked match page.
+  Wardogs server detail and a linked match page.
 
 ## Migration and scheduled pull commands
 
