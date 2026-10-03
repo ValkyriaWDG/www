@@ -125,7 +125,7 @@
 }
 
 .linkPanel input,
-.figureFields input,
+.figureFields input:not([type='checkbox']),
 .figureFields select {
   min-height: 40px;
   padding: 0 var(--space-3);
@@ -152,12 +152,6 @@
   margin: 0;
   color: var(--color-danger);
   font-size: 0.875rem;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
 }
 
 .canvasWrapper {
@@ -381,6 +375,21 @@
 
   .toolButton,
   .blockSelect {
+    min-height: 44px;
+  }
+
+  .toolButton {
+    min-width: 44px;
+  }
+
+  /* Image node fields and the inline buttons are 44 px touch targets like the form fields. */
+  .linkPanel input,
+  .figureFields input:not([type='checkbox']),
+  .figureFields select,
+  .tableButton,
+  .primaryButton,
+  .secondaryButton,
+  .dangerButton {
     min-height: 44px;
   }
 

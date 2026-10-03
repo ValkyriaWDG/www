@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { FIXTURE_SLUGS } from '../src/fixtures/data';
-import { matchBySlug } from './admin-community-support';
+import { matchBySlug, memberBySlug, tournamentBySlug } from './admin-community-support';
 import { signInAs } from './support/auth';
 import { expectNoHorizontalOverflow } from './support/shell-helpers';
 
@@ -88,11 +88,45 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   await page.goto('/cs/admin/manual');
   expect(await height(page, '[data-testid="admin-manual"] tbody th a')).toBeGreaterThanOrEqual(44);
 
+  // Audit log: the time cell stays on one line and its row link is a 44 px target; the wide
+  // table scrolls inside its labelled region instead of squeezing the columns.
+  await page.goto('/cs/admin/audit');
+  const audit = page.locator('[data-admin-audit]');
+  await expect(audit.locator('tbody tr').first()).toBeVisible();
+  const time = audit.locator('tbody th [data-audit-row]').first();
+  const lineHeight = await time.evaluate((element) => Number.parseFloat(getComputedStyle(element).lineHeight) || 24);
+  expect((await time.boundingBox())!.height).toBeLessThan(lineHeight * 2);
+  expect(await height(page, '[data-admin-audit] tbody th a')).toBeGreaterThanOrEqual(44);
+  expect(await audit.getByRole('region').first().evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  await expectNoHorizontalOverflow(page);
+
   // Overview: scheduled publications (the fixtures schedule one article).
   await page.goto('/cs/admin');
   const schedules = page.getByTestId('overview-schedules').locator('a');
   if ((await schedules.count()) > 0) expect((await schedules.first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
   await expectNoHorizontalOverflow(page);
+});
+
+test('the tournament and member editors keep a continuous heading outline (axe)', async ({ context, page }) => {
+  await signInAs(context, { roles: ['administrator'] });
+  const tournament = await tournamentBySlug(FIXTURE_SLUGS.tournaments.current);
+  const member = await memberBySlug('synteticka-hracka-bravo');
+  expect(tournament).not.toBeNull();
+  expect(member).not.toBeNull();
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  // Tournament editor: "Odkazy" and the description title follow the h1 directly.
+  await page.goto(`/cs/admin/tournaments/${tournament!.id}`);
+  await expect(page.getByRole('heading', { level: 2, name: 'Odkazy' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Popis turnaje · český obsah (CS)' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: /Popis turnaje/ })).toHaveCount(0);
+  await expect(page.getByLabel(/^Popisek odkazu/).first()).toHaveAccessibleDescription(/Obecné popisky/);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+
+  // Member editor: the biography title is an h2 as well.
+  await page.goto(`/cs/admin/members/${member!.id}`);
+  await expect(page.getByRole('heading', { level: 2, name: 'Medailonek · český obsah (CS)' })).toBeVisible();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 
 function collectBrowserErrors(page: Page): string[] {

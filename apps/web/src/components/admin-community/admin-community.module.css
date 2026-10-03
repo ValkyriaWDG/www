@@ -331,9 +331,20 @@ h3.repeatHeading {
 
 .roundGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+  /* The map name (first field) gets a wider track than the mode/side/score fields. */
+  grid-template-columns: minmax(min(100%, 12rem), 2fr) repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
   gap: 0 var(--space-3);
   align-items: end;
+}
+
+@media (max-width: 479px) {
+  .roundGrid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+  }
+
+  .roundGrid > :first-child {
+    grid-column: 1 / -1;
+  }
 }
 
 .checkGrid {
@@ -688,6 +699,36 @@ h3.repeatHeading {
   .listDetail[data-has-detail] {
     grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
   }
+}
+
+/* Inline text link (public address in the status panel, linked matches of a tournament). */
+.textLink {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+.textLink:hover {
+  color: var(--color-accent-strong);
+}
+
+@media (max-width: 767px) {
+  .textLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
+/* Audit log: the table keeps a readable width inside its scroll region (phones scroll it)
+   and the time column never wraps, so its row link is one 44 px line. */
+.auditTable table {
+  min-width: 44rem;
+}
+
+.auditTable tbody th {
+  white-space: nowrap;
 }
 
 .code {

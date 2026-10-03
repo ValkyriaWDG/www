@@ -459,6 +459,7 @@
         "gameLocked": "Hru nelze změnit, dokud jsou k turnaji připojené zápasy.",
         "slug": "Nechte prázdné a adresa se vytvoří z názvu a sezóny.",
         "httpsOnly": "Jen adresy https://.",
+        "linkLabel": "Obecné popisky (Web soutěže, Pravidla, Tabulka, Rozpis, Registrace) se návštěvníkům zobrazí v jejich jazyce; poznámka v závorce zůstane.",
         "internalNotes": "Nikdy se nezobrazí na veřejném webu."
       },
       "linksTitle": "Odkazy",

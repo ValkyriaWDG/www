@@ -3,6 +3,7 @@
 import { NodeViewWrapper, type ReactNodeViewProps } from '@tiptap/react';
 import { useTranslations } from 'next-intl';
 import { useId, useState } from 'react';
+import forms from '@/components/ui/forms.module.css';
 import styles from './editor.module.css';
 
 /**
@@ -56,13 +57,15 @@ export function ImageNodeView({ node, updateAttributes, deleteNode, selected }: 
             {t('missingAlt')}
           </p>
         ) : null}
-        <label className={styles.checkbox}>
+        {/* Shared 24 px checkbox in a 44 px label row, like the form fields outside the editor. */}
+        <label className={forms.choice}>
           <input
             type="checkbox"
+            className={forms.checkbox}
             checked={decorative}
             onChange={(event) => updateAttributes({ decorative: event.target.checked, alt: event.target.checked ? '' : alt })}
           />
-          {t('decorativeLabel')}
+          <span className={forms.label}>{t('decorativeLabel')}</span>
         </label>
         <label htmlFor={`${id}-caption`}>{t('captionLabel')}</label>
         <input

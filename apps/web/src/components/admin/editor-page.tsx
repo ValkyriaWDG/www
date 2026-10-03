@@ -106,7 +106,12 @@ export async function EditorPage({
       ) : (
         <MissingTranslation documentId={state.document.id} locale={contentLocale} basePath={basePath} pageKey={state.document.pageKey} existing={state.translations[other] ? other : null} />
       )}
-      {manualMeta ? <ManualMetaForm documentId={state.document.id} initial={manualMeta} archived={Boolean(state.document.archivedAt)} /> : null}
+      {manualMeta ? (
+        // Same two-column grid as the editor above, so the shared metadata panel ends with the editor column.
+        <div className={styles.editorGrid}>
+          <ManualMetaForm documentId={state.document.id} initial={manualMeta} archived={Boolean(state.document.archivedAt)} />
+        </div>
+      ) : null}
     </section>
   );
 }
