@@ -567,6 +567,7 @@ export function NewsEditor({ mode, uiLocale, contentLocale, initialState, initia
             title={t('confirm.cancelScheduleTitle', { locale: contentLocale })}
             description={t('confirm.cancelScheduleBody', { locale: contentLocale })}
             confirmLabel={t('confirm.cancelScheduleConfirm')}
+            cancelLabel={t('confirm.cancelScheduleKeep')}
             pending={busy === 'cancel'}
             onConfirm={() => void cancelSchedule(confirm.schedule)}
             onCancel={() => setConfirm(null)}

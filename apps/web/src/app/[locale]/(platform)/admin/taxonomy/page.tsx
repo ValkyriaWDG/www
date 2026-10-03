@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { TaxonomyListScreen } from '@/components/admin/taxonomy-list';
 import { routing } from '@/i18n/routing';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/ta
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminTaxonomy' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'content.edit' });
 }
 
 /**

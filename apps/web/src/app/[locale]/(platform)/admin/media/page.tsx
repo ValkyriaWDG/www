@@ -19,7 +19,7 @@ import { DomainError } from '@/lib/result';
 import { can } from '@/modules/access/policy';
 import { getActor } from '@/modules/access/server';
 import { AccessDeniedError } from '@/modules/access/types';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { uuidSchema } from '@/modules/content/inputs';
 import { getAsset, listAssets, scopeCapability, type AssetDetailDTO } from '@/modules/media/library';
 import { importedEditorialTemplates, listEditorialTemplates } from '@/modules/media/templates';
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/me
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'media.library' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle') });
 }
 
 /**

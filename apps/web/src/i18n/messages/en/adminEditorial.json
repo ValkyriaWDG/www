@@ -176,6 +176,7 @@
       "cancelScheduleTitle": "{locale, select, cs {Cancel the scheduled Czech publication?} en {Cancel the scheduled English publication?} other {Cancel the schedule?}}",
       "cancelScheduleBody": "{locale, select, cs {Nothing is published at the scheduled time. The current live Czech version (if any) stays exactly as it is.} en {Nothing is published at the scheduled time. The current live English version (if any) stays exactly as it is.} other {Nothing is published at the scheduled time.}}",
       "cancelScheduleConfirm": "Cancel schedule",
+      "cancelScheduleKeep": "Keep schedule",
       "restoreTitle": "{locale, select, cs {Restore this revision into the Czech draft?} en {Restore this revision into the English draft?} other {Restore this revision?}}",
       "restoreBody": "The revision saved by {author} ({time}) becomes a new draft. The live version changes only when you publish.",
       "restoreConfirm": "Restore to draft",

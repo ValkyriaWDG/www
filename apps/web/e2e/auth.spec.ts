@@ -62,7 +62,10 @@ test.describe('sign-in page', () => {
   });
 
   test('local recovery sign-in does not exist unless enabled', async ({ request }) => {
-    expect((await request.get('/cs/login/recovery')).status()).toBe(404);
+    const response = await request.get('/cs/login/recovery');
+    expect(response.status()).toBe(404);
+    // The disabled route does not announce itself through the page title either.
+    expect(/<title>([^<]*)<\/title>/.exec(await response.text())?.[1]).toBe('Valkyria');
     expect((await request.get('/en/login/recovery')).status()).toBe(404);
   });
 
@@ -110,6 +113,8 @@ test.describe('protected routes', () => {
     // Hidden links are convenience only: direct module URLs are denied as well.
     await page.goto('/cs/admin/news');
     await expect(page.getByTestId('access-denied')).toBeVisible();
+    // The denied page is titled as such, not after the module it protects.
+    await expect(page).toHaveTitle(/^Přístup odepřen/);
     expect(member.userId).toBeTruthy();
   });
 
@@ -124,6 +129,9 @@ test.describe('protected routes', () => {
 
     await page.goto('/en/admin');
     await expect(page.getByTestId('admin-module-news')).toContainText('News');
+    await page.goto('/en/admin/matches');
+    await expect(page.getByTestId('access-denied')).toBeVisible();
+    await expect(page).toHaveTitle(/^Access denied/);
   });
 
   test('an HLL-only editor sees the manual but cannot open community pages', async ({ context, page }) => {

@@ -7,7 +7,7 @@ import { TournamentEditor } from '@/components/admin-community/tournament-editor
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { can, canForGame } from '@/modules/access/policy';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { getTournamentForAdmin } from '@/modules/tournaments/queries';
 
 export const dynamic = 'force-dynamic';
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/to
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.tournaments.editor' });
-  return { title: t('editMetaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('editMetaTitle'), capability: 'matches.edit' });
 }
 
 /** Edit one tournament: facts, links, descriptions per locale, publication and linked matches. */

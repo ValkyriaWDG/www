@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { editorialDb, uniqueSuffix } from './admin-editorial-helpers';
+import { canvas, editorialDb, expectSaved, publish, uniqueSuffix } from './admin-editorial-helpers';
 import { signInAs } from './support/auth';
 
 for (const locale of ['cs', 'en'] as const) {
@@ -111,3 +111,34 @@ for (const locale of ['cs', 'en'] as const) {
     expect(await storedMeta()).toMatchObject({ credits: `${credits} updated`, source_url: 'https://example.org/manual' });
   });
 }
+
+test('a short article without a table of contents keeps the reading column on the public page', async ({ browser, context, page }) => {
+  test.setTimeout(90_000);
+  await signInAs(context, { roles: ['hll_editor'], name: 'Synthetic manual editor' });
+  await page.goto('/cs/admin/manual/new');
+  await page.getByTestId('new-post-title').fill(`[E2E] Krátký článek ${uniqueSuffix()}`);
+  await page.getByTestId('new-post-submit').click();
+  await expect(page).toHaveURL(/\/cs\/admin\/manual\/[0-9a-f-]{36}\?lang=cs$/);
+  await canvas(page, 'cs').click();
+  await page.keyboard.type('Jediný odstavec bez nadpisů, takže článek nemá obsah.');
+  await page.getByTestId('editor-excerpt').fill('Krátký perex.');
+  await page.getByTestId('editor-save').click();
+  await expectSaved(page);
+  await page.locator('#manual-source-url').fill('https://example.org/synthetic-short-article');
+  await page.locator('#manual-credits').fill('Syntetičtí autoři krátkého článku');
+  await page.getByTestId('manual-meta-save').click();
+  await expect(page.getByTestId('manual-meta-form')).toContainText('Údaje článku jsou uložené.');
+  await publish(page);
+  const slug = await page.getByTestId('editor-slug').inputValue();
+
+  const visitor = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await visitor.goto(`/cs/hll/field-manual/${slug}`);
+  await expect(visitor.locator('[data-manual-toc]')).toHaveCount(0);
+  // Without a table of contents the text keeps the reading column instead of the 280 px navigation track.
+  expect((await visitor.locator('[data-article-body]').boundingBox())!.width).toBeGreaterThan(600);
+  const provenance = visitor.locator('[data-manual-provenance]');
+  expect((await provenance.locator('dd').first().boundingBox())!.width).toBeGreaterThan(300);
+  const source = provenance.getByRole('link', { name: /example\.org/ });
+  expect((await source.boundingBox())!.height).toBeLessThan(60);
+  await visitor.close();
+});

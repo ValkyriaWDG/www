@@ -103,6 +103,16 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   expect(await audit.getByRole('region').first().evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
   await expectNoHorizontalOverflow(page);
 
+  // Logi profile associations: the shared labelled checkbox (24 px control in a 44 px row).
+  const alfa = (await memberBySlug(FIXTURE_SLUGS.members.publishedBilingual))!;
+  await page.goto(`/cs/admin/members/logi?profile=${alfa.id}`);
+  const stats = page.getByLabel('Zveřejnit ověřené statistiky relací');
+  await expect(stats).toBeVisible();
+  expect((await stats.boundingBox())!.height).toBeGreaterThanOrEqual(24);
+  expect(await height(page, '[data-logi-link-editor] input[type="checkbox"] + label')).toBeGreaterThanOrEqual(24);
+  expect(await stats.evaluate((input) => input.parentElement!.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+  await expectNoHorizontalOverflow(page);
+
   // Overview: scheduled publications (the fixtures schedule one article).
   await page.goto('/cs/admin');
   const schedules = page.getByTestId('overview-schedules').locator('a');
@@ -170,4 +180,22 @@ test('the rich-text editor injects no inline stylesheet and its toolbar stays ke
 
   expect(errors.filter((error) => /inline style|Content Security Policy/i.test(error))).toEqual([]);
   expect(errors.filter((error) => error.startsWith('pageerror'))).toEqual([]);
+});
+
+test('wide admin tables fade their trailing edge at 1024 px and the Logi pages carry their own titles', async ({ context, page }) => {
+  await signInAs(context, { roles: ['administrator'] });
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.goto('/cs/admin/news');
+  const region = page.getByTestId('admin-news').getByRole('region').first();
+  expect(await region.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  const frame = region.locator('xpath=..');
+  await expect(frame).toHaveAttribute('data-scroll-edges', /^(end|both)$/);
+  await region.evaluate((element) => element.scrollTo({ left: element.scrollWidth }));
+  await expect(frame).toHaveAttribute('data-scroll-edges', 'start');
+  await expect(page.getByTestId('row-actions').first()).toBeInViewport();
+
+  await page.goto('/cs/admin/matches/logi');
+  await expect(page).toHaveTitle(/^Propojené zápasy · Správa/);
+  await page.goto('/en/admin/members/logi');
+  await expect(page).toHaveTitle(/^Logi profile associations · Administration/);
 });

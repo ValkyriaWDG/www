@@ -12,7 +12,7 @@ import { RefreshIcon } from '@/components/ui/icons';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { getIntegrationHealthForAdmin } from '@/modules/integrations/admin-health';
 import type { AdminIntegrationHealth } from '@/modules/integrations/admin-health-types';
 import { getSettingsForAdmin, type AdminSetting } from '@/modules/settings/service';
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/in
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminIntegrations' });
-  return { title: t('metaTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('metaTitle'), capability: 'settings.manage' });
 }
 
 /**

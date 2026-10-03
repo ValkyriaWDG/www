@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/login/recovery'>): Promise<Metadata> {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) return {};
+  if (!hasLocale(routing.locales, locale) || !getServerEnv().LOCAL_ADMIN_LOGIN_ENABLED) return {};
   const t = await getTranslations({ locale, namespace: 'auth.meta' });
   return { title: t('recovery'), robots: { index: false, follow: false } };
 }

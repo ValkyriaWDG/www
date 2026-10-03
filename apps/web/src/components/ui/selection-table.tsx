@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { type ReactNode, useId } from 'react';
 import { Link } from '@/i18n/navigation';
 import { SortIcon } from './icons';
+import { ScrollRegion } from './scroll-region';
 import styles from './data.module.css';
 
 export type SortDirection = 'ascending' | 'descending';
@@ -86,7 +87,7 @@ export function SelectionTable<Row>({ caption, captionHidden, columns, rows, get
           ))}
         </form>
       ) : null}
-      <div className={styles.scroll} role="region" aria-label={t('a11y.scrollRegion', { label: caption })} tabIndex={0}>
+      <ScrollRegion label={t('a11y.scrollRegion', { label: caption })} className={styles.scroll}>
         <table className={styles.table}>
           <caption className={captionHidden ? 'visually-hidden' : styles.caption}>{caption}</caption>
           <thead>
@@ -131,7 +132,7 @@ export function SelectionTable<Row>({ caption, captionHidden, columns, rows, get
             })}
           </tbody>
         </table>
-      </div>
+      </ScrollRegion>
     </>
   );
 }

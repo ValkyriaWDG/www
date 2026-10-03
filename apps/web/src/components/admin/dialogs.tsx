@@ -17,6 +17,7 @@ export function ConfirmDialog({
   title,
   description,
   confirmLabel,
+  cancelLabel,
   intent = 'danger',
   pending = false,
   onConfirm,
@@ -27,6 +28,8 @@ export function ConfirmDialog({
   title: ReactNode;
   description?: ReactNode;
   confirmLabel: string;
+  /** Safe choice label when the generic "Cancel" would read like the destructive action (e.g. cancelling a schedule). */
+  cancelLabel?: string;
   intent?: 'danger' | 'primary';
   pending?: boolean;
   onConfirm: () => void;
@@ -49,7 +52,7 @@ export function ConfirmDialog({
       actions={
         <>
           <GameButton ref={cancelRef} intent="secondary" onClick={onCancel} disabled={pending} data-confirm="cancel">
-            {t('cancel')}
+            {cancelLabel ?? t('cancel')}
           </GameButton>
           <GameButton intent={intent} onClick={onConfirm} pending={pending} pendingLabel={t('working')} data-confirm="confirm">
             {confirmLabel}

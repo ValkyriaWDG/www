@@ -176,6 +176,7 @@
       "cancelScheduleTitle": "{locale, select, cs {Zrušit plánovanou publikaci české verze?} en {Zrušit plánovanou publikaci anglické verze?} other {Zrušit plán?}}",
       "cancelScheduleBody": "{locale, select, cs {V naplánovaném čase se nic nezveřejní. Aktuální zveřejněná česká verze (pokud existuje) zůstane přesně taková, jaká je.} en {V naplánovaném čase se nic nezveřejní. Aktuální zveřejněná anglická verze (pokud existuje) zůstane přesně taková, jaká je.} other {V naplánovaném čase se nic nezveřejní.}}",
       "cancelScheduleConfirm": "Zrušit plán",
+      "cancelScheduleKeep": "Ponechat plán",
       "restoreTitle": "{locale, select, cs {Obnovit tuto revizi do českého konceptu?} en {Obnovit tuto revizi do anglického konceptu?} other {Obnovit tuto revizi?}}",
       "restoreBody": "Revize, kterou uložil(a) {author} ({time}), se stane novým konceptem. Zveřejněná verze se změní až po zveřejnění.",
       "restoreConfirm": "Obnovit do konceptu",

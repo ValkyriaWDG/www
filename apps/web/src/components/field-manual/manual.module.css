@@ -432,6 +432,12 @@
     grid-template-columns: minmax(220px, 280px) minmax(0, 76ch);
     gap: 32px;
   }
+
+  /* A short article has no table of contents: the text keeps the reading column instead
+     of falling into the empty 280 px navigation track. */
+  .articleLayout:not([data-manual-toc-present]) {
+    grid-template-columns: minmax(0, 76ch);
+  }
 }
 
 .toc {

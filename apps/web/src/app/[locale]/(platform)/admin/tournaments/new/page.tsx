@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { TournamentEditor } from '@/components/admin-community/tournament-editor';
 import { routing } from '@/i18n/routing';
 import { can, canForGame } from '@/modules/access/policy';
-import { requireAdminPage } from '@/modules/auth/admin-guard';
+import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/admin/to
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: 'adminCommunity.tournaments.editor' });
-  return { title: t('createTitle'), robots: { index: false, follow: false } };
+  return adminPageMetadata({ locale, title: t('createTitle'), capability: 'matches.edit' });
 }
 
 /** Creates a draft tournament for a game in the editor's scope. */
