@@ -151,6 +151,11 @@ export const match = pgTable(
     publishedAt: tz('published_at'),
     eventUrl: text('event_url'),
     vodLinks: jsonb('vod_links').$type<ExternalLink[]>().notNull().default(sql`'[]'::jsonb`),
+    /**
+     * Editorial Wardogs League detail link (canonical `https://wardogsleague.net/matches/<id>`),
+     * read on demand as an unverified preview. Never a result source; Wardogs matches only.
+     */
+    leagueMatchUrl: text('league_match_url'),
     coverAssetId: uuid('cover_asset_id').references(() => asset.id, { onDelete: 'set null' }),
     /** Private administration only; never selected into public DTOs. */
     internalNotes: text('internal_notes').notNull().default(''),
@@ -162,6 +167,10 @@ export const match = pgTable(
   },
   (t) => [
     index('match_public_idx').on(t.publication, t.startsAt),
+    check(
+      'match_league_url_ck',
+      sql`${t.leagueMatchUrl} is null or (${t.game} = 'wardogs' and length(${t.leagueMatchUrl}) <= 125 and ${t.leagueMatchUrl} ~ '^https://wardogsleague\\.net/matches/[A-Za-z0-9_-]{1,80}$')`,
+    ),
     index('match_tournament_idx').on(t.tournamentId, t.startsAt),
     check('match_game_ck', sql`${t.game} in (${sqlList(GAMES)})`),
     check('match_status_ck', sql`${t.status} in (${sqlList(MATCH_STATUSES)})`),
