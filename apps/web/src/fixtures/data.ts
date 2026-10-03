@@ -282,6 +282,8 @@ export type FixtureMatch = {
   status: 'scheduled' | 'live' | 'completed' | 'postponed' | 'cancelled';
   published: boolean;
   eventUrl: string | null;
+  /** Synthetic Wardogs League link (accepted URL shape, nonexistent fixture ID). */
+  leagueMatchUrl?: string;
   vodLinks: { url: string; label: string }[];
   internalNotes: string;
   result?: {
@@ -311,6 +313,7 @@ export const FIXTURE_MATCHES: FixtureMatch[] = [
     status: 'scheduled',
     published: true,
     eventUrl: 'https://example.org/synthetic-fixture/event-alpha',
+    leagueMatchUrl: 'https://wardogsleague.net/matches/synthetic-fixture-alpha',
     vodLinks: [],
     internalNotes: 'Synthetic internal note (upcoming): must never appear publicly.',
     recap: {},

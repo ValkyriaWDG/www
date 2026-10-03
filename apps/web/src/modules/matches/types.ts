@@ -95,6 +95,8 @@ export type PublicMatchDetail = PublicMatchSummary & {
   bestOf: number | null;
   teamSize: number | null;
   eventUrl: string | null;
+  /** Canonical Wardogs League detail link read as an unverified preview (Wardogs only). */
+  leagueMatchUrl: string | null;
   vodLinks: ExternalLink[];
   /** Shared cover image; alt/caption from the requested locale's published recap snapshot when it uses the same asset. */
   cover: PublicMatchCover | null;
@@ -149,6 +151,7 @@ export type AdminMatch = AdminMatchListItem & {
   bestOf: number | null;
   teamSize: number | null;
   eventUrl: string | null;
+  leagueMatchUrl: string | null;
   vodLinks: ExternalLink[];
   coverAssetId: string | null;
   /** Private administration text; never part of any public DTO. */

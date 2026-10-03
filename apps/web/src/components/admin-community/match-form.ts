@@ -1,5 +1,6 @@
 import type { CompetitionType, Game, MatchOutcome, MatchStatus, ResultVerification } from '@valkyria/db/schema';
 import { roundIssuesForGame } from '@/modules/games/hll-catalog';
+import { isLeagueMatchUrl, LEAGUE_MATCH_URL_MAX_LENGTH } from '@/modules/integrations/logi/readers/league-url';
 import { DEFAULT_MATCH_TIME_ZONE, isValidTimeZone, ZonedTimeError, zonedLocalDateTime, zonedLocalToInstant } from '@/modules/matches/time';
 import type { AdminMatch } from '@/modules/matches/types';
 import type { FieldErrors } from './errors';
@@ -48,6 +49,8 @@ export type FactsValues = {
   bestOf: string;
   teamSize: string;
   eventUrl: string;
+  /** Wardogs League detail link (Wardogs matches only); shown publicly as an unverified preview. */
+  leagueMatchUrl: string;
   vodLinks: VodLinkValues[];
   cover: MediaRef | null;
   internalNotes: string;
@@ -96,6 +99,7 @@ export function emptyFacts(): FactsValues {
     bestOf: '',
     teamSize: '',
     eventUrl: '',
+    leagueMatchUrl: '',
     vodLinks: [],
     cover: null,
     internalNotes: '',
@@ -117,6 +121,7 @@ export function factsFrom(match: AdminMatch): FactsValues {
     bestOf: numberText(match.bestOf),
     teamSize: numberText(match.teamSize),
     eventUrl: text(match.eventUrl),
+    leagueMatchUrl: text(match.leagueMatchUrl),
     vodLinks: match.vodLinks.map((link) => ({ key: newVodKey(), label: link.label, url: link.url })),
     cover: match.coverAssetId ? { assetId: match.coverAssetId, filename: null } : null,
     internalNotes: match.internalNotes,
@@ -180,6 +185,7 @@ export function factsEqual(a: FactsValues, b: FactsValues): boolean {
     a.bestOf === b.bestOf &&
     a.teamSize === b.teamSize &&
     a.eventUrl === b.eventUrl &&
+    a.leagueMatchUrl === b.leagueMatchUrl &&
     vodsEqual(a.vodLinks, b.vodLinks) &&
     mediaId(a.cover) === mediaId(b.cover) &&
     a.internalNotes === b.internalNotes &&
@@ -288,6 +294,10 @@ export function validateFacts(values: FactsValues): FieldErrors {
   const errors: FieldErrors = {};
   if (values.opponentName.trim() === '') errors.opponentName = 'required';
   if (values.eventUrl.trim() !== '' && !isHttpsUrl(values.eventUrl)) errors.eventUrl = 'invalid_format';
+  if (values.leagueMatchUrl.trim() !== '') {
+    if (values.game !== 'wardogs') errors.leagueMatchUrl = 'wardogs_only';
+    else if (values.leagueMatchUrl.trim().length > LEAGUE_MATCH_URL_MAX_LENGTH || !isLeagueMatchUrl(values.leagueMatchUrl)) errors.leagueMatchUrl = 'invalid_league_url';
+  }
   for (const field of ['bestOf', 'teamSize'] as const) {
     const parsed = parseCount(values[field]);
     if (parsed !== null && (Number.isNaN(parsed) || parsed < 1)) errors[field] = 'invalid_number';
@@ -356,6 +366,7 @@ function factsPayload(values: FactsValues) {
     bestOf: parseCount(values.bestOf),
     teamSize: parseCount(values.teamSize),
     eventUrl: optionalText(values.eventUrl),
+    leagueMatchUrl: optionalText(values.leagueMatchUrl),
     vodLinks: vodInput(values.vodLinks),
     coverAssetId: values.cover?.assetId ?? null,
     internalNotes: values.internalNotes,

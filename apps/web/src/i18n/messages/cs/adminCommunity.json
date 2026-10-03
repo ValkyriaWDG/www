@@ -126,7 +126,9 @@
     "ends_before_start": "Konec nemůže být před začátkem.",
     "has_matches": "K turnaji jsou připojené zápasy; hru nelze změnit, dokud je neodpojíte.",
     "game_mismatch": "Turnaj patří k jiné hře než zápas.",
-    "tournament_missing": "Vybraný turnaj už neexistuje."
+    "tournament_missing": "Vybraný turnaj už neexistuje.",
+    "wardogs_only": "Toto pole se týká jen zápasů Wardogs.",
+    "invalid_league_url": "Zadejte adresu detailu zápasu ve tvaru https://wardogsleague.net/matches/ID."
   },
   "media": {
     "none": "Bez obrázku",
@@ -302,7 +304,8 @@
         "internalNotes": "Interní poznámky",
         "newDate": "Nové datum",
         "newTime": "Nový čas",
-        "tournament": "Turnaj"
+        "tournament": "Turnaj",
+        "leagueMatchUrl": "Odkaz na zápas ve Wardogs League"
       },
       "hints": {
         "opponentShortCode": "Např. tag klanu. Písmena, číslice, tečky a pomlčky.",
@@ -319,7 +322,8 @@
         "verified": "Potvrzený oficiálním zdrojem.",
         "source": "Odkud výsledek pochází, např. web ligy.",
         "internalNotes": "Nikdy se nezobrazí na veřejném webu, v reportážích ani v náhledech.",
-        "tournament": "Soutěž z přehledu turnajů stejné hry; veřejně se zobrazí až po zveřejnění turnaje."
+        "tournament": "Soutěž z přehledu turnajů stejné hry; veřejně se zobrazí až po zveřejnění turnaje.",
+        "leagueMatchUrl": "Jen https://wardogsleague.net/matches/ID, pouze u zápasů Wardogs. Veřejně se zobrazí jako neověřený náhled z League; jediným výsledkem zůstává výsledek zapsaný níže."
       },
       "scheduleIntro": "Kdy se zápas hraje. Nejde o čas zveřejnění stránky zápasu.",
       "currentStart": "Plánovaný začátek",
