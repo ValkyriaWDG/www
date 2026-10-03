@@ -21,22 +21,17 @@ behaviour change. See the
 [readiness map](integrations/logi/readiness-2026-10-03.md#reader-capability-states)
 and [runbook](integrations/logi/runbook.md#wardogs-league-and-warcon-readers).
 
-Run from `apps/web` on the branch head: `pnpm lint` passed; `pnpm typecheck` passed;
-`pnpm test:unit` passed 93 files / 1015 tests (62 new reader tests, League label, config, view and
-schema additions, dictionary parity); `DATABASE_URL=… npx vitest run --project
-integration tests/integration/matches-league-url.test.ts tests/integration/matches-lifecycle.test.ts
-tests/integration/game-scope.test.ts tests/integration/fixtures-synthetic.test.ts
-tests/integration/fixtures-schema-compat.test.ts tests/integration/migrations.test.ts
-tests/integration/schema-invariants.test.ts` passed 62 tests; `node scripts/check-foundation.mjs`
-passed. Not run yet: `pnpm build`, the browser suites (`e2e/wardogs-warcon.spec.ts`,
-the regression suite) and the opt-in captures (`CAPTURE_EVIDENCE=1 pnpm test:e2e
-e2e/visual-wardogs-readers.spec.ts` → `.local/evidence/wardogs-readers/`). The browser
-environment uses `LOGI_READERS_SOURCE=synthetic-fixture`; this is local synthetic
-proof, not hosted acceptance. Open operator questions before activation are listed in
-the readiness map. Next: build and browser verification, PR with captioned captures,
-the orchestrator's build/browser/PostgreSQL runs on the merged head. The readers appear
-on `/[locale]/admin/integrations` as the "Čtečky Wardogs (League, Warcon)" block of the
-Logi section (state, approved-connection count, last attempt and its category).
+On `1342841` (merged with main `86b6061`) lint, typecheck and the optimized build passed
+with 1033 unit, 513 PostgreSQL and 237 browser tests (107 opt-in captures
+skipped); the first full browser run had put the Warcon panel on the Wardogs home as
+well, which broke the short-window layout, so the panel stays on the server detail only.
+Eight inspected CS/EN captures of the server detail and the match page at 1440 and 390 px
+plus the administration page with the readers block are in the
+[evidence](evidence/logi-readers-2026-10-03/README.md). The browser environment uses
+`LOGI_READERS_SOURCE=synthetic-fixture`: this is local synthetic proof, not hosted
+acceptance; the operator questions before activation are in the readiness map. Next: PR,
+latest-head CI, merge and publication; then the hosted keys, connection ids and the
+deployed producer revision from the operator.
 
 ## Integration health administration — 2026-10-03
 
@@ -67,8 +62,9 @@ PostgreSQL and 227 browser tests (99 opt-in captures skipped); four inspected CS
 captures are in the [evidence](evidence/integrations-admin-2026-10-03/README.md). Local
 synthetic verification only: no Logi source is configured in the e2e environment, so the
 Logi states are proven by seeded PostgreSQL cases. Logi settings writes, hosted runtime
-facts and production activation stay out of scope. Next: PR, latest-head CI, merge and
-publication; the Logi readers (#87) add their capability states to this page.
+facts and production activation stay out of scope. Merged as `86b6061` (PR #93); the
+publication of that main passed verification and its publish job waits for the
+environment approval. The Logi readers (#87) add their capability states to this page.
 
 ## Taxonomy administration (#86) — 2026-10-03
 

@@ -16484,6 +16484,116 @@
       "bytes": 101034,
       "width": 1368,
       "height": 1617
+    },
+    {
+      "id": "logi-readers-server-detail-warcon-cs-1440x1050",
+      "path": "docs/evidence/logi-readers-2026-10-03/server-detail-warcon-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/servers?server=synthetic-wardogs; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "9a7caa3c1182141c93d56c3ee20666c0add3203a90b971bebd69bfe29ff1947a",
+      "bytes": 99304,
+      "width": 1440,
+      "height": 2255
+    },
+    {
+      "id": "logi-readers-match-league-preview-cs-1440x1050",
+      "path": "docs/evidence/logi-readers-2026-10-03/match-league-preview-cs-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/ukazka-wardogs-nadchazejici; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "3e615fb171b9f032a3f0c953bd0a177d7e84fca84ae1082d5ccb3be6315cc064",
+      "bytes": 85952,
+      "width": 1440,
+      "height": 1700
+    },
+    {
+      "id": "logi-readers-server-detail-warcon-en-1440x1050",
+      "path": "docs/evidence/logi-readers-2026-10-03/server-detail-warcon-en-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/servers?server=synthetic-wardogs; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1c505835dda80307abf3057d1067d8dbeefc6c63d39ccc983206ea1e828b121b",
+      "bytes": 97344,
+      "width": 1440,
+      "height": 2235
+    },
+    {
+      "id": "logi-readers-match-league-preview-en-1440x1050",
+      "path": "docs/evidence/logi-readers-2026-10-03/match-league-preview-en-1440x1050.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/matches/ukazka-wardogs-nadchazejici; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "8b5aabc22a03311b2ecd2d0d1f5d6dcda887b67d606f60ced5c4020ee0d5c8fa",
+      "bytes": 81612,
+      "width": 1440,
+      "height": 1700
+    },
+    {
+      "id": "logi-readers-server-detail-warcon-cs-390x844",
+      "path": "docs/evidence/logi-readers-2026-10-03/server-detail-warcon-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/servers?server=synthetic-wardogs; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "5a74ef1dab50bdeb7990f0f7e2cb6bb24f058dbde7435e0b7cb739007cfc5f40",
+      "bytes": 83040,
+      "width": 390,
+      "height": 3377
+    },
+    {
+      "id": "logi-readers-match-league-preview-cs-390x844",
+      "path": "docs/evidence/logi-readers-2026-10-03/match-league-preview-cs-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/wardogs/matches/ukazka-wardogs-nadchazejici; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "ebf26c158607fa0fd3f993eba77b15c957ce73e1ea38cbaf4391d7481a134359",
+      "bytes": 54636,
+      "width": 390,
+      "height": 2183
+    },
+    {
+      "id": "logi-readers-server-detail-warcon-en-390x844",
+      "path": "docs/evidence/logi-readers-2026-10-03/server-detail-warcon-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/servers?server=synthetic-wardogs; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "554049da840e24d833e78ff0587b48e93e20765314f917fd88e67203c2290b61",
+      "bytes": 81790,
+      "width": 390,
+      "height": 3377
+    },
+    {
+      "id": "logi-readers-match-league-preview-en-390x844",
+      "path": "docs/evidence/logi-readers-2026-10-03/match-league-preview-en-390x844.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/wardogs/matches/ukazka-wardogs-nadchazejici; visitor; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "8dc41f4ceb61daa554d48d2ba5e8437c4dd829ef81331a318153e7f3f4ef44a0",
+      "bytes": 52264,
+      "width": 390,
+      "height": 2136
+    },
+    {
+      "id": "logi-readers-admin-integrations-cs-1440x900-full",
+      "path": "docs/evidence/logi-readers-2026-10-03/integrations-cs-1440x900-full.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /cs/admin/integrations; administrator; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "20893bf8f486b02a6708025b2e2f800677168c107d3fea398f0821ef507ad6ec",
+      "bytes": 189970,
+      "width": 1440,
+      "height": 3199
+    },
+    {
+      "id": "logi-readers-admin-integrations-en-390x844-logi",
+      "path": "docs/evidence/logi-readers-2026-10-03/integrations-en-390x844-logi.webp",
+      "source": "Actual Chromium browser capture, 2026-10-03; local standalone production build with synthetic e2e fixtures and the synthetic reader source; /en/admin/integrations; administrator; source 1342841",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; excluded from the Apache code license",
+      "sha256": "1f8450c7a66bc905bfb8c7b42d003c86abb2b5e133066ac998e12cba05d4abbd",
+      "bytes": 35308,
+      "width": 390,
+      "height": 844
     }
   ]
 }
