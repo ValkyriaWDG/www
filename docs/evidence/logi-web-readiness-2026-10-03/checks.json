@@ -1,0 +1,52 @@
+{
+  "base": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+  "sourceState": "Verified unchanged tested app source committed; see source-manifest.json",
+  "nextBuildId": "_Xdm70C5k9uTgh4u_8UfD",
+  "environment": {
+    "os": "Windows x64",
+    "node": "24.21.0",
+    "pnpm": "10.34.5",
+    "postgres": "18.4",
+    "databaseLocale": "ICU en-US UTF-8",
+    "data": "Disposable synthetic fixtures"
+  },
+  "results": {
+    "frozenInstall": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "optimizedBuild": "passed",
+    "unit": {
+      "files": 85,
+      "passed": 929
+    },
+    "postgresIntegration": {
+      "files": 46,
+      "passed": 482
+    },
+    "cleanBrowser": {
+      "passed": 214,
+      "skipped": 124,
+      "retries": 0,
+      "note": "Includes all 4 new CS/EN manual cases and FAQ regression; skipped cases are opt-in captures."
+    },
+    "foundation": "Passed with handoff, screenshot integrity and local documentation links: 2829 files"
+  },
+  "diagnosedEarlierFailures": [
+    "Manual filter navigation test race corrected by waiting for committed filter state",
+    "Mutated fixtures reused by a still-running E2E server; clean guarded reset with CI=true passed",
+    "C locale did not support required Czech ILIKE behavior; isolated ICU cluster passed"
+  ],
+  "limits": [
+    "No committed PR-head CI yet",
+    "No new container runtime or deployment verification",
+    "No hosted Logi SSO/grant acceptance",
+    "No production database mutation or private admin session",
+    "New manual screenshot attachments not visually reviewed; inspect or recapture"
+  ],
+  "followUpIssues": [
+    86,
+    87
+  ],
+  "logiProducerSource": "c42ea770c307793494ae159a924f86e3c6ced50d",
+  "runtimeCommit": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1"
+}

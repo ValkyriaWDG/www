@@ -1,0 +1,217 @@
+{
+  "base": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+  "runtimeCommit": "ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1",
+  "nextBuildId": "_Xdm70C5k9uTgh4u_8UfD",
+  "files": [
+    {
+      "path": "apps/web/e2e/admin-faq.spec.ts",
+      "testedSha256": "531a7f90aaf5e70651debfed03351a14188baa238ef0c6d3e82d541d9bb587a3",
+      "committedSha256": "531a7f90aaf5e70651debfed03351a14188baa238ef0c6d3e82d541d9bb587a3",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/e2e/admin-manual.spec.ts",
+      "testedSha256": "46dc47138ba640d9ea9613526fa2757f70d02716f415fe6b980584a97b11533c",
+      "committedSha256": "46dc47138ba640d9ea9613526fa2757f70d02716f415fe6b980584a97b11533c",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/e2e/auth.spec.ts",
+      "testedSha256": "aa8beef926e932c91813be88706d1aaee3337d7b7ba931803b6f3957707f7848",
+      "committedSha256": "aa8beef926e932c91813be88706d1aaee3337d7b7ba931803b6f3957707f7848",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/e2e/support/auth.ts",
+      "testedSha256": "f067f86cfbd9aba591d90f7c1d608db96faa4c9f7aba0ee5392daab21cd07a41",
+      "committedSha256": "f067f86cfbd9aba591d90f7c1d608db96faa4c9f7aba0ee5392daab21cd07a41",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/e2e/support/server-env.ts",
+      "testedSha256": "a2c7df2323c517c263082cdc800a82a3abc57ba02446c2f01ab57c55479e3230",
+      "committedSha256": "a2c7df2323c517c263082cdc800a82a3abc57ba02446c2f01ab57c55479e3230",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/e2e/visual-auth.spec.ts",
+      "testedSha256": "aedab3f2d679a0b74a092c211888a9172ba2a12ae3844d62200cfe0041879ec5",
+      "committedSha256": "aedab3f2d679a0b74a092c211888a9172ba2a12ae3844d62200cfe0041879ec5",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/admin/content/page.tsx",
+      "testedSha256": "19d6a05167c7c9ce8b93d8ff6a932a9ab973cb12cdf20344ad3ead2bd7208ce7",
+      "committedSha256": "19d6a05167c7c9ce8b93d8ff6a932a9ab973cb12cdf20344ad3ead2bd7208ce7",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/admin/manual/new/page.tsx",
+      "testedSha256": "cde6eb760a7ec70e20db5318ca3328d2f6fd6dc974df38d776f53377061c8313",
+      "committedSha256": "cde6eb760a7ec70e20db5318ca3328d2f6fd6dc974df38d776f53377061c8313",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/admin/manual/page.tsx",
+      "testedSha256": "2cb06ca08b143d2934973b8f4893f64354abb2ac95b453d54595de02ab43a05e",
+      "committedSha256": "2cb06ca08b143d2934973b8f4893f64354abb2ac95b453d54595de02ab43a05e",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/app/[locale]/(platform)/login/page.tsx",
+      "testedSha256": "445ad1b5cfcd66e627cb9f80e36c2367f7c22867c0ca9134df66ad92618f86d8",
+      "committedSha256": "445ad1b5cfcd66e627cb9f80e36c2367f7c22867c0ca9134df66ad92618f86d8",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/admin/editorial-list.tsx",
+      "testedSha256": "2150212ce83338861e81854e2e6c6c150ae2568a216c14eeecb1d85bc67fb55b",
+      "committedSha256": "2150212ce83338861e81854e2e6c6c150ae2568a216c14eeecb1d85bc67fb55b",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/admin/manual-meta-form.tsx",
+      "testedSha256": "a493c99e5eba820a70a23e49ac74243084ec5787f23012f4f470bc764c99ee15",
+      "committedSha256": "a493c99e5eba820a70a23e49ac74243084ec5787f23012f4f470bc764c99ee15",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/public/core-page.tsx",
+      "testedSha256": "50732fd670256fe7233f4eff66030eb4a2faae012d2a1df3d454e3277d30d75b",
+      "committedSha256": "50732fd670256fe7233f4eff66030eb4a2faae012d2a1df3d454e3277d30d75b",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/public/faq-summary.ts",
+      "testedSha256": "e72b3a5f27b128ad6d24fefb229232aca9061ec47525e0b745e26d57f8d01f67",
+      "committedSha256": "e72b3a5f27b128ad6d24fefb229232aca9061ec47525e0b745e26d57f8d01f67",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/shell/footer.module.css",
+      "testedSha256": "55c78b6473e36dd521ad4e9d59dff70f7955a1a96dbd441010e63224567292de",
+      "committedSha256": "55c78b6473e36dd521ad4e9d59dff70f7955a1a96dbd441010e63224567292de",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/shell/home/home.module.css",
+      "testedSha256": "27741544c4e1649071a21bad900f602ec6f52c7f7c7999e342018cd88580b4db",
+      "committedSha256": "27741544c4e1649071a21bad900f602ec6f52c7f7c7999e342018cd88580b4db",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/shell/site-footer.tsx",
+      "testedSha256": "91d4ecee338da0defd5ffcc3fe3bb6172df10f54ad97d28395e6cd29ff8687ac",
+      "committedSha256": "91d4ecee338da0defd5ffcc3fe3bb6172df10f54ad97d28395e6cd29ff8687ac",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/components/ui/utility-button.module.css",
+      "testedSha256": "804eee0e8db4ae26f435c683037aa8175a5f06375605beee22352b66250f88a2",
+      "committedSha256": "804eee0e8db4ae26f435c683037aa8175a5f06375605beee22352b66250f88a2",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/cs/admin.json",
+      "testedSha256": "26be332bb6bd66cc8ed3392eb3d502cf66d144a035113473832ceaf5802a47d7",
+      "committedSha256": "26be332bb6bd66cc8ed3392eb3d502cf66d144a035113473832ceaf5802a47d7",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/cs/auth.json",
+      "testedSha256": "63b43ff04a97d62b9b2be537b9e9c42df1c168fdd6ba51c7cf53d68800672746",
+      "committedSha256": "63b43ff04a97d62b9b2be537b9e9c42df1c168fdd6ba51c7cf53d68800672746",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/en/admin.json",
+      "testedSha256": "4179aadecd969af34d01600d4919a71c1e90da3f235422e30bf0aac738ab0abc",
+      "committedSha256": "4179aadecd969af34d01600d4919a71c1e90da3f235422e30bf0aac738ab0abc",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/i18n/messages/en/auth.json",
+      "testedSha256": "b7eaa62f10245a93f0b204bae93240d0150ba3406cbddf01756fa6a8e0b278c4",
+      "committedSha256": "b7eaa62f10245a93f0b204bae93240d0150ba3406cbddf01756fa6a8e0b278c4",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/admin-guard.tsx",
+      "testedSha256": "09a5ccf00c13504d91118dfa6c00d4532ac62e57987a7287d3bb3ea13124e98a",
+      "committedSha256": "09a5ccf00c13504d91118dfa6c00d4532ac62e57987a7287d3bb3ea13124e98a",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/admin-modules.test.ts",
+      "testedSha256": "21abc6fb562587133c28674354e1230d7f11511689d1df863f34f585fe952fa4",
+      "committedSha256": "21abc6fb562587133c28674354e1230d7f11511689d1df863f34f585fe952fa4",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/admin-modules.ts",
+      "testedSha256": "6c9dc4cb07e4b017e58901c5c3602a68faf2a675a489754700cea0b9d98cf7be",
+      "committedSha256": "6c9dc4cb07e4b017e58901c5c3602a68faf2a675a489754700cea0b9d98cf7be",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/login-actions.test.ts",
+      "testedSha256": "97e07e0305b7ba03399ef89fcaeb2d3977fd4dd3d7a15eb80c0187b91ed5b7b4",
+      "committedSha256": "97e07e0305b7ba03399ef89fcaeb2d3977fd4dd3d7a15eb80c0187b91ed5b7b4",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/login-page.test.tsx",
+      "testedSha256": "540f30b8b2887ac991a9ade5961afd6ef037a1a9c46dac8de766c56d80b4147c",
+      "committedSha256": "540f30b8b2887ac991a9ade5961afd6ef037a1a9c46dac8de766c56d80b4147c",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/auth/ui/auth.module.css",
+      "testedSha256": "7010293256af7c9c81e6a5624b881613e7fd984276b4a451e99e493513669ec0",
+      "committedSha256": "7010293256af7c9c81e6a5624b881613e7fd984276b4a451e99e493513669ec0",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/field-manual/README.md",
+      "testedSha256": "9d96da5a9627e3f67fb626598b7b612bbd415be815c384fedc5440f0bed589f5",
+      "committedSha256": "9d96da5a9627e3f67fb626598b7b612bbd415be815c384fedc5440f0bed589f5",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-public.test.ts",
+      "testedSha256": "805f02f5f9ee06d08e1bb42219ed2be43c1cf02abc92bffce7ed70fc09214cd2",
+      "committedSha256": "805f02f5f9ee06d08e1bb42219ed2be43c1cf02abc92bffce7ed70fc09214cd2",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi-public.ts",
+      "testedSha256": "386550fc5fdc6841026a4b18984cfe4956c7101a7f8e02e408c6578b7110cc41",
+      "committedSha256": "386550fc5fdc6841026a4b18984cfe4956c7101a7f8e02e408c6578b7110cc41",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/sync.test.ts",
+      "testedSha256": "f7e74271f2521351598384a224373867c1d803f7482caf0c531ab7b030eca7cc",
+      "committedSha256": "f7e74271f2521351598384a224373867c1d803f7482caf0c531ab7b030eca7cc",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/src/modules/integrations/logi/sync.ts",
+      "testedSha256": "23ad93534a0b94bd02b8835eefa8af9b069dba71fb00ff24fe6076e72153e575",
+      "committedSha256": "23ad93534a0b94bd02b8835eefa8af9b069dba71fb00ff24fe6076e72153e575",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/tests/integration/auth-request.test.ts",
+      "testedSha256": "e3f44affb99a0baf39907cc1a8797cfb5a3805bd1f53d80dfe1fe28294d1ca80",
+      "committedSha256": "e3f44affb99a0baf39907cc1a8797cfb5a3805bd1f53d80dfe1fe28294d1ca80",
+      "lineEndingNormalizationOnly": false
+    },
+    {
+      "path": "apps/web/tests/unit/legacy-editorial-renderers.test.tsx",
+      "testedSha256": "88ca79c1525e801e7b2fcf3e7ed447c4a9e5c546a2762e64f7dd4ac4171df92a",
+      "committedSha256": "88ca79c1525e801e7b2fcf3e7ed447c4a9e5c546a2762e64f7dd4ac4171df92a",
+      "lineEndingNormalizationOnly": false
+    }
+  ]
+}

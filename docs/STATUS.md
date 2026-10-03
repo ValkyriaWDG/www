@@ -1,5 +1,28 @@
 # Current status
 
+## Website/Logi review handoff — 2026-10-03
+
+Runtime commit `ce0db5ebb00b2d341d0cde45e49b4e6f296f83e1` on
+`fix/logi-web-readiness` restores visible Logi login readiness, enlarges Wardogs
+home controls, repairs manual search/unsaved metadata and fixed-scope admin access,
+removes duplicated imported FAQ introductions, and repairs Logi pagination reset
+and failed-collector freshness handling. Lint, typecheck and optimized build passed,
+with 929 unit, 482 PostgreSQL and 214 browser tests; 124 opt-in captures were skipped.
+This is local synthetic verification. The read-only production check found source
+`0a94d59` with Logi client/source configuration absent; no hosted activation or new
+deployment occurred during the handoff.
+
+The owner requested transfer to Claude and explicitly authorized autonomous website
+commits, PR merges, image publication and deployment after review and successful
+checks. Read the [updated handoff](handoff/claude-logi-web-readiness-2026-10-03.md),
+[readiness map](integrations/logi/readiness-2026-10-03.md),
+[editor guide](operations/editor-guide.md) and
+[evidence](evidence/logi-web-readiness-2026-10-03/README.md).
+Next: independently review the branch, inspect/regenerate admin screenshots, verify
+current-head CI, then complete the authorized release. Follow-ups #86 (taxonomy)
+and #87 (approved Wardogs readers) remain open alongside hosted acceptance #23/#8/#7
+and administration health #22. Do not mistake this handoff for completed activation.
+
 ## Background test hydration wait — 2026-10-03
 
 The publication qualification for merged PR #84 stopped before image publication:
