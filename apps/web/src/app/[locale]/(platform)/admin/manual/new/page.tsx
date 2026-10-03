@@ -23,7 +23,7 @@ export default async function NewManualArticlePage({ params }: PageProps<'/[loca
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const access = await requireAdminPage({ locale, path: '/admin/manual/new', capability: 'content.edit' });
+  const access = await requireAdminPage({ locale, path: '/admin/manual/new', capability: 'content.edit', game: 'hell-let-loose' });
   if (!access.ok) return access.denied;
   const t = await getTranslations({ locale, namespace: 'adminEditorial.manual' });
   return (

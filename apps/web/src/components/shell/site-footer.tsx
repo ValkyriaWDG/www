@@ -9,7 +9,7 @@ type SiteFooterProps = { discordUrl: string | null; hasBackgroundVideo: boolean;
 
 /**
  * Utility rail / site footer on every localized page: community links on the left
- * (Discord, News, HLL WEB), background control plus visible HLL WEB and Privacy links on
+ * (Discord, News), background control and Privacy links on
  * the right. On home it sits under the action stack like reference 09's utility rows.
  */
 export async function SiteFooter({ discordUrl, hasBackgroundVideo, newsHref }: SiteFooterProps) {

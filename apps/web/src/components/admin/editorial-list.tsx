@@ -145,7 +145,7 @@ export async function EditorialListScreen({ locale, actor, raw, kind }: { locale
         </FeedbackNotice>
       ) : null}
       <FilterBar
-        action="/admin/news"
+        action={basePath}
         searchLabel={t('list.searchLabel')}
         searchValue={filters.q}
         searchPlaceholder={t('list.searchPlaceholder')}

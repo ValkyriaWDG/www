@@ -28,6 +28,10 @@ test('an editor publishes the Czech FAQ independently of English', async ({ cont
   await page.keyboard.press('Home');
   await page.keyboard.press('Shift+End');
   await page.keyboard.type(answer);
+  // Legacy imports generated this summary from the answers; it must not become a
+  // long, truncated second copy above the public question index.
+  const copiedExcerpt = `${(await canvas(page, 'cs').innerText()).replace(/\s+/g, ' ').trim().slice(0, 590)}…`;
+  await page.getByTestId('editor-excerpt').fill(copiedExcerpt);
   await page.getByTestId('editor-save').click();
   await expectSaved(page);
   await expect(page.getByTestId('editor-publish')).toHaveText('Publikovat češtinu');
@@ -39,6 +43,10 @@ test('an editor publishes the Czech FAQ independently of English', async ({ cont
   const visitor = await visitorContext.newPage();
   await visitor.goto('/cs/hll/faq');
   await expect(visitor.locator('[data-core-page="faq"]')).toHaveAttribute('data-published', 'true');
+  const header = visitor.locator('header:has(#faq-title)');
+  await expect(header).toContainText('Odpovědi na nejčastější otázky o komunitě Valkyria, náboru, VIP a hraní Hell Let Loose.');
+  await expect(header).not.toContainText(answer);
+  await expect(header).not.toContainText('Jak se přidat do Valkyrie?');
   const index = visitor.locator('[data-faq-index]');
   await expect(index.getByRole('link')).toHaveCount(11);
   await expect(index.getByRole('link').first()).toHaveText('Jak se přidat do Valkyrie?');

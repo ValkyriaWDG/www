@@ -1,4 +1,7 @@
 .home {
+  --action-stack-width: clamp(320px, 24vw, 470px);
+  --cta-height: clamp(112px, 14vh, 160px);
+  --secondary-action-height: clamp(52px, 5.5vh, 64px);
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -19,6 +22,7 @@
 
 .actions {
   display: grid;
+  flex-shrink: 0;
   gap: var(--action-gap);
   width: var(--action-stack-width);
   max-width: 100%;

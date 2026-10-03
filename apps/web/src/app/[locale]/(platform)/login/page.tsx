@@ -61,32 +61,34 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
           </>
         ) : (
           <>
-            <p className={styles.lead}>{t(preferLogi ? 'logiPurpose' : 'purpose')}</p>
+            <p className={styles.lead}>{t(logiReady ? 'logiPurpose' : 'signInPurpose')}</p>
             {errorKey ? (
               <Notice tone="danger" role="alert" testId="login-error">
                 {t(`errors.${errorKey}`)}
               </Notice>
             ) : null}
-            {!discordReady && !logiReady ? (
-              <Notice tone="warning" role="status" testId="login-provider-unavailable">
-                {t(preferLogi ? 'logiUnavailable' : 'providerUnavailable')}
-              </Notice>
-            ) : null}
-            {preferLogi ? <form action={startLogiSignIn}>
-              <input type="hidden" name="locale" value={locale} />
-              <input type="hidden" name="returnTo" value={returnTo} />
-              <SubmitButton className={styles.primary} pendingLabel={t('logiRedirecting')} disabled={!logiReady} testId="login-logi">
-                {t('continueLogi')}
-              </SubmitButton>
-            </form> : null}
-            {!preferLogi || discordReady ? <form action={startDiscordSignIn}>
-              <input type="hidden" name="locale" value={locale} />
-              <input type="hidden" name="returnTo" value={returnTo} />
-              <SubmitButton className={styles.primary} pendingLabel={t('redirecting')} disabled={!discordReady} testId="login-discord">
-                <DiscordIcon size={22} />
-                {t('continueDiscord')}
-              </SubmitButton>
-            </form> : null}
+            <div className={styles.providers}>
+              <form action={startLogiSignIn}>
+                <input type="hidden" name="locale" value={locale} />
+                <input type="hidden" name="returnTo" value={returnTo} />
+                <SubmitButton className={styles.primary} pendingLabel={t('logiRedirecting')} disabled={!logiReady} testId="login-logi">
+                  {t('continueLogi')}
+                </SubmitButton>
+              </form>
+              {!logiReady ? (
+                <Notice tone="warning" role="status" testId="login-provider-unavailable">
+                  {t('logiUnavailable')}
+                </Notice>
+              ) : null}
+              {discordReady ? <form action={startDiscordSignIn}>
+                <input type="hidden" name="locale" value={locale} />
+                <input type="hidden" name="returnTo" value={returnTo} />
+                <SubmitButton className={styles.primary} pendingLabel={t('redirecting')} testId="login-discord">
+                  <DiscordIcon size={22} />
+                  {t('continueDiscord')}
+                </SubmitButton>
+              </form> : null}
+            </div>
             <p className={styles.note}>{t(preferLogi ? 'logiSeparate' : 'separate')}</p>
           </>
         )}

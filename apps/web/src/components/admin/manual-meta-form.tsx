@@ -2,6 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useUnsavedChangesGuard } from '@/components/shell/unsaved-changes';
 import { Checkbox, FormActions, Select, TextField } from '@/components/ui/form-fields';
 import { GameButton } from '@/components/ui/game-button';
 import { FeedbackNotice } from '@/components/ui/panels';
@@ -28,13 +29,17 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
     credits: initial.credits,
     markReviewed: false,
   });
+  const [savedValues, setSavedValues] = useState<Values>(values);
   const [reviewedAt, setReviewedAt] = useState(initial.reviewedAt);
   const [status, setStatus] = useState<{ kind: 'success' | 'error'; message: string } | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, setPending] = useState(false);
+  const dirty = !archived && JSON.stringify(values) !== JSON.stringify(savedValues);
+  const disabled = archived || pending;
   const set = (patch: Partial<Values>) => setValues((current) => ({ ...current, ...patch }));
 
-  const submit = async () => {
+  const submit = async (): Promise<boolean> => {
+    if (disabled) return false;
     setPending(true);
     setStatus(null);
     const result = await saveManualMetaAction({
@@ -50,13 +55,17 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
     if (result.ok) {
       setFieldErrors({});
       if (values.markReviewed) setReviewedAt(new Date());
-      set({ markReviewed: false });
+      const saved = { ...values, markReviewed: false };
+      setValues(saved);
+      setSavedValues(saved);
       setStatus({ kind: 'success', message: t('saved') });
-      return;
+      return true;
     }
     setFieldErrors(result.fieldErrors ?? {});
     setStatus({ kind: 'error', message: tErrors(result.code as 'unexpected') });
+    return false;
   };
+  useUnsavedChangesGuard(dirty, { onSaveRequest: submit });
 
   return (
     <form
@@ -83,7 +92,7 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
         hint={t('sortOrderHint')}
         inputMode="numeric"
         value={values.sortOrder}
-        disabled={archived}
+        disabled={disabled}
         onChange={(event) => set({ sortOrder: event.target.value.replace(/[^0-9]/g, '').slice(0, 5) })}
       />
       <TextField
@@ -93,7 +102,7 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
         hint={t('sourceUrlHint')}
         type="url"
         value={values.sourceUrl}
-        disabled={archived}
+        disabled={disabled}
         error={fieldErrors.sourceUrl ? t('invalidUrl') : null}
         onChange={(event) => set({ sourceUrl: event.target.value })}
       />
@@ -103,7 +112,7 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
         label={t('sourceDate')}
         type="date"
         value={values.sourcePublishedOn}
-        disabled={archived}
+        disabled={disabled}
         error={fieldErrors.sourcePublishedOn ? t('invalidDate') : null}
         onChange={(event) => set({ sourcePublishedOn: event.target.value })}
       />
@@ -112,7 +121,7 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
         id="manual-source-language"
         label={t('sourceLanguage')}
         value={values.sourceLanguage}
-        disabled={archived}
+        disabled={disabled}
         onChange={(event) => set({ sourceLanguage: event.target.value as Values['sourceLanguage'] })}
         options={[
           { value: '', label: t('languages.none') },
@@ -128,7 +137,7 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
         hint={t('creditsHint')}
         maxLength={500}
         value={values.credits}
-        disabled={archived}
+        disabled={disabled}
         onChange={(event) => set({ credits: event.target.value })}
       />
       <Checkbox
@@ -137,11 +146,11 @@ export function ManualMetaForm({ documentId, initial, archived }: { documentId: 
         label={t('markReviewed')}
         hint={reviewedAt ? t('reviewedAt', { date: format.dateTime(new Date(reviewedAt), { dateStyle: 'medium' }) }) : t('neverReviewed')}
         checked={values.markReviewed}
-        disabled={archived}
+        disabled={disabled}
         onChange={(event) => set({ markReviewed: event.target.checked })}
       />
       <FormActions sticky={false} status={pending ? t('saving') : null}>
-        <GameButton type="submit" intent="secondary" pending={pending} pendingLabel={t('saving')} disabled={archived} data-testid="manual-meta-save">
+        <GameButton type="submit" intent="secondary" pending={pending} pendingLabel={t('saving')} disabled={disabled} data-testid="manual-meta-save">
           {t('save')}
         </GameButton>
       </FormActions>

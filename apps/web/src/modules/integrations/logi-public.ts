@@ -46,7 +46,8 @@ export async function getLogiServerOverview(game: GameRoute, now = new Date()): 
     const servers: ServerSnapshot[] = source.publicServers.filter((config) => config.published).map((config) => {
       const row = rows.find((row) => row.resource === 'server-snapshots' && row.externalId === config.connectionId && row.operation === 'upsert');
       const wire = logiServerSnapshotSchema.safeParse(row?.data);
-      const sourceAvailable = Boolean(row?.lastSuccessAt && now.getTime() - row.lastSuccessAt.getTime() < PUBLIC_REVALIDATION_MAX_AGE_MS);
+      // A failed pull supersedes a recent success without rewriting its snapshot.
+      const sourceAvailable = Boolean(row?.lastSuccessAt && !row.errorCode && now.getTime() - row.lastSuccessAt.getTime() < PUBLIC_REVALIDATION_MAX_AGE_MS);
       const snapshot = wire.success ? mapLogiServerSnapshot(scope, wire.data, config, now, sourceAvailable) : null;
       return snapshot ?? {
         ref: { source: 'logi', sourceInstanceId: scope.sourceInstanceId, guildId: scope.guildId, game, kind: 'server', externalId: config.connectionId },

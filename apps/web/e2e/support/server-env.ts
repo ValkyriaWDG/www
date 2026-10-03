@@ -46,6 +46,7 @@ export function e2eServerEnv(options: {
       '200000000000000004': ['administrator'],
       // Game-scoped grant: editor authority for Hell Let Loose content only.
       '200000000000000005': { roles: ['editor'], games: ['hell-let-loose'] },
+      '200000000000000006': { roles: ['editor'], games: ['wardogs'] },
     }),
     // Labelled synthetic server snapshots (never real Valkyria server state).
     SERVER_STATUS_SOURCE: 'synthetic-fixture',

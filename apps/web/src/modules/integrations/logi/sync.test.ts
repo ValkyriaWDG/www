@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createLogiClient, type LogiFetch } from './client';
-import { compareLogiRevisions, type LogiSyncRecord } from './contracts';
+import { compareLogiRevisions, logiResourceSchemas, type LogiSyncRecord } from './contracts';
 import { coalesceLogiRecords, logiSyncScopeKey, synchronizeLogiScope, type LogiSyncCheckpoint, type LogiSyncCommit, type LogiSyncLease, type LogiSyncStore } from './sync';
 import fixture from './fixtures/v0.6.json';
+import peopleFixture from './fixtures/v0.14-people.json';
 
 const now = Date.parse('2026-10-02T12:00:00Z');
 const options = { resources: ['event-summaries'] as const, now: () => now, newGeneration: () => 'rebuild-1' };
@@ -161,6 +162,56 @@ describe('revision-aware bootstrap and replay', () => {
     expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'failed', error: 'upstream', committedPages: 1 });
     expect(store.checkpoint).toMatchObject({ mode: 'bootstrap', listCursor: null, resourceIndex: 0 });
     expect(store.shadows.get('rebuild-1')?.size).toBe(0);
+  });
+
+  it('restarts an invalidated people list from a new boundary across passes before promoting', async () => {
+    const store = new MemoryStore();
+    const former: LogiSyncRecord<'roster-summaries'> = {
+      guildId: '910000000000000001', gameId: 'wardogs', resource: 'roster-summaries', id: 'roster-example', revision: '1', operation: 'upsert',
+      data: logiResourceSchemas['roster-summaries'].parse(peopleFixture.roster),
+    };
+    const prior: LogiSyncRecord<'roster-summaries'> = { ...former, id: 'prior-roster', data: { ...former.data, id: 'prior-roster' } };
+    const current: LogiSyncRecord<'member-summaries'> = {
+      guildId: '910000000000000001', gameId: 'wardogs', resource: 'member-summaries', id: 'assignment-example', revision: '2', operation: 'upsert',
+      data: logiResourceSchemas['member-summaries'].parse(peopleFixture.member),
+    };
+    store.active.set(prior.id, prior);
+    let generation = 0;
+    const calls: string[] = [];
+    const resources = ['member-summaries', 'roster-summaries'] as const;
+    const reader = createLogiClient({ origin: 'https://logi.example', apiKey: 'synthetic-people-key-12345', sourceInstanceId: 'instance', guildId: '910000000000000001', gameId: 'wardogs', resources }, { fetchImpl: async (input) => {
+      const url = new URL(input);
+      const resource = url.pathname.split('/').at(-1)!;
+      calls.push(`${resource}:${url.searchParams.get('cursor') ?? url.searchParams.get('start') ?? 'first'}`);
+      if (resource === 'changes') {
+        if (url.searchParams.has('start')) generation++;
+        return json(changed(`boundary-${generation}`));
+      }
+      if (url.pathname.includes('/sync-records/')) return json({ data: resource === former.id ? former : current });
+      if (resource === 'member-summaries') return json(list(generation === 1 ? [] : [current.data]));
+      if (url.searchParams.has('cursor')) return json(fixture.reset, 410);
+      return json({ data: generation === 1 ? [former.data] : [], page: { nextCursor: generation === 1 ? 'invalidated-page' : null, limit: 1 } });
+    } });
+    const syncOptions = { resources, now: () => now, newGeneration: () => `people-${generation}` };
+
+    expect(await synchronizeLogiScope(reader, store, { ...syncOptions, maxSteps: 3 })).toMatchObject({ state: 'pending', reset: false });
+    expect(store.checkpoint).toMatchObject({ mode: 'bootstrap', resourceIndex: 1, listCursor: 'invalidated-page', generation: 'people-1' });
+    expect(store.shadows.get('people-1')?.has(former.id)).toBe(true);
+
+    expect(await synchronizeLogiScope(reader, store, { ...syncOptions, maxSteps: 1 })).toMatchObject({ state: 'pending', reset: true });
+    expect(store.checkpoint).toMatchObject({ mode: 'bootstrap', resourceIndex: 0, listCursor: null, boundaryCursor: 'boundary-2', cursor: 'boundary-2', generation: 'people-2' });
+    expect([...store.active.keys()]).toEqual(['prior-roster']);
+    expect(store.commits.every((commit) => commit.promoteGeneration === null)).toBe(true);
+
+    expect(await synchronizeLogiScope(reader, store, syncOptions)).toMatchObject({ state: 'caught_up', reset: false });
+    expect(calls).toEqual([
+      'changes:now', 'member-summaries:first', 'roster-summaries:first', 'roster-example:first',
+      'roster-summaries:invalidated-page', 'changes:now', 'member-summaries:first', 'assignment-example:first', 'roster-summaries:first', 'changes:boundary-2',
+    ]);
+    expect([...store.active.keys()]).toEqual(['assignment-example']);
+    expect(store.checkpoint).toMatchObject({ mode: 'live', generation: null });
+    expect(store.commits.at(-1)?.promoteGeneration).toBe('people-2');
+    expect(store.releases).toBe(3);
   });
 
   it('applies newer atomic state after a hint and duplicate delivery cannot regress a tombstone', async () => {

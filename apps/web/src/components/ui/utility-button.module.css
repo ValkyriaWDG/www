@@ -23,8 +23,8 @@
 }
 
 .icon svg {
-  width: clamp(20px, 1.1vw, 28px);
-  height: clamp(20px, 1.1vw, 28px);
+  width: var(--utility-icon-size, clamp(20px, 1.1vw, 28px));
+  height: var(--utility-icon-size, clamp(20px, 1.1vw, 28px));
 }
 
 .utility:hover {

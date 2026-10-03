@@ -33,7 +33,7 @@ export default async function AdminContentPage({ params }: PageProps<'/[locale]/
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const access = await requireAdminPage({ locale, path: '/admin/content', capability: 'content.edit' });
+  const access = await requireAdminPage({ locale, path: '/admin/content', capability: 'content.edit', game: null });
   if (!access.ok) return access.denied;
   const actor = access.principal;
   const t = await getTranslations({ locale, namespace: 'adminEditorial' });

@@ -1,4 +1,5 @@
-import { can } from '@/modules/access/policy';
+import type { Game } from '@valkyria/db';
+import { can, canForGame } from '@/modules/access/policy';
 import type { Capability } from '@/modules/access/capabilities';
 import type { Actor } from '@/modules/access/types';
 
@@ -10,6 +11,8 @@ export type AdminModule = {
   path: `/admin/${AdminModuleKey}`;
   /** The module is offered when the actor holds any of these capabilities. */
   anyOf: readonly Capability[];
+  /** Fixed module resource scope; null requires platform-wide authority. */
+  game?: Game | null;
 };
 
 /**
@@ -19,9 +22,9 @@ export type AdminModule = {
 export const ADMIN_MODULES: readonly AdminModule[] = [
   { key: 'news', path: '/admin/news', anyOf: ['content.edit'] },
   // HLL Field Manual articles; the same editor, revisions and publication rules as news.
-  { key: 'manual', path: '/admin/manual', anyOf: ['content.edit'] },
+  { key: 'manual', path: '/admin/manual', anyOf: ['content.edit'], game: 'hell-let-loose' },
   // Core static pages (clan, community, privacy, faq); same editor and publication rules as news.
-  { key: 'content', path: '/admin/content', anyOf: ['content.edit'] },
+  { key: 'content', path: '/admin/content', anyOf: ['content.edit'], game: null },
   { key: 'media', path: '/admin/media', anyOf: ['media.editorial.manage', 'media.match.manage'] },
   { key: 'matches', path: '/admin/matches', anyOf: ['matches.edit'] },
   // Competitions that matches link to; the same match-manager capabilities and game scope.
@@ -33,5 +36,7 @@ export const ADMIN_MODULES: readonly AdminModule[] = [
 
 export function permittedAdminModules(actor: Actor): AdminModule[] {
   if (!can(actor, 'admin.access')) return [];
-  return ADMIN_MODULES.filter((module) => module.anyOf.some((capability) => can(actor, capability)));
+  return ADMIN_MODULES.filter((module) => module.anyOf.some((capability) =>
+    module.game === undefined ? can(actor, capability) : canForGame(actor, capability, module.game),
+  ));
 }
