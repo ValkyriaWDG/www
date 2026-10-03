@@ -27,7 +27,10 @@ lint, typecheck and the optimized build passed with 935 unit, __INTEGRATION__ Po
 and 223 + 178 browser tests (the full run on `6f9411d` with the one layout failure, then
 the rerun with the fix; 99 opt-in captures skipped); the seven inspected CS/EN captures
 are in the [evidence](evidence/taxonomy-admin-2026-10-03/README.md). Local synthetic
-verification only. Next: PR, latest-head CI, merge and publication.
+verification only. Two opt-in capture tests (`visual.spec.ts` hub focus on the Discord
+action, `visual-hll.spec.ts` players statistics at 390×844) fail in capture mode on this
+branch and on main alike; they are not in CI and go to the next UI round. Next: PR #91
+latest-head CI, merge and publication.
 
 Publication of main `c232cdb`: the first run (37129342056) failed in
 `pnpm test:integration` on a racy membership test, fixed in PR #90 without touching

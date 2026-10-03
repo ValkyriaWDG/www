@@ -37,6 +37,13 @@ Verification on `c37f5af` (local, synthetic data):
   4 passed, 7 captures above.
 - `node scripts/check-foundation.mjs`: passed.
 
+With `CAPTURE_EVIDENCE=1` the opt-in capture tests of the `chromium` project run too; two
+of them fail in that mode on this branch and identically on the main build of `c232cdb`:
+`visual.spec.ts` "keyboard focus on the primary CTA" (the hub needs more than 40 Tab
+presses to reach the Discord action) and the `visual-hll.spec.ts` players statistics
+capture at 390×844 (times out waiting for the page). Neither runs in CI and neither page
+changes here; both go to the next UI round.
+
 Limitations: the news category and tag forms share the manual form and are covered by
 the browser journey (`e2e/admin-taxonomy.spec.ts`) and the PostgreSQL cases rather than
 by captures. Published article snapshots keep their news labels until the next
