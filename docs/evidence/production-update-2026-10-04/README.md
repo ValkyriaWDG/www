@@ -16,6 +16,11 @@ production runtime evidence, separate from the publisher's synthetic CI tests.
 | Scheduled publishing and backups | Existing timers resumed; successful service status |
 | Automatic updater | Existing dedicated Watchtower resumed, 300-second interval |
 
+The first natural poll completed at 01:17:35 UTC: `scanned=1`, `updated=0`,
+`failed=0`. The container ID was unchanged from post-promotion acceptance and the
+accepted image remained healthy. This proves the resumed selection/polling path
+and no unnecessary restart for the unchanged digest, not a future replacement.
+
 ## Database and storage acceptance
 
 Automatic promotion correctly held this candidate because its migration bundle
@@ -78,6 +83,8 @@ Browser proof below is from the live canonical origin at 1280×720. Navigation f
 HLL to Wardogs and then to the new history section completed; no browser console
 errors were observed. History correctly showed the unconfigured/unpublished data
 state. No provider credentials were supplied or enabled by this deployment.
+The Wardogs video was observed playing (`paused=false`, `muted=true`,
+`readyState=4`, playback time approximately 30 seconds) from the canonical media URL.
 
 ![Live HLL main menu after the accepted deployment.](hll-live.png)
 
