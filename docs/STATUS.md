@@ -1,6 +1,20 @@
 # Current status
 
-## Logi sparse-feed catch-up — 2026-10-04
+## Logi membership refresh and sparse-feed catch-up — 2026-10-04
+
+The same branch also fixes a reproduced cross-game membership refresh collision:
+Logi shares a guild/member refresh lease, so concurrent HLL/WDG reads could return
+one verified member and one HTTP-200 `unknown`, denying a valid account. After the
+initial round, the website rechecks unknown once using the same restricted game
+key and freshness bound. HTTP errors, verified absence, actual timeouts and
+continued unknown still fail closed. Epoch/revision/session fences are unchanged.
+The account warning names the actual configured membership provider. A read-only
+live run of the patched reader at 20:19:10 UTC recovered unknown to verified in
+1,642 ms; this does not mean the website is deployed. Ten new unit cases pass
+(1,180 total), plus lint, typecheck, production build and independent auth review.
+Real PostgreSQL recovery/revocation tests and final-head CI remain required. The
+changed Logi warning has no new browser capture yet; production account proof stays
+private. PR: [#107](https://github.com/ValkyriaWDG/www/pull/107).
 
 Branch `fix/logi-sparse-replay`, based on accepted main `9279c0f`, addresses a
 production bootstrap backlog of about 24,000 guild revisions. Logi bounds scanned

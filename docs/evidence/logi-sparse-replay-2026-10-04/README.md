@@ -1,4 +1,48 @@
-# Sparse Logi change-feed catch-up
+# Logi membership refresh recovery and sparse change-feed catch-up
+
+## Intermittent membership denial
+
+The production account could authenticate through Logi while its subsequent access
+check reported unavailable membership. A bounded read-only probe at 20:03:28 UTC
+reproduced HTTP 200 `present` for HLL in 1,440 ms alongside HTTP 200 `unknown` for
+Wardogs in 613 ms. Current Logi source (`9d460e0`) shares the Discord member refresh
+lease by guild and subject, across game grants. A sibling request can therefore
+receive `unknown` while the first refresh is still running. Separate probes also
+observed genuine four-second timeouts; those are a different failure and remain
+fail-closed.
+
+The consumer now waits for both initial game reads, then rechecks only validated
+`unknown` results once with that game's original restricted key and freshness
+requirement. It does not retry HTTP errors, verified absence or a valid empty role
+set. Requests retain four-second timeouts, with an eight-second aggregate bound.
+Epoch/revision ordering, final stored-evidence/session checks and request-level
+grant revalidation remain unchanged. There is no cross-request authority cache.
+
+At 20:19:10 UTC the **actual patched reader**, bundled as an isolated read-only
+diagnostic in the website runtime, recovered this live race: HLL initially returned
+`unknown`, Wardogs returned `present`, then only HLL was reread and returned
+`present`. Total time was 1,642 ms. The [sanitized response sequence](membership-refresh-live-proof.json)
+contains no subjects, role IDs or credentials. This is live provider recovery proof,
+**not a deployed website change or a completed production login acceptance**.
+
+The account warning also names the configured membership provider (`Logi` or
+`Discord`), independently of the sign-in method. Its layout is unchanged. Targeted
+browser capture of the changed Logi warning remains unperformed; private account
+screenshots are not public repository artifacts.
+
+```sh
+pnpm --filter @valkyria/web exec vitest run --project unit src/modules/access/logi-membership-reader.test.ts src/modules/integrations/logi/client.test.ts src/i18n
+pnpm --filter @valkyria/web exec vitest run --project integration tests/integration/logi-membership.test.ts
+```
+
+RED: the old one-round reader failed three of ten regression cases. GREEN: all ten
+reader cases pass, including scoped recovery, continued unknown, verified departure,
+empty roles, wrong subject, stale observations, 401/403/429/503 and timeout. The
+reader/client/i18n command passes 70 tests; the full unit suite passes 1,180 tests.
+Lint, typecheck and the production build also pass. Independent auth review found no
+actionable issue. The added real-database two-game recovery case and existing
+revocation/session regressions require the final-head CI PostgreSQL environment;
+they were not run against a production database or an unavailable local database.
 
 ## Observed production behavior
 
@@ -72,12 +116,15 @@ production account screenshots and credentials are not repository artifacts.
 
 ## Release and remaining acceptance
 
-The sparse-feed patch is not production proof. Require current-head Quality gate,
+The website patches are not deployed production proof. Require current-head Quality gate,
 independent review and the standard accepted-main publication workflow. Preserve
 existing checkpoints and runtime; do not replace the image with an ad hoc build.
 After deployment, finish bounded manual imports until all four scopes are caught
 up, then enable the already-prepared timer and verify a scheduled pass. Keep public
 Logi publication, commands and webhooks disabled during that acceptance.
+Also verify a new browser login, account membership and protected administration.
+Real provider outages still deny access; bounded refresh recovery is not an outage
+bypass. The earlier sparse-only CI run is not final-head evidence for the auth fix.
 
 Provider HLL/Warcon collectors remain a separate hosted configuration dependency.
 They had no successful observation/import at the last UI read. Preserve the current

@@ -310,4 +310,8 @@ the related flag:
   read cache, before broad SSO rollout.
 - **One source fails all.** With both game sources configured, a membership timeout for one
   game denies the user's authority in both. This is fail-closed by design; revisit it if one
-  source is often unavailable.
+  source is often unavailable. A validated HTTP-200 `unknown` caused by Logi's shared
+  member refresh lease is rechecked once after the initial game reads finish, using
+  the original game key and freshness limit. Each request remains bounded to four
+  seconds and the whole read to eight seconds. This does not retry HTTP errors or
+  mask actual transport timeouts; continued unknown still denies access.

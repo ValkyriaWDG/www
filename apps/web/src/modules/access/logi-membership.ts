@@ -1,10 +1,11 @@
 import { authSession, logiMembership, type Executor, type Game } from '@valkyria/db';
 import { and, eq, gt, inArray, sql } from 'drizzle-orm';
 import { configuredLogiSources, type ConfiguredLogiSource } from '@/modules/integrations/logi-config';
-import { createLogiClient, LOGI_CLOCK_SKEW_MS } from '@/modules/integrations/logi/client';
+import { LOGI_CLOCK_SKEW_MS } from '@/modules/integrations/logi/client';
 import type { LogiMembership } from '@/modules/integrations/logi/contracts';
 import type { AccessEnv } from './config';
 import { grantsFromLogiMembership } from './logi-grants';
+import { readLogiMemberships } from './logi-membership-reader';
 import type { RoleMapping } from './role-mapping';
 
 /**
@@ -45,11 +46,8 @@ export async function loadLogiMembershipEvidence(db: Executor, input: { env: Acc
   try {
     const sources = configuredLogiSources(input.env, 'membership');
     if (sources.length === 0 || sources.some((source) => source.guildId !== (input.env.LOGI_GUILD_ID ?? input.env.DISCORD_GUILD_ID))) return null;
-    const rows = await Promise.all(sources.map(async (source) => {
-      const client = createLogiClient({ ...source, resources: ['membership-summaries'], timeoutMs: 4_000 }, { fetchImpl: input.fetchImpl, now: () => now().getTime() });
-      const value = await client.membership(input.subject, input.maxAgeMs);
-      return persist(db, source, value, now());
-    }));
+    const values = await readLogiMemberships({ sources, subject: input.subject, maxAgeMs: input.maxAgeMs, now, fetchImpl: input.fetchImpl });
+    const rows = await Promise.all(sources.map((source, index) => persist(db, source, values[index]!, now())));
     return rows.every((row) => stillFresh(row, now(), input.maxAgeMs)) ? rows : null;
   } catch {
     return null;

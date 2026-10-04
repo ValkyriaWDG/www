@@ -139,6 +139,16 @@ an unknown guild or unconfigured mapping grants no private access.
 - Periodic reconciliation corrects missed gateway events; 429 honors Retry-After with
   bounded retries and backoff. Do not interpret timeout/403 as successful zero-role sync.
 
+Logi shares its Discord-member refresh lease across games. The website first reads
+each game with its own restricted key, waits for that round to finish, then rechecks
+only HTTP-200 `unknown` observations once. This prevents the other game's in-flight
+refresh from becoming an avoidable denial. Each request still has a four-second
+timeout and the whole read is bounded to eight seconds. HTTP failures, including
+401/403/429, are not retried by this recovery; verified absence is not retried either.
+No completed observation is cached across requests, and the final stored-evidence,
+session, age and game-grant checks remain mandatory. Continued unknown or timeout
+still denies access. The account notice names the configured membership provider.
+
 The selected adapter supplies authoritative refreshes. Logi membership is implemented
 with isolated provider/database proof; hosted identity, collector freshness and role
 mapping still need activation acceptance. The retired custom bot's receiver and signed
