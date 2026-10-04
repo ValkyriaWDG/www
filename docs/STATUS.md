@@ -1,5 +1,24 @@
 # Current status
 
+## Logi live-contract compatibility fix — 2026-10-04
+
+Branch `fix/logi-live-contract`, based on main `b112bad`, fixes two findings from
+the first production synchronization. Current Logi event/match summaries contain
+`matchTeams`, which the deployed strict consumer rejected. The consumer now accepts
+that closed, bounded snapshot while keeping the public DTO unchanged. A whole-pass
+deadline also returns resumable `pending` instead of a transport failure; a genuine
+request timeout still fails, and unfinished generations remain unpublished.
+
+[Reproducible evidence](evidence/logi-live-contract-2026-10-04/README.md) includes
+synthetic regression tests and a read-only live probe accepting all six collection
+responses plus six HLL atomic records. Local lint, typecheck, foundation, production
+build and all 1,157 unit tests passed. The probe does not establish a complete
+production import. No migration or configuration change is required by this patch.
+Production SSO activation is a separate operation. Provider collectors still need
+valid hosted configuration; the synchronization timer remains disabled until a
+complete manual pass is verified. Next: current-head CI, reviewed release, then
+production continuation and complete-import proof.
+
 ## Production deployment of `3dbfee7` — 2026-10-04
 
 The owner explicitly requested deployment of the published website updates. The

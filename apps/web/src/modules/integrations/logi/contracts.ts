@@ -21,6 +21,20 @@ const capability = z.enum(['server_snapshot', 'match_history']);
 const providerError = z.enum(['timeout', 'network', 'rate_limited', 'unauthorized', 'invalid_response', 'unsupported', 'configuration', 'not_listed']);
 const identity = { id: logiIdSchema, guildId: logiIdSchema, gameId: logiGameSchema };
 const eventIdentity = { ...identity, title: z.string().max(1000), updatedAt: instant.nullable() };
+/** Current Logi team snapshots; optional only for older producer responses. */
+const matchTeams = z.array(z.strictObject({
+  teamId: logiIdSchema,
+  slot: z.enum(['a', 'b', 'c']),
+  side: z.enum(['Allies', 'Axis', 'Valkyra', 'Manticore', 'Lonestar']).nullable(),
+  name: z.string().min(1).max(120),
+  shortCode: z.string().min(1).max(16).nullable(),
+  logoUrl: z.url().max(2048).refine((value) => {
+    const url = URL.parse(value);
+    return url !== null && url.protocol === 'https:' && !url.username && !url.password;
+  }).nullable(),
+  teamRevision: z.number().int().positive().safe(),
+  capturedAt: instant,
+})).max(3).nullable().optional();
 
 export const logiScopeSchema = z.strictObject({
   sourceInstanceId: z.string().regex(/^[A-Za-z0-9_.:-]{1,128}$/),
@@ -31,6 +45,7 @@ export type LogiScope = z.infer<typeof logiScopeSchema>;
 
 export const logiEventSummarySchema = z.strictObject({
   ...eventIdentity,
+  matchTeams,
   kind: z.enum(['match', 'training']),
   status: z.enum(['registration', 'closed', 'starting', 'concluded']).nullable(),
   startsAt: instant.nullable(),
@@ -38,6 +53,7 @@ export const logiEventSummarySchema = z.strictObject({
 });
 export const logiMatchSummarySchema = z.strictObject({
   ...eventIdentity,
+  matchTeams,
   eventId: logiIdSchema,
   resultState: z.enum(['unknown', 'provisional']),
   result: z.strictObject({

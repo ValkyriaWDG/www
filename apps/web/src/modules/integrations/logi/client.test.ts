@@ -22,6 +22,44 @@ function setup(body: unknown, patch: Partial<LogiClientConfig> = {}) {
 }
 const listBody = { data: [syncFixtures.record.data.data], page: { nextCursor: null, limit: 25 } };
 
+describe('current producer match team summaries', () => {
+  const team = {
+    teamId: 'synthetic-team', slot: 'a', side: 'Valkyra', name: 'Synthetic team',
+    shortCode: 'SYN', logoUrl: 'https://assets.example/team.png', teamRevision: 2,
+    capturedAt: '2026-10-04T12:00:00Z',
+  };
+  function row(resource: 'event-summaries' | 'match-summaries', matchTeams: unknown) {
+    const event = listBody.data[0]!;
+    return resource === 'event-summaries' ? { ...event, matchTeams } : {
+      id: event.id, guildId: event.guildId, gameId: event.gameId, title: event.title,
+      updatedAt: event.updatedAt, eventId: event.id, resultState: 'unknown', result: null, matchTeams,
+    };
+  }
+
+  it.each(['event-summaries', 'match-summaries'] as const)('accepts null, empty and captured teams in %s lists and atomic records', async (resource) => {
+    for (const matchTeams of [null, [], [team]]) {
+      const data = row(resource, matchTeams);
+      const page = { ...listBody, data: [data] };
+      await expect(setup(page).client.list(resource)).resolves.toEqual(page);
+      const atomic = { data: { ...syncFixtures.record.data, resource, data } };
+      await expect(setup(atomic).client.syncRecord(resource, data.id)).resolves.toEqual(atomic.data);
+    }
+  });
+
+  it.each([
+    [team, team, team, team],
+    [{ ...team, discordUserId: 'synthetic-private-member' }],
+    [{ ...team, logoUrl: 'javascript:alert(1)' }],
+    [{ ...team, logoUrl: 'not-a-url' }],
+    [{ ...team, logoUrl: 'https://user:password@assets.example/team.png' }],
+    [{ ...team, capturedAt: 'tomorrow' }],
+    [{ ...team, teamRevision: 0 }],
+    [{ ...team, name: 'x'.repeat(121) }],
+  ])('rejects malformed or private team metadata', async (...matchTeams) => {
+    await expect(setup({ ...listBody, data: [row('event-summaries', matchTeams)] }).client.list('event-summaries')).rejects.toMatchObject({ code: 'invalid_response' });
+  });
+});
+
 describe('closed producer contracts', () => {
   it('accepts the actual versioned event and match fixture bodies', () => {
     let checked = 0;
