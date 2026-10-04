@@ -1,5 +1,23 @@
 # Current status
 
+## Publication of main `3dbfee7` — 2026-10-04
+
+Container publication run [37162780893](https://github.com/ValkyriaWDG/www/actions/runs/37162780893)
+(`expected_sha` `3dbfee7f4612dbcb943ecb324ee6763127002bd4`, UI rounds 12–13, the League
+fixtures reader and the Warcon game history reader) passed its verification jobs, was
+approved in the `container-publish` environment by the owner and published the immutable
+image `valkyria-www@sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3`
+(tag `sha-3dbfee7f…`), confirmed against the public registry tag list. Automatic
+production promotion was **held** (`migration-bundle-changed`): the candidate carries the
+migrations `0011_taxonomy_admin` and `0012_league_match_url` that production revision
+`0a94d59` (digest `sha256:336c317a…`, still the `production` alias) does not; the runtime
+contract fingerprint is unchanged. Per the [Watchtower policy](operations/watchtower.md)
+and the [release workflow](engineering/release-workflow.md), the operator stops the
+updater, proves backup/restore, applies the two migrations through the image's one-shot
+migration CLI under the lock, verifies the compatible image, promotes its exact OCI index
+and resumes the updater; none of that was run here. The new readers stay inactive until
+their keys and source associations exist in the production configuration.
+
 ## Warcon retained game history reader — 2026-10-03
 
 Branch `feat/logi-warcon-history` (on main `5e7a7d9`) consumes the fourth explicit
