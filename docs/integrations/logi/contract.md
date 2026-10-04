@@ -79,6 +79,12 @@ read, stored separately from public operational projections. Unknown scores and
 observations remain null. Result states remain `unknown`, `provisional`, `confirmed`
 or `corrected` as supplied; a concluded event is not automatic result confirmation.
 
+Event and match summaries accept the producer's optional, nullable `matchTeams`
+snapshot (at most three teams: catalogue ID, slot, side, name, short code, HTTPS logo,
+positive revision and UTC capture time). Older responses without the field remain
+valid. Each team object stays closed; private or unknown fields are rejected. These
+snapshots are validated and retained privately, not added to the public match DTO.
+
 | Surface | Implemented behavior | Publication control |
 | --- | --- | --- |
 | `/{locale}/{game}/matches` | Connected match list alongside the historical local archive | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
@@ -135,6 +141,12 @@ per game, with a 60-second lease. It can finish as `pending`, `busy`, `lease_los
 `caught_up` or `failed`; `pending` resumes on a later pass. Failures preserve the
 checkpoint and use bounded backoff, including `Retry-After`. Periodic pulls remain
 necessary even when webhooks are configured.
+
+The whole-pass deadline is cooperative: expiry during an HTTP request returns
+`pending` with the last committed checkpoint, just as expiry between steps does.
+A request timeout while that budget remains available is still `failed`. Neither
+case publishes an incomplete replacement generation. People synchronization uses
+its separately bounded larger pass; it has the same continuation rules.
 
 `POST /api/integrations/logi/{sourceInstanceId}/webhook` accepts only configured
 sources. It verifies HMAC-SHA256 over `X-Logi-Timestamp + "." + rawBody`, a timestamp

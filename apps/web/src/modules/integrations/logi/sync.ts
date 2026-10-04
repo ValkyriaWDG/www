@@ -211,6 +211,9 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
     }
     return outcome;
   } catch (error) {
+    // A cooperative run deadline leaves the last committed checkpoint resumable.
+    // Keep request timeouts inside the run budget as actual transport failures.
+    if (signal.aborted && error instanceof LogiClientError && error.code === 'timeout') return outcome;
     return { ...outcome, state: 'failed', error: error instanceof LogiClientError ? error.code : 'persistence', retryAfterMs: error instanceof LogiClientError ? error.retryAfterMs : null };
   } finally {
     await store.release(lease);

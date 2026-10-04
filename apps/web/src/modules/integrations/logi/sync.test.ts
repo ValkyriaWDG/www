@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { createLogiClient, type LogiFetch } from './client';
+import { describe, expect, it, vi } from 'vitest';
+import { createLogiClient, LogiClientError, type LogiFetch } from './client';
 import { compareLogiRevisions, logiResourceSchemas, type LogiSyncRecord } from './contracts';
 import { coalesceLogiRecords, logiSyncScopeKey, synchronizeLogiScope, type LogiSyncCheckpoint, type LogiSyncCommit, type LogiSyncLease, type LogiSyncStore } from './sync';
 import fixture from './fixtures/v0.6.json';
@@ -54,6 +54,51 @@ function live(cursor = 'old-cursor'): LogiSyncCheckpoint {
 }
 
 describe('revision-aware bootstrap and replay', () => {
+  it('resumes committed pages after the run budget expires without publishing an incomplete generation', async () => {
+    const store = new MemoryStore();
+    const budget = new AbortController();
+    const timer = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(budget.signal);
+    const value = record();
+    try {
+      const reader = client(async (input) => {
+        const url = new URL(input);
+        if (url.pathname.endsWith('/changes')) return json(changed('boundary'));
+        if (url.pathname.includes('/sync-records/')) return json({ data: value });
+        if (!url.searchParams.has('cursor')) return json(list([value.data], 'next-page'));
+        budget.abort();
+        return json(list([]));
+      });
+      await expect(synchronizeLogiScope(reader, store, options)).resolves.toMatchObject({
+        state: 'pending', committedPages: 2, records: 1, error: null,
+      });
+      expect(store.checkpoint).toMatchObject({ mode: 'bootstrap', listCursor: 'next-page' });
+      expect(store.active.size).toBe(0);
+      expect(store.releases).toBe(1);
+    } finally { timer.mockRestore(); }
+
+    const resumedPaths: string[] = [];
+    const resumed = client(async (input) => {
+      const url = new URL(input);
+      resumedPaths.push(url.pathname);
+      if (url.pathname.endsWith('/changes')) return json(changed('caught-up'));
+      expect(url.searchParams.get('cursor')).toBe('next-page');
+      return json(list([]));
+    });
+    await expect(synchronizeLogiScope(resumed, store, options)).resolves.toMatchObject({ state: 'caught_up', error: null });
+    expect(store.active.get(value.id)).toEqual(value);
+    expect(resumedPaths.some((path) => path.includes('/sync-records/'))).toBe(false);
+  });
+
+  it('keeps a request timeout as failure while the run budget is still available', async () => {
+    const store = new MemoryStore();
+    const reader = client(async () => { throw new LogiClientError('timeout'); });
+    await expect(synchronizeLogiScope(reader, store, options)).resolves.toMatchObject({
+      state: 'failed', error: 'timeout', committedPages: 0,
+    });
+    expect(store.active.size).toBe(0);
+    expect(store.releases).toBe(1);
+  });
+
   it('finishes more than fifty empty people scan pages within the larger bounded pass', async () => {
     let clock = now;
     let pages = 0;
