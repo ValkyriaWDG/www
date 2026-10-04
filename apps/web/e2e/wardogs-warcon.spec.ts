@@ -1,6 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { FIXTURE_SLUGS } from '../src/fixtures/data';
+import { measuredBox } from './support/shell-helpers';
 
 /*
  * Approved Logi readers (issue #87) against the labelled synthetic reader source
@@ -95,7 +96,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(preview).toContainText(locale === 'cs' ? 'Termín' : 'Scheduled');
       await expect(preview.locator('[data-synthetic-data="league"]')).toHaveCSS('border-top-style', 'dashed');
       // The external event link of the match is a 44 px row on phones.
-      expect((await page.locator('[data-match-links] a').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      expect((await measuredBox(page.locator('[data-match-links] a').first())).height).toBeGreaterThanOrEqual(44);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
       expect((await new AxeBuilder({ page }).include('[data-league-preview]').analyze()).violations).toEqual([]);
       expect(errors).toEqual([]);

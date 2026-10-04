@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { FIXTURE_SLUGS } from '../src/fixtures/data';
 import { matchBySlug, memberBySlug, tournamentBySlug } from './admin-community-support';
 import { signInAs } from './support/auth';
-import { expectNoHorizontalOverflow } from './support/shell-helpers';
+import { expectNoHorizontalOverflow, measuredBox } from './support/shell-helpers';
 
 /**
  * Administration chrome at desktop and phone widths: the module list must not push the
@@ -68,7 +68,7 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
 
   // Integrations: the shared checkbox is 24 px inside a 44 px label row.
   await page.goto('/cs/admin/integrations');
-  const checkbox = (await page.locator('[data-game-servers="wardogs"] input[type="checkbox"]').first().boundingBox())!;
+  const checkbox = await measuredBox(page.locator('[data-game-servers="wardogs"] input[type="checkbox"]').first());
   expect(checkbox.width).toBeGreaterThanOrEqual(24);
   expect(checkbox.height).toBeGreaterThanOrEqual(24);
   expect(await height(page, '[data-game-servers="wardogs"] input[type="checkbox"] + label')).toBeGreaterThanOrEqual(24);
@@ -77,7 +77,7 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   // Settings: compact row actions and the radio controls.
   await page.goto('/cs/admin/settings');
   expect(await height(page, 'button:has-text("Přidat odkaz")')).toBeGreaterThanOrEqual(44);
-  expect((await page.locator('input[type="radio"]').first().boundingBox())!.height).toBeGreaterThanOrEqual(24);
+  expect((await measuredBox(page.locator('input[type="radio"]').first())).height).toBeGreaterThanOrEqual(24);
   // The community links heading follows the page heading directly (no skipped level).
   await expect(page.getByRole('heading', { level: 2, name: 'Další komunitní odkazy' })).toBeVisible();
 
@@ -108,7 +108,7 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   await page.goto(`/cs/admin/members/logi?profile=${alfa.id}`);
   const stats = page.getByLabel('Zveřejnit ověřené statistiky relací');
   await expect(stats).toBeVisible();
-  expect((await stats.boundingBox())!.height).toBeGreaterThanOrEqual(24);
+  expect((await measuredBox(stats)).height).toBeGreaterThanOrEqual(24);
   expect(await height(page, '[data-logi-link-editor] input[type="checkbox"] + label')).toBeGreaterThanOrEqual(24);
   expect(await stats.evaluate((input) => input.parentElement!.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
   await expectNoHorizontalOverflow(page);
@@ -116,7 +116,7 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   // Overview: scheduled publications (the fixtures schedule one article).
   await page.goto('/cs/admin');
   const schedules = page.getByTestId('overview-schedules').locator('a');
-  if ((await schedules.count()) > 0) expect((await schedules.first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  if ((await schedules.count()) > 0) expect((await measuredBox(schedules.first())).height).toBeGreaterThanOrEqual(44);
   await expectNoHorizontalOverflow(page);
 });
 
