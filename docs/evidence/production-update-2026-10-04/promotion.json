@@ -1,0 +1,11 @@
+{
+  "registry": "majorluk/valkyria-www",
+  "public": true,
+  "source": "3dbfee7f4612dbcb943ecb324ee6763127002bd4",
+  "candidate": "sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3",
+  "previous": "sha256:336c317a50c5be1bd639259c582dc88177d9c4d6d7701acabf5508e8706b56ec",
+  "observedAt": "2026-10-04T01:11:43.794Z",
+  "mode": "promotion",
+  "status": "promoted",
+  "attestationsPreserved": true
+}

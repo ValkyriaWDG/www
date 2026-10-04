@@ -1,6 +1,6 @@
 import { expect, type Page, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { expectNoHorizontalOverflow } from './support/shell-helpers';
+import { expectNoHorizontalOverflow, measuredBox } from './support/shell-helpers';
 
 /*
  * Retained Warcon server game history (Wardogs) against the labelled synthetic reader
@@ -190,7 +190,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(details).not.toHaveAttribute('open', '');
       const summary = details.locator('summary');
       await expect(summary).toHaveText(L.players11);
-      expect((await summary.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      expect((await measuredBox(summary)).height).toBeGreaterThanOrEqual(44);
       await summary.focus();
       await expect(summary).toBeFocused();
       await page.keyboard.press('Enter');
@@ -247,7 +247,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(summary.locator('[data-history-summary-game]').first()).toContainText(L.winnerAlpha);
       const link = summary.locator('[data-history-summary-link]');
       await expect(link).toHaveAttribute('href', `/${locale}/wardogs/history?server=${SERVER}`);
-      expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      expect((await measuredBox(link)).height).toBeGreaterThanOrEqual(44);
       // Below the Warcon panel.
       const warcon = (await page.locator(`[data-warcon-panel="${SERVER}"]`).boundingBox())!;
       expect((await summary.boundingBox())!.y).toBeGreaterThanOrEqual(warcon.y + warcon.height - 1);

@@ -1,6 +1,7 @@
 import { type APIRequestContext, expect, test } from '@playwright/test';
 import { canvas, createPost, expectSaved, fillPublishable, storedTranslation, uniqueSuffix } from './admin-editorial-helpers';
 import { ageMembershipSnapshot, E2E_BASE_URL, setDiscordMember, signInAs } from './support/auth';
+import { measuredBox } from './support/shell-helpers';
 
 /**
  * Safety journeys of the editorial administration: same-translation conflicts keep the
@@ -198,7 +199,7 @@ test.describe('phone layout', () => {
     // Save stays reachable in the sticky action bar with a ≥44 px target.
     const save = page.getByTestId('editor-save');
     await expect(save).toBeInViewport();
-    expect((await save.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await measuredBox(save)).height).toBeGreaterThanOrEqual(44);
     await save.click();
     await expectSaved(page);
     await page.getByTestId('editor-excerpt').fill('Perex z telefonu.');

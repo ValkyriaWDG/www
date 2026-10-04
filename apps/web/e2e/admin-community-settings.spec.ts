@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { auditCount, e2eDb, uniqueSuffix } from './admin-community-support';
 import { signInAs } from './support/auth';
+import { measuredBox } from './support/shell-helpers';
 
 /**
  * Site settings (administrators/owners only) and the audit screen's access boundary.
@@ -121,7 +122,7 @@ test('a saved community link is a 44 px target on the community page at phone wi
   await visitor.goto('/cs/community');
   const link = visitor.locator('[data-community-links]').getByRole('link', { name: new RegExp(label) });
   await expect(link).toBeVisible();
-  expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  expect((await measuredBox(link)).height).toBeGreaterThanOrEqual(44);
   await visitor.close();
 
   // Restore the operator default so the shared public fixtures stay as seeded.

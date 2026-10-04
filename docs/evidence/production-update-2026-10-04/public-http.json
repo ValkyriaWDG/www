@@ -1,0 +1,142 @@
+{
+  "observedAt": "2026-10-04T01:11:29.437Z",
+  "result": "passed",
+  "rows": [
+    {
+      "round": 1,
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "application/json",
+      "cache": "DYNAMIC",
+      "ray": "a4504ffe1c3fb858-WAW",
+      "health": {
+        "status": "ok"
+      }
+    },
+    {
+      "round": 1,
+      "path": "/api/health/ready",
+      "status": 200,
+      "contentType": "application/json",
+      "cache": "DYNAMIC",
+      "ray": "a4504ffecce8b858-WAW",
+      "health": {
+        "status": "ready",
+        "checks": {
+          "config": "ok",
+          "database": "ok",
+          "schema": "ok",
+          "media": "ok"
+        }
+      }
+    },
+    {
+      "round": 1,
+      "path": "/cs/hll",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cache": "DYNAMIC",
+      "ray": "a4504fff5d45b858-WAW"
+    },
+    {
+      "round": 1,
+      "path": "/cs/wardogs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cache": "DYNAMIC",
+      "ray": "a45050003e3fb858-WAW"
+    },
+    {
+      "round": 2,
+      "path": "/api/health/live",
+      "status": 200,
+      "contentType": "application/json",
+      "cache": "DYNAMIC",
+      "ray": "a45050010eebb858-WAW",
+      "health": {
+        "status": "ok"
+      }
+    },
+    {
+      "round": 2,
+      "path": "/api/health/ready",
+      "status": 200,
+      "contentType": "application/json",
+      "cache": "DYNAMIC",
+      "ray": "a45050015f23b858-WAW",
+      "health": {
+        "status": "ready",
+        "checks": {
+          "config": "ok",
+          "database": "ok",
+          "schema": "ok",
+          "media": "ok"
+        }
+      }
+    },
+    {
+      "round": 2,
+      "path": "/cs/hll",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cache": "DYNAMIC",
+      "ray": "a4505001af73b858-WAW"
+    },
+    {
+      "round": 2,
+      "path": "/cs/wardogs",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cache": "DYNAMIC",
+      "ray": "a4505002e88eb858-WAW"
+    },
+    {
+      "path": "/en/hll",
+      "status": 200
+    },
+    {
+      "path": "/en/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/cs/wardogs/history",
+      "status": 200
+    },
+    {
+      "path": "/en/wardogs/history",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/faq",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/field-manual",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/matches",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/servers",
+      "status": 200
+    },
+    {
+      "path": "/cs/login",
+      "status": 200
+    },
+    {
+      "path": "/en/login",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200
+    }
+  ]
+}

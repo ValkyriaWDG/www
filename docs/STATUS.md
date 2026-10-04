@@ -1,5 +1,54 @@
 # Current status
 
+## Production deployment of `3dbfee7` — 2026-10-04
+
+The owner explicitly requested deployment of the published website updates. The
+held publication below is now accepted in production: the running web container
+and the `production` channel both resolve to source
+`3dbfee7f4612dbcb943ecb324ee6763127002bd4`, OCI index
+`sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3`.
+The dedicated Watchtower updater is running again with its existing five-minute
+schedule and website-only selectors.
+Its first natural poll at 01:17:35 UTC scanned one container with zero updates or
+failures; the running container identity and healthy accepted image were unchanged.
+
+A frozen database/media backup restored successfully into a newly created
+disposable database and media directory: all 37 table content fingerprints and
+442 media-file hashes matched. Both additive migrations (`0011_taxonomy_admin`,
+`0012_league_match_url`) were rehearsed and then applied in production through the
+image's locked migration CLI (2 applied / 11 existing; retry 0 / 13). The candidate
+and previous accepted image both passed route/readiness checks against the upgraded
+copy; existing content survived the upgrade. A first deployment attempt rejected
+Docker's mount-array ordering and rolled back to the compatible previous image.
+The retry compared complete mount objects by destination, preserved the runtime
+environment/storage/security configuration, and passed.
+
+Liveness and full readiness, canonical CS/EN HLL/Wardogs pages, FAQ, field manual,
+matches, servers, login pages, the new Wardogs history page, robots and sitemap
+passed public HTTP checks. Browser navigation and screenshots are recorded in
+[deployment evidence](evidence/production-update-2026-10-04/README.md).
+Logi/League/Warcon keys and SSO activation were not changed; rendered login or
+history pages do not establish provider authentication or live reader acceptance.
+Protected backups and configuration snapshots stay outside this public repository.
+
+## Publication of main `3dbfee7` — 2026-10-04
+
+Container publication run [37162780893](https://github.com/ValkyriaWDG/www/actions/runs/37162780893)
+(`expected_sha` `3dbfee7f4612dbcb943ecb324ee6763127002bd4`, UI rounds 12–13, the League
+fixtures reader and the Warcon game history reader) passed its verification jobs, was
+approved in the `container-publish` environment by the owner and published the immutable
+image `valkyria-www@sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3`
+(tag `sha-3dbfee7f…`), confirmed against the public registry tag list. Automatic
+production promotion was **held** (`migration-bundle-changed`): the candidate carries the
+migrations `0011_taxonomy_admin` and `0012_league_match_url` that production revision
+`0a94d59` (digest `sha256:336c317a…`, still the `production` alias) does not; the runtime
+contract fingerprint is unchanged. Per the [Watchtower policy](operations/watchtower.md)
+and the [release workflow](engineering/release-workflow.md), the operator stops the
+updater, proves backup/restore, applies the two migrations through the image's one-shot
+migration CLI under the lock, verifies the compatible image, promotes its exact OCI index
+and resumes the updater; none of that was run here. The new readers stay inactive until
+their keys and source associations exist in the production configuration.
+
 ## Warcon retained game history reader — 2026-10-03
 
 Branch `feat/logi-warcon-history` (on main `5e7a7d9`) consumes the fourth explicit

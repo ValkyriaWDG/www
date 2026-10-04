@@ -17452,6 +17452,39 @@
       "bytes": 37260,
       "width": 390,
       "height": 844
+    },
+    {
+      "id": "production-update-2026-10-04-hll",
+      "path": "docs/evidence/production-update-2026-10-04/hll-live.png",
+      "source": "Actual Chromium browser capture, 2026-10-04; live canonical https://valkyria.cz/cs/hll; source 3dbfee7f4612dbcb943ecb324ee6763127002bd4",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "29e7b363a32d4c88db81e19bececfc9a667549175102b43b426963972ea6d443",
+      "bytes": 66254,
+      "width": 65536,
+      "height": 4292542531
+    },
+    {
+      "id": "production-update-2026-10-04-wardogs",
+      "path": "docs/evidence/production-update-2026-10-04/wardogs-live.png",
+      "source": "Actual Chromium browser capture, 2026-10-04; live canonical https://valkyria.cz/cs/wardogs; source 3dbfee7f4612dbcb943ecb324ee6763127002bd4",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "14281f54c29fcec837ceb6ecc7e15e9077dc74561378038e64be5203a48a0589",
+      "bytes": 120932,
+      "width": 65536,
+      "height": 4292542531
+    },
+    {
+      "id": "production-update-2026-10-04-login",
+      "path": "docs/evidence/production-update-2026-10-04/login-live.png",
+      "source": "Actual Chromium browser capture, 2026-10-04; live canonical https://valkyria.cz/cs/login; source 3dbfee7f4612dbcb943ecb324ee6763127002bd4",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria website verification; underlying third-party game imagery excluded from Apache code license; no general redistribution license asserted",
+      "sha256": "8e4cf269a238eb28dd8c2d40f7d60060c0810a0a60175e7b8af8c2158d2e070f",
+      "bytes": 53508,
+      "width": 65536,
+      "height": 4292542531
     }
   ]
 }

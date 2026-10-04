@@ -1,5 +1,5 @@
 import { expect, type Request, test } from '@playwright/test';
-import { expectNoHorizontalOverflow, MISSING_VIDEO_PATH, settledBackgroundState, tabUntil } from './support/shell-helpers';
+import { expectNoHorizontalOverflow, measuredBox, MISSING_VIDEO_PATH, settledBackgroundState, tabUntil } from './support/shell-helpers';
 
 const HLL_URL = 'https://valkyriahll.cz/';
 
@@ -341,19 +341,19 @@ test.describe('home control sizes', () => {
     expect(await metrics()).toMatchObject({ cta: 96, action: 48 });
     // The whole menu, including the utility rail under the servers overview, fits a short window.
     await expect(page.locator('[data-home-servers]')).toBeVisible();
-    const rail = (await page.locator('[data-utility="discord"]').boundingBox())!;
+    const rail = await measuredBox(page.locator('[data-utility="discord"]'));
     expect(rail.y + rail.height).toBeLessThanOrEqual(700);
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/cs/wardogs');
     expect(await metrics()).toMatchObject({ cta: 96, action: 52, utility: 48 });
     // Servers overview controls are touch targets: a 24 px checkbox and a 44 px link.
-    const refresh = (await page.locator('[data-home-servers] input[type="checkbox"]').boundingBox())!;
+    const refresh = await measuredBox(page.locator('[data-home-servers] input[type="checkbox"]'));
     expect(refresh.width).toBeGreaterThanOrEqual(24);
     expect(refresh.height).toBeGreaterThanOrEqual(24);
-    expect((await page.locator('[data-home-servers] header a').boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await measuredBox(page.locator('[data-home-servers] header a'))).height).toBeGreaterThanOrEqual(44);
     // The server name link of the overview is a 44 px row as well (round 11).
-    expect((await page.locator('[data-home-servers] a[href*="?server="]').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await measuredBox(page.locator('[data-home-servers] a[href*="?server="]').first())).height).toBeGreaterThanOrEqual(44);
     await expectNoHorizontalOverflow(page);
   });
 });

@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 /** Path of the intentionally missing background video configured for the e2e server. */
 export const MISSING_VIDEO_PATH = '/e2e-missing/background-loop.mp4';
@@ -10,6 +10,17 @@ export async function tabUntil(page: Page, predicate: string, limit = 40): Promi
     if (await page.evaluate((selector) => document.activeElement?.matches(selector) ?? false, predicate)) return;
   }
   throw new Error(`Focus never reached ${predicate} within ${limit} Tab presses`);
+}
+
+/**
+ * Bounding box with the layout float noise removed: Chromium reports a 24 px control at a
+ * fractional offset as 23.99993896…, so the values are snapped to 1/100 px before size checks.
+ */
+export async function measuredBox(locator: Locator): Promise<{ x: number; y: number; width: number; height: number }> {
+  const box = await locator.boundingBox();
+  if (!box) throw new Error(`${locator} has no bounding box`);
+  const snap = (value: number) => Math.round(value * 100) / 100;
+  return { x: snap(box.x), y: snap(box.y), width: snap(box.width), height: snap(box.height) };
 }
 
 /** Asserts that the document does not scroll horizontally. */

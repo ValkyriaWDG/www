@@ -1,0 +1,230 @@
+{
+  "source": "3dbfee7f4612dbcb943ecb324ee6763127002bd4",
+  "digest": "sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3",
+  "previousSource": "0a94d59c32831cfa198a0371bf204523e6555a3a",
+  "previousDigest": "sha256:336c317a50c5be1bd639259c582dc88177d9c4d6d7701acabf5508e8706b56ec",
+  "startedAt": "20261004T011037Z",
+  "restore": "passed",
+  "rollbackImageVerified": true,
+  "backedUpTables": 37,
+  "backedUpMediaFiles": 442,
+  "rehearsalMigrations": [
+    {
+      "applied": 2,
+      "alreadyApplied": 11,
+      "total": 13
+    },
+    {
+      "applied": 0,
+      "alreadyApplied": 13,
+      "total": 13
+    }
+  ],
+  "rehearsalImages": [
+    {
+      "image": "majorluk/valkyria-www@sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3",
+      "http": [
+        {
+          "path": "/api/health/live",
+          "status": 200
+        },
+        {
+          "path": "/api/health/ready",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll",
+          "status": 200
+        },
+        {
+          "path": "/en/hll",
+          "status": 200
+        },
+        {
+          "path": "/cs/wardogs",
+          "status": 200
+        },
+        {
+          "path": "/en/wardogs",
+          "status": 200
+        },
+        {
+          "path": "/cs/login",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/faq",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/field-manual",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/matches",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/servers",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "image": "majorluk/valkyria-www@sha256:336c317a50c5be1bd639259c582dc88177d9c4d6d7701acabf5508e8706b56ec",
+      "http": [
+        {
+          "path": "/api/health/live",
+          "status": 200
+        },
+        {
+          "path": "/api/health/ready",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll",
+          "status": 200
+        },
+        {
+          "path": "/en/hll",
+          "status": 200
+        },
+        {
+          "path": "/cs/wardogs",
+          "status": 200
+        },
+        {
+          "path": "/en/wardogs",
+          "status": 200
+        },
+        {
+          "path": "/cs/login",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/faq",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/field-manual",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/matches",
+          "status": 200
+        },
+        {
+          "path": "/cs/hll/servers",
+          "status": 200
+        }
+      ]
+    }
+  ],
+  "productionMigrations": [
+    {
+      "applied": 2,
+      "alreadyApplied": 11,
+      "total": 13
+    },
+    {
+      "applied": 0,
+      "alreadyApplied": 13,
+      "total": 13
+    }
+  ],
+  "previousAttempt": {
+    "failure": "mount-array-order-comparison",
+    "rollback": "verified"
+  },
+  "stage": "accepted",
+  "result": "deployed",
+  "candidateHttp": [
+    {
+      "path": "/api/health/live",
+      "status": 200
+    },
+    {
+      "path": "/api/health/ready",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll",
+      "status": 200
+    },
+    {
+      "path": "/en/hll",
+      "status": 200
+    },
+    {
+      "path": "/cs/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/en/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/cs/login",
+      "status": 200
+    },
+    {
+      "path": "/en/login",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/faq",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/field-manual",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/matches",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll/servers",
+      "status": 200
+    },
+    {
+      "path": "/cs/wardogs/history",
+      "status": 200
+    },
+    {
+      "path": "/en/wardogs/history",
+      "status": 200
+    }
+  ],
+  "environmentPreserved": true,
+  "mountsPreserved": true,
+  "watchtower": "running",
+  "channel": "production",
+  "finalHttp": [
+    {
+      "path": "/api/health/ready",
+      "status": 200
+    },
+    {
+      "path": "/cs/hll",
+      "status": 200
+    },
+    {
+      "path": "/en/hll",
+      "status": 200
+    },
+    {
+      "path": "/cs/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/en/wardogs",
+      "status": 200
+    },
+    {
+      "path": "/cs/wardogs/history",
+      "status": 200
+    }
+  ],
+  "health": "healthy"
+}
