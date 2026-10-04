@@ -18,6 +18,10 @@ Production SSO activation is a separate operation. Provider collectors still nee
 valid hosted configuration; the synchronization timer remains disabled until a
 complete manual pass is verified. Next: current-head CI, reviewed release, then
 production continuation and complete-import proof.
+Independent review identified an asymmetric stored-JSON rollback boundary: an older
+strict reader rejects imported `matchTeams` projections despite healthy endpoints.
+The evidence documents the reproduced boundary and publication hold/roll-forward
+procedure; this is not a schema migration or a proved production rollback.
 
 ## Production deployment of `3dbfee7` — 2026-10-04
 

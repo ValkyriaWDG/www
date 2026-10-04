@@ -62,3 +62,30 @@ change. Team metadata does not enter the public match DTO. Existing keys and sto
 checkpoints can continue after the reviewed image is deployed. Keep the scheduled
 runner disabled until manual continuation reaches `caught_up`; inspect provider
 configuration failures separately. Login success is not a collector/import proof.
+
+## Rollback boundary after importing team snapshots
+
+The database schema is unchanged, but stored JSON compatibility is not symmetric.
+Once new event/match projections contain `matchTeams`, the earlier strict reader on
+`b112bad` rejects those rows. Its public event reader skips them; an image-only
+rollback can therefore hide imported matches while liveness/readiness still pass.
+The generic image rollback rehearsal does not establish this data-shape compatibility.
+
+A synthetic stored-projection check at 18:38:43 UTC used the committed
+`fixtures/v0.6.json` event, added `matchTeams: null`, parsed it with this candidate
+and serialized/deserialized the result as stored JSON. The actual contract obtained
+with `git show b112bad0dd530b11d6a9f6df5f831acfed934023:apps/web/src/modules/integrations/logi/contracts.ts`
+accepted the legacy fixture but rejected the new projection with `unrecognized_keys`;
+the candidate accepted both. Repeating those `safeParse` calls reproduces the boundary.
+This is a schema-level rehearsal, not a production image rollback or restore proof.
+
+For an operational rollback, stop the dedicated updater and Logi timer and preserve
+the current image, configuration and checkpoints. Keep connected match publication
+disabled (the initial activation already does). Roll forward to a corrected consumer
+that still accepts these snapshots before resuming import and publication. If an
+older image must temporarily serve the site, treat its connected match surface as
+unavailable; do not claim recovery from healthchecks alone. Validate a retained
+new-format projection plus complete synchronization on the replacement consumer.
+Do not delete checkpoints, restore an old database over newer writes or silently
+strip team snapshots as an image-rollback shortcut. Existing SSO and the separate
+direct HLL server reader do not consume this projection shape.
