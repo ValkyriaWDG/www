@@ -136,8 +136,11 @@ one remains available within its freshness limits. Promotion removes retired
 generations transactionally. Neither partial lists nor provider failures prove deletion.
 Changed source/key configuration gets a distinct cache scope.
 
-Run a pass every minute. A pass is bounded to 8 synchronization steps and 25 seconds
-per game, with a 60-second lease. It can finish as `pending`, `busy`, `lease_lost`,
+Run a pass every minute. A data pass is bounded to 100 synchronization steps and
+25 seconds per game, with a 60-second lease. Change scans start at ten guild rows
+and expand to 100 after an empty nonterminal page. An expanded page with over ten
+hints is reread from the same cursor at ten; atomic refetch remains bounded to ten
+hints per commit. A pass can finish as `pending`, `busy`, `lease_lost`,
 `caught_up` or `failed`; `pending` resumes on a later pass. Failures preserve the
 checkpoint and use bounded backoff, including `Retry-After`. Periodic pulls remain
 necessary even when webhooks are configured.

@@ -186,8 +186,14 @@ same image and protected environment as the website. No timer is installed by th
 code change. Do not launch the pull as an unawaited web-request promise. Concurrent
 invocations are fenced by PostgreSQL leases, but a single scheduled worker is enough.
 
-Each source has a 25-second/8-step pass and 60-second lease. A large initial import or
-reset can require several passes. The CLI reports safe outcomes and exits nonzero for
+Data scopes have a 25-second/100-step pass; people scopes retain a 50-second/100-step
+pass and a five-minute full reconciliation interval. Both use a 60-second lease.
+Change replay starts with ten scanned guild rows, expands empty nonterminal scans
+to at most 100, and rereads a dense expanded page from the same cursor at ten before
+refetching records. Each commit still refetches at most ten hints with concurrency
+four; larger scans do not skip filtered pages, enlarge private grants or change
+stored checkpoints. A large initial import or reset can require several passes.
+The CLI reports safe outcomes and exits nonzero for
 `failed`; `pending` means resumable work, not completed synchronization. Backoff is
 stored durably, so restarting the process does not bypass a 429. Pending webhook hints
 are marked only after all games of their source/guild are caught up through a pass

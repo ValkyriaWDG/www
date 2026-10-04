@@ -13,12 +13,13 @@ export { LogiClientError, logiRetryAfterMs, validateLogiOrigin, type LogiErrorCo
 
 /** Tolerated provider clock lead for membership observations. */
 export const LOGI_CLOCK_SKEW_MS = 5_000;
+export type LogiChangeRequestOptions = LogiRequestOptions & { limit?: number };
 export interface LogiReader {
   readonly scope: LogiScope;
   readonly resources: readonly LogiResource[];
   list<R extends LogiCollectionResource>(resource: R, input?: { cursor?: string | null; limit?: number } & LogiRequestOptions): Promise<LogiCollectionPage<R>>;
   startChanges(resources: readonly LogiCollectionResource[], options?: LogiRequestOptions): Promise<LogiChangesPage>;
-  changes(resources: readonly LogiCollectionResource[], cursor: string, options?: LogiRequestOptions): Promise<LogiChangesPage>;
+  changes(resources: readonly LogiCollectionResource[], cursor: string, options?: LogiChangeRequestOptions): Promise<LogiChangesPage>;
   syncRecord<R extends LogiCollectionResource>(resource: R, id: string, options?: LogiRequestOptions): Promise<LogiSyncRecord<R>>;
   membership(discordUserId: string, maxAgeMs?: number, options?: LogiRequestOptions): Promise<LogiMembership>;
 }
@@ -57,11 +58,14 @@ export function createLogiClient(config: LogiClientConfig, dependencies: { fetch
   const permitted = (resource: LogiResource) => { if (!resources.includes(resource)) throw new LogiClientError('forbidden'); };
   const get = transport.get;
 
-  async function changePage(selected: readonly LogiCollectionResource[], cursor: string | null, options?: LogiRequestOptions): Promise<LogiChangesPage> {
+  async function changePage(selected: readonly LogiCollectionResource[], cursor: string | null, options?: LogiChangeRequestOptions): Promise<LogiChangesPage> {
     if (selected.length === 0 || new Set(selected).size !== selected.length) throw new LogiClientError('configuration');
     selected.forEach(permitted);
-    const query = { resources: [...selected].sort().join(','), limit: '10', ...(cursor === null ? { start: 'now' } : { cursor: checkedCursor(cursor) }) };
+    const limit = options?.limit ?? 10;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new LogiClientError('configuration');
+    const query = { resources: [...selected].sort().join(','), limit: String(limit), ...(cursor === null ? { start: 'now' } : { cursor: checkedCursor(cursor) }) };
     const page = parse(logiChangesPageSchema, await get('changes', query, options));
+    if (page.data.length > Math.min(limit, page.page.limit)) invalid();
     for (const change of page.data) {
       assertScope(change, scope);
       if (!(selected as readonly string[]).includes(change.resource)) throw new LogiClientError('scope_mismatch');

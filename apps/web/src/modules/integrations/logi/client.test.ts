@@ -192,6 +192,29 @@ describe('bounded server-only transport', () => {
     expect(url.searchParams.get('start')).toBe('now');
     await expect(setup(syncFixtures.changes).client.changes(['match-summaries'], 'cursor')).rejects.toMatchObject({ code: 'scope_mismatch' });
   });
+
+  it('allows a bounded change scan without changing the authorized resource selection', async () => {
+    const { client, fetchImpl } = setup({ data: [], page: { nextCursor: 'next', hasMore: true, limit: 100 } });
+    await client.changes(['event-summaries'], 'cursor', { limit: 100 });
+    const url = new URL(fetchImpl.mock.calls[0]![0]);
+    expect(url.searchParams.get('limit')).toBe('100');
+    expect(url.searchParams.get('cursor')).toBe('cursor');
+    expect(url.searchParams.get('resources')).toBe('event-summaries');
+    expect(url.searchParams.get('game')).toBe('wardogs');
+  });
+
+  it.each([0, -1, 101, 1.5, NaN])('rejects an invalid change scan size %s before HTTP', async (limit) => {
+    const { client, fetchImpl } = setup(syncFixtures.bootstrap);
+    await expect(client.changes(['event-summaries'], 'cursor', { limit })).rejects.toMatchObject({ code: 'configuration' });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it.each([[10, 11, 100], [100, 101, 100], [10, 6, 5]])('rejects %s scan responses that exceed the requested or reported bound', async (limit, count, reportedLimit) => {
+    const value = syncFixtures.record.data;
+    const hint = { guildId: value.guildId, gameId: value.gameId, resource: value.resource, id: value.id, revision: value.revision, operation: value.operation };
+    const { client } = setup({ data: Array.from({ length: count }, () => hint), page: { nextCursor: 'next', hasMore: true, limit: reportedLimit } });
+    await expect(client.changes(['event-summaries'], 'cursor', { limit })).rejects.toMatchObject({ code: 'invalid_response' });
+  });
 });
 
 describe('exact subject membership', () => {

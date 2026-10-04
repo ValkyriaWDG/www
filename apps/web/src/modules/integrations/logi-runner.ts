@@ -25,7 +25,7 @@ export async function runLogiSync(db: Executor, env: LogiIntegrationEnv): Promis
     const resources = source.purpose === 'people' ? LOGI_PEOPLE_RESOURCES : LOGI_COLLECTION_RESOURCES;
     const reader = createLogiClient({ ...source, resources });
     const store = createPostgresLogiSyncStore(db, source);
-    const outcome = await synchronizeLogiScope(reader, store, { resources, ...(source.purpose === 'people' ? { fullRefreshMs: 300_000, maxSteps: 100, maxRunMs: 50_000 } : {}) });
+    const outcome = await synchronizeLogiScope(reader, store, { resources, maxSteps: 100, ...(source.purpose === 'people' ? { fullRefreshMs: 300_000, maxRunMs: 50_000 } : {}) });
     outcomes.push(outcome);
     sourceOutcomes.push(outcome);
     if (outcome.state === 'failed') {

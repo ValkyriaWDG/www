@@ -107,6 +107,7 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
   const lease: LogiSyncLease = acquired;
   const signal = AbortSignal.timeout(maxRunMs);
   let checkpoint: LogiSyncCheckpoint | null = null;
+  let changeScanLimit = 10;
 
   async function refetch<T>(items: readonly T[], read: (item: T) => Promise<LogiSyncRecord<LogiCollectionResource> | null>): Promise<LogiSyncRecord<LogiCollectionResource>[]> {
     const records: LogiSyncRecord<LogiCollectionResource>[] = [];
@@ -136,6 +137,7 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
   }
 
   async function beginBootstrap(): Promise<boolean> {
+    changeScanLimit = 10;
     const page = await reader.startChanges(resources, { signal });
     const next: LogiSyncCheckpoint = {
       version: (checkpoint?.version ?? 0) + 1, mode: 'bootstrap', generation: newGeneration(),
@@ -180,7 +182,18 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
           }, records)) return outcome;
           continue;
         }
-        const page = await reader.changes(resources, current.cursor, { signal });
+        let page = await reader.changes(resources, current.cursor, { signal, limit: changeScanLimit });
+        // The producer limits scanned guild rows before filtering game/resources.
+        // Expand sparse scans, but keep atomic refetch work at ten hints per commit.
+        // A dense expanded page is reread from the unchanged cursor; its larger
+        // continuation is never committed or used to skip unprocessed identities.
+        if (page.data.length > 10) {
+          changeScanLimit = 10;
+          page = await reader.changes(resources, current.cursor, { signal, limit: changeScanLimit });
+          if (page.data.length > 10) throw new LogiClientError('invalid_response');
+        } else if (page.data.length === 0 && page.page.hasMore) {
+          changeScanLimit = 100;
+        }
         if (page.page.hasMore && page.page.nextCursor === current.cursor) throw new LogiClientError('invalid_response');
         const identities = new Map<string, typeof page.data[number]>();
         for (const hint of page.data) {
