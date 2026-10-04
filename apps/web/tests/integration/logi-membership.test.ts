@@ -45,6 +45,33 @@ async function membershipPersisted(subject: string): Promise<void> {
 const resolve = (id: Awaited<ReturnType<typeof identity>>, overrides: Partial<Parameters<typeof resolveActor>[1]> = {}) => resolveActor(database.db, { session: id.session, user: id.user, intent: 'write', env, now: NOW, fetchImpl: id.fetchImpl, ...overrides });
 
 describe('Logi authorization with real database sessions and observations', () => {
+  it('recovers the shared member refresh across game grants before authorizing either game', async () => {
+    const id = await identity();
+    const twoGames = { ...env, LOGI_SOURCES_JSON: JSON.stringify([{ ...source, gameId: 'hell_let_loose' }, source]), LOGI_MEMBERSHIP_API_KEY_HLL: 'synthetic-hll-membership-key' };
+    let release!: () => void;
+    const refreshed = new Promise<void>((resolve) => { release = resolve; });
+    let complete = false;
+    const gameCalls: string[] = [];
+    const fetchImpl = (async (raw, init) => {
+      const url = new URL(String(raw));
+      if (url.pathname.endsWith('/userinfo')) return id.fetchImpl(raw, init);
+      const gameId = url.searchParams.get('game');
+      gameCalls.push(gameId!);
+      if (gameId === 'hell_let_loose') { await refreshed; complete = true; }
+      if (!complete) {
+        release();
+        return Response.json({ data: { ...id.member, gameId, state: 'unknown', completeness: 'unavailable', roleIds: [], observedAt: null } });
+      }
+      return Response.json({ data: { ...id.member, gameId } });
+    }) as typeof fetch;
+    const actor = await resolve(id, { env: twoGames, fetchImpl });
+    expect(actor).toMatchObject({ status: 'verified' });
+    expect(canForGame(actor, 'matches.edit', 'hell-let-loose')).toBe(true);
+    expect(canForGame(actor, 'matches.edit', 'wardogs')).toBe(true);
+    expect(gameCalls).toEqual(['hell_let_loose', 'wardogs', 'wardogs']);
+    expect(await database.db.select({ state: logiMembership.state }).from(logiMembership).where(eq(logiMembership.subject, id.discordUserId))).toEqual([{ state: 'present' }, { state: 'present' }]);
+  });
+
   it('grants only the explicitly observed game and checks central session on every request', async () => {
     const id = await identity();
     const actor = await resolve(id);

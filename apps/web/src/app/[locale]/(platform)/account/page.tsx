@@ -3,6 +3,7 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { getServerEnv } from '@/lib/env';
 import { can, canForGame } from '@/modules/access/policy';
 import { GAME_REGISTRY, GAME_ROUTES } from '@/modules/games/registry';
 import { getActor } from '@/modules/access/server';
@@ -73,7 +74,9 @@ export default async function AccountPage({ params, searchParams }: PageProps<'/
         ) : null}
         <div data-testid="account-status" data-state={state.key}>
           <Notice tone={state.tone} title={t(`states.${state.key}.title`)} role={state.tone === 'danger' ? 'alert' : 'status'}>
-            {t(`states.${state.key}.body`)}
+            {state.key === 'stale'
+              ? t('states.stale.body', { provider: getServerEnv().LOGI_MEMBERSHIP_SOURCE === 'logi' ? 'Logi' : 'Discord' })
+              : t(`states.${state.key}.body`)}
           </Notice>
         </div>
 

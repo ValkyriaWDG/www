@@ -1,5 +1,45 @@
 # Current status
 
+## Logi membership refresh and sparse-feed catch-up — 2026-10-04
+
+The same branch also fixes a reproduced cross-game membership refresh collision:
+Logi shares a guild/member refresh lease, so concurrent HLL/WDG reads could return
+one verified member and one HTTP-200 `unknown`, denying a valid account. After the
+initial round, the website rechecks unknown once using the same restricted game
+key and freshness bound. HTTP errors, verified absence, actual timeouts and
+continued unknown still fail closed. Epoch/revision/session fences are unchanged.
+The account warning names the actual configured membership provider. A read-only
+live run of the patched reader at 20:19:10 UTC recovered unknown to verified in
+1,642 ms; this does not mean the website is deployed. Ten new unit cases pass
+(1,180 total), plus lint, typecheck, production build and independent auth review.
+Real PostgreSQL recovery/revocation tests and final-head CI remain required. The
+changed Logi warning has no new browser capture yet; production account proof stays
+private. PR: [#107](https://github.com/ValkyriaWDG/www/pull/107).
+
+Branch `fix/logi-sparse-replay`, based on accepted main `9279c0f`, addresses a
+production bootstrap backlog of about 24,000 guild revisions. Logi bounds scanned
+rows before filtering game/resource, so ten-row requests often returned no matching
+hints and the data runner's eight-step cap made catch-up excessively slow.
+Replay now expands sparse scans to 100 rows, rereads dense pages at ten from the
+unchanged cursor, and lets data scopes use up to 100 steps inside their unchanged
+25-second deadline. Atomic work, grants, backoff and checkpoint format are preserved.
+See [evidence and acceptance limits](evidence/logi-sparse-replay-2026-10-04/README.md).
+Local checks passed: 72 focused tests, all 1,170 unit tests, lint, typecheck,
+production build and foundation. Independent review found no actionable code
+findings; its contract-documentation correction is included. PostgreSQL integration
+was not run locally because its isolated runtime was unavailable. Current-head CI,
+including that persisted-runner regression, is still required before acceptance.
+
+The preceding live-contract fix is already deployed as source
+`9279c0f77a010e732dc5e24987c34fcb3370aca9`, digest
+`sha256:cfa43d2210e7c2c1eff55d86e35d2649a1f077b8b1e9943916a502a5623f6022`.
+Runtime/mount/security equality, readiness, Watchtower and a fresh browser Logi
+login with protected administration were verified. A first post-login membership
+check transiently failed closed; the subsequent account and admin reads succeeded
+without changing authorization. This sparse-feed follow-up is not deployed yet.
+Initial sync is incomplete, its timer remains off, Logi publication/writes/webhooks
+remain off, and provider collector configuration still needs the hosted operator.
+
 ## Logi live-contract compatibility fix — 2026-10-04
 
 Branch `fix/logi-live-contract`, based on main `b112bad`, fixes two findings from

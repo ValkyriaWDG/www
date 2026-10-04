@@ -54,6 +54,81 @@ function live(cursor = 'old-cursor'): LogiSyncCheckpoint {
 }
 
 describe('revision-aware bootstrap and replay', () => {
+  it('catches up a sparse guild feed across bounded passes without replacing the last complete generation early', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live('scan-0'), mode: 'replay', generation: 'rebuild-1' };
+    store.active.set('old', record('9', 'Last complete generation', 'old'));
+    const fresh = record('24001');
+    let pages = 0;
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      if (url.pathname.includes('/sync-records/')) return json({ data: fresh });
+      expect(url.searchParams.has('start')).toBe(false);
+      const offset = Number(url.searchParams.get('cursor')!.slice(5));
+      const limit = Number(url.searchParams.get('limit'));
+      const end = Math.min(offset + limit, 24001);
+      pages++;
+      return json({ data: end === 24001 ? [hint(fresh)] : [], page: { nextCursor: `scan-${end}`, hasMore: end < 24001, limit } });
+    });
+    const states: string[] = [];
+    for (let pass = 0; pass < 3; pass++) {
+      const outcome = await synchronizeLogiScope(reader, store, { ...options, maxSteps: 100 });
+      states.push(outcome.state);
+      if (outcome.state !== 'caught_up') expect([...store.active.keys()]).toEqual(['old']);
+    }
+    expect(states).toEqual(['pending', 'pending', 'caught_up']);
+    expect(pages).toBeLessThanOrEqual(250);
+    expect([...store.active.values()]).toEqual([fresh]);
+    expect(store.checkpoint).toMatchObject({ mode: 'live', cursor: 'scan-24001', generation: null });
+  });
+
+  it('rereads a dense expanded page from the unchanged cursor in small atomic batches without skipping identities', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live('scan-0'), mode: 'replay', generation: 'rebuild-1' };
+    const values = Array.from({ length: 100 }, (_, index) => record(String(index + 11), 'Synthetic event', `event-${index + 11}`));
+    const requests: { offset: number; limit: number }[] = [];
+    const readIds: string[] = [];
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      if (url.pathname.includes('/sync-records/')) {
+        const id = url.pathname.split('/').at(-1)!;
+        readIds.push(id);
+        return json({ data: values.find((value) => value.id === id)! });
+      }
+      const offset = Number(url.searchParams.get('cursor')!.slice(5));
+      const limit = Number(url.searchParams.get('limit'));
+      requests.push({ offset, limit });
+      const end = Math.min(offset + limit, 110);
+      const data = values.filter((value) => Number(value.revision) > offset && Number(value.revision) <= end).map(hint);
+      return json({ data, page: { nextCursor: `scan-${end}`, hasMore: end < 110, limit } });
+    });
+    expect(await synchronizeLogiScope(reader, store, { ...options, maxSteps: 6 })).toMatchObject({ state: 'pending', records: 50 });
+    expect(store.active.size).toBe(0);
+    expect(store.checkpoint?.cursor).toBe('scan-60');
+    expect(requests.slice(0, 3)).toEqual([{ offset: 0, limit: 10 }, { offset: 10, limit: 100 }, { offset: 10, limit: 10 }]);
+    expect(await synchronizeLogiScope(reader, store, { ...options, maxSteps: 6 })).toMatchObject({ state: 'caught_up', records: 50 });
+    expect(new Set(readIds).size).toBe(100);
+    expect(readIds).toHaveLength(100);
+    expect(store.active.size).toBe(100);
+    expect(store.commits.every((commit) => commit.records.length <= 10)).toBe(true);
+  });
+
+  it.each([[429, 'rate_limited'], [503, 'upstream']] as const)('preserves the checkpoint when the dense-page reread returns %s', async (status, error) => {
+    const store = new MemoryStore();
+    store.checkpoint = live('scan-0');
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      const cursor = url.searchParams.get('cursor');
+      const limit = Number(url.searchParams.get('limit'));
+      if (cursor === 'scan-0') return json(changed('scan-10', true));
+      if (limit === 100) return json({ data: Array.from({ length: 11 }, (_, i) => hint(record(String(i + 11), 'Synthetic', `event-${i}`))), page: { nextCursor: 'scan-110', hasMore: true, limit } });
+      return json({}, status);
+    });
+    expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'failed', error, committedPages: 1, records: 0 });
+    expect(store.checkpoint?.cursor).toBe('scan-10');
+    expect(store.active.size).toBe(0);
+  });
+
   it('resumes committed pages after the run budget expires without publishing an incomplete generation', async () => {
     const store = new MemoryStore();
     const budget = new AbortController();
