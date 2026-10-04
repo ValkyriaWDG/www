@@ -1,5 +1,34 @@
 # Current status
 
+## Production deployment of `3dbfee7` — 2026-10-04
+
+The owner explicitly requested deployment of the published website updates. The
+held publication below is now accepted in production: the running web container
+and the `production` channel both resolve to source
+`3dbfee7f4612dbcb943ecb324ee6763127002bd4`, OCI index
+`sha256:d6087257f939e2294f651df32fe9d2a3ed72e13569cba843e58884cf82e60ad3`.
+The dedicated Watchtower updater is running again with its existing five-minute
+schedule and website-only selectors.
+
+A frozen database/media backup restored successfully into a newly created
+disposable database and media directory: all 37 table content fingerprints and
+442 media-file hashes matched. Both additive migrations (`0011_taxonomy_admin`,
+`0012_league_match_url`) were rehearsed and then applied in production through the
+image's locked migration CLI (2 applied / 11 existing; retry 0 / 13). The candidate
+and previous accepted image both passed route/readiness checks against the upgraded
+copy; existing content survived the upgrade. A first deployment attempt rejected
+Docker's mount-array ordering and rolled back to the compatible previous image.
+The retry compared complete mount objects by destination, preserved the runtime
+environment/storage/security configuration, and passed.
+
+Liveness and full readiness, canonical CS/EN HLL/Wardogs pages, FAQ, field manual,
+matches, servers, login pages, the new Wardogs history page, robots and sitemap
+passed public HTTP checks. Browser navigation and screenshots are recorded in
+[deployment evidence](evidence/production-update-2026-10-04/README.md).
+Logi/League/Warcon keys and SSO activation were not changed; rendered login or
+history pages do not establish provider authentication or live reader acceptance.
+Protected backups and configuration snapshots stay outside this public repository.
+
 ## Publication of main `3dbfee7` — 2026-10-04
 
 Container publication run [37162780893](https://github.com/ValkyriaWDG/www/actions/runs/37162780893)
