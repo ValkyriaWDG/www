@@ -144,7 +144,7 @@ export function hasMemberFilters(filters: MemberFilters): boolean {
 /* --------------------------------------------------------------- matches */
 
 export type MatchView = 'upcoming' | 'results';
-export type MatchFilters = { view: MatchView; game?: Game; q?: string; page: number; logiPage?: number };
+export type MatchFilters = { view: MatchView; game?: Game; q?: string; page: number };
 
 export function parseMatchView(value: string | undefined): MatchView | undefined {
   return value === 'upcoming' || value === 'results' ? value : undefined;
@@ -155,8 +155,8 @@ export function parseMatchFilters(params: RawSearchParams | undefined, fallbackV
     view: parseMatchView(firstParam(params, 'view')) ?? fallbackView,
     game: parseGame(firstParam(params, 'game')),
     q: parseSearch(firstParam(params, 'q')),
-    page: parsePage(firstParam(params, 'page')),
-    logiPage: parsePage(firstParam(params, 'logiPage')),
+    // Old bookmarks may contain the former provider-only page. Emit only the shared page.
+    page: parsePage(firstParam(params, 'page') ?? firstParam(params, 'logiPage')),
   };
 }
 
@@ -167,7 +167,6 @@ export function matchesListHref(filters: Partial<MatchFilters>, base = ''): stri
     ['game', filters.game],
     ['q', filters.q],
     ['page', filters.page],
-    ['logiPage', filters.logiPage && filters.logiPage > 1 ? filters.logiPage : undefined],
   ]);
 }
 
@@ -180,7 +179,6 @@ export function matchDetailHref(slug: string, filters: Partial<Omit<MatchFilters
     ['game', filters.game],
     ['q', filters.q],
     ['page', filters.page],
-    ['logiPage', filters.logiPage && filters.logiPage > 1 ? filters.logiPage : undefined],
   ]);
 }
 

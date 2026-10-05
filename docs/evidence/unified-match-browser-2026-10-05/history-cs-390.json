@@ -1,0 +1,12 @@
+{
+  "caption": "One synthetic match browser: an original website fixture interleaves chronologically with connected results, using one search, count and pagination. The first row and preview show reviewed 0:5 and open the original detail.",
+  "kind": "synthetic-local-browser-screenshot",
+  "route": "/cs/hll/matches?view=results",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "capturedAt": "2026-10-05T19:50:42.442Z",
+  "testedCommit": "e547be03c8a5611f1c48621da2e9b2d8b17ceef2",
+  "environment": "Windows; Node 24.21.0; pnpm 10.34.5; Chromium; local standalone production build; disposable PostgreSQL 15; synthetic fixtures"
+}

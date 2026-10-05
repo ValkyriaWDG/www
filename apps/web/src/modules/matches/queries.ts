@@ -22,6 +22,10 @@ import { authorize, authorizeGames, foldedContains, pageCount, parseInput } from
 import { loadProseAdminDetail, loadProseStatuses, publishedProseFor } from '@/modules/prose/queries';
 import { SLUG_PATTERN } from '@/modules/prose/slug';
 import { acceptedLeagueMatchIds, leagueMatchUrlForId, mapLeagueMatchSlugs } from './league-links';
+import { GAME_REGISTRY } from '@/modules/games/registry';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { filterPublicLogiMatches, publicLogiMatchView } from '@/modules/integrations/logi/public-matches';
+import { mergePublicMatchWindow, publicMatchWindow, type UnifiedPublicMatchPage } from './public-browser';
 import { adminMatchListSchema, publicMatchListSchema, type AdminMatchListInput, type PublicMatchListInput } from './schemas';
 import { loadMatchStatistics } from './statistics-service';
 import { loadPublicLegacyMatchDetails } from './legacy-details';
@@ -151,6 +155,46 @@ export async function listPublicMatches(db: Executor, input: PublicMatchListInpu
     .limit(query.pageSize)
     .offset((query.page - 1) * query.pageSize);
   return { items: await toSummaries(db, rows), total, page: query.page, pageCount: pageCount(total, query.pageSize) };
+}
+
+/** One public schedule: filter, count and globally order both origins before slicing a page. */
+export async function listUnifiedPublicMatches(db: Executor, input: Pick<PublicMatchListInput, 'view' | 'game' | 'q' | 'page' | 'pageSize' | 'now'>, events: readonly PublicLogiEvent[]): Promise<UnifiedPublicMatchPage> {
+  const query = parseInput(publicMatchListSchema, input);
+  const scoped = events.filter((event) => event.kind === 'match' && (!query.game || GAME_REGISTRY[event.ref.game].db === query.game));
+  // Only fresh, already publication-checked exact associations suppress a website row.
+  // This is independent of the active view/search so a counterpart cannot appear twice.
+  const linked = scoped.flatMap((event) => event.archive ? [event.archive.slug] : []);
+  const connected = filterPublicLogiMatches(scoped, { view: query.view, q: query.q, now: query.now });
+  const where = and(
+    isPublished,
+    linked.length ? notInArray(match.slug, linked) : undefined,
+    inArray(match.status, [...VIEW_STATUSES[query.view]]),
+    query.game ? eq(match.game, query.game) : undefined,
+    query.q ? foldedContains([match.opponentName, match.opponentShortCode, match.competitionName], query.q) : undefined,
+  );
+  const window = publicMatchWindow(query.page, query.pageSize, connected.length);
+  const [totals, rows] = await Promise.all([
+    db.select({ total: count() }).from(match).where(where),
+    db.select(summaryColumns).from(match).leftJoin(matchResult, eq(matchResult.matchId, match.id)).where(where)
+      .orderBy(...(query.view === 'upcoming' ? [asc(match.startsAt), asc(match.id)] : [desc(match.startsAt), desc(match.id)]))
+      .offset(window.websiteOffset).limit(window.websiteLimit),
+  ]);
+  const total = (totals[0]?.total ?? 0) + connected.length;
+  return {
+    items: mergePublicMatchWindow(await toSummaries(db, rows), connected, query.view, window.skip, query.pageSize),
+    total, page: query.page, pageCount: pageCount(total, query.pageSize),
+  };
+}
+
+export async function getUnifiedPublicMatchCounts(db: Executor, events: readonly PublicLogiEvent[], now = new Date()): Promise<PublicMatchCounts> {
+  const matches = events.filter((event) => event.kind === 'match');
+  const counts = await getPublicMatchCounts(db, matches.flatMap((event) => event.archive ? [event.archive.slug] : []));
+  for (const event of matches) {
+    const view = publicLogiMatchView(event, now);
+    counts[view] += 1;
+    counts.byGame[GAME_REGISTRY[event.ref.game].db][view] += 1;
+  }
+  return counts;
 }
 
 /**

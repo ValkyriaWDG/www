@@ -14,7 +14,7 @@ let deps: SocialDeps;
 beforeAll(async () => {
   db = await createTestDatabase();
   await seedTestUsers(db.db);
-  deps = { db: () => db.db, mediaRoot: '/not-used', siteOrigin: 'https://social-test.example', render: renderer };
+  deps = { db: () => db.db, matchEvents: async () => [], mediaRoot: '/not-used', siteOrigin: 'https://social-test.example', render: renderer };
 });
 afterAll(async () => { await db.drop(); });
 

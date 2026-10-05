@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { createHash } from 'node:crypto';
 import { getTranslations } from 'next-intl/server';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { cache } from 'react';
@@ -15,12 +16,17 @@ import { getDb } from '@/lib/db';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { canonicalMatchPath, sectionBase } from '@/modules/games/routes';
 import { sharingMetadata } from '@/modules/social/metadata';
+import { matchCard } from '@/modules/social/model';
 import { getPublicMatch } from '@/modules/matches/queries';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
-import { LogiMatches } from './logi-matches';
+import { linkedPublicLogiMatch, publicLogiMatchTime, publicLogiMatchView } from '@/modules/integrations/logi/public-matches';
+import { readPublicLogiEventPeople } from '@/modules/integrations/logi-people';
+import { getServerEnv } from '@/lib/env';
+import { PublicLogiMatchPeople } from './logi-people';
 
 /** Published match only; unknown and draft matches are indistinguishable (null → 404). */
 export const loadPublicMatch = cache(async (slug: string, locale: AppLocale) => (isSlug(slug) ? getPublicMatch(getDb(), slug, locale) : null));
+const loadMatchEvents = cache((game: GameRoute) => getPublicLogiEvents(game));
 
 /** Canonical match URL of a published slug (shared legacy route → game section), or `null`. */
 export async function canonicalMatchRedirect(locale: AppLocale, slug: string): Promise<string | null> {
@@ -32,15 +38,21 @@ export async function matchDetailMetadata(locale: AppLocale, slug: string, game:
   const match = await loadPublicMatch(slug, locale);
   if (!match || match.game !== GAME_REGISTRY[game].db) return {};
   const t = await getTranslations({ locale, namespace: 'matches' });
+  const connected = linkedPublicLogiMatch(await loadMatchEvents(game), match);
+  const ct = await getTranslations({ locale, namespace: 'logi' });
+  const time = connected ? publicLogiMatchTime(connected) : { at: match.startsAt, kind: 'start' as const };
   const title = t('meta.detailTitle', { opponent: match.opponentName });
   const description = t('meta.detailDescription', {
     game: t(`games.${match.game}`),
     competition: [t(`competition.${match.competitionType}`), match.competitionName].filter(Boolean).join(' – '),
-    date: formatDate(match.startsAt, locale, 'dateTimeZone'),
+    date: `${time.kind === 'end' ? `${ct('endTime')}: ` : ''}${formatDate(time.at, locale, 'dateTimeZone')}`,
   });
   const alternates = bilingualAlternates(locale, canonicalMatchPath(match.game, match.slug));
   const site = await getTranslations({ locale, namespace: 'common.site' });
-  const sharing = sharingMetadata(locale, 'matches', match.slug, match.updatedAt, title, description);
+  // Imported results have no review version; a match-only change must invalidate a
+  // crawler's image URL even when the event timestamps did not change.
+  const revision = connected ? createHash('sha256').update(JSON.stringify([match.updatedAt, matchCard(match, locale, connected)])).digest('hex').slice(0, 24) : match.updatedAt;
+  const sharing = sharingMetadata(locale, 'matches', match.slug, revision, title, description);
   return {
     title: seoTitle(title, site('name')),
     description,
@@ -67,11 +79,14 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
   const match = await loadPublicMatch(slug, locale);
   if (!match) notFound();
   if (match.game !== GAME_REGISTRY[game].db) permanentRedirect(`/${locale}${canonicalMatchPath(match.game, match.slug)}`);
-  const view = viewForStatus(match.status);
+  const events = await loadMatchEvents(game);
+  const linked = linkedPublicLogiMatch(events, match);
+  const people = linked ? await readPublicLogiEventPeople(getDb(), getServerEnv(), match.game, linked.ref.externalId) : null;
+  // Keep the same view as the visible row, even if the original archive status lags.
+  const view = linked ? publicLogiMatchView(linked) : viewForStatus(match.status);
   const filters = { ...parseMatchFilters(query, view), view, game: undefined };
   const base = sectionBase(game);
   const t = await getTranslations({ locale, namespace: 'matches' });
-  const linked = (await getPublicLogiEvents(game)).filter((event) => event.archive?.slug === match.slug);
   return (
     <PageMain width="full" labelledBy="match-title">
       <PageHeader
@@ -81,8 +96,8 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
         titleId="match-title"
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
-      {linked.length > 0 ? <LogiMatches locale={locale} events={linked} selected={linked[0]!} /> : null}
-      <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} />
+      <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} events={events} />
+      {people ? <PublicLogiMatchPeople locale={locale} people={people} /> : null}
     </PageMain>
   );
 }

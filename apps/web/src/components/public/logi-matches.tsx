@@ -1,13 +1,11 @@
 import { getTranslations } from 'next-intl/server';
-import { EmptyState, GameButton, LinkTabs, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
+import { EmptyState, GameButton, SelectionTable, StatusBadge } from '@/components/ui';
 import { formatDate } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
 import { logiEventHref, publicLogiMatchTime, queryPublicLogiMatches } from '@/modules/integrations/logi/public-matches';
 import styles from './logi-matches.module.css';
-import type { GameRoute } from '@/modules/games/registry';
-import { matchesListHref, type MatchFilters } from './query';
 
 export { logiEventHref } from '@/modules/integrations/logi/public-matches';
 
@@ -34,25 +32,4 @@ export async function LogiMatches({ locale, events, selected, view = 'upcoming',
     ]} /> : <EmptyState title={t('empty')} />}
     {selected ? <>{selected.result.provenance?.kind === 'event_result_import' ? <p>{t('importedOn', { date: format(selected.result.provenance.importedAt) })}</p> : null}<p>{t('updated', { date: format(selected.observedAt) })}</p><GameButton href={`/${selected.ref.game}/matches`}>{t('back')}</GameButton></> : null}
   </section>;
-}
-
-export async function LogiMatchBrowser({ locale, events, game, filters, now = new Date() }: { locale: AppLocale; events: PublicLogiEvent[]; game?: GameRoute | null; filters: MatchFilters; now?: Date }) {
-  const t = await getTranslations({ locale, namespace: 'logi' });
-  const base = game ? `/${game}` : '';
-  const href = (next: Partial<MatchFilters>) => matchesListHref(next, base);
-  const page = queryPublicLogiMatches(events, { view: filters.view, q: filters.q, page: filters.logiPage, now });
-  const matches = await LogiMatches({ locale, events, view: filters.view, q: filters.q, page: page.page, now });
-  return <div className={styles.section} data-logi-browser="">
-    <LinkTabs label={t('all')} current={filters.view} tabs={(['upcoming', 'results'] as const).map((view) => ({ key: view, label: t(view), href: href({ ...filters, view, page: 1, logiPage: 1 }) }))} />
-    <form action={`/${locale}${base}/matches`} method="get" role="search" className={styles.search}>
-      <input type="hidden" name="view" value={filters.view} />
-      {filters.game ? <input type="hidden" name="game" value={filters.game} /> : null}
-      <label htmlFor="logi-match-search">{t('searchLabel')}</label>
-      <input type="search" id="logi-match-search" name="q" defaultValue={filters.q} autoComplete="off" />
-      <GameButton type="submit" size="sm">{t('search')}</GameButton>
-    </form>
-    {matches}
-    <Pagination page={page.page} pageCount={page.pageCount} hrefForPage={(logiPage) => href({ ...filters, logiPage })} />
-    <h2>{t('archive')}</h2>
-  </div>;
 }

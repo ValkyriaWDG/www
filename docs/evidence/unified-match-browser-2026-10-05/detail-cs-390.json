@@ -1,0 +1,15 @@
+{
+  "caption": "One synthetic linked match detail: the main result is reviewed Axis 0 / Allies 5, its unknown status and supplied end time stay explicit, and original map rounds remain attached. No separate source result table or conflicting original primary score.",
+  "kind": "synthetic-local-browser-screenshot",
+  "route": "/cs/hll/matches/ukazka-hll-historicky",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "capturedAt": "2026-10-05T20:33:40.544Z",
+  "testedCommit": "f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+  "environment": "Windows; Node 24.21.0; pnpm 10.34.5; Chromium; local standalone production build; disposable PostgreSQL 15; synthetic fixtures",
+  "sha256": "e7a9985595028e0656ab76aec310b682a6898f604bbc9cab7fee7f5f142f02ec",
+  "width": 390,
+  "height": 4445
+}

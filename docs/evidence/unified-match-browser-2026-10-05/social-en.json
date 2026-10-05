@@ -1,0 +1,11 @@
+{
+  "caption": "Actual English social renderer of the same synthetic linked match, with current labelled result.",
+  "kind": "synthetic-local-social-render",
+  "capturedAt": "2026-10-05T20:24:19.978709+00:00",
+  "testedCommit": "f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+  "environment": "Windows; Node 24.21.0; actual ImageResponse renderer; synthetic fixtures; 1200x630 PNG",
+  "test": "src/modules/social/social.test.ts - actual renderer produces bounded PNG cards",
+  "sha256": "1a54c7701dd80345b92fdd20a44b4b390b0f48707941c0752423305bfff8a01d",
+  "width": 1200,
+  "height": 630
+}

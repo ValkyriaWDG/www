@@ -1,9 +1,17 @@
 import type { PublicLogiEvent } from './mapping';
+import { gameRouteFromDb } from '@/modules/games/registry';
+import type { PublicMatchDetail } from '@/modules/matches/types';
 
 export type PublicLogiMatchView = 'upcoming' | 'results';
 export const PUBLIC_LOGI_MATCH_PAGE_SIZE = 10;
 /** Matches the local fixture browser's grace for a match that just started. */
 const NEXT_MATCH_GRACE_MS = 3 * 60 * 60_000;
+
+/** Already-public, fresh, explicitly bound records only; names never establish identity. */
+export function linkedPublicLogiMatch(events: readonly PublicLogiEvent[], match: Pick<PublicMatchDetail, 'slug' | 'game'>): PublicLogiEvent | null {
+  const linked = events.filter((event) => event.kind === 'match' && event.ref.game === gameRouteFromDb(match.game) && event.archive?.slug === match.slug);
+  return linked.length === 1 ? linked[0]! : null;
+}
 
 /** An end time stays an end time; an old event does not acquire a fictional start. */
 export function publicLogiMatchTime(event: PublicLogiEvent): { at: string; kind: 'start' | 'end' } {
@@ -25,6 +33,23 @@ function identity(event: PublicLogiEvent): string {
 
 const folded = (value: string) => value.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
 
+/** Publication-scoped rows, filtered and sorted before any shared-browser pagination. */
+export function filterPublicLogiMatches(events: readonly PublicLogiEvent[], options: {
+  view: PublicLogiMatchView;
+  q?: string;
+  now?: Date;
+}) {
+  const now = options.now ?? new Date();
+  const search = folded(options.q?.trim() ?? '');
+  const direction = options.view === 'results' ? -1 : 1;
+  return events.filter((event) => event.kind === 'match' && publicLogiMatchView(event, now) === options.view && (!search || folded([
+    event.title,
+    event.archive?.opponentName ?? '', event.archive?.opponentShortCode ?? '', event.archive?.competitionName ?? '',
+    ...event.teams.flatMap((team) => [team.name, team.shortCode ?? '', team.side ?? '']),
+    ...event.result.participants.map((participant) => participant.label),
+  ].join(' ')).includes(search))).sort((left, right) => direction * (Date.parse(publicLogiMatchTime(left).at) - Date.parse(publicLogiMatchTime(right).at)) || identity(left).localeCompare(identity(right)));
+}
+
 /** One filter/order/page rule for rows, counts and next-match callers. Input is already publication-scoped. */
 export function queryPublicLogiMatches(events: readonly PublicLogiEvent[], options: {
   view: PublicLogiMatchView;
@@ -33,17 +58,9 @@ export function queryPublicLogiMatches(events: readonly PublicLogiEvent[], optio
   pageSize?: number;
   now?: Date;
 }) {
-  const now = options.now ?? new Date();
   const page = Number.isSafeInteger(options.page) && options.page! >= 1 && options.page! <= 1000 ? options.page! : 1;
   const pageSize = Number.isSafeInteger(options.pageSize) && options.pageSize! >= 1 && options.pageSize! <= 100 ? options.pageSize! : PUBLIC_LOGI_MATCH_PAGE_SIZE;
-  const search = folded(options.q?.trim() ?? '');
-  const direction = options.view === 'results' ? -1 : 1;
-  const rows = events.filter((event) => event.kind === 'match' && publicLogiMatchView(event, now) === options.view && (!search || folded([
-    event.title,
-    event.archive?.opponentName ?? '', event.archive?.opponentShortCode ?? '', event.archive?.competitionName ?? '',
-    ...event.teams.flatMap((team) => [team.name, team.shortCode ?? '', team.side ?? '']),
-    ...event.result.participants.map((participant) => participant.label),
-  ].join(' ')).includes(search))).sort((left, right) => direction * (Date.parse(publicLogiMatchTime(left).at) - Date.parse(publicLogiMatchTime(right).at)) || identity(left).localeCompare(identity(right)));
+  const rows = filterPublicLogiMatches(events, options);
   return { items: rows.slice((page - 1) * pageSize, page * pageSize), total: rows.length, page, pageCount: Math.max(1, Math.ceil(rows.length / pageSize)) };
 }
 

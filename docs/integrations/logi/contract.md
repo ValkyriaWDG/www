@@ -92,17 +92,29 @@ with its import provenance and timestamp; its presence never confirms a result.
 Known zero scores remain zero and absent scores remain unknown. An end timestamp
 can place a historical match in Results, but is labelled as an end time rather than
 inventing a start. The two home pages select the next actual scheduled match across
-the public Logi projection and the local archive. Connected lists have their own
-bounded search/page state (`logiPage`), independent of the archive page.
+the public Logi projection and the local archive. The public browser combines both
+origins before pagination: one view, search, count, chronological order and `page`.
+The retired `logiPage` parameter is accepted only as a bookmark fallback when `page`
+is absent; newly generated links use `page`. There are no source-based public groups.
+The database reads a bounded offset window wide enough for every matching connected
+row to interleave; it does not truncate the website archive before merging.
 
 Optional per-source `matchLinks: [{eventId, matchId}]` bind an exact Logi event to an
 existing website match UUID. Both records must already be public and in the same
 game and configured authority. While the fresh Logi row is visible, the archive row
-is omitted from the list and next-match selection, but its original URL, result,
-recap and rounds remain unchanged. That detail also shows the current Logi facts.
+is omitted from the list and next-match selection. Its original URL is the single
+canonical detail. The main date, operational status and result come together from
+that fresh exact binding, including unknown values; the old result cannot fill a
+missing participant score. Supplied participant labels are never converted into
+Valkyria/opponent sides. The original stored record, recap, rounds, maps, statistics
+and editorial links remain intact as enrichment. Metadata and sharing images use
+the same public authority; sharing cards retain participant labels and recheck the
+public binding before each cached image response. Provider detail URLs temporarily
+redirect to the original URL while the explicit public binding remains valid.
 The connected row retains the archive opponent, short code and competition for
-display and search. If the Logi projection becomes unavailable, the archive row
-returns. Identity review is an operator task; there is no runtime fuzzy name/date
+display and search, and its primary link opens that original detail. If the Logi projection becomes unavailable, the archive row
+returns, and the original detail uses its complete stored presentation. Identity
+review is an operator task; there is no runtime fuzzy name/date
 matching and no mutation of either source's historical record.
 
 Optional `matchAliases: [{canonicalEventId, aliasEventIds}]` record explicitly
@@ -121,7 +133,7 @@ and projection JSON boundaries below; prefer a compatible roll-forward release.
 
 | Surface | Implemented behavior | Publication control |
 | --- | --- | --- |
-| `/{locale}/{game}/matches` | Connected match list alongside the historical local archive | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
+| `/{locale}/{game}/matches` | One match browser combining connected and original website fixtures/results | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
 | `/{locale}/{game}/matches/logi/{id}` | Connected detail, schedule and supplied participant/result rows | Uses the same published, current projection; unavailable/unpublished IDs are not public |
 | `/{locale}/admin/matches/logi` | Load authoritative editable facts; create, update or cancel an eligible connected match | Current Logi session, game capability, write flag/key and provider command policy |
 | Server pages, Wardogs home overview and `/api/servers/{game}` | Safe Logi server cards with `SERVER_STATUS_SOURCE=logi`, or Wardogs only with `SERVER_STATUS_SOURCE_WDG=logi` | Each configured `publicServers` entry needs `published=true` |

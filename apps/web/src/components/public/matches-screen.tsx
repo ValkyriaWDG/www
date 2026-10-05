@@ -5,8 +5,9 @@ import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { GAME_REGISTRY, gameRouteFromDb, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
-import { getPublicMatch, getPublicMatchCounts, listPublicMatches } from '@/modules/matches/queries';
-import type { PublicMatchCounts, PublicMatchDetail, PublicMatchPage, PublicMatchSummary } from '@/modules/matches/types';
+import { getPublicMatch, getUnifiedPublicMatchCounts, listUnifiedPublicMatches } from '@/modules/matches/queries';
+import type { PublicMatchCounts, PublicMatchDetail, PublicMatchSummary } from '@/modules/matches/types';
+import { publicMatchRowGame, publicMatchRowKey, publicMatchRowSlug, type PublicMatchRow, type UnifiedPublicMatchPage } from '@/modules/matches/public-browser';
 import { ListLoadError } from './list-load-error';
 import { MatchDetailExtras, MatchDetailPane } from './match-detail';
 import { getMatchTranslations, MatchResult, MatchStart, MatchStatusBadge, MatchTeams } from './match-parts';
@@ -15,7 +16,9 @@ import { TagList } from './tags';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
 import { getLeagueMatchPreview } from '@/modules/integrations/logi/readers/league';
 import { LeaguePreview } from './league-preview';
-import { LogiMatchBrowser } from './logi-matches';
+import { linkedPublicLogiMatch, logiEventHref } from '@/modules/integrations/logi/public-matches';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { ConnectedMatchPreview, ConnectedMatchResult, ConnectedMatchStart, ConnectedMatchStatus, ConnectedMatchTeams, getConnectedMatchTranslations } from './connected-match-parts';
 import styles from './matches.module.css';
 
 export const MATCH_PAGE_SIZE = 10;
@@ -34,6 +37,7 @@ export async function MatchesScreen({
   mode,
   selected,
   game = null,
+  events,
 }: {
   locale: AppLocale;
   filters: MatchFilters;
@@ -42,75 +46,82 @@ export async function MatchesScreen({
   selected?: PublicMatchDetail | null;
   /** Game section (fixed game, no game filter) or `null` for the shared all-games list. */
   game?: GameRoute | null;
+  /** Detail callers reuse the same publication-checked snapshot for view and rows. */
+  events?: PublicLogiEvent[];
 }) {
   const t = await getMatchTranslations(locale);
+  const connectedT = await getConnectedMatchTranslations(locale);
   const db = getDb();
   const base = sectionBase(game);
   const scopedGame = game ? GAME_REGISTRY[game].db : undefined;
   const filters: MatchFilters = scopedGame ? { ...requested, game: undefined } : requested;
   const effectiveGame = scopedGame ?? filters.game;
-  const logiEvents = mode === 'list' ? (await getPublicLogiEvents(game ?? undefined)).filter((event) => !effectiveGame || GAME_REGISTRY[event.ref.game].db === effectiveGame) : [];
-  // Only a currently visible provider counterpart replaces an archive list row. Its
-  // canonical archive detail stays available; stale provider data restores the row.
-  const linkedPublicSlugs = logiEvents.flatMap((event) => event.archive ? [event.archive.slug] : []);
+  const logiEvents = events ?? await getPublicLogiEvents(game ?? undefined);
+  const now = new Date();
   const listHref = (next: Partial<MatchFilters>) => matchesListHref(next, base);
   // Game lists keep their list context on the detail URL; the shared list links to each
   // match's canonical game section.
   const detailHref = (row: { slug: string; game: PublicMatchSummary['game'] }, context: Partial<Omit<MatchFilters, 'view'>>) =>
     game ? matchDetailHref(row.slug, context, base) : matchDetailHref(row.slug, {}, sectionBase(gameRouteFromDb(row.game)));
-  let page: PublicMatchPage | null = null;
+  const rowHref = (row: PublicMatchRow) => {
+    const slug = publicMatchRowSlug(row);
+    if (row.kind === 'connected' && !slug) return logiEventHref(row.event);
+    return detailHref({ slug: slug!, game: publicMatchRowGame(row) }, { game: filters.game, q: filters.q, page: filters.page });
+  };
+  let page: UnifiedPublicMatchPage | null = null;
   let counts: PublicMatchCounts | null = null;
   try {
     [page, counts] = await Promise.all([
-      listPublicMatches(db, { view: filters.view, game: effectiveGame, q: filters.q, page: filters.page, pageSize: MATCH_PAGE_SIZE }, linkedPublicSlugs),
-      getPublicMatchCounts(db, linkedPublicSlugs),
+      listUnifiedPublicMatches(db, { view: filters.view, game: effectiveGame, q: filters.q, page: filters.page, pageSize: MATCH_PAGE_SIZE, now }, logiEvents),
+      getUnifiedPublicMatchCounts(db, logiEvents, now),
     ]);
   } catch (error) {
     console.error('[matches] list query failed', error instanceof Error ? error.name : 'unknown');
   }
 
   let pane: PublicMatchDetail | null = selected ?? null;
-  if (mode === 'list' && page && page.items[0]) {
-    pane = await getPublicMatch(db, page.items[0].slug, locale).catch(() => null);
+  const firstRow = page?.items[0];
+  if (mode === 'list' && firstRow?.kind === 'website') {
+    pane = await getPublicMatch(db, firstRow.match.slug, locale).catch(() => null);
   }
   // Editorial League link of a published Wardogs match: an unverified preview, read on demand, never a result.
   const league = mode === 'detail' && pane?.game === 'wardogs' && pane.leagueMatchUrl ? await getLeagueMatchPreview(pane.leagueMatchUrl) : null;
 
   const filtered = hasMatchFilters(filters);
-  const listFilters = { game: filters.game, q: filters.q, logiPage: filters.logiPage };
+  const listFilters = { game: filters.game, q: filters.q };
   const viewCount = (view: MatchView) => (counts ? (effectiveGame ? counts.byGame[effectiveGame][view] : counts[view]) : null);
   const tabs = VIEWS.map((view) => {
     const count = viewCount(view);
     const label = t(`list.views.${view}`);
     return {
       key: view,
-      href: listHref({ ...listFilters, view, logiPage: 1 }),
+      href: listHref({ ...listFilters, view }),
       label: count === null ? label : t('list.viewTab', { label, formatted: formatNumber(count, locale) }),
     };
   });
 
-  const columns: SelectionColumn<PublicMatchSummary>[] = [
-    { key: 'start', header: t('list.columns.start'), numeric: true, cell: (match) => <MatchStart match={match} locale={locale} t={t} /> },
-    { key: 'match', header: t('list.columns.match'), rowHeader: true, cell: (match) => <MatchTeams match={match} t={t} /> },
+  const columns: SelectionColumn<PublicMatchRow>[] = [
+    { key: 'start', header: t('list.columns.start'), numeric: true, cell: (row) => row.kind === 'website' ? <MatchStart match={row.match} locale={locale} t={t} /> : <ConnectedMatchStart event={row.event} locale={locale} t={connectedT} /> },
+    { key: 'match', header: t('list.columns.match'), rowHeader: true, cell: (row) => row.kind === 'website' ? <MatchTeams match={row.match} t={t} /> : <ConnectedMatchTeams event={row.event} t={connectedT} /> },
     {
       key: 'competition',
       header: t('list.columns.competition'),
-      cell: (match) => (
+      cell: (row) => (
         <span className={styles.competition}>
           <TagList
             items={[
               // A game section lists only its own game; the chip matters on the shared list.
-              ...(game ? [] : [{ key: 'game', label: t(`gamesShort.${match.game}`), tone: 'game' as const }]),
-              { key: 'type', label: t(`competition.${match.competitionType}`) },
+              ...(game ? [] : [{ key: 'game', label: t(`gamesShort.${publicMatchRowGame(row)}`), tone: 'game' as const }]),
+              ...(row.kind === 'website' ? [{ key: 'type', label: t(`competition.${row.match.competitionType}`) }] : []),
             ]}
           />
-          {match.competitionName ? <span className={styles.competitionName}>{match.competitionName}</span> : null}
+          <span className={styles.competitionName}>{(row.kind === 'website' ? row.match.competitionName : row.event.archive?.competitionName) || (row.kind === 'connected' ? '—' : null)}</span>
         </span>
       ),
     },
-    { key: 'status', header: t('list.columns.status'), cell: (match) => <MatchStatusBadge match={match} t={t} /> },
+    { key: 'status', header: t('list.columns.status'), cell: (row) => row.kind === 'website' ? <MatchStatusBadge match={row.match} t={t} /> : <ConnectedMatchStatus event={row.event} t={connectedT} /> },
     ...(filters.view === 'results'
-      ? [{ key: 'result', header: t('list.columns.result'), align: 'end' as const, numeric: true, cell: (match: PublicMatchSummary) => <MatchResult match={match} t={t} variant="row" /> }]
+      ? [{ key: 'result', header: t('list.columns.result'), align: 'end' as const, numeric: true, cell: (row: PublicMatchRow) => row.kind === 'website' ? <MatchResult match={row.match} t={t} variant="row" /> : <ConnectedMatchResult event={row.event} t={connectedT} /> }]
       : []),
   ];
 
@@ -130,10 +141,10 @@ export async function MatchesScreen({
           captionHidden
           columns={columns}
           rows={page.items}
-          getRowKey={(match) => match.slug}
-          getRowHref={(match) => detailHref(match, { ...listFilters, page: filters.page })}
+          getRowKey={publicMatchRowKey}
+          getRowHref={rowHref}
           linkColumn="match"
-          selectedKey={mode === 'detail' ? (selected?.slug ?? null) : null}
+          selectedKey={mode === 'detail' ? page.items.filter((row) => publicMatchRowSlug(row) === selected?.slug).map(publicMatchRowKey)[0] ?? null : null}
         />
       </div>
     );
@@ -181,8 +192,7 @@ export async function MatchesScreen({
   if (filters.view === 'results') hiddenParams.view = 'results';
   if (filters.game) hiddenParams.game = filters.game;
 
-  return (<>
-    {mode === 'list' && logiEvents.length > 0 ? <LogiMatchBrowser locale={locale} events={logiEvents} game={game} filters={filters} /> : null}
+  return (
     <div className={styles.browser} data-mode={mode} data-view={filters.view}>
       <div className={styles.toolbar}>
         <LinkTabs label={t('list.viewsLabel')} tabs={tabs} current={mode === 'list' ? filters.view : ''} />
@@ -200,11 +210,11 @@ export async function MatchesScreen({
                     name: 'game',
                     label: t('list.gameGroup'),
                     options: [
-                      { value: 'all', label: t('list.all'), href: listHref({ ...filters, game: undefined, page: 1, logiPage: 1 }), current: !filters.game },
+                      { value: 'all', label: t('list.all'), href: listHref({ ...filters, game: undefined, page: 1 }), current: !filters.game },
                       ...GAMES.map((value) => ({
                         value,
                         label: t(`games.${value}`),
-                        href: listHref({ ...filters, game: value, page: 1, logiPage: 1 }),
+                        href: listHref({ ...filters, game: value, page: 1 }),
                         current: filters.game === value,
                       })),
                     ],
@@ -216,7 +226,7 @@ export async function MatchesScreen({
         />
       </div>
       <div className={styles.list}>
-        {mode === 'list' && logiEvents.length > 0 && page?.total === 0 ? null : listContent}
+        {listContent}
         {page ? <Pagination page={page.page} pageCount={page.pageCount} hrefForPage={(value) => listHref({ ...filters, page: value })} /> : null}
         <p className={styles.note}>{t('list.timeZoneNote')}</p>
       </div>
@@ -224,15 +234,16 @@ export async function MatchesScreen({
         <div className={styles.pane}>
           <MatchDetailPane
             match={pane}
+            connected={linkedPublicLogiMatch(logiEvents, pane)}
             locale={locale}
             mode={mode === 'detail' ? 'detail' : 'preview'}
             detailHref={detailHref(pane, { ...listFilters, page: filters.page })}
             titleId={mode === 'detail' ? 'match-overview-title' : 'match-preview-title'}
           />
         </div>
-      ) : null}
+      ) : mode === 'list' && firstRow?.kind === 'connected' ? <div className={styles.pane}><ConnectedMatchPreview event={firstRow.event} locale={locale} href={rowHref(firstRow)} /></div> : null}
       {mode === 'detail' && pane ? <MatchDetailExtras match={pane} locale={locale} titleId="match-overview-title" /> : null}
       {mode === 'detail' && league ? <LeaguePreview preview={league} locale={locale} titleId="match-overview-title" /> : null}
-    </div></>
+    </div>
   );
 }
