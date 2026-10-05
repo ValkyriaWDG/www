@@ -5,11 +5,15 @@ import { getPublishedNewsBySlug } from '@/modules/content/public';
 import { getPublicMatch } from '@/modules/matches/queries';
 import { deliverMedia } from '@/modules/media/delivery';
 import { articleCard, matchCard, parseSocialTarget, siteCard, type SocialCard } from './model';
-import { isGameRoute } from '@/modules/games/registry';
+import { gameRouteFromDb, isGameRoute, type GameRoute } from '@/modules/games/registry';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { linkedPublicLogiMatch } from '@/modules/integrations/logi/public-matches';
 
 export type SocialDeps = {
   /** Lazy: the generic website card works without a database or auth configuration. */
   db: () => Executor;
+  /** Same fresh/public projection gate as the match page, called before cache lookup. */
+  matchEvents: (game: GameRoute) => Promise<PublicLogiEvent[]>;
   mediaRoot: string;
   siteOrigin: string;
   render: (card: SocialCard, cover: Buffer | null, host: string) => Promise<Uint8Array>;
@@ -40,7 +44,8 @@ export async function socialImageResponse(request: Request, params: { locale: st
     } else if (target.slug && target.kind === 'matches') {
       const result = await getPublicMatch(deps.db(), target.slug, target.locale as AppLocale);
       if (!result) return missing();
-      card = matchCard(result, target.locale);
+      const events = await deps.matchEvents(gameRouteFromDb(result.game));
+      card = matchCard(result, target.locale, linkedPublicLogiMatch(events, result));
     }
     let cover: Buffer | null = null;
     if (card.coverId) {

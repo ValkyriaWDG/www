@@ -1,9 +1,17 @@
 import type { PublicLogiEvent } from './mapping';
+import { gameRouteFromDb } from '@/modules/games/registry';
+import type { PublicMatchDetail } from '@/modules/matches/types';
 
 export type PublicLogiMatchView = 'upcoming' | 'results';
 export const PUBLIC_LOGI_MATCH_PAGE_SIZE = 10;
 /** Matches the local fixture browser's grace for a match that just started. */
 const NEXT_MATCH_GRACE_MS = 3 * 60 * 60_000;
+
+/** Already-public, fresh, explicitly bound records only; names never establish identity. */
+export function linkedPublicLogiMatch(events: readonly PublicLogiEvent[], match: Pick<PublicMatchDetail, 'slug' | 'game'>): PublicLogiEvent | null {
+  const linked = events.filter((event) => event.kind === 'match' && event.ref.game === gameRouteFromDb(match.game) && event.archive?.slug === match.slug);
+  return linked.length === 1 ? linked[0]! : null;
+}
 
 /** An end time stays an end time; an old event does not acquire a fictional start. */
 export function publicLogiMatchTime(event: PublicLogiEvent): { at: string; kind: 'start' | 'end' } {

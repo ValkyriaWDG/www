@@ -18,6 +18,12 @@ async function capture(page: Page, name: string, caption: string) {
   if (process.env.CAPTURE_EVIDENCE !== '1') return;
   mkdirSync(outDir, { recursive: true });
   await page.evaluate(() => document.fonts.ready);
+  // Full-page evidence also includes maps below the lazy-loading viewport.
+  await page.locator('img').evaluateAll((nodes) => Promise.all(nodes.map(async (node) => {
+    const image = node as HTMLImageElement;
+    image.loading = 'eager';
+    await image.decode();
+  })));
   await page.screenshot({ path: path.join(outDir, `${name}.png`), fullPage: true, animations: 'disabled', caret: 'hide' });
   writeFileSync(path.join(outDir, `${name}.json`), `${JSON.stringify({ caption, kind: 'synthetic-local-browser-screenshot', route: new URL(page.url()).pathname + new URL(page.url()).search, viewport: page.viewportSize(), capturedAt: new Date().toISOString() }, null, 2)}\n`);
 }
@@ -75,17 +81,25 @@ for (const locale of ['cs', 'en'] as const) {
       // The only primary row link opens the preserved original detail.
       await archive.click();
       await expect(page).toHaveURL(new RegExp(`/${locale}/hll/matches/${archiveSlug}$`));
-      const current = page.locator('[data-logi-matches]');
+      await expect(page.locator('[data-logi-matches]')).toHaveCount(0);
+      const current = page.locator('[data-match-primary-result]');
+      await expect(current).toHaveCount(1);
       await expect(current).toContainText(copy[locale].confirmed);
       await expect(current).toContainText('Axis: 0');
       await expect(current).toContainText('Allies: 5');
       const original = page.locator(`[data-match-detail="${archiveSlug}"]`);
       await expect(original).toContainText('Synthetic HLL Opponent Foxtrot');
       await expect(original).toContainText('Synthetic Historical Cup (sample)');
-      await expect(original.locator('[data-result="score"]')).toContainText('3 : 2');
+      await expect(current).not.toContainText('3 : 2');
+      await expect(original.locator('[data-match-time="end"]')).toHaveAttribute('datetime', await reviewed.locator('time').getAttribute('datetime') ?? '');
+      await expect(original).toContainText(copy[locale].end);
+      await expect(original.locator('[data-match-start]')).toHaveCount(0);
+      await expect(original.locator('[data-match-status]')).toHaveText(copy[locale].unknown);
+      await expect(original.locator('[data-match-teams]')).toContainText('[SYNTHETIC] Team A · SYA');
+      await expect(original.locator('[data-match-teams]')).toContainText('[SYNTHETIC] Team B · SYB');
       await expect(page.locator('[data-match-rounds]')).toContainText('Hürtgen Forest');
       await expectNoHorizontalOverflow(page);
-      await capture(page, `archive-${locale}-${width}`, 'Synthetic linked archive detail: the fresh reviewed Logi result appears above the unchanged original 3:2 website result and its map rounds.');
+      await capture(page, `detail-${locale}-${width}`, 'One synthetic linked match detail: the main result is reviewed Axis 0 / Allies 5, its unknown status and supplied end time stay explicit, and original map rounds remain attached. No separate source result table or conflicting original primary score.');
       expect(browserErrors).toEqual([]);
     });
   }
@@ -123,13 +137,26 @@ test('imported detail preserves provenance and three-team upcoming has no fabric
   await expect(page.locator('[data-logi-matches]')).toContainText(copy.en.imported);
   await expect(page.locator('[data-logi-matches]')).toContainText(copy.en.importedOn);
   await page.goto('/en/wardogs/matches');
-  const connected = page.locator('[data-match-table] tbody tr').filter({ hasText: '[SYNTHETIC] Next wardogs match' });
+  const connected = page.locator('[data-match-table] tbody tr').filter({ has: page.locator(`a[href*="/matches/${FIXTURE_SLUGS.matches.upcoming}"]`) });
   await expect(connected).toHaveCount(1);
   for (const team of ['[SYNTHETIC] Team A · SYA', '[SYNTHETIC] Team B · SYB', '[SYNTHETIC] Team C · SYC']) await expect(connected).toContainText(team);
   await expect(connected.locator('[data-column="result"]')).toHaveCount(0);
   await expect(connected).not.toContainText(/0\s*:\s*0/);
   await expectNoHorizontalOverflow(page);
   await capture(page, 'wardogs-three-teams-en-1280', 'Synthetic upcoming Wardogs match shows three captured teams and their supplied sides; the unknown result remains unavailable.');
+});
+
+test('the single linked Wardogs mobile detail retains all three captured teams without public people', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/en/wardogs/matches/logi/synthetic-next-wardogs');
+  await expect(page).toHaveURL(new RegExp(`/en/wardogs/matches/${FIXTURE_SLUGS.matches.upcoming}$`));
+  const teams = page.locator('[data-match-teams]');
+  await expect(teams.locator('li')).toHaveCount(3);
+  for (const team of ['[SYNTHETIC] Team A · SYA', '[SYNTHETIC] Team B · SYB', '[SYNTHETIC] Team C · SYC', 'Lonestar', 'Manticore', 'Valkyra']) await expect(teams).toContainText(team);
+  await expect(page.locator('[data-match-primary-result] [data-connected-result]')).toHaveText('—');
+  await expect(page.locator('[data-logi-matches]')).toHaveCount(0);
+  await expectNoHorizontalOverflow(page);
+  await capture(page, 'detail-wardogs-en-390', 'Synthetic linked Wardogs mobile detail retains three captured teams, short codes and supplied sides in one match overview. No public people data is configured and the unknown result is not filled from the original archive.');
 });
 
 test('an explicitly reviewed identical alias is hidden and its old detail redirects to the canonical event', async ({ page, request }) => {
@@ -142,6 +169,12 @@ test('an explicitly reviewed identical alias is hidden and its old detail redire
   await page.goto('/en/hll/matches/logi/synthetic-history-alias');
   await expect(page).toHaveURL(/\/en\/hll\/matches\/logi\/synthetic-history-01$/);
   await expect(page.locator('[data-logi-matches]')).toContainText(copy.en.imported);
+});
+
+test('a linked provider detail redirects to the single published canonical match', async ({ request }) => {
+  const response = await request.get('/en/hll/matches/logi/synthetic-history-00', { maxRedirects: 0 });
+  expect(response.status()).toBe(307);
+  expect(response.headers().location).toBe(`/en/hll/matches/${archiveSlug}`);
 });
 
 test('both homes select the actual next published Logi match', async ({ page }) => {

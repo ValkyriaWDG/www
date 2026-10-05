@@ -7,6 +7,10 @@ import cs from '@/i18n/messages/cs/social.json';
 import en from '@/i18n/messages/en/social.json';
 import type { GameRoute } from '@/modules/games/registry';
 import { hllMapArtwork } from '@/modules/games/hll-maps';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { linkedPublicLogiMatch, publicLogiMatchTime, publicLogiMatchView } from '@/modules/integrations/logi/public-matches';
+import logiCs from '@/i18n/messages/cs/logi.json';
+import logiEn from '@/i18n/messages/en/logi.json';
 
 export const SOCIAL_SIZE = { width: 1200, height: 630 } as const;
 /** v3: owner graphics pack backgrounds and HLL map briefing (docs/assets/graphics-pack-2026-09-29.md). */
@@ -23,6 +27,9 @@ export type SocialCard = {
   label: string;
   detail: string;
   score: string | null;
+  /** Provider-labelled scores cannot be interpreted as Valkyria/opponent positions. */
+  participantScores?: { label: string; value: string }[];
+  moreParticipants?: string;
   status: string;
   /** Game name; rendered as text only when no official mark applies (community articles). */
   game: string;
@@ -83,14 +90,18 @@ export function articleCard(article: ArticleDTO): SocialCard {
   };
 }
 
-export function matchCard(match: PublicMatchDetail, locale: AppLocale): SocialCard {
+export function matchCard(match: PublicMatchDetail, locale: AppLocale, connected?: PublicLogiEvent | null): SocialCard {
   const copy = socialCopy(locale);
+  const current = linkedPublicLogiMatch(connected ? [connected] : [], match);
+  const logi = locale === 'cs' ? logiCs : logiEn;
   const result = describeResult(match);
-  const score = result.kind === 'score' ? `${result.valkyria} : ${result.opponent}` : null;
+  const score = !current && result.kind === 'score' ? `${result.valkyria} : ${result.opponent}` : null;
   let status: string = copy.status[match.status];
   if (result.kind === 'unpublished') status = copy.resultUnpublished;
   if (result.kind === 'outcome') status = copy.outcome[result.outcome];
   if (result.kind === 'score' || result.kind === 'outcome') status += ` · ${copy.verification[result.verification]}`;
+  if (current) status = [current.status ? logi[current.status] : null, current.result.provenance?.kind === 'event_result_import' ? logi.importedProvisional : logi[current.result.state]].filter(Boolean).join(' · ');
+  const time = current ? publicLogiMatchTime(current) : { at: match.startsAt, kind: 'start' as const };
   let map: SocialCard['map'] = null;
   if (match.game === 'hell-let-loose') {
     for (const round of match.rounds ?? []) {
@@ -103,8 +114,12 @@ export function matchCard(match: PublicMatchDetail, locale: AppLocale): SocialCa
   }
   return {
     locale, kind: 'matches', title: cardText(`VALKYRIA vs ${match.opponentName}`, 112),
-    label: match.status === 'completed' ? copy.result : copy.match,
-    detail: cardText([formatDate(match.startsAt, locale, 'dateTimeZone', match.timeZone), match.competitionName].filter(Boolean).join(' · '), 110),
+    label: (current ? publicLogiMatchView(current) === 'results' : match.status === 'completed') ? copy.result : copy.match,
+    detail: cardText([`${time.kind === 'end' ? `${logi.endTime}: ` : ''}${formatDate(time.at, locale, 'dateTimeZone', current ? 'Europe/Prague' : match.timeZone)}`, match.competitionName].filter(Boolean).join(' · '), 110),
+    ...(current ? {
+      participantScores: current.result.participants.slice(0, 3).map((participant) => ({ label: cardText(participant.label || logi.unknown, 40), value: participant.score === null ? '—' : String(participant.score) })),
+      moreParticipants: current.result.participants.length > 3 ? copy.otherParticipants.replace('{count}', String(current.result.participants.length - 3)) : undefined,
+    } : {}),
     score, status, game: match.game === 'wardogs' ? 'WARDOGS' : 'HELL LET LOOSE', marks: [match.game === 'wardogs' ? 'wardogs' : 'hll'],
     coverId: match.cover?.assetId ?? null, theme: match.game === 'wardogs' ? 'wardogs' : 'hll', map,
   };

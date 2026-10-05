@@ -91,7 +91,8 @@ export async function renderSocialCard(card: SocialCard, cover: Buffer | null, s
   const map = !cover && card.map ? await mapLayers(card.map.slug) : null;
   const scene = !cover && !map ? await backdrop(THEME_BACKDROP[card.theme]) : null;
   const marks = await Promise.all(card.marks.map(markImage));
-  const titleSize = card.score ? 56 : card.title.length > 92 ? 48 : card.title.length > 52 ? 56 : 70;
+  const labelledResult = Boolean(card.participantScores?.length);
+  const titleSize = labelledResult ? 48 : card.score ? 56 : card.title.length > 92 ? 48 : card.title.length > 52 ? 56 : 70;
   const clampedText = { display: '-webkit-box', WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis', overflow: 'hidden', flexShrink: 0 } as const;
   const shade = (alpha: number) => `rgba(${rgb}, ${alpha})`;
   const chip = { display: 'flex', position: 'absolute', right: 44, fontSize: 15, color: '#d6d7cc', letterSpacing: 0.6, padding: '4px 10px', background: shade(0.78) } as const;
@@ -133,9 +134,15 @@ export async function renderSocialCard(card: SocialCard, cover: Buffer | null, s
       </div>
       <div style={{ display: 'flex', position: 'absolute', left: 48, top: 139, width: 624, bottom: 91, flexDirection: 'column' }}>
         <div style={{ ...clampedText, WebkitLineClamp: 1, color: accent, fontSize: 22, letterSpacing: 2, marginBottom: 20 }}>{renderText(card.label)}</div>
-        <div style={{ ...clampedText, WebkitLineClamp: card.score ? 2 : 4, fontSize: titleSize, lineHeight: 1.06, letterSpacing: 0.2 }}>{renderText(card.title)}</div>
+        <div style={{ ...clampedText, WebkitLineClamp: card.score || labelledResult ? 2 : 4, fontSize: titleSize, lineHeight: 1.06, letterSpacing: 0.2 }}>{renderText(card.title)}</div>
         {card.score ? <div style={{ display: 'flex', fontSize: card.score.length > 12 ? 56 : 76, flexShrink: 0, color: accent, marginTop: 9 }}>{card.score}</div> : null}
-        {card.status ? <div style={{ display: 'flex', fontSize: 22, marginTop: 12, color: '#e6c67e' }}>{renderText(card.status)}</div> : null}
+        {labelledResult ? <div style={{ display: 'flex', flexDirection: 'column', marginTop: 9, flexShrink: 0 }}>
+          {card.participantScores!.map((participant, index) => <div key={index} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 28, color: accent }}>
+            <span style={{ ...clampedText, WebkitLineClamp: 1, maxWidth: 540 }}>{renderText(participant.label)}</span><span>{participant.value}</span>
+          </div>)}
+          {card.moreParticipants ? <div style={{ display: 'flex', fontSize: 18 }}>{renderText(card.moreParticipants)}</div> : null}
+        </div> : null}
+        {card.status ? <div style={{ ...clampedText, WebkitLineClamp: 2, fontSize: 22, marginTop: 12, color: '#e6c67e' }}>{renderText(card.status)}</div> : null}
         <div style={{ ...clampedText, WebkitLineClamp: 2, fontSize: 24, lineHeight: 1.3, color: '#d0d1c8', marginTop: 'auto', paddingTop: 14 }}>{renderText(card.detail)}</div>
       </div>
       {coverArt || map ? (

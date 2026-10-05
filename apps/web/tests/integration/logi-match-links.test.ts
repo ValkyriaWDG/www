@@ -7,6 +7,7 @@ import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
 import { getPublicMatch, getPublicMatchCounts, getUnifiedPublicMatchCounts, listPublicMatches, listUnifiedPublicMatches } from '@/modules/matches/queries';
 import { publicMatchRowKey } from '@/modules/matches/public-browser';
 import { createMatch, publishMatch, recordResult } from '@/modules/matches/service';
+import { socialImageResponse, type SocialDeps } from '@/modules/social/handler';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
 
 let database: TestDatabase;
@@ -26,6 +27,27 @@ const environment = (matchId: string) => ({
 });
 
 describe('reviewed Logi/archive associations on PostgreSQL', () => {
+  it('rechecks the current binding and publication before serving a cached sharing card', async () => {
+    const created = await createMatch(database.db, actors.matchManager, { game: 'hell-let-loose', opponentName: 'Synthetic sharing opponent', competitionType: 'friendly', startsAt: '2026-10-01T18:00:00Z' });
+    const published = await publishMatch(database.db, actors.matchManager, { id: created.id, expectedVersion: created.version });
+    await recordResult(database.db, actors.matchManager, { id: created.id, expectedVersion: published.version, scoreValkyria: 3, scoreOpponent: 1, verification: 'verified', source: 'Synthetic archive evidence' });
+    const current = { ...event('linked-event'), result: { ...event('linked-event').result, state: 'corrected' as const, participants: [{ id: 'a', label: 'Axis', score: 0 }, { id: 'b', label: 'Allies', score: 5 }] } };
+    let events = await attachPublicLogiArchiveLinks(database.db, environment(created.id), [current]);
+    const deps: SocialDeps = { db: () => database.db, matchEvents: async () => events, mediaRoot: '/not-used', siteOrigin: 'https://connected-sharing.example.test', render: async (card) => new TextEncoder().encode(JSON.stringify(card)) };
+    const request = new Request(`https://site.example/api/social/en/matches/${created.slug}`);
+    const params = { locale: 'en', kind: 'matches', slug: [created.slug] };
+    const first = await socialImageResponse(request, params, deps);
+    expect(first.status).toBe(200);
+    expect(await first.json()).toMatchObject({ score: null, participantScores: [{ label: 'Axis', value: '0' }, { label: 'Allies', value: '5' }] });
+    events = events.map((row) => ({ ...row, result: { ...row.result, state: 'unknown', participants: [] } }));
+    expect(await (await socialImageResponse(request, params, deps)).json()).toMatchObject({ score: null, participantScores: [] });
+    // Stale/removed projections are absent at the public reader boundary.
+    events = [];
+    expect(await (await socialImageResponse(request, params, deps)).json()).toMatchObject({ score: '3 : 1' });
+    await database.db.update(match).set({ publication: 'draft' }).where(eq(match.id, created.id));
+    expect((await socialImageResponse(request, params, deps)).status).toBe(404);
+  });
+
   it('deduplicates only a visible same-game association while preserving the old detail and result', async () => {
     const created = await createMatch(database.db, actors.matchManager, { game: 'hell-let-loose', opponentName: 'Synthetic archive opponent', competitionType: 'friendly', startsAt: '2026-10-01T18:00:00Z' });
     const published = await publishMatch(database.db, actors.matchManager, { id: created.id, expectedVersion: created.version });

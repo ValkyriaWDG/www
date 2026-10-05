@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import sharp from 'sharp';
 import type { ArticleDTO } from '@/modules/content/types';
 import type { PublicMatchDetail } from '@/modules/matches/types';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
 import { articleCard, cardText, matchCard, parseSocialTarget, siteCard, socialImagePath, type SocialCard } from './model';
 import { sharingMetadata } from './metadata';
 import { renderSocialCard } from './render';
@@ -106,6 +107,13 @@ describe('social image publication and presentation contract', () => {
       matchCard(withRounds({ ...hll, result: { scoreValkyria: 0, scoreOpponent: 0, outcome: 'draw', verification: 'verified' } }, 'Hürtgen Forest'), 'cs'),
     ];
     cards.push(articleCard({ ...article, game: 'hell-let-loose', title: 'Příliš žluťoučký kůň úpěl ďábelské ódy: dlouhý titulek novinky o sobotní akci na serveru Valkyria' }));
+    const linked: PublicLogiEvent = {
+      ref: { source: 'logi', sourceInstanceId: 'synthetic', guildId: 'synthetic', game: 'hll', kind: 'match', externalId: 'synthetic' },
+      kind: 'match', title: 'Synthetic', status: null, startsAt: null, endsAt: '2026-10-01T20:00:00Z', observedAt: '2026-10-01T20:01:00Z', sourceUpdatedAt: null, teams: [], archive: { slug: 'synthetic-linked' },
+      result: { state: 'corrected', version: 2, reviewedAt: null, endedAt: null, participants: [{ id: 'a', label: 'Axis', score: 0 }, { id: 'b', label: 'Allies', score: 5 }], provenance: { kind: 'reviewed_result', origin: 'manual' } },
+    };
+    for (const locale of ['cs', 'en'] as const) cards.push(matchCard(withRounds({ ...hll, slug: 'synthetic-linked' }, 'Hürtgen Forest'), locale, linked));
+    cards.push(matchCard({ ...hll, slug: 'synthetic-linked', opponentName: 'Long synthetic opponent with a descriptive team name' }, 'en', { ...linked, result: { ...linked.result, participants: Array.from({ length: 16 }, (_, index) => ({ id: String(index), label: `Long synthetic participant label number ${index}`, score: index === 1 ? null : index })) } }));
     for (const [index, card] of cards.entries()) {
       const png = await renderSocialCard(card, null, 'valkyria.cz');
       // Opt-in evidence export of the rendered PNGs (not written in normal runs).

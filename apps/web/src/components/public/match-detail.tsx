@@ -13,6 +13,9 @@ import { isHllSide } from '@/modules/games/hll-catalog';
 import { hllMapArtwork, type HllMapArtwork } from '@/modules/games/hll-maps';
 import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { publicLogiMatchTime } from '@/modules/integrations/logi/public-matches';
+import { ConnectedMatchResult, ConnectedMatchStatus, getConnectedMatchTranslations } from './connected-match-parts';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { matchFormatLabel, sharedRoundMode } from './match-format';
@@ -58,14 +61,19 @@ export async function MatchDetailPane({
   mode,
   detailHref,
   titleId,
+  connected,
 }: {
   match: PublicMatchDetail;
   locale: AppLocale;
   mode: 'preview' | 'detail';
   detailHref?: string;
   titleId: string;
+  /** Fresh, publication-checked exact binding; the original supplies editorial enrichment. */
+  connected?: PublicLogiEvent | null;
 }) {
   const t = await getMatchTranslations(locale);
+  const ct = await getConnectedMatchTranslations(locale);
+  const time = connected ? publicLogiMatchTime(connected) : { at: match.startsAt, kind: 'start' as const };
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const competition = [t(`competition.${match.competitionType}`), match.competitionName].filter(Boolean).join(' – ');
   const format = matchFormatLabel(match.format, match.bestOf, (count) => t('detail.bestOf', { count }));
@@ -86,14 +94,14 @@ export async function MatchDetailPane({
         ]
       : []),
     {
-      label: t('detail.start'),
+      label: time.kind === 'end' ? ct('endTime') : t('detail.start'),
       value: (
-        <time dateTime={match.startsAt} data-match-start="">
-          {formatDate(match.startsAt, locale, 'dateTimeZone')}
+        <time dateTime={time.at} data-match-time={time.kind} data-match-start={time.kind === 'start' ? '' : undefined}>
+          {formatDate(time.at, locale, 'dateTimeZone')}
         </time>
       ),
     },
-    ...(match.status === 'postponed' && match.originalStartsAt
+    ...(!connected && match.status === 'postponed' && match.originalStartsAt
       ? [
           {
             label: t('detail.originalStart'),
@@ -105,7 +113,10 @@ export async function MatchDetailPane({
           },
         ]
       : []),
-    { label: t('detail.status'), value: <MatchStatusBadge match={match} t={t} /> },
+    { label: t('detail.status'), value: <span data-match-status="">{connected ? <ConnectedMatchStatus event={connected} t={ct} /> : <MatchStatusBadge match={match} t={t} />}</span> },
+    ...(connected?.teams.length ? [{ label: ct('teams'), value: <ul className={styles.connectedTeamFacts} data-match-teams="">
+      {connected.teams.map((team) => <li key={team.id}><span>{team.name}{team.shortCode ? ` · ${team.shortCode}` : ''}</span>{team.side ? <small>{team.side}</small> : null}</li>)}
+    </ul> }] : []),
     { label: t('detail.game'), value: t(`games.${match.game}`) },
     ...(match.season ? [{ label: t('detail.season'), value: match.season }] : []),
     ...(format ? [{ label: t('detail.format'), value: format }] : []),
@@ -145,11 +156,12 @@ export async function MatchDetailPane({
           ) : undefined
         }
       >
-        <section className={styles.block} aria-labelledby={`${titleId}-result`}>
+        <section className={styles.block} aria-labelledby={`${titleId}-result`} data-match-primary-result="">
           <h3 id={`${titleId}-result`} className={styles.blockTitle}>
             {t('detail.result')}
           </h3>
-          <MatchResult match={match} t={t} variant="detail" />
+          {connected ? <ConnectedMatchResult event={connected} t={ct} detail /> : <MatchResult match={match} t={t} variant="detail" />}
+          {connected?.result.provenance?.kind === 'event_result_import' ? <p className={styles.note}>{ct('importedOn', { date: formatDate(connected.result.provenance.importedAt, locale, 'dateTimeZone') })}</p> : null}
         </section>
         {mode === 'detail' ? (
           <>

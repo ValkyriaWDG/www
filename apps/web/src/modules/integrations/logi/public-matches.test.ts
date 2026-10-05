@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PublicLogiEvent } from './mapping';
-import { getNextPublicLogiMatch, logiEventHref, publicLogiMatchTime, publicLogiMatchView, queryPublicLogiMatches } from './public-matches';
+import { getNextPublicLogiMatch, linkedPublicLogiMatch, logiEventHref, publicLogiMatchTime, publicLogiMatchView, queryPublicLogiMatches } from './public-matches';
 
 const now = new Date('2026-10-05T12:00:00Z');
 const event = (id: string, fields: Partial<PublicLogiEvent> = {}): PublicLogiEvent => ({
@@ -12,6 +12,15 @@ const event = (id: string, fields: Partial<PublicLogiEvent> = {}): PublicLogiEve
 });
 
 describe('one public Logi match query for lists and home pages', () => {
+  it('accepts only one explicit same-game detail binding, never titles or an ambiguous set', () => {
+    const match = { slug: 'synthetic-archive', game: 'hell-let-loose' as const };
+    const linked = event('linked', { archive: { slug: match.slug } });
+    expect(linkedPublicLogiMatch([linked], match)).toBe(linked);
+    expect(linkedPublicLogiMatch([], match)).toBeNull();
+    expect(linkedPublicLogiMatch([event('title-only', { title: match.slug })], match)).toBeNull();
+    expect(linkedPublicLogiMatch([linked], { ...match, game: 'wardogs' })).toBeNull();
+    expect(linkedPublicLogiMatch([linked, event('other', { archive: linked.archive })], match)).toBeNull();
+  });
   it('classifies a passed end, a supplied result or concluded event as history without changing source status', () => {
     const old = event('old', { endsAt: '2026-10-04T18:00:00Z' });
     const scored = event('scored', { result: { ...old.result, state: 'provisional', participants: [{ id: 'a', label: 'A', score: 0 }, { id: 'b', label: 'B', score: 5 }] } });

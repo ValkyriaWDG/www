@@ -36,11 +36,11 @@ export function ConnectedMatchStatus({ event, t }: { event: PublicLogiEvent; t: 
   return <StatusBadge kind="neutral">{t(event.status ?? 'unknown')}</StatusBadge>;
 }
 
-export function ConnectedMatchResult({ event, t }: { event: PublicLogiEvent; t: T }) {
-  return event.result.participants.length ? <span className={styles.connectedResult}>
+export function ConnectedMatchResult({ event, t, detail = false }: { event: PublicLogiEvent; t: T; detail?: boolean }) {
+  return event.result.participants.length ? <span className={styles.connectedResult} data-connected-result="">
     {event.result.participants.map((participant) => <span key={participant.id}>{participant.label || t('unknown')}: <strong>{participant.score ?? '—'}</strong></span>)}
-    <small>{t(event.result.state)}</small>
-  </span> : <span className={styles.dash} aria-label={t('unknown')}>—</span>;
+    <small>{detail && event.result.provenance?.kind === 'event_result_import' ? t('importedProvisional') : t(event.result.state)}</small>
+  </span> : <span className={styles.dash} aria-label={t('unknown')} data-connected-result="">—</span>;
 }
 
 export async function ConnectedMatchPreview({ event, locale, href }: { event: PublicLogiEvent; locale: AppLocale; href: string }) {

@@ -16,7 +16,7 @@ import { TagList } from './tags';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
 import { getLeagueMatchPreview } from '@/modules/integrations/logi/readers/league';
 import { LeaguePreview } from './league-preview';
-import { logiEventHref } from '@/modules/integrations/logi/public-matches';
+import { linkedPublicLogiMatch, logiEventHref } from '@/modules/integrations/logi/public-matches';
 import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
 import { ConnectedMatchPreview, ConnectedMatchResult, ConnectedMatchStart, ConnectedMatchStatus, ConnectedMatchTeams, getConnectedMatchTranslations } from './connected-match-parts';
 import styles from './matches.module.css';
@@ -234,6 +234,7 @@ export async function MatchesScreen({
         <div className={styles.pane}>
           <MatchDetailPane
             match={pane}
+            connected={linkedPublicLogiMatch(logiEvents, pane)}
             locale={locale}
             mode={mode === 'detail' ? 'detail' : 'preview'}
             detailHref={detailHref(pane, { ...listFilters, page: filters.page })}

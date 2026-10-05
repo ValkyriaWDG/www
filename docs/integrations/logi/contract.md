@@ -102,11 +102,19 @@ row to interleave; it does not truncate the website archive before merging.
 Optional per-source `matchLinks: [{eventId, matchId}]` bind an exact Logi event to an
 existing website match UUID. Both records must already be public and in the same
 game and configured authority. While the fresh Logi row is visible, the archive row
-is omitted from the list and next-match selection, but its original URL, result,
-recap and rounds remain unchanged. That detail also shows the current Logi facts.
+is omitted from the list and next-match selection. Its original URL is the single
+canonical detail. The main date, operational status and result come together from
+that fresh exact binding, including unknown values; the old result cannot fill a
+missing participant score. Supplied participant labels are never converted into
+Valkyria/opponent sides. The original stored record, recap, rounds, maps, statistics
+and editorial links remain intact as enrichment. Metadata and sharing images use
+the same public authority; sharing cards retain participant labels and recheck the
+public binding before each cached image response. Provider detail URLs temporarily
+redirect to the original URL while the explicit public binding remains valid.
 The connected row retains the archive opponent, short code and competition for
 display and search, and its primary link opens that original detail. If the Logi projection becomes unavailable, the archive row
-returns. Identity review is an operator task; there is no runtime fuzzy name/date
+returns, and the original detail uses its complete stored presentation. Identity
+review is an operator task; there is no runtime fuzzy name/date
 matching and no mutation of either source's historical record.
 
 Optional `matchAliases: [{canonicalEventId, aliasEventIds}]` record explicitly

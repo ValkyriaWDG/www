@@ -13,13 +13,15 @@ await client.connect();
 try {
   const archive = await client.query<{ id: string }>('select id from "match" where slug = $1 and game = $2 and publication = $3 and is_fixture = true', [FIXTURE_SLUGS.matches.hllHistorical, 'hell-let-loose', 'published']);
   if (archive.rows.length !== 1) throw new Error('Expected the one published synthetic HLL archive fixture.');
+  const wardogs = await client.query<{ id: string }>('select id from "match" where slug = $1 and game = $2 and publication = $3 and is_fixture = true', [FIXTURE_SLUGS.matches.upcoming, 'wardogs', 'published']);
+  if (wardogs.rows.length !== 1) throw new Error('Expected the one published synthetic Wardogs upcoming fixture.');
   const guildId = '910000000000000001';
   const sourceInstanceId = 'synthetic-public-match-source';
   const origin = 'https://logi.example.test';
   const env: LogiIntegrationEnv = {
     LOGI_SOURCES_JSON: JSON.stringify([
       { sourceInstanceId, origin, guildId, gameId: 'hell_let_loose', publishMatches: true, matchLinks: [{ eventId: 'synthetic-history-00', matchId: archive.rows[0]!.id }], matchAliases: [{ canonicalEventId: 'synthetic-history-01', aliasEventIds: ['synthetic-history-alias'] }] },
-      { sourceInstanceId, origin, guildId, gameId: 'wardogs', publishMatches: true },
+      { sourceInstanceId, origin, guildId, gameId: 'wardogs', publishMatches: true, matchLinks: [{ eventId: 'synthetic-next-wardogs', matchId: wardogs.rows[0]!.id }] },
     ]),
     LOGI_DATA_API_KEY_HLL: 'synthetic-public-hll-key-not-a-credential',
     LOGI_DATA_API_KEY_WDG: 'synthetic-public-wardogs-key-not-a-credential',

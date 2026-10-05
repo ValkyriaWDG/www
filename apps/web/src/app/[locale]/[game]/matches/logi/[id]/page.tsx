@@ -11,7 +11,8 @@ import { getServerEnv } from '@/lib/env';
 import { readPublicLogiEventPeople } from '@/modules/integrations/logi-people';
 import { PublicLogiMatchPeople } from '@/components/public/logi-people';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
-import { logiEventHref } from '@/modules/integrations/logi/public-matches';
+import { linkedPublicLogiMatch, logiEventHref } from '@/modules/integrations/logi/public-matches';
+import { canonicalMatchPath } from '@/modules/games/routes';
 
 export const dynamic = 'force-dynamic';
 export default async function ConnectedMatchPage({ params }: { params: Promise<{ locale: string; game: string; id: string }> }) {
@@ -21,6 +22,9 @@ export default async function ConnectedMatchPage({ params }: { params: Promise<{
   const events = await getPublicLogiEvents(game);
   const selected = events.find((row) => row.ref.externalId === id || row.aliases?.includes(id));
   if (!selected) notFound();
+  if (selected.archive && linkedPublicLogiMatch(events, { slug: selected.archive.slug, game: GAME_REGISTRY[game].db }) === selected) {
+    redirect(`/${locale}${canonicalMatchPath(GAME_REGISTRY[game].db, selected.archive.slug)}`);
+  }
   // This temporary redirect is valid only while both public records still agree.
   if (selected.ref.externalId !== id) redirect(`/${locale}${logiEventHref(selected)}`);
   const people = await readPublicLogiEventPeople(getDb(), getServerEnv(), GAME_REGISTRY[game].db, id);
