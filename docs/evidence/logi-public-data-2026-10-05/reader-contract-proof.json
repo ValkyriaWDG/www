@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-05T17:54:42.109Z",
+  "databaseWrites": false,
+  "results": [
+    {
+      "reader": "warcon-live",
+      "status": 200,
+      "valid": true,
+      "bytes": 3430,
+      "durationMs": 928,
+      "scopeMatches": true,
+      "view": "live",
+      "freshness": "fresh"
+    },
+    {
+      "reader": "warcon-matches",
+      "status": 200,
+      "valid": true,
+      "bytes": 2143,
+      "durationMs": 701,
+      "scopeMatches": true,
+      "view": "matches"
+    },
+    {
+      "reader": "retained-history",
+      "status": 200,
+      "valid": true,
+      "bytes": 171030,
+      "durationMs": 780,
+      "count": 5,
+      "scopeMatches": true,
+      "complete": true,
+      "revision": "15"
+    }
+  ]
+}

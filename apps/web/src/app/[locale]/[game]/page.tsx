@@ -10,11 +10,9 @@ import type { NextMatch } from '@/components/shell/home/next-match-strip';
 import { getShellLinks } from '@/components/shell/shell-config';
 import { bilingualAlternates } from '@/components/public/metadata';
 import { routing } from '@/i18n/routing';
-import { getDb } from '@/lib/db';
-import { getServerEnv } from '@/lib/env';
-import { GAME_REGISTRY, isGameRoute } from '@/modules/games/registry';
-import { canonicalMatchPath, gamePath } from '@/modules/games/routes';
-import { getNextPublicMatch } from '@/modules/matches/queries';
+import { isGameRoute } from '@/modules/games/registry';
+import { gamePath } from '@/modules/games/routes';
+import { getNextWebsiteMatch } from '@/modules/matches/public-next-match';
 import { getPublicServerOverview } from '@/modules/integrations/servers/presentation';
 import { sharingMetadata } from '@/modules/social/metadata';
 
@@ -48,16 +46,7 @@ export default async function GameLandingPage({ params, searchParams }: PageProp
 /** Earliest published upcoming Wardogs fixture, or null (no strip) when none exists or data is unavailable. */
 async function loadNextMatch(): Promise<NextMatch | null> {
   try {
-    if (!getServerEnv().DATABASE_URL) return null;
-    const next = await getNextPublicMatch(getDb(), new Date(), GAME_REGISTRY.wardogs.db);
-    if (!next) return null;
-    return {
-      href: canonicalMatchPath(next.game, next.slug),
-      opponent: next.opponentName,
-      game: next.game,
-      startsAt: next.startsAt,
-      competition: next.competitionName,
-    };
+    return await getNextWebsiteMatch('wardogs');
   } catch {
     return null;
   }

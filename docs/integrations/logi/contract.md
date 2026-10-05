@@ -82,8 +82,42 @@ or `corrected` as supplied; a concluded event is not automatic result confirmati
 Event and match summaries accept the producer's optional, nullable `matchTeams`
 snapshot (at most three teams: catalogue ID, slot, side, name, short code, HTTPS logo,
 positive revision and UTC capture time). Older responses without the field remain
-valid. Each team object stays closed; private or unknown fields are rejected. These
-snapshots are validated and retained privately, not added to the public match DTO.
+valid. Each team object stays closed; private or unknown fields are rejected. The
+public DTO exposes only the supplied team ID, slot, side, name and short code. Logos,
+capture metadata and unrecognized fields are not passed to the component.
+
+A supplied reviewed result takes precedence over `match-summaries.result`. When
+there is no reviewed result, a supplied imported result is shown as **provisional**,
+with its import provenance and timestamp; its presence never confirms a result.
+Known zero scores remain zero and absent scores remain unknown. An end timestamp
+can place a historical match in Results, but is labelled as an end time rather than
+inventing a start. The two home pages select the next actual scheduled match across
+the public Logi projection and the local archive. Connected lists have their own
+bounded search/page state (`logiPage`), independent of the archive page.
+
+Optional per-source `matchLinks: [{eventId, matchId}]` bind an exact Logi event to an
+existing website match UUID. Both records must already be public and in the same
+game and configured authority. While the fresh Logi row is visible, the archive row
+is omitted from the list and next-match selection, but its original URL, result,
+recap and rounds remain unchanged. That detail also shows the current Logi facts.
+The connected row retains the archive opponent, short code and competition for
+display and search. If the Logi projection becomes unavailable, the archive row
+returns. Identity review is an operator task; there is no runtime fuzzy name/date
+matching and no mutation of either source's historical record.
+
+Optional `matchAliases: [{canonicalEventId, aliasEventIds}]` record explicitly
+reviewed duplicate Logi identities. Groups are disjoint and scoped to one source,
+guild and game. An alias is hidden only while its canonical event is present and
+all public match facts agree (including scores, teams and result provenance).
+Conflicting or missing canonical facts keep the independent row visible. A hidden
+alias detail temporarily redirects to the canonical event; it can become an
+independent page again when those facts diverge. Archive links target canonical
+events, never aliases. These presentation settings do not change the sync scope.
+
+Earlier strict source-config readers reject `matchLinks` and `matchAliases`. Deploy
+a compatible consumer before adding them. To recover with an older image, restore a
+reviewed compatible configuration as well as accounting for the stored checkpoint
+and projection JSON boundaries below; prefer a compatible roll-forward release.
 
 | Surface | Implemented behavior | Publication control |
 | --- | --- | --- |
@@ -136,11 +170,33 @@ one remains available within its freshness limits. Promotion removes retired
 generations transactionally. Neither partial lists nor provider failures prove deletion.
 Changed source/key configuration gets a distinct cache scope.
 
+Incomplete generations have a fixed 30-minute lifetime from capture of their
+pre-list boundary. Once that age is reached, the runner starts a fresh full
+bootstrap: capture a new boundary, enumerate every collection, refetch authoritative
+records and finish replay before promotion. It does not move the cursor of the old
+generation or promote its partial rows. This bounds replay work accumulated during
+an interrupted bootstrap; it cannot guarantee completion if a full rebuild itself
+takes more than 30 minutes. Capture failure, run expiry or lease loss preserves the
+last committed checkpoint and active generation.
+
+The strict checkpoint JSON accepts optional `bootstrapStartedAt`. A legacy
+`bootstrap` or `replay` checkpoint without it starts one complete replacement because
+its capture age is unknown. A legacy or old `live` checkpoint keeps incremental
+polling; this age rule never resets a complete active generation. New timestamps
+remain unchanged across resumable passes. No SQL migration, key change or runtime
+override is required. Earlier strict readers reject the additional JSON field, so
+after new checkpoints are written, recover with a compatible roll-forward image;
+an older image is not a proved synchronization rollback.
+
 Run a pass every minute. A data pass is bounded to 100 synchronization steps and
 25 seconds per game, with a 60-second lease. Change scans start at ten guild rows
-and expand to 100 after an empty nonterminal page. An expanded page with over ten
-hints is reread from the same cursor at ten; atomic refetch remains bounded to ten
-hints per commit. A pass can finish as `pending`, `busy`, `lease_lost`,
+and expand to 100 after a nonterminal page with fewer than ten distinct identities.
+Hints are coalesced by scope/resource/ID, keeping the highest exact revision. An
+expanded page with at most ten identities is fully refetched before its cursor is
+committed, even when it contains 100 repeated hints. A page with over ten identities
+is reread from the unchanged cursor at ten scanned rows; its larger continuation
+is never committed. Atomic refetch remains bounded to ten identities per commit
+with concurrency four. A pass can finish as `pending`, `busy`, `lease_lost`,
 `caught_up` or `failed`; `pending` resumes on a later pass. Failures preserve the
 checkpoint and use bounded backoff, including `Retry-After`. Periodic pulls remain
 necessary even when webhooks are configured.

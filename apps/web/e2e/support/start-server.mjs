@@ -27,6 +27,15 @@ if (!cli('migrate.mjs')) throw new Error('dist/cli/migrate.mjs missing; run "pnp
 cli('seed.mjs');
 cli('fixtures.mjs', ['--allow-fixtures'], 'dev-cli');
 
+// The separate Logi browser suite adds only synthetic, publication-scoped projections.
+// Resolve archive UUIDs after the ordinary fixtures; no operational Logi request runs.
+if (process.env.E2E_LOGI_PUBLIC_FIXTURES === '1') {
+  const fixtureEnv = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', path.join(appDir, 'e2e', 'support', 'seed-logi-public.ts')], {
+    cwd: appDir, env: process.env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'],
+  }));
+  Object.assign(process.env, fixtureEnv);
+}
+
 const children = [];
 const discordMock = path.join(appDir, 'e2e', 'support', 'discord-mock.mjs');
 if (existsSync(discordMock)) {

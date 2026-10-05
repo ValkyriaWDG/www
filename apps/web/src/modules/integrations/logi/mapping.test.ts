@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mapLogiEventSummary, mapLogiServerSnapshot, type LogiPublicServer } from './mapping';
-import { logiEventSummarySchema, logiResultSummarySchema, logiServerSnapshotSchema } from './contracts';
+import { logiEventSummarySchema, logiMatchSummarySchema, logiResultSummarySchema, logiServerSnapshotSchema } from './contracts';
 import servers from './fixtures/v0.5.json';
 import changes from './fixtures/v0.6.json';
 import factions from './fixtures/result-wardogs-factions.json';
@@ -83,7 +83,72 @@ describe('explicit public projections', () => {
     expect(mapped?.result.participants).toHaveLength(3);
     expect(mapped?.result.state).toBe('provisional');
     expect(mapped?.result).not.toHaveProperty('attribution');
-    expect(mapped?.result).not.toHaveProperty('provenance');
+    expect(mapped?.result.provenance).toEqual({ kind: 'reviewed_result', origin: result.result?.provenance.origin });
+    expect(mapped?.result.provenance).not.toHaveProperty('sources');
     expect(() => mapLogiEventSummary(source, event, { ...result, id: 'different', eventId: 'different' }, { externalId: event.id, published: true }, now.toISOString())).toThrow('identity mismatch');
+  });
+});
+
+const imported = logiMatchSummarySchema.parse({
+  id: 'synthetic-history', eventId: 'synthetic-history', guildId: '910000000000000001', gameId: 'hell_let_loose',
+  title: 'Synthetic imported match', updatedAt: null, resultState: 'provisional',
+  result: { mapId: 'synthetic-map', mapName: 'Synthetic Map', sideA: 'axis', sideB: 'allies', score: { sideA: 0, sideB: 5 }, outcome: 'defeat', endedAt: '2026-09-27T20:00:00Z', provenance: { type: 'event_result_import', importedAt: '2026-09-28T09:00:00Z' } },
+});
+const historicalEvent = logiEventSummarySchema.parse({
+  id: imported.id, guildId: imported.guildId, gameId: imported.gameId, title: imported.title, updatedAt: null,
+  kind: 'match', status: null, startsAt: null, endsAt: '2026-09-27T21:00:00Z',
+});
+const historicalScope = { sourceInstanceId: 'synthetic-source', guildId: imported.guildId, gameId: imported.gameId };
+const historicalPublication = { externalId: imported.id, published: true };
+
+describe('historical public match projections', () => {
+  it('exposes an imported score as provisional with its provenance and never invents a start or team affiliation', () => {
+    const mapped = mapLogiEventSummary(historicalScope, historicalEvent, null, historicalPublication, now.toISOString(), imported);
+    expect(mapped).toMatchObject({
+      status: null, startsAt: null, teams: [],
+      result: {
+        state: 'provisional', version: null, reviewedAt: null, endedAt: '2026-09-27T20:00:00Z',
+        participants: [{ id: 'sideA', label: 'axis', score: 0 }, { id: 'sideB', label: 'allies', score: 5 }],
+        provenance: { kind: 'event_result_import', importedAt: '2026-09-28T09:00:00Z' },
+      },
+    });
+    expect(mapped).not.toHaveProperty('scoreValkyria');
+    expect(mapped?.result).not.toHaveProperty('outcome');
+  });
+
+  it.each(['provisional', 'confirmed', 'corrected'] as const)('a supplied %s result always wins over a conflicting imported score', (state) => {
+    const reviewed = logiResultSummarySchema.parse({
+      ...factions.data, id: imported.id, eventId: imported.id, guildId: imported.guildId, gameId: imported.gameId,
+      resultState: state, result: { ...factions.data.result, status: state },
+    });
+    const mapped = mapLogiEventSummary(historicalScope, historicalEvent, reviewed, historicalPublication, now.toISOString(), imported);
+    expect(mapped?.result).toMatchObject({ state, version: reviewed.result?.version, reviewedAt: reviewed.result?.reviewedAt, endedAt: null, participants: reviewed.result?.participants, provenance: { kind: 'reviewed_result', origin: reviewed.result?.provenance.origin } });
+    expect(mapped?.result.provenance).not.toHaveProperty('importedAt');
+  });
+
+  it('uses the imported fallback when the reviewed-result resource explicitly reports unknown', () => {
+    const unknown = logiResultSummarySchema.parse({ id: imported.id, eventId: imported.id, guildId: imported.guildId, gameId: imported.gameId, title: imported.title, updatedAt: null, resultState: 'unknown', result: null });
+    expect(mapLogiEventSummary(historicalScope, historicalEvent, unknown, historicalPublication, now.toISOString(), imported)?.result.state).toBe('provisional');
+    expect(mapLogiEventSummary(historicalScope, historicalEvent, unknown, historicalPublication, now.toISOString(), { ...imported, resultState: 'unknown', result: null })?.result).toMatchObject({ state: 'unknown', participants: [], provenance: null });
+  });
+
+  it('rejects mismatched imported event identities and games before accepting a fallback', () => {
+    expect(() => mapLogiEventSummary(historicalScope, historicalEvent, null, historicalPublication, now.toISOString(), { ...imported, id: 'different', eventId: 'different' })).toThrow('identity mismatch');
+    expect(() => mapLogiEventSummary(historicalScope, historicalEvent, null, historicalPublication, now.toISOString(), { ...imported, gameId: 'wardogs' })).toThrow('scope mismatch');
+    expect(mapLogiEventSummary(historicalScope, historicalEvent, null, { ...historicalPublication, published: false }, now.toISOString(), imported)).toBeNull();
+  });
+
+  it('publishes captured team names, codes and sides by slot without logos or mapping teams onto scores', () => {
+    const team = { teamId: 'synthetic-team-c', slot: 'c' as const, side: null, name: 'Charlie', shortCode: 'CHA', logoUrl: 'https://private.example/team.png', teamRevision: 2, capturedAt: now.toISOString() };
+    const event = { ...historicalEvent, matchTeams: [team, { ...team, teamId: 'synthetic-team-a', slot: 'a' as const, side: 'Axis' as const, name: 'Alpha', shortCode: null }] };
+    const mapped = mapLogiEventSummary(historicalScope, event, null, historicalPublication, now.toISOString(), imported);
+    expect(mapped?.teams).toEqual([
+      { id: 'synthetic-team-a', slot: 'a', side: 'Axis', name: 'Alpha', shortCode: null },
+      { id: 'synthetic-team-c', slot: 'c', side: null, name: 'Charlie', shortCode: 'CHA' },
+    ]);
+    expect(mapped?.result.participants.map((participant) => participant.label)).toEqual(['axis', 'allies']);
+    for (const secret of ['logoUrl', 'private.example', 'teamRevision', 'capturedAt']) expect(JSON.stringify(mapped)).not.toContain(secret);
+    // The event's explicit removal of its teams cannot be undone by another resource.
+    expect(mapLogiEventSummary(historicalScope, { ...event, matchTeams: [] }, null, historicalPublication, now.toISOString(), { ...imported, matchTeams: [team] })?.teams).toEqual([]);
   });
 });

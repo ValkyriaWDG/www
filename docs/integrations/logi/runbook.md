@@ -50,6 +50,32 @@ paste an arbitrary URL from a browser request into this configuration. A repeate
 `LOGI_ALLOW_LOOPBACK_HTTP` is exclusively for explicit isolated local tests; keep it
 false in production.
 
+### Reconciling the existing match archive
+
+After reviewing identities, add optional per-source bindings:
+
+```json
+{
+  "matchLinks": [{"eventId": "synthetic-event", "matchId": "10000000-0000-4000-8000-000000000001"}],
+  "matchAliases": [{"canonicalEventId": "synthetic-event", "aliasEventIds": ["synthetic-import-duplicate"]}]
+}
+```
+
+Use the website match UUID, not its slug or an external round ID. Review an exact
+shared external identity together with timestamps, result facts and round coverage;
+matching a title or calendar date is insufficient. Keep ambiguous or conflicting
+results independent. A link does not publish a draft, cross a game/guild boundary,
+overwrite a result or remove an old URL. Canonical and alias IDs must be disjoint,
+and each archive UUID can be linked once in its source. The website checks current
+public fact equality before hiding an alias, and restores the archive list row when
+the linked Logi projection is unavailable. See the [public contract](contract.md#reads-and-public-surfaces).
+
+Deploy the compatible website before adding these fields: older strict runtime
+config readers reject them. Save the protected previous configuration separately.
+The optional checkpoint `bootstrapStartedAt` and previously imported `matchTeams`
+also make a blind old-image rollback unsafe; use a compatible roll-forward and keep
+publication off if the recovered reader cannot prove current complete projections.
+
 | Settings | Purpose and prerequisite |
 | --- | --- |
 | `LOGI_SSO_ENABLED`, `LOGI_ISSUER_URL`, `LOGI_CLIENT_ID`, `LOGI_CLIENT_SECRET`, `LOGI_GUILD_ID` | Qualified RS256/JWKS provider; exact registered HTTPS callback `/api/auth/callback/logi`; canonical Discord guild |

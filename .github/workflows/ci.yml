@@ -250,6 +250,22 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Verify connected Logi matches against isolated synthetic projections
+        env:
+          CAPTURE_EVIDENCE: '1'
+        run: pnpm --filter @valkyria/web exec playwright test -c playwright.logi.config.ts
+      - name: Upload connected Logi browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: logi-public-browser-${{ github.sha }}
+          path: |
+            apps/web/.local/evidence/logi-public-data
+            apps/web/test-results/logi-public
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Verify shipped HLL artwork with an empty video playlist
         env:
           E2E_HLL_EMPTY_MEDIA: '1'

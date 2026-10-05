@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { gameRouteFromLogi } from '@/modules/games/registry';
 import { classifyFreshness, SERVER_FRESHNESS, type Freshness, type ServerSnapshot, type SourceRef } from '../contract';
 import {
-  logiEventSummarySchema, logiResultSummarySchema, logiScopeSchema, logiServerSnapshotSchema,
+  logiEventSummarySchema, logiMatchSummarySchema, logiResultSummarySchema, logiScopeSchema, logiServerSnapshotSchema,
   type LogiEventSummary, type LogiResultSummary, type LogiScope, type LogiServerSnapshot,
 } from './contracts';
 
@@ -66,16 +66,26 @@ export type PublicLogiEvent = {
   endsAt: string;
   sourceUpdatedAt: string | null;
   observedAt: string;
+  /** Captured names and explicit sides, independent of result participant identities. */
+  teams: { id: string; slot: 'a' | 'b' | 'c'; side: string | null; name: string; shortCode: string | null }[];
+  /** Added only after a reviewed association resolves to a published same-game archive entry. */
+  archive?: { slug: string; opponentName?: string; opponentShortCode?: string | null; competitionName?: string | null };
+  /** Explicitly reviewed IDs only; added by the equivalent-current-facts archive reconciliation. */
+  aliases?: string[];
   result: {
     state: LogiResultSummary['resultState'];
     version: number | null;
     reviewedAt: string | null;
+    endedAt: string | null;
     participants: { id: string; label: string; score: number | null }[];
+    provenance: { kind: 'reviewed_result'; origin: 'collected' | 'manual' | 'legacy_import' }
+      | { kind: 'event_result_import'; importedAt: string }
+      | null;
   };
 };
 
 /** Publication is a website decision; fetching an operational event cannot publish it. */
-export function mapLogiEventSummary(scope: LogiScope, input: LogiEventSummary, resultInput: LogiResultSummary | null, publication: { externalId: string; published: boolean }, observedAt: string): PublicLogiEvent | null {
+export function mapLogiEventSummary(scope: LogiScope, input: LogiEventSummary, resultInput: LogiResultSummary | null, publication: { externalId: string; published: boolean }, observedAt: string, matchInput: z.infer<typeof logiMatchSummarySchema> | null = null): PublicLogiEvent | null {
   const event = logiEventSummarySchema.parse(input);
   const sourceRef = ref(scope, event, event.kind === 'match' ? 'match' : 'event');
   if (!publication.published || publication.externalId !== event.id) return null;
@@ -85,13 +95,26 @@ export function mapLogiEventSummary(scope: LogiScope, input: LogiEventSummary, r
     ref(scope, result, 'match');
     if (result.id !== event.id) throw new Error('Logi result identity mismatch');
   }
+  const match = matchInput === null ? null : logiMatchSummarySchema.parse(matchInput);
+  if (match) {
+    ref(scope, match, 'match');
+    if (match.id !== event.id) throw new Error('Logi imported result identity mismatch');
+  }
+  const reviewed = result?.result;
+  const imported = reviewed ? null : match?.result;
+  const teams = (event.matchTeams ?? []).map(({ teamId, slot, side, name, shortCode }) => ({ id: teamId, slot, side, name, shortCode })).sort((left, right) => left.slot.localeCompare(right.slot));
   return {
     ref: sourceRef, title: event.title, kind: event.kind, status: event.status,
-    startsAt: event.startsAt, endsAt: event.endsAt, sourceUpdatedAt: event.updatedAt, observedAt,
+    startsAt: event.startsAt, endsAt: event.endsAt, sourceUpdatedAt: event.updatedAt, observedAt, teams,
     result: {
-      state: result?.resultState ?? 'unknown', version: result?.result?.version ?? null,
-      reviewedAt: result?.result?.reviewedAt ?? null,
-      participants: result?.result?.participants.map(({ id, label, score }) => ({ id, label, score })) ?? [],
+      state: reviewed?.status ?? (imported ? 'provisional' : 'unknown'), version: reviewed?.version ?? null,
+      reviewedAt: reviewed?.reviewedAt ?? null, endedAt: imported?.endedAt ?? null,
+      participants: reviewed?.participants.map(({ id, label, score }) => ({ id, label, score })) ?? (imported ? [
+        { id: 'sideA', label: imported.sideA, score: imported.score.sideA },
+        { id: 'sideB', label: imported.sideB, score: imported.score.sideB },
+      ] : []),
+      provenance: reviewed ? { kind: 'reviewed_result', origin: reviewed.provenance.origin }
+        : imported ? { kind: 'event_result_import', importedAt: imported.provenance.importedAt } : null,
     },
   };
 }

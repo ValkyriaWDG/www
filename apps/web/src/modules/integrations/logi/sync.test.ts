@@ -56,7 +56,7 @@ function live(cursor = 'old-cursor'): LogiSyncCheckpoint {
 describe('revision-aware bootstrap and replay', () => {
   it('catches up a sparse guild feed across bounded passes without replacing the last complete generation early', async () => {
     const store = new MemoryStore();
-    store.checkpoint = { ...live('scan-0'), mode: 'replay', generation: 'rebuild-1' };
+    store.checkpoint = { ...live('scan-0'), mode: 'replay', generation: 'rebuild-1', bootstrapStartedAt: new Date(now).toISOString() };
     store.active.set('old', record('9', 'Last complete generation', 'old'));
     const fresh = record('24001');
     let pages = 0;
@@ -84,7 +84,7 @@ describe('revision-aware bootstrap and replay', () => {
 
   it('rereads a dense expanded page from the unchanged cursor in small atomic batches without skipping identities', async () => {
     const store = new MemoryStore();
-    store.checkpoint = { ...live('scan-0'), mode: 'replay', generation: 'rebuild-1' };
+    store.checkpoint = { ...live('scan-0'), mode: 'replay', generation: 'rebuild-1', bootstrapStartedAt: new Date(now).toISOString() };
     const values = Array.from({ length: 100 }, (_, index) => record(String(index + 11), 'Synthetic event', `event-${index + 11}`));
     const requests: { offset: number; limit: number }[] = [];
     const readIds: string[] = [];
@@ -127,6 +127,171 @@ describe('revision-aware bootstrap and replay', () => {
     expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'failed', error, committedPages: 1, records: 0 });
     expect(store.checkpoint?.cursor).toBe('scan-10');
     expect(store.active.size).toBe(0);
+  });
+
+  it.each([1, 10])('processes an expanded page containing 100 hints for %s identities without rereading or skipping revisions', async (identityCount) => {
+    const store = new MemoryStore();
+    store.checkpoint = live('scan-0');
+    const requests: { offset: number; limit: number }[] = [];
+    const readIds: string[] = [];
+    const values = Array.from({ length: identityCount }, (_, index) => record(String(110 - index), 'Latest atomic value', `hot-${index}`));
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      if (url.pathname.includes('/sync-records/')) {
+        const id = url.pathname.split('/').at(-1)!;
+        readIds.push(id);
+        return json({ data: values.find((value) => value.id === id)! });
+      }
+      const offset = Number(url.searchParams.get('cursor')!.slice(5));
+      const limit = Number(url.searchParams.get('limit'));
+      requests.push({ offset, limit });
+      const end = Math.min(offset + limit, 110);
+      // A nonempty low-cardinality page should expand too; ten distinct hints
+      // become cheap only after coalescing the following repeated updates.
+      const data = offset === 0 && identityCount === 10 ? [] : Array.from({ length: end - offset }, (_, index) => {
+        const revision = offset + index + 1;
+        return hint(record(String(revision), 'Change hint', `hot-${(110 - revision) % identityCount}`));
+      });
+      return json({ data, page: { nextCursor: `scan-${end}`, hasMore: end < 110, limit } });
+    });
+    expect(await synchronizeLogiScope(reader, store, { ...options, maxSteps: 2 })).toMatchObject({ state: 'caught_up', committedPages: 2 });
+    expect(requests).toEqual([{ offset: 0, limit: 10 }, { offset: 10, limit: 100 }]);
+    expect(readIds).toHaveLength(identityCount === 1 ? 2 : 10);
+    expect(store.checkpoint?.cursor).toBe('scan-110');
+    expect([...store.active.values()].sort((a, b) => a.id.localeCompare(b.id))).toEqual(values.sort((a, b) => a.id.localeCompare(b.id)));
+    expect(store.commits.every((commit) => commit.records.length <= 10)).toBe(true);
+  });
+
+  it('does not commit an expanded continuation when an atomic record is older than the latest duplicate hint', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = live('scan-0');
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      if (url.pathname.includes('/sync-records/')) return json({ data: record('50') });
+      const offset = Number(url.searchParams.get('cursor')!.slice(5));
+      const limit = Number(url.searchParams.get('limit'));
+      const end = Math.min(offset + limit, 110);
+      return json({ data: offset === 0 ? [] : Array.from({ length: end - offset }, (_, i) => hint(record(String(offset + i + 1)))), page: { nextCursor: `scan-${end}`, hasMore: end < 110, limit } });
+    });
+    expect(await synchronizeLogiScope(reader, store, { ...options, maxSteps: 2 })).toMatchObject({ state: 'failed', error: 'invalid_response', committedPages: 1 });
+    expect(store.checkpoint?.cursor).toBe('scan-10');
+    expect(store.active.size).toBe(0);
+  });
+
+  it.each(['bootstrap', 'replay'] as const)('replaces a legacy incomplete %s checkpoint with a fresh full bootstrap exactly once', async (mode) => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live(), mode, generation: 'legacy-shadow', listCursor: mode === 'bootstrap' ? 'old-list' : null };
+    store.active.set('old', record('1', 'Last complete', 'old'));
+    const calls: string[] = [];
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      calls.push(`${url.pathname.split('/').at(-1)}:${url.searchParams.get('cursor') ?? url.searchParams.get('start') ?? 'first'}`);
+      return json(url.pathname.endsWith('/changes') ? changed('fresh-boundary') : list([]));
+    });
+    expect(await synchronizeLogiScope(reader, store, { ...options, maxSteps: 1 })).toMatchObject({ state: 'pending', reset: true, committedPages: 1 });
+    expect(store.checkpoint).toMatchObject({ mode: 'bootstrap', resourceIndex: 0, listCursor: null, generation: 'rebuild-1', boundaryCursor: 'fresh-boundary', cursor: 'fresh-boundary', bootstrapStartedAt: new Date(now).toISOString() });
+    expect([...store.active.keys()]).toEqual(['old']);
+    expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'caught_up', reset: false });
+    expect(calls).toEqual(['changes:now', 'event-summaries:first', 'changes:fresh-boundary']);
+  });
+
+  it.each(['bootstrap', 'replay'] as const)('resumes %s below 30 minutes and restarts it at the exact age boundary', async (mode) => {
+    const store = new MemoryStore();
+    let clock = now + 30 * 60_000 - 1;
+    store.checkpoint = { ...live('saved-cursor'), mode, resourceIndex: mode === 'bootstrap' ? 0 : 1, generation: 'old-shadow', listCursor: mode === 'bootstrap' ? 'saved-list' : null, bootstrapStartedAt: new Date(now).toISOString() };
+    const calls: string[] = [];
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      calls.push(url.searchParams.get('cursor') ?? url.searchParams.get('start') ?? 'first');
+      if (url.searchParams.has('start')) return json(changed('fresh-boundary'));
+      return json(mode === 'bootstrap' ? list([], 'continued-list') : changed('continued-replay', true));
+    });
+    const ageOptions = { ...options, now: () => clock, maxSteps: 1 };
+    expect(await synchronizeLogiScope(reader, store, ageOptions)).toMatchObject({ state: 'pending', reset: false });
+    expect(store.checkpoint?.bootstrapStartedAt).toBe(new Date(now).toISOString());
+    clock++;
+    expect(await synchronizeLogiScope(reader, store, ageOptions)).toMatchObject({ state: 'pending', reset: true });
+    expect(calls).toEqual([mode === 'bootstrap' ? 'saved-list' : 'saved-cursor', 'now']);
+    expect(store.checkpoint).toMatchObject({ mode: 'bootstrap', resourceIndex: 0, listCursor: null, boundaryCursor: 'fresh-boundary', bootstrapStartedAt: new Date(clock).toISOString() });
+  });
+
+  it.each([undefined, '2026-09-01T00:00:00.000Z'])('keeps a healthy live checkpoint incremental regardless of bootstrap timestamp %s', async (bootstrapStartedAt) => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live(), ...(bootstrapStartedAt ? { bootstrapStartedAt } : {}) };
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      expect(url.searchParams.has('start')).toBe(false);
+      expect(url.searchParams.get('cursor')).toBe('old-cursor');
+      return json(changed('current-cursor'));
+    });
+    expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'caught_up', reset: false, committedPages: 1 });
+  });
+
+  it.each([[429, 'rate_limited'], [503, 'upstream']] as const)('retains the expired generation and active data when fresh boundary capture returns %s', async (status, error) => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live(), mode: 'replay', generation: 'expired-shadow', bootstrapStartedAt: new Date(now - 30 * 60_000).toISOString() };
+    store.active.set('old', record('1', 'Last complete', 'old'));
+    const saved = structuredClone(store.checkpoint);
+    const reader = client(async (input) => {
+      expect(new URL(input).searchParams.get('start')).toBe('now');
+      return new Response(null, { status, headers: { 'retry-after': '65' } });
+    });
+    expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'failed', error, committedPages: 0, ...(status === 429 ? { retryAfterMs: 65_000 } : {}) });
+    expect(store.checkpoint).toEqual(saved);
+    expect([...store.active.keys()]).toEqual(['old']);
+  });
+
+  it('does not replace an expired checkpoint after losing its lease during boundary capture', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live(), mode: 'replay', generation: 'expired-shadow', bootstrapStartedAt: new Date(now - 30 * 60_000).toISOString() };
+    const saved = structuredClone(store.checkpoint);
+    const reader = client(async (input) => {
+      expect(new URL(input).searchParams.get('start')).toBe('now');
+      store.rejectCommit = true;
+      return json(changed('fresh-boundary'));
+    });
+    expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'lease_lost', committedPages: 0 });
+    expect(store.checkpoint).toEqual(saved);
+  });
+
+  it('rebuilds all identities after expiry and reconciles concurrent create, update and removal before promotion', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live('old-replay'), mode: 'replay', generation: 'expired-shadow', bootstrapStartedAt: new Date(now - 30 * 60_000).toISOString() };
+    store.active.set('legacy', record('1', 'Last complete', 'legacy'));
+    const updated = record('103', 'Updated after capture', 'existing');
+    const created = record('104', 'Created after enumeration', 'created');
+    const removed: LogiSyncRecord<'event-summaries'> = { ...hint(record('105', 'Removed after enumeration', 'removed')), resource: 'event-summaries', gameId: 'wardogs', operation: 'remove', data: null };
+    const calls: string[] = [];
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      const id = url.pathname.split('/').at(-1)!;
+      calls.push(`${id}:${url.searchParams.get('cursor') ?? url.searchParams.get('start') ?? 'first'}`);
+      expect([...store.active.keys()]).toEqual(['legacy']);
+      if (url.searchParams.has('start')) return json(changed('fresh-boundary'));
+      if (id === 'event-summaries') return json(list([record('101', 'Listed before update', 'existing').data, record('101', 'Listed before removal', 'removed').data]));
+      if (id === 'changes') {
+        expect(url.searchParams.get('cursor')).toBe('fresh-boundary');
+        return json(changed('fully-replayed', false, [hint(record('102', 'Update hint', 'existing')), hint(created), hint(removed)]));
+      }
+      return json({ data: id === 'existing' ? updated : id === 'created' ? created : removed });
+    });
+    expect(await synchronizeLogiScope(reader, store, options)).toMatchObject({ state: 'caught_up', reset: true, committedPages: 3 });
+    expect(calls[0]).toBe('changes:now');
+    expect(calls[1]).toBe('event-summaries:first');
+    expect(store.active.get('existing')).toEqual(updated);
+    expect(store.active.get('created')).toEqual(created);
+    expect(store.active.get('removed')).toEqual(removed);
+    expect(store.active.has('legacy')).toBe(false);
+    expect(store.commits.slice(0, -1).every((commit) => commit.promoteGeneration === null)).toBe(true);
+    expect(store.checkpoint).toMatchObject({ mode: 'live', cursor: 'fully-replayed', bootstrapStartedAt: new Date(now).toISOString() });
+  });
+
+  it('rejects a malformed bootstrap timestamp before reading or committing source data', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live(), mode: 'replay', generation: 'malformed', bootstrapStartedAt: 'not-an-instant' };
+    const fetchImpl = vi.fn<LogiFetch>();
+    expect(await synchronizeLogiScope(client(fetchImpl), store, options)).toMatchObject({ state: 'failed', error: 'persistence', committedPages: 0 });
+    expect(fetchImpl).not.toHaveBeenCalled();
   });
 
   it('resumes committed pages after the run budget expires without publishing an incomplete generation', async () => {

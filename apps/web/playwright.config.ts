@@ -14,6 +14,8 @@ const MUTATING_SPECS = /(^|\/)admin-[^/]*\.spec\.ts$/;
 const ADMIN_CAPTURE_SPECS = /(^|\/)visual-admin-[^/]*\.spec\.ts$/;
 /** Actual delivered background media has its own suite (playwright.media.config.ts). */
 const MEDIA_SPECS = 'media/**';
+/** Connected Logi projections use their own database and explicit playwright.logi.config.ts. */
+const LOGI_PUBLIC_SPECS = 'logi-public/**';
 
 export default defineConfig({
   testDir: 'e2e',
@@ -36,7 +38,7 @@ export default defineConfig({
   projects: [
     // Read-only journeys assert exact synthetic fixtures; they finish before any spec that
     // creates, publishes or reconfigures shared data in the same disposable database.
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: [MUTATING_SPECS, ADMIN_CAPTURE_SPECS, MEDIA_SPECS] },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: [MUTATING_SPECS, ADMIN_CAPTURE_SPECS, MEDIA_SPECS, LOGI_PUBLIC_SPECS] },
     { name: 'chromium-admin', use: { ...devices['Desktop Chrome'] }, testMatch: MUTATING_SPECS, dependencies: ['chromium'] },
     { name: 'chromium-admin-capture', use: { ...devices['Desktop Chrome'] }, testMatch: ADMIN_CAPTURE_SPECS, dependencies: ['chromium-admin'] },
   ],

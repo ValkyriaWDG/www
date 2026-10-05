@@ -5,7 +5,8 @@ import { getServerEnv } from '@/lib/env';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import type { ServerSnapshot } from './contract';
 import { configuredLogiSources, type LogiIntegrationEnv } from './logi-config';
-import { logiEventSummarySchema, logiResultSummarySchema, logiServerSnapshotSchema } from './logi/contracts';
+import { attachPublicLogiArchiveLinks } from './logi-match-links';
+import { logiEventSummarySchema, logiMatchSummarySchema, logiResultSummarySchema, logiServerSnapshotSchema } from './logi/contracts';
 import { mapLogiEventSummary, mapLogiServerSnapshot, type PublicLogiEvent } from './logi/mapping';
 import { readActiveLogiProjections } from './logi-store';
 import type { ServerOverview } from './servers/provider';
@@ -25,17 +26,22 @@ export async function readPublicLogiEvents(db: Executor, env: LogiIntegrationEnv
       if (!event.success || event.data.kind !== 'match') continue;
       const resultRow = records.find((record) => record.resource === 'result-summaries' && record.externalId === row.externalId && record.operation === 'upsert');
       const result = logiResultSummarySchema.safeParse(resultRow?.data);
-      const dto = mapLogiEventSummary(scope, event.data, result.success ? result.data : null, { externalId: row.externalId, published: true }, row.observedAt.toISOString());
+      const matchRow = records.find((record) => record.resource === 'match-summaries' && record.externalId === row.externalId && record.operation === 'upsert');
+      const match = logiMatchSummarySchema.safeParse(matchRow?.data);
+      const dto = mapLogiEventSummary(scope, event.data, result.success ? result.data : null, { externalId: row.externalId, published: true }, row.observedAt.toISOString(), match.success ? match.data : null);
       if (dto) events.push(dto);
     }
   }
-  return events.sort((left, right) => (left.startsAt ?? left.endsAt).localeCompare(right.startsAt ?? right.endsAt));
+  return events;
 }
 
 export async function getPublicLogiEvents(game?: GameRoute) {
   const env = getServerEnv();
   if (env.LOGI_SOURCES_JSON === '[]') return [];
-  try { return await readPublicLogiEvents(getDb(), env, game); } catch { return []; }
+  try {
+    const db = getDb();
+    return await attachPublicLogiArchiveLinks(db, env, await readPublicLogiEvents(db, env, game));
+  } catch { return []; }
 }
 
 export async function getLogiServerOverview(game: GameRoute, now = new Date()): Promise<ServerOverview> {

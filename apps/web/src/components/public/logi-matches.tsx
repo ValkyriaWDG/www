@@ -1,41 +1,58 @@
 import { getTranslations } from 'next-intl/server';
-import { EmptyState, FilterBar, GameButton, LinkTabs, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
+import { EmptyState, GameButton, LinkTabs, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
+import { formatDate } from '@/i18n/date-format';
+import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { logiEventHref, publicLogiMatchTime, queryPublicLogiMatches } from '@/modules/integrations/logi/public-matches';
 import styles from './logi-matches.module.css';
 import type { GameRoute } from '@/modules/games/registry';
 import { matchesListHref, type MatchFilters } from './query';
 
-export function logiEventHref(event: PublicLogiEvent) {
-  return `/${event.ref.game}/matches/logi/${encodeURIComponent(event.ref.externalId)}`;
-}
-export async function LogiMatches({ locale, events, selected, view = 'upcoming', q = '', page = 1 }: { locale: AppLocale; events: PublicLogiEvent[]; selected?: PublicLogiEvent; view?: 'upcoming' | 'results'; q?: string; page?: number }) {
+export { logiEventHref } from '@/modules/integrations/logi/public-matches';
+
+export async function LogiMatches({ locale, events, selected, view = 'upcoming', q = '', page = 1, now = new Date() }: { locale: AppLocale; events: PublicLogiEvent[]; selected?: PublicLogiEvent; view?: 'upcoming' | 'results'; q?: string; page?: number; now?: Date }) {
   const t = await getTranslations({ locale, namespace: 'logi' });
-  const format = (iso: string | null) => iso ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Prague' }).format(new Date(iso)) : t('unknown');
-  const rows = selected ? [selected] : events.filter((event) => (event.status === 'concluded') === (view === 'results') && event.title.toLocaleLowerCase(locale).includes(q.toLocaleLowerCase(locale))).slice((page - 1) * 10, page * 10);
+  const format = (iso: string | null) => iso ? formatDate(iso, locale, 'dateTimeZone') : t('unknown');
+  const rows = selected ? [selected] : queryPublicLogiMatches(events, { view, q, page, now }).items;
   return <section className={styles.section} aria-labelledby="connected-matches-title" data-logi-matches="">
     <h2 id="connected-matches-title">{selected ? t('result') : t('publicTitle')}</h2>
     {rows.length ? <SelectionTable caption={t('title')} captionHidden rows={rows} getRowKey={(row) => `${row.ref.game}:${row.ref.externalId}`} getRowHref={logiEventHref} linkColumn="match" columns={[
-      { key: 'start', header: t('start'), cell: (row) => row.startsAt ? <time dateTime={row.startsAt}>{format(row.startsAt)}</time> : t('unknown') },
-      { key: 'match', header: t('match'), rowHeader: true, cell: (row) => row.title },
+      { key: 'start', header: t('date'), cell: (row) => {
+        const time = publicLogiMatchTime(row);
+        return <span className={styles.date}><time dateTime={time.at}>{format(time.at)}</time>{time.kind === 'end' ? <small>{t('endTime')}</small> : null}</span>;
+      } },
+      { key: 'match', header: t('match'), rowHeader: true, cell: (row) => <div className={styles.identity}><span>{row.title}</span>{row.teams.length ? <ul className={styles.teams} aria-label={t('teams')}>{row.teams.map((team) => <li key={team.id}><span>{team.name}{team.shortCode ? <strong> · {team.shortCode}</strong> : null}</span>{team.side ? <small>{team.side}</small> : null}</li>)}</ul> : null}</div> },
       { key: 'game', header: t('game'), cell: (row) => t(row.ref.game) },
       { key: 'status', header: t('status'), cell: (row) => <StatusBadge kind="neutral">{t(row.status ?? 'unknown')}</StatusBadge> },
-      { key: 'result', header: t('result'), cell: (row) => row.result.participants.length ? <div>{row.result.participants.map((team) => <div key={team.id}>{team.label}: {team.score ?? '—'}</div>)}<small>{t(row.result.state)}</small></div> : t('unknown') },
+      { key: 'result', header: t('result'), numeric: true, cell: (row) => row.result.participants.length ? <div className={styles.result}>{row.result.participants.map((participant) => <div key={participant.id}>{participant.label || t('unknown')}: {participant.score ?? '—'}</div>)}<small>{row.result.provenance?.kind === 'event_result_import' ? t('importedProvisional') : t(row.result.state)}</small></div> : t('unknown') },
+      ...(rows.some((row) => row.archive) ? [{ key: 'archive', header: t('details'), cell: (row: PublicLogiEvent) => row.archive ? <div className={styles.archive}>
+        {row.archive.opponentName ? <span>{t('archiveMatch', { opponent: row.archive.opponentName })}</span> : null}
+        {row.archive.competitionName ? <small>{row.archive.competitionName}</small> : null}
+        <Link className={styles.archiveLink} href={`/${row.ref.game}/matches/${encodeURIComponent(row.archive.slug)}`}>{t('archiveDetails')}</Link>
+      </div> : '—' }] : []),
     ]} /> : <EmptyState title={t('empty')} />}
-    {selected ? <><p>{t('updated', { date: format(selected.observedAt) })}</p><GameButton href={`/${selected.ref.game}/matches`}>{t('back')}</GameButton></> : null}
+    {selected ? <>{selected.result.provenance?.kind === 'event_result_import' ? <p>{t('importedOn', { date: format(selected.result.provenance.importedAt) })}</p> : null}<p>{t('updated', { date: format(selected.observedAt) })}</p><GameButton href={`/${selected.ref.game}/matches`}>{t('back')}</GameButton></> : null}
   </section>;
 }
 
-export async function LogiMatchBrowser({ locale, events, game, filters }: { locale: AppLocale; events: PublicLogiEvent[]; game?: GameRoute | null; filters: MatchFilters }) {
+export async function LogiMatchBrowser({ locale, events, game, filters, now = new Date() }: { locale: AppLocale; events: PublicLogiEvent[]; game?: GameRoute | null; filters: MatchFilters; now?: Date }) {
   const t = await getTranslations({ locale, namespace: 'logi' });
   const base = game ? `/${game}` : '';
   const href = (next: Partial<MatchFilters>) => matchesListHref(next, base);
-  const count = events.filter((event) => (event.status === 'concluded') === (filters.view === 'results') && event.title.toLocaleLowerCase(locale).includes((filters.q ?? '').toLocaleLowerCase(locale))).length;
-  return <div className={styles.section}>
-    <LinkTabs label={t('all')} current={filters.view} tabs={(['upcoming', 'results'] as const).map((view) => ({ key: view, label: t(view), href: href({ ...filters, view, page: 1 }) }))} />
-    <FilterBar action={`${base}/matches`} searchLabel={t('match')} searchValue={filters.q} hiddenParams={{ view: filters.view, ...(filters.game ? { game: filters.game } : {}) }} />
-    <LogiMatches locale={locale} events={events} view={filters.view} q={filters.q} page={filters.page} />
-    <Pagination page={filters.page} pageCount={Math.ceil(count / 10)} hrefForPage={(page) => href({ ...filters, page })} />
+  const page = queryPublicLogiMatches(events, { view: filters.view, q: filters.q, page: filters.logiPage, now });
+  const matches = await LogiMatches({ locale, events, view: filters.view, q: filters.q, page: page.page, now });
+  return <div className={styles.section} data-logi-browser="">
+    <LinkTabs label={t('all')} current={filters.view} tabs={(['upcoming', 'results'] as const).map((view) => ({ key: view, label: t(view), href: href({ ...filters, view, page: 1, logiPage: 1 }) }))} />
+    <form action={`/${locale}${base}/matches`} method="get" role="search" className={styles.search}>
+      <input type="hidden" name="view" value={filters.view} />
+      {filters.game ? <input type="hidden" name="game" value={filters.game} /> : null}
+      <label htmlFor="logi-match-search">{t('searchLabel')}</label>
+      <input type="search" id="logi-match-search" name="q" defaultValue={filters.q} autoComplete="off" />
+      <GameButton type="submit" size="sm">{t('search')}</GameButton>
+    </form>
+    {matches}
+    <Pagination page={page.page} pageCount={page.pageCount} hrefForPage={(logiPage) => href({ ...filters, logiPage })} />
     <h2>{t('archive')}</h2>
   </div>;
 }

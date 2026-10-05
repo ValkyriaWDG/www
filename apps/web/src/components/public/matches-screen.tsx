@@ -50,6 +50,9 @@ export async function MatchesScreen({
   const filters: MatchFilters = scopedGame ? { ...requested, game: undefined } : requested;
   const effectiveGame = scopedGame ?? filters.game;
   const logiEvents = mode === 'list' ? (await getPublicLogiEvents(game ?? undefined)).filter((event) => !effectiveGame || GAME_REGISTRY[event.ref.game].db === effectiveGame) : [];
+  // Only a currently visible provider counterpart replaces an archive list row. Its
+  // canonical archive detail stays available; stale provider data restores the row.
+  const linkedPublicSlugs = logiEvents.flatMap((event) => event.archive ? [event.archive.slug] : []);
   const listHref = (next: Partial<MatchFilters>) => matchesListHref(next, base);
   // Game lists keep their list context on the detail URL; the shared list links to each
   // match's canonical game section.
@@ -59,8 +62,8 @@ export async function MatchesScreen({
   let counts: PublicMatchCounts | null = null;
   try {
     [page, counts] = await Promise.all([
-      listPublicMatches(db, { view: filters.view, game: effectiveGame, q: filters.q, page: filters.page, pageSize: MATCH_PAGE_SIZE }),
-      getPublicMatchCounts(db),
+      listPublicMatches(db, { view: filters.view, game: effectiveGame, q: filters.q, page: filters.page, pageSize: MATCH_PAGE_SIZE }, linkedPublicSlugs),
+      getPublicMatchCounts(db, linkedPublicSlugs),
     ]);
   } catch (error) {
     console.error('[matches] list query failed', error instanceof Error ? error.name : 'unknown');
@@ -74,14 +77,14 @@ export async function MatchesScreen({
   const league = mode === 'detail' && pane?.game === 'wardogs' && pane.leagueMatchUrl ? await getLeagueMatchPreview(pane.leagueMatchUrl) : null;
 
   const filtered = hasMatchFilters(filters);
-  const listFilters = { game: filters.game, q: filters.q };
+  const listFilters = { game: filters.game, q: filters.q, logiPage: filters.logiPage };
   const viewCount = (view: MatchView) => (counts ? (effectiveGame ? counts.byGame[effectiveGame][view] : counts[view]) : null);
   const tabs = VIEWS.map((view) => {
     const count = viewCount(view);
     const label = t(`list.views.${view}`);
     return {
       key: view,
-      href: listHref({ ...listFilters, view }),
+      href: listHref({ ...listFilters, view, logiPage: 1 }),
       label: count === null ? label : t('list.viewTab', { label, formatted: formatNumber(count, locale) }),
     };
   });
@@ -197,11 +200,11 @@ export async function MatchesScreen({
                     name: 'game',
                     label: t('list.gameGroup'),
                     options: [
-                      { value: 'all', label: t('list.all'), href: listHref({ ...filters, game: undefined, page: 1 }), current: !filters.game },
+                      { value: 'all', label: t('list.all'), href: listHref({ ...filters, game: undefined, page: 1, logiPage: 1 }), current: !filters.game },
                       ...GAMES.map((value) => ({
                         value,
                         label: t(`games.${value}`),
-                        href: listHref({ ...filters, game: value, page: 1 }),
+                        href: listHref({ ...filters, game: value, page: 1, logiPage: 1 }),
                         current: filters.game === value,
                       })),
                     ],
@@ -213,7 +216,7 @@ export async function MatchesScreen({
         />
       </div>
       <div className={styles.list}>
-        {listContent}
+        {mode === 'list' && logiEvents.length > 0 && page?.total === 0 ? null : listContent}
         {page ? <Pagination page={page.page} pageCount={page.pageCount} hrefForPage={(value) => listHref({ ...filters, page: value })} /> : null}
         <p className={styles.note}>{t('list.timeZoneNote')}</p>
       </div>
