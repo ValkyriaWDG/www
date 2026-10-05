@@ -9,6 +9,20 @@ const env = (overrides: Record<string, unknown> = {}) => ({
 });
 
 describe('Logi source scope', () => {
+  it('accepts explicit archive identities without changing the authority scope', () => {
+    const matchLinks = [{ eventId: 'event-one', matchId: '10000000-0000-4000-8000-000000000001' }];
+    const configured = configuredLogiSources(env({ matchLinks }), 'data')[0]!;
+    expect(configured).toMatchObject({ matchLinks });
+    expect(configured.scopeKey).toBe(configuredLogiSources(env(), 'data')[0]!.scopeKey);
+  });
+  it.each([
+    [{ eventId: 'event-one', matchId: 'not-a-uuid' }],
+    [{ eventId: '../event', matchId: '10000000-0000-4000-8000-000000000001' }],
+    [{ eventId: 'event-one', matchId: '10000000-0000-4000-8000-000000000001' }, { eventId: 'event-two', matchId: '10000000-0000-4000-8000-000000000001' }],
+    [{ eventId: 'event-one', matchId: '10000000-0000-4000-8000-000000000001' }, { eventId: 'event-one', matchId: '10000000-0000-4000-8000-000000000002' }],
+  ])('rejects ambiguous or invalid explicit archive bindings: %j', (...matchLinks) => {
+    expect(() => configuredLogiSources(env({ matchLinks }), 'data')).toThrow('Invalid LOGI_SOURCES_JSON');
+  });
   it('keeps the cache scope when only presentation settings change', () => {
     const [base] = configuredLogiSources(env(), 'data');
     const [published] = configuredLogiSources(env({ publishMatches: true, publicServers: [] }), 'data');

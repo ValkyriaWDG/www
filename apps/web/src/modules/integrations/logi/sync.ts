@@ -4,8 +4,10 @@ import { z } from 'zod';
 import { LogiClientError, type LogiErrorCode, type LogiReader } from './client';
 import {
   LOGI_ALL_COLLECTION_RESOURCES, compareLogiRevisions, logiCursorSchema, logiScopeSchema,
-  type LogiCollectionResource, type LogiScope, type LogiSyncRecord,
+  type LogiChange, type LogiCollectionResource, type LogiScope, type LogiSyncRecord,
 } from './contracts';
+
+const MAX_BOOTSTRAP_AGE_MS = 30 * 60_000;
 
 export type LogiSyncScope = LogiScope & { resources: readonly LogiCollectionResource[] };
 export const logiSyncCheckpointSchema = z.strictObject({
@@ -16,6 +18,8 @@ export const logiSyncCheckpointSchema = z.strictObject({
   listCursor: logiCursorSchema.nullable(),
   boundaryCursor: logiCursorSchema,
   cursor: logiCursorSchema,
+  /** Capture time of this full rebuild; absent on checkpoints written by older runners. */
+  bootstrapStartedAt: z.iso.datetime().optional(),
   /** Full generation completion, not an idle incremental pull or a source observation. */
   reconciledAt: z.iso.datetime().optional(),
 }).refine((value) => (value.mode === 'live') === (value.generation === null));
@@ -62,8 +66,8 @@ export function logiSyncScopeKey(scope: LogiSyncScope): string {
 }
 
 /** Deduplicate within a page without converting revisions to lossy Number values. */
-export function coalesceLogiRecords(records: readonly LogiSyncRecord<LogiCollectionResource>[]): LogiSyncRecord<LogiCollectionResource>[] {
-  const result = new Map<string, LogiSyncRecord<LogiCollectionResource>>();
+export function coalesceLogiRecords<T extends LogiChange>(records: readonly T[]): T[] {
+  const result = new Map<string, T>();
   for (const record of records) {
     const key = JSON.stringify([record.guildId, record.gameId, record.resource, record.id]);
     const previous = result.get(key);
@@ -138,10 +142,12 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
 
   async function beginBootstrap(): Promise<boolean> {
     changeScanLimit = 10;
+    const bootstrapStartedAt = new Date(now()).toISOString();
     const page = await reader.startChanges(resources, { signal });
     const next: LogiSyncCheckpoint = {
       version: (checkpoint?.version ?? 0) + 1, mode: 'bootstrap', generation: newGeneration(),
       resourceIndex: 0, listCursor: null, boundaryCursor: page.page.nextCursor, cursor: page.page.nextCursor,
+      bootstrapStartedAt,
     };
     return commit(next);
   }
@@ -155,6 +161,16 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
       }
       // Copy narrows the local value; commit advances the captured checkpoint.
       const current: LogiSyncCheckpoint = checkpoint;
+      // A stalled initial sweep need not replay an unbounded old guild backlog.
+      // Replace only the invisible generation and repeat every baseline read from
+      // a fresh pre-list boundary. Legacy incomplete checkpoints renew once because
+      // their capture age is unknown; live checkpoints are never reset by this rule.
+      if (current.mode !== 'live' && (!current.bootstrapStartedAt
+        || now() - Date.parse(current.bootstrapStartedAt) >= MAX_BOOTSTRAP_AGE_MS)) {
+        outcome.reset = true;
+        if (!await beginBootstrap()) return outcome;
+        continue;
+      }
       if (current.mode === 'live' && options.fullRefreshMs !== undefined
         && (!current.reconciledAt || now() - Date.parse(current.reconciledAt) >= options.fullRefreshMs)) {
         if (!await beginBootstrap()) return outcome;
@@ -183,25 +199,21 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
           continue;
         }
         let page = await reader.changes(resources, current.cursor, { signal, limit: changeScanLimit });
+        let identities = coalesceLogiRecords(page.data);
         // The producer limits scanned guild rows before filtering game/resources.
-        // Expand sparse scans, but keep atomic refetch work at ten hints per commit.
-        // A dense expanded page is reread from the unchanged cursor; its larger
-        // continuation is never committed or used to skip unprocessed identities.
-        if (page.data.length > 10) {
+        // Repeated hints for one identity need only one authoritative refetch at
+        // least as new as its highest hint. Keep that work at ten identities even
+        // when the scan contains 100 rows. A denser page is reread without advancing.
+        if (identities.length > 10) {
           changeScanLimit = 10;
           page = await reader.changes(resources, current.cursor, { signal, limit: changeScanLimit });
-          if (page.data.length > 10) throw new LogiClientError('invalid_response');
-        } else if (page.data.length === 0 && page.page.hasMore) {
+          identities = coalesceLogiRecords(page.data);
+          if (identities.length > 10) throw new LogiClientError('invalid_response');
+        } else if (identities.length < 10 && page.page.hasMore) {
           changeScanLimit = 100;
         }
         if (page.page.hasMore && page.page.nextCursor === current.cursor) throw new LogiClientError('invalid_response');
-        const identities = new Map<string, typeof page.data[number]>();
-        for (const hint of page.data) {
-          const key = JSON.stringify([hint.resource, hint.id]);
-          const previous = identities.get(key);
-          if (!previous || compareLogiRevisions(hint.revision, previous.revision) > 0) identities.set(key, hint);
-        }
-        const records = await refetch([...identities.values()], async (hint) => {
+        const records = await refetch(identities, async (hint) => {
           const record = await reader.syncRecord(hint.resource as LogiCollectionResource, hint.id, { signal });
           if (compareLogiRevisions(record.revision, hint.revision) < 0) throw new LogiClientError('invalid_response');
           return record;

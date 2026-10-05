@@ -1,6 +1,37 @@
 # Current status
 
+## Public Logi data and archive reconciliation — 2026-10-05
+
+PR [#107](https://github.com/ValkyriaWDG/www/pull/107) was merged and deployed by the
+standard publisher and Watchtower on 2026-10-04. Production accepted source is
+`cf70d5573f7d72e4094794595b6a30bb775b0db8`, image
+`sha256:4a13427b630dcfa9d42ca6d013a034bb7db97e38a23aa9a64f9380c738e7cccd`.
+Actual SSO login, account/admin access, membership refresh and both team pages were
+verified after deployment. Its final CI passed 1,180 unit, 516 PostgreSQL integration,
+271 browser and four artwork cases plus image gates. The hosted Codex security scan
+did not run. The dated preparation records below are historical, not current blockers.
+
+The owner stopped the repeated monitor and authorized completion of public website
+data. Read-only production inventory on October 5 found current enabled HLL/Warcon
+connections, 68 HLL match summaries (66 with imported provisional results), one
+upcoming Wardogs match and five completed retained Wardogs games. The HLL history
+collector still reported a network error; enabled live collection does not prove a
+complete healthy history. The existing website archive contains 203 published HLL
+results and two scheduled fixtures. No archive row has been overwritten.
+
+Branch `fix/logi-public-data` adds safe imported-result/team display, connected
+search/paging and next-match selection, explicit reviewed archive links and duplicate
+aliases, and full-bootstrap renewal after an interrupted generation ages 30 minutes.
+This is a fresh complete import, never a cursor skip or promotion of partial data.
+The source/config and stored-JSON rollback boundaries are documented in the
+[contract](integrations/logi/contract.md). No SQL migration is added.
+New-release acceptance and production publication are tracked in
+[the evidence record](evidence/logi-public-data-2026-10-05/README.md); implementation
+and synthetic tests alone do not establish live public integration.
+
 ## Logi membership refresh and sparse-feed catch-up — 2026-10-04
+
+Historical preparation record; superseded by the accepted release above.
 
 The same branch also fixes a reproduced cross-game membership refresh collision:
 Logi shares a guild/member refresh lease, so concurrent HLL/WDG reads could return

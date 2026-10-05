@@ -11,18 +11,17 @@ import { getHeaderAccountState } from '@/modules/auth/header-state';
 import { getLatestNewsTeaser } from '@/modules/content/public';
 import type { NewsSummary } from '@/modules/content/types';
 import { GAME_REGISTRY } from '@/modules/games/registry';
-import { canonicalMatchPath, canonicalNewsPath } from '@/modules/games/routes';
-import { getNextPublicMatch } from '@/modules/matches/queries';
-import type { PublicMatchSummary } from '@/modules/matches/types';
+import { canonicalNewsPath } from '@/modules/games/routes';
+import { getNextWebsiteMatch, type PublicNextMatch } from '@/modules/matches/public-next-match';
 import { getHllMenuItems } from './hll-shell';
 import { HllMenu } from './hll-menu';
 import styles from './hll.module.css';
 
-async function loadTeasers(locale: AppLocale): Promise<{ match: PublicMatchSummary | null; news: NewsSummary | null }> {
+async function loadTeasers(locale: AppLocale): Promise<{ match: PublicNextMatch | null; news: NewsSummary | null }> {
   if (!getServerEnv().DATABASE_URL) return { match: null, news: null };
   const db = getDb();
   const [match, news] = await Promise.all([
-    getNextPublicMatch(db, new Date(), GAME_REGISTRY.hll.db).catch(() => null),
+    getNextWebsiteMatch('hll').catch(() => null),
     getLatestNewsTeaser(locale, db, GAME_REGISTRY.hll.db).catch(() => null),
   ]);
   return { match, news };
@@ -80,11 +79,11 @@ export async function HllLanding({ locale, notice }: { locale: AppLocale; notice
         {match || news ? (
           <section className={styles.strip} aria-label={t('strip.label')} data-hll-strip="">
             {match ? (
-              <GuardedLink href={canonicalMatchPath(match.game, match.slug)} className={styles.stripItem} data-hll-strip-item="match">
+              <GuardedLink href={match.href} className={styles.stripItem} data-hll-strip-item="match">
                 <span className={styles.stripLabel}>{t('strip.nextMatch')}</span>
-                <span className={styles.stripTitle}>{t('strip.versus', { opponent: match.opponentName })}</span>
+                <span className={styles.stripTitle}>{match.title ?? t('strip.versus', { opponent: match.opponent })}</span>
                 <span className={styles.stripMeta}>
-                  {[match.competitionName, formatDate(match.startsAt, locale, 'dateTimeZone')].filter(Boolean).join(' · ')}
+                  {[match.competition, formatDate(match.startsAt, locale, 'dateTimeZone')].filter(Boolean).join(' · ')}
                 </span>
               </GuardedLink>
             ) : null}

@@ -1,3 +1,28 @@
 .section { display: grid; gap: var(--space-6); grid-column: 1 / -1; margin-block: var(--space-6); }
 .section h2 { font-family: var(--font-display); font-size: var(--text-panel-heading); }
 .section small, .section p { color: var(--color-text-muted); }
+.date, .identity, .result { display: grid; gap: var(--space-1); }
+.date { min-width: 9rem; }
+.identity { min-width: 11rem; }
+.teams { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.teams li { display: grid; gap: 0.125rem; }
+.teams strong { font-weight: 500; }
+.teams small { font-size: 0.75rem; }
+.result { min-width: 10rem; }
+.archive { display: grid; gap: var(--space-1); min-width: 10rem; }
+.archiveLink { position: relative; z-index: 2; display: inline-block; padding-block: var(--space-2); color: var(--color-accent-strong); }
+.search { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.search label { font-family: var(--font-display); }
+.search input[type='search'] { flex: 1 1 14rem; min-width: 0; min-height: 2.75rem; padding: var(--space-2) var(--space-3); border: var(--border-hairline) solid var(--color-border); border-radius: 0; background: var(--color-row); color: var(--color-text); font: inherit; }
+
+/* Keep every result and the original archive link visible without a sideways scroll. */
+@media (max-width: 40rem) {
+  .section table, .section tbody { display: block; width: 100%; min-width: 0; }
+  .section thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .section tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-block: var(--space-2); border-block-end: var(--border-hairline) solid var(--color-border); }
+  .section tbody th, .section tbody td { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+  .section tbody th { grid-column: 1 / -1; order: -1; }
+  .section tbody td::before { content: attr(data-label); display: block; margin-block-end: var(--space-1); font-family: var(--font-display); font-size: 0.75rem; color: var(--color-text-muted); }
+  .section td[data-column='result'], .section td[data-column='archive'] { grid-column: 1 / -1; }
+  .date, .identity, .result, .archive { min-width: 0; }
+}

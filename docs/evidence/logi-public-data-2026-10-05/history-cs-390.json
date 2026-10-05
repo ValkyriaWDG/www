@@ -1,0 +1,10 @@
+{
+  "caption": "Synthetic Logi history: imported provisional scores, supplied end times, captured team names, and an explicitly linked original archive. The first row uses the reviewed 0:5 result instead of the conflicting imported 5:0.",
+  "kind": "synthetic-local-browser-screenshot",
+  "route": "/cs/hll/matches?view=results",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "capturedAt": "2026-10-05T17:54:04.093Z"
+}

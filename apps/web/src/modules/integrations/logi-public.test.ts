@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { resetServerEnvForTests } from '@/lib/env';
-import { getLogiServerOverview } from './logi-public';
+import { getLogiServerOverview, readPublicLogiEvents } from './logi-public';
+import type { Executor } from '@valkyria/db';
 import { readActiveLogiProjections } from './logi-store';
 import { logiServerSnapshotSchema } from './logi/contracts';
 import fixtures from './logi/fixtures/v0.5.json';
@@ -15,6 +16,39 @@ afterEach(() => {
   vi.resetAllMocks();
   vi.unstubAllEnvs();
   resetServerEnvForTests();
+});
+
+describe('published Logi matches use every supplied result resource', () => {
+  const env = (published = true) => ({ LOGI_DATA_API_KEY_HLL: 'synthetic-data-key-123456', LOGI_SOURCES_JSON: JSON.stringify([{ sourceInstanceId: 'synthetic-source', origin: 'https://logi.example.test', guildId: '910000000000000001', gameId: 'hell_let_loose', publishMatches: published }]) });
+  const event = { id: 'synthetic-match', guildId: '910000000000000001', gameId: 'hell_let_loose', title: 'Synthetic old match', updatedAt: null, kind: 'match', status: null, startsAt: null, endsAt: '2026-09-01T20:00:00Z' };
+  const imported = { id: event.id, eventId: event.id, guildId: event.guildId, gameId: event.gameId, title: event.title, updatedAt: null, resultState: 'provisional', result: { mapId: 'synthetic-map', mapName: null, sideA: 'allies', sideB: 'axis', score: { sideA: 0, sideB: 5 }, outcome: 'defeat', endedAt: null, provenance: { type: 'event_result_import', importedAt: '2026-09-02T00:00:00Z' } } };
+  const row = (resource: string, data: Record<string, unknown>): Awaited<ReturnType<typeof readActiveLogiProjections>>[number] => ({ resource, externalId: event.id, data, revision: '1', operation: 'upsert', withinBudget: true, observedAt, lastSuccessAt: observedAt, checkpoint: null, errorCode: null });
+
+  it('joins an imported match summary by exact event identity in the active source', async () => {
+    vi.mocked(readActiveLogiProjections).mockResolvedValue([row('event-summaries', event), row('match-summaries', imported)]);
+    const result = await readPublicLogiEvents({} as Executor, env(), 'hll', now);
+    expect(result).toHaveLength(1);
+    expect(result[0]?.result).toMatchObject({ state: 'provisional', participants: [{ label: 'allies', score: 0 }, { label: 'axis', score: 5 }], provenance: { kind: 'event_result_import' } });
+    expect(result[0]?.startsAt).toBeNull();
+  });
+
+  it('ignores another event and tombstoned imported scores', async () => {
+    const importedRow = row('match-summaries', imported);
+    vi.mocked(readActiveLogiProjections).mockResolvedValue([row('event-summaries', event), { ...importedRow, externalId: 'another' }]);
+    expect((await readPublicLogiEvents({} as Executor, env(), 'hll', now))[0]?.result.state).toBe('unknown');
+    vi.mocked(readActiveLogiProjections).mockResolvedValue([row('event-summaries', event), { ...importedRow, operation: 'remove', data: null }]);
+    expect((await readPublicLogiEvents({} as Executor, env(), 'hll', now))[0]?.result.state).toBe('unknown');
+  });
+
+  it('keeps unpublished, stale, wrong-game and removed events out of the public list', async () => {
+    const records = [row('event-summaries', event), row('match-summaries', imported)];
+    vi.mocked(readActiveLogiProjections).mockResolvedValue(records);
+    expect(await readPublicLogiEvents({} as Executor, env(false), 'hll', now)).toEqual([]);
+    expect(await readPublicLogiEvents({} as Executor, env(), 'wardogs', now)).toEqual([]);
+    expect(await readPublicLogiEvents({} as Executor, env(), 'hll', new Date(now.getTime() + 16 * 60_000))).toEqual([]);
+    vi.mocked(readActiveLogiProjections).mockResolvedValue([{ ...records[0]!, operation: 'remove', data: null }, records[1]!]);
+    expect(await readPublicLogiEvents({} as Executor, env(), 'hll', now)).toEqual([]);
+  });
 });
 
 describe.each(['hll', 'wardogs'] as const)('Logi %s public server source health', (game) => {

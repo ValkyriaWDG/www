@@ -57,12 +57,31 @@ const sourceSchema = z.strictObject({
   publishMatches: z.boolean().default(false),
   /** Private directory, published rosters and verified player facts use a distinct key. */
   syncPeople: z.boolean().default(false),
+  /** Reviewed identity bindings only; never inferred from a date, title or score. */
+  matchLinks: z.array(z.strictObject({
+    eventId: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/),
+    matchId: z.uuid(),
+  })).max(1000).default([]),
+  /** Reviewed duplicate imports; collapse only while their public facts still agree. */
+  matchAliases: z.array(z.strictObject({
+    canonicalEventId: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/),
+    aliasEventIds: z.array(z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/)).min(1).max(10),
+  })).max(1000).default([]),
   publicServers: z.array(logiPublicServerSchema).max(20).default([]),
   /** Wardogs only: each `publicId` must name a published `publicServers` entry; IDs are unique. */
   warconConnections: z.array(logiWarconConnectionSchema).max(20).default([]),
   /** Wardogs only: retained-history sources under published servers; source and public IDs are unique. */
   historySources: z.array(logiHistorySourceSchema).max(20).default([]),
 }).superRefine((source, ctx) => {
+  const aliasIds = source.matchAliases.flatMap((group) => group.aliasEventIds);
+  const allAliasIds = source.matchAliases.flatMap((group) => [group.canonicalEventId, ...group.aliasEventIds]);
+  if (new Set(allAliasIds).size !== allAliasIds.length || source.matchLinks.some((link) => aliasIds.includes(link.eventId))) {
+    ctx.addIssue({ code: 'custom', message: 'match_alias_conflict', path: ['matchAliases'] });
+  }
+  if (new Set(source.matchLinks.map((row) => row.eventId)).size !== source.matchLinks.length
+    || new Set(source.matchLinks.map((row) => row.matchId)).size !== source.matchLinks.length) {
+    ctx.addIssue({ code: 'custom', message: 'match_link_duplicate', path: ['matchLinks'] });
+  }
   if (source.warconConnections.length > 0) {
     if (source.gameId !== 'wardogs') ctx.addIssue({ code: 'custom', message: 'warcon_wardogs_only', path: ['warconConnections'] });
     const connectionIds = new Set(source.warconConnections.map((row) => row.connectionId));

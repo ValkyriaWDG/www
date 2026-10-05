@@ -17485,6 +17485,105 @@
       "bytes": 53508,
       "width": 65536,
       "height": 4292542531
+    },
+    {
+      "id": "logi-public-data-2026-10-05-archive-cs-1440",
+      "path": "docs/evidence/logi-public-data-2026-10-05/archive-cs-1440.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:02.457Z; local standalone production build with invented Logi projections; /cs/hll/matches/ukazka-hll-historicky; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "16da40485953d2ed106381b389f05753e372469fea7ab1d3ada598fe32889f5a",
+      "bytes": 886708,
+      "width": 1440,
+      "height": 3778
+    },
+    {
+      "id": "logi-public-data-2026-10-05-archive-cs-390",
+      "path": "docs/evidence/logi-public-data-2026-10-05/archive-cs-390.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:05.173Z; local standalone production build with invented Logi projections; /cs/hll/matches/ukazka-hll-historicky; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "7739914bd79ea098129f2d397b7496dbb2e8757259dccf43a0dd52ce1520dcc7",
+      "bytes": 602751,
+      "width": 390,
+      "height": 5089
+    },
+    {
+      "id": "logi-public-data-2026-10-05-archive-en-1440",
+      "path": "docs/evidence/logi-public-data-2026-10-05/archive-en-1440.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:07.719Z; local standalone production build with invented Logi projections; /en/hll/matches/ukazka-hll-historicky; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "e966eba02310d1704e28d36d3ef1730f3f742f06c93b970c31aed327df1fabef",
+      "bytes": 874998,
+      "width": 1440,
+      "height": 3778
+    },
+    {
+      "id": "logi-public-data-2026-10-05-archive-en-390",
+      "path": "docs/evidence/logi-public-data-2026-10-05/archive-en-390.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:10.144Z; local standalone production build with invented Logi projections; /en/hll/matches/ukazka-hll-historicky; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "9b248ef2bd5c42f06ec89b13ee44ab20f80df2964dc6e17154f03285258af078",
+      "bytes": 595653,
+      "width": 390,
+      "height": 5067
+    },
+    {
+      "id": "logi-public-data-2026-10-05-history-cs-1440",
+      "path": "docs/evidence/logi-public-data-2026-10-05/history-cs-1440.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:01.258Z; local standalone production build with invented Logi projections; /cs/hll/matches?view=results; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "4ab28df79c59c383c131a2945856ec1e16cd61d540df9cae18b2638119b393f9",
+      "bytes": 513522,
+      "width": 1440,
+      "height": 2161
+    },
+    {
+      "id": "logi-public-data-2026-10-05-history-cs-390",
+      "path": "docs/evidence/logi-public-data-2026-10-05/history-cs-390.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:04.093Z; local standalone production build with invented Logi projections; /cs/hll/matches?view=results; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "c44a1e8cb1dd6bc3e8e1f31dff9f6484a48208d133ee65a3e4f5b8f1209f9911",
+      "bytes": 356941,
+      "width": 390,
+      "height": 5454
+    },
+    {
+      "id": "logi-public-data-2026-10-05-history-en-1440",
+      "path": "docs/evidence/logi-public-data-2026-10-05/history-en-1440.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:06.527Z; local standalone production build with invented Logi projections; /en/hll/matches?view=results; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "59a3af3738797b374c084a03e974372caa27af6209c88d7d26a3775e3f77c28e",
+      "bytes": 499070,
+      "width": 1440,
+      "height": 2161
+    },
+    {
+      "id": "logi-public-data-2026-10-05-history-en-390",
+      "path": "docs/evidence/logi-public-data-2026-10-05/history-en-390.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:09.054Z; local standalone production build with invented Logi projections; /en/hll/matches?view=results; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "d8b88b117b5023eb5414622a6561560e963ceeb7becaecd52e3c27b5bcc06e9f",
+      "bytes": 345443,
+      "width": 390,
+      "height": 5421
+    },
+    {
+      "id": "logi-public-data-2026-10-05-wardogs-three-teams-en-1280",
+      "path": "docs/evidence/logi-public-data-2026-10-05/wardogs-three-teams-en-1280.png",
+      "source": "Actual Chromium capture, 2026-10-05T17:54:13.578Z; local standalone production build with invented Logi projections; /en/wardogs/matches; base cf70d557 with reviewed public-data changes",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "203e92ff705e23f4a2de4d2283b3bd15c705a9595dcf89a6c18e6ce3ca6d859d",
+      "bytes": 591470,
+      "width": 1280,
+      "height": 2696
     }
   ]
 }

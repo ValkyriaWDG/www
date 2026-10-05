@@ -1,18 +1,11 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 import { formatWeekdayDateTime } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
+import type { PublicNextMatch } from '@/modules/matches/public-next-match';
 import styles from './home.module.css';
 
 /** Public projection of the next published fixture (supplied by the matches module). */
-export type NextMatch = {
-  /** Logical localized path, e.g. `/matches/<slug>`. */
-  href: string;
-  opponent: string;
-  game: 'wardogs' | 'hell-let-loose';
-  /** ISO instant; displayed in Europe/Prague with an explicit zone. */
-  startsAt: string;
-  competition?: string | null;
-};
+export type NextMatch = PublicNextMatch;
 
 /** Optional bottom-center teaser for a real published upcoming fixture; renders nothing otherwise. */
 export async function NextMatchStrip({ match }: { match: NextMatch | null }) {
@@ -25,7 +18,7 @@ export async function NextMatchStrip({ match }: { match: NextMatch | null }) {
     <Link href={match.href} className={styles.nextMatch} data-next-match="">
       <span className={styles.nextLabel}>{t('label')}</span>
       <span className={styles.nextBody}>
-        <span className={styles.nextOpponent}>{t('versus', { opponent: match.opponent })}</span>
+        <span className={styles.nextOpponent}>{match.title ?? t('versus', { opponent: match.opponent })}</span>
         <span className={styles.nextMeta}>
           {t(`game.${match.game}`)}
           {match.competition ? ` · ${match.competition}` : ''}

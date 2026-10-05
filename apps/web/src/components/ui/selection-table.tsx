@@ -115,7 +115,7 @@ export function SelectionTable<Row>({ caption, captionHidden, columns, rows, get
                     const content = column.cell(row);
                     const Cell = column.rowHeader ? 'th' : 'td';
                     return (
-                      <Cell key={column.key} scope={column.rowHeader ? 'row' : undefined} data-align={column.align} data-numeric={column.numeric || undefined}>
+                      <Cell key={column.key} scope={column.rowHeader ? 'row' : undefined} data-column={column.key} data-label={typeof column.header === 'string' ? column.header : column.headerText} data-align={column.align} data-numeric={column.numeric || undefined}>
                         {column.key === linkColumn ? (
                           <Link href={getRowHref(row)} scroll={linkScroll} className={styles.rowLink} aria-current={selected ? 'page' : undefined}>
                             {content}

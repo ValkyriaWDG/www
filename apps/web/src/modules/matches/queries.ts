@@ -14,7 +14,7 @@ import {
   type MatchStatus,
   type ResultVerification,
 } from '@valkyria/db';
-import { and, asc, count, desc, eq, gte, inArray, lte, or, type SQL } from 'drizzle-orm';
+import { and, asc, count, desc, eq, gte, inArray, lte, notInArray, or, type SQL } from 'drizzle-orm';
 import { capabilityScope } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { loadAssetDefaults, loadPublicImages } from '@/modules/prose/assets';
@@ -127,12 +127,13 @@ async function toSummaries(db: Executor, rows: SummaryRow[]): Promise<PublicMatc
  * Results (completed/cancelled, newest first) view with optional filters and opponent
  * search (case/diacritic-insensitive). Invalid optional filters are ignored.
  */
-export async function listPublicMatches(db: Executor, input: PublicMatchListInput): Promise<PublicMatchPage> {
+export async function listPublicMatches(db: Executor, input: PublicMatchListInput, linkedPublicSlugs: readonly string[] = []): Promise<PublicMatchPage> {
   const query = parseInput(publicMatchListSchema, input);
   const statuses = VIEW_STATUSES[query.view];
   if (query.status && !statuses.includes(query.status)) return { items: [], total: 0, page: query.page, pageCount: 1 };
   const where = and(
     isPublished,
+    linkedPublicSlugs.length ? notInArray(match.slug, [...linkedPublicSlugs]) : undefined,
     inArray(match.status, query.status ? [query.status] : [...statuses]),
     query.game ? eq(match.game, query.game) : undefined,
     query.competition ? eq(match.competitionType, query.competition) : undefined,
@@ -156,7 +157,7 @@ export async function listPublicMatches(db: Executor, input: PublicMatchListInpu
  * Earliest published live match, or scheduled match starting at/after `now` (with a
  * short grace period for fixtures that have just started), else `null`.
  */
-export async function getNextPublicMatch(db: Executor, now: Date = new Date(), game?: Game): Promise<PublicMatchSummary | null> {
+export async function getNextPublicMatch(db: Executor, now: Date = new Date(), game?: Game, linkedPublicSlugs: readonly string[] = []): Promise<PublicMatchSummary | null> {
   if (game !== undefined && !GAMES.includes(game)) return null;
   const rows = await db
     .select(summaryColumns)
@@ -165,6 +166,7 @@ export async function getNextPublicMatch(db: Executor, now: Date = new Date(), g
     .where(
       and(
         isPublished,
+        linkedPublicSlugs.length ? notInArray(match.slug, [...linkedPublicSlugs]) : undefined,
         game ? eq(match.game, game) : undefined,
         or(eq(match.status, 'live'), and(eq(match.status, 'scheduled'), gte(match.startsAt, new Date(now.getTime() - NEXT_MATCH_GRACE_MS)))),
       ),
@@ -176,11 +178,11 @@ export async function getNextPublicMatch(db: Executor, now: Date = new Date(), g
 }
 
 /** Counts of published matches per public view, overall and per game. */
-export async function getPublicMatchCounts(db: Executor): Promise<PublicMatchCounts> {
+export async function getPublicMatchCounts(db: Executor, linkedPublicSlugs: readonly string[] = []): Promise<PublicMatchCounts> {
   const rows = await db
     .select({ game: match.game, status: match.status, n: count() })
     .from(match)
-    .where(isPublished)
+    .where(and(isPublished, linkedPublicSlugs.length ? notInArray(match.slug, [...linkedPublicSlugs]) : undefined))
     .groupBy(match.game, match.status);
   const byGame = Object.fromEntries(GAMES.map((game) => [game, { upcoming: 0, results: 0 }])) as Record<Game, { upcoming: number; results: number }>;
   const counts: PublicMatchCounts = { upcoming: 0, results: 0, byGame };
