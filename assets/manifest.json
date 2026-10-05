@@ -17628,6 +17628,94 @@
       "bytes": 234052,
       "width": 390,
       "height": 2754
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-detail-cs-1440",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/detail-cs-1440.png",
+      "source": "Actual local capture, 2026-10-05T20:33:37.961Z; synthetic-local-browser-screenshot; /cs/hll/matches/ukazka-hll-historicky; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "1fa94efca48ae995299047faaa271bfd3367bc07170a86bef8289e0ff18f977e",
+      "bytes": 874614,
+      "width": 1440,
+      "height": 3666
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-detail-cs-390",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/detail-cs-390.png",
+      "source": "Actual local capture, 2026-10-05T20:33:40.544Z; synthetic-local-browser-screenshot; /cs/hll/matches/ukazka-hll-historicky; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "e7a9985595028e0656ab76aec310b682a6898f604bbc9cab7fee7f5f142f02ec",
+      "bytes": 568206,
+      "width": 390,
+      "height": 4445
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-detail-en-1440",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/detail-en-1440.png",
+      "source": "Actual local capture, 2026-10-05T20:37:08.512Z; synthetic-local-browser-screenshot; /en/hll/matches/ukazka-hll-historicky; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "2781779671f917c95547ee7a236f5ff70b0c10a33bc9f0e4b4218e6298bca052",
+      "bytes": 856277,
+      "width": 1440,
+      "height": 3666
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-detail-en-390",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/detail-en-390.png",
+      "source": "Actual local capture, 2026-10-05T20:33:45.809Z; synthetic-local-browser-screenshot; /en/hll/matches/ukazka-hll-historicky; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "f6586c8415573fd3f94bd853a6766966ac71fa647414a47d2f66309c56864c6c",
+      "bytes": 563909,
+      "width": 390,
+      "height": 4423
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-detail-wardogs-en-390",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/detail-wardogs-en-390.png",
+      "source": "Actual local capture, 2026-10-05T20:33:51.593Z; synthetic-local-browser-screenshot; /en/wardogs/matches/ukazka-wardogs-nadchazejici; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "e3dae92ea3f4f2ce902d7953dbd3e006490d405f20dbbaeb1f61ffd018fcb10b",
+      "bytes": 240694,
+      "width": 390,
+      "height": 2405
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-social-cs",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/social-cs.png",
+      "source": "Actual local capture, 2026-10-05T20:24:19.830282+00:00; synthetic-local-social-render; social-card renderer test; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "db3a37691c074d0c71916b2ba3fa75e403f3dadb2985a1308180443de770c732",
+      "bytes": 479366,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-social-en",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/social-en.png",
+      "source": "Actual local capture, 2026-10-05T20:24:19.978709+00:00; synthetic-local-social-render; social-card renderer test; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "1a54c7701dd80345b92fdd20a44b4b390b0f48707941c0752423305bfff8a01d",
+      "bytes": 476674,
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-social-long-en",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/social-long-en.png",
+      "source": "Actual local capture, 2026-10-05T20:24:20.117253+00:00; synthetic-local-social-render; social-card renderer test; synthetic fixtures; source f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "89a25fb2567b27ed66dad45f498124599f00222fd373161d4cfbad43b3641800",
+      "bytes": 769312,
+      "width": 1200,
+      "height": 630
     }
   ]
 }

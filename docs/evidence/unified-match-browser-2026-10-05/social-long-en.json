@@ -1,0 +1,11 @@
+{
+  "caption": "Actual social renderer stress case: long synthetic title and 16 participants; three labelled rows preserve zero and unknown, with an explicit count of the other 13.",
+  "kind": "synthetic-local-social-render",
+  "capturedAt": "2026-10-05T20:24:20.117253+00:00",
+  "testedCommit": "f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+  "environment": "Windows; Node 24.21.0; actual ImageResponse renderer; synthetic fixtures; 1200x630 PNG",
+  "test": "src/modules/social/social.test.ts - actual renderer produces bounded PNG cards",
+  "sha256": "89a25fb2567b27ed66dad45f498124599f00222fd373161d4cfbad43b3641800",
+  "width": 1200,
+  "height": 630
+}

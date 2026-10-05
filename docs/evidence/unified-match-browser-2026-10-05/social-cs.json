@@ -1,0 +1,11 @@
+{
+  "caption": "Actual Czech social renderer: labelled Axis 0 / Allies 5, corrected result and supplied end time; original map enrichment retained.",
+  "kind": "synthetic-local-social-render",
+  "capturedAt": "2026-10-05T20:24:19.830282+00:00",
+  "testedCommit": "f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+  "environment": "Windows; Node 24.21.0; actual ImageResponse renderer; synthetic fixtures; 1200x630 PNG",
+  "test": "src/modules/social/social.test.ts - actual renderer produces bounded PNG cards",
+  "sha256": "db3a37691c074d0c71916b2ba3fa75e403f3dadb2985a1308180443de770c732",
+  "width": 1200,
+  "height": 630
+}

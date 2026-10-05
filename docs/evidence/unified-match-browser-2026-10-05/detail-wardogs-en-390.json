@@ -1,0 +1,15 @@
+{
+  "caption": "Synthetic linked Wardogs mobile detail retains three captured teams, short codes and supplied sides in one match overview. No public people data is configured and the unknown result is not filled from the original archive.",
+  "kind": "synthetic-local-browser-screenshot",
+  "route": "/en/wardogs/matches/ukazka-wardogs-nadchazejici",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "capturedAt": "2026-10-05T20:33:51.593Z",
+  "testedCommit": "f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97",
+  "environment": "Windows; Node 24.21.0; pnpm 10.34.5; Chromium; local standalone production build; disposable PostgreSQL 15; synthetic fixtures",
+  "sha256": "e3dae92ea3f4f2ce902d7953dbd3e006490d405f20dbbaeb1f61ffd018fcb10b",
+  "width": 390,
+  "height": 2405
+}

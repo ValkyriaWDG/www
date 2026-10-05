@@ -10,11 +10,14 @@ The repeated chat monitor has been removed at the owner's request.
 
 The owner then rejected public source-separated match groups. Branch
 `fix/unified-match-browser` replaces them with one shared filter/search/count,
-chronological list and paginator while preserving original detail URLs and facts.
-Implementation `e547be03c8a5611f1c48621da2e9b2d8b17ceef2` passed 1,235 unit tests,
-three focused real PostgreSQL tests, eight connected-browser and twelve existing
+chronological list and paginator. Fresh exact-linked Logi facts also drive the
+canonical detail and share image; original maps, historical statistics and editorial
+enrichment stay attached. Imported-score changes invalidate social image URLs,
+including results without a review version. No Logi producer code was changed.
+Implementation `f909b2dcb72c856a4fb15e26ac6f237a9d1a8a97` passed 1,245 unit tests,
+seven focused real PostgreSQL tests, ten connected-browser and twelve existing
 match-browser tests, lint, typecheck and the production build. Independent review
-has no remaining actionable findings. CS/EN desktop/mobile captures and exact
+has no remaining actionable findings. CS/EN desktop/mobile and actual social captures and exact
 acceptance boundaries are in the [evidence record](evidence/unified-match-browser-2026-10-05/README.md).
 Current-head CI and normal publication/deployment remain the next release gates.
 The preparation records below are historical and do not supersede this state.
