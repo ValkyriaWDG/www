@@ -260,7 +260,7 @@ jobs:
         with:
           name: logi-public-browser-${{ github.sha }}
           path: |
-            apps/web/.local/evidence/logi-public-data
+            apps/web/.local/evidence/unified-match-browser
             apps/web/test-results/logi-public
           include-hidden-files: true
           if-no-files-found: warn

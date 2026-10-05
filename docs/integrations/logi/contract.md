@@ -92,8 +92,12 @@ with its import provenance and timestamp; its presence never confirms a result.
 Known zero scores remain zero and absent scores remain unknown. An end timestamp
 can place a historical match in Results, but is labelled as an end time rather than
 inventing a start. The two home pages select the next actual scheduled match across
-the public Logi projection and the local archive. Connected lists have their own
-bounded search/page state (`logiPage`), independent of the archive page.
+the public Logi projection and the local archive. The public browser combines both
+origins before pagination: one view, search, count, chronological order and `page`.
+The retired `logiPage` parameter is accepted only as a bookmark fallback when `page`
+is absent; newly generated links use `page`. There are no source-based public groups.
+The database reads a bounded offset window wide enough for every matching connected
+row to interleave; it does not truncate the website archive before merging.
 
 Optional per-source `matchLinks: [{eventId, matchId}]` bind an exact Logi event to an
 existing website match UUID. Both records must already be public and in the same
@@ -101,7 +105,7 @@ game and configured authority. While the fresh Logi row is visible, the archive 
 is omitted from the list and next-match selection, but its original URL, result,
 recap and rounds remain unchanged. That detail also shows the current Logi facts.
 The connected row retains the archive opponent, short code and competition for
-display and search. If the Logi projection becomes unavailable, the archive row
+display and search, and its primary link opens that original detail. If the Logi projection becomes unavailable, the archive row
 returns. Identity review is an operator task; there is no runtime fuzzy name/date
 matching and no mutation of either source's historical record.
 
@@ -121,7 +125,7 @@ and projection JSON boundaries below; prefer a compatible roll-forward release.
 
 | Surface | Implemented behavior | Publication control |
 | --- | --- | --- |
-| `/{locale}/{game}/matches` | Connected match list alongside the historical local archive | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
+| `/{locale}/{game}/matches` | One match browser combining connected and original website fixtures/results | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
 | `/{locale}/{game}/matches/logi/{id}` | Connected detail, schedule and supplied participant/result rows | Uses the same published, current projection; unavailable/unpublished IDs are not public |
 | `/{locale}/admin/matches/logi` | Load authoritative editable facts; create, update or cancel an eligible connected match | Current Logi session, game capability, write flag/key and provider command policy |
 | Server pages, Wardogs home overview and `/api/servers/{game}` | Safe Logi server cards with `SERVER_STATUS_SOURCE=logi`, or Wardogs only with `SERVER_STATUS_SOURCE_WDG=logi` | Each configured `publicServers` entry needs `published=true` |

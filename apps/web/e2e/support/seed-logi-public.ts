@@ -32,6 +32,10 @@ try {
     name: `[SYNTHETIC] Team ${slot.toUpperCase()}`, shortCode: `SY${slot.toUpperCase()}`, logoUrl: 'https://excluded.invalid/never-render-logo.png', teamRevision: 1, capturedAt: now.toISOString(),
   });
   await client.query('begin');
+  // An unassociated website match lies between two connected results. A real mixed page
+  // must order it there, rather than append a second collection after the provider rows.
+  await client.query(`insert into "match" (id, slug, game, opponent_name, competition_type, starts_at, status, publication, published_at, is_fixture)
+    values (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, now(), true)`, ['synthetic-unified-local', 'hell-let-loose', '[SYNTHETIC] Local Interleaved Opponent', 'friendly', iso(-1.5 * day), 'completed', 'published']);
   for (const source of configuredLogiSources(env, 'data')) {
     const generation = 'synthetic-public-v1';
     await client.query('insert into logi_sync_scope (scope_key, source_instance_id, guild_id, game_id, active_generation, last_success_at, last_attempt_at) values ($1,$2,$3,$4,$5,$6,$6)', [source.scopeKey, source.sourceInstanceId, source.guildId, source.gameId, generation, now]);
@@ -45,7 +49,7 @@ try {
     if (source.gameId === 'hell_let_loose') {
       for (let index = 0; index < 12; index++) {
         const id = `synthetic-history-${String(index).padStart(2, '0')}`;
-        const identity = { id, guildId, gameId: source.gameId, title: `[SYNTHETIC] Logi history ${String(index).padStart(2, '0')}`, updatedAt: now.toISOString() };
+        const identity = { id, guildId, gameId: source.gameId, title: `[SYNTHETIC] Match history ${String(index).padStart(2, '0')}`, updatedAt: now.toISOString() };
         await insert('event-summaries', { ...identity, kind: 'match', status: null, startsAt: null, endsAt: iso(-(index + 1) * day), matchTeams: index === 0 ? [team('b', source.gameId), team('a', source.gameId)] : null });
         await insert('match-summaries', { ...identity, eventId: id, resultState: 'provisional', matchTeams: null, result: { mapId: 'synthetic-map', mapName: 'Synthetic Map', sideA: 'Axis', sideB: 'Allies', score: { sideA: index === 0 ? 5 : 0, sideB: index === 0 ? 0 : 5 }, outcome: 'defeat', endedAt: iso(-(index + 1) * day), provenance: { type: 'event_result_import', importedAt: now.toISOString() } } });
         await insert('result-summaries', { ...identity, eventId: id, resultState: index === 0 ? 'confirmed' : 'unknown', result: index === 0 ? {

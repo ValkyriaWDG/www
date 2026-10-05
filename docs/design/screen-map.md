@@ -192,6 +192,14 @@ Reference: [13 Server browser](references/13-server-browser.jpg). Preserve its f
 
 **Filters:** game (`All`, `Wardogs`, `Hell Let Loose`), status (`Upcoming`, `Results`, optionally `All`), search opponent/event when useful. Current Wardogs focus can be a documented default, while HLL remains accessible. Paginate long history; distinguish archived history from ongoing activity.
 
+**One collection:** original website matches and published connected matches use one
+toolbar, count, chronological order, table and paginator. Source names do not create
+public groups. Apply search/game/view before shared pagination; Upcoming is soonest
+first and Results newest first. An exact reviewed association appears once and its
+primary row link opens the original detail with maps and statistics. Unassociated
+matches retain their own detail. If connected data becomes unavailable, the original
+published row returns. Do not infer duplicate identities from similar names or dates.
+
 **Rows:** start time/date, opponent/event name, game, state, published score. Use tabular numerals and stable column widths. Map/mode appears only if known and relevant. A `LIVE` state requires a trustworthy source, not merely a timestamp in the past.
 
 **Selected detail preview:** opponent, game, date/time, status, published score, approved cover/map image if available, short context, `MATCH DETAILS` link. Upcoming rows can show a community link; public visitors never receive an internal roster management button.

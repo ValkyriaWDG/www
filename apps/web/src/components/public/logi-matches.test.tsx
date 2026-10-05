@@ -7,7 +7,7 @@ import en from '@/i18n/messages/en/logi.json';
 import csCommon from '@/i18n/messages/cs/common.json';
 import enCommon from '@/i18n/messages/en/common.json';
 import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
-import { LogiMatchBrowser, LogiMatches } from './logi-matches';
+import { LogiMatches } from './logi-matches';
 
 vi.mock('next-intl/server', () => ({ getTranslations: async ({ locale }: { locale: 'cs' | 'en' }) => createTranslator({ locale, messages: locale === 'cs' ? cs : en }) }));
 vi.mock('@/i18n/navigation', () => ({
@@ -38,7 +38,7 @@ describe('connected match public rendering', () => {
     expect(html).toContain('axis: 0');
     expect(html).toContain('allies: 5');
     expect(html).toContain('href="/hll/matches/synthetic-archive"');
-    expect(html).toContain(locale === 'cs' ? 'Archivní detail zápasu' : 'Archived match details');
+    expect(html).toContain(locale === 'cs' ? 'Detail zápasu' : 'Match details');
     for (const privateField of ['private-source-instance', 'private-guild', 'logoUrl', 'teamRevision', 'capturedAt']) expect(html).not.toContain(privateField);
     expect(html).not.toContain(locale === 'cs' ? 'Ukončený' : 'Concluded');
   });
@@ -63,14 +63,4 @@ describe('connected match public rendering', () => {
     expect(html).toContain('axis: 0');
   });
 
-  it('paginates connected history independently from the archive page and counts the same historical rows', async () => {
-    const events = Array.from({ length: 12 }, (_, index) => ({ ...imported, ref: { ...imported.ref, externalId: `history-${index}` }, title: `[SYNTHETIC] History ${index}`, endsAt: `2026-09-${String(index + 1).padStart(2, '0')}T20:00:00Z`, result: { ...imported.result, endedAt: null } }));
-    const html = render(await LogiMatchBrowser({ locale: 'en', events, game: 'hll', filters: { view: 'results', page: 7, logiPage: 2 }, now }), 'en');
-    expect(html).toContain('[SYNTHETIC] History 1');
-    expect(html).toContain('[SYNTHETIC] History 0');
-    expect(html).not.toContain('[SYNTHETIC] History 11');
-    expect(html).toContain('page=7&amp;logiPage=2');
-    expect(html).not.toContain('page=2&amp;logiPage=');
-    expect(html).toContain('id="logi-match-search"');
-  });
 });

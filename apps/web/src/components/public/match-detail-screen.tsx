@@ -17,6 +17,7 @@ import { canonicalMatchPath, sectionBase } from '@/modules/games/routes';
 import { sharingMetadata } from '@/modules/social/metadata';
 import { getPublicMatch } from '@/modules/matches/queries';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
+import { publicLogiMatchView } from '@/modules/integrations/logi/public-matches';
 import { LogiMatches } from './logi-matches';
 
 /** Published match only; unknown and draft matches are indistinguishable (null → 404). */
@@ -67,11 +68,13 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
   const match = await loadPublicMatch(slug, locale);
   if (!match) notFound();
   if (match.game !== GAME_REGISTRY[game].db) permanentRedirect(`/${locale}${canonicalMatchPath(match.game, match.slug)}`);
-  const view = viewForStatus(match.status);
+  const events = await getPublicLogiEvents(game);
+  const linked = events.filter((event) => event.archive?.slug === match.slug);
+  // Keep the same view as the visible row, even if the original archive status lags.
+  const view = linked[0] ? publicLogiMatchView(linked[0]) : viewForStatus(match.status);
   const filters = { ...parseMatchFilters(query, view), view, game: undefined };
   const base = sectionBase(game);
   const t = await getTranslations({ locale, namespace: 'matches' });
-  const linked = (await getPublicLogiEvents(game)).filter((event) => event.archive?.slug === match.slug);
   return (
     <PageMain width="full" labelledBy="match-title">
       <PageHeader
@@ -82,7 +85,7 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
       {linked.length > 0 ? <LogiMatches locale={locale} events={linked} selected={linked[0]!} /> : null}
-      <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} />
+      <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} events={events} />
     </PageMain>
   );
 }

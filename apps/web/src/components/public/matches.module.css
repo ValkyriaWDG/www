@@ -1022,3 +1022,22 @@ span.teamMark {
 @media (max-width: 767px) {
   .leagueFixtureList { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Connected and editorial records share the same five-column browser. */
+.connectedIdentity,
+.connectedResult {
+  display: grid;
+  gap: var(--space-1);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.connectedTeams,
+.connectedResult small {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.connectedResult strong {
+  font-variant-numeric: tabular-nums;
+}
