@@ -1,5 +1,24 @@
 # Current status
 
+## Unified public match browser — 2026-10-05
+
+Production PR [#108](https://github.com/ValkyriaWDG/www/pull/108) was merged and
+deployed as `746b62a95e5fc11e9c061ce3d45a72ec7e669446`. Live data, reviewed archive
+links and the minute synchronization schedule are enabled. The known upstream HLL
+player-statistics error remains declared; incomplete projections are not promoted.
+The repeated chat monitor has been removed at the owner's request.
+
+The owner then rejected public source-separated match groups. Branch
+`fix/unified-match-browser` replaces them with one shared filter/search/count,
+chronological list and paginator while preserving original detail URLs and facts.
+Implementation `e547be03c8a5611f1c48621da2e9b2d8b17ceef2` passed 1,235 unit tests,
+three focused real PostgreSQL tests, eight connected-browser and twelve existing
+match-browser tests, lint, typecheck and the production build. Independent review
+has no remaining actionable findings. CS/EN desktop/mobile captures and exact
+acceptance boundaries are in the [evidence record](evidence/unified-match-browser-2026-10-05/README.md).
+Current-head CI and normal publication/deployment remain the next release gates.
+The preparation records below are historical and do not supersede this state.
+
 ## Public Logi data and archive reconciliation — 2026-10-05
 
 PR [#107](https://github.com/ValkyriaWDG/www/pull/107) was merged and deployed by the

@@ -17584,6 +17584,50 @@
       "bytes": 591470,
       "width": 1280,
       "height": 2696
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-history-cs-1440",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/history-cs-1440.png",
+      "source": "Actual Chromium capture, 2026-10-05T19:50:39.720Z; local standalone production build with synthetic fixtures; /cs/hll/matches?view=results; source e547be03c8a5611f1c48621da2e9b2d8b17ceef2",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "af61d748b36b9edc42fffc241cf95273d9c50bb73483a2c3ec49c89e25f3d2b0",
+      "bytes": 429884,
+      "width": 1440,
+      "height": 1805
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-history-cs-390",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/history-cs-390.png",
+      "source": "Actual Chromium capture, 2026-10-05T19:50:42.442Z; local standalone production build with synthetic fixtures; /cs/hll/matches?view=results; source e547be03c8a5611f1c48621da2e9b2d8b17ceef2",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "824da42d58cebfee4b4973b1578ff5c2a8aa670a66378fcc5901b66e664f3f78",
+      "bytes": 245356,
+      "width": 390,
+      "height": 2788
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-history-en-1440",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/history-en-1440.png",
+      "source": "Actual Chromium capture, 2026-10-05T19:50:45.049Z; local standalone production build with synthetic fixtures; /en/hll/matches?view=results; source e547be03c8a5611f1c48621da2e9b2d8b17ceef2",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "067c3042af3706e203adf0cb4e2d9aff1a72af760ec913d79fc7215e256c40c1",
+      "bytes": 413539,
+      "width": 1440,
+      "height": 1805
+    },
+    {
+      "id": "unified-match-browser-2026-10-05-history-en-390",
+      "path": "docs/evidence/unified-match-browser-2026-10-05/history-en-390.png",
+      "source": "Actual Chromium capture, 2026-10-05T19:50:47.842Z; local standalone production build with synthetic fixtures; /en/hll/matches?view=results; source e547be03c8a5611f1c48621da2e9b2d8b17ceef2",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "770325ff832829ead0472e72aa5c3a80fa78207caf7db7859968e70bd5fb4331",
+      "bytes": 234052,
+      "width": 390,
+      "height": 2754
     }
   ]
 }
