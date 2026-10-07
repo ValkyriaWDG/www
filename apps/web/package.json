@@ -32,7 +32,7 @@
     "@tiptap/extensions": "3.31.3",
     "@tiptap/pm": "3.31.3",
     "@tiptap/react": "3.31.3",
-    "@tiptap/starter-kit": "3.31.3",
+    "@tiptap/starter-kit": "3.31.4",
     "@valkyria/db": "workspace:*",
     "better-auth": "1.7.6",
     "drizzle-orm": "0.45.3",
