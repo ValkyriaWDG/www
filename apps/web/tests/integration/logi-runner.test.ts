@@ -98,4 +98,35 @@ describe('purpose-independent bounded Logi runner', () => {
     expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ externalId: value.id, revision: value.revision }]);
     expect(await database.db.select({ generation: logiProjection.generation }).from(logiProjection).where(eq(logiProjection.scopeKey, source.scopeKey))).toEqual([{ generation: state!.activeGeneration }]);
   });
+
+  it('stops re-reading the collection when the producer answers every change cursor with 410', async () => {
+    const env = { LOGI_SOURCES_JSON: JSON.stringify([{ sourceInstanceId: 'synthetic-no-log', guildId: '910000000000000004', gameId: 'wardogs', origin: 'https://logi.example.test' }]), LOGI_DATA_API_KEY_WDG: 'synthetic-data-key-123456' };
+    const source = configuredLogiSources(env, 'data')[0]!;
+    const value: LogiSyncRecord<'event-summaries'> = { resource: 'event-summaries', id: 'listed-event', guildId: source.guildId, gameId: source.gameId, revision: '7', operation: 'upsert', data: { id: 'listed-event', guildId: source.guildId, gameId: source.gameId, title: 'Listed event', kind: 'match', status: null, startsAt: null, endsAt: '2026-01-01T20:00:00Z', updatedAt: null } };
+    const requests: string[] = [];
+    vi.stubGlobal('fetch', async (input: string) => {
+      const url = new URL(input);
+      requests.push(url.pathname.split('/').slice(4).join('/'));
+      if (url.pathname.endsWith('/changes')) {
+        return url.searchParams.has('start')
+          ? Response.json({ data: [], page: { nextCursor: 'boundary', hasMore: false, limit: 10 } })
+          : Response.json({ error: { code: 'reset_required', message: 'Cursor replay is not retained.' } }, { status: 410 });
+      }
+      if (url.pathname.includes('/sync-records/')) return Response.json({ data: value });
+      const resource = url.pathname.split('/').at(-1)!;
+      return Response.json({ data: resource === value.resource ? [value.data] : [], page: { nextCursor: null, limit: 10 } });
+    });
+    expect(await runLogiSync(database.db, env)).toMatchObject([{ state: 'caught_up', reset: false }]);
+    const baseline = requests.length;
+    expect(requests.filter((path) => path === 'changes')).toHaveLength(2);
+    expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ externalId: value.id, revision: value.revision }]);
+    expect(await database.db.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, source.scopeKey))).toMatchObject([{ checkpoint: { mode: 'live', generation: null, reconciledAt: expect.any(String) } }]);
+    const [promoted] = await database.db.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, source.scopeKey));
+    for (let run = 0; run < 3; run++) expect(await runLogiSync(database.db, env)).toMatchObject([{ state: 'caught_up', reset: false, committedPages: 1, records: 0 }]);
+    expect(requests.slice(baseline)).toEqual(['changes', 'changes', 'changes']);
+    const [contacted] = await database.db.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, source.scopeKey));
+    expect(contacted).toMatchObject({ activeGeneration: promoted!.activeGeneration, version: promoted!.version + 3, errorCode: null });
+    expect(contacted!.lastSuccessAt!.getTime()).toBeGreaterThanOrEqual(promoted!.lastSuccessAt!.getTime());
+    expect(await readActiveLogiProjections(database.db, source)).toMatchObject([{ externalId: value.id }]);
+  });
 });

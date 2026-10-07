@@ -61,8 +61,10 @@ disabled source's association can still be removed.
 ## Freshness and capacity
 
 Native revisions/tombstones are monotonic decimal strings. Cross-row dependencies
-invalidate the producer cursor generation; 410 starts a fresh snapshot. Full people
-reconciliation also runs every five minutes to recheck proof/source ownership. Idle
+invalidate the producer cursor generation; a 410 during the lists starts a fresh
+snapshot, and a 410 on replay or while live waits for the next full reconciliation
+(Logi keeps no replay log since 7 October 2026). Full people reconciliation runs
+every five minutes to recheck proof/source ownership. Idle
 polling does not reset its age. Reset/bootstrap hides prior public people data.
 
 Public output and association candidates require a complete live generation, no

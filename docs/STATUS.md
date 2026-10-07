@@ -1,5 +1,19 @@
 # Current status
 
+## Logi synchronization without a replay log — 2026-10-07
+
+Logi removed its change log on 7 October 2026: every change cursor now answers
+410. The minute `logi:sync` runner restarted a full baseline on each 410 and never
+reached `live`, so it re-read every collection continuously, about 60 requests per
+second against the clan key's 60-per-second limit. Branch
+`fix/logi-sync-no-replay-log` promotes a completed baseline on a replay 410, records
+the contact on a live 410 and rebuilds on a schedule (data 10 minutes, people
+5 minutes, inside the public and people freshness limits). A run's requests are
+spaced to at most 10 per second. Verified with `vitest run --project unit`
+(1,237 passed) and `--project integration` on a disposable local PostgreSQL 16
+(521 passed). The new runner test fails on the previous code with `pending`.
+Production effect needs the new image deployed; no migration or configuration change.
+
 ## Public Logi data and archive reconciliation — 2026-10-05
 
 PR [#107](https://github.com/ValkyriaWDG/www/pull/107) was merged and deployed by the
