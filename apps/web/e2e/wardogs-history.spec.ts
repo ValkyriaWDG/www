@@ -20,7 +20,7 @@ const LABELS = {
     outcomes30: '10 rozhodnuto · 2 remíz · 0 bez výsledku', outcomesAll: '19 rozhodnuto · 2 remíz · 1 bez výsledku · 1 neznámých', feedAll: '22 z 23 her s úplnými statistikami', feed30: '11 z 12 her s úplnými statistikami',
     other: 'Remízy 2 · Bez výsledku 1 · Neznámé 1', count30: 'Zobrazeno 1–12 z 12 her', countAll: 'Zobrazeno 1–20 z 23 her', countPage2: 'Zobrazeno 21–23 z 23 her', countRidge: 'Zobrazeno 1–7 z 7 her',
     belowFloor: 'Dalších 6 hráčů je pod minimem 500 min.', players11: 'Hráči (11)', empty: 'Pro zvolené filtry nejsou žádné hry.', reset: 'Zrušit filtry', winnerAlpha: 'Vítěz: Alpha', noFeed: 'bez bojového feedu', draw: 'Remíza',
-    summaryTitle: 'Historie her', summaryGames: '12 her za posledních 30 dní', link: 'Celá historie serveru', ended: /^Konec [a-zě]{2} \d{1,2}\. \d{1,2}\. \d{2}:\d{2} SE(L)?Č$/,
+    summaryTitle: 'Historie her', summaryGames: '12 her za posledních 30 dní', link: 'Celá historie serveru', ended: /^Konec (?:po|út|st|čt|pá|so|ne) \d{1,2}\. \d{1,2}\. \d{2}:\d{2} SE(L)?Č$/,
   },
   en: {
     title: 'Server game history', nav: 'HISTORY', summary: 'Summary', factions: 'Faction win shares', players: 'Player rankings', games: 'Game history', filters: 'Filters',

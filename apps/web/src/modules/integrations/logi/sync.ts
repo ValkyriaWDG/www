@@ -79,8 +79,10 @@ export function coalesceLogiRecords<T extends LogiChange>(records: readonly T[])
 /**
  * Capture boundary → resumable full lists → atomic refetches → replay → promote.
  * The list itself has no revision and is only an identity discovery mechanism.
- * Empty pages with a continuation are not completion; a 410 starts another shadow
- * rebuild. There is no webhook payload trust or inferred deletion from partial lists.
+ * Empty pages with a continuation are not completion. A 410 during the lists
+ * starts another shadow rebuild; a 410 on replay promotes the completed baseline,
+ * and a 410 while live waits for `fullRefreshMs` when one is set. There is no
+ * webhook payload trust or inferred deletion from partial lists.
  */
 export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncStore, options: {
   resources?: readonly LogiCollectionResource[];
@@ -230,6 +232,23 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
         // change feed. Restart the whole shadow generation, never that page alone.
         if (!(error instanceof LogiClientError && (error.code === 'reset_required'
           || current.mode !== 'bootstrap' && error.code === 'not_found'))) throw error;
+        // A producer without a replay log (Logi since 7 October 2026) answers every
+        // change cursor with 410. A completed baseline is then current as of its
+        // sweep: promote it, and leave the next rebuild to `fullRefreshMs` instead
+        // of starting one at once, which re-read the whole collection every run.
+        if (error.code === 'reset_required' && current.mode === 'replay') {
+          if (!await commit({
+            ...current, version: current.version + 1, mode: 'live', generation: null,
+            reconciledAt: new Date(now()).toISOString(),
+          }, [], current.generation)) return outcome;
+          return { ...outcome, state: 'caught_up' };
+        }
+        if (error.code === 'reset_required' && current.mode === 'live' && options.fullRefreshMs !== undefined) {
+          // The answer still proves the source reachable and the key authorized:
+          // record the contact, as an idle incremental pull did.
+          if (!await commit({ ...current, version: current.version + 1 })) return outcome;
+          return { ...outcome, state: 'caught_up' };
+        }
         outcome.reset = true;
         if (!await beginBootstrap()) return outcome;
       }

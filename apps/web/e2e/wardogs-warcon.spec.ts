@@ -63,7 +63,7 @@ for (const locale of ['cs', 'en'] as const) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
       expect((await new AxeBuilder({ page }).include('main').analyze()).violations).toEqual([]);
       // Hydrated without discarding the server tree: round times are rendered from date parts.
-      expect(await recentRoundTimes(page).first().innerText()).toMatch(locale === 'cs' ? /^[a-zě]{2} \d{1,2}\. \d{1,2}\. \d{2}:\d{2} SE(L)?Č$/ : /^[A-Z][a-z]{2} \d{1,2} [A-Z][a-z]{2}, \d{2}:\d{2} CES?T$/);
+      expect(await recentRoundTimes(page).first().innerText()).toMatch(locale === 'cs' ? /^(?:po|út|st|čt|pá|so|ne) \d{1,2}\. \d{1,2}\. \d{2}:\d{2} SE(L)?Č$/ : /^[A-Z][a-z]{2} \d{1,2} [A-Z][a-z]{2}, \d{2}:\d{2} CES?T$/);
       expect(errors).toEqual([]);
     });
 

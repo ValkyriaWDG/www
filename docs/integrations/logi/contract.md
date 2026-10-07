@@ -160,6 +160,14 @@ never becomes zero players or proof that a server is offline.
 The bounded `logi:sync` runner captures a change-feed boundary, discovers identities
 through full paginated lists, refetches authoritative revisioned records, replays
 changes and promotes the completed generation. Empty pages with a cursor continue.
+
+Since 7 October 2026 Logi keeps no replay log and answers every change cursor with
+410. A 410 on replay therefore promotes the completed baseline, and a 410 while
+live records the successful contact and waits for the next full rebuild: every
+10 minutes for data, every 5 minutes for people. Before this, each 410 started a
+new baseline at once, and the minute runner re-read every collection continuously
+(about 60 requests per second). A run's requests are spaced to at most
+10 per second (`paceLogiReader`); Logi limits a clan key to 60.
 Opaque cursors are scoped to the configured authority; decimal revisions are compared
 exactly without conversion to JavaScript numbers.
 

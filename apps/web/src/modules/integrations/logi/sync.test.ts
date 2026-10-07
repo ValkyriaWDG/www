@@ -602,3 +602,62 @@ describe('revision-aware bootstrap and replay', () => {
     expect(new Set([logiSyncScopeKey(scope), logiSyncScopeKey({ ...scope, guildId: 'another' }), logiSyncScopeKey({ ...scope, gameId: 'hell_let_loose' }), logiSyncScopeKey({ ...scope, sourceInstanceId: 'another' }), logiSyncScopeKey({ ...scope, resources: ['result-summaries'] })]).size).toBe(5);
   });
 });
+
+describe('a producer without a replay log', () => {
+  it('promotes a completed baseline when every change cursor is 410, then makes one request a run until the full refresh', async () => {
+    let clock = now;
+    let captures = 0;
+    const calls: string[] = [];
+    const store = new MemoryStore();
+    store.active.set('old-event', record('9', 'Old active', 'old-event'));
+    const fresh = record();
+    const reader = client(async (input) => {
+      const url = new URL(input);
+      const kind = url.pathname.split('/').at(-1)!;
+      calls.push(`${kind}:${url.searchParams.get('cursor') ?? url.searchParams.get('start') ?? 'first'}`);
+      if (kind === 'changes') {
+        if (!url.searchParams.has('start')) return json(fixture.reset, 410);
+        captures++;
+        return json(changed(`boundary-${captures}`));
+      }
+      if (kind === 'event-summaries') return json(list([fresh.data]));
+      return json({ data: fresh });
+    });
+    const refresh = { ...options, now: () => clock, fullRefreshMs: 900_000, newGeneration: () => `refresh-${captures}` };
+
+    expect(await synchronizeLogiScope(reader, store, refresh)).toMatchObject({ state: 'caught_up', reset: false });
+    expect(calls).toEqual(['changes:now', 'event-summaries:first', 'fixture-event-1:first', 'changes:boundary-1']);
+    expect([...store.active.keys()]).toEqual([fresh.id]);
+    expect(store.checkpoint).toMatchObject({ mode: 'live', generation: null, cursor: 'boundary-1', reconciledAt: new Date(now).toISOString() });
+    expect(store.commits.at(-1)?.promoteGeneration).toBe('refresh-1');
+
+    for (const minutes of [1, 5, 14]) {
+      calls.length = 0;
+      clock = now + minutes * 60_000;
+      const version = store.checkpoint!.version;
+      // One request, and one checkpoint commit recording the successful contact.
+      expect(await synchronizeLogiScope(reader, store, refresh)).toMatchObject({ state: 'caught_up', reset: false, committedPages: 1, records: 0 });
+      expect(calls).toEqual(['changes:boundary-1']);
+      expect(store.checkpoint).toMatchObject({ mode: 'live', cursor: 'boundary-1', version: version + 1, reconciledAt: new Date(now).toISOString() });
+      expect(store.commits.at(-1)).toMatchObject({ records: [], promoteGeneration: null, targetGeneration: null });
+    }
+    expect(captures).toBe(1);
+
+    calls.length = 0;
+    clock = now + 900_000;
+    expect((await synchronizeLogiScope(reader, store, refresh)).state).toBe('caught_up');
+    expect(captures).toBe(2);
+    expect(calls).toEqual(['changes:now', 'event-summaries:first', 'fixture-event-1:first', 'changes:boundary-2']);
+  });
+
+  it('keeps the last complete generation when the replay promotion is not accepted', async () => {
+    const store = new MemoryStore();
+    store.checkpoint = { ...live('boundary'), mode: 'replay', generation: 'rebuild-1', bootstrapStartedAt: new Date(now).toISOString() };
+    store.active.set('old', record('9', 'Last complete generation', 'old'));
+    store.rejectCommit = true;
+    const reader = client(async () => json(fixture.reset, 410));
+    expect((await synchronizeLogiScope(reader, store, { ...options, fullRefreshMs: 900_000 })).state).toBe('lease_lost');
+    expect([...store.active.keys()]).toEqual(['old']);
+    expect(store.checkpoint).toMatchObject({ mode: 'replay', generation: 'rebuild-1' });
+  });
+});
