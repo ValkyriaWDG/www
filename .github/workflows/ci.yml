@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           package-manager-cache: false
@@ -45,7 +45,7 @@ jobs:
           RESTIC_TEST_BIN="$tool_dir/restic" node --test scripts/tests/encrypted-backup.integration.mjs
       - name: Upload encrypted recovery evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: encrypted-recovery-${{ github.sha }}
           path: .local/encrypted-backup/report.json
@@ -100,7 +100,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: pnpm
@@ -141,7 +141,7 @@ jobs:
           node --test scripts/tests/restore-rehearsal.integration.mjs
       - name: Upload real restore boundary evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: restore-boundaries-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .local/restore-rehearsal/report-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}.json
@@ -170,7 +170,7 @@ jobs:
         run: node scripts/release/rehearse-images.mjs
       - name: Upload image and rollback rehearsal
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-rehearsal-${{ github.sha }}
           path: .local/release-hardening/images/report.json
@@ -207,7 +207,7 @@ jobs:
           node scripts/release/runtime-scan.mjs .local/release-hardening/scans/bookworm.json .local/release-hardening/scans/ci.json .local/release-hardening/scans/comparison.json
       - name: Upload complete runtime advisory comparison
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: runtime-scans-${{ github.sha }}
           path: .local/release-hardening/scans/*.json
@@ -220,7 +220,7 @@ jobs:
             mirror.gcr.io/aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
             image --format cyclonedx --output /out/valkyria-web.cdx.json --no-progress valkyria-web:ci
       - name: Upload image SBOM
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: sbom-${{ github.sha }}
           path: sbom/valkyria-web.cdx.json
@@ -231,7 +231,7 @@ jobs:
         run: node scripts/release/measure-pages.mjs
       - name: Upload page budget samples and synthetic screenshots
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: page-budgets-${{ github.sha }}
           path: |
@@ -241,7 +241,7 @@ jobs:
           retention-days: 90
       - name: Upload browser report and screenshots
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: playwright-report-${{ github.sha }}
           path: |
@@ -256,7 +256,7 @@ jobs:
         run: pnpm --filter @valkyria/web exec playwright test -c playwright.logi.config.ts
       - name: Upload connected Logi browser evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: logi-public-browser-${{ github.sha }}
           path: |
@@ -277,7 +277,7 @@ jobs:
         run: pnpm --filter @valkyria/web test:e2e e2e/hll-artwork.spec.ts --project=chromium --output=test-results-hll-artwork
       - name: Upload HLL artwork verification
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: hll-artwork-${{ github.sha }}
           path: |
