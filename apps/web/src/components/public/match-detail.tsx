@@ -14,7 +14,7 @@ import { hllMapArtwork, type HllMapArtwork } from '@/modules/games/hll-maps';
 import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
 import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
-import { getOperationalTranslations, OperationalMatchResult, OperationalMatchStatus } from './operational-match-parts';
+import { getOperationalTranslations, OperationalMatchResult, OperationalMatchStart, OperationalMatchStatus } from './operational-match-parts';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { matchFormatLabel, sharedRoundMode } from './match-format';
@@ -93,7 +93,7 @@ export async function MatchDetailPane({
       : []),
     {
       label: t('detail.start'),
-      value: (
+      value: operational && logi ? <span data-match-start=""><OperationalMatchStart event={operational} locale={locale} t={logi} /></span> : (
         <time dateTime={match.startsAt} data-match-start="">
           {formatDate(match.startsAt, locale, 'dateTimeZone')}
         </time>

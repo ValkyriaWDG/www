@@ -46,6 +46,55 @@ async function capture(page: Page, name: string, caption: string) {
 test.use({ reducedMotion: 'reduce' });
 
 for (const locale of ['cs', 'en'] as const) {
+  for (const width of [1280, 390]) {
+    test(`${locale} at ${width}: native captured team names remain readable beside the versus column`, async ({ page }) => {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+      await page.goto(`/${locale}/hll/matches/logi/synthetic-next-hell_let_loose`);
+      await page.evaluate(() => document.fonts.ready);
+      const detail = page.locator('[data-operational-match-detail][data-detail-mode="detail"]');
+      const identity = detail.locator('[data-expanded]');
+      // The accessible teams prefix precedes the first team; it must not affect placement.
+      await expect(identity.locator(':scope > span > .visually-hidden')).toHaveCount(1);
+      const first = identity.getByTitle('[SYNTHETIC] International Combined Arms Expeditionary Brigade Alpha', { exact: true });
+      const second = identity.getByTitle('[SYNTHETIC] Team B', { exact: true });
+      await expect(first).toBeVisible();
+      await expect(second).toBeVisible();
+      const [firstBox, secondBox, identityBox] = await Promise.all([first.boundingBox(), second.boundingBox(), identity.boundingBox()]);
+      expect(firstBox).not.toBeNull(); expect(secondBox).not.toBeNull(); expect(identityBox).not.toBeNull();
+      // Both team rows occupy the wide content track, with a separate track reserved for VS.
+      expect(firstBox!.width).toBeGreaterThan(160);
+      expect(secondBox!.width).toBeGreaterThan(160);
+      expect(Math.abs(firstBox!.x - secondBox!.x)).toBeLessThan(1);
+      expect(Math.abs(firstBox!.width - secondBox!.width)).toBeLessThan(1);
+      for (const box of [firstBox!, secondBox!]) {
+        expect(box.x).toBeGreaterThan(identityBox!.x + 24);
+        expect(box.x + box.width).toBeLessThanOrEqual(identityBox!.x + identityBox!.width + 1);
+      }
+      const name = first.locator('strong');
+      const readability = await name.evaluate((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const lineTops = new Set(Array.from(range.getClientRects(), (rect) => Math.round(rect.top)));
+        return { width: element.getBoundingClientRect().width, lines: lineTops.size, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth };
+      });
+      // The actual text must wrap into readable lines instead of a 24px, one-letter column.
+      expect(readability.width).toBeGreaterThan(100);
+      expect(readability.lines).toBeGreaterThan(0);
+      expect(readability.lines).toBeLessThanOrEqual(6);
+      expect(readability.scrollWidth).toBeLessThanOrEqual(readability.clientWidth + 1);
+      const versus = second.locator('..').locator(':scope > [aria-hidden="true"]').filter({ hasText: /^VS$/ });
+      await expect(versus).toBeVisible();
+      const versusBox = await versus.boundingBox();
+      expect(versusBox).not.toBeNull();
+      expect(versusBox!.x + versusBox!.width).toBeLessThanOrEqual(secondBox!.x);
+      await expectSharedPresentation(page);
+      await expectNoHorizontalOverflow(page);
+      await capture(page, `native-team-readability-${locale}-${width}`, 'Synthetic native HLL detail: the long first captured team and the second team share the wide content track; VS remains in its own narrow track.');
+    });
+  }
+}
+
+for (const locale of ['cs', 'en'] as const) {
   for (const width of [1440, 390]) {
     test(`${locale} at ${width}: actual history, reviewed precedence, teams and original archive`, async ({ page, request }) => {
       const browserErrors: string[] = [];
@@ -72,6 +121,10 @@ for (const locale of ['cs', 'en'] as const) {
         await expect(result.locator('strong')).toHaveText(['0', '5']);
       }
       await expect(reviewed.locator('td').first()).toContainText(copy[locale].end);
+      const currentTime = await reviewed.locator('[data-column="start"] time').getAttribute('datetime');
+      expect(currentTime).not.toBeNull();
+      // A reviewed archive identity must not reintroduce its old placeholder kickoff.
+      await expect(browser.locator(`[data-match-detail="${archiveSlug}"] [data-match-start] time`)).toHaveAttribute('datetime', currentTime!);
       await expect(reviewed.locator('[data-column="status"]')).toHaveText(copy[locale].played);
       await expect(reviewed.locator('th strong')).toHaveText(['VLK', 'SHF']);
       await expect(reviewed.locator('th')).toContainText('Valkyria');
@@ -99,6 +152,8 @@ for (const locale of ['cs', 'en'] as const) {
       await archive.click();
       await expect(page).toHaveURL(new RegExp(`/${locale}/hll/matches/${archiveSlug}$`));
       const current = page.locator(`[data-match-detail="${archiveSlug}"]`);
+      await expect(current.locator('[data-match-start] time')).toHaveAttribute('datetime', currentTime!);
+      await expect(current.locator('[data-match-start]')).toContainText(copy[locale].end);
       await expect(current).toContainText(copy[locale].confirmed);
       await expect(current).toContainText('Axis: 0');
       await expect(current).toContainText('Allies: 5');
