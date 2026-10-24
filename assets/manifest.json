@@ -17672,6 +17672,39 @@
       "bytes": 372885,
       "width": 1440,
       "height": 900
+    },
+    {
+      "id": "production-2026-10-24-hll-event",
+      "path": "docs/evidence/production-2026-10-24/hll-event.png",
+      "source": "Actual anonymous production browser capture on 2026-10-24; https://valkyria.cz/cs/hll/servers?server=valkyria-event; running source 6647f9a9bae24186d794f8f2826253ad30c29a70",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with approved public data; underlying game imagery remains excluded from the Apache code license",
+      "sha256": "46de5e0fb67b9ac0890cd372686acd0931bf8d69f580328b55bf16f2b8164e8f",
+      "bytes": 81444,
+      "width": 65536,
+      "height": 4292542531
+    },
+    {
+      "id": "production-2026-10-24-wardogs",
+      "path": "docs/evidence/production-2026-10-24/wardogs.png",
+      "source": "Actual anonymous production browser capture on 2026-10-24; https://valkyria.cz/cs/wardogs; running source 6647f9a9bae24186d794f8f2826253ad30c29a70",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with approved public data; underlying game imagery remains excluded from the Apache code license",
+      "sha256": "f22189c3eb4fd0398923dab7ad2aab9e778a6b885ad346c70f5b6391252ef5ab",
+      "bytes": 116784,
+      "width": 65536,
+      "height": 4292542531
+    },
+    {
+      "id": "production-2026-10-24-unified-matches",
+      "path": "docs/evidence/production-2026-10-24/unified-matches.png",
+      "source": "Actual anonymous production browser capture on 2026-10-24; https://valkyria.cz/cs/matches; running source 6647f9a9bae24186d794f8f2826253ad30c29a70",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with approved public data; underlying game imagery remains excluded from the Apache code license",
+      "sha256": "182819ce34977417f10952a3b6d62d7cf7040c577a79e42d3792746bbe446d63",
+      "bytes": 85909,
+      "width": 65536,
+      "height": 4292542531
     }
   ]
 }
