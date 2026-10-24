@@ -54,7 +54,9 @@
     "recordedRecent": "Latest matches, up to {count}",
     "recordedRecentEmpty": "Recent match details are not available.",
     "recordedMore": "{count, plural, one {# more match} other {# more matches}}",
-    "statisticsTitle": "Player statistics"
+    "statisticsTitle": "Player statistics",
+    "unavailableTitle": "Player details are temporarily unavailable",
+    "unavailableBody": "Try reloading this page or return to the player directory."
   },
   "roles": {
     "leader": "Leader",

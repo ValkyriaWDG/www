@@ -54,7 +54,9 @@
     "recordedRecent": "Poslední zápasy, nejvýše {count}",
     "recordedRecentEmpty": "Podrobnosti posledních zápasů nejsou k dispozici.",
     "recordedMore": "{count, plural, one {Další # zápas} few {Další # zápasy} other {Dalších # zápasů}}",
-    "statisticsTitle": "Statistiky hráče"
+    "statisticsTitle": "Statistiky hráče",
+    "unavailableTitle": "Profil je dočasně nedostupný",
+    "unavailableBody": "Zkuste stránku znovu načíst nebo se vraťte na seznam hráčů."
   },
   "roles": {
     "leader": "Velitel",

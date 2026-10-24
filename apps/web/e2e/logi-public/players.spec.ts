@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import pg from 'pg';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, type Page, test } from '@playwright/test';
 import { FIXTURE_SLUGS } from '../../src/fixtures/data';
@@ -113,5 +114,48 @@ for (const locale of ['cs', 'en'] as const) {
       expect((await page.goto(target))?.status()).toBe(404);
       await expect(page.locator('[data-public-player-profile]')).toHaveCount(0);
     }
+  });
+  test(`${locale}: a temporary player source outage offers retry and recovers without publishing old facts`, async ({ page }) => {
+    const target = new URL(process.env.E2E_DATABASE_URL ?? '');
+    if (process.env.E2E_PUBLIC_PLAYER_FIXTURES !== '1' || !['127.0.0.1', 'localhost', '[::1]'].includes(target.hostname) || !/^[A-Za-z0-9_]+_logi_e2e$/.test(target.pathname.slice(1))) throw new Error('Outage acceptance requires the explicit disposable loopback Logi fixture database.');
+    const client = new pg.Client({ connectionString: target.toString() });
+    await client.connect();
+    const where = 'source_instance_id=$1 and guild_id=$2 and game_id=$3 and active_generation=$4';
+    const fixture = ['synthetic-public-match-source', '910000000000000001', 'hell_let_loose', 'synthetic-people-v1'];
+    try {
+      const source = await client.query<{ scope_key: string; error_code: string | null }>(`select scope_key,error_code from logi_sync_scope where ${where}`, fixture);
+      expect(source.rows).toHaveLength(1);
+      const scope = source.rows[0]!;
+      for (const width of [1280, 390]) {
+        await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+        await page.goto(`/${locale}/hll/members?q=Public+HLL+Bravo`);
+        const href = await page.locator('[data-member-roster] tbody tr th a').getAttribute('href');
+        expect(href).toMatch(new RegExp(`^/${locale}/hll/players/[a-f0-9]{64}`));
+        expect((await page.goto(href!))?.status()).toBe(200);
+        await expect(page.getByRole('heading', { level: 1 })).toHaveText('[SYNTHETIC] Public HLL Bravo');
+        try {
+          const changed = await client.query(`update logi_sync_scope set error_code='upstream' where ${where} and scope_key=$5`, [...fixture, scope.scope_key]);
+          expect(changed.rowCount).toBe(1);
+          expect((await page.goto(href!))?.status()).toBe(200);
+          await expect(page.locator('[data-public-player-unavailable]')).toHaveCount(1);
+          await expect(page.locator('[data-public-player-profile], [data-public-player-statistics]')).toHaveCount(0);
+          expect((await page.content()).includes('[SYNTHETIC] Public HLL Bravo')).toBe(false);
+          await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute('content', /noindex/);
+          const retry = page.getByRole('link', { name: locale === 'cs' ? 'Zkusit znovu' : 'Try again', exact: true });
+          await expect(retry).toHaveAttribute('href', href!);
+          await expect(page.getByRole('link', { name: locale === 'cs' ? 'Zpět na členy' : 'Back to members', exact: true })).toHaveAttribute('href', `/${locale}/hll/members?q=Public+HLL+Bravo`);
+          await safe(page);
+          expect((await new AxeBuilder({ page }).include('main').analyze()).violations).toEqual([]);
+          await capture(page, `player-unavailable-${locale}-${width}`, 'Synthetic current HLL player source unavailable: HTTP200 generic noindex recovery with retry and directory link, no retained supplied name, profile, statistics or fabricated zero values. The exact disposable synthetic core error is restored in finally and recovery is verified.');
+          await client.query(`update logi_sync_scope set error_code=$5 where ${where} and scope_key=$6`, [...fixture, scope.error_code, scope.scope_key]);
+          await retry.click();
+          await expect(page.getByRole('heading', { level: 1 })).toHaveText('[SYNTHETIC] Public HLL Bravo');
+          await expect(page.locator('[data-public-player-unavailable]')).toHaveCount(0);
+        } finally {
+          await client.query(`update logi_sync_scope set error_code=$5 where ${where} and scope_key=$6`, [...fixture, scope.error_code, scope.scope_key]);
+        }
+        expect((await page.goto(`/${locale}/hll/players/private-native-id`))?.status()).toBe(404);
+      }
+    } finally { await client.end(); }
   });
 }

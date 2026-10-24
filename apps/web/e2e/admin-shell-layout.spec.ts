@@ -101,7 +101,7 @@ test('phone administration controls are 44 px touch targets', async ({ context, 
   expect(checkbox.width).toBeGreaterThanOrEqual(24);
   expect(checkbox.height).toBeGreaterThanOrEqual(24);
   expect(await height(page, '[data-game-servers="wardogs"] input[type="checkbox"] + label')).toBeGreaterThanOrEqual(24);
-  await expect(page.getByRole('heading', { name: 'Čtečky Wardogs (League, Warcon)' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Čtečky herních dat' })).toBeVisible();
 
   // Settings: compact row actions and the radio controls.
   await page.goto('/cs/admin/settings');

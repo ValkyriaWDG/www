@@ -3,35 +3,63 @@ import { getTranslations } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import { cache } from 'react';
 import { PageMain } from '@/components/shell/page-main';
-import { PageHeader, SectionFrame } from '@/components/ui';
+import { FeedbackNotice, GameButton, PageHeader, SectionFrame } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
-import { readPublicLogiPlayers } from '@/modules/integrations/logi-public-players';
+import { readPublicLogiPlayerDirectory, type PublicPlayerDirectory } from '@/modules/integrations/logi-public-players';
 import { readPublicPlayerStatistics } from '@/modules/integrations/logi-public-player-statistics';
 import { bilingualAlternates } from './metadata';
 import { LogiPlayerStatistics } from './logi-people';
 import { PlayerRecordedStatistics } from './player-recorded-statistics';
-import { membersListHref, parseMemberFilters, type RawSearchParams } from './query';
+import { buildHref, membersListHref, parseMemberFilters, type RawSearchParams } from './query';
 import { TagList } from './tags';
 import styles from './members.module.css';
 
 const loadPlayer = cache(async (key: string, game: GameRoute | null) => /^[a-f0-9]{64}$/.test(key)
-  ? (await readPublicLogiPlayers(getDb(), getServerEnv(), { game: game ? GAME_REGISTRY[game].db : undefined })).find((player) => player.key === key) ?? null : null);
+  ? readPublicLogiPlayerDirectory(getDb(), getServerEnv(), { game: game ? GAME_REGISTRY[game].db : undefined }) : null);
+
+const temporarilyUnavailable = (directory: PublicPlayerDirectory | null) => Boolean(directory?.availability.enabledGames.length
+  && (directory.availability.state === 'unavailable' || directory.availability.state === 'partial'));
+
+async function PlayerUnavailable({ locale, playerKey, game, query }: { locale: AppLocale; playerKey: string; game: GameRoute | null; query?: RawSearchParams }) {
+  const t = await getTranslations({ locale, namespace: 'members' });
+  const filters = parseMemberFilters(query);
+  if (game) filters.game = undefined;
+  const base = sectionBase(game);
+  const retryHref = buildHref(`${base}/players/${playerKey}`, [['game', filters.game], ['role', filters.role], ['q', filters.q], ['page', filters.page]]);
+  return <PageMain width="reading" labelledBy="player-title">
+    <meta name="robots" content="noindex, follow" />
+    <PageHeader title={t('player.title')} titleId="player-title" back={{ href: membersListHref(filters, base), label: t('profile.back') }} />
+    <div data-public-player-unavailable="">
+      <FeedbackNotice kind="warning" title={t('player.unavailableTitle')}
+        action={<GameButton href={retryHref} intent="secondary">{t('list.retry')}</GameButton>}>
+        <p>{t('player.unavailableBody')}</p>
+      </FeedbackNotice>
+    </div>
+  </PageMain>;
+}
 
 export async function playerProfileMetadata(locale: AppLocale, key: string, game: GameRoute | null): Promise<Metadata> {
-  const player = await loadPlayer(key, game);
-  if (!player) return {};
+  const directory = await loadPlayer(key, game);
+  const player = directory?.players.find((row) => row.key === key);
   const t = await getTranslations({ locale, namespace: 'members' });
-  return { title: player.displayName ?? t('player.unknownName'), description: t('player.description'), alternates: bilingualAlternates(locale, `/players/${key}`) };
+  if (!player) return temporarilyUnavailable(directory) ? { title: t('player.unavailableTitle'), robots: { index: false, follow: true } } : {};
+  // Metadata may finish before the late page publication fence. A generic title
+  // prevents an earlier supplied name surviving in HTML after an outage/withdrawal.
+  return { title: t('player.title'), description: t('player.description'), alternates: bilingualAlternates(locale, `/players/${key}`) };
 }
 
 export async function PlayerProfileScreen({ locale, playerKey, game, query }: { locale: AppLocale; playerKey: string; game: GameRoute | null; query?: RawSearchParams }) {
-  const initial = await loadPlayer(playerKey, game);
-  if (!initial) notFound();
+  const initialDirectory = await loadPlayer(playerKey, game);
+  const initial = initialDirectory?.players.find((row) => row.key === playerKey);
+  if (!initial) {
+    if (temporarilyUnavailable(initialDirectory)) return PlayerUnavailable({ locale, playerKey, game, query });
+    notFound();
+  }
   if (initial.profileSlug) redirect(`/${locale}${initial.href}`);
   const [recorded, t, people] = await Promise.all([
     readPublicPlayerStatistics(getDb(), getServerEnv(), initial.key, { game: game ? GAME_REGISTRY[game].db : undefined }),
@@ -40,8 +68,12 @@ export async function PlayerProfileScreen({ locale, playerKey, game, query }: { 
   // Optional statistics introduce another I/O boundary after the initial page lookup.
   // Re-resolve outside React's request cache so a withdrawal, expiry or changed native
   // identity during that request cannot leave the earlier name or lineup on the page.
-  const player = (await readPublicLogiPlayers(getDb(), getServerEnv(), { game: game ? GAME_REGISTRY[game].db : undefined })).find((row) => row.key === playerKey);
-  if (!player) notFound();
+  const finalDirectory = await readPublicLogiPlayerDirectory(getDb(), getServerEnv(), { game: game ? GAME_REGISTRY[game].db : undefined });
+  const player = finalDirectory.players.find((row) => row.key === playerKey);
+  if (!player) {
+    if (temporarilyUnavailable(finalDirectory)) return PlayerUnavailable({ locale, playerKey, game, query });
+    notFound();
+  }
   if (player.profileSlug) redirect(`/${locale}${player.href}`);
   const filters = parseMemberFilters(query);
   if (game) filters.game = undefined;
