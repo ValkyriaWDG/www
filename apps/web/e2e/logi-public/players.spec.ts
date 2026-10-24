@@ -124,7 +124,7 @@ for (const locale of ['cs', 'en'] as const) {
     const fixture = ['synthetic-public-match-source', '910000000000000001', 'hell_let_loose', 'synthetic-people-v1'];
     try {
       const source = await client.query<{ scope_key: string; error_code: string | null }>(`select scope_key,error_code from logi_sync_scope where ${where}`, fixture);
-      expect(source.rows).toHaveLength(1);
+      expect(source.rowCount).toBe(1);
       const scope = source.rows[0]!;
       for (const width of [1280, 390]) {
         await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });

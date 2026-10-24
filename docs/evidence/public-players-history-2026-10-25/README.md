@@ -4,7 +4,7 @@ These are actual local Chromium application screenshots with **synthetic data**.
 They do not establish production activation, provider availability or historical
 completeness. The complete product's production acceptance remains open.
 
-The captured application source is `b954ef5ccb29caa0d4d23520ce9d7a4602fc9542`,
+The original sixteen captures use application source `b954ef5ccb29caa0d4d23520ce9d7a4602fc9542`,
 standalone build `zxxN5ApXMysIhFQwZCyw8`, using disposable loopback PostgreSQL.
 Screenshots were captured on 24 October 2026 at 22:56–22:59 UTC (25 October in
 Europe/Prague). All sixteen selected captures were visually inspected. No real
@@ -20,9 +20,11 @@ actual tested source rather than being relabelled with a newer commit.
 | Populated reviewed player facts | Per game: 57 all-team recorded matches, 1,234 kills and latest 30; five initially visible with keyboard-accessible remaining-25 disclosure; HLL score fields and signed Wardogs money retained |
 | Public lineup and privacy | Native match links point to the same public player; no private identifiers, identity proof, groups or attendance in HTML; axe, no page errors or horizontal overflow |
 | HLL and Wardogs history | **22 browser tests passed** on the same build: CS/EN 1440/390, scoped menus, filters, sorting, keyboard details, per-game metrics, paging, axe, console and privacy checks |
+| Temporary profile outage and recovery | Latest **8/8 player browser tests passed**, including CS/EN desktop/mobile generic noindex recovery, actual retry after restoring the source, and continued 404 for fresh unknown/withdrawn keys. Source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build `8XyGoWferUcBlAaBTV8Ag`; four additional inspected captures below |
+| Administration regression | **4/4 affected browser tests passed** on the same latest build: reader rows in both languages, permissions, presentation overrides and phone touch targets |
 | Current publication state | Real PostgreSQL tests cover missing/stale/partial/bootstrap/error snapshots, wrong scope, exact withdrawals, independent roster/statistics opt-outs, authority rotation, assignment recreation and unresolved/conflicting identity |
 | Statistics identity and caching | **12 focused tests passed**, including legacy-ID shadow account, missing/incorrect proof, wrong game, warm-cache withdrawal and changed scope/generation/native identity |
-| Integrated source | Full lint and production build passed; **1,438 unit tests** and the final **585 PostgreSQL tests** passed. Required GitHub CI remains separate |
+| Integrated source | Full lint and production build passed; **1,447 unit tests** and the final **585 PostgreSQL tests** passed. Required GitHub CI remains separate |
 
 Reproduction from the repository root, using disposable loopback PostgreSQL only:
 
@@ -37,7 +39,7 @@ DATABASE_URL=<separate-disposable-loopback-postgres> CAPTURE_EVIDENCE=1 pnpm --f
 
 The explicit player fixture intercepts only the synthetic Logi test origin under
 the opt-in loopback E2E harness; production transport is unchanged. The ordinary
-connected suite retains its original consent-only fixtures. CI runs the six new
+connected suite retains its original consent-only fixtures. CI runs the eight new
 player cases in a separate enabled step and uploads its own head-specific artifact.
 
 ## Captures
@@ -152,5 +154,26 @@ EN `/en/wardogs/history`, 1440px viewport; synthetic local application, source `
 ![Wardogs history, en, 390px synthetic Chromium](wardogs-history-en-390.png)
 
 EN `/en/wardogs/history`, 390px viewport; synthetic local application, source `b954ef5`, build `zxxN5ApXMysIhFQwZCyw8`. Game-scoped filters, faction summaries, sortable player ranking and expanded game detail using retained synthetic Warcon facts.
+
+</details>
+
+<details>
+<summary>Temporary player-source outage — four inspected captures</summary>
+
+![Temporary player-source outage, cs, 1280px synthetic Chromium](player-unavailable-cs-1280.png)
+
+CS scoped HLL player detail, 1280px viewport, captured 2026-10-24T23:24:59.247Z; synthetic local application, source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build `8XyGoWferUcBlAaBTV8Ag`. Generic noindex recovery page contains no retained name or statistics. The browser test restores the source and clicks retry to verify recovery.
+
+![Temporary player-source outage, cs, 390px synthetic Chromium](player-unavailable-cs-390.png)
+
+CS scoped HLL player detail, 390px viewport, captured 2026-10-24T23:25:00.36Z; synthetic local application, source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build `8XyGoWferUcBlAaBTV8Ag`. Generic noindex recovery page contains no retained name or statistics. The browser test restores the source and clicks retry to verify recovery.
+
+![Temporary player-source outage, en, 1280px synthetic Chromium](player-unavailable-en-1280.png)
+
+EN scoped HLL player detail, 1280px viewport, captured 2026-10-24T23:25:09.474Z; synthetic local application, source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build `8XyGoWferUcBlAaBTV8Ag`. Generic noindex recovery page contains no retained name or statistics. The browser test restores the source and clicks retry to verify recovery.
+
+![Temporary player-source outage, en, 390px synthetic Chromium](player-unavailable-en-390.png)
+
+EN scoped HLL player detail, 390px viewport, captured 2026-10-24T23:25:10.494Z; synthetic local application, source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build `8XyGoWferUcBlAaBTV8Ag`. Generic noindex recovery page contains no retained name or statistics. The browser test restores the source and clicks retry to verify recovery.
 
 </details>

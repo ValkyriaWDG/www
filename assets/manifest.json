@@ -18024,6 +18024,50 @@
       "bytes": 599878,
       "width": 390,
       "height": 7440
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-unavailable-cs-1280",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-unavailable-cs-1280.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-24T23:24:59.247Z; source 69778d1810633dd51e0fb65b75441eeb6baaa606; build 8XyGoWferUcBlAaBTV8Ag; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "e242b6fc40785b442d6347831b9254d37f6873b48822e0b59815c6467f83f04d",
+      "bytes": 348823,
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-unavailable-cs-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-unavailable-cs-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-24T23:25:00.36Z; source 69778d1810633dd51e0fb65b75441eeb6baaa606; build 8XyGoWferUcBlAaBTV8Ag; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "c7f52c1d339e180a269c6d9501a666edf29ce81b461892fe748e67fb162ba211",
+      "bytes": 116902,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-unavailable-en-1280",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-unavailable-en-1280.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-24T23:25:09.474Z; source 69778d1810633dd51e0fb65b75441eeb6baaa606; build 8XyGoWferUcBlAaBTV8Ag; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "0466f9a0a526d4ed706cb67fca5fb524db5a71f94cb69c0cd96b4371a5068688",
+      "bytes": 347657,
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-unavailable-en-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-unavailable-en-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-24T23:25:10.494Z; source 69778d1810633dd51e0fb65b75441eeb6baaa606; build 8XyGoWferUcBlAaBTV8Ag; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "09c36b18b5e399705ed7db394b015d3861eb25496edbf85a098d8afec7568627",
+      "bytes": 116216,
+      "width": 390,
+      "height": 844
     }
   ]
 }

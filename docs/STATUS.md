@@ -9,12 +9,16 @@ statistics and separate game-scoped HLL/WDG retained-history views. Missing data
 remains unavailable; publication, exact identity and current-generation fences apply.
 See [the implemented contract](integrations/logi/public-players-and-history.md).
 
-Local integrated verification passed lint, types, production build, 1,438 unit and
+Local integrated verification passed lint, types, production build, 1,447 unit and
 585 PostgreSQL tests. The captured UI source `b954ef5ccb29caa0d4d23520ce9d7a4602fc9542`
 passed six explicitly enabled player and 22 both-game history browser cases;
-[sixteen inspected synthetic captures](evidence/public-players-history-2026-10-25/README.md)
+[twenty inspected synthetic captures](evidence/public-players-history-2026-10-25/README.md)
 retain their real source/build identity. A subsequent negative-only publication
 correction is covered by the final PostgreSQL run and 35 focused policy cases.
+The later source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build
+`8XyGoWferUcBlAaBTV8Ag`, passed eight player browser cases including actual outage
+recovery and four affected ordinary admin browser cases. Four outage captures retain
+this newer provenance; the original sixteen captures retain the original build.
 
 Logi [PR #258](https://github.com/Ninjonik/logi/pull/258) passed exact-head CI
 [40140549720](https://github.com/Ninjonik/logi/actions/runs/40140549720) and is merged as
@@ -24,8 +28,7 @@ The owner received its explicit-target deployment/backfill handoff.
 
 This feature is **not accepted on production**. The website release is pending;
 the matching Logi application/Convex revision and bounded HLL backfill must be
-deployed by Ninjonik. The owner will arrange that deployment after the verified
-revision and operator commands are supplied. Existing production acceptance below
+deployed by Ninjonik. The owner has forwarded the verified revision and operator commands to Ninjonik. Existing production acceptance below
 covers the earlier unified-match release only. Local, CI and real production
 checks will be recorded independently with the feature handoff.
 

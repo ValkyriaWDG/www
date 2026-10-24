@@ -18,6 +18,12 @@ exact identity. No internal/account/platform IDs, private roles, groups, member 
 or attendance are in public DTOs or URLs. Current core and final SQL version fences
 remain required.
 
+A temporarily unavailable or refreshing enabled source returns a generic noindex
+player recovery page with retry and directory navigation, without retaining a name
+or statistics. Fresh unknown/withdrawn keys and disabled or wrong-game publication
+remain 404. Basic-profile metadata uses a generic player title so a later withdrawal
+cannot leave a supplied name in the initial document metadata.
+
 Owner-authorized basic gaming publication does not create personal consent. Biography,
 avatar and editorial roles keep their existing published/consented profile gate.
 Exact hidden/withdrawn associations and roster/statistics opt-outs still suppress the
