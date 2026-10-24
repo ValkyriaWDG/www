@@ -1,5 +1,32 @@
 # Current status
 
+## Production active — 2026-10-24
+
+The unified website is running application source
+`6647f9a9bae24186d794f8f2826253ad30c29a70` at immutable index digest
+`sha256:56cebfcf9e98e6d25521c1f2805870c895c7e54f3f419785e90fc5223ffdfcf0`,
+activated at 16:46:52 UTC. Website PRs #112/#113/#114 are merged. Exact PR-head CI,
+accepted-main CI and protected publication passed in full. Actual production passed
+**119/119 public checks twice**, plus real Logi SSO, both private team views and
+simplified administration. HLL has one public EVENT server through Logi; the old
+HLL data key is revoked and its replacement's positive/negative scope reads passed.
+Current HLL/WDG core generations contain 128/69 members and seven/three rosters.
+
+Explicit migration applied zero changes with 13 already applied. Readiness, actual
+image identity, all three timers, 442 preserved media files and 17 untouched unrelated
+containers passed read-back. Paired recovery restored 37 tables/442 files; encrypted
+off-host recovery and post-exchange rollback configuration passed authenticated
+decryption/hash checks. The dedicated updater was resumed. Full commands, CI links,
+limits and inspected anonymous production screenshots are in the
+[production acceptance record](evidence/production-2026-10-24/README.md).
+
+Logi #256 merged as `2fa02ab7`; its automatic application deployment was observed.
+The owner explicitly deferred Convex activation. The new collector cadence and final
+League parser are therefore not claimed active. Warcon health/capabilities still
+return `provider_timeout`/503; HLL historical player-statistics exceed the unchanged
+bounded generation and remain unavailable. These producer dependencies are recorded
+separately from the deployed website. Earlier preparation notes below are historical.
+
 ## Independent current team synchronization — 2026-10-24
 
 Live HLL acceptance found that thousands of historical player-session records kept
