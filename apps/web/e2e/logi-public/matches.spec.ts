@@ -219,7 +219,7 @@ test(`${locale}: shared standalone detail and three-team upcoming have no fabric
   const next = connected.locator('tbody tr').filter({ hasText: '[SYNTHETIC] Next wardogs match' });
   await expect(next).toHaveCount(1);
   for (const label of ['[SYNTHETIC] Team A', 'SYA', 'Lonestar', '[SYNTHETIC] Team B', 'SYB', 'Manticore', '[SYNTHETIC] Team C', 'SYC', 'Valkyra']) await expect(next).toContainText(label);
-  await expect(next.locator('th strong')).toHaveText(['SYA', 'SYB', 'SYC']);
+  await expect(next.locator('th strong')).toHaveText('[SYNTHETIC] Next wardogs match');
   await expect(connected.locator('[data-column="result"]')).toHaveCount(0);
   await expect(next).not.toContainText(/0\s*:\s*0/);
   await expectSharedPresentation(page);
@@ -331,6 +331,32 @@ test(`${locale}: the shared results list filters all matches with the same game 
 }
 
 for (const locale of ['cs', 'en'] as const) {
+  for (const width of [1280, 390]) {
+    test(`${locale} at ${width}: a pending Wardogs title stays primary with only two supplied teams`, async ({ page }) => {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+      await page.goto(`/${locale}/wardogs/matches`);
+      const pending = page.locator('[data-unified-matches] tbody tr').filter({ hasText: '[SYNTHETIC] SYA vs SYB vs SYC' });
+      await expect(pending).toHaveCount(1);
+      await expect(pending.locator('th strong')).toHaveText('[SYNTHETIC] SYA vs SYB vs SYC');
+      await expect(pending.getByRole('listitem')).toHaveCount(2);
+      await expect(pending).toContainText(locale === 'cs' ? 'Zadané týmy' : 'Supplied teams');
+      await expect(pending).not.toContainText('[SYNTHETIC] Team C');
+      await pending.getByRole('link').click();
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('[SYNTHETIC] SYA VS SYB VS SYC', { ignoreCase: true });
+      const detail = page.locator('[data-operational-match-detail][data-detail-mode="detail"]');
+      await expect(detail.locator('[data-source-title-primary]')).toBeVisible();
+      await expect(detail.getByRole('listitem')).toHaveCount(2);
+      await expect(detail).toContainText('[SYNTHETIC] Team A');
+      await expect(detail).toContainText('[SYNTHETIC] Team B');
+      await expect(detail).not.toContainText('[SYNTHETIC] Team C');
+      await expect(detail).toContainText(locale === 'cs' ? 'Čeká na výsledek' : 'Awaiting result');
+      await expect(detail.locator('[data-result-state]')).toHaveCount(0);
+      await expectSharedPresentation(page);
+      await expectNoHorizontalOverflow(page);
+      expect((await new AxeBuilder({ page }).include('[data-operational-match-detail]').analyze()).violations).toEqual([]);
+      await capture(page, `wardogs-source-identity-${locale}-${width}`, 'Synthetic pending Wardogs detail: the exact three-team event title remains primary; only the two actually supplied teams are listed as secondary facts, with no invented third team or score.');
+    });
+  }
   test(`${locale}: shared and HLL upcoming use the same match presentation`, async ({ page }) => {
     for (const route of [`/${locale}/matches`, `/${locale}/hll/matches`]) {
       await page.goto(route);

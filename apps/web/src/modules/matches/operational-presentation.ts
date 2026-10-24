@@ -6,8 +6,8 @@ export type OperationalMatchIdentity = {
   title: string;
   teams: { key: string; name: string; code: string | null; side: string | null }[];
   subtitle: string | null;
-  /** Supplied WDG teams cannot represent all observed result participants. */
-  partialTeams?: true;
+  /** Captured WDG teams are supplied facts, not proof of a complete match identity. */
+  sourceTitlePrimary?: true;
 };
 
 /** Presentation only: captured teams and reviewed archive identities never imply score attribution. */
@@ -22,8 +22,8 @@ export function operationalMatchIdentity(event: PublicLogiEvent): OperationalMat
     code: team.shortCode !== null && team.shortCode.toLowerCase() === team.name.toLowerCase() ? null : team.shortCode,
     side: team.side,
   }));
-  if (!archive && event.ref.game === 'wardogs' && teams.length > 0 && event.result.participants.length > teams.length) {
-    return { title: event.title, teams, subtitle: null, partialTeams: true };
+  if (!archive && event.ref.game === 'wardogs' && teams.length > 0) {
+    return { title: event.title, teams, subtitle: null, sourceTitlePrimary: true };
   }
   const title = archive?.opponentName ? `Valkyria vs. ${archive.opponentName}` : teams.length ? teams.map((team) => team.name).join(' vs. ') : event.title;
   return { title, teams, subtitle: title !== event.title ? event.title : null };

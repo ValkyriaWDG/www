@@ -18,8 +18,8 @@ export function OperationalMatchStart({ event, locale, t }: { event: PublicLogiE
 
 export function OperationalMatchTeams({ event, t, expanded = false }: { event: PublicLogiEvent; t: T; expanded?: boolean }) {
   const identity = operationalMatchIdentity(event);
-  return <span className={styles.identity} data-expanded={expanded || undefined} data-partial-teams={identity.partialTeams || undefined}>
-    {identity.partialTeams ? <>
+  return <span className={styles.identity} data-expanded={expanded || undefined} data-source-title-primary={identity.sourceTitlePrimary || undefined}>
+    {identity.sourceTitlePrimary ? <>
       <strong className={styles.fallbackTitle}>{identity.title}</strong>
       <span className={styles.suppliedTeams}>
         <span>{t('suppliedTeams')}</span>

@@ -17771,6 +17771,28 @@
       "bytes": 150153,
       "width": 390,
       "height": 1512
+    },
+    {
+      "id": "wardogs-source-identity-2026-10-24-desktop",
+      "path": "docs/evidence/wardogs-source-identity-2026-10-24/desktop.png",
+      "source": "Actual local production-build Chromium capture on 2026-10-24; explicitly synthetic fixtures; /cs/wardogs/matches/logi/synthetic-pending-wardogs-identity; 1280px; application tree in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; approved game artwork remains excluded from Apache code license",
+      "sha256": "a1739b3b52c076059b15b190832fc5e1f57c49d13005ac15fc63951d8ae43368",
+      "bytes": 417968,
+      "width": 1280,
+      "height": 1074
+    },
+    {
+      "id": "wardogs-source-identity-2026-10-24-mobile",
+      "path": "docs/evidence/wardogs-source-identity-2026-10-24/mobile.png",
+      "source": "Actual local production-build Chromium capture on 2026-10-24; explicitly synthetic fixtures; /en/wardogs/matches/logi/synthetic-pending-wardogs-identity; 390px; application tree in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; approved game artwork remains excluded from Apache code license",
+      "sha256": "4b6560a5022bafd6e74e0859599686c91a04010ef13eaca01e3872ea9184789d",
+      "bytes": 117904,
+      "width": 390,
+      "height": 932
     }
   ]
 }
