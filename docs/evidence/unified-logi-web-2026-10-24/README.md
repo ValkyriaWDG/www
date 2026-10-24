@@ -24,7 +24,9 @@ synthetic acceptance; this record does not claim a production release.
   Archive/profile-publication tools remain keyboard-accessible in secondary disclosures.
   Backend permissions, consent and direct historical editor URLs are unchanged.
 
-No SQL migration or Logi upstream source change is required. Existing source grants,
+No SQL migration or Logi upstream source change is required. Next.js and its ESLint
+configuration are pinned to 16.4.1 after the runtime security scan described below.
+Existing source grants,
 server publication mappings and provider collection still determine hosted behavior.
 
 ## Local checks
@@ -35,7 +37,7 @@ identities, source keys and observations are deliberately invented.
 
 | Check | Command/scenario | Observed |
 | --- | --- | --- |
-| Install | `pnpm install --frozen-lockfile` | Passed; lockfile unchanged |
+| Install | `pnpm install --frozen-lockfile` | Passed, including the pinned Next.js 16.4.1 security update |
 | Foundation | `node scripts/check-foundation.mjs` | Passed |
 | Foundation behavior | `node --test scripts/tests/*.test.mjs` | 176 passed |
 | Lint | `pnpm lint` | Passed |
@@ -65,6 +67,24 @@ those pre-existing runtime warnings were repaired.
 One concurrent server follow-up recorded Chromium `ERR_NO_BUFFER_SPACE` in its
 console-error assertion. All 19 cases subsequently passed serially with that assertion
 retained; it was not treated as a successful first run.
+
+## Hosted CI follow-up
+
+[CI for `575a67e`](https://github.com/ValkyriaWDG/www/actions/runs/40096796649)
+passed foundation, lint, types, unit/integration tests, production build, PostgreSQL
+restore, both image builds, rollback rehearsal and container startup/migration/health.
+It then failed the unchanged runtime security gate: Next.js 16.3.6 had four fixable
+HIGH/CRITICAL findings. Browser and page-budget steps after that gate were skipped.
+
+The repair pins `next` and `eslint-config-next` to **16.4.1** and updates only their
+lockfile resolutions and dependent peer contexts. The source advisories are
+[GHSA-2464-fhr4-w9xw](https://github.com/advisories/GHSA-2464-fhr4-w9xw),
+[GHSA-673q-mjm6-r5xr](https://github.com/advisories/GHSA-673q-mjm6-r5xr),
+CVE-2026-94482 and CVE-2026-94483. No finding, threshold or gate was suppressed.
+Frozen install, lint, types, 1,292 unit tests, 529 PostgreSQL tests, the production
+build and 17 connected browser cases passed again locally after this repair.
+The PR records final-head hosted CI;
+this earlier failed run is retained as evidence rather than labelled green.
 
 ## Inspected screenshots
 

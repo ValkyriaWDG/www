@@ -25,6 +25,12 @@ The [evidence record](evidence/unified-logi-web-2026-10-24/README.md) contains i
 CS/EN desktop/mobile screenshots, reproduction commands and exact verification limits.
 PR-head hosted checks remain separate from these local results.
 
+Hosted CI on `575a67e` passed through image startup/rollback/restore checks, then
+stopped at four fixable HIGH/CRITICAL Next.js advisories. The follow-up pins Next.js
+and its ESLint configuration to 16.4.1 without suppressing the security gate. Frozen
+install, lint, types, 1,292 unit tests, 529 PostgreSQL tests and build passed again
+locally. The PR carries the latest-head CI result and retained failure evidence.
+
 Read-only hosted checks still observed production source `9b6ffd78` healthy, with
 public liveness/readiness and canonical HLL/WDG routes returning 200. Both configured
 sources already use `https://logibot.tech`; their server/event/member collection reads
