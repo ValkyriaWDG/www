@@ -154,4 +154,3 @@ EN `/en/wardogs/history`, 1440px viewport; synthetic local application, source `
 EN `/en/wardogs/history`, 390px viewport; synthetic local application, source `b954ef5`, build `zxxN5ApXMysIhFQwZCyw8`. Game-scoped filters, faction summaries, sortable player ranking and expanded game detail using retained synthetic Warcon facts.
 
 </details>
-
