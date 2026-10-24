@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { LogiOperations } from '@/components/admin/logi-operations';
+import adminStyles from '@/components/admin/admin.module.css';
 import { FilterForm } from '@/components/admin-community/filter-form';
 import { formatDate, formatNumber } from '@/components/admin-community/format';
 import { pickEnum, pickPage, pickParam, queryHref, type SearchParams } from '@/components/admin-community/list-query';
@@ -37,6 +39,7 @@ export default async function AdminTournamentsPage({ params, searchParams }: Pag
 
   const t = await getTranslations({ locale, namespace: 'adminCommunity.tournaments.list' });
   const tc = await getTranslations({ locale, namespace: 'adminCommunity.common' });
+  const ta = await getTranslations({ locale, namespace: 'admin.archive' });
   const sp = (await searchParams) as SearchParams;
   const filters = {
     q: pickParam(sp, 'q'),
@@ -67,12 +70,15 @@ export default async function AdminTournamentsPage({ params, searchParams }: Pag
         eyebrow={t('eyebrow')}
         title={t('title')}
         description={t('description')}
-        actions={
+      />
+      <LogiOperations locale={locale} actor={access.principal} />
+      <details className={adminStyles.archive} open={anyFilter || page > 1 || deleted || loadFailed} data-testid="admin-tournament-archive">
+        <summary>{ta('tournaments')}</summary>
+        <div className={adminStyles.archiveBody}>
+          <p>{ta('description')}</p>
           <GameButton href="/admin/tournaments/new" intent="primary" size="lg" data-action="new-tournament">
             {t('newTournament')}
           </GameButton>
-        }
-      />
       {deleted ? <FeedbackNotice kind="success">{t('deletedNotice')}</FeedbackNotice> : null}
       <FilterForm
         action={PATH}
@@ -161,6 +167,8 @@ export default async function AdminTournamentsPage({ params, searchParams }: Pag
           <Pagination page={result.page} pageCount={result.pageCount} hrefForPage={(value) => queryHref(PATH, { ...filters, page: value > 1 ? value : undefined })} />
         </>
       ) : null}
+        </div>
+      </details>
     </div>
   );
 }

@@ -5,14 +5,17 @@
     "navLabel": "Administration modules",
     "overview": "Overview",
     "account": "My account",
-    "website": "Back to website"
+    "website": "Back to website",
+    "archive": "Archive and profile publication"
   },
   "overview": {
     "metaTitle": "Administration",
     "eyebrow": "Administration",
     "title": "Administration",
     "intro": "Signed in as {name}. Only the modules you may use are listed; every module checks your permissions again.",
-    "modulesTitle": "Your modules",
+    "modulesTitle": "Website content and settings",
+    "archiveTitle": "Archive and profile publication",
+    "archiveDescription": "Repair historical records and manage consent to show profiles on the website. Manage current matches and rosters in Logi.",
     "empty": "No administration modules are available for your roles.",
     "modules": {
       "news": {
@@ -36,16 +39,16 @@
         "description": "Upload and manage images within your permitted scope."
       },
       "matches": {
-        "title": "Matches",
-        "description": "Create, schedule and publish matches and results."
+        "title": "Match archive",
+        "description": "Repair and publish historical matches, results and reports."
       },
       "tournaments": {
-        "title": "Tournaments",
-        "description": "Competitions with their description and rules, publication and the matches in them."
+        "title": "Tournament archive",
+        "description": "Historical competitions, their rules and links to archived matches."
       },
       "members": {
-        "title": "Members",
-        "description": "Review and publish member profiles."
+        "title": "Profile publication",
+        "description": "Consent, biographies and links between public profiles and Logi."
       },
       "settings": {
         "title": "Settings",
@@ -68,6 +71,21 @@
       "schedulesEmpty": "Nothing is scheduled.",
       "needsReapproval": "Needs re-approval"
     }
+  },
+  "operations": {
+    "title": "Manage in Logi",
+    "description": "Manage servers, rosters, matches and results for Hell Let Loose and Wardogs in Logi. The website displays their public data. Edit news, the Field Manual, media and website settings here.",
+    "open": "Open Logi",
+    "external": "external website",
+    "unavailable": "No valid Logi address is configured for your permission scope. Check the integration configuration; the archive and editorial tools remain available.",
+    "games": { "hll": "Hell Let Loose", "wardogs": "Wardogs" }
+  },
+  "archive": {
+    "matches": "Open the match archive",
+    "tournaments": "Open the tournament archive",
+    "description": "Use this section to repair and complete historical records. Create new matches, competitions and results in Logi.",
+    "members": "Manage profile publication",
+    "membersDescription": "Manage membership and rosters in Logi. Confirm publication consent, edit biographies and link profiles to the matching Logi member here."
   },
   "denied": {
     "metaTitle": "Access denied",

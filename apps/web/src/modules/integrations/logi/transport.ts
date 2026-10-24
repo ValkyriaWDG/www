@@ -102,6 +102,8 @@ export type LogiTransport = {
   readonly timeoutMs: number;
   /** Parsed JSON body of a 2xx response; every other outcome is a `LogiClientError`. */
   get(path: string, query: Record<string, string>, options?: LogiRequestOptions): Promise<unknown>;
+  /** HLL's scoped live route accepts no query; no other route may omit game. */
+  getHllLive(connectionId: string, options?: LogiRequestOptions): Promise<unknown>;
 };
 
 export function createLogiTransport(config: LogiTransportConfig, dependencies: { fetchImpl?: LogiFetch; now?: () => number } = {}): LogiTransport {
@@ -115,9 +117,9 @@ export function createLogiTransport(config: LogiTransportConfig, dependencies: {
   const fetchImpl = dependencies.fetchImpl ?? fetch;
   const now = dependencies.now ?? Date.now;
 
-  async function get(path: string, query: Record<string, string>, options: LogiRequestOptions = {}): Promise<unknown> {
+  async function get(path: string, query: Record<string, string>, options: LogiRequestOptions = {}, hllLive = false): Promise<unknown> {
     const url = new URL(`/api/v1/clan/${path}`, origin);
-    url.search = new URLSearchParams({ ...query, game: gameId }).toString();
+    url.search = hllLive ? '' : new URLSearchParams({ ...query, game: gameId }).toString();
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     const abort = () => controller.abort();
@@ -147,5 +149,10 @@ export function createLogiTransport(config: LogiTransportConfig, dependencies: {
     }
   }
 
-  return { origin, timeoutMs, get };
+  return { origin, timeoutMs, get: (path, query, options) => get(path, query, options),
+    getHllLive: (connectionId, options) => {
+      if (gameId !== 'hell_let_loose' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/.test(connectionId)) throw new LogiClientError('configuration');
+      return get(`hll-live/${encodeURIComponent(connectionId)}`, {}, options, true);
+    },
+  };
 }

@@ -9,6 +9,7 @@ import { recordAdminDenial } from '@/modules/auth/admin-guard';
 import { AdminNav } from '@/components/admin/admin-nav';
 import styles from '@/components/admin/admin.module.css';
 import { permittedAdminModules } from '@/modules/auth/admin-modules';
+import { groupAdminModules } from '@/components/admin/admin-workflows';
 import { AccessDeniedPanel } from '@/modules/auth/ui/access-denied';
 import { AdminSignInRedirect } from '@/modules/auth/ui/admin-sign-in-redirect';
 
@@ -43,7 +44,7 @@ export default async function AdminLayout({ children, params }: LayoutProps<'/[l
 
   const t = await getTranslations({ locale, namespace: 'admin.shell' });
   const tModules = await getTranslations({ locale, namespace: 'admin.overview.modules' });
-  const modules = permittedAdminModules(actor);
+  const { website: modules, archive } = groupAdminModules(permittedAdminModules(actor));
   // Quiet static admin chrome: module navigation (permitted modules only) + account links.
   // A labelled region, not a second <header>: the public shell already owns the banner landmark,
   // and the label differs from the overview's own "Administrace" section so landmarks stay unique.
@@ -72,6 +73,12 @@ export default async function AdminLayout({ children, params }: LayoutProps<'/[l
           />
         </div>
       </div>
+      {archive.length ? (
+        <details className={styles.secondaryNav} data-testid="admin-archive-nav">
+          <summary>{t('archive')}</summary>
+          <AdminNav label={t('archive')} items={archive.map((module) => ({ key: module.key, href: module.path, label: tModules(`${module.key}.title`) }))} />
+        </details>
+      ) : null}
       <main id="main-content" tabIndex={-1} className={styles.main}>
         {children}
       </main>

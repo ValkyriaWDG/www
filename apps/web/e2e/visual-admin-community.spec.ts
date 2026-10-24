@@ -73,10 +73,11 @@ test.afterAll(() => {
 test('matches admin list (cs)', async ({ browser }) => {
   await capture(browser, {
     file: 'matches-list-cs-1920x1080.png',
-    caption: 'Match manager, /cs/admin/matches at 1920×1080: prominent NOVÝ ZÁPAS, search + game/status/publication filters in the URL, date range, start times in Europe/Prague with zone, separate status and publication badges, results or “—”.',
+    caption: 'Match manager, /cs/admin/matches at 1920×1080: Logi operations entry above the deliberately opened historical archive with creation, URL filters, dates, publication states and retained results.',
     locale: 'cs',
     role: 'match_manager',
     open: async () => '/cs/admin/matches',
+    prepare: async (page) => { await page.getByTestId('admin-match-archive').locator('summary').click(); },
   });
 });
 

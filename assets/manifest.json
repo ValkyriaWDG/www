@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-03",
+  "recordedAt": "2026-10-24",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -17584,6 +17584,94 @@
       "bytes": 591470,
       "width": 1280,
       "height": 2696
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-admin-cs-390",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/admin-cs-390.png",
+      "source": "Actual Chromium capture, 2026-10-24T12:46:26.647Z; local standalone production build with invented Logi projections; /cs/admin; base 9b6ffd78 with unified website implementation",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "a2b0607b74a118d80cadcc5308fa1c5ff769ce7bf2665c869b565e03cfe26c0e",
+      "bytes": 138585,
+      "width": 390,
+      "height": 2343
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-admin-en-1440",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/admin-en-1440.png",
+      "source": "Actual Chromium capture, 2026-10-24T12:46:28.475Z; local standalone production build with invented Logi projections; /en/admin; base 9b6ffd78 with unified website implementation",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "bf28ac3578268d9c4a068d9315dd475c0602c890ecb4733a8a61c8174cab1af5",
+      "bytes": 168461,
+      "width": 1440,
+      "height": 1419
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-history-cs-1440",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/history-cs-1440.png",
+      "source": "Actual Chromium capture, 2026-10-24T12:46:13.861Z; local standalone production build with invented Logi projections; /cs/hll/matches?view=results; base 9b6ffd78 with unified website implementation",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "2c2e43a6be3a60bfced1063ed1402a05388186de8612951b3a7d013ca4a0ec60",
+      "bytes": 458208,
+      "width": 1440,
+      "height": 1890
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-history-en-390",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/history-en-390.png",
+      "source": "Actual Chromium capture, 2026-10-24T12:46:18.453Z; local standalone production build with invented Logi projections; /en/hll/matches?view=results; base 9b6ffd78 with unified website implementation",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "265102a2269e53fed5370f7398b65f674391165c8eda8e6f60740e18fe92ad7c",
+      "bytes": 282959,
+      "width": 390,
+      "height": 3521
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-hub-cs-1280",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/hub-cs-1280.png",
+      "source": "Actual Chromium capture, 2026-10-24T13:03:28.599Z; local standalone production build with invented Logi projections; /cs; ea4ee3ef with final hub-flow repair",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "4c70f6b75157318f7afe479ce513391cb7e898b1a7b856fe8a83169e2bb18b06",
+      "bytes": 1007924,
+      "width": 1280,
+      "height": 1209
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-hub-en-1280",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/hub-en-1280.png",
+      "source": "Actual Chromium capture, 2026-10-24T13:03:29.719Z; local standalone production build with invented Logi projections; /en; ea4ee3ef with final hub-flow repair",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "70d2f7c12513ca281ec8a7c75982786ad5cf53d4bf76b8db3a62c10f1e0ee77c",
+      "bytes": 1004441,
+      "width": 1280,
+      "height": 1209
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-members-cs-390",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/members-cs-390.png",
+      "source": "Actual Chromium capture, 2026-10-24T12:46:27.431Z; local standalone production build with invented Logi projections; /cs/members?q=Bravo; base 9b6ffd78 with unified website implementation",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "b73b018f4e3da51992e68131f8d02746fd9beda6a5a5d37126021022ac97fd8e",
+      "bytes": 159278,
+      "width": 390,
+      "height": 1289
+    },
+    {
+      "id": "unified-logi-web-2026-10-24-members-en-1440",
+      "path": "docs/evidence/unified-logi-web-2026-10-24/members-en-1440.png",
+      "source": "Actual Chromium capture, 2026-10-24T12:46:29.357Z; local standalone production build with invented Logi projections; /en/members?q=Bravo; base 9b6ffd78 with unified website implementation",
+      "usage": "verification-evidence-only",
+      "rights": "Application screenshot with synthetic data and Valkyria branding; underlying game imagery excluded from the Apache code license",
+      "sha256": "7d6ca0704375a7dc581b24b74b4ad3c9ffcefe7568768a1c44a0f1525dbd6171",
+      "bytes": 372885,
+      "width": 1440,
+      "height": 900
     }
   ]
 }

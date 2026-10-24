@@ -18,11 +18,13 @@ try {
   const origin = 'https://logi.example.test';
   const env: LogiIntegrationEnv = {
     LOGI_SOURCES_JSON: JSON.stringify([
-      { sourceInstanceId, origin, guildId, gameId: 'hell_let_loose', publishMatches: true, matchLinks: [{ eventId: 'synthetic-history-00', matchId: archive.rows[0]!.id }], matchAliases: [{ canonicalEventId: 'synthetic-history-01', aliasEventIds: ['synthetic-history-alias'] }] },
-      { sourceInstanceId, origin, guildId, gameId: 'wardogs', publishMatches: true },
+      { sourceInstanceId, origin, guildId, gameId: 'hell_let_loose', publishMatches: true, syncPeople: true, matchLinks: [{ eventId: 'synthetic-history-00', matchId: archive.rows[0]!.id }], matchAliases: [{ canonicalEventId: 'synthetic-history-01', aliasEventIds: ['synthetic-history-alias'] }] },
+      { sourceInstanceId, origin, guildId, gameId: 'wardogs', publishMatches: true, syncPeople: true },
     ]),
     LOGI_DATA_API_KEY_HLL: 'synthetic-public-hll-key-not-a-credential',
     LOGI_DATA_API_KEY_WDG: 'synthetic-public-wardogs-key-not-a-credential',
+    LOGI_PEOPLE_API_KEY_HLL: 'synthetic-people-hll-key-not-a-credential',
+    LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-wardogs-key-not-a-credential',
   };
   const now = new Date();
   const iso = (milliseconds: number) => new Date(now.getTime() + milliseconds).toISOString();
@@ -56,6 +58,26 @@ try {
     }
     const id = `synthetic-next-${source.gameId}`;
     await insert('event-summaries', { id, guildId, gameId: source.gameId, title: `[SYNTHETIC] Next ${source.gameId} match`, updatedAt: now.toISOString(), kind: 'match', status: 'registration', startsAt: iso(60 * 60_000), endsAt: iso(3 * 60 * 60_000), matchTeams: source.gameId === 'wardogs' ? [team('c', source.gameId), team('a', source.gameId), team('b', source.gameId)] : [team('a', source.gameId), team('b', source.gameId)] });
+  }
+  // One consented profile belongs to both games; its private operational name never renders.
+  const approved = await client.query<{ id: string }>('select id from member_profile where slug = $1 and state = $2 and consent_confirmed_at is not null and is_fixture = true', [FIXTURE_SLUGS.members.publishedCsOnlyBio, 'published']);
+  if (approved.rows.length !== 1) throw new Error('Expected the consented synthetic cross-game profile.');
+  for (const source of configuredLogiSources(env, 'people')) {
+    const generation = 'synthetic-people-v1';
+    const checkpoint = { version: 1, mode: 'live', generation: null, resourceIndex: 0, listCursor: null, boundaryCursor: '1', cursor: '1', reconciledAt: now.toISOString() };
+    await client.query('insert into logi_sync_scope (scope_key,source_instance_id,guild_id,game_id,active_generation,last_success_at,last_attempt_at,checkpoint,version) values ($1,$2,$3,$4,$5,$6,$6,$7,1)', [source.scopeKey, sourceInstanceId, guildId, source.gameId, generation, now, checkpoint]);
+    const memberId = `private-member-${source.gameId}`;
+    const identityId = `private-identity-${source.gameId}`;
+    const common = { schemaVersion: 1, guildId, gameId: source.gameId, updatedAt: now.toISOString() };
+    const records: { resource: LogiCollectionResource; value: Record<string, unknown> }[] = [
+      { resource: 'member-summaries', value: { ...common, id: memberId, identityId, discordSubject: '910000000000000002', identityState: 'resolved', displayName: 'PRIVATE_OPERATIONAL_NAME', type: 'member', status: 'active', paused: false, groups: [{ id: 'private-group', name: 'PRIVATE_OPERATIONAL_GROUP', primary: true }] } },
+      { resource: 'roster-summaries', value: { ...common, id: `private-roster-${source.gameId}`, eventId: `synthetic-next-${source.gameId}`, published: true, squads: [{ index: 0, name: '[SYNTHETIC] Alpha', slots: [{ index: 0, memberId, identityId, identityState: 'resolved', attendance: 'acknowledged' }] }], reserves: [], notAttending: [], eventParticipation: [{ memberId, identityId, identityState: 'resolved', status: 'attending', completed: null }] } },
+    ];
+    for (const { resource, value } of records) {
+      const safe = logiResourceSchemas[resource].parse(value);
+      await client.query('insert into logi_projection (scope_key,generation,resource,external_id,revision,operation,data,observed_at) values ($1,$2,$3,$4,$5,$6,$7,$8)', [source.scopeKey, generation, resource, value.id, '1', 'upsert', safe, now]);
+    }
+    await client.query('insert into logi_member_link (profile_id,scope_key,source_instance_id,guild_id,game_id,member_id,identity_id,allow_roster,allow_stats) values ($1,$2,$3,$4,$5,$6,$7,true,false)', [approved.rows[0]!.id, source.scopeKey, sourceInstanceId, guildId, source.gameId, memberId, identityId]);
   }
   await client.query('commit');
   // Only invented source settings leave this process, never its database connection string.

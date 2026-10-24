@@ -44,6 +44,34 @@ test('the admin bar is a labelled region, the page keeps one banner and the acco
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 
+test('Logi operations stay primary and historical tools remain keyboard accessible in both languages', async ({ context, page }) => {
+  test.setTimeout(90_000);
+  await signInAs(context, { roles: ['administrator'] });
+  for (const locale of ['cs', 'en']) {
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/${locale}/admin`);
+      await expect(page.getByTestId('admin-logi-operations')).toBeVisible();
+      const nav = page.getByTestId('admin-nav');
+      for (const key of ['matches', 'tournaments', 'members']) await expect(nav.locator(`[data-admin-nav="${key}"]`)).toHaveCount(0);
+      const archiveNav = page.getByTestId('admin-archive-nav');
+      await expect(archiveNav.locator('[data-admin-nav="matches"]')).toBeHidden();
+      await archiveNav.locator('summary').focus();
+      await page.keyboard.press('Enter');
+      await expect(archiveNav.locator('[data-admin-nav="matches"]')).toBeVisible();
+      await archiveNav.locator('[data-admin-nav="matches"]').click();
+      await expect(page).toHaveURL(new RegExp(`/${locale}/admin/matches$`));
+      await expect(page.getByTestId('admin-logi-operations')).toBeVisible();
+      const archive = page.getByTestId('admin-match-archive');
+      await expect(archive.getByRole('table')).toBeHidden();
+      await archive.locator('summary').focus();
+      await page.keyboard.press('Enter');
+      await expect(archive.getByRole('table')).toBeVisible();
+      await expectNoHorizontalOverflow(page);
+    }
+  }
+});
+
 test('the media library fits a phone with two cards per row', async ({ context, page }) => {
   await signInAs(context, { roles: ['administrator'] });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -59,7 +87,8 @@ test('the media library fits a phone with two cards per row', async ({ context, 
 async function height(page: Page, selector: string): Promise<number> {
   const box = await page.locator(selector).first().boundingBox();
   expect(box, selector).not.toBeNull();
-  return box!.height;
+  // Chromium can report 43.99993896484375 for a computed 44px target after scrolling.
+  return Math.round(box!.height * 100) / 100;
 }
 
 test('phone administration controls are 44 px touch targets', async ({ context, page }) => {
@@ -192,6 +221,8 @@ test('wide admin tables fade their trailing edge at 1024 px and the Logi pages c
   await expect(frame).toHaveAttribute('data-scroll-edges', /^(end|both)$/);
   await region.evaluate((element) => element.scrollTo({ left: element.scrollWidth }));
   await expect(frame).toHaveAttribute('data-scroll-edges', 'start');
+  // The secondary archive navigation adds vertical content above the table.
+  await page.getByTestId('row-actions').first().scrollIntoViewIfNeeded();
   await expect(page.getByTestId('row-actions').first()).toBeInViewport();
 
   await page.goto('/cs/admin/matches/logi');

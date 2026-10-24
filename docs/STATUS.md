@@ -1,5 +1,60 @@
 # Current status
 
+## Unified Logi public website — 2026-10-24
+
+Branch `feat/unified-logi-web` extends main `9b6ffd78` with one public match
+browser across the community, HLL and Wardogs: common search, chronological ordering,
+counts and pagination. Explicit Logi/archive bindings suppress duplicate rows while
+retaining historical URLs, recaps and rounds. Their details show one current result.
+Both game homes and the primary hub use the same actual next-match selection.
+The normal member directory includes consented, exactly linked public match lineups
+from both games, without publishing private directory or attendance data.
+
+Server overviews now read current Logi collections with short scoped caches instead
+of waiting for ten-minute reconciliation. An independently authorized Warcon live
+observation can enrich the Wardogs home/browser/polling overview; elapsed time is
+never relabelled as remaining time. The scoped HLL live adapter is implemented with
+default-private player publication. Administration prioritizes Logi operations and
+website editorial/configuration tools; historical editors and consent controls remain
+secondary and server-authorized. No SQL migration or Logi source change is needed.
+
+Local checks: frozen install, foundation, 176 tooling tests, lint, types, production
+build, **1,292 unit**, **529 PostgreSQL integration**, **272 ordinary browser** tests
+(166 opt-in capture/media cases skipped), and **17 connected browser** scenarios.
+The [evidence record](evidence/unified-logi-web-2026-10-24/README.md) contains inspected
+CS/EN desktop/mobile screenshots, reproduction commands and exact verification limits.
+PR-head hosted checks remain separate from these local results.
+
+Hosted CI on `575a67e` passed through image startup/rollback/restore checks, then
+stopped at four fixable HIGH/CRITICAL Next.js advisories. The follow-up pins Next.js
+and its ESLint configuration to 16.4.1 without suppressing the security gate. Frozen
+install, lint, types, 1,292 unit tests, 529 PostgreSQL tests and build passed again
+locally. The PR carries the latest-head CI result and retained failure evidence.
+The Windows standalone follow-up explicitly traces Sharp's sibling libvips DLLs;
+the new Turbopack trace had omitted them and broken social-image responses.
+CI on `16f3c00` passed the security gate, 272 browser cases and mobile budgets, then
+exposed an auth-secret mismatch in the connected test harness. The suite now uses
+the shared environment helper on both sides; all 17 connected cases passed locally
+with the non-default CI ephemeral secret. Product auth and assertions are unchanged.
+
+Read-only hosted checks still observed production source `9b6ffd78` healthy, with
+public liveness/readiness and canonical HLL/WDG routes returning 200. Both configured
+sources already use `https://logibot.tech`; their server/event/member collection reads
+returned 200. HLL generic status changed from stale/unknown to fresh/online across
+the bounded observations. Wardogs generic status remained stale/unknown and its
+Warcon live reader returned unavailable/no status. These are source observations,
+not acceptance of a complete healthy data feed.
+
+**Remaining activation:** HLL still selects direct CRCON, has no published Logi server
+mapping, and the existing HLL data key receives **403** on `hll-live`. Follow the
+[explicit HLL activation requirements](integrations/logi/hll-live.md), preserve consent,
+and prove provider status after recovery. This implementation did not broaden grants,
+change production configuration, publish/deploy an image, access the production
+database or restart the live service. Merge/publication/deployment and final hosted
+acceptance remain separate operations under the repository agreement.
+
+The dated records below describe earlier work and are retained as history.
+
 ## Logi synchronization without a replay log — 2026-10-07
 
 Logi removed its change log on 7 October 2026: every change cursor now answers

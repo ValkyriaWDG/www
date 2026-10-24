@@ -5,7 +5,7 @@
 .date { min-width: 9rem; }
 .identity { min-width: 11rem; }
 .teams { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
-.teams li { display: grid; gap: 0.125rem; }
+.teams li, .teams > span { display: grid; gap: 0.125rem; }
 .teams strong { font-weight: 500; }
 .teams small { font-size: 0.75rem; }
 .result { min-width: 10rem; }

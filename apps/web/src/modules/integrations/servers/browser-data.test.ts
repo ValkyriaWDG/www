@@ -4,14 +4,14 @@ import type { ServerSnapshot } from '../contract';
 import { getServerBrowserData } from './browser';
 import { getWarconServersPublic } from '../logi/readers/warcon';
 import type { WarconServerPublic } from '../logi/readers/public';
-import { getServerLivePlayers } from './live-players-provider';
+import { getLogiHllServerDetail, getServerLivePlayers } from './live-players-provider';
 import { resetServerPresentationCache } from './presentation';
 import { getServerOverview, type ServerOverview } from './provider';
 
 const select = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/db', () => ({ getDb: () => ({ select: () => ({ from: () => ({ where: () => ({ limit: select }) }) }) }) }));
 vi.mock('./provider', () => ({ getServerOverview: vi.fn() }));
-vi.mock('./live-players-provider', () => ({ getServerLivePlayers: vi.fn() }));
+vi.mock('./live-players-provider', () => ({ getServerLivePlayers: vi.fn(), getLogiHllServerDetail: vi.fn() }));
 vi.mock('../logi/readers/warcon', () => ({ getWarconServersPublic: vi.fn() }));
 
 const now = new Date('2026-10-03T12:00:00Z');
@@ -34,6 +34,7 @@ beforeEach(() => {
   resetServerEnvForTests();
   vi.mocked(getServerOverview).mockResolvedValue(overview);
   vi.mocked(getServerLivePlayers).mockResolvedValue(players);
+  vi.mocked(getLogiHllServerDetail).mockResolvedValue(null);
   vi.mocked(getWarconServersPublic).mockImplementation(async (publicIds, recentFor) => publicIds.map((publicId) => warconEntry(publicId, publicId === recentFor)));
   select.mockResolvedValue([{ value: [{ game: 'hll', publicId: 'alpha', published: false }] }]);
 });
@@ -50,6 +51,7 @@ describe('server browser data with the website presentation', () => {
     expect(data.overview).toMatchObject({ state: 'ok', servers: [{ publicId: 'bravo' }] });
     expect(data.livePlayers).toBeNull();
     expect(getServerLivePlayers).not.toHaveBeenCalled();
+    expect(getLogiHllServerDetail).not.toHaveBeenCalled();
   });
 
   it('serves live players for a visible server and none without a selection', async () => {
@@ -69,6 +71,15 @@ describe('server browser data with the website presentation', () => {
   it('never composes Warcon facts for HLL', async () => {
     expect((await getServerBrowserData('hll', 'bravo')).warcon).toBeNull();
     expect(getWarconServersPublic).not.toHaveBeenCalled();
+  });
+
+  it('adds safe selected-server HLL live facts without changing other configured servers', async () => {
+    vi.mocked(getLogiHllServerDetail).mockResolvedValue({
+      status: { map: 'Current map', mode: 'warfare', players: 18, capacity: 100, nextMap: 'Next map', timeRemainingSeconds: 900, score: { allied: 3, axis: 2 }, observedAt: now.toISOString(), freshness: 'fresh' }, players,
+    });
+    const data = await getServerBrowserData('hll', 'bravo');
+    expect(data.overview).toMatchObject({ servers: [{ publicId: 'bravo', map: 'Current map', mode: 'warfare', nextMap: 'Next map', timeRemainingSeconds: 900, score: { allied: 3, axis: 2 } }] });
+    expect(getLogiHllServerDetail).toHaveBeenCalledExactlyOnceWith('bravo', expect.any(Date));
   });
 
   it('follows the presented Wardogs overview: hidden servers get neither live players nor Warcon facts', async () => {

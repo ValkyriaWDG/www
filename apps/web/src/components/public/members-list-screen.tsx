@@ -13,11 +13,14 @@ import { PageMain } from '@/components/shell/page-main';
 import { EmptyState, FilterBar, GameButton, PageHeader, Pagination, SelectionTable, type FilterGroup, type SelectionColumn } from '@/components/ui';
 import { formatNumber } from '@/i18n/date-format';
 import type { AppLocale } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
 import { getDb } from '@/lib/db';
+import { getServerEnv } from '@/lib/env';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
 import { listPublicMembers } from '@/modules/members/queries';
 import type { PublicMember } from '@/modules/members/types';
+import { readPublicLogiRosterDirectory } from '@/modules/integrations/logi-people';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 
 const PAGE_SIZE = 24;
@@ -62,6 +65,9 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
     },
   );
   const filtered = hasMemberFilters(filters);
+  // A shared roster read composes into these same rows. Search, roles, game scope,
+  // totals and paging continue to use only profiles approved for public display.
+  const activity = list?.items.length ? await readPublicLogiRosterDirectory(getDb(), getServerEnv(), { game: effectiveGame }) : [];
 
   const filterGroups: FilterGroup[] = [
     ...(game
@@ -122,6 +128,21 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
         ) : (
           <span className="visually-hidden">{t('list.noGames')}</span>
         ),
+    },
+    {
+      key: 'matches',
+      header: t('list.columns.matches'),
+      cell: (member) => {
+        const matches = activity.filter((row) => row.profileSlug === member.slug).flatMap((row) => row.matches)
+          .sort((left, right) => Date.parse(right.startsAt ?? '1970-01-01') - Date.parse(left.startsAt ?? '1970-01-01') || left.title.localeCompare(right.title));
+        return matches.length ? (
+          <div className={styles.matchActivity}>
+            <span>{t('list.matchCount', { count: matches.length })}</span>
+            {matches.slice(0, 2).map((match) => <Link key={match.href} href={match.href}>{match.title}</Link>)}
+            {matches.length > 2 ? <span>{t('list.moreMatches', { count: matches.length - 2 })}</span> : null}
+          </div>
+        ) : <span>{t('list.noPublicMatches')}</span>;
+      },
     },
   ];
 

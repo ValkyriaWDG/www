@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { LogiOperations } from '@/components/admin/logi-operations';
+import adminStyles from '@/components/admin/admin.module.css';
 import { FilterForm } from '@/components/admin-community/filter-form';
 import { formatDate, formatNumber } from '@/components/admin-community/format';
 import { dayStart, nextDayStart, pickDate, pickEnum, pickPage, pickParam, queryHref, type SearchParams } from '@/components/admin-community/list-query';
@@ -11,7 +13,6 @@ import styles from '@/components/admin-community/admin-community.module.css';
 import { EmptyState, FeedbackNotice, GameButton, PageHeader, Pagination, SelectionTable, StatusBadge } from '@/components/ui';
 import { routing } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
-import { getServerEnv } from '@/lib/env';
 import { adminPageMetadata, requireAdminPage } from '@/modules/auth/admin-guard';
 import { listMatchesForAdmin } from '@/modules/matches/queries';
 import { DEFAULT_MATCH_TIME_ZONE } from '@/modules/matches/time';
@@ -39,7 +40,7 @@ export default async function AdminMatchesPage({ params, searchParams }: PagePro
 
   const t = await getTranslations({ locale, namespace: 'adminCommunity.matches.list' });
   const tc = await getTranslations({ locale, namespace: 'adminCommunity.common' });
-  const logi = await getTranslations({ locale, namespace: 'logi' });
+  const ta = await getTranslations({ locale, namespace: 'admin.archive' });
   const sp = (await searchParams) as SearchParams;
   const filters = {
     q: pickParam(sp, 'q'),
@@ -103,14 +104,16 @@ export default async function AdminMatchesPage({ params, searchParams }: PagePro
         eyebrow={t('eyebrow')}
         title={t('title')}
         description={t('description')}
-        actions={
+      />
+      <LogiOperations locale={locale} actor={access.principal} />
+      <details className={adminStyles.archive} open={anyFilter || page > 1 || deleted || loadFailed} data-testid="admin-match-archive">
+        <summary>{ta('matches')}</summary>
+        <div className={adminStyles.archiveBody}>
+          <p>{ta('description')}</p>
           <GameButton href="/admin/matches/new" intent="primary" size="lg" data-action="new-match">
             {t('newMatch')}
           </GameButton>
-        }
-      />
       {deleted ? <FeedbackNotice kind="success">{t('deletedNotice')}</FeedbackNotice> : null}
-      {getServerEnv().LOGI_EVENT_WRITE_ENABLED ? <GameButton href="/admin/matches/logi" intent="secondary">{logi('title')}</GameButton> : null}
       <FilterForm
         action={PATH}
         label={t('filters.label')}
@@ -213,6 +216,8 @@ export default async function AdminMatchesPage({ params, searchParams }: PagePro
           <Pagination page={result.page} pageCount={result.pageCount} hrefForPage={(value) => queryHref(PATH, { ...current, page: value > 1 ? value : undefined })} />
         </>
       ) : null}
+        </div>
+      </details>
     </div>
   );
 }

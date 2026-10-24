@@ -16,8 +16,8 @@
       "results": "Výsledky"
     },
     "viewTab": "{label} ({formatted})",
-    "searchLabel": "Hledat soupeře a soutěže",
-    "searchPlaceholder": "Soupeř nebo soutěž",
+    "searchLabel": "Hledat zápas, tým nebo soutěž",
+    "searchPlaceholder": "Zápas, tým nebo soutěž",
     "gameGroup": "Hra",
     "all": "Vše",
     "resultCount": "{count, plural, one {# zápas} few {# zápasy} many {# zápasu} other {# zápasů}}",

@@ -2,6 +2,8 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import styles from '@/components/admin/admin.module.css';
+import { groupAdminModules } from '@/components/admin/admin-workflows';
+import { LogiOperations } from '@/components/admin/logi-operations';
 import { GameButton } from '@/components/ui/game-button';
 import { EmptyState, FeedbackNotice, StatusBadge } from '@/components/ui/panels';
 import { formatDate } from '@/i18n/date-format';
@@ -32,7 +34,7 @@ export default async function AdminOverviewPage({ params }: PageProps<'/[locale]
 
   const t = await getTranslations({ locale, namespace: 'admin.overview' });
   const tEditorial = await getTranslations({ locale, namespace: 'adminEditorial' });
-  const modules = permittedAdminModules(access.principal);
+  const { website: modules, archive } = groupAdminModules(permittedAdminModules(access.principal));
   let editorial: EditorialOverview | null = null;
   if (can(access.principal, 'content.read_private')) {
     const db = getDb();
@@ -64,6 +66,8 @@ export default async function AdminOverviewPage({ params }: PageProps<'/[locale]
           </GameButton>
         ) : null}
       </div>
+
+      <LogiOperations locale={locale} actor={access.principal} />
 
       {editorial && 'error' in editorial ? (
         <FeedbackNotice kind="error" title={t('items.loadFailed')} live={false} />
@@ -131,12 +135,12 @@ export default async function AdminOverviewPage({ params }: PageProps<'/[locale]
         </div>
       ) : null}
 
-      <h2 className={styles.eyebrow} style={{ marginTop: 'var(--space-3)' }}>
+      {modules.length ? <h2 className={styles.eyebrow} style={{ marginTop: 'var(--space-3)' }}>
         {t('modulesTitle')}
-      </h2>
-      {modules.length === 0 ? (
+      </h2> : null}
+      {modules.length === 0 && archive.length === 0 ? (
         <EmptyState title={t('empty')} />
-      ) : (
+      ) : modules.length ? (
         <ul className={styles.moduleGrid} data-testid="admin-modules">
           {modules.map((module) => (
             <li key={module.key} data-testid={`admin-module-${module.key}`}>
@@ -147,7 +151,21 @@ export default async function AdminOverviewPage({ params }: PageProps<'/[locale]
             </li>
           ))}
         </ul>
-      )}
+      ) : null}
+      {archive.length ? (
+        <details className={styles.archive} data-testid="admin-archive-modules">
+          <summary>{t('archiveTitle')}</summary>
+          <p className={styles.muted}>{t('archiveDescription')}</p>
+          <ul className={styles.itemList}>
+            {archive.map((module) => (
+              <li key={module.key} data-testid={`admin-module-${module.key}`}>
+                <Link className={styles.textLink} href={module.path}>{t(`modules.${module.key}.title`)}</Link>
+                <span className={`${styles.small} ${styles.muted}`}>{t(`modules.${module.key}.description`)}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
     </section>
   );
 }

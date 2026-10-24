@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { LogiOperations } from '@/components/admin/logi-operations';
+import adminStyles from '@/components/admin/admin.module.css';
 import { formatDate } from '@/components/admin-community/format';
 import { pickEnum, pickPage, pickParam, queryHref, type SearchParams } from '@/components/admin-community/list-query';
 import { PROFILE_STATE_KIND } from '@/components/admin-community/status';
@@ -37,6 +39,7 @@ export default async function AdminMembersPage({ params, searchParams }: PagePro
   const t = await getTranslations({ locale, namespace: 'adminCommunity.members.list' });
   const tc = await getTranslations({ locale, namespace: 'adminCommunity.common' });
   const tp = await getTranslations({ locale, namespace: 'logiPeople' });
+  const ta = await getTranslations({ locale, namespace: 'admin.archive' });
   const sp = (await searchParams) as SearchParams;
   const filters = { q: pickParam(sp, 'q'), state: pickEnum(sp, 'state', PROFILE_STATES) };
   const page = pickPage(sp);
@@ -58,12 +61,17 @@ export default async function AdminMembersPage({ params, searchParams }: PagePro
         eyebrow={t('eyebrow')}
         title={t('title')}
         description={t('description')}
-        actions={
+      />
+      <LogiOperations locale={locale} actor={access.principal} />
+      <details className={adminStyles.archive} open={anyFilter || page > 1 || loadFailed} data-testid="admin-member-publication">
+        <summary>{ta('members')}</summary>
+        <div className={adminStyles.archiveBody}>
+          <p>{ta('membersDescription')}</p>
+          <div className={styles.toolbarRow}>
           <><GameButton href="/admin/members/logi">{tp('linkTitle')}</GameButton><GameButton href="/admin/members/new" intent="primary" size="lg" data-action="new-member">
             {t('newMember')}
           </GameButton></>
-        }
-      />
+          </div>
       <FilterForm
         action={PATH}
         label={t('filters.label')}
@@ -143,6 +151,8 @@ export default async function AdminMembersPage({ params, searchParams }: PagePro
           <Pagination page={result.page} pageCount={result.pageCount} hrefForPage={(value) => queryHref(PATH, { ...filters, page: value > 1 ? value : undefined })} />
         </>
       ) : null}
+        </div>
+      </details>
     </div>
   );
 }

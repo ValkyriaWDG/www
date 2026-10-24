@@ -23,6 +23,9 @@ test('editor creates a profile, is refused without consent, records consent, pub
 
   await page.goto('/cs/admin/members');
   await expect(page.getByRole('heading', { level: 1, name: 'Profily členů' })).toBeVisible();
+  await expect(page.getByTestId('admin-logi-operations')).toBeVisible();
+  await expect(page.locator('[data-action="new-member"]')).toBeHidden();
+  await page.getByTestId('admin-member-publication').locator('summary').click();
   await page.getByRole('link', { name: 'Nový profil' }).click();
   await page.getByLabel(/^Zobrazované jméno/).fill(`  ${displayName}  `);
   await page.getByRole('checkbox', { name: 'Wardogs' }).check();

@@ -109,6 +109,20 @@
   font-size: var(--text-small);
 }
 
+.archiveLink { position: relative; z-index: 2; color: var(--color-accent-strong); padding-block: var(--space-2); }
+
+/* One readable row for every source; complete multi-faction results stay visible. */
+@media (max-width: 40rem) {
+  .table table, .table tbody { display: block; width: 100%; min-width: 0; }
+  .table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-block: var(--space-2); }
+  .table tbody th, .table tbody td { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+  .table tbody th { grid-column: 1 / -1; order: -1; }
+  .table tbody td::before { content: attr(data-label); display: block; margin-block-end: var(--space-1); color: var(--color-text-muted); font-family: var(--font-display); font-size: var(--text-meta); }
+  .table td[data-column='result'] { grid-column: 1 / -1; }
+  .table [class*='date'], .table [class*='identity'], .table [class*='result'] { min-width: 0; }
+}
+
 /* Detail route: the list shows the match's view; mark that tab visually (it is not the current page). */
 .browser[data-mode='detail'][data-view='upcoming'] .toolbar nav li:nth-child(1) a,
 .browser[data-mode='detail'][data-view='results'] .toolbar nav li:nth-child(2) a {

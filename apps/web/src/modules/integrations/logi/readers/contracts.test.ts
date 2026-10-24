@@ -17,7 +17,19 @@ describe('closed League read contract (producer v0.12)', () => {
     expect(leagueReadEnvelopeSchema.safeParse({ data: leagueFixture.stale }).success).toBe(true);
   });
 
-  it('rejects unknown fields, a non-null result, a foreign parser version and extra envelope keys', () => {
+  it('accepts current producer League placements without accepting invalid or duplicate teams', () => {
+    const snapshot = leagueFixture.stale.snapshot;
+    const withResults = (results: unknown) => ({ ...leagueFixture.stale, snapshot: { ...snapshot, results } });
+    expect(leagueReadSchema.parse(withResults({ placements: [{ place: 1, teamCode: 'VLK' }, { place: 1, teamCode: 'OTHER' }], confirmed: true })).snapshot?.results).toEqual({ placements: [{ place: 1, teamCode: 'VLK' }, { place: 1, teamCode: 'OTHER' }], confirmed: true });
+    for (const results of [
+      { placements: [], confirmed: true },
+      { placements: [{ place: 0, teamCode: 'VLK' }], confirmed: true },
+      { placements: [{ place: 1, teamCode: 'VLK' }, { place: 2, teamCode: 'VLK' }], confirmed: true },
+      { placements: [{ place: 1, teamCode: 'VLK', privateNote: 'hidden' }], confirmed: true },
+    ]) expect(leagueReadSchema.safeParse(withResults(results)).success).toBe(false);
+  });
+
+  it('rejects unknown fields, a malformed result, a foreign parser version and extra envelope keys', () => {
     const snapshot = leagueFixture.stale.snapshot;
     expect(leagueReadSchema.safeParse({ ...leagueFixture.stale, snapshot: { ...snapshot, adminNote: 'private' } }).success).toBe(false);
     expect(leagueReadSchema.safeParse({ ...leagueFixture.stale, snapshot: { ...snapshot, results: { placements: [] } } }).success).toBe(false);

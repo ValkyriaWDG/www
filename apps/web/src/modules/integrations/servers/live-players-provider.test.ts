@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { resetServerEnvForTests } from '@/lib/env';
 import { getServerLivePlayers, observeLivePlayers, resetLivePlayersForTests } from './live-players-provider';
 
@@ -6,7 +6,7 @@ const now = new Date('2026-09-29T12:00:00Z');
 const server = { publicId: 'alpha', name: 'Alpha', baseUrl: 'https://one.example.org', address: null, statsUrl: null };
 const body = (time = now, stats: unknown[] = [{ player: '[SYN] Alpha', team: { side: 'axis' }, kills: 3 }], refresh = 15) => ({ result: { snapshot_timestamp: time.getTime() / 1000, stats, refresh_interval_sec: refresh } });
 
-afterEach(() => { resetLivePlayersForTests(); delete process.env.SERVER_STATUS_SOURCE; delete process.env.HLL_SERVER_SOURCES_JSON; resetServerEnvForTests(); });
+afterEach(() => { resetLivePlayersForTests(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); delete process.env.SERVER_STATUS_SOURCE; delete process.env.HLL_SERVER_SOURCES_JSON; resetServerEnvForTests(); });
 
 describe('live player shared cache', () => {
   it('deduplicates in-flight requests and reuses success for at least thirty seconds', async () => {
@@ -65,5 +65,20 @@ describe('live player shared cache', () => {
     resetServerEnvForTests();
     expect(await getServerLivePlayers('hll', 'https://untrusted.invalid', now)).toMatchObject({ state: 'not_configured', players: [] });
     expect(await getServerLivePlayers('wardogs', 'alpha', now)).toMatchObject({ state: 'not_configured', players: [] });
+  });
+
+  it('does not contact Logi for player names without explicit per-server publication', async () => {
+    vi.stubEnv('SERVER_STATUS_SOURCE', 'logi');
+    vi.stubEnv('LOGI_DATA_API_KEY_HLL', 'synthetic-restricted-data-key');
+    vi.stubEnv('LOGI_SOURCES_JSON', JSON.stringify([{
+      sourceInstanceId: 'test-source', origin: 'https://logi.example.test', guildId: '910000000000000001', gameId: 'hell_let_loose',
+      publicServers: [{ connectionId: 'hll-one', publicId: 'alpha', name: 'Alpha', published: true, address: null, statsUrl: null }],
+    }]));
+    resetServerEnvForTests();
+    const fetcher = vi.fn();
+    vi.stubGlobal('fetch', fetcher);
+    expect(await getServerLivePlayers('hll', 'alpha', now)).toMatchObject({ state: 'not_configured', players: [] });
+    expect(await getServerLivePlayers('hll', 'foreign', now)).toMatchObject({ state: 'not_configured', players: [] });
+    expect(fetcher).not.toHaveBeenCalled();
   });
 });

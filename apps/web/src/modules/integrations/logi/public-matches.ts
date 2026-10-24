@@ -26,24 +26,28 @@ function identity(event: PublicLogiEvent): string {
 const folded = (value: string) => value.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
 
 /** One filter/order/page rule for rows, counts and next-match callers. Input is already publication-scoped. */
-export function queryPublicLogiMatches(events: readonly PublicLogiEvent[], options: {
+export function publicLogiMatchRows(events: readonly PublicLogiEvent[], options: {
   view: PublicLogiMatchView;
   q?: string;
-  page?: number;
-  pageSize?: number;
   now?: Date;
 }) {
   const now = options.now ?? new Date();
-  const page = Number.isSafeInteger(options.page) && options.page! >= 1 && options.page! <= 1000 ? options.page! : 1;
-  const pageSize = Number.isSafeInteger(options.pageSize) && options.pageSize! >= 1 && options.pageSize! <= 100 ? options.pageSize! : PUBLIC_LOGI_MATCH_PAGE_SIZE;
   const search = folded(options.q?.trim() ?? '');
   const direction = options.view === 'results' ? -1 : 1;
-  const rows = events.filter((event) => event.kind === 'match' && publicLogiMatchView(event, now) === options.view && (!search || folded([
+  return events.filter((event) => event.kind === 'match' && publicLogiMatchView(event, now) === options.view && (!search || folded([
     event.title,
     event.archive?.opponentName ?? '', event.archive?.opponentShortCode ?? '', event.archive?.competitionName ?? '',
     ...event.teams.flatMap((team) => [team.name, team.shortCode ?? '', team.side ?? '']),
     ...event.result.participants.map((participant) => participant.label),
   ].join(' ')).includes(search))).sort((left, right) => direction * (Date.parse(publicLogiMatchTime(left).at) - Date.parse(publicLogiMatchTime(right).at)) || identity(left).localeCompare(identity(right)));
+}
+
+export function queryPublicLogiMatches(events: readonly PublicLogiEvent[], options: {
+  view: PublicLogiMatchView; q?: string; page?: number; pageSize?: number; now?: Date;
+}) {
+  const page = Number.isSafeInteger(options.page) && options.page! >= 1 && options.page! <= 1000 ? options.page! : 1;
+  const pageSize = Number.isSafeInteger(options.pageSize) && options.pageSize! >= 1 && options.pageSize! <= 100 ? options.pageSize! : PUBLIC_LOGI_MATCH_PAGE_SIZE;
+  const rows = publicLogiMatchRows(events, options);
   return { items: rows.slice((page - 1) * pageSize, page * pageSize), total: rows.length, page, pageCount: Math.max(1, Math.ceil(rows.length / pageSize)) };
 }
 

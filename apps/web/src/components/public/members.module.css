@@ -104,6 +104,26 @@
   line-clamp: 2;
 }
 
+.matchActivity {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 24rem;
+  overflow-wrap: anywhere;
+}
+
+.matchActivity > span {
+  color: var(--color-text-muted);
+  font-size: var(--text-meta);
+}
+
+/* Match links must remain independently operable above the stretched profile link. */
+.matchActivity a {
+  position: relative;
+  z-index: 1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .avatar {
   flex: none;
   display: grid;

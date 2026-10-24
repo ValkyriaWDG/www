@@ -12,6 +12,7 @@ import { getLatestNewsTeaser } from '@/modules/content/public';
 import type { NewsSummary } from '@/modules/content/types';
 import { GAME_ROUTES, gameRouteFromDb, type GameRoute } from '@/modules/games/registry';
 import { canonicalNewsPath, gamePath } from '@/modules/games/routes';
+import { getNextWebsiteMatch } from '@/modules/matches/public-next-match';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 import styles from './hub.module.css';
 
@@ -33,11 +34,12 @@ async function loadLatestNews(locale: AppLocale): Promise<NewsSummary | null> {
  * published post of any scope. Game artwork is used only for its own game.
  */
 export async function CommunityHub({ locale }: { locale: AppLocale }) {
-  const [t, games, links, latest] = await Promise.all([
+  const [t, games, links, latest, upcoming] = await Promise.all([
     getTranslations({ locale, namespace: 'games.hub' }),
     getTranslations({ locale, namespace: 'games' }),
     getShellLinks(),
     loadLatestNews(locale),
+    Promise.all(GAME_ROUTES.map(async (game) => ({ game, match: await getNextWebsiteMatch(game).catch(() => null) }))),
   ]);
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const common = await getTranslations({ locale, namespace: 'home.cta' });
@@ -80,6 +82,13 @@ export async function CommunityHub({ locale }: { locale: AppLocale }) {
                   <span className={styles.gameCta}>{t(`cards.${game}.cta`)}</span>
                 </span>
               </Link>
+              {upcoming.filter((row) => row.game === game && row.match).map(({ match }) => match ? (
+                <p key={match.href} className={styles.nextMatch} data-hub-next-match={game}>
+                  <span className={styles.latestMeta}>{games('hll.strip.nextMatch')}</span>
+                  <Link href={match.href} className={styles.latestLink}>{match.title ?? games('hll.strip.versus', { opponent: match.opponent })}</Link>
+                  <time className={styles.latestMeta} dateTime={match.startsAt}>{formatDate(match.startsAt, locale, 'dateTimeZone')}</time>
+                </p>
+              ) : null)}
             </li>
           ))}
         </ul>
