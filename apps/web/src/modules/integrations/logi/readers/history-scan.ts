@@ -62,6 +62,8 @@ async function scanOnce(reader: HistoryReader, filters: HistoryReadFilters, sign
   let cursor: string | null = null;
   let revision: string | undefined;
   let lastCollectedAt: string | null = null;
+  let gameId: HistoryRecord['gameId'] | undefined;
+  let guildId: string | undefined;
   for (let pageNumber = 0; pageNumber < maxPages; pageNumber += 1) {
     if (signal.aborted) throw new HistoryScanError('aborted');
     const page: HistoryPage = await reader.readPage({ filters, cursor, signal });
@@ -69,6 +71,11 @@ async function scanOnce(reader: HistoryReader, filters: HistoryReadFilters, sign
     revision ??= page.revision;
     if (revision !== page.revision) throw new HistoryScanError('revision_mismatch');
     if (page.items.some((record) => compareHistoryRevisions(record.revision, page.revision) > 0)) throw new HistoryScanError('invalid_response');
+    for (const record of page.items) {
+      gameId ??= record.gameId;
+      guildId ??= record.guildId;
+      if (record.sourceId !== filters.sourceId || record.gameId !== gameId || record.guildId !== guildId) throw new HistoryScanError('scope_mismatch');
+    }
     lastCollectedAt = page.lastCollectedAt;
     records.push(...page.items);
     cursor = page.nextCursor;

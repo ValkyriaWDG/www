@@ -54,20 +54,24 @@ test('administrator sees website collector health in Czech and English without c
   await expect(logi).toContainText('Vypnuto');
   await expect(logi.locator('[data-state="healthy"]')).toHaveCount(0);
   await expect(logi).toContainText('zatím žádné doručení');
-  // Wardogs readers: the e2e server runs the labelled synthetic reader source, so both are "configured" without any key.
+  // Game data readers use labelled synthetic sources, so all five are "configured" without keys.
   const readers = logi.locator('[data-logi-readers]');
-  await expect(logi).toContainText('Čtečky Wardogs (League, Warcon)');
+  await expect(logi).toContainText('Čtečky herních dat');
   await expect(readers.locator('[data-reader="league-matches"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="warcon-data"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Wardogs League – náhled zápasu');
   await expect(readers.locator('[data-reader="league-fixtures"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="league-fixtures"]')).toContainText(/Wardogs League – sledovaná utkání.*Nastaveno.*syntetický zdroj/s);
   await expect(readers.locator('[data-reader="warcon-data"]')).toContainText(/Warcon.*Nastaveno/s);
-  // Fourth row: the retained Warcon game history, also served by the synthetic source without a key.
-  await expect(readers.locator('[data-reader="server-game-history"]')).toHaveAttribute('data-state', 'configured');
-  await expect(readers.locator('[data-reader="server-game-history"]')).toContainText(/Warcon – historie her serveru.*Nastaveno.*syntetický zdroj/s);
-  await expect(readers.locator('[data-reader]')).toHaveCount(4);
-  await expect(logi).toContainText('uchované dohrané hry Warcon');
+  // Both games have independent retained-history rows, also served without keys.
+  for (const [game, label] of [['hll', 'Hell Let Loose'], ['wardogs', 'Wardogs']] as const) {
+    const history = readers.locator(`[data-reader="server-game-history"][data-reader-game="${game}"]`);
+    await expect(history).toHaveAttribute('data-state', 'configured');
+    await expect(history).toContainText(label);
+    await expect(history).toContainText(/Historie her serveru.*Nastaveno.*syntetický zdroj/s);
+  }
+  await expect(readers.locator('[data-reader]')).toHaveCount(5);
+  await expect(logi).toContainText('uchované dohrané hry serverů Hell Let Loose a Wardogs');
   // The synthetic source is reported as a code and rendered in the interface language.
   await expect(readers).toContainText('syntetický zdroj – jen testy a kontrolní snímky');
   await expect(readers).not.toContainText('synthetic-fixture');
@@ -93,13 +97,22 @@ test('administrator sees website collector health in Czech and English without c
   await page.goto('/en/admin/integrations');
   await expect(page.getByRole('heading', { level: 1, name: 'Integrations and servers' })).toBeVisible();
   await expect(page.locator('[data-integrations-logi]').getByText('No Logi source is configured.')).toBeVisible();
-  await expect(page.locator('[data-integrations-logi]')).toContainText('Wardogs readers (League, Warcon)');
+  await expect(page.locator('[data-integrations-logi]')).toContainText('Game data readers');
   await expect(page.locator('[data-logi-readers] [data-reader="league-matches"]')).toContainText(/Wardogs League – match preview.*Configured/s);
   await expect(page.locator('[data-logi-readers] [data-reader="league-fixtures"]')).toContainText(/Wardogs League – tracked fixtures.*Configured.*synthetic source/s);
-  await expect(page.locator('[data-logi-readers] [data-reader="server-game-history"]')).toContainText(/Warcon – server game history.*Configured.*synthetic source/s);
-  await expect(page.locator('[data-logi-readers] [data-reader]')).toHaveCount(4);
+  for (const [game, label] of [['hll', 'Hell Let Loose'], ['wardogs', 'Wardogs']] as const) {
+    const history = page.locator(`[data-logi-readers] [data-reader="server-game-history"][data-reader-game="${game}"]`);
+    await expect(history).toHaveAttribute('data-state', 'configured');
+    await expect(history).toContainText(label);
+    await expect(history).toContainText(/Server game history.*Configured.*synthetic source/s);
+  }
+  await expect(page.locator('[data-logi-readers] [data-reader]')).toHaveCount(5);
+  await expect(page.locator('[data-integrations-logi]')).toContainText('retained completed server games for Hell Let Loose and Wardogs');
+  await expect(page.locator('[data-logi-readers]')).toContainText('synthetic source (tests and review captures only)');
+  await expect(page.locator('[data-logi-readers]')).not.toContainText('synthetic-fixture');
   await expect(page.locator('[data-game-servers="hll"]')).toContainText('Synthetic data');
   await expect(page.locator('[data-integrations-discord]')).toContainText('6 mapped roles');
+  expect(await page.locator('main').innerText()).not.toMatch(/127\.0\.0\.1|https?:\/\/|statsApiKey|baseUrl|e2e-synthetic/i);
   await context.close();
 });
 

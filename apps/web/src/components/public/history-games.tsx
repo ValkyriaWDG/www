@@ -5,6 +5,7 @@ import { ScrollRegion } from '@/components/ui/scroll-region';
 import { formatNumber, formatWeekdayDateTime } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
+import type { GameRoute } from '@/modules/games/registry';
 import type { HistoryGamePlayerPublic, HistoryGamePublic, HistoryGamesPublic } from '@/modules/integrations/logi/readers/history-public';
 import { FactionSwatch } from './history-factions';
 import { formatPlaytime, historyHref, type HistoryQuery } from './history-query';
@@ -30,7 +31,7 @@ function Dash({ label }: { label: string }) {
  * game's players grouped by faction (result, playtime, kills, deaths, cash delta and the
  * feed-only metrics) when the source publishes players, else the faction scores only.
  */
-export async function GameHistoryList({ games, locale, query, base }: { games: HistoryGamesPublic; locale: AppLocale; query: HistoryQuery; base: string }) {
+export async function GameHistoryList({ games, locale, query, base, game: gameRoute = 'wardogs' }: { games: HistoryGamesPublic; locale: AppLocale; query: HistoryQuery; base: string; game?: GameRoute }) {
   const [t, tPlayers, tA11y] = await Promise.all([
     getTranslations({ locale, namespace: 'history.games' }),
     getTranslations({ locale, namespace: 'history.players' }),
@@ -41,8 +42,9 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
   const pageCount = Math.max(1, Math.ceil(games.total / games.pageSize));
   const from = games.games.length === 0 ? 0 : (games.page - 1) * games.pageSize + 1;
   const to = games.games.length === 0 ? 0 : from + games.games.length - 1;
+  const playerMetrics = gameRoute === 'hll' ? ['kills', 'deaths', 'combat', 'offense', 'defense', 'support'] as const : PLAYER_METRICS;
 
-  const metric = (player: HistoryGamePlayerPublic, key: (typeof PLAYER_METRICS)[number]) => {
+  const metric = (player: HistoryGamePlayerPublic, key: (typeof playerMetrics)[number]) => {
     const value = player[key];
     if (value === null) return <Dash label={unknown} />;
     if (key === 'seconds') return formatPlaytime(value) ?? <Dash label={unknown} />;
@@ -64,7 +66,7 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
       {game.factions.map((faction) => (
         <li key={faction.name}>
           <FactionSwatch colorHex={faction.colorHex} />
-          <span className={styles.scoreName}>{faction.name}</span>
+          <span className={styles.scoreName}>{gameRoute === 'hll' && locale === 'cs' ? faction.name === 'Allies' ? 'Spojenci' : faction.name === 'Axis' ? 'Osa' : faction.name : faction.name}</span>
           <span className={styles.scoreValue}>{faction.score === null ? <Dash label={t('scoreUnknown')} /> : number(faction.score)}</span>
         </li>
       ))}
@@ -93,7 +95,7 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
               <div key={group.name ?? '-'} className={styles.factionGroup} data-history-game-faction={group.name ?? ''}>
                 <h3 className={styles.factionGroupTitle}>
                   <FactionSwatch colorHex={group.colorHex} />
-                  {group.name ?? t('noFaction')}
+                  {gameRoute === 'hll' ? t('players', { count: number(group.players.length) }) : group.name ?? t('noFaction')}
                 </h3>
                 <ScrollRegion label={tA11y('scrollRegion', { label: caption })} className={matchStyles.rounds} data-sticky-column="">
                   <table>
@@ -101,15 +103,8 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
                     <thead>
                       <tr>
                         <th scope="col">{t('columns.player')}</th>
-                        <th scope="col">{t('columns.result')}</th>
-                        <th scope="col">{t('columns.playtime')}</th>
-                        <th scope="col">{t('columns.kills')}</th>
-                        <th scope="col">{t('columns.deaths')}</th>
-                        <th scope="col">{t('columns.cashDelta')}</th>
-                        <th scope="col">{t('columns.headshots')}</th>
-                        <th scope="col">{t('columns.teamKills')}</th>
-                        <th scope="col">{t('columns.suicides')}</th>
-                        <th scope="col">{t('columns.vehicleKills')}</th>
+                        {gameRoute === 'wardogs' ? <th scope="col">{t('columns.result')}</th> : null}
+                        {playerMetrics.map((key) => <th key={key} scope="col">{t(`columns.${key === 'seconds' ? 'playtime' : key}`)}</th>)}
                       </tr>
                     </thead>
                     <tbody>
@@ -121,8 +116,8 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
                               <span className={styles.platform}>{tPlayers(`platform.${player.platform}`)}</span>
                             </span>
                           </th>
-                          <td>{t(`result.${player.result ?? 'unknown'}`)}</td>
-                          {PLAYER_METRICS.map((key) => (
+                          {gameRoute === 'wardogs' ? <td>{t(`result.${player.result ?? 'unknown'}`)}</td> : null}
+                          {playerMetrics.map((key) => (
                             <td key={key} data-numeric="">{metric(player, key)}</td>
                           ))}
                         </tr>
@@ -140,7 +135,7 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
 
   return (
     <div className={styles.section} data-history-games="">
-      <SectionFrame title={t('title')} titleAs="h2" titleId="history-games-title" description={<p className={styles.note}>{t('description')}</p>}>
+      <SectionFrame title={t('title')} titleAs="h2" titleId="history-games-title" description={<p className={styles.note}>{t(gameRoute === 'hll' ? 'hllDescription' : 'description')}</p>}>
         {games.games.length === 0 ? (
           <p className={styles.note} data-history-games-empty="page">
             {t('pageEmpty')}{' '}
@@ -159,7 +154,7 @@ export async function GameHistoryList({ games, locale, query, base }: { games: H
                       <span className={styles.gameMap}>{mapLine}</span>
                       <span className={styles.gameBadges}>
                         <StatusBadge kind={OUTCOME_KIND[game.outcome]}>{game.outcome === 'decided' ? t('outcome.decided', { winner: game.winner ?? '—' }) : t(`outcome.${game.outcome}`)}</StatusBadge>
-                        {game.hasFeed ? null : <StatusBadge kind="warning" icon={false}>{t('noFeed')}</StatusBadge>}
+                        {gameRoute === 'hll' || game.hasFeed ? null : <StatusBadge kind="warning" icon={false}>{t('noFeed')}</StatusBadge>}
                       </span>
                     </div>
                     {scores(game)}

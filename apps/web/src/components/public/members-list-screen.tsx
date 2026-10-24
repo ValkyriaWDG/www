@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { GameSwitchNotice } from '@/components/games/switch-notice';
 import { ListLoadError } from '@/components/public/list-load-error';
 import { MemberAvatar } from '@/components/public/member-avatar';
+import { PublicPlayerDirectoryNotice } from '@/components/public/public-player-directory-notice';
 import styles from '@/components/public/members.module.css';
 import { bilingualAlternates } from '@/components/public/metadata';
 import { buildHref, hasMemberFilters, membersListHref, parseMemberFilters, type MemberFilters, type RawSearchParams } from '@/components/public/query';
@@ -18,9 +19,7 @@ import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
-import { listPublicMembers } from '@/modules/members/queries';
-import type { PublicMember } from '@/modules/members/types';
-import { readPublicLogiRosterDirectory } from '@/modules/integrations/logi-people';
+import { listPublicPlayerDirectory, type PublicPlayerDirectoryRow } from '@/modules/members/public-directory';
 import emblem from '../../../public/brand/valkyria-emblem-733.webp';
 
 const PAGE_SIZE = 24;
@@ -47,9 +46,9 @@ function profileHref(slug: string, filters: MemberFilters, base: string): string
 }
 
 /**
- * Public member directory (published + consented profiles), reference-12 roster. A game
- * section lists only members with that explicit public affiliation; hidden or
- * non-consenting members are absent from rows and counts in every scope.
+ * One directory of approved personal profiles and owner-published supplied gaming
+ * names. A game section requires that public affiliation; exact editorial withdrawals
+ * still suppress the corresponding source player before filtering and counting.
  */
 export async function MembersListScreen({ locale, query, game }: { locale: AppLocale; query: RawSearchParams | undefined; game: GameRoute | null }) {
   const base = sectionBase(game);
@@ -58,16 +57,13 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
   const effectiveGame = game ? GAME_REGISTRY[game].db : filters.game;
   const [t, games] = await Promise.all([getTranslations({ locale, namespace: 'members' }), getTranslations({ locale, namespace: 'games' })]);
   const href = (next: Partial<MemberFilters>) => membersListHref(next, base);
-  const list = await listPublicMembers(getDb(), { game: effectiveGame, role: filters.role, q: filters.q, page: filters.page, pageSize: PAGE_SIZE }).catch(
+  const list = await listPublicPlayerDirectory(getDb(), getServerEnv(), { game: effectiveGame, role: filters.role, q: filters.q, page: filters.page, pageSize: PAGE_SIZE }).catch(
     (error: unknown) => {
       console.error('[members] list query failed', error instanceof Error ? error.name : 'unknown');
       return null;
     },
   );
   const filtered = hasMemberFilters(filters);
-  // A shared roster read composes into these same rows. Search, roles, game scope,
-  // totals and paging continue to use only profiles approved for public display.
-  const activity = list?.items.length ? await readPublicLogiRosterDirectory(getDb(), getServerEnv(), { game: effectiveGame }) : [];
 
   const filterGroups: FilterGroup[] = [
     ...(game
@@ -95,16 +91,16 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
   if (filters.game) hiddenParams.game = filters.game;
   if (filters.role) hiddenParams.role = filters.role;
 
-  const columns: SelectionColumn<PublicMember>[] = [
+  const columns: SelectionColumn<PublicPlayerDirectoryRow>[] = [
     {
       key: 'member',
       header: t('list.columns.member'),
       rowHeader: true,
       cell: (member) => (
         <span className={styles.memberCell}>
-          <MemberAvatar avatar={member.avatar} name={member.displayName} size="sm" />
+          <MemberAvatar avatar={member.avatar} name={member.displayName ?? t('player.unknownName')} size="sm" />
           <span className={styles.memberName} data-member-name="">
-            {member.displayName}
+            {member.displayName ?? t('player.unknownName')}
           </span>
         </span>
       ),
@@ -133,7 +129,7 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
       key: 'matches',
       header: t('list.columns.matches'),
       cell: (member) => {
-        const matches = activity.filter((row) => row.profileSlug === member.slug).flatMap((row) => row.matches)
+        const matches = member.matches
           .sort((left, right) => Date.parse(right.startsAt ?? '1970-01-01') - Date.parse(left.startsAt ?? '1970-01-01') || left.title.localeCompare(right.title));
         return matches.length ? (
           <div className={styles.matchActivity}>
@@ -160,6 +156,7 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
         <ListLoadError message={t('list.loadError')} retryLabel={t('list.retry')} retryHref={href(filters)} />
       ) : (
         <>
+          <PublicPlayerDirectoryNotice locale={locale} availability={list.availability} retryHref={href(filters)} />
           {list.total > 0 || filtered ? (
             <FilterBar
               action={`${base}/members`}
@@ -192,8 +189,8 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
                   captionHidden
                   columns={columns}
                   rows={list.items}
-                  getRowKey={(member) => member.slug}
-                  getRowHref={(member) => profileHref(member.slug, filters, base)}
+                  getRowKey={(member) => member.key}
+                  getRowHref={(member) => member.profileSlug ? profileHref(member.profileSlug, filters, base) : buildHref(`${base}${member.href}`, [['game', filters.game], ['q', filters.q], ['page', filters.page]])}
                   linkColumn="member"
                 />
               </div>
@@ -207,7 +204,7 @@ export async function MembersListScreen({ locale, query, game }: { locale: AppLo
                 </GameButton>
               }
             />
-          ) : filtered ? (
+          ) : list.availability.state === 'partial' || list.availability.state === 'unavailable' ? null : filtered ? (
             <EmptyState
               title={t('list.filteredEmptyTitle')}
               action={

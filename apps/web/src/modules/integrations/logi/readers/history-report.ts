@@ -15,10 +15,10 @@ import { compareHistoryRevisions, HISTORY_MIN_MINUTES_DEFAULT, HISTORY_MIN_MINUT
  * Metrics are summed over known values only with a `knownGames` count, and feed-only
  * metrics count only for games with a feed. Eligibility is a playtime floor that never
  * removes a game from the faction totals. K/D needs known kills and deaths for every
- * game of the player and deaths above zero; win rate excludes unknown results.
+ * game and divides by at least one death, matching Logi; win rate excludes unknown results.
  */
 
-export const HISTORY_METRICS = ['seconds', 'kills', 'deaths', 'cashDelta', 'headshots', 'teamKills', 'suicides', 'vehicleKills'] as const;
+export const HISTORY_METRICS = ['seconds', 'kills', 'deaths', 'cashDelta', 'headshots', 'teamKills', 'suicides', 'vehicleKills', 'combat', 'offense', 'defense', 'support'] as const;
 export type HistoryMetric = (typeof HISTORY_METRICS)[number];
 /** Metrics the provider knows without a feed; the rest are unknown (not zero) in a game without one. */
 export const HISTORY_BASE_METRICS: readonly HistoryMetric[] = ['seconds', 'kills', 'deaths', 'cashDelta'];
@@ -60,13 +60,17 @@ export type HistoryReport = {
 export type HistoryMapCount = { name: string; games: number };
 
 /** Validates every candidate, keeps the highest revision per ID and orders by end time, then ID. */
-export function latestHistoryRecords(input: readonly HistoryRecord[]): HistoryRecord[] {
-  const latest = new Map<string, HistoryRecord>();
+export function latestHistoryRecords<T extends HistoryRecord>(input: readonly T[]): T[] {
+  const latest = new Map<string, T>();
   let guildId: string | undefined;
+  let gameId: HistoryRecord['gameId'] | undefined;
+  let sourceId: string | undefined;
   for (const candidate of input) {
-    const record = historyRecordSchema.parse(candidate);
+    const record = historyRecordSchema.parse(candidate) as T;
     guildId ??= record.guildId;
-    if (record.guildId !== guildId) throw new Error('Mixed history workspace.');
+    gameId ??= record.gameId;
+    sourceId ??= record.sourceId;
+    if (record.guildId !== guildId || record.gameId !== gameId || record.sourceId !== sourceId) throw new Error('Mixed history workspace, game or source.');
     const previous = latest.get(record.id);
     if (!previous || compareHistoryRevisions(record.revision, previous.revision) > 0) latest.set(record.id, record);
   }
@@ -83,8 +87,12 @@ export function aggregateHistory(input: readonly HistoryRecord[], minMinutes: nu
   const factions = new Map<string, HistoryFactionTotal>();
   const players = new Map<string, HistoryPlayer>();
   let feedGames = 0;
-  for (const { session } of records) {
-    const metadata = session.warcon;
+  for (const record of records) {
+    const { session } = record;
+    const metadata = record.gameId === 'wardogs' ? record.session.warcon : {
+      outcome: 'unknown' as const, winner: null, hasFeed: false,
+      factions: [] as { name: string; colorHex: string | null }[],
+    };
     outcomes[metadata.outcome] += 1;
     if (metadata.hasFeed) feedGames += 1;
     for (const side of metadata.factions) {
@@ -111,14 +119,15 @@ export function aggregateHistory(input: readonly HistoryRecord[], minMinutes: nu
       player.matches += 1;
       player.lastSeen = session.endedAt;
       if (fact.name) player.name = fact.name;
-      if (fact.result === 'win') player.wins += 1;
-      else if (fact.result === 'loss') player.losses += 1;
-      else if (fact.result === 'draw') player.draws += 1;
+      const result = record.gameId === 'wardogs' && 'result' in fact ? fact.result : null;
+      if (result === 'win') player.wins += 1;
+      else if (result === 'loss') player.losses += 1;
+      else if (result === 'draw') player.draws += 1;
       else player.unknownResults += 1;
       for (const metric of HISTORY_METRICS) {
         const value = fact.metrics[metric];
         // Feed-only zeros without a feed are unknown, not observed zeros.
-        if (typeof value !== 'number' || (!metadata.hasFeed && !HISTORY_BASE_METRICS.includes(metric))) continue;
+        if (typeof value !== 'number' || (record.gameId === 'wardogs' && !metadata.hasFeed && !HISTORY_BASE_METRICS.includes(metric))) continue;
         player.metrics[metric].value = (player.metrics[metric].value ?? 0) + value;
         player.metrics[metric].knownGames += 1;
       }
@@ -127,9 +136,9 @@ export function aggregateHistory(input: readonly HistoryRecord[], minMinutes: nu
   }
   for (const player of players.values()) {
     const { seconds, kills, deaths } = player.metrics;
-    player.eligible = seconds.value !== null && seconds.value >= minMinutes * 60;
-    player.kd = kills.knownGames === player.matches && deaths.knownGames === player.matches && deaths.value !== null && deaths.value > 0 && kills.value !== null
-      ? kills.value / deaths.value
+    player.eligible = (records[0]?.gameId === 'hell_let_loose' && minMinutes === 0) || (seconds.value !== null && seconds.value >= minMinutes * 60);
+    player.kd = kills.knownGames === player.matches && deaths.knownGames === player.matches && deaths.value !== null && kills.value !== null
+      ? kills.value / Math.max(1, deaths.value)
       : null;
     const decided = player.wins + player.losses + player.draws;
     player.winRate = decided ? player.wins / decided : null;

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Members",
-    "description": "Public profiles of Valkyria clan members who agreed to be listed.",
+    "description": "Valkyria players, supplied game names and published match lineups.",
     "profileDescription": "Public profile of {name} in the Valkyria clan."
   },
   "list": {
@@ -28,17 +28,35 @@
     "noRoles": "No public role",
     "noGames": "No game listed",
     "emptyTitle": "No member profiles have been published yet.",
-    "emptyBody": "Profiles appear here only after a member agrees to publication.",
+    "emptyBody": "Players appear from the published game directory or an approved personal profile.",
     "filteredEmptyTitle": "No results match these filters.",
     "filteredEmptyBody": "Try another game, role or name.",
     "pageEmptyTitle": "This page has no profiles.",
     "firstPage": "Go to the first page",
     "clearFilters": "Clear filters",
     "loadError": "The member profiles could not be loaded.",
+    "sourceUnavailableTitle": "The current player directory is not available.",
+    "sourceUnavailableBody": "Synchronization may be in progress or the game source may be unavailable. This does not mean that the team has no players. Approved personal profiles remain available.",
+    "sourcePartialTitle": "Part of the player directory is not available.",
+    "sourcePartialBody": "Only current available players and approved personal profiles are shown. Another game's synchronization may be in progress or its source may be unavailable; the list and counts may be incomplete.",
     "retry": "Try again",
     "matchCount": "{count, plural, one {# lineup} other {# lineups}}",
     "moreMatches": "{count, plural, one {# more lineup in profile} other {# more lineups in profile}}",
     "noPublicMatches": "No lineups available"
+  },
+  "player": {
+    "title": "Player",
+    "unknownName": "Player without a supplied name",
+    "description": "Supplied display name and published game activity. A lineup records selection for the match; it does not prove gameplay or attendance.",
+    "statisticsMissing": "Complete current player statistics are not available. Missing values are not zero.",
+    "recordedCoverage": "{count, plural, one {# publicly recorded match} other {# publicly recorded matches}} across all teams. Totals cover all available public records for this game in Logi, including matches outside this website.",
+    "recordedMatches": "Recorded matches",
+    "recordedRecent": "Latest matches, up to {count}",
+    "recordedRecentEmpty": "Recent match details are not available.",
+    "recordedMore": "{count, plural, one {# more match} other {# more matches}}",
+    "statisticsTitle": "Player statistics",
+    "unavailableTitle": "Player details are temporarily unavailable",
+    "unavailableBody": "Try reloading this page or return to the player directory."
   },
   "roles": {
     "leader": "Leader",

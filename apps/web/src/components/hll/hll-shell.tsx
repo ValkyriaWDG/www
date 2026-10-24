@@ -20,8 +20,7 @@ import styles from './hll.module.css';
 /** Localized HLL menu destinations in registry order (News, Matches, Servers, …, Join us). */
 export async function getHllMenuItems(): Promise<HllMenuItem[]> {
   const t = await getTranslations('games.hll.menu');
-  // The HLL registry never lists the Wardogs-only retained history; the guard keeps the label lookup typed.
-  return gameMenu('hll').flatMap((item) => (item.section === 'history' ? [] : [{ section: item.section, href: item.href, label: t(item.section) }]));
+  return gameMenu('hll').map((item) => ({ section: item.section, href: item.href, label: t(item.section) }));
 }
 
 /**

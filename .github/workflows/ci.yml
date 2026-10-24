@@ -266,6 +266,24 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+      - name: Verify owner-published gaming profiles and player statistics
+        env:
+          E2E_PUBLIC_PLAYER_FIXTURES: '1'
+          CAPTURE_EVIDENCE: '1'
+          E2E_LOGI_PORT: '3490'
+        run: pnpm --filter @valkyria/web exec playwright test -c playwright.logi.config.ts e2e/logi-public/players.spec.ts
+      - name: Upload public player browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: public-players-browser-${{ github.sha }}
+          path: |
+            apps/web/.local/evidence/public-players
+            apps/web/test-results/logi-public
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
       - name: Verify shipped HLL artwork with an empty video playlist
         env:
           E2E_HLL_EMPTY_MEDIA: '1'

@@ -14,7 +14,7 @@ import { INTEGRATION_CONTRACT_VERSION } from './contract';
 import { configuredLogiSourceBindings, configuredLogiSources, type ConfiguredLogiSource, type LogiIntegrationEnv, type LogiSourcePurpose } from './logi-config';
 import { PUBLIC_REVALIDATION_MAX_AGE_MS } from './logi-public';
 import { logiIntegrationHealthSchema } from './logi/contracts';
-import { READER_RESOURCES, readerCapabilityStates } from './logi/readers/health';
+import { READER_RESOURCES, historyCapabilityState, readerCapabilityStates } from './logi/readers/health';
 import { logiSyncCheckpointSchema } from './logi/sync';
 import { parseCrconConfig } from './servers/crcon';
 import { SYNTHETIC_SERVERS } from './servers/fixtures';
@@ -177,11 +177,12 @@ async function logiSources(db: Executor, env: IntegrationAdminEnv, now: Date): P
 /** Approved Wardogs readers (issue #87 and the retained game history): states and attempt categories only. */
 function readers(env: IntegrationAdminEnv, now: Date): AdminReader[] {
   const states = readerCapabilityStates(env, now);
-  return READER_RESOURCES.map((resource) => {
-    const state = states[resource];
+  const wardogs: AdminReader[] = READER_RESOURCES.map((resource) => {
+    const state = resource === 'server-game-history' ? historyCapabilityState(env, now, 'wardogs') : states[resource];
     const purpose = resource === 'warcon-data' ? 'warcon' : resource === 'server-game-history' ? 'history' : 'league';
-    return { resource, purpose, state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
+    return { game: 'wardogs', resource, purpose, state: state.state, detail: state.detail, approvedConnections: state.approvedConnections, lastAttemptAt: state.lastAttemptAt, lastOutcome: state.lastOutcome };
   });
+  return [...wardogs, { game: 'hll', resource: 'server-game-history', purpose: 'history', ...historyCapabilityState(env, now, 'hell_let_loose') }];
 }
 
 /**

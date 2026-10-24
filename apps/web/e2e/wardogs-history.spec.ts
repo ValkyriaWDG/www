@@ -1,14 +1,16 @@
 import { expect, type Page, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { expectNoHorizontalOverflow, measuredBox } from './support/shell-helpers';
+import { serveSyntheticMedia } from './support/synthetic-video';
 
 /*
  * Retained Warcon server game history (Wardogs) against the labelled synthetic reader
  * source (`LOGI_READERS_SOURCE=synthetic-fixture`, e2e/support/server-env.ts): the
  * `/[locale]/wardogs/history` page with its filters, summary, faction win shares, player
  * rankings and paginated game list in cs/en at 1440 and 390 px, the compact summary on the
- * server detail, the Wardogs menu entry and the absence of the section on HLL pages and
- * the Wardogs home. The synthetic dataset has 23 games over 60 days (ended 1, 3.5, 6, …
+ * server detail and both scoped game menus. HLL uses three completed games with genuine
+ * metric fields and deliberately unknown outcome/time facts. The Wardogs dataset has
+ * 23 games over 60 days (ended 1, 3.5, 6, …
  * days ago): the default 30-day period holds 12 of them, 7 days hold 3, 90 days and the
  * whole history hold all 23. No Logi request, key or real server data is involved.
  */
@@ -59,11 +61,64 @@ const rankingRows = (page: Page) => page.locator('[data-history-ranking] tbody t
 const rankingNames = (page: Page) => page.locator('[data-history-ranking] tbody th');
 
 for (const locale of ['cs', 'en'] as const) {
+  for (const width of [1440, 390]) {
+    test(`HLL history shows supplied score metrics and honest unknowns: ${locale}, ${width}px`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 1050 });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await serveSyntheticMedia(page);
+      const errors = collectBrowserErrors(page);
+      expect((await page.goto(`/${locale}/hll/history?min=60&sort=winRate`))?.status()).toBe(200);
+      await expect(page.locator('[data-history-state]')).toHaveAttribute('data-history-state', 'fresh');
+      await expect(page.locator('[data-history-state]')).toHaveAttribute('data-history-server', 'synthetic-hll-history');
+      await expect(page.locator('[data-history-games-total]')).toHaveText('3');
+      await expect(rankingRows(page)).toHaveCount(1);
+      await expect(rankingNames(page)).toContainText('[SYNTHETIC] HLL Player');
+      const rank = rankingRows(page).first();
+      await expect(rank.locator('[data-history-metric="combat"]')).toContainText('200');
+      await expect(rank.locator('[data-history-coverage="combat"]')).toContainText('2');
+      await expect(rank.locator('[data-history-metric="offense"]')).toHaveText('0');
+      await expect(rank.locator('[data-history-metric="defense"]')).toHaveText('240');
+      await expect(rank.locator('[data-history-metric="support"]')).toContainText('120');
+      await expect(rank.locator('[data-history-kd]')).toContainText('—');
+      await expect(page.locator('form[data-history-filters] input[name="min"]')).toHaveValue('0');
+      await expect(page.locator('form[data-history-filters] input[name="min"]')).toBeHidden();
+      await expect(page.locator('[data-history-feed], [data-history-outcomes], [data-history-faction-table], [data-history-cash]')).toHaveCount(0);
+      await expect(page.locator('[data-history-sort="winRate"], [data-history-sort="seconds"]')).toHaveCount(0);
+      const games = page.locator('[data-history-game]');
+      await expect(games).toHaveCount(3);
+      await expect(page.locator('[data-history-game][data-history-outcome="unknown"]')).toHaveCount(3);
+      await expect(games.first().locator('[data-history-scores]')).toContainText(locale === 'cs' ? 'Spojenci' : 'Allies');
+      await expect(games.first().locator('[data-history-scores]')).toContainText(locale === 'cs' ? 'Osa' : 'Axis');
+      await expect(page.locator('[data-history-note]')).toContainText(locale === 'cs' ? 'odehraný čas' : 'individual playtime');
+      const disclosure = games.first().locator('[data-history-game-detail="players"]');
+      await disclosure.locator('summary').focus();
+      await page.keyboard.press('Enter');
+      await expect(disclosure.locator('tbody tr')).toHaveCount(1);
+      await expect(disclosure.locator('thead th')).toHaveText(locale === 'cs' ? ['Hráč', 'Zabití', 'Úmrtí', 'Boj', 'Útok', 'Obrana', 'Podpora'] : ['Player', 'Kills', 'Deaths', 'Combat', 'Offensive', 'Defensive', 'Support']);
+      await expect(disclosure.locator('tbody td')).toHaveText(['10', '5', '100', '0', '80', '60']);
+      expect(JSON.stringify(await rank.getAttribute('data-history-player'))).toMatch(/[a-f0-9]{16}/);
+      expect(await page.content()).not.toMatch(/private-synthetic-hll|sourceDigest|platformId|HLL History Server/);
+      await expectNoHorizontalOverflow(page);
+      await expectAxeClean(page);
+      if (process.env.CAPTURE_EVIDENCE === '1') await page.screenshot({ path: testInfo.outputPath(`hll-history-${locale}-${width}.png`), fullPage: true, animations: 'disabled' });
+      await page.locator('[data-history-sort="combat"]').click();
+      await expect(page).toHaveURL(/sort=combat/);
+      await expect(rankingRows(page)).toHaveCount(1);
+      await page.locator('select[name="map"]').selectOption('[SYNTHETIC] HLL Training Ground');
+      await page.locator('[data-history-submit]').click();
+      await expect(page.locator('[data-history-games-total]')).toHaveText('2');
+      await expect(page.locator('[data-history-game]')).toHaveCount(2);
+      expect(errors).toEqual([]);
+    });
+  }
+}
+
+for (const locale of ['cs', 'en'] as const) {
   const L = LABELS[locale];
   for (const width of [1440, 390]) {
     const height = width === 390 ? 844 : 1050;
 
-    test(`history page: default 30-day overview with filters, summary, factions, rankings and games: ${locale}, ${width}px`, async ({ page }) => {
+    test(`history page: default 30-day overview with filters, summary, factions, rankings and games: ${locale}, ${width}px`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height });
       await page.emulateMedia({ reducedMotion: 'reduce' });
       const errors = collectBrowserErrors(page);
@@ -120,6 +175,7 @@ for (const locale of ['cs', 'en'] as const) {
       expect(await page.content()).not.toMatch(FORBIDDEN_TEXT);
       await expectNoHorizontalOverflow(page);
       await expectAxeClean(page);
+      if (process.env.CAPTURE_EVIDENCE === '1') await page.screenshot({ path: testInfo.outputPath(`wardogs-history-${locale}-${width}.png`), fullPage: true, animations: 'disabled' });
       expect(errors).toEqual([]);
     });
 
@@ -135,13 +191,13 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(page.locator('[data-history-feed]')).toHaveText(L.feedAll);
       await expectFactionRows(page, page, [['Bravo', '8 / 19', /^42\s?%$/, '23'], ['Alpha', '6 / 19', /^32\s?%$/, '23'], ['Charlie', '5 / 19', /^26\s?%$/, '23']]);
       await expect(page.locator('[data-history-other-outcomes]')).toHaveText(L.other);
-      // K/D descending: the highest ratio first, the zero-deaths player (unknown K/D) last with "—".
+      // K/D uses the provider denominator floor: an observed zero-death record remains a known ratio.
       await expect(page.locator('[data-history-ranking] th[aria-sort="descending"] [data-history-sort="kd"]')).toBeVisible();
       await expect(rankingRows(page)).toHaveCount(24);
-      await expect(rankingNames(page).first()).toContainText('[SYNTHETIC] Player 01');
-      await expect(rankingNames(page).last()).toContainText('[SYNTHETIC] Player 24');
-      await expect(rankingRows(page).last().locator('[data-history-kd]')).toHaveText(/^—/);
-      await expect(rankingRows(page).first().locator('[data-history-kd]')).toHaveText(/^1[.,]54$/);
+      await expect(rankingNames(page).first()).toContainText('[SYNTHETIC] Player 24');
+      await expect(rankingNames(page).last()).toContainText('[SYNTHETIC] Player 23');
+      await expect(rankingRows(page).last().locator('[data-history-kd]')).toHaveText(/^0[.,]65$/);
+      await expect(rankingRows(page).first().locator('[data-history-kd]')).toHaveText(/^3[.,]00$/);
       // The renamed player carries the latest name; the earlier name is not a ranking row.
       const names = await rankingNames(page).allInnerTexts();
       expect(names.some((name) => name.includes('[SYNTHETIC] Player 03 (renamed)'))).toBe(true);
@@ -151,7 +207,7 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(player04.locator('[data-history-cash]')).toHaveText(/^-2[\s,]724$/);
       const player08 = page.locator('[data-history-ranking] tbody tr', { hasText: '[SYNTHETIC] Player 08' });
       await expect(player08.locator('[data-history-coverage="cashDelta"]')).toHaveText(/11/);
-      // Ascending keeps the unknown K/D last.
+      // Ascending preserves the same known zero-death ratio.
       await page.locator('[data-history-sort="kd"]').click();
       await expect(page).toHaveURL(new RegExp(`/${locale}/wardogs/history\\?server=${SERVER}&period=all&sort=kd&dir=asc$`));
       await expect(page.locator('[data-history-ranking] th[aria-sort="ascending"] [data-history-sort="kd"]')).toBeVisible();
@@ -261,18 +317,20 @@ for (const locale of ['cs', 'en'] as const) {
   }
 }
 
-test('the Wardogs menu lists the history section; HLL pages and the Wardogs home carry none', async ({ page }) => {
+test('both game menus list scoped history while home pages omit history reports', async ({ page }) => {
   await page.goto('/cs/wardogs');
   const nav = page.getByRole('navigation', { name: 'Hlavní navigace' });
   await expect(nav.getByRole('link', { name: 'HISTORIE', exact: true })).toHaveAttribute('href', '/cs/wardogs/history');
   await expect(page.locator('[data-history-summary], [data-history-state]')).toHaveCount(0);
   await page.goto('/en/wardogs');
   await expect(page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'HISTORY', exact: true })).toHaveAttribute('href', '/en/wardogs/history');
-  expect((await page.goto('/cs/hll/history'))?.status()).toBe(404);
-  expect((await page.goto('/en/hll/history?server=synthetic-wardogs'))?.status()).toBe(404);
+  expect((await page.goto('/cs/hll/history'))?.status()).toBe(200);
+  await expect(page.locator('[data-history-state]')).toHaveAttribute('data-history-server', 'synthetic-hll-history');
+  expect((await page.goto('/en/hll/history?server=synthetic-wardogs'))?.status()).toBe(200);
+  await expect(page.locator('[data-history-state]')).toHaveAttribute('data-history-server', 'synthetic-hll-history');
   await page.goto('/cs/hll');
-  await expect(page.locator('[data-hll-menu-item="history"]')).toHaveCount(0);
-  await expect(page.locator('main')).not.toContainText(/Historie her/);
+  await expect(page.locator('[data-hll-menu="landing"] [data-hll-menu-item="history"]')).toHaveAttribute('href', '/cs/hll/history');
+  await expect(page.locator('[data-history-summary]')).toHaveCount(0);
   await page.goto('/cs/hll/servers?server=synthetic-alpha');
   await expect(page.locator('[data-history-summary]')).toHaveCount(0);
   await page.goto('/cs');

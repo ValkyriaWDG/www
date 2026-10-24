@@ -126,14 +126,14 @@
       "history": "Server game history (Warcon)"
     },
     "readers": {
-      "title": "Wardogs readers (League, Warcon)",
+      "title": "Game data readers",
       "resources": {
         "league-matches": "Wardogs League – match preview",
         "league-fixtures": "Wardogs League – tracked fixtures",
         "warcon-data": "Warcon",
-        "server-game-history": "Warcon – server game history"
+        "server-game-history": "Server game history"
       },
-      "intro": "On-demand reads with their own restricted keys: the League match preview, the Wardogs League fixtures Logi tracks, the Warcon live/recent-round facts of approved connections and the retained completed Warcon games of approved sources (server gameplay history, not clan results). States come from the configuration and the website’s last read, never from the hosted producer’s own health.",
+      "intro": "On-demand reads with their own restricted keys: Wardogs League previews and fixtures, Warcon server facts, and retained completed server games for Hell Let Loose and Wardogs. Each history row uses that game's grant and last website read. These states do not describe the hosted producer's own health.",
       "state": {
         "unconfigured": "Not configured",
         "configured": "Configured",

@@ -42,11 +42,12 @@ Approved Warcon connections are `warconConnections: [{ connectionId, publicId }]
 source; each `publicId` must name a `publicServers` entry with `published: true`, IDs are
 unique, and the entry is rejected on an HLL source. HLL CRCON configuration is untouched.
 
-`LOGI_HISTORY_API_KEY_WDG` selects the retained-history reader (`configuredLogiSources(env,
-'history')`): a separate key with the explicit `server-game-history` resource and `wardogs`
-game grant (the `warcon-data`, League and legacy keys do not inherit it; 401/403 is
+`LOGI_HISTORY_API_KEY_HLL` and `LOGI_HISTORY_API_KEY_WDG` select the retained-history reader
+(`configuredLogiSources(env, 'history')`): separate keys with the explicit
+`server-game-history` resource and matching `hell_let_loose` or `wardogs` game grant
+(the `warcon-data`, League and legacy keys do not inherit it; 401/403 is
 reported as `denied`). Approved sources are `historySources: [{ sourceId, publicId,
-publishPlayers }]` on the Wardogs source: `sourceId` is the opaque 64-hex retained-history
+publishPlayers }]` on the matching game source: `sourceId` is the opaque 64-hex retained-history
 source ID a `HistoryRecord` carries (not the Warcon connection ID, the provider server
 UUID or a website public ID), `publicId` a published `publicServers` entry, both unique,
 `publishPlayers` false by default. Nothing is matched by server name.
@@ -100,15 +101,39 @@ outcomes: { decided, draw, noResult, unknown }, feedGames, firstEndedAt, lastEnd
 factions: [{ name, colorHex, wins, appearances, winShare }], maps: [{ name, games }],
 playersPublished, eligiblePlayers, players: null | [{ key, name, platform, lastSeen,
 matches, wins, losses, draws, unknownResults, eligible, winRate, kd, metrics: { seconds |
-kills | deaths | cashDelta | headshots | teamKills | suicides | vehicleKills: { value,
-knownGames } } }] }` (`getHistoryReport(publicId, filters, now)`).
+kills | deaths | cashDelta | headshots | teamKills | suicides | vehicleKills | combat |
+offense | defense | support: { value, knownGames } } }] }`
+(`getHistoryReport(publicId, filters, now, gameId = 'wardogs')`).
 
 `HistoryGamesPublic` = `{ publicId, state, synthetic, coverage, refreshedAt,
 lastCollectedAt, filters: { from, until, map }, page, pageSize: 20, total,
 playersPublished, games: [{ id, startedAt, endedAt, map, mode, lighting, outcome, winner,
 hasFeed, factions: [{ name, colorHex, score }], players: null | [{ key, name, platform,
 faction, result, seconds, kills, deaths, cashDelta, headshots, teamKills, suicides,
-vehicleKills }] }] }` newest first (`getHistoryGames(publicId, filters, page, now)`).
+vehicleKills, combat, offense, defense, support }] }] }` newest first
+(`getHistoryGames(publicId, filters, page, now, gameId = 'wardogs')`).
+
+Both `/[locale]/hll/history` and `/[locale]/wardogs/history` use this list, report,
+period/map filtering and pagination. The reader validates the exact game, guild, source
+and provider pair on every page; scans reject cross-game/source/guild continuations.
+Cache scopes include the credential fingerprint and game, and completed snapshots are
+still replaced atomically under the existing page/time budgets and window fallback.
+
+The HLL branch is a complete CRCON session with numeric external ID, ordered UTC
+start/end, exactly Allied/Axis participants, and player metrics limited to nonnegative
+known kills, deaths, combat, offense, defense and support. Warcon metadata, per-player
+faction and per-player result are rejected. HLL winners, individual playtime and player
+outcomes stay unknown. The HLL page uses a zero-minute eligibility floor and does not
+offer a playtime filter or win-rate sorting; otherwise missing playtime would hide all
+players. It shows known metric totals with per-metric coverage, preserving observed
+zero. Wardogs keeps its own feed, faction, outcome and playtime rules. The history
+source's `publishPlayers` gate remains separate from the basic public directory and
+personal-profile/verified-statistics consent.
+
+K/D follows Logi for both games: with kills and deaths known for every included game,
+it is `kills / max(1, deaths)`, including an observed zero-death game; missing coverage
+keeps the ratio unknown. HLL contributes no aggregate faction wins or win shares
+without Warcon outcome metadata; per-game Allied/Axis participants and scores remain.
 
 `state` is `fresh` (complete snapshot, last refresh succeeded, younger than 30 minutes),
 `stale` (snapshot kept after a failed refresh or past 30 minutes), `preparing` (first

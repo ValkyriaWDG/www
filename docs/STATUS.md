@@ -1,5 +1,37 @@
 # Current status
 
+## Public players and both-game history — implementation, 2026-10-25
+
+The owner authorized basic gaming names, player statistics and server history for
+both games. Current work adds a unified public gaming directory with opaque player
+links, consented personal-profile composition, lineup links, reviewed public player
+statistics and separate game-scoped HLL/WDG retained-history views. Missing data
+remains unavailable; publication, exact identity and current-generation fences apply.
+See [the implemented contract](integrations/logi/public-players-and-history.md).
+
+Local integrated verification passed lint, types, production build, 1,447 unit and
+585 PostgreSQL tests. The captured UI source `b954ef5ccb29caa0d4d23520ce9d7a4602fc9542`
+passed six explicitly enabled player and 22 both-game history browser cases;
+[twenty inspected synthetic captures](evidence/public-players-history-2026-10-25/README.md)
+retain their real source/build identity. A subsequent negative-only publication
+correction is covered by the final PostgreSQL run and 35 focused policy cases.
+The later source `69778d1810633dd51e0fb65b75441eeb6baaa606`, build
+`8XyGoWferUcBlAaBTV8Ag`, passed eight player browser cases including actual outage
+recovery and four affected ordinary admin browser cases. Four outage captures retain
+this newer provenance; the original sixteen captures retain the original build.
+
+Logi [PR #258](https://github.com/Ninjonik/logi/pull/258) passed exact-head CI
+[40140549720](https://github.com/Ninjonik/logi/actions/runs/40140549720) and is merged as
+`2472e3d4b454853b064212813aea59313bef2efb` (identical tested application tree).
+Its local 3,481 tests, types, Convex runtime bundles and production build passed.
+The owner received its explicit-target deployment/backfill handoff.
+
+This feature is **not accepted on production**. The website release is pending;
+the matching Logi application/Convex revision and bounded HLL backfill must be
+deployed by Ninjonik. The owner has forwarded the verified revision and operator commands to Ninjonik. Existing production acceptance below
+covers the earlier unified-match release only. Local, CI and real production
+checks will be recorded independently with the feature handoff.
+
 ## Unified matches accepted on production — 2026-10-24
 
 Application source `076ba9316ff0f8433dc01efc916a5962ca7ac184`, application tree

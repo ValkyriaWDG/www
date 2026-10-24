@@ -19,6 +19,7 @@ import { getPublicMatch } from '@/modules/matches/queries';
 import { getServerEnv } from '@/lib/env';
 import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
 import { readPublicLogiEventPeople } from '@/modules/integrations/logi-people';
+import { readPublicLogiPlayerMatchPeople } from '@/modules/integrations/logi-public-players';
 import { publicLogiMatchView } from '@/modules/integrations/logi/public-matches';
 import { PublicLogiMatchPeople } from './logi-people';
 
@@ -73,6 +74,7 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
   const linked = (await getPublicLogiEvents(game)).find((event) => event.archive?.slug === match.slug);
   const view = linked ? publicLogiMatchView(linked) : viewForStatus(match.status);
   const people = linked ? await readPublicLogiEventPeople(getDb(), getServerEnv(), match.game, linked.ref.externalId) : null;
+  const sourcePeople = linked ? await readPublicLogiPlayerMatchPeople(getDb(), getServerEnv(), match.game, linked.ref.externalId) : undefined;
   const filters = { ...parseMatchFilters(query, view), view, game: undefined };
   const base = sectionBase(game);
   const t = await getTranslations({ locale, namespace: 'matches' });
@@ -86,7 +88,7 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
       <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} />
-      <PublicLogiMatchPeople locale={locale} people={people} />
+      <PublicLogiMatchPeople locale={locale} people={people} sourcePeople={sourcePeople} />
     </PageMain>
   );
 }

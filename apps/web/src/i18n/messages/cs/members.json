@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Členové",
-    "description": "Veřejné profily členů klanu Valkyria, kteří se zveřejněním souhlasili.",
+    "description": "Hráči Valkyrie, dodaná herní jména a zveřejněné zápasové sestavy.",
     "profileDescription": "Veřejný profil hráče {name} v klanu Valkyria."
   },
   "list": {
@@ -28,17 +28,35 @@
     "noRoles": "Bez veřejné role",
     "noGames": "Bez uvedené hry",
     "emptyTitle": "Zatím nebyly zveřejněny žádné profily členů.",
-    "emptyBody": "Profil se tu objeví až poté, co člen se zveřejněním souhlasí.",
+    "emptyBody": "Hráči se zobrazují ze zveřejněného herního adresáře nebo schváleného osobního profilu.",
     "filteredEmptyTitle": "Těmto filtrům neodpovídají žádné výsledky.",
     "filteredEmptyBody": "Zkus jinou hru, roli nebo jméno.",
     "pageEmptyTitle": "Na této stránce nejsou žádné profily.",
     "firstPage": "Přejít na první stránku",
     "clearFilters": "Zrušit filtry",
     "loadError": "Profily členů se nepodařilo načíst.",
+    "sourceUnavailableTitle": "Aktuální seznam hráčů není dostupný.",
+    "sourceUnavailableBody": "Může probíhat synchronizace nebo být nedostupný herní zdroj. Neznamená to, že tým nemá hráče. Schválené osobní profily zůstávají dostupné.",
+    "sourcePartialTitle": "Část seznamu hráčů není dostupná.",
+    "sourcePartialBody": "Zobrazeni jsou jen aktuálně dostupní hráči a schválené osobní profily. U druhé hry může probíhat synchronizace nebo být nedostupný její zdroj; seznam a počty mohou být neúplné.",
     "retry": "Zkusit znovu",
     "matchCount": "{count, plural, one {# sestava} few {# sestavy} many {# sestavy} other {# sestav}}",
     "moreMatches": "{count, plural, one {Další # sestava v profilu} few {Další # sestavy v profilu} many {Dalších # sestavy v profilu} other {Dalších # sestav v profilu}}",
     "noPublicMatches": "Sestavy nejsou k dispozici"
+  },
+  "player": {
+    "title": "Hráč",
+    "unknownName": "Hráč bez dodaného jména",
+    "description": "Dodané zobrazované jméno a zveřejněná herní aktivita. Sestava zachycuje nominaci do zápasu; nepotvrzuje odehranou hru ani docházku.",
+    "statisticsMissing": "Úplné aktuální statistiky hráče nejsou k dispozici. Chybějící hodnoty nejsou nuly.",
+    "recordedCoverage": "{count, plural, one {# veřejně zaznamenaný zápas} few {# veřejně zaznamenané zápasy} other {# veřejně zaznamenaných zápasů}} napříč všemi týmy. Souhrn zahrnuje všechny dostupné veřejné záznamy této hry v Logi, nejen zápasy tohoto webu.",
+    "recordedMatches": "Zaznamenané zápasy",
+    "recordedRecent": "Poslední zápasy, nejvýše {count}",
+    "recordedRecentEmpty": "Podrobnosti posledních zápasů nejsou k dispozici.",
+    "recordedMore": "{count, plural, one {Další # zápas} few {Další # zápasy} other {Dalších # zápasů}}",
+    "statisticsTitle": "Statistiky hráče",
+    "unavailableTitle": "Profil je dočasně nedostupný",
+    "unavailableBody": "Zkuste stránku znovu načíst nebo se vraťte na seznam hráčů."
   },
   "roles": {
     "leader": "Velitel",

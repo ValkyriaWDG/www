@@ -14,6 +14,8 @@ import type { AppLocale } from '@/i18n/routing';
 import { getDb } from '@/lib/db';
 import { getServerEnv } from '@/lib/env';
 import { readPublicLogiMemberEnrichment } from '@/modules/integrations/logi-people';
+import { readPublicLogiPlayers } from '@/modules/integrations/logi-public-players';
+import { readPublicPlayerStatistics } from '@/modules/integrations/logi-public-player-statistics';
 import { PublicLogiMemberActivity } from './logi-people';
 import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { sectionBase } from '@/modules/games/routes';
@@ -63,6 +65,8 @@ export async function MemberProfileScreen({ locale, slug, game, query }: { local
   if (game) filters.game = undefined;
   const t = await getTranslations({ locale, namespace: 'members' });
   const activity = await readPublicLogiMemberEnrichment(getDb(), getServerEnv(), slug, { game: game ? GAME_REGISTRY[game].db : undefined });
+  const sourcePlayer = (await readPublicLogiPlayers(getDb(), getServerEnv(), { game: game ? GAME_REGISTRY[game].db : undefined })).find((player) => player.profileSlug === slug);
+  const recordedStatistics = sourcePlayer ? await readPublicPlayerStatistics(getDb(), getServerEnv(), sourcePlayer.key, { game: game ? GAME_REGISTRY[game].db : undefined }) : [];
   return (
     <PageMain width="reading" labelledBy="member-title">
       <PageHeader
@@ -113,7 +117,7 @@ export async function MemberProfileScreen({ locale, slug, game, query }: { local
           }}
         />
       </SectionFrame>
-      <PublicLogiMemberActivity locale={locale} items={activity} />
+      <PublicLogiMemberActivity locale={locale} items={activity} recordedStatistics={recordedStatistics} />
     </PageMain>
   );
 }

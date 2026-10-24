@@ -1,6 +1,7 @@
 import { HISTORY_MIN_MINUTES_DEFAULT } from '@/modules/integrations/logi/readers/history-contracts';
 import { type HistoryPlayerPublic, type HistoryPublicFilters, type HistoryPublicState, parseHistoryPage, parseHistoryPublicFilters } from '@/modules/integrations/logi/readers/history-public';
 import { DISPLAY_TIME_ZONE } from '@/i18n/routing';
+import type { GameRoute } from '@/modules/games/registry';
 import { buildHref, firstParam, type RawSearchParams } from './query';
 
 /*
@@ -16,7 +17,7 @@ export type HistoryPeriod = (typeof HISTORY_PERIODS)[number];
 export const HISTORY_PERIOD_DEFAULT: HistoryPeriod = '30d';
 const PERIOD_DAYS: Record<Exclude<HistoryPeriod, 'all'>, number> = { '7d': 7, '30d': 30, '90d': 90 };
 
-export const HISTORY_SORTS = ['kills', 'kd', 'winRate', 'seconds', 'cashDelta', 'deaths', 'matches'] as const;
+export const HISTORY_SORTS = ['kills', 'kd', 'winRate', 'seconds', 'cashDelta', 'deaths', 'matches', 'combat', 'offense', 'defense', 'support'] as const;
 export type HistorySort = (typeof HISTORY_SORTS)[number];
 export const HISTORY_SORT_DEFAULT: HistorySort = 'kills';
 export type HistorySortDirection = 'desc' | 'asc';
@@ -57,7 +58,7 @@ export function parseHistoryDirection(value: unknown): HistorySortDirection {
  * Validated page state. The server falls back to the first published history server when
  * the requested one is unknown or absent, so a stale link never selects nothing.
  */
-export function parseHistoryQuery(params: RawSearchParams | undefined, publicIds: readonly string[]): HistoryQuery {
+export function parseHistoryQuery(params: RawSearchParams | undefined, publicIds: readonly string[], game: GameRoute = 'wardogs'): HistoryQuery {
   const requested = firstParam(params, 'server');
   const server = requested !== undefined && requested.length <= 64 && PUBLIC_ID.test(requested) && publicIds.includes(requested) ? requested : publicIds[0] ?? null;
   const filters = parseHistoryPublicFilters({ map: firstParam(params, 'map'), minMinutes: firstParam(params, 'min') });
@@ -65,8 +66,8 @@ export function parseHistoryQuery(params: RawSearchParams | undefined, publicIds
     server,
     period: parseHistoryPeriod(firstParam(params, 'period')),
     map: filters.map,
-    minMinutes: filters.minMinutes,
-    sort: parseHistorySort(firstParam(params, 'sort')),
+    minMinutes: game === 'hll' ? 0 : filters.minMinutes,
+    sort: game === 'hll' && ['winRate', 'seconds', 'cashDelta'].includes(parseHistorySort(firstParam(params, 'sort'))) ? HISTORY_SORT_DEFAULT : parseHistorySort(firstParam(params, 'sort')),
     dir: parseHistoryDirection(firstParam(params, 'dir')),
     page: parseHistoryPage(firstParam(params, 'page')),
     allPlayers: firstParam(params, 'players') === 'all',
@@ -144,6 +145,10 @@ export function historySortValue(player: HistoryPlayerPublic, sort: HistorySort)
     case 'deaths': return player.metrics.deaths.value;
     case 'seconds': return player.metrics.seconds.value;
     case 'cashDelta': return player.metrics.cashDelta.value;
+    case 'combat': return player.metrics.combat.value;
+    case 'offense': return player.metrics.offense.value;
+    case 'defense': return player.metrics.defense.value;
+    case 'support': return player.metrics.support.value;
   }
 }
 

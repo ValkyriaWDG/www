@@ -211,9 +211,11 @@ export type HistoryStoreStatus = {
 };
 
 /** Latest attempt across sources for the administration health read model; no ID, cursor or record leaves the store. */
-export function historyStoreStatus(now = new Date()): HistoryStoreStatus {
+export function historyStoreStatus(now = new Date(), sources?: readonly { scopeKey: string; sourceId: string }[]): HistoryStoreStatus {
+  const approved = sources === undefined ? null : new Set(sources.map(({ scopeKey, sourceId }) => `${scopeKey}/${sourceId}`));
+  const entries = [...store.entries()].filter(([key]) => approved === null || approved.has(key));
   let latest: HistoryStoreEntry | null = null;
-  for (const entry of store.values()) if (Number.isFinite(entry.lastAttemptAt) && (!latest || entry.lastAttemptAt > latest.lastAttemptAt)) latest = entry;
+  for (const [, entry] of entries) if (Number.isFinite(entry.lastAttemptAt) && (!latest || entry.lastAttemptAt > latest.lastAttemptAt)) latest = entry;
   const snapshot = latest?.snapshot ?? null;
   return {
     lastAttemptAt: latest ? iso(latest.lastAttemptAt) : null,
@@ -224,7 +226,7 @@ export function historyStoreStatus(now = new Date()): HistoryStoreStatus {
     lastCollectedAt: snapshot?.lastCollectedAt ?? null,
     refreshedAt: snapshot?.refreshedAt ?? null,
     coverage: snapshot?.coverage ?? null,
-    sources: store.size,
+    sources: entries.length,
   };
 }
 

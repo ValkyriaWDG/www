@@ -35,7 +35,7 @@ describe('history report projection', () => {
     expect(dto.players).toHaveLength(24);
     expect(dto.eligiblePlayers).toBe(report.eligiblePlayers);
     expect(Object.keys(dto.players![0]!).sort()).toEqual(['draws', 'eligible', 'kd', 'key', 'lastSeen', 'losses', 'matches', 'metrics', 'name', 'platform', 'unknownResults', 'winRate', 'wins']);
-    expect(Object.keys(dto.players![0]!.metrics)).toEqual(['seconds', 'kills', 'deaths', 'cashDelta', 'headshots', 'teamKills', 'suicides', 'vehicleKills']);
+    expect(Object.keys(dto.players![0]!.metrics)).toEqual(['seconds', 'kills', 'deaths', 'cashDelta', 'headshots', 'teamKills', 'suicides', 'vehicleKills', 'combat', 'offense', 'defense', 'support']);
     expect(dto.players!.map((player) => player.key)).toEqual(report.players.map((player) => playerKey(player.platform, player.platformId)));
     expect(new Set(dto.players!.map((player) => player.key)).size).toBe(24);
     expect(JSON.stringify(dto)).not.toMatch(FORBIDDEN);
@@ -62,6 +62,15 @@ describe('history report projection', () => {
 });
 
 describe('history games projection', () => {
+  it('keeps accepted provider score timelines out of all public history DTOs', () => {
+    const record = structuredClone(records[0]!);
+    record.session.warcon.scoreTimeline = [[0, 0, 0], [60, 100, 35]];
+    const report = toHistoryReportPublic(context(), DEFAULT_HISTORY_PUBLIC_FILTERS, aggregateHistory([record]), []);
+    const games = toHistoryGamesPublic(context(), DEFAULT_HISTORY_PUBLIC_FILTERS, [record], 1);
+    expect(games.games).toHaveLength(1);
+    expect(JSON.stringify({ report, games })).not.toMatch(/scoreTimeline|sourceDigest|platformId|externalId/);
+  });
+
   it('lists games newest first in pages of 20 with factions, scores and opaque player rows', () => {
     const page1 = toHistoryGamesPublic(context(), DEFAULT_HISTORY_PUBLIC_FILTERS, records, 1);
     const page2 = toHistoryGamesPublic(context(), DEFAULT_HISTORY_PUBLIC_FILTERS, records, 2);
@@ -74,7 +83,7 @@ describe('history games projection', () => {
     expect(page1.games[0]).toMatchObject({ id: 'synthetic-game-01', map: 'Synthetic Training Ground', mode: 'Synthetic Objective', lighting: 'Synthetic Dawn', outcome: 'decided', winner: 'Alpha', hasFeed: true });
     expect(page1.games[0]!.factions).toEqual([{ name: 'Alpha', colorHex: '#ff0000', score: 100 }, { name: 'Bravo', colorHex: '#00ff00', score: 35 }, { name: 'Charlie', colorHex: '#0000ff', score: 35 }]);
     expect(Object.keys(page1.games[0]!).sort()).toEqual(['endedAt', 'factions', 'hasFeed', 'id', 'lighting', 'map', 'mode', 'outcome', 'players', 'startedAt', 'winner']);
-    expect(Object.keys(page1.games[0]!.players![0]!).sort()).toEqual(['cashDelta', 'deaths', 'faction', 'headshots', 'key', 'kills', 'name', 'platform', 'result', 'seconds', 'suicides', 'teamKills', 'vehicleKills']);
+    expect(Object.keys(page1.games[0]!.players![0]!).sort()).toEqual(['cashDelta', 'combat', 'deaths', 'defense', 'faction', 'headshots', 'key', 'kills', 'name', 'offense', 'platform', 'result', 'seconds', 'suicides', 'support', 'teamKills', 'vehicleKills']);
     const corrected = page1.games.find((game) => game.id === 'synthetic-game-03')!;
     expect(corrected).toMatchObject({ winner: 'Bravo' });
     expect(corrected.players!.find((player) => player.deaths === 0)).toMatchObject({ kills: 3, result: expect.any(String) });

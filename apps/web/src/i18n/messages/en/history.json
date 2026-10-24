@@ -4,12 +4,18 @@
     "description": "Completed games on the Wardogs server from the Warcon records retained by Logi: faction results, player rankings and the game list."
   },
   "title": "Server game history",
+  "hll": {
+    "metaDescription": "Completed Hell Let Loose server games, recorded maps and player combat, offensive, defensive and support scores.",
+    "intro": "Completed Hell Let Loose server games with the recorded maps and player statistics.",
+    "note": "These are server games. Player names are server nicknames and do not establish clan membership. The records do not supply winners, player results or individual playtime; those facts remain unknown.",
+    "filterSummary": "Showing: {server} · {period} · {map}"
+  },
   "intro": "Completed games on the Wardogs server from the Warcon records retained by Logi: faction win shares, player rankings and the list of games with their scores.",
   "note": "This is server gameplay history, not clan results: factions are not clan teams, players are not verified members and games are not official Wardogs League results. Completed-game statistics differ from Warcon's live leaderboard, which counts time differently.",
   "synthetic": "Synthetic demo data – not real games on a Valkyria server.",
   "unavailable": {
     "title": "Game history is not available yet.",
-    "body": "No Valkyria server publishes its game history yet. It will appear here once available; nothing is estimated until then."
+    "body": "No server for this game publishes its history yet. It will appear here once available; nothing is estimated until then."
   },
   "state": {
     "preparing": {
@@ -84,6 +90,7 @@
   "players": {
     "title": "Player rankings",
     "description": "Totals from the completed games in the selected period. Players are not verified clan members; names are as the server reported them in the latest game.",
+    "hllDescription": "Recorded kills, deaths and combat, offensive, defensive and support scores. Totals show their coverage when a value was not supplied for every game. Individual playtime and wins are not supplied.",
     "notPublished": "This server does not publish player statistics.",
     "caption": "Player rankings",
     "columns": {
@@ -97,6 +104,10 @@
       "kd": "K/D",
       "playtime": "Time (h:mm)",
       "cashDelta": "Cash",
+      "combat": "Combat",
+      "offense": "Offensive",
+      "defense": "Defensive",
+      "support": "Support",
       "headshots": "Headshots",
       "teamKills": "Team kills",
       "suicides": "Suicides",
@@ -118,6 +129,7 @@
     "showAll": "Show all ({count})",
     "showTop": "Show the first {count} only",
     "empty": "No player meets the minimum in this period.",
+    "hllEmpty": "No player statistics were recorded for this period.",
     "sortBy": "Sort by: {column}",
     "sortedDesc": "sorted descending",
     "sortedAsc": "sorted ascending",
@@ -126,6 +138,7 @@
   "games": {
     "title": "Game history",
     "description": "Completed games, newest first. Final scores and the winner come from Warcon; a game without a combat feed has no detailed statistics.",
+    "hllDescription": "Completed games, newest first. Open a game to see its recorded player statistics. Missing scores remain unknown; no winner or player result is inferred.",
     "count": "Showing {from}–{to} of {total, plural, one {# game} few {# games} other {# games}}",
     "pageEmpty": "There are no games on this page.",
     "firstPage": "Go to the first page",
@@ -157,6 +170,10 @@
       "kills": "Kills",
       "deaths": "Deaths",
       "cashDelta": "Cash",
+      "combat": "Combat",
+      "offense": "Offensive",
+      "defense": "Defensive",
+      "support": "Support",
       "headshots": "Headshots",
       "teamKills": "Team kills",
       "suicides": "Suicides",

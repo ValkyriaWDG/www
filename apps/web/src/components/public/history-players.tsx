@@ -5,6 +5,7 @@ import { ScrollRegion } from '@/components/ui/scroll-region';
 import { formatNumber } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
+import type { GameRoute } from '@/modules/games/registry';
 import type { HistoryMetric } from '@/modules/integrations/logi/readers/history-report';
 import type { HistoryPlayerPublic, HistoryReportPublic } from '@/modules/integrations/logi/readers/history-public';
 import { formatPlaytime, HISTORY_RANKING_CAP, historyHref, type HistoryQuery, type HistorySort, sortHistoryPlayers } from './history-query';
@@ -13,6 +14,7 @@ import styles from './history.module.css';
 
 type Column = { key: string; label: string; sort?: HistorySort; secondary?: boolean };
 const SECONDARY_METRICS = ['headshots', 'teamKills', 'suicides', 'vehicleKills'] as const satisfies readonly HistoryMetric[];
+const HLL_METRICS = ['combat', 'offense', 'defense', 'support'] as const satisfies readonly HistoryMetric[];
 
 function Dash({ label }: { label: string }) {
   return (
@@ -31,11 +33,11 @@ function Dash({ label }: { label: string }) {
  * feed-only metrics as a secondary group (collapsed on phones), the count of players
  * below the floor and a 50-row cap lifted by `players=all`.
  */
-export async function PlayerRankings({ report, locale, query, base }: { report: HistoryReportPublic; locale: AppLocale; query: HistoryQuery; base: string }) {
+export async function PlayerRankings({ report, locale, query, base, game = 'wardogs' }: { report: HistoryReportPublic; locale: AppLocale; query: HistoryQuery; base: string; game?: GameRoute }) {
   const [t, tA11y] = await Promise.all([getTranslations({ locale, namespace: 'history.players' }), getTranslations({ locale, namespace: 'common.a11y' })]);
   const frame = (children: ReactNode, state: string) => (
     <div className={styles.section} data-history-players={state}>
-      <SectionFrame title={t('title')} titleAs="h2" titleId="history-players-title" description={<p className={styles.note}>{t('description')}</p>}>
+      <SectionFrame title={t('title')} titleAs="h2" titleId="history-players-title" description={<p className={styles.note}>{t(game === 'hll' ? 'hllDescription' : 'description')}</p>}>
         {children}
       </SectionFrame>
     </div>
@@ -53,14 +55,15 @@ export async function PlayerRankings({ report, locale, query, base }: { report: 
   const columns: Column[] = [
     { key: 'player', label: t('columns.player') },
     { key: 'matches', label: t('columns.matches'), sort: 'matches' },
-    { key: 'record', label: t('columns.record') },
-    { key: 'winRate', label: t('columns.winRate'), sort: 'winRate' },
+    ...(game === 'wardogs' ? [{ key: 'record', label: t('columns.record') }, { key: 'winRate', label: t('columns.winRate'), sort: 'winRate' as const }] : []),
     { key: 'kills', label: t('columns.kills'), sort: 'kills' },
     { key: 'deaths', label: t('columns.deaths'), sort: 'deaths' },
     { key: 'kd', label: t('columns.kd'), sort: 'kd' },
-    { key: 'playtime', label: t('columns.playtime'), sort: 'seconds' },
-    { key: 'cashDelta', label: t('columns.cashDelta'), sort: 'cashDelta' },
-    ...SECONDARY_METRICS.map((metric) => ({ key: metric, label: t(`columns.${metric}`), secondary: true })),
+    ...(game === 'wardogs' ? [
+      { key: 'playtime', label: t('columns.playtime'), sort: 'seconds' as const },
+      { key: 'cashDelta', label: t('columns.cashDelta'), sort: 'cashDelta' as const },
+      ...SECONDARY_METRICS.map((metric) => ({ key: metric, label: t(`columns.${metric}`), secondary: true })),
+    ] : HLL_METRICS.map((metric) => ({ key: metric, label: t(`columns.${metric}`), sort: metric }))),
   ];
 
   const header = (column: Column) => {
@@ -89,7 +92,7 @@ export async function PlayerRankings({ report, locale, query, base }: { report: 
   };
 
   const body = rows.length === 0 ? (
-    <p className={styles.note} data-history-ranking="empty">{t('empty')}</p>
+    <p className={styles.note} data-history-ranking="empty">{t(game === 'hll' ? 'hllEmpty' : 'empty')}</p>
   ) : (
     <ScrollRegion label={tA11y('scrollRegion', { label: t('caption') })} className={matchStyles.rounds} data-scroll-table="history-players" data-sticky-column="">
       <table data-history-ranking="">
@@ -116,7 +119,7 @@ export async function PlayerRankings({ report, locale, query, base }: { report: 
                 </span>
               </th>
               <td data-numeric="">{number(player.matches)}</td>
-              <td data-numeric="">
+              {game === 'wardogs' ? <td data-numeric="">
                 {t('record', { wins: number(player.wins), losses: number(player.losses), draws: number(player.draws) })}
                 {player.unknownResults > 0 ? (
                   <span className={styles.unknownResults}>
@@ -124,16 +127,16 @@ export async function PlayerRankings({ report, locale, query, base }: { report: 
                     <span className="visually-hidden"> {t('unknownResultsLong', { count: player.unknownResults })}</span>
                   </span>
                 ) : null}
-              </td>
-              <td data-numeric="">{player.winRate === null ? <Dash label={unknown} /> : formatNumber(player.winRate, locale, { style: 'percent', maximumFractionDigits: 0 })}</td>
+              </td> : null}
+              {game === 'wardogs' ? <td data-numeric="">{player.winRate === null ? <Dash label={unknown} /> : formatNumber(player.winRate, locale, { style: 'percent', maximumFractionDigits: 0 })}</td> : null}
               <td data-numeric="">{total(player, 'kills')}</td>
               <td data-numeric="">{total(player, 'deaths')}</td>
               <td data-numeric="" data-history-kd="">{player.kd === null ? <Dash label={unknown} /> : formatNumber(player.kd, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td data-numeric="">{total(player, 'seconds', (seconds) => formatPlaytime(seconds) ?? '—')}</td>
-              <td data-numeric="" data-history-cash="">{total(player, 'cashDelta', (cash) => formatNumber(cash, locale, { signDisplay: 'exceptZero' }))}</td>
-              {SECONDARY_METRICS.map((metric) => (
+              {game === 'wardogs' ? <td data-numeric="">{total(player, 'seconds', (seconds) => formatPlaytime(seconds) ?? '—')}</td> : null}
+              {game === 'wardogs' ? <td data-numeric="" data-history-cash="">{total(player, 'cashDelta', (cash) => formatNumber(cash, locale, { signDisplay: 'exceptZero' }))}</td> : null}
+              {game === 'wardogs' ? SECONDARY_METRICS.map((metric) => (
                 <td key={metric} data-numeric="" className={styles.secondary}>{total(player, metric)}</td>
-              ))}
+              )) : HLL_METRICS.map((metric) => <td key={metric} data-numeric="" data-history-metric={metric}>{total(player, metric)}</td>)}
             </tr>
           ))}
         </tbody>
@@ -145,7 +148,7 @@ export async function PlayerRankings({ report, locale, query, base }: { report: 
     <>
       {body}
       <div className={styles.foot}>
-        {rows.length > 0 ? <p className={`${styles.phoneNote}`}>{t('secondary')}</p> : null}
+        {rows.length > 0 && game === 'wardogs' ? <p className={`${styles.phoneNote}`}>{t('secondary')}</p> : null}
         {belowFloor > 0 ? <p data-history-below-floor={belowFloor}>{t('belowFloor', { count: belowFloor, min: number(query.minMinutes) })}</p> : null}
         {capped ? (
           <p data-history-capped="">

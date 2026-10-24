@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { HistoryRecord } from './history-contracts';
+import type { HistoryWardogsRecord as HistoryRecord } from './history-contracts';
 import { aggregateHistory, filterHistoryRecords, HISTORY_METRICS, latestHistoryRecords, listHistoryMaps } from './history-report';
 import { SYNTHETIC_HISTORY_CORRECTED_GAME, SYNTHETIC_HISTORY_GAME_COUNT, SYNTHETIC_HISTORY_PLAYER_COUNT, syntheticHistoryPages } from './synthetic';
 
@@ -136,7 +136,7 @@ describe('aggregateHistory (ported from the producer)', () => {
     expect(report.players[0]).toMatchObject({ draws: 1, unknownResults: 1, winRate: 0 });
   });
 
-  it('sums known metrics only, keeps feed-only zeros without a feed unknown, allows negative cash and null K/D at zero deaths', () => {
+  it('sums known metrics only, keeps missing coverage unknown and uses the provider K/D denominator floor at zero deaths', () => {
     const noFeed = historyRecord('game-1');
     noFeed.session.warcon.hasFeed = false;
     noFeed.session.players[0]!.metrics = { seconds: 3600, kills: 5, deaths: 0, cashDelta: -150, headshots: 0, teamKills: 0, suicides: 0, vehicleKills: 0 };
@@ -148,16 +148,21 @@ describe('aggregateHistory (ported from the producer)', () => {
     expect(player.metrics).toEqual({
       seconds: { value: 4800, knownGames: 2 }, kills: { value: 12, knownGames: 2 }, deaths: { value: 0, knownGames: 1 }, cashDelta: { value: -150, knownGames: 1 },
       headshots: { value: null, knownGames: 0 }, teamKills: { value: null, knownGames: 0 }, suicides: { value: null, knownGames: 0 }, vehicleKills: { value: null, knownGames: 0 },
+      combat: { value: null, knownGames: 0 }, offense: { value: null, knownGames: 0 }, defense: { value: null, knownGames: 0 }, support: { value: null, knownGames: 0 },
     });
     expect(player.kd).toBeNull();
     expect(player.eligible).toBe(true);
     const zeroDeaths = historyRecord('game-3');
     zeroDeaths.session.players[0]!.metrics = { seconds: 100, kills: 3, deaths: 0, cashDelta: 10 };
+    expect(aggregateHistory([zeroDeaths]).players[0]!.kd).toBe(3);
+    zeroDeaths.session.players[0]!.metrics.kills = 0;
+    expect(aggregateHistory([zeroDeaths]).players[0]!.kd).toBe(0);
+    zeroDeaths.session.players[0]!.metrics.deaths = null;
     expect(aggregateHistory([zeroDeaths]).players[0]!.kd).toBeNull();
     const withDeaths = historyRecord('game-4');
     withDeaths.session.players[0]!.metrics = { seconds: 100, kills: 3, deaths: 2, cashDelta: 10 };
     expect(aggregateHistory([withDeaths]).players[0]!.kd).toBe(1.5);
-    expect(HISTORY_METRICS).toEqual(['seconds', 'kills', 'deaths', 'cashDelta', 'headshots', 'teamKills', 'suicides', 'vehicleKills']);
+    expect(HISTORY_METRICS).toEqual(['seconds', 'kills', 'deaths', 'cashDelta', 'headshots', 'teamKills', 'suicides', 'vehicleKills', 'combat', 'offense', 'defense', 'support']);
   });
 
   it('excludes unknown results from the win rate and sorts players by kills then platform ID, factions by wins then name', () => {
@@ -189,7 +194,7 @@ describe('aggregateHistory (ported from the producer)', () => {
     const renamed = report.players.find((player) => player.platformId === 'synthetic-xbox-03')!;
     expect(renamed.name).toBe('[SYNTHETIC] Player 03 (renamed)');
     const zeroDeaths = report.players.find((player) => player.platformId === 'synthetic-xbox-24')!;
-    expect(zeroDeaths).toMatchObject({ matches: 1, kd: null, metrics: { deaths: { value: 0, knownGames: 1 }, kills: { value: 3, knownGames: 1 } } });
+    expect(zeroDeaths).toMatchObject({ matches: 1, kd: 3, metrics: { deaths: { value: 0, knownGames: 1 }, kills: { value: 3, knownGames: 1 } } });
     const unknownResult = report.players.find((player) => player.platformId === 'synthetic-steam-23')!;
     expect(unknownResult).toMatchObject({ matches: 2, unknownResults: 1 });
     expect(report.players.some((player) => (player.metrics.cashDelta.value ?? 0) < 0)).toBe(true);

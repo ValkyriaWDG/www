@@ -9,6 +9,9 @@ import type {
   PublicLogiEventPeople,
   PublicLogiMemberEnrichment,
 } from '@/modules/integrations/logi-people-types';
+import { mergePublicPlayerRosterRows, type PublicPlayerMatchPeople } from '@/modules/integrations/logi-public-players';
+import type { PublicPlayerStatistics } from '@/modules/integrations/logi-public-player-statistics';
+import { PlayerRecordedStatistics } from './player-recorded-statistics';
 import styles from './logi-people.module.css';
 
 const metricKeys = [
@@ -211,19 +214,23 @@ export async function LogiTeamScreen({
   );
 }
 
-export async function PublicLogiMemberActivity({ locale, items }: { locale: AppLocale; items: PublicLogiMemberEnrichment[] }) {
-  if (!items.length) return null;
+export async function PublicLogiMemberActivity({ locale, items, recordedStatistics = [] }: { locale: AppLocale; items: PublicLogiMemberEnrichment[]; recordedStatistics?: PublicPlayerStatistics[] }) {
+  const games = [...new Set([...items.map((item) => item.game), ...recordedStatistics.map((item) => item.game)])];
+  if (!games.length) return null;
   const t = await getTranslations({ locale, namespace: 'logiPeople' });
   return (
     <SectionFrame title={t('publicTitle')} titleId="member-logi-activity" description={t('publicNotice')}>
       <div className={styles.stack}>
-        {items.map((item) => (
-          <section key={item.game}>
-            <h3>{item.game === 'wardogs' ? 'Wardogs' : 'Hell Let Loose'}</h3>
+        {games.map((game) => {
+          const item = items.find((row) => row.game === game);
+          const recorded = recordedStatistics.find((row) => row.game === game);
+          return <section key={game}>
+            <h3>{game === 'wardogs' ? 'Wardogs' : 'Hell Let Loose'}</h3>
+            {item ? <>
             <p className={styles.muted}>
               {t('updated', { date: date(item.observedAt, locale) })}
             </p>
-            {item.statistics ? <LogiPlayerStatistics locale={locale} stats={item.statistics} /> : null}
+            {!recorded && item.statistics ? <LogiPlayerStatistics locale={locale} stats={item.statistics} /> : null}
             {item.rosters.length ? (
               <>
                 <h4>{t('publicRoster')}</h4>
@@ -239,33 +246,39 @@ export async function PublicLogiMemberActivity({ locale, items }: { locale: AppL
                   ))}
                 </ul>
               </>
-            ) : null}
-          </section>
-        ))}
+            ) : null}</> : null}
+            {recorded ? <PlayerRecordedStatistics locale={locale} stats={recorded} /> : null}
+          </section>;
+        })}
       </div>
     </SectionFrame>
   );
 }
 
-export async function PublicLogiMatchPeople({ locale, people }: { locale: AppLocale; people: PublicLogiEventPeople | null }) {
-  if (!people || (!people.roster.length && !people.statistics.length)) return null;
+export async function PublicLogiMatchPeople({ locale, people, sourcePeople }: { locale: AppLocale; people: PublicLogiEventPeople | null; sourcePeople?: PublicPlayerMatchPeople }) {
+  const roster = mergePublicPlayerRosterRows(people?.roster.map((row) => ({ href: `/members/${row.profileSlug}`, displayName: row.displayName, squad: row.squad, slot: row.slot, reserve: row.reserve })) ?? [], sourcePeople?.roster ?? []);
+  const statistics = [...new Map([
+    ...people?.statistics.map((row) => ({ href: `/members/${row.profileSlug}`, displayName: row.displayName, statistics: row.statistics })) ?? [],
+    ...sourcePeople?.statistics ?? [],
+  ].map((row) => [row.href, row])).values()];
+  if (!roster.length && !statistics.length) return null;
   const t = await getTranslations({ locale, namespace: 'logiPeople' });
   return (
     <SectionFrame title={t('publicRoster')} titleId="match-logi-people" description={t('publicNotice')}>
       <div className={styles.stack}>
         <ul>
-          {people.roster.map((row, index) => (
-            <li key={`${row.profileSlug}:${index}`}>
-              <Link href={`/members/${row.profileSlug}`}>{row.displayName}</Link> ·{' '}
+          {roster.map((row, index) => (
+            <li key={`${row.href}:${index}`}>
+              <Link href={row.href}>{row.displayName ?? t('unknown')}</Link> ·{' '}
               {row.reserve ? t('reserves') : (row.squad ?? t('unknown'))}
               {row.slot === null ? '' : ` · ${t('position')} ${row.slot + 1}`}
             </li>
           ))}
         </ul>
-        {people.statistics.map((row) => (
-          <section key={row.profileSlug}>
+        {statistics.map((row) => (
+          <section key={row.href}>
             <h3>
-              <Link href={`/members/${row.profileSlug}`}>{row.displayName}</Link>
+              <Link href={row.href}>{row.displayName ?? t('unknown')}</Link>
             </h3>
             <LogiPlayerStatistics locale={locale} stats={row.statistics} />
           </section>

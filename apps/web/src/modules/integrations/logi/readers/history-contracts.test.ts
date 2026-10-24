@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   compareHistoryRevisions, HISTORY_CURSOR_MAX_LENGTH, HISTORY_PAGE_SIZE, HISTORY_REVISION_PATTERN, HISTORY_SOURCE_ID_PATTERN, historyFiltersSchema, historyPageEnvelopeSchema, historyPageSchema,
-  historyRecordEnvelopeSchema, historyRecordSchema, historyWarconSchema, type HistoryRecord,
+  historyRecordEnvelopeSchema, historyRecordSchema, historyWardogsRecordSchema, historyWarconSchema, type HistoryWardogsRecord as HistoryRecord,
 } from './history-contracts';
 import { SYNTHETIC_HISTORY_REVISION, syntheticHistoryPages } from './synthetic';
 
@@ -16,9 +16,16 @@ describe('closed server-game-history contract (producer 72946e3)', () => {
     expect(pages.map((page) => [page.items.length, page.nextCursor])).toEqual([[20, 'synthetic-history-cursor-2'], [0, 'synthetic-history-cursor-3'], [4, null]]);
     expect(HISTORY_PAGE_SIZE).toBe(20);
     expect(HISTORY_CURSOR_MAX_LENGTH).toBe(8192);
-    expect(Object.keys(historyRecordSchema.shape).sort()).toEqual(['collectedAt', 'gameId', 'guildId', 'id', 'provider', 'revision', 'schemaVersion', 'serverName', 'session', 'sourceId', 'updatedAt']);
+    expect(Object.keys(historyWardogsRecordSchema.shape).sort()).toEqual(['collectedAt', 'gameId', 'guildId', 'id', 'provider', 'revision', 'schemaVersion', 'serverName', 'session', 'sourceId', 'updatedAt']);
     expect(Object.keys(historyPageSchema.shape).sort()).toEqual(['items', 'lastCollectedAt', 'nextCursor', 'revision']);
-    expect(Object.keys(historyWarconSchema.shape).sort()).toEqual(['factions', 'hasFeed', 'lighting', 'mode', 'outcome', 'schemaVersion', 'winner']);
+    expect(Object.keys(historyWarconSchema.shape).sort()).toEqual(['factions', 'hasFeed', 'lighting', 'mode', 'outcome', 'schemaVersion', 'scoreTimeline', 'winner']);
+  });
+
+  it('accepts the producer optional bounded scoreTimeline and rejects malformed or unbounded samples', () => {
+    const base = record();
+    const withTimeline = (scoreTimeline: unknown) => ({ ...base, session: { ...base.session, warcon: { ...base.session.warcon, scoreTimeline } } });
+    for (const timeline of [[], [[0]], [[0, 5, 0], [60, 10, 5]], Array.from({ length: 500 }, () => Array.from({ length: 17 }, () => 0))]) expect(historyRecordSchema.safeParse(withTimeline(timeline)).success).toBe(true);
+    for (const timeline of [null, [[]], [[0, null]], [[Number.POSITIVE_INFINITY]], [[0, '5']], [Array.from({ length: 18 }, () => 0)], Array.from({ length: 501 }, () => [0])]) expect(historyRecordSchema.safeParse(withTimeline(timeline)).success).toBe(false);
   });
 
   it('rejects unknown keys anywhere, foreign games and providers, and unbounded values', () => {

@@ -12,17 +12,17 @@ import { gamePath } from '@/modules/games/routes';
 export async function generateMetadata({ params, searchParams }: PageProps<'/[locale]/[game]/history'>): Promise<Metadata> {
   const { locale, game } = await params;
   if (!hasLocale(routing.locales, locale) || !isGameRoute(game) || !gameHasSection(game, 'history')) return {};
-  const [t, games] = await Promise.all([getTranslations({ locale, namespace: 'history.meta' }), getTranslations({ locale, namespace: 'games' })]);
+  const [t, games, history] = await Promise.all([getTranslations({ locale, namespace: 'history.meta' }), getTranslations({ locale, namespace: 'games' }), getTranslations({ locale, namespace: 'history' })]);
   return {
     title: games('sectionTitle', { section: t('title'), game: games(`names.${game}`) }),
-    description: t('description'),
+    description: game === 'hll' ? history('hll.metaDescription') : t('description'),
     alternates: bilingualAlternates(locale, gamePath(game, 'history')),
     // Server, period, map, floor, sort and page are view state of one document, not separate indexable facts.
     ...(hasHistoryQuery(await searchParams) ? { robots: { index: false, follow: true } } : {}),
   };
 }
 
-/** Retained Warcon server game history of the Wardogs section; games without the section are not found. */
+/** Retained gameplay history of the selected game; unknown game sections are not found. */
 export default async function GameHistoryPage({ params, searchParams }: PageProps<'/[locale]/[game]/history'>) {
   const { locale, game } = await params;
   if (!hasLocale(routing.locales, locale) || !isGameRoute(game) || !gameHasSection(game, 'history')) notFound();
