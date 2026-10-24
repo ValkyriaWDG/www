@@ -86,6 +86,14 @@ build and 17 connected browser cases passed again locally after this repair.
 The PR records final-head hosted CI;
 this earlier failed run is retained as evidence rather than labelled green.
 
+The first Windows browser rerun after the dependency repair exposed four failing
+social-image cases: Turbopack traced the Sharp native addon but omitted its two
+sibling libvips DLLs. Directly loading the traced package reproduced the missing-DLL
+error while the source package loaded correctly. A narrow native-asset tracing
+include restores those installed DLLs to standalone output. After rebuilding, the
+traced package loads Sharp 0.35.5 successfully. Existing PNG/draft-exclusion assertions
+remain unchanged; the complete browser rerun verifies the public response boundary.
+
 ## Inspected screenshots
 
 Every capture below is an actual local application screenshot with synthetic fixtures,

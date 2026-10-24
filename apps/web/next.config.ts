@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
   // Native/server-only libraries stay external to the server bundle.
   serverExternalPackages: ['sharp', 'pg'],
   outputFileTracingIncludes: {
+    // Turbopack traces Sharp's Windows addon but misses its sibling libvips DLLs.
+    // Keep these installed pnpm assets in the standalone output as well.
+    '/*': ['../../node_modules/.pnpm/@img+sharp-win32-*/node_modules/@img/sharp-win32-*/lib/*.dll'],
     '/api/social/**': ['./node_modules/@fontsource/barlow-condensed/files/*600-normal.woff'],
   },
   images: {

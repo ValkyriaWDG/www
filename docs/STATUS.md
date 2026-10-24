@@ -30,6 +30,8 @@ stopped at four fixable HIGH/CRITICAL Next.js advisories. The follow-up pins Nex
 and its ESLint configuration to 16.4.1 without suppressing the security gate. Frozen
 install, lint, types, 1,292 unit tests, 529 PostgreSQL tests and build passed again
 locally. The PR carries the latest-head CI result and retained failure evidence.
+The Windows standalone follow-up explicitly traces Sharp's sibling libvips DLLs;
+the new Turbopack trace had omitted them and broken social-image responses.
 
 Read-only hosted checks still observed production source `9b6ffd78` healthy, with
 public liveness/readiness and canonical HLL/WDG routes returning 200. Both configured
