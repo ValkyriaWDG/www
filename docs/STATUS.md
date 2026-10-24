@@ -9,11 +9,17 @@ readiness/configuration, 442 preserved media files and 17 untouched other contai
 Visual acceptance found a first-team banner grid defect and an inconsistent archived
 placeholder timestamp in linked details. This correction explicitly places teams in
 the wide track and uses the list's current supplied timestamp in the linked pane.
-Local build/types/lint, nine focused unit checks and all 25 connected journeys passed,
+An unlinked WDG record with fewer captured teams than result participants retains its
+original event title and explicitly secondary supplied teams, without VS or invented
+team-score attribution. Local build/types/full lint, all 1,388 unit tests (including
+39 focused identity/rendering cases) and all 25 connected journeys passed,
 including four new actual text-geometry cases. Independent review has no findings.
 [Inspected desktop/mobile evidence](evidence/match-detail-readability-2026-10-24/README.md).
-Hosted qualification/deployment of this correction and seven reviewed recent HLL
-identity bindings remain pending. Older active-image sections below are historical.
+Hosted qualification/deployment of this correction remains pending. Seven independently
+reviewed recent HLL identity bindings were activated at 19:11:39 UTC, passed 117 public
+checks and removed seven duplicates across results/upcoming. The unresolved legacy
+opponent331 was corrected to K&B with an audit record; scores, dates and publication
+are unchanged. Older active-image sections below are historical.
 
 ## Shared match presentation follow-up — 2026-10-24
 

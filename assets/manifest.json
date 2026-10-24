@@ -17756,8 +17756,8 @@
       "source": "Actual local production-build Chromium capture on 2026-10-24; synthetic fixtures; /cs/hll/matches/logi/synthetic-next-hell_let_loose; 1280px; fix/match-long-team-labels application tree in README",
       "usage": "verification-evidence-only",
       "rights": "Valkyria application screenshot with synthetic public data; approved game artwork remains excluded from Apache code license",
-      "sha256": "38b1ce7c3dfe14be08b851773cd11903af4bb1a28513dd8590570d127a6fac0f",
-      "bytes": 447606,
+      "sha256": "3e1b91c3b1dd9c8ca60d4bf7e0fbc9012b6dee35cd44eb093f5e9e913ee9fddd",
+      "bytes": 447421,
       "width": 1280,
       "height": 1404
     },
@@ -17767,8 +17767,8 @@
       "source": "Actual local production-build Chromium capture on 2026-10-24; synthetic fixtures; /en/hll/matches/logi/synthetic-next-hell_let_loose; 390px; fix/match-long-team-labels application tree in README",
       "usage": "verification-evidence-only",
       "rights": "Valkyria application screenshot with synthetic public data; approved game artwork remains excluded from Apache code license",
-      "sha256": "6b308c7e545767993c5eb30ce0274b12f05dd8c3119618f92abf2e5395e476b5",
-      "bytes": 150266,
+      "sha256": "98f0a511364a8b064dc709f09ee75b6493ce3173d76ac064d4fe95444d7392f4",
+      "bytes": 150153,
       "width": 390,
       "height": 1512
     }

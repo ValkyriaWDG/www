@@ -98,6 +98,39 @@ describe('shared operational match presentation', () => {
     }
   });
 
+  it.each(['cs', 'en'] as const)('keeps a partial %s Wardogs capture secondary without turning its two teams into the match identity', async (locale) => {
+    const event: PublicLogiEvent = {
+      ...imported, ref: { ...imported.ref, game: 'wardogs' }, archive: undefined,
+      title: 'VLK vs ROG vs BACM',
+      teams: [
+        { id: 'synthetic-pv', slot: 'a', name: 'Polish Veterans', shortCode: 'PV', side: 'Valkyra' },
+        { id: 'synthetic-rog', slot: 'b', name: 'TEAM ROGUE', shortCode: 'ROG', side: 'Lonestar' },
+      ],
+      result: { ...imported.result, state: 'corrected', participants: [
+        { id: 'Valkyra', label: 'Valkyra', score: 100 },
+        { id: 'Manticore', label: 'Manticore', score: 91 },
+        { id: 'Lonestar', label: 'Lonestar', score: 65 },
+      ] },
+    };
+    const before = structuredClone(event);
+    const t = await getOperationalTranslations(locale);
+    for (const expanded of [false, true]) {
+      const html = render(<OperationalMatchTeams event={event} t={t} expanded={expanded} />, locale);
+      expect(html).toMatch(/<strong[^>]*>VLK vs ROG vs BACM<\/strong>/);
+      expect(html).toContain(locale === 'cs' ? 'Zadané týmy' : 'Supplied teams');
+      for (const text of ['Polish Veterans', 'PV', 'TEAM ROGUE', 'ROG', 'Valkyra', 'Lonestar']) expect(html).toContain(text);
+      expect(html).toContain('data-partial-teams="true"');
+      expect(html.match(/role="listitem"/g)).toHaveLength(2);
+      expect(html).not.toMatch(/>VS<|Polish Veterans vs\.|>Valkyria<|>BACM</);
+      expect(html.indexOf('VLK vs ROG vs BACM')).toBeLessThan(html.indexOf('Polish Veterans'));
+    }
+    const detail = render(await OperationalMatchPreview({ event, locale, mode: 'detail' }), locale);
+    for (const score of ['Valkyra: 100', 'Manticore: 91', 'Lonestar: 65']) expect(detail).toContain(score);
+    expect(detail).not.toMatch(/>VS<|PV: 100|ROG: 65|VLK: 100|BACM: 91/);
+    expect(event).toEqual(before);
+    expectPresentationOnly(detail);
+  });
+
   it('navigates a reviewed preview directly to its canonical match and retains the supplied event end when no result end exists', async () => {
     const event = { ...imported, result: { ...imported.result, endedAt: null } };
     const preview = render(await OperationalMatchPreview({ locale: 'en', event }), 'en');

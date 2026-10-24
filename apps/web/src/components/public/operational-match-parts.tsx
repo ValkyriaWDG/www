@@ -18,8 +18,16 @@ export function OperationalMatchStart({ event, locale, t }: { event: PublicLogiE
 
 export function OperationalMatchTeams({ event, t, expanded = false }: { event: PublicLogiEvent; t: T; expanded?: boolean }) {
   const identity = operationalMatchIdentity(event);
-  return <span className={styles.identity} data-expanded={expanded || undefined}>
-    {identity.teams.length ? <span className={styles.teams}><span className="visually-hidden">{t('teams')}: </span>{identity.teams.map((team, index) => <span className={styles.teamGroup} key={team.key}>
+  return <span className={styles.identity} data-expanded={expanded || undefined} data-partial-teams={identity.partialTeams || undefined}>
+    {identity.partialTeams ? <>
+      <strong className={styles.fallbackTitle}>{identity.title}</strong>
+      <span className={styles.suppliedTeams}>
+        <span>{t('suppliedTeams')}</span>
+        <span role="list">{identity.teams.map((team) => <span className={styles.suppliedTeam} key={team.key} role="listitem">
+          <span>{team.name}{team.code ? ` (${team.code})` : null}</span>{team.side ? <small>{team.side}</small> : null}
+        </span>)}</span>
+      </span>
+    </> : identity.teams.length ? <span className={styles.teams}><span className="visually-hidden">{t('teams')}: </span>{identity.teams.map((team, index) => <span className={styles.teamGroup} key={team.key}>
       {index > 0 ? <span className={styles.versus} aria-hidden="true">VS</span> : null}
       <span className={styles.team} title={team.name}>
         {expanded ? <span className={styles.monogram} aria-hidden="true">{(team.code ?? team.name).slice(0, 3)}</span> : null}

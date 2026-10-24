@@ -80,6 +80,57 @@ describe('operational match identity presentation', () => {
   });
 });
 
+describe('partial Wardogs identity presentation', () => {
+  const partial = (): PublicLogiEvent => event({
+    ref: { ...event().ref, game: 'wardogs' },
+    title: 'VLK vs ROG vs BACM',
+    teams: [
+      { id: 'synthetic-pv', slot: 'a', name: 'Polish Veterans', shortCode: 'PV', side: 'Valkyra' },
+      { id: 'synthetic-rog', slot: 'b', name: 'TEAM ROGUE', shortCode: 'ROG', side: 'Lonestar' },
+    ],
+    result: { ...event().result, state: 'corrected', participants: [
+      { id: 'Valkyra', label: 'Valkyra', score: 100 },
+      { id: 'Manticore', label: 'Manticore', score: 91 },
+      { id: 'Lonestar', label: 'Lonestar', score: 65 },
+    ] },
+  });
+
+  it('keeps the exact conflicting source title primary and all supplied teams secondary without result attribution', () => {
+    const row = partial();
+    const before = structuredClone(row);
+    expect(operationalMatchIdentity(row)).toEqual({
+      title: 'VLK vs ROG vs BACM', subtitle: null, partialTeams: true,
+      teams: [
+        { key: 'synthetic-pv', name: 'Polish Veterans', code: 'PV', side: 'Valkyra' },
+        { key: 'synthetic-rog', name: 'TEAM ROGUE', code: 'ROG', side: 'Lonestar' },
+      ],
+    });
+    expect(row).toEqual(before);
+  });
+
+  it('does not create team identities by parsing a generic or empty title', () => {
+    for (const title of ['Synthetic generic match', '']) {
+      const identity = operationalMatchIdentity({ ...partial(), title });
+      expect(identity).toMatchObject({ title, subtitle: null, partialTeams: true });
+      expect(identity.teams).toHaveLength(2);
+    }
+  });
+
+  it('keeps complete captured teams, HLL, archive links and absent captured teams on their existing paths', () => {
+    const row = partial();
+    const complete = { ...row, teams: [...row.teams, { id: 'synthetic-third', slot: 'c' as const, name: 'Supplied Third Team', shortCode: null, side: null }] };
+    const hll = { ...row, ref: { ...row.ref, game: 'hll' as const } };
+    const linked = { ...row, archive: { slug: 'synthetic-archive', opponentName: 'Reviewed Opponent', opponentShortCode: 'REV' } };
+    for (const unchanged of [complete, hll, linked, { ...row, archive: { slug: 'synthetic-archive' } }, { ...row, teams: [] }, { ...row, result: { ...row.result, participants: [] } }]) {
+      expect(operationalMatchIdentity(unchanged)).not.toHaveProperty('partialTeams');
+    }
+    expect(operationalMatchIdentity(complete).title).toBe('Polish Veterans vs. TEAM ROGUE vs. Supplied Third Team');
+    expect(operationalMatchIdentity(hll).title).toBe('Polish Veterans vs. TEAM ROGUE');
+    expect(operationalMatchIdentity(linked).title).toBe('Valkyria vs. Reviewed Opponent');
+    expect(operationalMatchIdentity({ ...row, teams: [] })).toEqual({ title: row.title, teams: [], subtitle: null });
+  });
+});
+
 describe('public result faction labels', () => {
   it.each([
     ['allies', 'cs', 'Spojenci'], ['Allies', 'cs', 'Spojenci'], ['ALLIES', 'en', 'Allies'],

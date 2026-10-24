@@ -12,14 +12,23 @@ The preview and canonical detail now use the identical supplied start/end semant
 as the list, including an explicit end-time label when no start exists. Underlying
 archive dates, scores, publication and consent remain unchanged.
 
+The actual Wardogs 10 October record supplies a three-team event title and three
+faction results, but only two captured team records. For this narrow unlinked WDG
+case, the original event title remains primary and every captured team is secondary
+under “Supplied teams”, without VS. The renderer neither invents the missing team
+nor attributes faction scores to clans. Complete captures and archive links retain
+their existing presentation.
+
 ## Reproduction and proof
 
-Tested application tree `ce771f2b653364a756c63db09b00b78a2cdec043`, based on
+Tested application tree `6bd5262995a338555b46c76bac8ecf368b877e54`, based on
 `eea874591543461f31b905e7b67c3cd67add8764`. Windows/Node24/pnpm10.34.5,
 standalone production build, Playwright Chromium, disposable loopback PostgreSQL
 and explicitly synthetic projections. Independent integrated review: no findings.
 
-`pnpm build`, typecheck, scoped ESLint and nine focused rendering unit tests passed.
+`pnpm build`, full lint/typecheck and all 1,388 unit tests passed. The 39 focused
+identity/rendering cases include the exact partial-WDG contradiction in both locales,
+checking primary/secondary order, retained data, absent VS and unchanged faction scores.
 `CAPTURE_EVIDENCE=1 pnpm --filter @valkyria/web exec playwright test -c playwright.logi.config.ts`
 passed **25/25** journeys. Four new CS/EN ×1280/390 cases measure both team-track
 widths/alignment, long-name rendered line count, clipping and VS placement. Existing
@@ -41,5 +50,8 @@ names, no text clipping or horizontal overflow, and an honest awaiting-result st
 
 Hosted qualification and production acceptance of this correction remain pending.
 The earlier source is already deployed, but its successful HTTP checks do not close
-this visible defect. The seven reviewed recent HLL identity associations are an
-independent operator configuration correction; no runtime matching heuristic is added.
+this visible defect. The seven reviewed recent HLL identity associations were activated
+independently at 19:11:39 UTC and passed 117 public checks. The unresolved legacy
+opponent331 was corrected to Kebaguettes & Bayonets / K&B using captured data and the
+current public legacy match209, with an audit record and no score/date/publication
+change. No runtime matching heuristic is added.
