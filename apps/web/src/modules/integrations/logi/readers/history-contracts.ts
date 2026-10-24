@@ -7,7 +7,9 @@ import { z } from 'zod';
  * `providerSessionSchema` of `contracts.ts`. The producer serves retained completed
  * Warcon games of the Wardogs workspace with UTC start/end, map, final scores, winner
  * and outcome, faction names/colours, mode/lighting, feed coverage and per-player
- * facts. This is server gameplay history: factions are not clan teams, provider
+ * facts. The matched HLL/CRCON branch carries completed sessions and known score
+ * metrics without Warcon metadata or invented outcomes. This is server gameplay history:
+ * factions are not clan teams, provider
  * players are not verified members and games are not official League results.
  *
  * Everything is `z.strictObject`: an unknown key (or a newer producer version) is an
@@ -28,6 +30,7 @@ export const HISTORY_SOURCE_ID_PATTERN = /^[a-f0-9]{64}$/;
 /** Playtime floor of the player ranking, in minutes (`aggregateHistory`). */
 export const HISTORY_MIN_MINUTES_DEFAULT = 60;
 export const HISTORY_MIN_MINUTES_MAX = 100_000;
+export const HISTORY_HLL_METRICS = ['kills', 'deaths', 'combat', 'offense', 'defense', 'support'] as const;
 
 const text = z.string().min(1).max(200);
 const timestamp = z.iso.datetime();
@@ -61,6 +64,8 @@ export const historyWarconSchema = z.strictObject({
   winner: text.nullable(),
   outcome: historyOutcomeSchema,
   hasFeed: z.boolean(),
+  /** Provider score samples, accepted for wire parity; not part of the public DTO. */
+  scoreTimeline: z.array(z.array(z.number().finite()).min(1).max(17)).max(500).optional(),
   mode: z.string().max(200).nullable(),
   lighting: z.string().max(200).nullable(),
   factions: z.array(historyFactionSchema).max(16).refine((factions) => new Set(factions.map((faction) => faction.name)).size === factions.length, { message: 'Duplicate Warcon faction.' }),
@@ -79,7 +84,7 @@ export const historyPlayerSchema = z.strictObject({
 });
 export type HistoryPlayerFact = z.infer<typeof historyPlayerSchema>;
 
-export const historySessionSchema = z.strictObject({
+const historySessionBaseSchema = z.strictObject({
   externalId: z.string().min(1).max(100),
   startedAt: timestamp,
   endedAt: timestamp,
@@ -87,9 +92,9 @@ export const historySessionSchema = z.strictObject({
   map: text.nullable(),
   participants: z.array(historyParticipantSchema).max(16),
   sourceDigest: z.string().regex(/^[a-f0-9]{64}$/),
-  warcon: historyWarconSchema,
   players: z.array(historyPlayerSchema).max(300),
-}).refine((session) =>
+});
+export const historySessionSchema = historySessionBaseSchema.extend({ warcon: historyWarconSchema }).refine((session) =>
   Date.parse(session.endedAt) >= Date.parse(session.startedAt)
   && new Set(session.players.map((player) => `${player.platform}:${player.platformId}`)).size === session.players.length
   && new Set(session.participants.map((faction) => faction.id)).size === session.participants.length
@@ -97,20 +102,33 @@ export const historySessionSchema = z.strictObject({
 { message: 'Invalid retained Warcon session.' });
 export type HistorySession = z.infer<typeof historySessionSchema>;
 
-export const historyRecordSchema = z.strictObject({
+const historyRecordFields = {
   schemaVersion: z.literal(1),
   /** Stable record ID; replaying a game or rotating its key keeps it. */
   id: z.string().min(1).max(200),
   guildId: z.string().min(1).max(64),
-  gameId: z.literal('wardogs'),
-  provider: z.literal('wardogs_warcon'),
   sourceId: historySourceIdSchema,
   serverName: z.string().max(200).nullable(),
   revision: historyRevisionSchema,
   collectedAt: timestamp,
   updatedAt: timestamp,
-  session: historySessionSchema,
-});
+};
+
+/** HLL retained facts carry no Warcon metadata, faction assignment or player outcome. */
+export const historyHllPlayerSchema = historyPlayerSchema.omit({ faction: true, result: true }).extend({ metrics: z.record(z.string().refine((key) => (HISTORY_HLL_METRICS as readonly string[]).includes(key)), z.number().finite().nonnegative().nullable()) });
+export const historyHllSessionSchema = historySessionBaseSchema.extend({ externalId: z.string().regex(/^\d{1,20}$/), players: z.array(historyHllPlayerSchema).max(300) }).refine((session) =>
+  Date.parse(session.endedAt) >= Date.parse(session.startedAt)
+  && new Set(session.players.map((player) => `${player.platform}:${player.platformId}`)).size === session.players.length
+  && session.participants.length === 2
+  && session.participants.some((participant) => participant.id === 'allied' && participant.label === 'Allies')
+  && session.participants.some((participant) => participant.id === 'axis' && participant.label === 'Axis')
+  && session.participants.every((participant) => participant.score === null || participant.score >= 0),
+{ message: 'Invalid retained HLL session.' });
+export const historyWardogsRecordSchema = z.strictObject({ ...historyRecordFields, gameId: z.literal('wardogs'), provider: z.literal('wardogs_warcon'), session: historySessionSchema });
+export const historyHllRecordSchema = z.strictObject({ ...historyRecordFields, gameId: z.literal('hell_let_loose'), provider: z.literal('hll_crcon'), session: historyHllSessionSchema });
+export const historyRecordSchema = z.discriminatedUnion('gameId', [historyWardogsRecordSchema, historyHllRecordSchema]);
+export type HistoryWardogsRecord = z.infer<typeof historyWardogsRecordSchema>;
+export type HistoryHllRecord = z.infer<typeof historyHllRecordSchema>;
 export type HistoryRecord = z.infer<typeof historyRecordSchema>;
 
 export const historyPageSchema = z.strictObject({

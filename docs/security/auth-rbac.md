@@ -93,8 +93,12 @@ The game-scoped `/[locale]/[game]/team` page displays only published native rost
 Website profile associations require `members.publish` for every profile affiliation
 and the source game. The final transaction rechecks issuer evidence and the unchanged,
 unexpired interactive session under shared locks. Associations do not link login
-accounts or grant authority. Public statistics and line-up positions require separate
-opt-ins plus current published-profile consent. Internal member types/statuses/groups
+accounts or grant authority. Personal-profile enrichment requires separate statistics/
+lineup opt-ins plus current published-profile consent. The explicitly owner-enabled
+[basic gaming directory](../integrations/logi/public-players-and-history.md) publishes
+allowlisted supplied names and public lineup facts without creating personal consent;
+exact withdrawals/opt-outs and current source/version fences remain effective.
+Internal member types/statuses/groups
 and individual attendance remain private. See [people synchronization](../integrations/logi/people.md).
 
 ## Game-scoped authority

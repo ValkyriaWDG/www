@@ -10,12 +10,18 @@ function player(overrides: Partial<HistoryPlayerPublic> & { key: string }): Hist
   const metric = (value: number | null, knownGames = 1) => ({ value, knownGames });
   return {
     name: overrides.key, platform: 'steam', lastSeen: '2026-10-01T00:00:00.000Z', matches: 1, wins: 0, losses: 0, draws: 0, unknownResults: 0, eligible: true, winRate: null, kd: null,
-    metrics: { seconds: metric(60), kills: metric(0), deaths: metric(0), cashDelta: metric(0), headshots: metric(0), teamKills: metric(0), suicides: metric(0), vehicleKills: metric(0) },
+    metrics: { seconds: metric(60), kills: metric(0), deaths: metric(0), cashDelta: metric(0), headshots: metric(0), teamKills: metric(0), suicides: metric(0), vehicleKills: metric(0), combat: metric(null, 0), offense: metric(null, 0), defense: metric(null, 0), support: metric(null, 0) },
     ...overrides,
   };
 }
 
 describe('history page query', () => {
+  it('keeps HLL rankings usable without invented playtime and accepts only relevant score sorts', () => {
+    expect(parseHistoryQuery(undefined, servers, 'hll')).toMatchObject({ minMinutes: 0, sort: 'kills' });
+    for (const sort of ['winRate', 'seconds', 'cashDelta']) expect(parseHistoryQuery({ min: '60', sort }, servers, 'hll')).toMatchObject({ minMinutes: 0, sort: 'kills' });
+    for (const sort of ['combat', 'offense', 'defense', 'support']) expect(parseHistoryQuery({ sort }, servers, 'hll').sort).toBe(sort);
+    expect(parseHistoryQuery({ sort: 'cashDelta', min: '500' }, servers, 'wardogs')).toMatchObject({ minMinutes: 500, sort: 'cashDelta' });
+  });
   it('selects the first published history server unless a published one is requested', () => {
     expect(parseHistoryQuery(undefined, servers).server).toBe('community-one');
     expect(parseHistoryQuery({ server: 'community-two' }, servers).server).toBe('community-two');

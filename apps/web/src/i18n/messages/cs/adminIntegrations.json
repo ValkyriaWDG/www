@@ -126,14 +126,14 @@
       "history": "Historie her serveru (Warcon)"
     },
     "readers": {
-      "title": "Čtečky Wardogs (League, Warcon)",
+      "title": "Čtečky herních dat",
       "resources": {
         "league-matches": "Wardogs League – náhled zápasu",
         "league-fixtures": "Wardogs League – sledovaná utkání",
         "warcon-data": "Warcon",
-        "server-game-history": "Warcon – historie her serveru"
+        "server-game-history": "Historie her serveru"
       },
-      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhled zápasu z League, utkání ve Wardogs League, která Logi sleduje, živé údaje či poslední kola ze schválených připojení Warcon a uchované dohrané hry Warcon ze schválených zdrojů (historie hry na serveru, ne výsledky klanu). Stavy vycházejí z konfigurace a z posledního čtení webu, nikdy ze stavu hostovaného producenta.",
+      "intro": "Čtení na vyžádání s vlastními omezenými klíči: náhledy a utkání Wardogs League, údaje serverů Warcon a uchované dohrané hry serverů Hell Let Loose a Wardogs. Každý řádek historie používá oprávnění dané hry a její poslední čtení webu. Tyto stavy nepopisují stav hostovaného producenta.",
       "state": {
         "unconfigured": "Nenastaveno",
         "configured": "Nastaveno",

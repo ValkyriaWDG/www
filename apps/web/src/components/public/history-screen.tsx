@@ -7,7 +7,7 @@ import { EmptyState, FeedbackNotice, PageHeader, SectionFrame, SyntheticNote } f
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import { getPathname } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
-import type { GameRoute } from '@/modules/games/registry';
+import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { gamePath } from '@/modules/games/routes';
 import { getHistoryGames, getHistoryReport, listHistoryPublicIds } from '@/modules/integrations/logi/readers/history';
 import type { HistoryReportPublic } from '@/modules/integrations/logi/readers/history-public';
@@ -23,32 +23,32 @@ import styles from './history.module.css';
 export type HistoryServer = { publicId: string; name: string };
 
 /**
- * Published Wardogs servers with an approved history source, named by the website's
+ * Published servers of the selected game with an approved history source, named by the website's
  * server presentation (an explicitly hidden server is not listed; a server without an
  * observed name keeps its public ID).
  */
-export async function listHistoryServers(now: Date): Promise<HistoryServer[]> {
-  const publicIds = listHistoryPublicIds();
+export async function listHistoryServers(now: Date, game: GameRoute = 'wardogs'): Promise<HistoryServer[]> {
+  const publicIds = listHistoryPublicIds(GAME_REGISTRY[game].logi);
   if (publicIds.length === 0) return [];
   const rows = await getServerPresentation(now);
-  const overview = await getPublicServerOverview('wardogs', now, rows);
+  const overview = await getPublicServerOverview(game, now, rows);
   const names = new Map(overview.state === 'not_configured' ? [] : overview.servers.map((server) => [server.publicId, server.name]));
-  return publicIds.filter((publicId) => isServerPublished(rows, 'wardogs', publicId)).map((publicId) => ({ publicId, name: names.get(publicId) ?? publicId }));
+  return publicIds.filter((publicId) => isServerPublished(rows, game, publicId)).map((publicId) => ({ publicId, name: names.get(publicId) ?? publicId }));
 }
 
 /**
- * Server game history page (Wardogs): the state line, the GET filter form, summary tiles,
+ * Server game history page: the state line, the GET filter form, summary tiles,
  * faction win shares, player rankings and the paginated game list, all computed from one
  * period boundary per request. Reader `null` (unconfigured) renders the unavailable state.
  */
 export async function HistoryScreen({ locale, game, query }: { locale: AppLocale; game: GameRoute; query: RawSearchParams | undefined }) {
   const now = new Date();
-  const [t, games, servers] = await Promise.all([getTranslations({ locale, namespace: 'history' }), getTranslations({ locale, namespace: 'games' }), listHistoryServers(now)]);
-  const state = parseHistoryQuery(query, servers.map((server) => server.publicId));
+  const [t, games, servers] = await Promise.all([getTranslations({ locale, namespace: 'history' }), getTranslations({ locale, namespace: 'games' }), listHistoryServers(now, game)]);
+  const state = parseHistoryQuery(query, servers.map((server) => server.publicId), game);
   const base = gamePath(game, 'history');
   const filters = historyFiltersFor(state, now);
   const [report, page] = state.server
-    ? await Promise.all([getHistoryReport(state.server, filters, now), getHistoryGames(state.server, filters, state.page, now)])
+    ? await Promise.all([getHistoryReport(state.server, filters, now, GAME_REGISTRY[game].logi), getHistoryGames(state.server, filters, state.page, now, GAME_REGISTRY[game].logi)])
     : [null, null];
   const server = servers.find((row) => row.publicId === state.server) ?? null;
 
@@ -58,7 +58,7 @@ export async function HistoryScreen({ locale, game, query }: { locale: AppLocale
       eyebrow={games(`eyebrow.${game}`)}
       title={t('title')}
       titleId="history-title"
-      description={<p>{t('intro')}</p>}
+      description={<p>{t(game === 'hll' ? 'hll.intro' : 'intro')}</p>}
     />
   );
 
@@ -98,10 +98,10 @@ export async function HistoryScreen({ locale, game, query }: { locale: AppLocale
           </FeedbackNotice>
         ) : null}
         {report.coverage.kind === 'window' ? <p className={styles.note} data-history-coverage-window="">{t('coverage', { date: formatDate(report.coverage.from, locale) })}</p> : null}
-        <p className={styles.note} data-history-note="">{t('note')}</p>
+        <p className={styles.note} data-history-note="">{t(game === 'hll' ? 'hll.note' : 'note')}</p>
       </div>
 
-      <Filters locale={locale} base={base} state={state} servers={servers} report={report} period={period} server={server} />
+      <Filters locale={locale} base={base} state={state} servers={servers} report={report} period={period} server={server} game={game} />
 
       {blocked ? null : report.games === 0 ? (
         <div className={styles.section} data-history-empty="">
@@ -121,7 +121,7 @@ export async function HistoryScreen({ locale, game, query }: { locale: AppLocale
                   <dt>{t('summary.games')}</dt>
                   <dd><span className={styles.tileValue} data-history-games-total="">{number(report.games)}</span></dd>
                 </div>
-                <div className={styles.tile}>
+                {game === 'wardogs' ? <div className={styles.tile}>
                   <dt>{t('summary.outcomes')}</dt>
                   <dd>
                     <span className={styles.tileValue}>{number(report.outcomes.decided)}</span>
@@ -130,14 +130,14 @@ export async function HistoryScreen({ locale, game, query }: { locale: AppLocale
                       {report.outcomes.unknown > 0 ? t('summary.outcomesUnknown', { unknown: number(report.outcomes.unknown) }) : null}
                     </span>
                   </dd>
-                </div>
-                <div className={styles.tile}>
+                </div> : null}
+                {game === 'wardogs' ? <div className={styles.tile}>
                   <dt>{t('summary.feed')}</dt>
                   <dd>
                     <span className={styles.tileValue}>{number(report.feedGames)}</span>
                     <span className={styles.tileDetail} data-history-feed="">{t('summary.feedValue', { feed: number(report.feedGames), games: report.games })}</span>
                   </dd>
-                </div>
+                </div> : null}
                 <div className={styles.tile}>
                   <dt>{t('summary.range')}</dt>
                   <dd>
@@ -158,14 +158,14 @@ export async function HistoryScreen({ locale, game, query }: { locale: AppLocale
             </SectionFrame>
           </div>
 
-          <div className={styles.section}>
+          {game === 'wardogs' ? <div className={styles.section}>
             <SectionFrame title={t('factions.title')} titleAs="h2" titleId="history-factions-title" description={<p className={styles.note}>{t('factions.description')}</p>}>
               <FactionShares factions={report.factions} outcomes={report.outcomes} locale={locale} captionId="history-factions-caption" />
             </SectionFrame>
-          </div>
+          </div> : null}
 
-          <PlayerRankings report={report} locale={locale} query={state} base={base} />
-          <GameHistoryList games={page} locale={locale} query={state} base={base} />
+          <PlayerRankings report={report} locale={locale} query={state} base={base} game={game} />
+          <GameHistoryList games={page} locale={locale} query={state} base={base} game={game} />
         </>
       )}
     </PageMain>
@@ -173,7 +173,7 @@ export async function HistoryScreen({ locale, game, query }: { locale: AppLocale
 }
 
 /** GET form: server, period, map (of the period) and the playtime floor; the active selection is summarized below it. */
-async function Filters({ locale, base, state, servers, report, period, server }: { locale: AppLocale; base: string; state: HistoryQuery; servers: HistoryServer[]; report: HistoryReportPublic; period: string; server: HistoryServer }) {
+async function Filters({ locale, base, state, servers, report, period, server, game }: { locale: AppLocale; base: string; state: HistoryQuery; servers: HistoryServer[]; report: HistoryReportPublic; period: string; server: HistoryServer; game: GameRoute }) {
   const t = await getTranslations({ locale, namespace: 'history' });
   const number = (value: number) => formatNumber(value, locale);
   const maps = report.maps.some((map) => map.name === state.map) || state.map === null ? report.maps : [...report.maps, { name: state.map, games: 0 }];
@@ -193,13 +193,13 @@ async function Filters({ locale, base, state, servers, report, period, server }:
             defaultValue={state.map ?? ''}
             options={[{ value: '', label: t('filters.allMaps') }, ...maps.map((map) => ({ value: map.name, label: t('filters.mapOption', { name: map.name, count: map.games }) }))]}
           />
-          <TextField name="min" id="history-min" label={t('filters.min')} hint={t('filters.minHint')} type="number" inputMode="numeric" min={0} max={100000} step={1} defaultValue={state.minMinutes} />
+          {game === 'wardogs' ? <TextField name="min" id="history-min" label={t('filters.min')} hint={t('filters.minHint')} type="number" inputMode="numeric" min={0} max={100000} step={1} defaultValue={state.minMinutes} /> : <input type="hidden" name="min" value="0" />}
           <div className={styles.filterActions}>
             <GameButton type="submit" intent="primary" data-history-submit="">{t('filters.submit')}</GameButton>
           </div>
         </HistoryFilterForm>
         <p className={styles.summaryLine} data-history-filter-summary="">
-          {t('filters.summary', { server: server.name, period, map: state.map ?? t('filters.allMaps'), floor: t('filters.floor', { min: number(state.minMinutes) }) })}
+          {game === 'hll' ? t('hll.filterSummary', { server: server.name, period, map: state.map ?? t('filters.allMaps') }) : t('filters.summary', { server: server.name, period, map: state.map ?? t('filters.allMaps'), floor: t('filters.floor', { min: number(state.minMinutes) }) })}
         </p>
       </SectionFrame>
     </div>

@@ -1,5 +1,5 @@
 import { leagueFixturesPageSchema, leagueReadSchema, warconEnvelopeSchema, type LeagueFixture, type LeagueRead, type LeagueSnapshot, type WarconEnvelope } from './contracts';
-import { historyPageSchema, type HistoryOutcome, type HistoryPage, type HistoryPlayerFact, type HistoryRecord } from './history-contracts';
+import { historyPageSchema, historyWardogsRecordSchema, type HistoryOutcome, type HistoryPage, type HistoryPlayerFact, type HistoryWardogsRecord } from './history-contracts';
 import { canonicalLeagueMatchUrl, type LeagueMatchUrl } from './league-url';
 
 /**
@@ -193,7 +193,7 @@ function syntheticHistoryPlayers(game: number, winner: string | null, outcome: H
   });
 }
 
-function syntheticHistoryRecord(now: Date, game: number, overrides: { winner?: string; revision?: string } = {}): HistoryRecord {
+function syntheticHistoryRecord(now: Date, game: number, overrides: { winner?: string; revision?: string } = {}): HistoryWardogsRecord {
   const outcome = SYNTHETIC_HISTORY_OUTCOMES[game] ?? 'decided';
   const winner = outcome === 'decided' ? overrides.winner ?? SYNTHETIC_HISTORY_FACTIONS[game % 3]!.name : null;
   const endedAt = now.getTime() - DAY_MS - game * 2.5 * DAY_MS;
@@ -228,7 +228,7 @@ function syntheticHistoryRecord(now: Date, game: number, overrides: { winner?: s
  * a corrected copy of game 3 (same ID, revision 6, Bravo instead of Charlie as the
  * winner). Every page validates against the closed page schema.
  */
-export function syntheticHistoryPages(now: Date): HistoryPage[] {
+export function syntheticHistoryPages(now: Date): (Omit<HistoryPage, 'items'> & { items: HistoryWardogsRecord[] })[] {
   const games = Array.from({ length: SYNTHETIC_HISTORY_GAME_COUNT }, (_, game) => syntheticHistoryRecord(now, game));
   const corrected = syntheticHistoryRecord(now, SYNTHETIC_HISTORY_CORRECTED_GAME, { winner: 'Bravo', revision: '6' });
   corrected.updatedAt = iso(now.getTime() - 6 * 60_000);
@@ -237,5 +237,23 @@ export function syntheticHistoryPages(now: Date): HistoryPage[] {
     { items: games.slice(0, 20), revision: SYNTHETIC_HISTORY_REVISION, nextCursor: SYNTHETIC_HISTORY_CURSORS[0], lastCollectedAt },
     { items: [], revision: SYNTHETIC_HISTORY_REVISION, nextCursor: SYNTHETIC_HISTORY_CURSORS[1], lastCollectedAt },
     { items: [...games.slice(20), corrected], revision: SYNTHETIC_HISTORY_REVISION, nextCursor: null, lastCollectedAt },
-  ].map((page) => historyPageSchema.parse(page));
+  ].map((page) => ({ ...historyPageSchema.parse(page), items: page.items.map((item) => historyWardogsRecordSchema.parse(item)) }));
+}
+
+/** Separate complete HLL facts: missing metrics and all outcomes stay unknown. */
+export const SYNTHETIC_HLL_HISTORY_SOURCE_ID = 'a1'.repeat(32);
+export const SYNTHETIC_HLL_HISTORY_PUBLIC_ID = 'synthetic-hll-history';
+export function syntheticHllHistoryPages(now: Date): HistoryPage[] {
+  const items = Array.from({ length: 3 }, (_, index) => {
+    const endedAt = iso(now.getTime() - (index + 1) * DAY_MS);
+    return {
+      schemaVersion: 1, id: `synthetic-hll-game-${index}`, guildId: SYNTHETIC_HISTORY_GUILD_ID, gameId: 'hell_let_loose', provider: 'hll_crcon',
+      sourceId: SYNTHETIC_HLL_HISTORY_SOURCE_ID, serverName: '[SYNTHETIC] HLL History Server', revision: '1', collectedAt: endedAt, updatedAt: endedAt,
+      session: { externalId: String(1000 + index), startedAt: iso(Date.parse(endedAt) - 90 * 60_000), endedAt, complete: true,
+        map: index === 2 ? null : '[SYNTHETIC] HLL Training Ground', participants: [{ id: 'allied', label: 'Allies', score: null }, { id: 'axis', label: 'Axis', score: null }], sourceDigest: 'ab'.repeat(32),
+        players: [{ platform: 'steam', platformId: 'private-synthetic-hll-player', name: '[SYNTHETIC] HLL Player', metrics: { kills: index === 2 ? null : 10, deaths: 5, combat: index === 1 ? null : 100, offense: 0, defense: 80, support: index === 2 ? null : 60 } }],
+      },
+    };
+  });
+  return [historyPageSchema.parse({ items, revision: '1', nextCursor: null, lastCollectedAt: iso(now.getTime() - 5 * 60_000) })];
 }

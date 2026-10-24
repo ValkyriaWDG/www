@@ -1,5 +1,27 @@
 # Valkyria screen and interaction map
 
+## Public gaming players and both-game history (2026-10-25)
+
+`/{locale}/members` and both game-scoped member pages compose approved personal
+profiles with owner-published gaming names before one search/filter/count/pagination.
+Basic players link to `/players/<opaque-key>` (also game-scoped), with exact game
+affiliations and published lineup links. A consented personal profile keeps its
+canonical `/members/[slug]` URL. Personal biography/avatar/roles are not inferred.
+Missing or partially updated sources have an explicit availability notice.
+
+Player detail separates public recorded-match totals from the latest 30 matches
+per game, with HLL score metrics and signed Wardogs money where supplied. Missing
+statistics stay unavailable. Public lineups use the same opaque player links;
+private groups, attendance and account identifiers never become public content.
+
+Both game menus expose `/{locale}/{game}/history`. HLL presents observed Allies/Axis
+scores and known combat metrics without inferred winners, factions or playtime;
+Wardogs retains its faction shares and playtime filters. Both reuse the existing
+responsive history filter, ranking and expandable game details. The initial
+Wardogs-only checkpoint below is superseded by this implemented contract; actual
+production activation remains a separate acceptance item. See
+[publication, identity and history boundaries](../integrations/logi/public-players-and-history.md).
+
 ## Shared match presentation (2026-10-24 follow-up)
 
 The community, HLL and Wardogs match pages use one chronological browser, shared

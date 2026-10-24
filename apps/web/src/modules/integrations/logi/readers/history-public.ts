@@ -88,6 +88,10 @@ export type HistoryGamePlayerPublic = {
   teamKills: number | null;
   suicides: number | null;
   vehicleKills: number | null;
+  combat: number | null;
+  offense: number | null;
+  defense: number | null;
+  support: number | null;
 };
 export type HistoryGamePublic = {
   /** Stable retained record ID of the producer (not the provider match ID). */
@@ -214,26 +218,28 @@ export function toHistoryReportPublic(context: HistoryPublicContext, filters: Hi
 }
 
 function metricOf(record: HistoryRecord, metrics: Record<string, number | null>, metric: HistoryMetric): number | null {
-  if (!record.session.warcon.hasFeed && !HISTORY_BASE_METRICS.includes(metric)) return null;
+  if (record.gameId === 'wardogs' && !record.session.warcon.hasFeed && !HISTORY_BASE_METRICS.includes(metric)) return null;
   const value = metrics[metric];
   return typeof value === 'number' ? value : null;
 }
 
 function toHistoryGamePublic(context: HistoryPublicContext, record: HistoryRecord): HistoryGamePublic {
   const { session } = record;
+  const metadata = record.gameId === 'wardogs' ? record.session.warcon : { winner: null, outcome: 'unknown' as const, mode: null, lighting: null, hasFeed: false, factions: session.participants.map((participant) => ({ name: participant.label, colorHex: null })) };
   const scores = new Map(session.participants.map((participant) => [participant.id, participant.score]));
-  const factions: HistoryGameFactionPublic[] = session.warcon.factions.map((faction) => ({ name: faction.name, colorHex: faction.colorHex, score: scores.get(faction.name) ?? null }));
-  if (session.warcon.winner !== null && !factions.some((faction) => faction.name === session.warcon.winner)) {
-    factions.push({ name: session.warcon.winner, colorHex: null, score: scores.get(session.warcon.winner) ?? null });
+  const factions: HistoryGameFactionPublic[] = record.gameId === 'wardogs' ? metadata.factions.map((faction) => ({ name: faction.name, colorHex: faction.colorHex, score: scores.get(faction.name) ?? null })) : session.participants.map((participant) => ({ name: participant.label, colorHex: null, score: participant.score }));
+  if (metadata.winner !== null && !factions.some((faction) => faction.name === metadata.winner)) {
+    factions.push({ name: metadata.winner, colorHex: null, score: scores.get(metadata.winner) ?? null });
   }
   return {
-    id: record.id, startedAt: session.startedAt, endedAt: session.endedAt, map: session.map, mode: session.warcon.mode, lighting: session.warcon.lighting,
-    outcome: session.warcon.outcome, winner: session.warcon.winner, hasFeed: session.warcon.hasFeed, factions,
+    id: record.id, startedAt: session.startedAt, endedAt: session.endedAt, map: session.map, mode: metadata.mode, lighting: metadata.lighting,
+    outcome: metadata.outcome, winner: metadata.winner, hasFeed: metadata.hasFeed, factions,
     players: context.publishPlayers
       ? session.players.map((player) => ({
-        key: context.playerKey(player.platform, player.platformId), name: player.name ?? null, platform: player.platform, faction: player.faction ?? null, result: player.result ?? null,
+        key: context.playerKey(player.platform, player.platformId), name: player.name ?? null, platform: player.platform, faction: record.gameId === 'wardogs' && 'faction' in player ? player.faction ?? null : null, result: record.gameId === 'wardogs' && 'result' in player ? player.result ?? null : null,
         seconds: metricOf(record, player.metrics, 'seconds'), kills: metricOf(record, player.metrics, 'kills'), deaths: metricOf(record, player.metrics, 'deaths'), cashDelta: metricOf(record, player.metrics, 'cashDelta'),
         headshots: metricOf(record, player.metrics, 'headshots'), teamKills: metricOf(record, player.metrics, 'teamKills'), suicides: metricOf(record, player.metrics, 'suicides'), vehicleKills: metricOf(record, player.metrics, 'vehicleKills'),
+        combat: metricOf(record, player.metrics, 'combat'), offense: metricOf(record, player.metrics, 'offense'), defense: metricOf(record, player.metrics, 'defense'), support: metricOf(record, player.metrics, 'support'),
       }))
       : null,
   };

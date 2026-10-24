@@ -309,3 +309,13 @@ export async function readPublicLogiEventPeople(db: Executor, env: LogiIntegrati
 }
 
 export { PEOPLE_FRESH_MS };
+
+// Server-only publication adapters share the same atomic snapshots and identity fences.
+export type { PeopleSnapshot as LogiPeopleSnapshot };
+export {
+  readSnapshot as readLogiPeopleSnapshot,
+  readStatisticsSnapshot as readLogiStatisticsSnapshot,
+  stillPublic as isCurrentLogiPeopleSnapshot,
+  readScopedPublicEvents as readScopedLogiPeopleEvents,
+  statisticsFence as logiPeopleSnapshotFence,
+};

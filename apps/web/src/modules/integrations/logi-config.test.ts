@@ -28,6 +28,10 @@ describe('Logi source scope', () => {
     const [base] = configuredLogiSources(env(), 'data');
     const [published] = configuredLogiSources(env({ publishMatches: true, publicServers: [] }), 'data');
     expect(published!.scopeKey).toBe(base!.scopeKey);
+    const [players] = configuredLogiSources(env({ publishPlayers: true }), 'data');
+    expect(base!.publishPlayers).toBe(false);
+    expect(players!.publishPlayers).toBe(true);
+    expect(players!.scopeKey).toBe(base!.scopeKey);
   });
   it('moves the cache scope when the authority changes', () => {
     const [base] = configuredLogiSources(env(), 'data');
@@ -78,7 +82,7 @@ const readerKeys = { LOGI_LEAGUE_API_KEY_WDG: 'synthetic-league-key-12345', LOGI
 const HISTORY_SOURCE = '0123456789abcdef'.repeat(4);
 const published = [{ connectionId: 'conn-a', publicId: 'community-one', name: 'Approved', published: true, address: null, statsUrl: null }];
 
-describe('Wardogs-only reader purposes', () => {
+describe('game-scoped reader purposes', () => {
   it('select the league and warcon readers by their own keys and never borrow another grant', () => {
     expect(configuredLogiSources({ ...env(), LOGI_SOURCES_JSON: JSON.stringify([source]) }, 'league')).toEqual([]);
     expect(configuredLogiSources({ ...env(), LOGI_SOURCES_JSON: JSON.stringify([source]) }, 'warcon')).toEqual([]);
@@ -101,6 +105,19 @@ describe('Wardogs-only reader purposes', () => {
     expect(configuredLogiSources(both, 'league').map((row) => row.gameId)).toEqual(['wardogs']);
     expect(configuredLogiSources(both, 'warcon').map((row) => row.gameId)).toEqual(['wardogs']);
     expect(configuredLogiSources(both, 'history').map((row) => row.gameId)).toEqual(['wardogs']);
+  });
+  it('uses an independent HLL history key without borrowing a Wardogs grant', () => {
+    const hll = { ...source, gameId: 'hell_let_loose', publicServers: published,
+      historySources: [{ sourceId: HISTORY_SOURCE, publicId: 'community-one', publishPlayers: true }] };
+    const both = { NODE_ENV: 'test', ...readerKeys, LOGI_HISTORY_API_KEY_HLL: 'synthetic-hll-history-key-12345', LOGI_SOURCES_JSON: JSON.stringify([hll, source]) };
+    const readers = configuredLogiSources(both, 'history');
+    expect(readers.map((row) => row.gameId)).toEqual(['hell_let_loose', 'wardogs']);
+    expect(readers[0]!.apiKey).toBe(both.LOGI_HISTORY_API_KEY_HLL);
+    expect(readers[1]!.apiKey).toBe(readerKeys.LOGI_HISTORY_API_KEY_WDG);
+    expect(readers[0]!.historySources[0]!.publishPlayers).toBe(true);
+    expect(readers[0]!.scopeKey).not.toBe(readers[1]!.scopeKey);
+    expect(configuredLogiSources({ ...both, LOGI_HISTORY_API_KEY_HLL: undefined }, 'history').map((row) => row.gameId)).toEqual(['wardogs']);
+    expect(() => configuredLogiSources({ ...both, LOGI_HISTORY_API_KEY_HLL: 'short' }, 'history')).toThrow('Missing restricted Logi service key');
   });
 });
 
@@ -126,7 +143,6 @@ describe('approved retained-history sources', () => {
     ['an uppercase source ID', [{ sourceId: HISTORY_SOURCE.toUpperCase(), publicId: 'community-one' }], {}],
     ['an extra field', [{ sourceId: HISTORY_SOURCE, publicId: 'community-one', serverName: 'guess' }], {}],
     ['a non-boolean publishPlayers', [{ sourceId: HISTORY_SOURCE, publicId: 'community-one', publishPlayers: 'yes' }], {}],
-    ['an HLL source', [{ sourceId: HISTORY_SOURCE, publicId: 'community-one' }], { gameId: 'hell_let_loose' }],
     ['more than 20 sources', Array.from({ length: 21 }, (_, i) => ({ sourceId: HISTORY_SOURCE.slice(0, 62) + String(i).padStart(2, '0'), publicId: 'community-one' })), {}],
   ])('reject %s', (_label, historySources, extra) => {
     expect(() => configuredLogiSources(withSources(historySources, extra), 'history')).toThrow('Invalid LOGI_SOURCES_JSON');

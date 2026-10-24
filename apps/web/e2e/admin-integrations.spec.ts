@@ -56,7 +56,7 @@ test('administrator sees website collector health in Czech and English without c
   await expect(logi).toContainText('zatím žádné doručení');
   // Wardogs readers: the e2e server runs the labelled synthetic reader source, so both are "configured" without any key.
   const readers = logi.locator('[data-logi-readers]');
-  await expect(logi).toContainText('Čtečky Wardogs (League, Warcon)');
+  await expect(logi).toContainText('Čtečky herních dat');
   await expect(readers.locator('[data-reader="league-matches"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="warcon-data"]')).toHaveAttribute('data-state', 'configured');
   await expect(readers.locator('[data-reader="league-matches"]')).toContainText('Wardogs League – náhled zápasu');
@@ -64,10 +64,14 @@ test('administrator sees website collector health in Czech and English without c
   await expect(readers.locator('[data-reader="league-fixtures"]')).toContainText(/Wardogs League – sledovaná utkání.*Nastaveno.*syntetický zdroj/s);
   await expect(readers.locator('[data-reader="warcon-data"]')).toContainText(/Warcon.*Nastaveno/s);
   // Fourth row: the retained Warcon game history, also served by the synthetic source without a key.
-  await expect(readers.locator('[data-reader="server-game-history"]')).toHaveAttribute('data-state', 'configured');
-  await expect(readers.locator('[data-reader="server-game-history"]')).toContainText(/Warcon – historie her serveru.*Nastaveno.*syntetický zdroj/s);
-  await expect(readers.locator('[data-reader]')).toHaveCount(4);
-  await expect(logi).toContainText('uchované dohrané hry Warcon');
+  for (const [game, label] of [['hll', 'Hell Let Loose'], ['wardogs', 'Wardogs']] as const) {
+    const history = readers.locator(`[data-reader="server-game-history"][data-reader-game="${game}"]`);
+    await expect(history).toHaveAttribute('data-state', 'configured');
+    await expect(history).toContainText(label);
+    await expect(history).toContainText(/Historie her serveru.*Nastaveno.*syntetický zdroj/s);
+  }
+  await expect(readers.locator('[data-reader]')).toHaveCount(5);
+  await expect(logi).toContainText('uchované dohrané hry serverů Hell Let Loose a Wardogs');
   // The synthetic source is reported as a code and rendered in the interface language.
   await expect(readers).toContainText('syntetický zdroj – jen testy a kontrolní snímky');
   await expect(readers).not.toContainText('synthetic-fixture');

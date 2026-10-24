@@ -121,6 +121,7 @@ export type AdminReaderState = 'unconfigured' | 'configured' | 'unsupported' | '
  * Attempt facts come from the in-process caches.
  */
 export type AdminReader = {
+  game: GameRoute;
   resource: AdminReaderResource;
   /** The matching `LogiSourcePurpose` (both League readers share the League key). */
   purpose: Extract<LogiSourcePurpose, 'league' | 'warcon' | 'history'>;

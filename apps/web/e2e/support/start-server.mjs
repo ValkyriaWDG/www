@@ -3,7 +3,7 @@
 import { execFileSync, spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import pg from 'pg';
 
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -44,7 +44,12 @@ if (existsSync(discordMock)) {
 if (process.env.E2E_CRCON_MOCK_PORT) {
   children.push(spawn(process.execPath, [path.join(appDir, 'e2e', 'support', 'crcon-mock.mjs')], { stdio: 'inherit', env: process.env }));
 }
-const server = spawn(process.execPath, [path.join(appDir, 'scripts', 'serve-standalone.mjs')], { stdio: 'inherit', env: process.env });
+const serverEnv = { ...process.env };
+if (process.env.E2E_PUBLIC_PLAYER_FIXTURES === '1') {
+  const mock = pathToFileURL(path.join(appDir, 'e2e', 'support', 'logi-public-player-mock.mjs')).href;
+  serverEnv.NODE_OPTIONS = `${process.env.NODE_OPTIONS ?? ''} --import=${mock}`.trim();
+}
+const server = spawn(process.execPath, [path.join(appDir, 'scripts', 'serve-standalone.mjs')], { stdio: 'inherit', env: serverEnv });
 children.push(server);
 const stop = (signal) => children.forEach((child) => child.kill(signal));
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => stop(signal));

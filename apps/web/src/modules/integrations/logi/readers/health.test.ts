@@ -44,14 +44,21 @@ describe('readerCapabilityStates', () => {
   });
 
   it('reports the retained history reader unconfigured without its key, a Wardogs source or approved historySources', () => {
-    expect(readerCapabilityStates(env())['server-game-history']).toEqual({ state: 'unconfigured', detail: 'LOGI_HISTORY_API_KEY_WDG is not set', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 });
+    expect(readerCapabilityStates(env())['server-game-history']).toEqual({ state: 'unconfigured', detail: 'no LOGI_HISTORY_API_KEY_HLL or LOGI_HISTORY_API_KEY_WDG is set', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 });
     const keyed = { LOGI_HISTORY_API_KEY_WDG: 'synthetic-history-key-0123456789' };
-    expect(readerCapabilityStates({ ...env(keyed), LOGI_SOURCES_JSON: JSON.stringify([{ ...wardogs, gameId: 'hell_let_loose' }]) })['server-game-history']).toMatchObject({ state: 'unconfigured', detail: 'no valid Wardogs source in LOGI_SOURCES_JSON' });
-    expect(readerCapabilityStates(env(keyed, { publicServers: published }))['server-game-history']).toMatchObject({ state: 'unconfigured', detail: 'no approved historySources on the Wardogs source' });
-    expect(readerCapabilityStates(historyEnv)['server-game-history']).toEqual({ state: 'configured', detail: 'server-game-history grant configured for local; 1 approved source(s) on local', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 });
+    expect(readerCapabilityStates({ ...env(keyed), LOGI_SOURCES_JSON: JSON.stringify([{ ...wardogs, gameId: 'hell_let_loose' }]) })['server-game-history']).toMatchObject({ state: 'unconfigured', detail: 'no valid history source in LOGI_SOURCES_JSON' });
+    expect(readerCapabilityStates(env(keyed, { publicServers: published }))['server-game-history']).toMatchObject({ state: 'unconfigured', detail: 'no approved historySources on the configured games' });
+    expect(readerCapabilityStates(historyEnv)['server-game-history']).toEqual({ state: 'configured', detail: 'server-game-history grant configured; 1 approved source(s) across Wardogs', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 });
     // The other readers do not borrow the history key.
     expect(readerCapabilityStates(historyEnv)['warcon-data'].state).toBe('unconfigured');
     expect(JSON.stringify(readerCapabilityStates(historyEnv))).not.toMatch(/synthetic-history-key|0123456789abcdef/);
+  });
+
+  it('recognizes an independently configured HLL retained-history grant without borrowing a Wardogs key', () => {
+    const hllHistory = env({ LOGI_HISTORY_API_KEY_HLL: 'synthetic-hll-history-key-0123456789' }, { gameId: 'hell_let_loose', publicServers: published, historySources });
+    expect(readerCapabilityStates(hllHistory)['server-game-history']).toMatchObject({ state: 'configured', detail: 'server-game-history grant configured; 1 approved source(s) across Hell Let Loose' });
+    expect(readerCapabilityStates(hllHistory)['warcon-data'].state).toBe('unconfigured');
+    expect(JSON.stringify(readerCapabilityStates(hllHistory))).not.toMatch(/synthetic-hll-history-key|0123456789abcdef/);
   });
 
   it('reports the retained history reader denied, unsupported, preparing, available, stale and error from the snapshot store', async () => {
@@ -66,18 +73,18 @@ describe('readerCapabilityStates', () => {
     let release: () => void = () => undefined;
     const pending: HistoryScanner = () => new Promise((resolve) => { release = () => resolve({ revision: '7', lastCollectedAt: '2026-10-03T11:55:00.000Z', records: syntheticHistoryPages(at).flatMap((page) => page.items), pages: 3, resets: 0 }); });
     await observeHistory(pending, 'scope', SYNTHETIC_HISTORY_SOURCE_ID, at, { firstWaitMs: 10 });
-    expect(readerCapabilityStates(historyEnv, at)['server-game-history']).toMatchObject({ state: 'preparing', detail: 'first scan running; 1 approved source(s) on local', lastOutcome: null });
+    expect(readerCapabilityStates(historyEnv, at)['server-game-history']).toMatchObject({ state: 'preparing', detail: 'first scan running; 1 approved source(s) across Wardogs', lastOutcome: null });
     release();
     await settleHistoryStoreForTests();
-    expect(readerCapabilityStates(historyEnv, at)['server-game-history']).toEqual({ state: 'available', detail: '1 approved source(s) on local; 23 game(s) at revision 7, collected 2026-10-03T11:55:00.000Z, refreshed 2026-10-03T12:00:00.000Z, coverage all', lastAttemptAt: at.toISOString(), lastOutcome: 'ok', approvedConnections: 0 });
+    expect(readerCapabilityStates(historyEnv, at)['server-game-history']).toEqual({ state: 'available', detail: '1 approved source(s) across Wardogs; 23 game(s) at revision 7, collected 2026-10-03T11:55:00.000Z, refreshed 2026-10-03T12:00:00.000Z, coverage all', lastAttemptAt: at.toISOString(), lastOutcome: 'ok', approvedConnections: 0 });
     const later = new Date(at.getTime() + HISTORY_MIN_REFRESH_MS);
     const failingScan: HistoryScanner = () => Promise.reject(new HistoryScanError('rate_limited', 120_000));
     await observeHistory(failingScan, 'scope', SYNTHETIC_HISTORY_SOURCE_ID, later);
     await settleHistoryStoreForTests();
-    expect(readerCapabilityStates(historyEnv, later)['server-game-history']).toMatchObject({ state: 'stale', detail: '1 approved source(s) on local; 23 game(s) at revision 7, collected 2026-10-03T11:55:00.000Z, refreshed 2026-10-03T12:00:00.000Z, coverage all; last refresh: rate_limited', lastOutcome: 'rate_limited', lastAttemptAt: later.toISOString() });
+    expect(readerCapabilityStates(historyEnv, later)['server-game-history']).toMatchObject({ state: 'stale', detail: '1 approved source(s) across Wardogs; 23 game(s) at revision 7, collected 2026-10-03T11:55:00.000Z, refreshed 2026-10-03T12:00:00.000Z, coverage all; last refresh: rate_limited', lastOutcome: 'rate_limited', lastAttemptAt: later.toISOString() });
     resetHistoryStoreForTests();
     await observeHistory(() => Promise.reject(new HistoryScanError('budget_exceeded')), 'scope', SYNTHETIC_HISTORY_SOURCE_ID, at);
-    expect(readerCapabilityStates(historyEnv, at)['server-game-history']).toMatchObject({ state: 'error', detail: 'last scan failed: budget_exceeded; 1 approved source(s) on local', lastOutcome: 'budget_exceeded' });
+    expect(readerCapabilityStates(historyEnv, at)['server-game-history']).toMatchObject({ state: 'error', detail: 'last scan failed: budget_exceeded; 1 approved source(s) across Wardogs', lastOutcome: 'budget_exceeded' });
     expect(JSON.stringify(readerCapabilityStates(historyEnv, at))).not.toMatch(/synthetic-history-key|0123456789abcdef|cursor/);
   });
 

@@ -180,9 +180,9 @@ export async function HealthSections({ locale, health }: { locale: AppLocale; he
         <p className={base.actionNote}>{t('logi.readers.intro')}</p>
         <ul className={styles.purposeList} aria-labelledby="integrations-readers-title" data-logi-readers="">
           {logi.readers.map((reader) => (
-            <li key={reader.resource} className={styles.purpose} data-reader={reader.resource} data-state={reader.state}>
+            <li key={`${reader.game}/${reader.resource}`} className={styles.purpose} data-reader={reader.resource} data-reader-game={reader.game} data-state={reader.state}>
               <div className={styles.purposeHead}>
-                <span className={styles.purposeName}>{t(`logi.readers.resources.${reader.resource}`)}</span>
+                <span className={styles.purposeName}>{tGames(reader.game)} · {t(`logi.readers.resources.${reader.resource}`)}</span>
                 <span className={styles.badges}>
                   <StatusBadge kind={READER_STATE_KIND[reader.state]}>{t(`logi.readers.state.${reader.state}`)}</StatusBadge>
                   {reader.lastOutcome && reader.lastOutcome !== 'ok' ? (

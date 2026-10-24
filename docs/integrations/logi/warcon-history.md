@@ -1,5 +1,10 @@
 # Retained Warcon game history (website consumer)
 
+The [both-game update](public-players-and-history.md) is the current implementation
+contract, including HLL, strict optional score timelines and complete-coverage K/D.
+The initial Wardogs checkpoint below is historical source evidence, not current
+production activation.
+
 The website reads the retained completed Warcon games of the Wardogs workspace from
 Logi's `GET /api/v1/clan/server-game-history` and computes faction and player reports
 from them. This document records the consumed contract, the configuration, the

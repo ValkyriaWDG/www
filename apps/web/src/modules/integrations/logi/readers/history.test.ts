@@ -34,6 +34,16 @@ afterEach(() => {
 });
 
 describe('history reader transport', () => {
+  it('accepts retained Wardogs pages with the producer scoreTimeline and extended player metrics', async () => {
+    const record = structuredClone(pages[0]!.items[0]!);
+    record.session.warcon.scoreTimeline = [[0, 0, 0], [60, 100, 35]];
+    record.session.players[0]!.metrics = { ...record.session.players[0]!.metrics, deathStreak: 0, killStreak: 4, longestM: 120 };
+    const fetchImpl = vi.fn<LogiFetch>().mockResolvedValue(json({ data: { ...pages[2], items: [record] } }));
+    const result = await createHistoryReader(source, { fetchImpl }).readPage({ filters, cursor: null });
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0]!.gameId).toBe('wardogs');
+  });
+
   it('sends only the canonical query with the Wardogs scope, bearer key and no-store, and never limit/page/sort/minMinutes/gameId/id', async () => {
     const fetchImpl = pagesFetch();
     const reader = createHistoryReader(source, { fetchImpl });
@@ -52,9 +62,8 @@ describe('history reader transport', () => {
     expect(new Headers(a![1].headers).get('authorization')).toBe(`Bearer ${source.apiKey}`);
   });
 
-  it('refuses an HLL source, an unapproved source ID, invalid filters and an unsafe cursor before any request', async () => {
+  it('refuses an unapproved source ID, invalid filters and an unsafe cursor before any request', async () => {
     const fetchImpl = pagesFetch();
-    expect(() => createHistoryReader({ ...source, gameId: 'hell_let_loose' as never }, { fetchImpl })).toThrow(LogiClientError);
     const reader = createHistoryReader(source, { fetchImpl });
     await expect(reader.readPage({ filters: { sourceId: OTHER_SOURCE }, cursor: null })).rejects.toMatchObject({ code: 'configuration' });
     await expect(reader.readPage({ filters: { ...filters, from: '2026-10-01T00:00:00Z', until: '2026-09-01T00:00:00Z' }, cursor: null })).rejects.toMatchObject({ code: 'configuration' });

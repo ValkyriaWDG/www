@@ -4,12 +4,18 @@
     "description": "Dokončené hry na serveru Wardogs podle záznamů Warconu uchovaných v Logi: výsledky frakcí, žebříček hráčů a seznam her."
   },
   "title": "Historie her serveru",
+  "hll": {
+    "metaDescription": "Dokončené hry na serveru Hell Let Loose, zaznamenané mapy a bojové, útočné, obranné a podpůrné skóre hráčů.",
+    "intro": "Dokončené hry na serveru Hell Let Loose se zaznamenanými mapami a statistikami hráčů.",
+    "note": "Jde o hry na serveru. Přezdívky hráčů pocházejí ze serveru a nepotvrzují členství v klanu. Záznamy neposkytují vítěze, výsledky jednotlivých hráčů ani jejich odehraný čas; tyto údaje zůstávají neznámé.",
+    "filterSummary": "Zobrazeno: {server} · {period} · {map}"
+  },
   "intro": "Dokončené hry na serveru Wardogs podle záznamů Warconu, které uchovává Logi: podíl vítězství frakcí, žebříček hráčů a seznam her se skóre.",
   "note": "Jde o herní historii serveru, ne o výsledky klanu: frakce nejsou týmy klanu, hráči nejsou ověření členové a hry nejsou oficiální výsledky Wardogs League. Statistiky dokončených her se liší od živého žebříčku Warconu, který počítá čas jinak.",
   "synthetic": "Syntetická ukázková data – nejde o skutečné hry na serveru Valkyria.",
   "unavailable": {
     "title": "Historie her zatím není k dispozici.",
-    "body": "Žádný server Valkyria zatím nemá zveřejněnou historii her. Doplníme ji, jakmile bude k dispozici; do té doby nic neodhadujeme."
+    "body": "Žádný server této hry zatím nemá zveřejněnou historii. Doplníme ji, jakmile bude k dispozici; do té doby nic neodhadujeme."
   },
   "state": {
     "preparing": {
@@ -84,6 +90,7 @@
   "players": {
     "title": "Žebříček hráčů",
     "description": "Součty z dokončených her ve zvoleném období. Hráči nejsou ověření členové klanu; jména jsou tak, jak je nahlásil server, podle poslední hry.",
+    "hllDescription": "Zaznamenaná zabití, úmrtí a bojové, útočné, obranné a podpůrné skóre. Pokud hodnota chybí v některé hře, součet uvádí rozsah pokrytí. Odehraný čas a výhry jednotlivých hráčů zdroj neposkytuje.",
     "notPublished": "Tento server statistiky hráčů nezveřejňuje.",
     "caption": "Žebříček hráčů",
     "columns": {
@@ -97,6 +104,10 @@
       "kd": "K/D",
       "playtime": "Čas (h:mm)",
       "cashDelta": "Hotovost",
+      "combat": "Boj",
+      "offense": "Útok",
+      "defense": "Obrana",
+      "support": "Podpora",
       "headshots": "Headshoty",
       "teamKills": "Zabití spoluhráčů",
       "suicides": "Sebevraždy",
@@ -118,6 +129,7 @@
     "showAll": "Zobrazit všechny ({count})",
     "showTop": "Zobrazit jen prvních {count}",
     "empty": "V tomto období nesplňuje minimum žádný hráč.",
+    "hllEmpty": "V tomto období nebyly zaznamenány statistiky hráčů.",
     "sortBy": "Seřadit podle: {column}",
     "sortedDesc": "seřazeno sestupně",
     "sortedAsc": "seřazeno vzestupně",
@@ -126,6 +138,7 @@
   "games": {
     "title": "Historie her",
     "description": "Dokončené hry od nejnovější. Konečné skóre a vítěz pocházejí z Warconu; hra bez bojového feedu nemá podrobné statistiky.",
+    "hllDescription": "Dokončené hry od nejnovější. Rozbalením hry zobrazíš zaznamenané statistiky hráčů. Chybějící skóre zůstává neznámé; vítěze ani výsledek hráče neodvozujeme.",
     "count": "Zobrazeno {from}–{to} z {total, plural, one {# hry} few {# her} other {# her}}",
     "pageEmpty": "Na této stránce nejsou žádné hry.",
     "firstPage": "Přejít na první stránku",
@@ -157,6 +170,10 @@
       "kills": "Zabití",
       "deaths": "Úmrtí",
       "cashDelta": "Hotovost",
+      "combat": "Boj",
+      "offense": "Útok",
+      "defense": "Obrana",
+      "support": "Podpora",
       "headshots": "Headshoty",
       "teamKills": "Zabití spoluhráčů",
       "suicides": "Sebevraždy",

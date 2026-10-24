@@ -1,5 +1,6 @@
 import 'server-only';
 import type { LogiIntegrationEnv } from '../../logi-config';
+import type { LogiGameId } from '@/modules/games/registry';
 import { leagueFixturesReaderStatus } from './fixtures';
 import { configuredHistorySource } from './history';
 import { historyStoreStatus } from './history-store';
@@ -41,15 +42,18 @@ export type ReaderCapabilityState = {
   approvedConnections: number;
 };
 
-function historyState(env: LogiIntegrationEnv, now: Date): ReaderCapabilityState {
-  const history = historyStoreStatus(now);
+export function historyCapabilityState(env: LogiIntegrationEnv, now: Date, gameId?: LogiGameId): ReaderCapabilityState {
+  if (env.LOGI_READERS_SOURCE === 'synthetic-fixture') return { state: 'configured', detail: 'synthetic-fixture', lastAttemptAt: null, lastOutcome: null, approvedConnections: 0 };
+  const configured = (gameId ? [configuredHistorySource(env, gameId)] : [configuredHistorySource(env, 'hell_let_loose'), configuredHistorySource(env, 'wardogs')]).filter((source) => source !== null);
+  const history = historyStoreStatus(now, gameId ? configured.flatMap((source) => source.historySources.map(({ sourceId }) => ({ scopeKey: source.scopeKey, sourceId }))) : undefined);
   const attempt = { lastAttemptAt: history.lastAttemptAt, lastOutcome: history.lastOutcome, approvedConnections: 0 };
-  if (!env.LOGI_HISTORY_API_KEY_WDG) return { state: 'unconfigured', detail: 'LOGI_HISTORY_API_KEY_WDG is not set', ...attempt };
-  const source = configuredHistorySource(env);
-  if (!source) return { state: 'unconfigured', detail: 'no valid Wardogs source in LOGI_SOURCES_JSON', ...attempt };
-  const approved = source.historySources.length;
-  if (approved === 0) return { state: 'unconfigured', detail: 'no approved historySources on the Wardogs source', ...attempt };
-  const sources = `${approved} approved source(s) on ${source.sourceInstanceId}`;
+  if (gameId === 'hell_let_loose' && !env.LOGI_HISTORY_API_KEY_HLL) return { state: 'unconfigured', detail: 'LOGI_HISTORY_API_KEY_HLL is not set', ...attempt };
+  if (gameId === 'wardogs' && !env.LOGI_HISTORY_API_KEY_WDG) return { state: 'unconfigured', detail: 'LOGI_HISTORY_API_KEY_WDG is not set', ...attempt };
+  if (!env.LOGI_HISTORY_API_KEY_WDG && !env.LOGI_HISTORY_API_KEY_HLL) return { state: 'unconfigured', detail: 'no LOGI_HISTORY_API_KEY_HLL or LOGI_HISTORY_API_KEY_WDG is set', ...attempt };
+  if (configured.length === 0) return { state: 'unconfigured', detail: 'no valid history source in LOGI_SOURCES_JSON', ...attempt };
+  const approved = configured.reduce((total, source) => total + source.historySources.length, 0);
+  if (approved === 0) return { state: 'unconfigured', detail: 'no approved historySources on the configured games', ...attempt };
+  const sources = `${approved} approved source(s) across ${configured.map((source) => source.gameId === 'hell_let_loose' ? 'Hell Let Loose' : 'Wardogs').join(', ')}`;
   if (history.lastOutcome === 'not_found') return { state: 'unsupported', detail: 'producer answered 404: server-game-history route not deployed', ...attempt };
   if (history.lastOutcome === 'unauthorized' || history.lastOutcome === 'forbidden') return { state: 'denied', detail: `key lacks the explicit server-game-history grant or was revoked (producer answered ${history.lastOutcome === 'unauthorized' ? '401' : '403'})`, ...attempt };
   const snapshot = history.revision === null ? '' : `; ${history.games} game(s) at revision ${history.revision}, collected ${history.lastCollectedAt ?? 'never'}, refreshed ${history.refreshedAt}, coverage ${history.coverage?.kind === 'window' ? `window from ${history.coverage.from}` : 'all'}`;
@@ -58,7 +62,7 @@ function historyState(env: LogiIntegrationEnv, now: Date): ReaderCapabilityState
     case 'fresh': return { state: 'available', detail: `${sources}${snapshot}`, ...attempt };
     case 'stale': return { state: 'stale', detail: `${sources}${snapshot}; last refresh: ${history.lastOutcome ?? 'ok'}`, ...attempt };
     case 'unavailable': return { state: 'error', detail: `last scan failed: ${history.lastOutcome ?? 'unknown'}; ${sources}`, ...attempt };
-    default: return { state: 'configured', detail: `server-game-history grant configured for ${source.sourceInstanceId}; ${sources}`, ...attempt };
+    default: return { state: 'configured', detail: `server-game-history grant configured; ${sources}`, ...attempt };
   }
 }
 
@@ -103,6 +107,6 @@ export function readerCapabilityStates(env: LogiIntegrationEnv, now = new Date()
           : warcon.lastOutcome === 'not_found'
             ? { state: 'unsupported', detail: 'producer answered 404: warcon-data route not deployed', ...warconAttempt }
             : { state: 'configured', detail: `${connections} approved connection(s) on ${warconSource.sourceInstanceId}`, ...warconAttempt },
-    'server-game-history': historyState(env, now),
+    'server-game-history': historyCapabilityState(env, now),
   };
 }

@@ -40,7 +40,7 @@ describe('game registry', () => {
   });
 
   it('exposes the HLL menu order and keeps the Wardogs order', () => {
-    expect(gameMenu('hll').map((item) => item.section)).toEqual(['news', 'matches', 'tournaments', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community']);
+    expect(gameMenu('hll').map((item) => item.section)).toEqual(['news', 'matches', 'tournaments', 'servers', 'history', 'members', 'field-manual', 'faq', 'clan', 'community']);
     expect(gameMenu('wardogs').map((item) => item.href)).toEqual([
       '/wardogs/news',
       '/wardogs/clan',
@@ -51,7 +51,7 @@ describe('game registry', () => {
     ]);
     expect(gameHasSection('wardogs', 'field-manual')).toBe(false);
     expect(gameHasSection('wardogs', 'history')).toBe(true);
-    expect(gameHasSection('hll', 'history')).toBe(false);
+    expect(gameHasSection('hll', 'history')).toBe(true);
     expect(gameHasSection('wardogs', 'tournaments')).toBe(false);
   });
 });
@@ -89,7 +89,7 @@ describe('game routes', () => {
 
   it('opens the landing for sections the target lacks and for shared utility routes', () => {
     expect(resolveGameSwitch('/cs/hll/field-manual/role', '', 'wardogs')).toBe('/wardogs?switch=section');
-    expect(resolveGameSwitch('/cs/wardogs/history', 'server=synthetic-wardogs&period=all', 'hll')).toBe('/hll?switch=section');
+    expect(resolveGameSwitch('/cs/wardogs/history', 'server=synthetic-wardogs&period=all', 'hll')).toBe('/hll/history');
     expect(resolveGameSwitch('/cs/privacy', '', 'hll')).toBe('/hll');
     expect(resolveGameSwitch('/cs/admin/news', '', 'hll')).toBe('/hll');
     expect(resolveGameSwitch('/cs', '', 'hll')).toBe('/hll');

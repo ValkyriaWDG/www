@@ -16,10 +16,11 @@ try {
   const guildId = '910000000000000001';
   const sourceInstanceId = 'synthetic-public-match-source';
   const origin = 'https://logi.example.test';
+  const publicPlayers = process.env.E2E_PUBLIC_PLAYER_FIXTURES === '1';
   const env: LogiIntegrationEnv = {
     LOGI_SOURCES_JSON: JSON.stringify([
-      { sourceInstanceId, origin, guildId, gameId: 'hell_let_loose', publishMatches: true, syncPeople: true, matchLinks: [{ eventId: 'synthetic-history-00', matchId: archive.rows[0]!.id }], matchAliases: [{ canonicalEventId: 'synthetic-history-01', aliasEventIds: ['synthetic-history-alias'] }] },
-      { sourceInstanceId, origin, guildId, gameId: 'wardogs', publishMatches: true, syncPeople: true },
+      { sourceInstanceId, origin, guildId, gameId: 'hell_let_loose', publishMatches: true, publishPlayers: publicPlayers, syncPeople: true, matchLinks: [{ eventId: 'synthetic-history-00', matchId: archive.rows[0]!.id }], matchAliases: [{ canonicalEventId: 'synthetic-history-01', aliasEventIds: ['synthetic-history-alias'] }] },
+      { sourceInstanceId, origin, guildId, gameId: 'wardogs', publishMatches: true, publishPlayers: publicPlayers, syncPeople: true },
     ]),
     LOGI_DATA_API_KEY_HLL: 'synthetic-public-hll-key-not-a-credential',
     LOGI_DATA_API_KEY_WDG: 'synthetic-public-wardogs-key-not-a-credential',
@@ -77,6 +78,16 @@ try {
       { resource: 'member-summaries', value: { ...common, id: memberId, identityId, discordSubject: '910000000000000002', identityState: 'resolved', displayName: 'PRIVATE_OPERATIONAL_NAME', type: 'member', status: 'active', paused: false, groups: [{ id: 'private-group', name: 'PRIVATE_OPERATIONAL_GROUP', primary: true }] } },
       { resource: 'roster-summaries', value: roster },
     ];
+    if (publicPlayers) {
+      const shared = { memberId: `private-basic-shared-${source.gameId}`, identityId: 'private-basic-shared-identity', identityState: 'resolved' as const };
+      const local = { memberId: `private-basic-local-${source.gameId}`, identityId: `private-basic-local-identity-${source.gameId}`, identityState: 'resolved' as const };
+      for (const [reference, name] of [[shared, '[SYNTHETIC] Public Player Alpha'], [local, source.gameId === 'wardogs' ? '[SYNTHETIC] Public WDG Bravo' : '[SYNTHETIC] Public HLL Bravo']] as const) {
+        records.push({ resource: 'member-summaries', value: { ...common, id: reference.memberId, identityId: reference.identityId, identityState: reference.identityState, displayName: name, discordSubject: reference === shared ? '910000000000000003' : null, type: 'member', status: 'active', paused: false, groups: [{ id: 'private-basic-group', name: 'PRIVATE_BASIC_GROUP', primary: true }] } });
+      }
+      records.push({ resource: 'member-summaries', value: { ...common, id: `private-unresolved-${source.gameId}`, identityId: null, identityState: 'unresolved', displayName: null, discordSubject: null, type: 'member', status: 'pending', paused: true, groups: [] } });
+      records.push({ resource: 'roster-summaries', value: { ...common, id: `private-basic-roster-${source.gameId}`, eventId: `synthetic-next-${source.gameId}`, published: true,
+        squads: [{ index: 0, name: '[SYNTHETIC] Public Squad', slots: [shared, local].map((reference, index) => ({ ...reference, index, attendance: 'acknowledged' })) }], reserves: [], notAttending: [], eventParticipation: [{ ...shared, status: 'attending', completed: 'passed' }] } });
+    }
     // The linked historical detail must retain the same consented public lineup.
     if (source.gameId === 'hell_let_loose') records.push({ resource: 'roster-summaries', value: { ...roster, id: 'private-roster-history-hll', eventId: 'synthetic-history-00' } });
     for (const { resource, value } of records) {

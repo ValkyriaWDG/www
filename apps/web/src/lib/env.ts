@@ -66,6 +66,7 @@ const serverEnvSchema = z.object({
   LOGI_LEAGUE_API_KEY_WDG: optionalSecret,
   LOGI_WARCON_API_KEY_WDG: optionalSecret,
   LOGI_HISTORY_API_KEY_WDG: optionalSecret,
+  LOGI_HISTORY_API_KEY_HLL: optionalSecret,
   /** `synthetic-fixture` serves labelled synthetic League/Warcon reader data (tests and review captures only). */
   LOGI_READERS_SOURCE: z.preprocess(emptyToUndefined, z.enum(['logi', 'synthetic-fixture']).default('logi')),
   DISCORD_GUILD_ID: snowflake.optional(),

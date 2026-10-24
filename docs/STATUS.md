@@ -1,5 +1,21 @@
 # Current status
 
+## Public players and both-game history — implementation, 2026-10-25
+
+The owner authorized basic gaming names, player statistics and server history for
+both games. Current work adds a unified public gaming directory with opaque player
+links, consented personal-profile composition, lineup links, reviewed public player
+statistics and separate game-scoped HLL/WDG retained-history views. Missing data
+remains unavailable; publication, exact identity and current-generation fences apply.
+See [the implemented contract](integrations/logi/public-players-and-history.md).
+
+This feature is **not accepted on production**. The website release is pending;
+the matching Logi application/Convex revision and bounded HLL backfill must be
+deployed by Ninjonik. The owner will arrange that deployment after the verified
+revision and operator commands are supplied. Existing production acceptance below
+covers the earlier unified-match release only. Local, CI and real production
+checks will be recorded independently with the feature handoff.
+
 ## Unified matches accepted on production — 2026-10-24
 
 Application source `076ba9316ff0f8433dc01efc916a5962ca7ac184`, application tree

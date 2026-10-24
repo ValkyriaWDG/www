@@ -1,5 +1,11 @@
 # Read-only team synchronization
 
+The [public gaming directory and both-game history](public-players-and-history.md)
+adds owner-authorized supplied gaming names and exact public lineup links without
+manufacturing personal-profile consent. Its current publication rules supersede
+the profile-only public-name assumptions below; private team authorization and
+personal-profile/collected-session gates remain unchanged.
+
 Logi/Discord owns membership, published rosters, attendance responses and collected
 player facts. The website displays them. News, biographies, approved public names,
 media, consent and profile publication stay in the website CMS. There is no new

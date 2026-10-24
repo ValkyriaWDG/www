@@ -37,14 +37,13 @@ export const GAME_REGISTRY: Readonly<Record<GameRoute, GameDefinition>> = {
     db: 'hell-let-loose',
     logi: 'hell_let_loose',
     theme: 'hll',
-    sections: ['news', 'matches', 'tournaments', 'servers', 'members', 'field-manual', 'faq', 'clan', 'community'],
+    sections: ['news', 'matches', 'tournaments', 'servers', 'history', 'members', 'field-manual', 'faq', 'clan', 'community'],
   },
   wardogs: {
     route: 'wardogs',
     db: 'wardogs',
     logi: 'wardogs',
     theme: 'wardogs',
-    // `history` (retained Warcon server game history) is a Wardogs-only section; HLL never lists it.
     sections: ['news', 'clan', 'members', 'matches', 'servers', 'history'],
   },
 };
