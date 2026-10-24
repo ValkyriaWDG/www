@@ -221,7 +221,7 @@ export async function PublicLogiMemberActivity({ locale, items }: { locale: AppL
           <section key={item.game}>
             <h3>{item.game === 'wardogs' ? 'Wardogs' : 'Hell Let Loose'}</h3>
             <p className={styles.muted}>
-              {t('updated', { date: date(item.observedAt, locale) })} · {t('source')}
+              {t('updated', { date: date(item.observedAt, locale) })}
             </p>
             {item.statistics ? <LogiPlayerStatistics locale={locale} stats={item.statistics} /> : null}
             {item.rosters.length ? (

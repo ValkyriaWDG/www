@@ -69,14 +69,24 @@ for (const [locale, width, height] of [['cs', 1440, 1050], ['en', 1440, 1050], [
     await context.close();
   });
 
-  test(`matches page with the tracked League fixtures (${locale}, ${width}px)`, async ({ browser }) => {
+  test(`one match browser with an internal League detail (${locale}, ${width}px)`, async ({ browser }) => {
     const { context, page } = await newContext(browser, width, height, locale);
     await page.goto(`/${locale}/wardogs/matches`);
-    await expect(page.locator('[data-league-fixtures]')).toHaveAttribute('data-league-fixtures-state', 'fresh');
-    await expect(page.locator('[data-league-fixture]')).toHaveCount(3);
-    await page.locator('[data-league-fixtures]').scrollIntoViewIfNeeded();
+    await expect(page.locator('[data-unified-matches]')).toHaveCount(1);
+    await expect(page.locator('[data-match-table="upcoming"] a[href*="/matches/league/"]')).toHaveCount(1);
+    await expect(page.locator('[data-league-fixtures]')).toHaveCount(0);
+    await expect(page.locator('[data-synthetic-data="league-fixtures"]')).toBeVisible();
     await shot(page, `matches-league-fixtures-${locale}-${width}x${height}.png`,
-      `Visitor, /${locale}/wardogs/matches at ${width}×${height}: the Upcoming list of the Wardogs section followed by the "Tracked Wardogs League fixtures" section labelled as an unverified overview with synthetic-data note and three synthetic fixtures (two current tracked fixtures with kickoff, three team codes with names, map · zone · lighting, type/status and links to Wardogs League and, for the alpha fixture, to the clan's own match page; one paused fixture without a kickoff marked stale); no result appears.`,
+      `Visitor, /${locale}/wardogs/matches at ${width}×${height}: one upcoming match browser with a shared search, tabs and table for archive and League rows. The labelled synthetic bravo fixture retains its supplied kickoff, three team codes and map and opens an internal detail. Alpha is represented once by its published archive match; paused charlie is absent. No separate League collection or invented result appears.`,
+      locale);
+    await page.locator(`[data-match-table] a[href="/${locale}/wardogs/matches/league/synthetic-fixture-bravo"]`).click();
+    const detail = page.locator('[data-league-match-detail][data-detail-mode="detail"]');
+    await expect(detail).toBeVisible();
+    await expect(detail).toHaveAttribute('data-league-state', 'fresh');
+    for (const team of ['Synthetic Alpha', 'Synthetic Bravo', 'Synthetic Charlie']) await expect(detail).toContainText(team);
+    await expect(detail).toContainText('Synthetic Training Ground · Synthetic Zone · Synthetic Dusk');
+    await shot(page, `match-league-detail-${locale}-${width}x${height}.png`,
+      `Visitor, /${locale}/wardogs/matches/league/synthetic-fixture-bravo at ${width}×${height}: the common match detail layout for the synthetic tracked League fixture, with all three team names/codes, actual kickoff, map/zone/lighting, current source observation and an explicit external League source link. It shows no fabricated native score or result.`,
       locale);
     await context.close();
   });

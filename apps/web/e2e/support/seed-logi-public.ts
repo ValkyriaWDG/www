@@ -69,10 +69,13 @@ try {
     const memberId = `private-member-${source.gameId}`;
     const identityId = `private-identity-${source.gameId}`;
     const common = { schemaVersion: 1, guildId, gameId: source.gameId, updatedAt: now.toISOString() };
+    const roster = { ...common, id: `private-roster-${source.gameId}`, eventId: `synthetic-next-${source.gameId}`, published: true, squads: [{ index: 0, name: '[SYNTHETIC] Alpha', slots: [{ index: 0, memberId, identityId, identityState: 'resolved', attendance: 'acknowledged' }] }], reserves: [], notAttending: [], eventParticipation: [{ memberId, identityId, identityState: 'resolved', status: 'attending', completed: null }] };
     const records: { resource: LogiCollectionResource; value: Record<string, unknown> }[] = [
       { resource: 'member-summaries', value: { ...common, id: memberId, identityId, discordSubject: '910000000000000002', identityState: 'resolved', displayName: 'PRIVATE_OPERATIONAL_NAME', type: 'member', status: 'active', paused: false, groups: [{ id: 'private-group', name: 'PRIVATE_OPERATIONAL_GROUP', primary: true }] } },
-      { resource: 'roster-summaries', value: { ...common, id: `private-roster-${source.gameId}`, eventId: `synthetic-next-${source.gameId}`, published: true, squads: [{ index: 0, name: '[SYNTHETIC] Alpha', slots: [{ index: 0, memberId, identityId, identityState: 'resolved', attendance: 'acknowledged' }] }], reserves: [], notAttending: [], eventParticipation: [{ memberId, identityId, identityState: 'resolved', status: 'attending', completed: null }] } },
+      { resource: 'roster-summaries', value: roster },
     ];
+    // The linked historical detail must retain the same consented public lineup.
+    if (source.gameId === 'hell_let_loose') records.push({ resource: 'roster-summaries', value: { ...roster, id: 'private-roster-history-hll', eventId: 'synthetic-history-00' } });
     for (const { resource, value } of records) {
       const safe = logiResourceSchemas[resource].parse(value);
       await client.query('insert into logi_projection (scope_key,generation,resource,external_id,revision,operation,data,observed_at) values ($1,$2,$3,$4,$5,$6,$7,$8)', [source.scopeKey, generation, resource, value.id, '1', 'upsert', safe, now]);

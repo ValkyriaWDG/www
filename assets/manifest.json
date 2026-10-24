@@ -17681,8 +17681,8 @@
       "rights": "Valkyria application screenshot with approved public data; underlying game imagery remains excluded from the Apache code license",
       "sha256": "46de5e0fb67b9ac0890cd372686acd0931bf8d69f580328b55bf16f2b8164e8f",
       "bytes": 81444,
-      "width": 65536,
-      "height": 4292542531
+      "width": 1265,
+      "height": 712
     },
     {
       "id": "production-2026-10-24-wardogs",
@@ -17692,8 +17692,8 @@
       "rights": "Valkyria application screenshot with approved public data; underlying game imagery remains excluded from the Apache code license",
       "sha256": "f22189c3eb4fd0398923dab7ad2aab9e778a6b885ad346c70f5b6391252ef5ab",
       "bytes": 116784,
-      "width": 65536,
-      "height": 4292542531
+      "width": 1280,
+      "height": 720
     },
     {
       "id": "production-2026-10-24-unified-matches",
@@ -17703,8 +17703,52 @@
       "rights": "Valkyria application screenshot with approved public data; underlying game imagery remains excluded from the Apache code license",
       "sha256": "182819ce34977417f10952a3b6d62d7cf7040c577a79e42d3792746bbe446d63",
       "bytes": 85909,
-      "width": 65536,
-      "height": 4292542531
+      "width": 1265,
+      "height": 712
+    },
+    {
+      "id": "match-presentation-2026-10-24-hll-results-desktop",
+      "path": "docs/evidence/match-presentation-2026-10-24/hll-results-desktop.png",
+      "source": "Actual local production-build Playwright Chromium capture on 2026-10-24; synthetic fixtures; fix/match-presentation source snapshot described in README; /cs/hll/matches?view=results; 1440px",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; underlying approved game imagery remains excluded from the Apache code license",
+      "sha256": "017a8c265b16805c9deecf6f6a172401b04832fbaeb65b77ee9c09c705e1a973",
+      "bytes": 578444,
+      "width": 1440,
+      "height": 1680
+    },
+    {
+      "id": "match-presentation-2026-10-24-hll-results-mobile",
+      "path": "docs/evidence/match-presentation-2026-10-24/hll-results-mobile.png",
+      "source": "Actual local production-build Playwright Chromium capture on 2026-10-24; synthetic fixtures; fix/match-presentation source snapshot described in README; /cs/hll/matches?view=results; 390px",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; underlying approved game imagery remains excluded from the Apache code license",
+      "sha256": "1009a6147d14cad4636d5fb1ca415a69ead089f4f2e0b8ee19b6832a8690214f",
+      "bytes": 241767,
+      "width": 390,
+      "height": 3406
+    },
+    {
+      "id": "match-presentation-2026-10-24-wardogs-matches-desktop",
+      "path": "docs/evidence/match-presentation-2026-10-24/wardogs-matches-desktop.png",
+      "source": "Actual local production-build Playwright Chromium capture on 2026-10-24; synthetic fixtures; fix/match-presentation source snapshot described in README; /cs/wardogs/matches; 1440px",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; underlying approved game imagery remains excluded from the Apache code license",
+      "sha256": "5dd7b2e51625053e39347e0ea275ab6913b3b22010be18b642e1df86e7d1cd4a",
+      "bytes": 546370,
+      "width": 1440,
+      "height": 1131
+    },
+    {
+      "id": "match-presentation-2026-10-24-wardogs-detail-mobile",
+      "path": "docs/evidence/match-presentation-2026-10-24/wardogs-detail-mobile.png",
+      "source": "Actual local production-build Playwright Chromium capture on 2026-10-24; synthetic fixtures; fix/match-presentation source snapshot described in README; /en/wardogs/matches/league/synthetic-fixture-bravo; 390px",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; underlying approved game imagery remains excluded from the Apache code license",
+      "sha256": "a8d6181d6248bf6ea7e83d7355ffe6758e04527c9101d7749da64e3a8e3c195f",
+      "bytes": 116130,
+      "width": 390,
+      "height": 1099
     }
   ]
 }

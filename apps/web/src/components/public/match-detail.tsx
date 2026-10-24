@@ -155,7 +155,7 @@ export async function MatchDetailPane({
           <h3 id={`${titleId}-result`} className={styles.blockTitle}>
             {t('detail.result')}
           </h3>
-          {operational && logi ? <><OperationalMatchResult event={operational} t={logi} /><p className={styles.note}>{logi('updated', { date: formatDate(operational.observedAt, locale, 'dateTimeZone') })}</p></> : <MatchResult match={match} t={t} variant="detail" />}
+          {operational && logi ? <><OperationalMatchResult event={operational} t={logi} locale={locale} variant="detail" /><p className={styles.note}>{logi('updated', { date: formatDate(operational.observedAt, locale, 'dateTimeZone') })}</p></> : <MatchResult match={match} t={t} variant="detail" />}
         </section>
         {mode === 'detail' ? (
           <>

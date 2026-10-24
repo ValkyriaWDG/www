@@ -1,5 +1,23 @@
 # Valkyria screen and interaction map
 
+## Shared match presentation (2026-10-24 follow-up)
+
+The community, HLL and Wardogs match pages use one chronological browser, shared
+Upcoming/Results counts, search and pagination. Published archive/native events and
+eligible tracked League fixtures share the same rows and detail shell. No public
+"Matches from Logi" or "Website archive" collection remains. Reviewed associations
+resolve to one canonical match URL with retained recap, rounds and consented lineup;
+the old operational URL redirects there. Unbound tracked League fixtures have scoped
+`/{locale}/wardogs/matches/league/[id]` details and a secondary organizer link. A bound
+unpublished event cannot become public through a League URL. Paused/ignored fixtures
+are excluded. Unknown kickoffs stay unknown; stale observations are marked per row.
+
+Rows use captured/reviewed team identity, compact dates, prominent labelled scores
+and the same responsive arrangement. Result participants retain their own names and
+all N scores; faction order never implies clan ownership. Partial/unknown scores
+remain dashes. Provisional/confirmed/corrected labels describe verification without
+displaying internal import dates or source diagnostics.
+
 ## Implemented Wardogs server addition (2026-10-03)
 
 Under the unified canonical `valkyria.cz` platform, `/{locale}/wardogs/servers`

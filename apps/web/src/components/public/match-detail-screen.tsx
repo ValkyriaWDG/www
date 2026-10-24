@@ -16,6 +16,11 @@ import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { canonicalMatchPath, sectionBase } from '@/modules/games/routes';
 import { sharingMetadata } from '@/modules/social/metadata';
 import { getPublicMatch } from '@/modules/matches/queries';
+import { getServerEnv } from '@/lib/env';
+import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
+import { readPublicLogiEventPeople } from '@/modules/integrations/logi-people';
+import { publicLogiMatchView } from '@/modules/integrations/logi/public-matches';
+import { PublicLogiMatchPeople } from './logi-people';
 
 /** Published match only; unknown and draft matches are indistinguishable (null → 404). */
 export const loadPublicMatch = cache(async (slug: string, locale: AppLocale) => (isSlug(slug) ? getPublicMatch(getDb(), slug, locale) : null));
@@ -65,7 +70,9 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
   const match = await loadPublicMatch(slug, locale);
   if (!match) notFound();
   if (match.game !== GAME_REGISTRY[game].db) permanentRedirect(`/${locale}${canonicalMatchPath(match.game, match.slug)}`);
-  const view = viewForStatus(match.status);
+  const linked = (await getPublicLogiEvents(game)).find((event) => event.archive?.slug === match.slug);
+  const view = linked ? publicLogiMatchView(linked) : viewForStatus(match.status);
+  const people = linked ? await readPublicLogiEventPeople(getDb(), getServerEnv(), match.game, linked.ref.externalId) : null;
   const filters = { ...parseMatchFilters(query, view), view, game: undefined };
   const base = sectionBase(game);
   const t = await getTranslations({ locale, namespace: 'matches' });
@@ -79,6 +86,7 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
       <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} />
+      <PublicLogiMatchPeople locale={locale} people={people} />
     </PageMain>
   );
 }
