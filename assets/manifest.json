@@ -17793,6 +17793,61 @@
       "bytes": 117904,
       "width": 390,
       "height": 932
+    },
+    {
+      "id": "match-production-final-2026-10-24-before-wardogs",
+      "path": "docs/evidence/match-production-final-2026-10-24/before-wardogs.jpg",
+      "source": "Actual anonymous public production browser capture on 2026-10-24; /cs/wardogs/matches?view=results&q=BACM; application source eea874591543461f31b905e7b67c3cd67add8764; browser viewport and observed image dimensions in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria public application screenshot; no private profiles or rosters; approved game artwork remains excluded from Apache code license",
+      "sha256": "5d7a992c982e2706841b949777e7dd8c024df1a4641495f62760fff747ef861b",
+      "bytes": 73394,
+      "width": 1265,
+      "height": 712
+    },
+    {
+      "id": "match-production-final-2026-10-24-after-wardogs",
+      "path": "docs/evidence/match-production-final-2026-10-24/after-wardogs.jpg",
+      "source": "Actual anonymous public production browser capture on 2026-10-24; /cs/wardogs/matches?view=results&q=BACM; application source 076ba9316ff0f8433dc01efc916a5962ca7ac184; browser viewport and observed image dimensions in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria public application screenshot; no private profiles or rosters; approved game artwork remains excluded from Apache code license",
+      "sha256": "b9b7413aecff49edc566870519f4caa4a692b1a44d0f0598e7b6e3c9487bf200",
+      "bytes": 81610,
+      "width": 1265,
+      "height": 712
+    },
+    {
+      "id": "match-production-final-2026-10-24-after-hll",
+      "path": "docs/evidence/match-production-final-2026-10-24/after-hll.jpg",
+      "source": "Actual anonymous public production browser capture on 2026-10-24; /cs/hll/matches?view=results; application source 076ba9316ff0f8433dc01efc916a5962ca7ac184; browser viewport and observed image dimensions in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria public application screenshot; no private profiles or rosters; approved game artwork remains excluded from Apache code license",
+      "sha256": "331dd5f973376cb8841ae0785222ae9c994aca760a30e76fcc875f7017b5bffb",
+      "bytes": 85029,
+      "width": 1265,
+      "height": 712
+    },
+    {
+      "id": "match-production-final-2026-10-24-after-hll-native",
+      "path": "docs/evidence/match-production-final-2026-10-24/after-hll-native.jpg",
+      "source": "Actual anonymous public production browser capture on 2026-10-24; /cs/hll/matches/logi/px79as28v6a3ycv03synqtegvh8gtvnx; application source 076ba9316ff0f8433dc01efc916a5962ca7ac184; browser viewport and observed image dimensions in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria public application screenshot; no private profiles or rosters; approved game artwork remains excluded from Apache code license",
+      "sha256": "c0b6961160f12d96d08a39b73287409e6449b37dbb5676825b371c7c452ad590",
+      "bytes": 83064,
+      "width": 1265,
+      "height": 712
+    },
+    {
+      "id": "match-production-final-2026-10-24-after-primary",
+      "path": "docs/evidence/match-production-final-2026-10-24/after-primary.jpg",
+      "source": "Actual anonymous public production browser capture on 2026-10-24; /cs/matches?view=results; application source 076ba9316ff0f8433dc01efc916a5962ca7ac184; browser viewport and observed image dimensions in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria public application screenshot; no private profiles or rosters; approved game artwork remains excluded from Apache code license",
+      "sha256": "739a7cb32e0d91889c8519844caaeb99f76bcc1597f41694425b2d3e8cb5c5e3",
+      "bytes": 72450,
+      "width": 1265,
+      "height": 712
     }
   ]
 }

@@ -58,7 +58,48 @@ and a secondary organizer link; no invented result.
 
 ## Release boundary
 
-Hosted exact-head CI, accepted-main qualification, protected publication and current
-production read-back must be recorded on the PR before claiming deployment. This
-record does not claim that local fixtures activate Logi's deferred Convex producer.
-No SQL migration, environment, dependency or provider-permission change is required.
+[PR #116](https://github.com/ValkyriaWDG/www/pull/116) merged at 18:29:46 UTC as
+`eea874591543461f31b905e7b67c3cd67add8764`. Its application subtree is identical to
+the locally tested tree above. [PR-head CI 40119342787](https://github.com/ValkyriaWDG/www/actions/runs/40119342787)
+passed Foundation, Application and Quality gate for head `2172c4bcefb19ec4c56dbedf4f618b61558a282f`
+against base `83aa6ebb935dd84dfa67e8ca0c3629befe4b66f6` (PR merge context).
+This includes 274 ordinary browser tests (166 opt-in cases skipped), 21 connected
+journeys, four artwork tests, cold mobile budgets, real restore, non-root image,
+native sharp, rollback rehearsal, vulnerability comparison and SBOM. Detailed CI
+artifacts retain reports for 90 days; the selected captures above are durable.
+
+Production preparation independently verified authenticated registry identity
+`majorluk/valkyria-www` and its approved public visibility. Fresh paired recovery of
+the preceding `6647f9a` deployment restored all 37 tables and 442 media files. The
+capture paused only the website for 8.08 seconds; the encrypted off-host copy passed
+authenticated AES-GCM decryption and both plaintext/ciphertext hash checks. The
+rollback image is pinned to its accepted immutable digest; no database restore over
+new live writes is part of an image rollback. The dedicated updater is paused for
+explicit candidate acceptance. Unrelated services remain outside the release scope.
+
+[Accepted-main CI 40120956793](https://github.com/ValkyriaWDG/www/actions/runs/40120956793)
+and the full reusable verification of
+[publisher 40120979940](https://github.com/ValkyriaWDG/www/actions/runs/40120979940)
+passed for the exact merged `eea874591543461f31b905e7b67c3cd67add8764` source.
+The protected publication was approved only after those successful Quality gates.
+The image was published and activated at 18:54:25 UTC with immutable digest
+`sha256:515d6ac43760de5f441bd3ae550df8da10f9bc7d28ab2e4dd5c05db9187f1729`.
+The first read-back passed 121 public checks, readiness/configuration, 442 preserved
+media files and 17 untouched unrelated containers. Visual acceptance then found
+long-name banner wrapping, an inconsistent detail timestamp and a misleading partial
+Wardogs identity. HTTP success did not close those defects; the follow-up is recorded
+in [detail readability acceptance](../match-detail-readability-2026-10-24/README.md).
+
+Seven independently reviewed recent HLL native/archive links were activated at
+19:11:39 UTC, removing seven duplicate matches across upcoming/results. An unresolved
+legacy opponent identifier was corrected to K&B from the captured identity and public
+legacy match209, with an audit record and without changing scores/dates/publication.
+The resulting public acceptance passed 117/117 checks. Two further explicit Wardogs
+League/native associations for 24/25 October were saved in Logi's existing admin UI;
+the source retained its publication/freshness guards. At 19:43:38 UTC the expanded
+public acceptance passed 139/139 checks, including both locales' canonical redirects.
+These configuration observations still used the earlier image above; they are not
+proof that the later presentation fixes had been deployed.
+This record does not claim that local fixtures activate Logi's
+deferred Convex producer. No SQL migration, environment, dependency or provider-permission
+change is required.
