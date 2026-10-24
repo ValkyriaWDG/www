@@ -117,6 +117,17 @@ export type ConfiguredLogiSource = LogiSourceBinding & {
   scopeKey: string;
 };
 
+export const LOGI_PEOPLE_CORE_RESOURCES = ['member-summaries', 'roster-summaries'] as const;
+export const LOGI_PEOPLE_STATS_RESOURCES = ['player-stat-summaries'] as const;
+export const LOGI_PEOPLE_CORE_GENERATION_PREFIX = 'people-core-v1:';
+export const LOGI_PEOPLE_STATS_GENERATION_PREFIX = 'people-stats-v1:';
+
+/** Same restricted authority, independent history checkpoint; original profile bindings stay on core. */
+export function logiPeopleStatisticsSource(source: ConfiguredLogiSource): ConfiguredLogiSource {
+  if (source.purpose !== 'people') throw new Error('Invalid people statistics source.');
+  return { ...source, scopeKey: createHash('sha256').update(JSON.stringify([source.scopeKey, 'people-statistics-v1'])).digest('hex') };
+}
+
 /** `league`, `warcon` and `history` are Wardogs-only readers selected by the presence of their own key. */
 export type LogiSourcePurpose = 'data' | 'people' | 'membership' | 'commands' | 'league' | 'warcon' | 'history';
 const READER_PURPOSES: readonly LogiSourcePurpose[] = ['league', 'warcon', 'history'];

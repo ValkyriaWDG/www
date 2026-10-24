@@ -1,5 +1,30 @@
 # Current status
 
+## Independent current team synchronization — 2026-10-24
+
+Live HLL acceptance found that thousands of historical player-session records kept
+the complete people bootstrap from reaching current rosters. Current members and
+published rosters now reconcile atomically in their original people scope, preserving
+profile/consent bindings. Statistics have an independently key-bound checkpoint and
+run after every core/data scope with a bounded turn for each game. Legacy partial
+cursors reset under the existing lease/CAS; no checkpoint schema or SQL migration.
+Fresh complete statistics still require current core identity, result version,
+consent and an independently current statistics scope. Partial totals remain hidden.
+
+HLL's complete statistics export exceeds the existing 1,000-record limit; this
+change restores current team data without presenting incomplete history as a total.
+Full historical statistics need a separately scoped, coverage-aware provider contract.
+The record/byte/freshness bounds are unchanged. Before an old-image rollback, stop
+the sync writer and reset only the affected disposable people checkpoints/projections,
+preserving scope rows and profile links; follow the Logi operator runbook. Production
+acceptance and final image identity are still pending.
+
+Integrated local validation passed 1,298 unit tests, all 549 PostgreSQL integration
+tests, full lint/typecheck/build and 17 connected CS/EN desktop/mobile journeys.
+The focused server browser suites and independent source review cover the telemetry
+whitelist and core/statistics isolation; hosted exact-head release checks remain
+required. Existing checkpoint schema, source bounds and profile consent are retained.
+
 ## Public telemetry production follow-up — 2026-10-24
 
 Actual production acceptance found the old server overview exposed its internal

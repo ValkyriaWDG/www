@@ -1,11 +1,12 @@
 import { logiProjection, logiSyncScope } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { configuredLogiSources } from '@/modules/integrations/logi-config';
+import { configuredLogiSources, logiPeopleStatisticsSource, LOGI_PEOPLE_CORE_RESOURCES } from '@/modules/integrations/logi-config';
 import { runLogiSync } from '@/modules/integrations/logi-runner';
 import { readActiveLogiProjections } from '@/modules/integrations/logi-store';
 import { LOGI_COLLECTION_RESOURCES, type LogiSyncRecord } from '@/modules/integrations/logi/contracts';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
+import fixture from '@/modules/integrations/logi/fixtures/v0.14-people.json';
 
 let database: TestDatabase;
 beforeAll(async () => { database = await createTestDatabase(); });
@@ -22,10 +23,74 @@ describe('purpose-independent bounded Logi runner', () => {
       expect(new Headers(init.headers).get('authorization')).toBe(`Bearer ${env.LOGI_PEOPLE_API_KEY_WDG}`);
       return Response.json(url.pathname.endsWith('/changes') ? { data: [], page: { nextCursor: 'synthetic-boundary', hasMore: false, limit: 10 } } : { data: [], page: { nextCursor: null, limit: 1 } });
     });
-    expect(await runLogiSync(database.db, env)).toMatchObject([{ state: 'failed', error: 'configuration' }, { state: 'caught_up' }]);
+    expect(await runLogiSync(database.db, env)).toMatchObject([{ state: 'failed', error: 'configuration' }, { state: 'caught_up' }, { state: 'caught_up' }]);
     expect(calls).toContain('/api/v1/clan/member-summaries');
     expect(calls).not.toContain('/api/v1/clan/event-summaries');
-    expect(await database.db.select().from(logiSyncScope)).toMatchObject([{ scopeKey: configuredLogiSources(env, 'people')[0]!.scopeKey, checkpoint: { mode: 'live', reconciledAt: expect.any(String) } }]);
+    const core = configuredLogiSources(env, 'people')[0]!;
+    expect(await database.db.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, core.scopeKey))).toMatchObject([{ checkpoint: { mode: 'live', resourceIndex: 2, reconciledAt: expect.any(String) } }]);
+    expect(await database.db.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, logiPeopleStatisticsSource(core).scopeKey))).toMatchObject([{ checkpoint: { mode: 'live', resourceIndex: 1 } }]);
+  });
+
+  it.each(['bootstrap', 'live'] as const)('replaces a legacy %s people checkpoint without exposing partial history or delaying current rosters', async (mode) => {
+    const env = { LOGI_SOURCES_JSON: JSON.stringify([{ sourceInstanceId: `synthetic-core-${mode}`, guildId: fixture.member.guildId, gameId: 'wardogs', origin: 'https://logi.example.test', syncPeople: true }]), LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-123456' };
+    const core = configuredLogiSources(env, 'people')[0]!;
+    await database.db.insert(logiSyncScope).values({ scopeKey: core.scopeKey, sourceInstanceId: core.sourceInstanceId, guildId: core.guildId, gameId: core.gameId, version: 41, activeGeneration: 'old-complete', checkpoint: { version: 41, mode, generation: mode === 'live' ? null : 'legacy-shadow', resourceIndex: mode === 'live' ? 3 : 1, listCursor: mode === 'live' ? null : 'OLD_STATISTICS_CURSOR', boundaryCursor: 'old-boundary', cursor: 'old-boundary', bootstrapStartedAt: new Date().toISOString(), reconciledAt: new Date().toISOString() } });
+    await database.db.insert(logiProjection).values({ scopeKey: core.scopeKey, generation: 'old-complete', resource: 'member-summaries', externalId: 'old-member', revision: '1', operation: 'upsert', data: { ...fixture.member, id: 'old-member' }, observedAt: new Date() });
+    const calls: string[] = [];
+    vi.stubGlobal('fetch', async (input: string) => {
+      const url = new URL(input);
+      expect(url.searchParams.get('cursor')).not.toBe('OLD_STATISTICS_CURSOR');
+      const resource = url.pathname.split('/').at(-1)!;
+      calls.push(resource);
+      if (resource === 'changes') return url.searchParams.has('start')
+        ? Response.json({ data: [], page: { nextCursor: 'fresh-boundary', hasMore: false, limit: 10 } })
+        : Response.json({ error: { code: 'reset_required', message: 'No replay log.' } }, { status: 410 });
+      if (url.pathname.includes('/sync-records/')) {
+        const kind = url.pathname.split('/').at(-2)!;
+        const payload = kind === 'member-summaries' ? fixture.member : fixture.roster;
+        return Response.json({ data: { resource: kind, guildId: core.guildId, gameId: core.gameId, id: payload.id, revision: '9', operation: 'upsert', data: payload } });
+      }
+      if ((LOGI_PEOPLE_CORE_RESOURCES as readonly string[]).includes(resource)) {
+        expect(await readActiveLogiProjections(database.db, core)).toMatchObject([{ externalId: 'old-member' }]);
+        return Response.json({ data: [resource === 'member-summaries' ? fixture.member : fixture.roster], page: { nextCursor: null, limit: 1 } });
+      }
+      // More than one run's history; it must remain isolated and incomplete.
+      return Response.json({ data: [], page: { nextCursor: `history-${calls.length}`, limit: 1 } });
+    });
+    const outcomes = await runLogiSync(database.db, env);
+    expect(outcomes).toMatchObject([{ state: 'failed', error: 'configuration' }, { state: 'caught_up', reset: true }, { state: 'pending' }]);
+    const rows = await readActiveLogiProjections(database.db, core);
+    expect(rows.map((row) => row.resource).sort()).toEqual([...LOGI_PEOPLE_CORE_RESOURCES].sort());
+    const [state] = await database.db.select().from(logiSyncScope).where(eq(logiSyncScope.scopeKey, core.scopeKey));
+    expect(state).toMatchObject({ version: 45, leaseExpiresAt: null, checkpoint: { mode: 'live', resourceIndex: 2 } });
+    expect(state!.activeGeneration).toMatch(/^people-core-v1:/);
+    expect(calls.indexOf('roster-summaries')).toBeLessThan(calls.indexOf('player-stat-summaries'));
+  });
+
+  it('completes both game cores before bounded statistics even when HLL history never ends', async () => {
+    const env = {
+      LOGI_SOURCES_JSON: JSON.stringify(['hell_let_loose', 'wardogs'].map((gameId) => ({ sourceInstanceId: 'synthetic-two-game-priority', guildId: fixture.member.guildId, gameId, origin: 'https://logi.example.test', syncPeople: true }))),
+      LOGI_PEOPLE_API_KEY_HLL: 'synthetic-hll-people-key-123456',
+      LOGI_PEOPLE_API_KEY_WDG: 'synthetic-wdg-people-key-123456',
+    };
+    const calls: string[] = [];
+    vi.stubGlobal('fetch', async (input: string) => {
+      const url = new URL(input);
+      const game = url.searchParams.get('game');
+      const resource = url.pathname.split('/').at(-1)!;
+      calls.push(`${game}:${resource}`);
+      if (resource === 'changes') return Response.json({ data: [], page: { nextCursor: 'two-game-boundary', hasMore: false, limit: 10 } });
+      return Response.json({ data: [], page: { nextCursor: game === 'hell_let_loose' && resource === 'player-stat-summaries' ? `endless-history-${calls.length}` : null, limit: 1 } });
+    });
+    const outcomes = await runLogiSync(database.db, env);
+    expect(outcomes.map((row) => row.state)).toEqual(['failed', 'caught_up', 'caught_up', 'pending', 'caught_up']);
+    const firstStatistics = calls.findIndex((call) => call.endsWith(':player-stat-summaries'));
+    for (const game of ['hell_let_loose', 'wardogs']) {
+      expect(calls.indexOf(`${game}:member-summaries`)).toBeGreaterThanOrEqual(0);
+      expect(calls.indexOf(`${game}:roster-summaries`)).toBeGreaterThanOrEqual(0);
+      expect(calls.indexOf(`${game}:roster-summaries`)).toBeLessThan(firstStatistics);
+    }
+    expect(calls).toContain('wardogs:player-stat-summaries');
   });
 
   it('resumes a persisted data replay through more than eight filtered pages and promotes only at the terminal cursor', async () => {

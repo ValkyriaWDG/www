@@ -1,10 +1,10 @@
 import 'server-only';
 import { logiMemberLink, logiSyncScope, memberProfile, type Executor, type Game } from '@valkyria/db';
-import { and, eq, isNotNull, isNull, or } from 'drizzle-orm';
+import { and, eq, exists, isNotNull, isNull, or, sql } from 'drizzle-orm';
 import { assertCanForGames } from '@/modules/access/policy';
 import type { Actor } from '@/modules/access/types';
 import { gameRouteFromDb, GAME_REGISTRY } from '@/modules/games/registry';
-import { configuredLogiSources, type ConfiguredLogiSource, type LogiIntegrationEnv } from './logi-config';
+import { configuredLogiSources, logiPeopleStatisticsSource, type ConfiguredLogiSource, type LogiIntegrationEnv } from './logi-config';
 import type { LogiMemberCandidate, LogiPeopleState, LogiTeamAttendance, LogiTeamRoster, LogiTeamView, PublicLogiEventPeople, PublicLogiMemberEnrichment, PublicLogiRosterActivity, PublicRosterEntry } from './logi-people-types';
 import { attachPublicLogiArchiveLinks } from './logi-match-links';
 import { readPublicLogiEvents } from './logi-public';
@@ -31,7 +31,7 @@ const sourceGame = (game: Game) => GAME_REGISTRY[gameRouteFromDb(game)].logi;
 const forbiddenSource = new Set(['unauthorized', 'forbidden', 'configuration']);
 
 /** Ordinary team reads may show labelled last-known data, never use it as access evidence. */
-async function readSnapshot(db: Executor, source: ConfiguredLogiSource, options: Options): Promise<PeopleSnapshot> {
+async function readSnapshot(db: Executor, source: ConfiguredLogiSource, options: Options, statistics = false): Promise<PeopleSnapshot> {
   const rows = await readActiveLogiProjections(db, source);
   const state = rows[0] ?? await readLogiProjectionState(db, source);
   const checkpoint = logiSyncCheckpointSchema.safeParse(state?.checkpoint);
@@ -45,6 +45,10 @@ async function readSnapshot(db: Executor, source: ConfiguredLogiSource, options:
   if (snapshot.state === 'unavailable') return snapshot;
   for (const row of rows) {
     if (!(LOGI_PEOPLE_RESOURCES as readonly string[]).includes(row.resource)) throw new Error('Invalid people projection resource.');
+    // Legacy complete core generations may still contain historical statistics.
+    // They neither supply new statistics nor suppress the independent directory.
+    if (!statistics && row.resource === 'player-stat-summaries') continue;
+    if (statistics && row.resource !== 'player-stat-summaries') throw new Error('Invalid statistics projection resource.');
     if (row.operation === 'remove') continue;
     const value = row.resource === 'member-summaries' ? logiMemberSummarySchema.parse(row.data)
       : row.resource === 'roster-summaries' ? logiRosterSummarySchema.parse(row.data) : logiPlayerStatSummarySchema.parse(row.data);
@@ -68,6 +72,18 @@ async function readSnapshot(db: Executor, source: ConfiguredLogiSource, options:
   }
   snapshot.sessions = currentPlayerSessions(snapshot.sessions, at);
   return snapshot;
+}
+
+async function readStatisticsSnapshot(db: Executor, source: ConfiguredLogiSource, options: Options): Promise<PeopleSnapshot | null> {
+  try { return await readSnapshot(db, logiPeopleStatisticsSource(source), options, true); }
+  catch { return null; }
+}
+
+function statisticsFence(db: Executor, snapshot: PeopleSnapshot) {
+  return exists(db.select({ version: logiSyncScope.version }).from(logiSyncScope).where(and(
+    eq(logiSyncScope.scopeKey, snapshot.source.scopeKey), eq(logiSyncScope.version, snapshot.version ?? -1), isNull(logiSyncScope.errorCode),
+    eq(logiSyncScope.sourceInstanceId, snapshot.source.sourceInstanceId), eq(logiSyncScope.guildId, snapshot.source.guildId), eq(logiSyncScope.gameId, snapshot.source.gameId),
+  )));
 }
 
 function stillPublic(snapshot: PeopleSnapshot, at: Date): boolean {
@@ -104,9 +120,15 @@ export async function readLogiTeam(db: Executor, env: LogiIntegrationEnv, actor:
     const source = configuredLogiSources(env, 'people').find((row) => row.gameId === sourceGame(game));
     if (!source) return emptyTeam('unconfigured');
     const snapshot = await readSnapshot(db, source, options);
+    const statistics = await readStatisticsSnapshot(db, source, options);
+    const at = options.now?.() ?? new Date();
+    const current = statistics && stillPublic(snapshot, at) && stillPublic(statistics, at)
+      ? await db.select({ version: logiSyncScope.version }).from(logiSyncScope).where(and(eq(logiSyncScope.scopeKey, source.scopeKey), eq(logiSyncScope.version, snapshot.version ?? -1), isNull(logiSyncScope.errorCode), statisticsFence(db, statistics))).limit(1)
+      : [];
+    const sessions = current.length ? statistics!.sessions : [];
     return {
       state: snapshot.state, observedAt: snapshot.observedAt,
-      members: [...snapshot.members.values()].map((member) => ({ memberId: member.id, displayName: member.displayName, type: member.type, status: member.status, paused: member.paused, identityState: member.identityState, groups: member.groups.map((group) => group.name), statistics: summarizePlayerSessions(snapshot.sessions, member) })),
+      members: [...snapshot.members.values()].map((member) => ({ memberId: member.id, displayName: member.displayName, type: member.type, status: member.status, paused: member.paused, identityState: member.identityState, groups: member.groups.map((group) => group.name), statistics: summarizePlayerSessions(sessions, member) })),
       ...teamRows(snapshot),
     };
   } catch { return emptyTeam('unavailable'); }
@@ -130,9 +152,10 @@ export async function readLogiMemberCandidates(db: Executor, env: LogiIntegratio
 type ApprovedLink = { member: LogiMemberSummary; slug: string; displayName: string; allowStats: boolean; allowRoster: boolean };
 
 /** The final SQL read rechecks local consent and publication; source payloads cannot grant it. */
-async function approvedLinks(db: Executor, snapshots: readonly PeopleSnapshot[], profileSlug?: string): Promise<Map<string, Map<string, ApprovedLink>>> {
+async function approvedLinks(db: Executor, snapshots: readonly PeopleSnapshot[], profileSlug?: string, statistics: ReadonlyMap<string, PeopleSnapshot> = new Map()): Promise<Map<string, Map<string, ApprovedLink>>> {
   if (!snapshots.length) return new Map();
-  const rows = await db.select({ link: logiMemberLink, slug: memberProfile.slug, displayName: memberProfile.displayName, games: memberProfile.games })
+  const statisticsCurrent = or(...[...statistics].map(([coreScopeKey, snapshot]) => and(eq(logiMemberLink.scopeKey, coreScopeKey), statisticsFence(db, snapshot)))) ?? sql<boolean>`false`;
+  const rows = await db.select({ link: logiMemberLink, slug: memberProfile.slug, displayName: memberProfile.displayName, games: memberProfile.games, statisticsCurrent })
     .from(logiMemberLink).innerJoin(memberProfile, eq(memberProfile.id, logiMemberLink.profileId))
     .innerJoin(logiSyncScope, and(eq(logiSyncScope.scopeKey, logiMemberLink.scopeKey), isNull(logiSyncScope.errorCode)))
     .where(and(or(...snapshots.map(({ source, version }) => and(eq(logiMemberLink.scopeKey, source.scopeKey), eq(logiMemberLink.sourceInstanceId, source.sourceInstanceId), eq(logiMemberLink.guildId, source.guildId), eq(logiMemberLink.gameId, source.gameId), eq(logiSyncScope.version, version ?? -1)))), eq(memberProfile.state, 'published'), isNotNull(memberProfile.consentConfirmedAt), ...(profileSlug !== undefined ? [eq(memberProfile.slug, profileSlug)] : [])));
@@ -143,7 +166,7 @@ async function approvedLinks(db: Executor, snapshots: readonly PeopleSnapshot[],
     const member = snapshot.members.get(row.link.memberId);
     if (member?.identityState !== 'resolved' || !member.identityId || member.identityId !== row.link.identityId || !row.games.includes(game)) continue;
     const scoped = links.get(row.link.scopeKey) ?? new Map<string, ApprovedLink>();
-    scoped.set(member.id, { member, slug: row.slug, displayName: row.displayName, allowStats: row.link.allowStats, allowRoster: row.link.allowRoster });
+    scoped.set(member.id, { member, slug: row.slug, displayName: row.displayName, allowStats: row.link.allowStats && row.statisticsCurrent === true, allowRoster: row.link.allowRoster });
     links.set(row.link.scopeKey, scoped);
   }
   return links;
@@ -226,27 +249,30 @@ export async function readPublicLogiRosterDirectory(db: Executor, env: LogiInteg
 
 export async function readPublicLogiMemberEnrichment(db: Executor, env: LogiIntegrationEnv, profileSlug: string, options: Options & { game?: Game } = {}): Promise<PublicLogiMemberEnrichment[]> {
   try {
+    const at = options.now?.() ?? new Date();
+    const fixed = { now: () => at };
     const result: PublicLogiMemberEnrichment[] = [];
-    const prepared: { snapshot: PeopleSnapshot; game: Game; events: Map<string, PublicLogiEvent> }[] = [];
+    const prepared: { snapshot: PeopleSnapshot; statistics: PeopleSnapshot | null; game: Game; events: Map<string, PublicLogiEvent> }[] = [];
     for (const source of configuredLogiSources(env, 'people')) {
       const game: Game = source.gameId === 'wardogs' ? 'wardogs' : 'hell-let-loose';
       if (options.game && options.game !== game) continue;
-      const snapshot = await readSnapshot(db, source, options);
-      if (!stillPublic(snapshot, options.now?.() ?? new Date())) continue;
+      const snapshot = await readSnapshot(db, source, fixed);
+      if (!stillPublic(snapshot, at)) continue;
       // A member's explicit statistics consent may apply without publishing any match.
-      const events = await readScopedPublicEvents(db, env, source, game, options.now?.() ?? new Date()).catch(() => []);
-      prepared.push({ snapshot, game, events: publicRosterEvents(events) });
+      const events = await readScopedPublicEvents(db, env, source, game, at).catch(() => []);
+      const statistics = await readStatisticsSnapshot(db, source, fixed);
+      prepared.push({ snapshot, statistics, game, events: publicRosterEvents(events) });
     }
     // One last joined read fences consent, binding and the source checkpoint for every game.
-    const allLinks = await approvedLinks(db, prepared.map(({ snapshot }) => snapshot), profileSlug);
+    const allLinks = await approvedLinks(db, prepared.map(({ snapshot }) => snapshot), profileSlug, new Map(prepared.flatMap(({ snapshot, statistics }) => statistics && stillPublic(statistics, at) ? [[snapshot.source.scopeKey, statistics] as const] : [])));
     const decisionAt = options.now?.() ?? new Date();
-    for (const { snapshot, game, events } of prepared) {
+    for (const { snapshot, statistics, game, events } of prepared) {
       const links = allLinks.get(snapshot.source.scopeKey) ?? new Map<string, ApprovedLink>();
       if (!stillPublic(snapshot, decisionAt)) continue;
       for (const link of links.values()) {
         if (!link.allowStats && !link.allowRoster) continue;
         result.push({ game, observedAt: snapshot.observedAt!,
-          statistics: link.allowStats ? summarizePlayerSessions(snapshot.sessions, link.member) : null,
+          statistics: link.allowStats && statistics && stillPublic(statistics, decisionAt) ? summarizePlayerSessions(statistics.sessions, link.member) : null,
           rosters: link.allowRoster ? publicRoster(snapshot, links, events) : [],
         });
       }
@@ -257,19 +283,22 @@ export async function readPublicLogiMemberEnrichment(db: Executor, env: LogiInte
 
 export async function readPublicLogiEventPeople(db: Executor, env: LogiIntegrationEnv, game: Game, eventId: string, options: Options = {}): Promise<PublicLogiEventPeople | null> {
   try {
+    const at = options.now?.() ?? new Date();
+    const fixed = { now: () => at };
     const source = configuredLogiSources(env, 'people').find((row) => row.gameId === sourceGame(game));
     if (!source) return null;
-    const events = await readScopedPublicEvents(db, env, source, game, options.now?.() ?? new Date());
+    const events = await readScopedPublicEvents(db, env, source, game, at);
     const event = publicRosterEvents(events).get(eventId);
     if (!event) return null;
-    const snapshot = await readSnapshot(db, source, options);
-    if (!stillPublic(snapshot, options.now?.() ?? new Date())) return null;
-    const allLinks = await approvedLinks(db, [snapshot]);
+    const snapshot = await readSnapshot(db, source, fixed);
+    if (!stillPublic(snapshot, at)) return null;
+    const statistics = await readStatisticsSnapshot(db, source, fixed);
+    const allLinks = await approvedLinks(db, [snapshot], undefined, statistics && stillPublic(statistics, at) ? new Map([[snapshot.source.scopeKey, statistics]]) : new Map());
     const links = allLinks.get(snapshot.source.scopeKey) ?? new Map<string, ApprovedLink>();
     const decisionAt = options.now?.() ?? new Date();
     if (!stillPublic(snapshot, decisionAt)) return null;
     const selectedEvents = publicRosterEvents([event]);
-    const sessions = snapshot.sessions.filter((session) => session.eventRefs.some((ref) => selectedEvents.has(ref.eventId) && ref.resultVersion === event.result.version && ref.resultState === event.result.state));
+    const sessions = statistics && stillPublic(statistics, decisionAt) ? statistics.sessions.filter((session) => session.eventRefs.some((ref) => selectedEvents.has(ref.eventId) && ref.resultVersion === event.result.version && ref.resultState === event.result.state)) : [];
     return { observedAt: snapshot.observedAt!, roster: publicRoster(snapshot, links, selectedEvents),
       statistics: [...links.values()].flatMap((link) => {
         const statistics = link.allowStats ? summarizePlayerSessions(sessions, link.member) : null;

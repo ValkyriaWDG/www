@@ -205,7 +205,8 @@ changes and promotes the completed generation. Empty pages with a cursor continu
 Since 7 October 2026 Logi keeps no replay log and answers every change cursor with
 410. A 410 on replay therefore promotes the completed baseline, and a 410 while
 live records the successful contact and waits for the next full rebuild: every
-10 minutes for data, every 5 minutes for people. Before this, each 410 started a
+10 minutes for data, every 2 minutes for the atomic member/roster core and every
+5 minutes for independently atomic statistics. Before this, each 410 started a
 new baseline at once, and the minute runner re-read every collection continuously
 (about 60 requests per second). A run's requests are spaced to at most
 10 per second (`paceLogiReader`); Logi limits a clan key to 60.
@@ -253,8 +254,9 @@ necessary even when webhooks are configured.
 The whole-pass deadline is cooperative: expiry during an HTTP request returns
 `pending` with the last committed checkpoint, just as expiry between steps does.
 A request timeout while that budget remains available is still `failed`. Neither
-case publishes an incomplete replacement generation. People synchronization uses
-its separately bounded larger pass; it has the same continuation rules.
+case publishes an incomplete replacement generation. Core synchronization runs
+before statistics with separate bounded passes and the same continuation rules;
+see [people capacity and rollback](people.md#freshness-and-capacity).
 
 `POST /api/integrations/logi/{sourceInstanceId}/webhook` accepts only configured
 sources. It verifies HMAC-SHA256 over `X-Logi-Timestamp + "." + rawBody`, a timestamp
