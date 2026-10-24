@@ -48,9 +48,11 @@ lineup remain visible.
 The same native detail at `/en/…`, 390×844 viewport, full document: readable team
 names, no text clipping or horizontal overflow, and an honest awaiting-result state.
 
-Hosted qualification and production acceptance of this correction remain pending.
-The earlier source is already deployed, but its successful HTTP checks do not close
-this visible defect. The seven reviewed recent HLL identity associations were activated
+This correction was included in the combined accepted production source
+`076ba9316ff0f8433dc01efc916a5962ca7ac184` after full exact-head/main/publisher
+qualification. Actual long-name geometry, matching linked timestamps and inspected
+production screenshots are in the [final acceptance record](../match-production-final-2026-10-24/README.md).
+The seven reviewed recent HLL identity associations were activated
 independently at 19:11:39 UTC and passed 117 public checks. The unresolved legacy
 opponent331 was corrected to Kebaguettes & Bayonets / K&B using captured data and the
 current public legacy match209, with an audit record and no score/date/publication

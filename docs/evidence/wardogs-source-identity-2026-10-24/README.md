@@ -39,5 +39,7 @@ local synthetic captures, not production proof.
 
 PR #117's exact-head CI passed, but its main/publisher runs were deliberately
 cancelled before publication when this pending-event gap was found. That source was
-not deployed. Final exact-head/main/publisher qualification and actual hosted visual
-acceptance of the combined correction remain pending.
+not deployed. The combined correction merged as
+`076ba9316ff0f8433dc01efc916a5962ca7ac184` and passed full exact-head/main/protected
+publisher qualification. It was activated at20:40:17 UTC. Actual public/private and
+visual production acceptance is in the [final record](../match-production-final-2026-10-24/README.md).

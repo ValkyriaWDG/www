@@ -1,61 +1,44 @@
 # Current status
 
-## Pending Wardogs identity acceptance — 2026-10-24
+## Unified matches accepted on production — 2026-10-24
 
-Production review found that a three-team pending event with two captured teams had
-no result participants, bypassing the earlier partial-capture condition. All unlinked
-native Wardogs events now retain the exact original event title as primary; supplied
-teams remain secondary facts regardless of result count. No title parsing, invented
-team/score or publication/freshness change. HLL and reviewed archive identities remain
-unchanged. Local build/lint/types, 1,395 unit tests and 29 connected CS/EN desktop/mobile
-journeys passed, including the actual pending-capture shape and homepage title.
-[Inspected evidence](evidence/wardogs-source-identity-2026-10-24/README.md).
-PR #117 merged as `360ffe2e822c0cbd41d32d13f09078d2c36da1f9` after successful
-exact-head CI40125028899; its main/publisher runs were cancelled before publication
-when this remaining gap was found. It was not deployed. Final qualification and hosted
-acceptance remain pending. The currently running image is still the #116 source.
+Application source `076ba9316ff0f8433dc01efc916a5962ca7ac184`, application tree
+`7e8c329c77a69289e134888e41afa54eafa788a4`, is running at immutable digest
+`sha256:76d5083d360bf82dc70a267a7076d86fd406ffaf8d2de5f2e1c71c8f891ee52a`.
+It started at 20:40:17 UTC and was ready at 20:40:21. PRs #116/#117/#118 are merged;
+the #117-only publisher was cancelled before publication after finding the pending
+Wardogs identity gap. The deployed #118 source contains the combined correction.
 
-## Production detail acceptance correction — 2026-10-24
+Both games and primary now share one match list/search/count/pagination and rich
+detail composition. Labelled faction/participant results preserve pending and review
+states. Unlinked native Wardogs matches keep the supplied event title primary independently of captured
+team/result completeness; HLL long names and linked detail timestamps are corrected.
+Seven reviewed HLL identity links plus two explicit League/native links removed nine
+duplicate copies. The audited K&B metadata correction preserved scores/dates/publication.
 
-PR #116 deployed source `eea874591543461f31b905e7b67c3cd67add8764` at 18:54:25 UTC,
-image `sha256:515d6ac43760de5f441bd3ae550df8da10f9bc7d28ab2e4dd5c05db9187f1729`.
-Exact-head/main/publisher qualification passed, as did 121 public production checks,
-readiness/configuration, 442 preserved media files and 17 untouched other containers.
-Visual acceptance found a first-team banner grid defect and an inconsistent archived
-placeholder timestamp in linked details. This correction explicitly places teams in
-the wide track and uses the list's current supplied timestamp in the linked pane.
-An unlinked WDG record with fewer captured teams than result participants retains its
-original event title and explicitly secondary supplied teams, without VS or invented
-team-score attribution. Local build/types/full lint, all 1,388 unit tests (including
-39 focused identity/rendering cases) and all 25 connected journeys passed,
-including four new actual text-geometry cases. Independent review has no findings.
-[Inspected desktop/mobile evidence](evidence/match-detail-readability-2026-10-24/README.md).
-Hosted qualification/deployment of this correction remains pending. Seven independently
-reviewed recent HLL identity bindings were activated at 19:11:39 UTC, passed 117 public
-checks and removed seven duplicates across results/upcoming. The unresolved legacy
-opponent331 was corrected to K&B with an audit record; scores, dates and publication
-are unchanged. Older active-image sections below are historical.
+Exact-head CI 40127278162, accepted-main CI 40128878521 and protected publisher 40128893567
+passed fully. Main verification included 1,395 unit / 549 PostgreSQL tests, 274 ordinary
+browser tests (166 opt-in skipped), 29 CI synthetic connected CS/EN desktop/mobile journeys, four
+artwork tests, mobile budgets and image/restore/rollback/scanning/SBOM. Independent
+integrated source review had no findings.
+Actual production passed 143/143 public checks twice plus 12/12 runtime regressions and real
+browser search, filters/page 2, CS/EN details, readable long names and matching time.
+Real Logi SSO, both private teams (128 members / 7 rosters HLL; 69 / 3 WDG), simplified
+administration and post-sign-out protection passed. No private people are in public captures.
 
-## Shared match presentation follow-up — 2026-10-24
+Explicit migration applied 0, with 13 already applied. Paired recovery restored 37 tables / 442 files
+and authenticated encrypted off-host verification passed. Runtime configuration,
+442 media hashes, 17 unrelated container identities/start times and all three timers
+were preserved. The owned candidate was removed and dedicated updater resumed at 20:48:29 UTC.
+The first natural updater poll at 20:53:39 UTC reported failed=0, scanned=1, updated=0;
+the same website container/start time remained healthy at 20:55:29 UTC. Actual production
+captures, exact commands, CI links and limits: [final acceptance](evidence/match-production-final-2026-10-24/README.md).
 
-The application now presents native, reviewed archive and eligible tracked League
-matches through the same list/search/counters/pagination and detail composition.
-Both game homes use the same next-fixture selection. Reviewed identities and canonical
-archive URLs take precedence; legacy native URLs redirect without losing consented
-lineups. Prominent scores retain explicit participant/faction labels, zero/null and
-multi-team semantics. Missing results, stale fixtures and unpublished/paused bindings
-are not converted to confirmed results. Separate source/history sections and obsolete
-raw tables are removed. No SQL/configuration/dependency change.
+The owner's deferred Logi Convex activation and producer availability/statistics limits
+remain separate. Documentation-only commits after the pinned application source do
+not represent another image rollout. Earlier notes below are historical.
 
-Local integrated verification passed 1,383 unit tests, 549 PostgreSQL integration
-tests, lint/types/build, 21 connected projection journeys and 62 targeted public,
-League/layout/visual journeys. An independent integrated source review found no
-remaining actionable issues. Commands, tested application tree and inspected CS/EN
-desktop/mobile captures: [presentation evidence](evidence/match-presentation-2026-10-24/README.md).
-Hosted exact-head qualification and production deployment of this follow-up remain
-pending; the active image below still identifies the earlier accepted release.
-
-## Production active — 2026-10-24
+## Earlier production release — 2026-10-24
 
 The unified website is running application source
 `6647f9a9bae24186d794f8f2826253ad30c29a70` at immutable index digest
