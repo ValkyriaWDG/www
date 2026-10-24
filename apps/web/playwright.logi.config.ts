@@ -21,6 +21,6 @@ export default defineConfig({
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
     command: 'node e2e/support/start-server.mjs', url: `${baseURL}/api/health/ready`, reuseExistingServer: false, timeout: 180_000, stdout: 'pipe', stderr: 'pipe',
-    env: { ...e2eServerEnv({ port, discordMockPort: port + 1000, editorialMediaRoot: '.local/e2e-media-logi', background: { BACKGROUND_VIDEO_MP4_URL: `${baseURL}/e2e-missing/background-loop.mp4` } }), BETTER_AUTH_SECRET: 'e2e-only-ephemeral-secret-not-for-production-000', E2E_LOGI_PUBLIC_FIXTURES: '1' },
+    env: { ...e2eServerEnv({ port, discordMockPort: port + 1000, editorialMediaRoot: '.local/e2e-media-logi', background: { BACKGROUND_VIDEO_MP4_URL: `${baseURL}/e2e-missing/background-loop.mp4` } }), E2E_LOGI_PUBLIC_FIXTURES: '1' },
   },
 });

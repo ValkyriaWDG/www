@@ -94,6 +94,18 @@ include restores those installed DLLs to standalone output. After rebuilding, th
 traced package loads Sharp 0.35.5 successfully. Existing PNG/draft-exclusion assertions
 remain unchanged; the complete browser rerun verifies the public response boundary.
 
+[CI for `16f3c00`](https://github.com/ValkyriaWDG/www/actions/runs/40098169754)
+passed the repaired security gate (zero fixable HIGH/CRITICAL findings; 43 unfixed
+advisories remain visible), all 272 ordinary browser tests and all mobile page budgets.
+Its connected suite passed 13 cases but failed the four admin journeys: the suite
+overrode the server's auth secret while the client helper inherited CI's different
+ephemeral secret. The browser was correctly redirected to login. A local run with
+that non-default CI secret reproduced the same failure before the repair. Removing
+the suite-only override makes both sides use the existing shared environment helper;
+all 17 cases then passed with `CI=true` and the non-default ephemeral secret. No
+authentication check, assertion, timeout or production behavior was weakened.
+The final-head run and its artwork evidence are recorded in the PR.
+
 ## Inspected screenshots
 
 Every capture below is an actual local application screenshot with synthetic fixtures,

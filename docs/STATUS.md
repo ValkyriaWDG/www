@@ -32,6 +32,10 @@ install, lint, types, 1,292 unit tests, 529 PostgreSQL tests and build passed ag
 locally. The PR carries the latest-head CI result and retained failure evidence.
 The Windows standalone follow-up explicitly traces Sharp's sibling libvips DLLs;
 the new Turbopack trace had omitted them and broken social-image responses.
+CI on `16f3c00` passed the security gate, 272 browser cases and mobile budgets, then
+exposed an auth-secret mismatch in the connected test harness. The suite now uses
+the shared environment helper on both sides; all 17 connected cases passed locally
+with the non-default CI ephemeral secret. Product auth and assertions are unchanged.
 
 Read-only hosted checks still observed production source `9b6ffd78` healthy, with
 public liveness/readiness and canonical HLL/WDG routes returning 200. Both configured
