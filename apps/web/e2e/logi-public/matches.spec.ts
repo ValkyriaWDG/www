@@ -11,9 +11,29 @@ const archiveSlug = FIXTURE_SLUGS.matches.hllHistorical;
 const outDir = path.resolve('.local/evidence/unified-logi-web');
 const row = (page: Page, number: number) => page.locator('[data-unified-matches] tbody tr').filter({ hasText: `[SYNTHETIC] Logi history ${String(number).padStart(2, '0')}` });
 const copy = {
-  cs: { end: 'Čas konce', imported: 'Importovaný předběžný výsledek', confirmed: 'Potvrzený výsledek', unknown: 'Není k dispozici', archive: 'Archivní detail zápasu', importedOn: 'Výsledek importován:' },
-  en: { end: 'End time', imported: 'Imported provisional result', confirmed: 'Confirmed result', unknown: 'Not available', archive: 'Archived match details', importedOn: 'Result imported:' },
+  cs: { end: 'Čas konce', provisional: 'Předběžný výsledek', confirmed: 'Potvrzený výsledek', played: 'Odehráno', axis: 'Osa', allies: 'Spojenci' },
+  en: { end: 'End time', provisional: 'Provisional result', confirmed: 'Confirmed result', played: 'Played', axis: 'Axis', allies: 'Allies' },
 } as const;
+
+async function expectSharedPresentation(page: Page) {
+  await expect(page.locator('[data-logi-matches], [data-logi-browser]')).toHaveCount(0);
+  for (const obsolete of ['Matches from Logi', 'Zápasy z Logi', 'Website archive', 'Archiv webu', 'Imported provisional result', 'Importovaný předběžný výsledek', 'Archived match details', 'Archivní detail zápasu']) {
+    await expect(page.getByText(obsolete, { exact: true })).toHaveCount(0);
+  }
+  await expect(page.getByText(/Result imported:|Výsledek importován:/)).toHaveCount(0);
+}
+
+async function expectConsentedHistoricalLineup(page: Page, locale: 'cs' | 'en') {
+  const lineup = page.locator('[aria-labelledby="match-logi-people"]');
+  await expect(page.locator('#match-logi-people')).toBeVisible();
+  await expect(lineup).toBeVisible();
+  await expect(lineup.locator('ul > li')).toHaveCount(1);
+  await expect(lineup.getByRole('link', { name: 'Syntetická hráčka Bravo', exact: true })).toHaveAttribute('href', `/${locale}/members/${FIXTURE_SLUGS.members.publishedCsOnlyBio}`);
+  await expect(lineup).toContainText('[SYNTHETIC] Alpha');
+  await expect(lineup).not.toContainText(/acknowledged|attending/);
+  await expect(lineup.locator('[data-logi-player-stats]')).toHaveCount(0);
+  for (const privateField of ['PRIVATE_OPERATIONAL_NAME', 'PRIVATE_OPERATIONAL_GROUP', 'private-member-', 'private-identity-', 'private-roster-history-hll', '910000000000000002']) expect(await page.content()).not.toContain(privateField);
+}
 
 async function capture(page: Page, name: string, caption: string) {
   if (process.env.CAPTURE_EVIDENCE !== '1') return;
@@ -27,7 +47,7 @@ test.use({ reducedMotion: 'reduce' });
 
 for (const locale of ['cs', 'en'] as const) {
   for (const width of [1440, 390]) {
-    test(`${locale} at ${width}: actual history, reviewed precedence, teams and original archive`, async ({ page }) => {
+    test(`${locale} at ${width}: actual history, reviewed precedence, teams and original archive`, async ({ page, request }) => {
       const browserErrors: string[] = [];
       page.on('pageerror', (error) => browserErrors.push(error.message));
       await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
@@ -35,26 +55,33 @@ for (const locale of ['cs', 'en'] as const) {
       const browser = page.locator('[data-unified-matches]');
       await expect(browser.getByRole('searchbox')).toHaveCount(1);
       await expect(page.locator('[data-match-table]')).toHaveCount(1);
-      await expect(page.locator('[data-logi-browser]')).toHaveCount(0);
-      await expect(page.getByText(locale === 'cs' ? 'Zápasy z Logi' : 'Matches from Logi', { exact: true })).toHaveCount(0);
+      await expectSharedPresentation(page);
       await expect(browser.locator('tbody tr')).toHaveCount(10);
       await expect(browser.locator('tbody th')).toContainText(Array.from({ length: 10 }, (_, index) => `[SYNTHETIC] Logi history ${String(index).padStart(2, '0')}`));
       const reviewed = row(page, 0);
       const imported = row(page, 1);
       for (const text of ['Axis: 0', 'Allies: 5', copy[locale].confirmed]) await expect(reviewed).toContainText(text);
-      await expect(reviewed).not.toContainText(copy[locale].imported);
+      await expect(reviewed).not.toContainText(copy[locale].provisional);
       await expect(imported).toContainText('Axis: 0');
       await expect(imported).toContainText('Allies: 5');
-      await expect(imported).toContainText(copy[locale].imported);
+      await expect(imported).toContainText(copy[locale].provisional);
+      for (const score of [reviewed, imported]) {
+        const result = score.locator('[data-column="result"]');
+        await expect(result.getByText(copy[locale].axis, { exact: true })).toBeVisible();
+        await expect(result.getByText(copy[locale].allies, { exact: true })).toBeVisible();
+        await expect(result.locator('strong')).toHaveText(['0', '5']);
+      }
       await expect(reviewed.locator('td').first()).toContainText(copy[locale].end);
-      await expect(reviewed.locator('[data-column="status"]')).toHaveText(copy[locale].unknown);
-      await expect(reviewed).toContainText('[SYNTHETIC] Team A · SYA');
-      await expect(reviewed).toContainText('[SYNTHETIC] Team B · SYB');
-      const archive = reviewed.getByRole('link', { name: copy[locale].archive });
-      await expect(reviewed).toContainText('Valkyria vs. Synthetic HLL Opponent Foxtrot');
+      await expect(reviewed.locator('[data-column="status"]')).toHaveText(copy[locale].played);
+      await expect(reviewed.locator('th strong')).toHaveText(['VLK', 'SHF']);
+      await expect(reviewed.locator('th')).toContainText('Valkyria');
+      await expect(reviewed.locator('th')).toContainText('Synthetic HLL Opponent Foxtrot');
+      await expect(reviewed.locator('th')).not.toContainText('[SYNTHETIC] Team A');
+      await expect(reviewed.locator('th')).not.toContainText('[SYNTHETIC] Team B');
+      const archive = reviewed.locator('th a');
       await expect(reviewed).toContainText('Synthetic Historical Cup (sample)');
       await expect(archive).toHaveAttribute('href', `/${locale}/hll/matches/${archiveSlug}`);
-      await expect(page.locator(`[data-match-table] tbody th a[href*="/matches/${archiveSlug}"]`)).toHaveCount(0);
+      await expect(reviewed.locator('a')).toHaveCount(1);
       for (const excluded of ['never-render-logo', 'synthetic-public-match-source', '910000000000000001', 'synthetic-public-hll-key']) {
         expect(await page.content()).not.toContain(excluded);
       }
@@ -66,9 +93,9 @@ for (const locale of ['cs', 'en'] as const) {
         expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
       }
       expect((await new AxeBuilder({ page }).include('[data-unified-matches]').analyze()).violations).toEqual([]);
-      await capture(page, `history-${locale}-${width}`, 'Synthetic Logi history: imported provisional scores, supplied end times, captured team names, and an explicitly linked original archive. The first row uses the reviewed 0:5 result instead of the conflicting imported 5:0.');
+      await capture(page, `history-${locale}-${width}`, 'One synthetic match list with labelled scoreboards and honest result states. The reviewed first row shows Valkyria and its opponent, links directly to the canonical detail, and uses the reviewed 0:5 result.');
 
-      // A real second link in the row must work independently of the stretched primary link.
+      // The ordinary row link opens the canonical historical detail directly.
       await archive.click();
       await expect(page).toHaveURL(new RegExp(`/${locale}/hll/matches/${archiveSlug}$`));
       const current = page.locator(`[data-match-detail="${archiveSlug}"]`);
@@ -80,8 +107,19 @@ for (const locale of ['cs', 'en'] as const) {
       await expect(original).toContainText('Synthetic Historical Cup (sample)');
       await expect(original.locator('[data-result="score"]')).toHaveCount(0);
       await expect(page.locator('[data-match-rounds]')).toContainText('Hürtgen Forest');
+      await expectConsentedHistoricalLineup(page, locale);
+      await expectSharedPresentation(page);
       await expectNoHorizontalOverflow(page);
       await capture(page, `archive-${locale}-${width}`, 'Synthetic linked match detail: one current reviewed result beside the retained historical recap and map rounds.');
+      const legacy = `/${locale}/hll/matches/logi/synthetic-history-00`;
+      const redirect = await request.get(legacy, { maxRedirects: 0 });
+      expect(redirect.status()).toBe(307);
+      expect(redirect.headers().location).toBe(`/${locale}/hll/matches/${archiveSlug}`);
+      await page.goto(legacy);
+      await expect(page).toHaveURL(new RegExp(`/${locale}/hll/matches/${archiveSlug}$`));
+      await expect(page.locator(`[data-match-detail="${archiveSlug}"]`)).toContainText(copy[locale].confirmed);
+      await expectConsentedHistoricalLineup(page, locale);
+      await expectSharedPresentation(page);
       expect(browserErrors).toEqual([]);
     });
   }
@@ -110,20 +148,30 @@ test('one search and page includes current and historical matches', async ({ pag
   await expect(row(page, 0)).toHaveCount(1);
 });
 
-test('imported detail preserves provenance and three-team upcoming has no fabricated score', async ({ page }) => {
-  await page.goto('/en/hll/matches/logi/synthetic-history-01');
-  await expect(page.locator('[data-logi-matches]')).toContainText(copy.en.imported);
-  await expect(page.locator('[data-logi-matches]')).toContainText(copy.en.importedOn);
-  await page.goto('/en/wardogs/matches');
+for (const locale of ['cs', 'en'] as const) {
+test(`${locale}: shared standalone detail and three-team upcoming have no fabricated score`, async ({ page }) => {
+  await page.goto(`/${locale}/hll/matches/logi/synthetic-history-01`);
+  await expect(page.locator('[data-unified-matches]')).toHaveAttribute('data-mode', 'detail');
+  const detail = page.locator('[data-operational-match-detail][data-detail-mode="detail"]');
+  await expect(detail).toContainText(copy[locale].provisional);
+  await expect(detail).toContainText('Axis: 0; Allies: 5');
+  await expect(detail.locator('[data-result-state] strong')).toHaveText(['0', '5']);
+  await expect(detail.locator('time')).toHaveCount(1);
+  await expect(detail).toContainText(copy[locale].end);
+  await expectSharedPresentation(page);
+  await page.goto(`/${locale}/wardogs/matches`);
   const connected = page.locator('[data-unified-matches]');
   const next = connected.locator('tbody tr').filter({ hasText: '[SYNTHETIC] Next wardogs match' });
   await expect(next).toHaveCount(1);
-  for (const label of ['[SYNTHETIC] Team A · SYA', 'Lonestar', '[SYNTHETIC] Team B · SYB', 'Manticore', '[SYNTHETIC] Team C · SYC', 'Valkyra']) await expect(next).toContainText(label);
+  for (const label of ['[SYNTHETIC] Team A', 'SYA', 'Lonestar', '[SYNTHETIC] Team B', 'SYB', 'Manticore', '[SYNTHETIC] Team C', 'SYC', 'Valkyra']) await expect(next).toContainText(label);
+  await expect(next.locator('th strong')).toHaveText(['SYA', 'SYB', 'SYC']);
   await expect(connected.locator('[data-column="result"]')).toHaveCount(0);
   await expect(next).not.toContainText(/0\s*:\s*0/);
+  await expectSharedPresentation(page);
   await expectNoHorizontalOverflow(page);
-  await capture(page, 'wardogs-three-teams-en-1280', 'Synthetic upcoming Wardogs match shows three captured teams and their supplied sides; the unknown result remains unavailable.');
+  await capture(page, `wardogs-three-teams-${locale}-1280`, 'Synthetic upcoming Wardogs match shows three captured teams and their supplied sides; the unknown result remains unavailable.');
 });
+}
 
 test('an explicitly reviewed identical alias is hidden and its old detail redirects to the canonical event', async ({ page, request }) => {
   await page.goto('/en/hll/matches?view=results');
@@ -134,7 +182,8 @@ test('an explicitly reviewed identical alias is hidden and its old detail redire
   expect(response.headers().location).toBe('/en/hll/matches/logi/synthetic-history-01');
   await page.goto('/en/hll/matches/logi/synthetic-history-alias');
   await expect(page).toHaveURL(/\/en\/hll\/matches\/logi\/synthetic-history-01$/);
-  await expect(page.locator('[data-logi-matches]')).toContainText(copy.en.imported);
+  await expect(page.locator('[data-operational-match-detail][data-detail-mode="detail"]')).toContainText(copy.en.provisional);
+  await expectSharedPresentation(page);
 });
 
 test('both homes select the actual next published Logi match', async ({ page }) => {
@@ -194,7 +243,8 @@ for (const locale of ['cs', 'en'] as const) {
       expect((await new AxeBuilder({ page }).include('[data-member-roster]').analyze()).violations).toEqual([]);
       await capture(page, `members-${locale}-${width}`, 'One consented synthetic profile lists approved HLL and Wardogs lineups inside the ordinary member directory; private operational names and attendance are absent.');
       await roster.locator(`a[href="/${locale}/hll/matches/logi/synthetic-next-hell_let_loose"]`).click();
-      await expect(page.locator('[data-logi-matches]')).toContainText('[SYNTHETIC] Next hell_let_loose match');
+      await expect(page.locator('[data-operational-match-detail][data-detail-mode="detail"]')).toContainText('[SYNTHETIC] Next hell_let_loose match');
+      await expectSharedPresentation(page);
       await expect(page.locator('#match-logi-people')).toBeVisible();
       await expect(page.locator('[aria-labelledby="match-logi-people"]')).toContainText('Syntetická hráčka Bravo');
       await expectNoHorizontalOverflow(page);
@@ -202,16 +252,38 @@ for (const locale of ['cs', 'en'] as const) {
   }
 }
 
-test('the shared results list filters both sources with the same game controls', async ({ page }) => {
-  await page.goto('/en/matches?view=results');
+for (const locale of ['cs', 'en'] as const) {
+test(`${locale}: the shared results list filters all matches with the same game controls`, async ({ page }) => {
+  await page.goto(`/${locale}/matches?view=results`);
   const browser = page.locator('[data-unified-matches]');
   await expect(browser.getByRole('searchbox')).toHaveCount(1);
   await expect(page.locator('[data-match-table]')).toHaveCount(1);
   await expect(browser.locator('tbody tr')).toHaveCount(10);
-  await browser.locator('a[href="/en/matches?view=results&game=wardogs"]').click();
+  await expectSharedPresentation(page);
+  await browser.locator(`a[href="/${locale}/matches?view=results&game=wardogs"]`).click();
   await expect(browser.locator('tbody tr')).toHaveCount(3);
   await expect(browser).not.toContainText('[SYNTHETIC] Logi history');
-  await browser.locator('a[href="/en/matches?view=results&game=hell-let-loose"]').click();
+  await expectSharedPresentation(page);
+  await browser.locator(`a[href="/${locale}/matches?view=results&game=hell-let-loose"]`).click();
   await expect(browser.locator('tbody tr')).toHaveCount(10);
   await expect(row(page, 0)).toHaveCount(1);
+  await expectSharedPresentation(page);
+  await page.goto(`/${locale}/wardogs/matches?view=results`);
+  await expect(page.locator('[data-unified-matches]')).toHaveCount(1);
+  await expect(page.locator('[data-match-table]')).toHaveCount(1);
+  await expectSharedPresentation(page);
 });
+}
+
+for (const locale of ['cs', 'en'] as const) {
+  test(`${locale}: shared and HLL upcoming use the same match presentation`, async ({ page }) => {
+    for (const route of [`/${locale}/matches`, `/${locale}/hll/matches`]) {
+      await page.goto(route);
+      const browser = page.locator('[data-unified-matches]');
+      await expect(browser).toHaveCount(1);
+      await expect(browser.getByRole('searchbox')).toHaveCount(1);
+      await expect(page.locator('[data-match-table]')).toHaveCount(1);
+      await expectSharedPresentation(page);
+    }
+  });
+}

@@ -1,0 +1,55 @@
+.date, .date time { display: grid; gap: 3px; }
+.date { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.date strong { font-weight: 500; }
+.date time > span, .date small { color: var(--color-text-muted); font-size: .8125rem; }
+.identity { display: grid; gap: 7px; min-width: 0; }
+.teams { display: flex; flex-wrap: wrap; align-items: center; gap: 9px 12px; min-width: 0; }
+.teamGroup, .team { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.team { overflow-wrap: anywhere; }
+.teamName { display: grid; gap: 3px; min-width: 0; }
+.teamName > strong, .fallbackTitle { font-family: var(--font-display); font-size: 1.1875rem; line-height: 1.15; font-weight: 600; letter-spacing: .025em; }
+.teamName > small { color: var(--color-text-muted); font-size: .75rem; font-weight: 400; }
+.monogram { display: grid; place-items: center; flex: none; width: 32px; height: 36px; border: 1px solid var(--color-border); background: rgb(10 11 10 / .55); color: var(--color-text-muted); font-family: var(--font-display); font-size: .75rem; font-weight: 600; text-transform: uppercase; }
+.versus { color: var(--color-text-muted); font-family: var(--font-display); font-size: .75rem; letter-spacing: .06em; }
+.subtitle { color: var(--color-text-muted); font-size: .75rem; line-height: 1.35; font-weight: 400; overflow-wrap: anywhere; }
+.result { display: inline-grid; gap: 6px; min-width: 0; max-width: 100%; }
+.scorePair { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-width: 8rem; }
+.scoreEntry { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.scoreSide { display: grid; justify-items: center; gap: 3px; min-width: 0; }
+.scoreLabel { min-width: 3.25rem; max-width: 8rem; color: var(--color-text-muted); font-size: .75rem; line-height: 1.2; overflow-wrap: anywhere; text-align: center; }
+.scoreValue { color: var(--color-text); font-family: var(--font-display); font-size: 1.875rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.scoreSeparator { align-self: end; padding-bottom: 2px; color: var(--color-text-muted); font-family: var(--font-display); font-size: 1.5rem; }
+.scoreList { display: grid; gap: 5px; }
+.scoreList .scoreSide { width: 100%; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; text-align: start; }
+.scoreList .scoreEntry { border-bottom: 1px solid rgb(168 168 154 / .16); padding-bottom: 4px; }
+.scoreList .scoreValue { font-size: 1.5rem; }
+.verification { color: var(--color-text-muted); font-size: .6875rem; font-weight: 400; }
+.status { display: grid; justify-items: start; gap: 5px; }
+.result[data-result-state='provisional'] .verification { color: var(--color-warning); }
+.pending { display: inline-grid; gap: 3px; color: var(--color-text-muted); }
+.pending > span { font-family: var(--font-display); font-size: 1.75rem; }
+.pending small { max-width: 12rem; font-size: .75rem; font-weight: 400; }
+.banner { padding: 24px 20px; border-bottom: 1px solid var(--color-border); background: var(--color-row-alt); }
+.banner .teams { display: grid; gap: 14px; }
+.banner .teamGroup { display: grid; grid-template-columns: 24px minmax(0, 1fr); }
+.banner .teamGroup:first-child .team { grid-column: 2; }
+.banner .monogram { width: 48px; height: 48px; color: var(--color-accent-strong); border-color: var(--color-border-strong); font-size: 1rem; }
+.banner .teamName > strong { font-size: 1.375rem; }
+.banner .subtitle { margin-top: 12px; }
+.detailResult { display: grid; gap: 12px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.detailResult > h3 { margin: 0; font-family: var(--font-display); font-size: .875rem; letter-spacing: var(--tracking-meta); color: var(--color-text-muted); text-transform: uppercase; }
+.detailResult .result { display: grid; }
+.detailResult .scorePair { justify-content: center; gap: 24px; }
+.detailResult .scoreEntry { gap: 24px; }
+.detailResult .scoreValue { font-size: 3.25rem; }
+.detailResult .scoreLabel { font-size: .875rem; }
+.detailResult .verification { text-align: center; }
+.detailResult .scoreList .scoreValue { font-size: 2rem; }
+@media (max-width: 767px) {
+  .teams { gap: 10px; }
+  .teamName > strong { font-size: 1.125rem; }
+  .scorePair { justify-content: flex-start; }
+  .scoreList { min-width: min(100%, 12rem); }
+  .scoreList .scoreValue { font-size: 1.75rem; }
+  .banner { padding: 20px 16px; }
+}

@@ -16,6 +16,8 @@ export function publicLogiMatchView(event: PublicLogiEvent, now = new Date()): P
 }
 
 export function logiEventHref(event: PublicLogiEvent): string {
+  // Reviewed publication links resolve to one canonical match detail, regardless of origin.
+  if (event.archive) return `/${event.ref.game}/matches/${encodeURIComponent(event.archive.slug)}`;
   return `/${event.ref.game}/matches/logi/${encodeURIComponent(event.ref.externalId)}`;
 }
 

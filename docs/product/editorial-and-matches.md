@@ -161,6 +161,14 @@ separate approved-delivery policy and are not accepted by this image uploader.
 
 ## Match overview and authoring belong to the first release
 
+The final public presentation is one match collection across all approved sources.
+Use the same row, search, count, page and detail treatment for both game sections and
+the community overview. Data-source and import/archive terminology stays outside the
+visitor's browsing flow. Reviewed links preserve one canonical detail, including its
+recap, maps and consented lineup. Tracked external fixtures join that same collection
+only within their existing public scope, without bypassing an unpublished native
+binding or pretending organizer data is a reviewed clan result.
+
 Public `/[locale]/matches` separates localized **Upcoming** from **Results**, with game/status/competition
 filters, opponent search, dates and pagination. Use a compact Wardogs-style list/detail
 screen. Match rows show start time, competition/type, both teams with available logos,

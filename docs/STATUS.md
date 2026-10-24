@@ -1,5 +1,24 @@
 # Current status
 
+## Shared match presentation follow-up — 2026-10-24
+
+The application now presents native, reviewed archive and eligible tracked League
+matches through the same list/search/counters/pagination and detail composition.
+Both game homes use the same next-fixture selection. Reviewed identities and canonical
+archive URLs take precedence; legacy native URLs redirect without losing consented
+lineups. Prominent scores retain explicit participant/faction labels, zero/null and
+multi-team semantics. Missing results, stale fixtures and unpublished/paused bindings
+are not converted to confirmed results. Separate source/history sections and obsolete
+raw tables are removed. No SQL/configuration/dependency change.
+
+Local integrated verification passed 1,383 unit tests, 549 PostgreSQL integration
+tests, lint/types/build, 21 connected projection journeys and 62 targeted public,
+League/layout/visual journeys. An independent integrated source review found no
+remaining actionable issues. Commands, tested application tree and inspected CS/EN
+desktop/mobile captures: [presentation evidence](evidence/match-presentation-2026-10-24/README.md).
+Hosted exact-head qualification and production deployment of this follow-up remain
+pending; the active image below still identifies the earlier accepted release.
+
 ## Production active — 2026-10-24
 
 The unified website is running application source
