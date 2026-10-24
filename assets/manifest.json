@@ -17749,6 +17749,28 @@
       "bytes": 116130,
       "width": 390,
       "height": 1099
+    },
+    {
+      "id": "match-detail-readability-2026-10-24-desktop",
+      "path": "docs/evidence/match-detail-readability-2026-10-24/desktop.png",
+      "source": "Actual local production-build Chromium capture on 2026-10-24; synthetic fixtures; /cs/hll/matches/logi/synthetic-next-hell_let_loose; 1280px; fix/match-long-team-labels application tree in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; approved game artwork remains excluded from Apache code license",
+      "sha256": "38b1ce7c3dfe14be08b851773cd11903af4bb1a28513dd8590570d127a6fac0f",
+      "bytes": 447606,
+      "width": 1280,
+      "height": 1404
+    },
+    {
+      "id": "match-detail-readability-2026-10-24-mobile",
+      "path": "docs/evidence/match-detail-readability-2026-10-24/mobile.png",
+      "source": "Actual local production-build Chromium capture on 2026-10-24; synthetic fixtures; /en/hll/matches/logi/synthetic-next-hell_let_loose; 390px; fix/match-long-team-labels application tree in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot with synthetic public data; approved game artwork remains excluded from Apache code license",
+      "sha256": "6b308c7e545767993c5eb30ce0274b12f05dd8c3119618f92abf2e5395e476b5",
+      "bytes": 150266,
+      "width": 390,
+      "height": 1512
     }
   ]
 }

@@ -1,5 +1,20 @@
 # Current status
 
+## Production detail acceptance correction — 2026-10-24
+
+PR #116 deployed source `eea874591543461f31b905e7b67c3cd67add8764` at 18:54:25 UTC,
+image `sha256:515d6ac43760de5f441bd3ae550df8da10f9bc7d28ab2e4dd5c05db9187f1729`.
+Exact-head/main/publisher qualification passed, as did 121 public production checks,
+readiness/configuration, 442 preserved media files and 17 untouched other containers.
+Visual acceptance found a first-team banner grid defect and an inconsistent archived
+placeholder timestamp in linked details. This correction explicitly places teams in
+the wide track and uses the list's current supplied timestamp in the linked pane.
+Local build/types/lint, nine focused unit checks and all 25 connected journeys passed,
+including four new actual text-geometry cases. Independent review has no findings.
+[Inspected desktop/mobile evidence](evidence/match-detail-readability-2026-10-24/README.md).
+Hosted qualification/deployment of this correction and seven reviewed recent HLL
+identity bindings remain pending. Older active-image sections below are historical.
+
 ## Shared match presentation follow-up — 2026-10-24
 
 The application now presents native, reviewed archive and eligible tracked League

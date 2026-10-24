@@ -57,7 +57,7 @@ try {
       }
     }
     const id = `synthetic-next-${source.gameId}`;
-    await insert('event-summaries', { id, guildId, gameId: source.gameId, title: `[SYNTHETIC] Next ${source.gameId} match`, updatedAt: now.toISOString(), kind: 'match', status: 'registration', startsAt: iso(60 * 60_000), endsAt: iso(3 * 60 * 60_000), matchTeams: source.gameId === 'wardogs' ? [team('c', source.gameId), team('a', source.gameId), team('b', source.gameId)] : [team('a', source.gameId), team('b', source.gameId)] });
+    await insert('event-summaries', { id, guildId, gameId: source.gameId, title: `[SYNTHETIC] Next ${source.gameId} match`, updatedAt: now.toISOString(), kind: 'match', status: 'registration', startsAt: iso(60 * 60_000), endsAt: iso(3 * 60 * 60_000), matchTeams: source.gameId === 'wardogs' ? [team('c', source.gameId), team('a', source.gameId), team('b', source.gameId)] : [{ ...team('a', source.gameId), name: '[SYNTHETIC] International Combined Arms Expeditionary Brigade Alpha' }, team('b', source.gameId)] });
   }
   // One consented profile belongs to both games; its private operational name never renders.
   const approved = await client.query<{ id: string }>('select id from member_profile where slug = $1 and state = $2 and consent_confirmed_at is not null and is_fixture = true', [FIXTURE_SLUGS.members.publishedCsOnlyBio, 'published']);
