@@ -53,7 +53,7 @@
     "recordedMatches": "Zaznamenané zápasy",
     "recordedRecent": "Poslední zápasy, nejvýše {count}",
     "recordedRecentEmpty": "Podrobnosti posledních zápasů nejsou k dispozici.",
-    "recordedMore": "Dalších {count} zápasů",
+    "recordedMore": "{count, plural, one {Další # zápas} few {Další # zápasy} other {Dalších # zápasů}}",
     "statisticsTitle": "Statistiky hráče"
   },
   "roles": {

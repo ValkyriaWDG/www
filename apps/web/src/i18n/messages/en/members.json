@@ -53,7 +53,7 @@
     "recordedMatches": "Recorded matches",
     "recordedRecent": "Latest matches, up to {count}",
     "recordedRecentEmpty": "Recent match details are not available.",
-    "recordedMore": "{count} more matches",
+    "recordedMore": "{count, plural, one {# more match} other {# more matches}}",
     "statisticsTitle": "Player statistics"
   },
   "roles": {
