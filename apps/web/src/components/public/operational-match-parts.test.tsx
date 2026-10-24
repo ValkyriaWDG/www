@@ -119,7 +119,7 @@ describe('shared operational match presentation', () => {
       expect(html).toMatch(/<strong[^>]*>VLK vs ROG vs BACM<\/strong>/);
       expect(html).toContain(locale === 'cs' ? 'Zadané týmy' : 'Supplied teams');
       for (const text of ['Polish Veterans', 'PV', 'TEAM ROGUE', 'ROG', 'Valkyra', 'Lonestar']) expect(html).toContain(text);
-      expect(html).toContain('data-partial-teams="true"');
+      expect(html).toContain('data-source-title-primary="true"');
       expect(html.match(/role="listitem"/g)).toHaveLength(2);
       expect(html).not.toMatch(/>VS<|Polish Veterans vs\.|>Valkyria<|>BACM</);
       expect(html.indexOf('VLK vs ROG vs BACM')).toBeLessThan(html.indexOf('Polish Veterans'));
@@ -129,6 +129,38 @@ describe('shared operational match presentation', () => {
     expect(detail).not.toMatch(/>VS<|PV: 100|ROG: 65|VLK: 100|BACM: 91/);
     expect(event).toEqual(before);
     expectPresentationOnly(detail);
+  });
+
+  it.each(['cs', 'en'] as const)('keeps the pending three-team %s source title ahead of two supplied facts in rows, preview and detail', async (locale) => {
+    const event: PublicLogiEvent = { ...imported, archive: undefined, ref: { ...imported.ref, game: 'wardogs' }, title: 'VLK vs III vs KOD', status: 'registration', startsAt: '2026-11-01T18:00:00Z', endsAt: '2026-11-01T20:00:00Z', teams: [
+      { id: 'synthetic-captured-vlk', slot: 'a', name: 'Valkyria', shortCode: 'VLK', side: null },
+      { id: 'synthetic-captured-kod', slot: 'b', name: 'KidsOnDrugs', shortCode: 'KOD', side: null },
+    ], result: { state: 'unknown', version: null, reviewedAt: null, endedAt: null, participants: [], provenance: null } };
+    const before = structuredClone(event);
+    const t = await getOperationalTranslations(locale);
+    const outputs = [
+      ...[false, true].map((expanded) => render(<OperationalMatchTeams event={event} t={t} expanded={expanded} />, locale)),
+      ...await Promise.all((['preview', 'detail'] as const).map(async (mode) => render(await OperationalMatchPreview({ event, locale, mode }), locale))),
+    ];
+    for (const html of outputs) {
+      expect(html).toMatch(/<strong[^>]*>VLK vs III vs KOD<\/strong>/);
+      expect(html).toContain('data-source-title-primary="true"');
+      expect(html).toContain(locale === 'cs' ? 'Zadané týmy' : 'Supplied teams');
+      expect(html).toContain('Valkyria (VLK)');
+      expect(html).toContain('KidsOnDrugs (KOD)');
+      expect(html.match(/role="listitem"/g)).toHaveLength(2);
+      expect(html.indexOf('VLK vs III vs KOD')).toBeLessThan(html.indexOf('Valkyria (VLK)'));
+      expect(html).not.toMatch(/>VS<|>III<|Valkyria vs\.|data-partial-teams|synthetic-captured-|VLK:|KOD:|III:/);
+      expectPresentationOnly(html);
+    }
+    for (const html of outputs.slice(2)) {
+      expect(html).toContain(locale === 'cs' ? 'Čeká na výsledek' : 'Awaiting result');
+      const result = html.match(/<section[^>]*aria-label="(?:Výsledek|Result)"[\s\S]*?<\/section>/)?.[0];
+      expect(result).toBeDefined();
+      expect(result).not.toMatch(/<strong[^>]*>0<\/strong>|0\s*:\s*0/);
+      expect(html).toMatch(/datetime="2026-11-01T18:00:00Z"/i);
+    }
+    expect(event).toEqual(before);
   });
 
   it('navigates a reviewed preview directly to its canonical match and retains the supplied event end when no result end exists', async () => {
@@ -146,6 +178,10 @@ describe('shared operational match presentation', () => {
     const t = await getOperationalTranslations(locale);
     const event: PublicLogiEvent = { ...imported, archive: undefined, status: 'registration', startsAt: '2026-11-01T18:00:00Z', endsAt: '2026-11-01T20:00:00Z', ref: { ...imported.ref, game: 'wardogs' }, teams: [...imported.teams, { id: 'team-charlie', slot: 'c', side: 'Valkyra', name: 'Synthetic Charlie', shortCode: 'CHR' }], result: { state: 'unknown', version: null, reviewedAt: null, endedAt: null, participants: [], provenance: null } };
     const teams = render(<OperationalMatchTeams event={event} t={t} expanded />, locale);
+    expect(teams).toMatch(/<strong[^>]*>\[SYNTHETIC\] Historical match<\/strong>/);
+    expect(teams).toContain('data-source-title-primary="true"');
+    expect(teams.match(/role="listitem"/g)).toHaveLength(3);
+    expect(teams).not.toMatch(/>VS<|data-partial-teams/);
     for (const label of ['Synthetic Alpha', 'ALP', 'Synthetic Bravo', 'Synthetic Charlie', 'CHR', 'Valkyra']) expect(teams).toContain(label);
     const result = render(<OperationalMatchResult event={event} t={t} locale={locale} />, locale);
     expect(result).toContain('—');

@@ -46,6 +46,19 @@ describe('homepage next fixture from published sources', () => {
     expect(selectNextWebsiteMatch(null, [{ ...logi, startsAt: null }], 'hll', now)).toBeNull();
     expect(selectNextWebsiteMatch(local, [logi], 'wardogs', now)).toBeNull();
   });
+  it('keeps a pending Wardogs source title consistent with the list/header without inferring a two-team opponent', async () => {
+    const pending: PublicLogiEvent = { ...wardogsEvent, title: 'VLK vs III vs KOD', teams: [
+      { id: 'synthetic-captured-vlk', slot: 'a', name: 'Valkyria', shortCode: 'VLK', side: null },
+      { id: 'synthetic-captured-kod', slot: 'b', name: 'KidsOnDrugs', shortCode: 'KOD', side: null },
+    ] };
+    const before = structuredClone(pending);
+    const expected = { href: '/wardogs/matches/logi/event-1', title: 'VLK vs III vs KOD', opponent: '', game: 'wardogs', startsAt: pending.startsAt, competition: null };
+    expect(selectNextWebsiteMatch(wardogsLocal, [pending], 'wardogs', now)).toEqual(expected);
+    vi.mocked(getPublicLogiEvents).mockResolvedValue([pending]);
+    vi.mocked(getNextPublicMatch).mockResolvedValue(wardogsLocal);
+    expect(await getNextWebsiteMatch('wardogs', now)).toEqual(expected);
+    expect(pending).toEqual(before);
+  });
   it('chooses the earliest actual League kickoff across all sources without inferring an opposing team', () => {
     expect(selectNextWebsiteMatch(wardogsLocal, [wardogsEvent], 'wardogs', now, leagueRows([fixture()]))).toEqual({ href: '/wardogs/matches/league/synthetic-league', title: fixture().title, opponent: '', game: 'wardogs', startsAt: fixture().scheduledAt, competition: 'Wardogs League' });
   });

@@ -1,5 +1,20 @@
 # Current status
 
+## Pending Wardogs identity acceptance — 2026-10-24
+
+Production review found that a three-team pending event with two captured teams had
+no result participants, bypassing the earlier partial-capture condition. All unlinked
+native Wardogs events now retain the exact original event title as primary; supplied
+teams remain secondary facts regardless of result count. No title parsing, invented
+team/score or publication/freshness change. HLL and reviewed archive identities remain
+unchanged. Local build/lint/types, 1,395 unit tests and 29 connected CS/EN desktop/mobile
+journeys passed, including the actual pending-capture shape and homepage title.
+[Inspected evidence](evidence/wardogs-source-identity-2026-10-24/README.md).
+PR #117 merged as `360ffe2e822c0cbd41d32d13f09078d2c36da1f9` after successful
+exact-head CI40125028899; its main/publisher runs were cancelled before publication
+when this remaining gap was found. It was not deployed. Final qualification and hosted
+acceptance remain pending. The currently running image is still the #116 source.
+
 ## Production detail acceptance correction — 2026-10-24
 
 PR #116 deployed source `eea874591543461f31b905e7b67c3cd67add8764` at 18:54:25 UTC,

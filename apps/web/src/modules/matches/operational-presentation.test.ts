@@ -43,13 +43,14 @@ describe('operational match identity presentation', () => {
       { id: 'team-b', slot: 'b', name: 'Complete Bravo Name', shortCode: 'BRV', side: 'Manticore' },
     ] });
     expect(operationalMatchIdentity(row)).toEqual({
-      title: 'Complete Charlie Name vs. Complete Alpha Name vs. Complete Bravo Name',
+      title: row.title,
       teams: [
         { key: 'team-c', name: 'Complete Charlie Name', code: 'CHA', side: 'Lonestar' },
         { key: 'team-a', name: 'Complete Alpha Name', code: null, side: null },
         { key: 'team-b', name: 'Complete Bravo Name', code: 'BRV', side: 'Manticore' },
       ],
-      subtitle: row.title,
+      subtitle: null,
+      sourceTitlePrimary: true,
     });
   });
 
@@ -80,7 +81,7 @@ describe('operational match identity presentation', () => {
   });
 });
 
-describe('partial Wardogs identity presentation', () => {
+describe('source-first Wardogs identity presentation', () => {
   const partial = (): PublicLogiEvent => event({
     ref: { ...event().ref, game: 'wardogs' },
     title: 'VLK vs ROG vs BACM',
@@ -99,7 +100,7 @@ describe('partial Wardogs identity presentation', () => {
     const row = partial();
     const before = structuredClone(row);
     expect(operationalMatchIdentity(row)).toEqual({
-      title: 'VLK vs ROG vs BACM', subtitle: null, partialTeams: true,
+      title: 'VLK vs ROG vs BACM', subtitle: null, sourceTitlePrimary: true,
       teams: [
         { key: 'synthetic-pv', name: 'Polish Veterans', code: 'PV', side: 'Valkyra' },
         { key: 'synthetic-rog', name: 'TEAM ROGUE', code: 'ROG', side: 'Lonestar' },
@@ -111,20 +112,43 @@ describe('partial Wardogs identity presentation', () => {
   it('does not create team identities by parsing a generic or empty title', () => {
     for (const title of ['Synthetic generic match', '']) {
       const identity = operationalMatchIdentity({ ...partial(), title });
-      expect(identity).toMatchObject({ title, subtitle: null, partialTeams: true });
+      expect(identity).toMatchObject({ title, subtitle: null, sourceTitlePrimary: true });
       expect(identity.teams).toHaveLength(2);
     }
   });
 
-  it('keeps complete captured teams, HLL, archive links and absent captured teams on their existing paths', () => {
+  it.each([0, 2, 3])('keeps identity independent of %i observed result participants', (count) => {
+    const row = partial();
+    const variant = { ...row, result: { ...row.result, participants: row.result.participants.slice(0, count) } };
+    const before = structuredClone(variant);
+    expect(operationalMatchIdentity(variant)).toEqual(operationalMatchIdentity(row));
+    expect(variant).toEqual(before);
+  });
+
+  it('preserves a pending three-team title without inventing the missing captured team', () => {
+    const row = partial();
+    const pending = { ...row, title: 'VLK vs III vs KOD', status: 'registration' as const, teams: [
+      { id: 'synthetic-vlk', slot: 'a' as const, name: 'Valkyria', shortCode: 'VLK', side: null },
+      { id: 'synthetic-kod', slot: 'b' as const, name: 'KidsOnDrugs', shortCode: 'KOD', side: null },
+    ], result: { ...row.result, state: 'unknown' as const, participants: [] } };
+    const before = structuredClone(pending);
+    expect(operationalMatchIdentity(pending)).toEqual({ title: 'VLK vs III vs KOD', subtitle: null, sourceTitlePrimary: true, teams: [
+      { key: 'synthetic-vlk', name: 'Valkyria', code: 'VLK', side: null },
+      { key: 'synthetic-kod', name: 'KidsOnDrugs', code: 'KOD', side: null },
+    ] });
+    expect(pending).toEqual(before);
+  });
+
+  it('preserves source title for complete captures while HLL, archive links and absent teams stay unchanged', () => {
     const row = partial();
     const complete = { ...row, teams: [...row.teams, { id: 'synthetic-third', slot: 'c' as const, name: 'Supplied Third Team', shortCode: null, side: null }] };
     const hll = { ...row, ref: { ...row.ref, game: 'hll' as const } };
     const linked = { ...row, archive: { slug: 'synthetic-archive', opponentName: 'Reviewed Opponent', opponentShortCode: 'REV' } };
-    for (const unchanged of [complete, hll, linked, { ...row, archive: { slug: 'synthetic-archive' } }, { ...row, teams: [] }, { ...row, result: { ...row.result, participants: [] } }]) {
-      expect(operationalMatchIdentity(unchanged)).not.toHaveProperty('partialTeams');
+    for (const unchanged of [hll, linked, { ...row, archive: { slug: 'synthetic-archive' } }, { ...row, teams: [] }]) {
+      expect(operationalMatchIdentity(unchanged)).not.toHaveProperty('sourceTitlePrimary');
     }
-    expect(operationalMatchIdentity(complete).title).toBe('Polish Veterans vs. TEAM ROGUE vs. Supplied Third Team');
+    expect(operationalMatchIdentity(complete)).toMatchObject({ title: row.title, subtitle: null, sourceTitlePrimary: true });
+    expect(operationalMatchIdentity(complete).teams.map((team) => team.name)).toEqual(['Polish Veterans', 'TEAM ROGUE', 'Supplied Third Team']);
     expect(operationalMatchIdentity(hll).title).toBe('Polish Veterans vs. TEAM ROGUE');
     expect(operationalMatchIdentity(linked).title).toBe('Valkyria vs. Reviewed Opponent');
     expect(operationalMatchIdentity({ ...row, teams: [] })).toEqual({ title: row.title, teams: [], subtitle: null });
