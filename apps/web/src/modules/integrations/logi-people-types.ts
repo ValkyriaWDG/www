@@ -71,6 +71,7 @@ export type LogiTeamView = {
 /** Public names and slugs always come from a consented website profile. */
 export type PublicRosterEntry = {
   eventId: string;
+  matchTitle?: string;
   profileSlug: string;
   displayName: string;
   squad: string | null;
@@ -89,4 +90,19 @@ export type PublicLogiEventPeople = {
   observedAt: string;
   roster: PublicRosterEntry[];
   statistics: { profileSlug: string; displayName: string; statistics: PlayerStatisticsSummary }[];
+};
+
+/** Directory activity remains keyed by the approved public profile, never a source nickname. */
+export type PublicLogiRosterActivity = {
+  profileSlug: string;
+  game: Game;
+  observedAt: string;
+  matches: {
+    href: string;
+    title: string;
+    startsAt: string | null;
+    squad: string | null;
+    slot: number | null;
+    reserve: boolean;
+  }[];
 };

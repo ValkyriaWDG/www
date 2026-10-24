@@ -22,6 +22,10 @@ const leagueNullableText = leagueText.nullable();
 const leagueTimestamp = z.iso.datetime();
 const leagueCount = z.number().int().nonnegative().nullable();
 const leagueChoice = z.strictObject({ teamCode: leagueText, value: leagueNullableText });
+export const leagueResultsSchema = z.strictObject({
+  placements: z.array(z.strictObject({ place: z.number().int().min(1).max(20), teamCode: leagueText })).min(1).max(20),
+  confirmed: z.boolean(),
+}).refine((value) => new Set(value.placements.map((entry) => entry.teamCode)).size === value.placements.length);
 
 export const leagueSnapshotSchema = z.strictObject({
   id: leagueText,
@@ -50,8 +54,8 @@ export const leagueSnapshotSchema = z.strictObject({
   readyCheck: leagueNullableText,
   progress: z.array(z.strictObject({ label: leagueText, state: z.enum(['done', 'current', 'not_started']).nullable(), detail: leagueNullableText })).max(30).nullable(),
   scoringRule: leagueNullableText,
-  /** Always null in parser version 1: the League preview never carries a result. */
-  results: z.null(),
+  /** External League placements; kept separate from reviewed native clan results. */
+  results: leagueResultsSchema.nullable(),
   warnings: z.array(leagueText).max(100),
   fetchedAt: leagueTimestamp,
 });
@@ -82,7 +86,7 @@ export const LEAGUE_FIXTURES_CURSOR_MAX_LENGTH = 4096;
 /**
  * One tracked external fixture (`projectLeagueFixture`): the League match ID, the guild
  * and game scope, an optional native Logi event binding, the tracking state and the same
- * public snapshot as the preview (results always `null`). `error` is a free producer
+ * public snapshot as the preview. `error` is a free producer
  * string and is bounded here; it never reaches a public DTO.
  */
 export const leagueFixtureSchema = z.strictObject({

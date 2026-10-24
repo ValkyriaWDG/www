@@ -56,9 +56,9 @@ The site has three zones: public clan presentation, the signed-in member's accou
 | `/` | Root redirect | Everyone | Deterministic HTTP 307 to `/cs`; no browser-language negotiation |
 | `/{locale}` | Main menu | Everyone | `/cs` or `/en`; cinematic entry and Discord CTA; first priority |
 | `/clan` | Clan | Everyone | Verified clan story, Wardogs direction, HLL heritage, values and recruitment summary |
-| `/members` | Members | Everyone | Published member directory; game/role filters where justified by real data |
+| `/members` | Members | Everyone | One consented member directory with game/role filters and approved HLL/Wardogs lineup links from Logi |
 | `/members/[slug]` | Member profile | Everyone | Public profile projection; meaningful direct URL |
-| `/matches` | Matches | Everyone | Upcoming fixtures and published results, clearly separated by game and status |
+| `/matches` | Matches | Everyone | One chronological Logi/archive browser, Upcoming/Results tabs, shared search/game filter/count/pagination; no source-specific lists |
 | `/matches/[slug]` | Match details | Everyone | Public fixture/result detail and public recap |
 | `/community` | Community | Everyone | Discord, verified community links, recruitment guidance and rules entry points |
 | `/news` | News | Everyone | Primary navigation destination for all published news/blog posts; one collection, no separate `/blog` route |

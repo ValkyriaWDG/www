@@ -250,7 +250,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Verify connected Logi matches against isolated synthetic projections
+      - name: Verify unified Logi matches, public lineups and administration
         env:
           CAPTURE_EVIDENCE: '1'
         run: pnpm --filter @valkyria/web exec playwright test -c playwright.logi.config.ts
@@ -260,7 +260,7 @@ jobs:
         with:
           name: logi-public-browser-${{ github.sha }}
           path: |
-            apps/web/.local/evidence/logi-public-data
+            apps/web/.local/evidence/unified-logi-web
             apps/web/test-results/logi-public
           include-hidden-files: true
           if-no-files-found: warn

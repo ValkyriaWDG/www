@@ -7,7 +7,7 @@
   "list": {
     "eyebrow": "Valkyria // CZ & SK",
     "title": "Members",
-    "intro": "Valkyria clan members with a public profile.",
+    "intro": "Clan members and their published match lineups.",
     "breadcrumbHome": "Main menu",
     "rosterTitle": "Roster",
     "rosterCount": "{count, plural, one {# profile} other {# profiles}}",
@@ -22,7 +22,8 @@
     "columns": {
       "member": "Member",
       "roles": "Role",
-      "games": "Games"
+      "games": "Games",
+      "matches": "Match lineups"
     },
     "noRoles": "No public role",
     "noGames": "No game listed",
@@ -34,7 +35,10 @@
     "firstPage": "Go to the first page",
     "clearFilters": "Clear filters",
     "loadError": "The member profiles could not be loaded.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "matchCount": "{count, plural, one {# lineup} other {# lineups}}",
+    "moreMatches": "{count, plural, one {# more lineup in profile} other {# more lineups in profile}}",
+    "noPublicMatches": "No lineups available"
   },
   "roles": {
     "leader": "Leader",

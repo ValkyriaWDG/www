@@ -15,6 +15,8 @@ export const logiPublicServerSchema = z.strictObject({
   publicId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(64),
   name: z.string().min(1).max(200),
   published: z.boolean(),
+  /** Public live player names/statistics require a separate explicit publication choice. */
+  publishLivePlayers: z.boolean().optional(),
   address: z.string().min(1).max(255).refine((value) => !/[\s\u0000-\u001f\u007f]/.test(value)).nullable(),
   statsUrl: publicHttpsUrl.nullable(),
   /** Explicit source IDs, never infer an Allied/Axis or Valkyria side from position. */

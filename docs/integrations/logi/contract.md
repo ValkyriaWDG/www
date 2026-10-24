@@ -73,6 +73,42 @@ sets `LOGI_DISCORD_FALLBACK_ENABLED=true`; no silent fallback bypasses Logi poli
 
 ## Reads and public surfaces
 
+### Unified presentation and operations (2026-10-24)
+
+Logi supplies operational facts; the website retains editorial content, approved
+public identities, consent and historical recaps. It does not create another roster
+engine. The ordinary member directory includes approved published match-lineup links
+from both games, under the existing profile filters and pagination. Private Logi
+member names, membership status, groups and attendance cannot create public profiles
+or search fields. Exact reviewed identity binding, current reconciliation, source
+authorization, profile publication/consent and `allowRoster` remain required. Duplicate
+imported roster positions do not inflate either public details or directory counts.
+
+Main administration contains editorial/media/settings/health tools and a Logi entry
+link based on the validated configured origin and the actor's game capabilities.
+Historical match/tournament editors and consent/profile controls are secondary
+disclosures. Direct editor URLs and every server authorization check are retained.
+Failed loads and existing search/page state open the relevant historical tools.
+
+Current server collections are read directly from Logi with a 15-second scoped cache,
+shared in-flight requests, an eight-second pass deadline, five-page limit and atomic
+replacement. This avoids waiting for the ten-minute projection reconciliation. Network
+failures retain labelled stale observations and clear live scores; refused authority
+or scope clears cached rows. Only configured published connections are exposed.
+The scoped [HLL live adapter](hll-live.md) adds safe selected-server status and optional
+player rows, with its explicit grant/publication requirements. Wardogs keeps its
+existing scoped Warcon and retained-history readers. A newer usable authorized Warcon
+live observation can also enrich the ordinary Wardogs overview, home and polling
+response; unavailable or older alternatives do not replace current facts, website-hidden
+servers are not requested, and elapsed round time is not a remaining-time estimate.
+None of these source/configuration
+choices is changed implicitly by deploying the code.
+
+The League reader accepts the producer's optional confirmed placements contract,
+including tied places and unique team codes. It still does not promote unreviewed
+League observations into competitive results. The producer currently reports no
+parsed completed-match results; accepting its schema is not proof of live results.
+
 The consumer reads `event-summaries`, `match-summaries`, `result-summaries`,
 `server-snapshots` and `integration-health`. Membership is an on-demand authorization
 read, stored separately from public operational projections. Unknown scores and
@@ -92,14 +128,19 @@ with its import provenance and timestamp; its presence never confirms a result.
 Known zero scores remain zero and absent scores remain unknown. An end timestamp
 can place a historical match in Results, but is labelled as an end time rather than
 inventing a start. The two home pages select the next actual scheduled match across
-the public Logi projection and the local archive. Connected lists have their own
-bounded search/page state (`logiPage`), independent of the archive page.
+the public Logi projection and the local archive. The community hub shows that same
+next-match selection for each game. All three match lists compose both sources before
+chronological ordering and pagination, with one search, view, game filter, count and
+`page` parameter. Old `logiPage` URLs are accepted only as a fallback when `page` is
+absent; generated URLs contain only `page`. Provider result confidence remains visible.
 
 Optional per-source `matchLinks: [{eventId, matchId}]` bind an exact Logi event to an
 existing website match UUID. Both records must already be public and in the same
 game and configured authority. While the fresh Logi row is visible, the archive row
-is omitted from the list and next-match selection, but its original URL, result,
-recap and rounds remain unchanged. That detail also shows the current Logi facts.
+is omitted from the list and next-match selection. Its original URL, stored result,
+recap and rounds remain unchanged. The detail renders the current Logi result/status
+once in its normal overview alongside the historical recap and rounds, without a
+second provider table or a competing historical summary score.
 The connected row retains the archive opponent, short code and competition for
 display and search. If the Logi projection becomes unavailable, the archive row
 returns. Identity review is an operator task; there is no runtime fuzzy name/date
@@ -121,7 +162,7 @@ and projection JSON boundaries below; prefer a compatible roll-forward release.
 
 | Surface | Implemented behavior | Publication control |
 | --- | --- | --- |
-| `/{locale}/{game}/matches` | Connected match list alongside the historical local archive | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
+| `/{locale}/{game}/matches` | One chronological match list including public Logi events and historical archive entries | Per-source `publishMatches=true` explicitly publishes safe summaries for that configured game |
 | `/{locale}/{game}/matches/logi/{id}` | Connected detail, schedule and supplied participant/result rows | Uses the same published, current projection; unavailable/unpublished IDs are not public |
 | `/{locale}/admin/matches/logi` | Load authoritative editable facts; create, update or cancel an eligible connected match | Current Logi session, game capability, write flag/key and provider command policy |
 | Server pages, Wardogs home overview and `/api/servers/{game}` | Safe Logi server cards with `SERVER_STATUS_SOURCE=logi`, or Wardogs only with `SERVER_STATUS_SOURCE_WDG=logi` | Each configured `publicServers` entry needs `published=true` |

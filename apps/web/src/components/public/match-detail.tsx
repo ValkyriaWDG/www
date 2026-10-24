@@ -13,6 +13,8 @@ import { isHllSide } from '@/modules/games/hll-catalog';
 import { hllMapArtwork, type HllMapArtwork } from '@/modules/games/hll-maps';
 import { canonicalMatchPath, canonicalTournamentPath } from '@/modules/games/routes';
 import type { PublicMatchDetail } from '@/modules/matches/types';
+import type { PublicLogiEvent } from '@/modules/integrations/logi/mapping';
+import { getOperationalTranslations, OperationalMatchResult, OperationalMatchStatus } from './operational-match-parts';
 import { ExternalLink } from './external-link';
 import { LocalizedProseView } from './localized-prose';
 import { matchFormatLabel, sharedRoundMode } from './match-format';
@@ -58,14 +60,18 @@ export async function MatchDetailPane({
   mode,
   detailHref,
   titleId,
+  operational,
 }: {
   match: PublicMatchDetail;
   locale: AppLocale;
   mode: 'preview' | 'detail';
   detailHref?: string;
   titleId: string;
+  /** Current public facts of an explicitly linked operational counterpart. */
+  operational?: PublicLogiEvent;
 }) {
   const t = await getMatchTranslations(locale);
+  const logi = operational ? await getOperationalTranslations(locale) : null;
   const external = (await getTranslations({ locale, namespace: 'common.external' }))('suffix');
   const competition = [t(`competition.${match.competitionType}`), match.competitionName].filter(Boolean).join(' – ');
   const format = matchFormatLabel(match.format, match.bestOf, (count) => t('detail.bestOf', { count }));
@@ -105,7 +111,7 @@ export async function MatchDetailPane({
           },
         ]
       : []),
-    { label: t('detail.status'), value: <MatchStatusBadge match={match} t={t} /> },
+    { label: t('detail.status'), value: operational && logi ? <OperationalMatchStatus event={operational} t={logi} /> : <MatchStatusBadge match={match} t={t} /> },
     { label: t('detail.game'), value: t(`games.${match.game}`) },
     ...(match.season ? [{ label: t('detail.season'), value: match.season }] : []),
     ...(format ? [{ label: t('detail.format'), value: format }] : []),
@@ -149,7 +155,7 @@ export async function MatchDetailPane({
           <h3 id={`${titleId}-result`} className={styles.blockTitle}>
             {t('detail.result')}
           </h3>
-          <MatchResult match={match} t={t} variant="detail" />
+          {operational && logi ? <><OperationalMatchResult event={operational} t={logi} /><p className={styles.note}>{logi('updated', { date: formatDate(operational.observedAt, locale, 'dateTimeZone') })}</p></> : <MatchResult match={match} t={t} variant="detail" />}
         </section>
         {mode === 'detail' ? (
           <>

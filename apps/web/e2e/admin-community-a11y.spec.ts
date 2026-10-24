@@ -25,6 +25,11 @@ for (const entry of pages) {
     const page = await context.newPage();
     await page.goto(await entry.path());
     await page.evaluate(() => document.fonts.ready);
+    // Keep the existing form/table coverage after moving these tools into disclosures.
+    for (const id of ['admin-match-archive', 'admin-member-publication']) {
+      const section = page.getByTestId(id);
+      if (await section.count()) await section.locator('summary').click();
+    }
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
       // Scope to the page content; the shared shell header/footer is covered by the shell suite.

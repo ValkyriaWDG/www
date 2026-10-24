@@ -10,6 +10,9 @@ import { logiEventSummarySchema, logiMatchSummarySchema, logiResultSummarySchema
 import { mapLogiEventSummary, mapLogiServerSnapshot, type PublicLogiEvent } from './logi/mapping';
 import { readActiveLogiProjections } from './logi-store';
 import type { ServerOverview } from './servers/provider';
+import { readCurrentLogiServers } from './servers/logi';
+import { getWarconServersPublic } from './logi/readers/warcon';
+import { ageWarconLivePublic } from './logi/readers/public';
 
 /** A projection is public only while a successful pull is at most this old (also the administration freshness limit). */
 export const PUBLIC_REVALIDATION_MAX_AGE_MS = 15 * 60_000;
@@ -46,16 +49,14 @@ export async function getPublicLogiEvents(game?: GameRoute) {
 
 export async function getLogiServerOverview(game: GameRoute, now = new Date()): Promise<ServerOverview> {
   try {
-    const source = configuredLogiSources(getServerEnv(), 'data').find((row) => row.gameId === GAME_REGISTRY[game].logi);
+    const env = getServerEnv();
+    const source = configuredLogiSources(env, 'data').find((row) => row.gameId === GAME_REGISTRY[game].logi);
     if (!source || !source.publicServers.some((row) => row.published)) return { state: 'not_configured' };
-    const rows = await readActiveLogiProjections(getDb(), source);
+    const current = await readCurrentLogiServers(source);
     const scope = { sourceInstanceId: source.sourceInstanceId, guildId: source.guildId, gameId: source.gameId };
-    const servers: ServerSnapshot[] = source.publicServers.filter((config) => config.published).map((config) => {
-      const row = rows.find((row) => row.resource === 'server-snapshots' && row.externalId === config.connectionId && row.operation === 'upsert');
-      const wire = logiServerSnapshotSchema.safeParse(row?.data);
-      // A failed pull supersedes a recent success without rewriting its snapshot.
-      const sourceAvailable = Boolean(row?.lastSuccessAt && !row.errorCode && now.getTime() - row.lastSuccessAt.getTime() < PUBLIC_REVALIDATION_MAX_AGE_MS);
-      const snapshot = wire.success ? mapLogiServerSnapshot(scope, wire.data, config, now, sourceAvailable) : null;
+    let servers: ServerSnapshot[] = source.publicServers.filter((config) => config.published).map((config) => {
+      const wire = logiServerSnapshotSchema.safeParse(current.rows.find((row) => row.id === config.connectionId));
+      const snapshot = wire.success ? mapLogiServerSnapshot(scope, wire.data, config, now, current.available) : null;
       return snapshot ?? {
         ref: { source: 'logi', sourceInstanceId: scope.sourceInstanceId, guildId: scope.guildId, game, kind: 'server', externalId: config.connectionId },
         publicId: config.publicId, name: config.name, reachability: 'unknown', map: null, mode: null, players: null, capacity: null,
@@ -63,6 +64,36 @@ export async function getLogiServerOverview(game: GameRoute, now = new Date()): 
         connect: config.address ? { kind: 'address', address: config.address } : { kind: 'none' }, statsUrl: config.statsUrl,
       };
     });
+    let warconAvailable = false;
+    if (game === 'wardogs' && env.LOGI_WARCON_API_KEY_WDG && source.warconConnections.length > 0) {
+      // Reading presentation alone does not request an overview: it avoids a provider
+      // recursion and suppresses live reads for servers hidden by the website.
+      const { getServerPresentation, isServerPublished } = await import('./servers/presentation');
+      const presentation = await getServerPresentation(now);
+      const ids = servers.filter((server) => isServerPublished(presentation, game, server.publicId)).map((server) => server.publicId);
+      const observations = ids.length > 0 ? await getWarconServersPublic(ids, null, now) : [];
+      servers = servers.map((server): ServerSnapshot => {
+        if (!ids.includes(server.publicId)) return server;
+        const observation = observations?.find((row) => row.publicId === server.publicId && !row.synthetic);
+        if (!observation) return server;
+        const live = ageWarconLivePublic(observation.live, now);
+        if (live.freshness === 'unavailable') return server;
+        warconAvailable = true;
+        // An older or stale alternative never replaces a newer/current observation.
+        if (server.freshness === 'fresh' && live.freshness !== 'fresh'
+          || server.observedAt && live.observedAt && Date.parse(server.observedAt) > Date.parse(live.observedAt)) return server;
+        return {
+          ...server, map: live.map, players: live.playerCount, capacity: live.maxPlayers,
+          observedAt: live.observedAt, freshness: live.freshness,
+          reachability: live.freshness === 'fresh' ? 'online' : 'unknown',
+          score: null, teams: null,
+          teamScores: live.freshness === 'fresh' ? live.scores.map((score) => ({ id: score.name, label: score.name, score: score.score })) : null,
+          // Warcon matchSeconds is elapsed time, never a remaining-time estimate.
+          timeRemainingSeconds: null,
+        };
+      });
+    }
+    if (!current.available && !warconAvailable) return { state: 'unavailable', servers, attemptedAt: now.toISOString() };
     return { state: 'ok', servers, synthetic: false, partial: servers.some((row) => row.freshness === 'unavailable'), attemptedAt: now.toISOString() };
   } catch { return { state: 'unavailable', servers: [], attemptedAt: now.toISOString() }; }
 }

@@ -122,7 +122,10 @@ test.describe('protected routes', () => {
     await signInAs(context, { roles: ['editor'] });
     await page.goto('/cs/admin');
     await expect(page.getByRole('heading', { level: 1, name: 'Administrace' })).toBeVisible();
-    for (const key of ['news', 'media', 'members']) await expect(page.getByTestId(`admin-module-${key}`)).toBeVisible();
+    for (const key of ['news', 'media']) await expect(page.getByTestId(`admin-module-${key}`)).toBeVisible();
+    await expect(page.getByTestId('admin-module-members')).toBeHidden();
+    await page.getByTestId('admin-archive-modules').locator('summary').click();
+    await expect(page.getByTestId('admin-module-members')).toBeVisible();
     for (const key of ['settings', 'audit', 'matches']) await expect(page.getByTestId(`admin-module-${key}`)).toHaveCount(0);
     const nav = page.getByTestId('admin-nav');
     await expect(nav.getByRole('link', { name: 'Nastavení' })).toHaveCount(0);

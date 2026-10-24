@@ -6,6 +6,8 @@ import { classifyFreshness, SERVER_FRESHNESS } from '../contract';
 import { parseCrconConfig, type CrconServerConfig, type FetchLike } from './crcon';
 import { SYNTHETIC_SERVERS } from './fixtures';
 import { fetchLivePlayers, LIVE_PLAYERS_MIN_REFRESH_SECONDS, type LivePlayersObservation, type LivePlayersSnapshot } from './live-players';
+import { configuredLogiSources } from '../logi-config';
+import { readLogiHllLive, resetLogiHllLiveForTests, type HllLivePublic } from '../logi/readers/hll-live';
 
 type CacheEntry = { attemptedAt: number; refreshSeconds: number; failed: boolean; last: LivePlayersObservation | null; inflight?: Promise<void> };
 const cache = new Map<string, CacheEntry>();
@@ -49,6 +51,7 @@ export async function observeLivePlayers(server: CrconServerConfig, now = new Da
 export async function getServerLivePlayers(game: GameRoute, publicId: string, now = new Date()): Promise<LivePlayersSnapshot> {
   const env = getServerEnv();
   if (game !== 'hll') return empty(publicId, 'not_configured');
+  if (env.SERVER_STATUS_SOURCE === 'logi') return (await getLogiHllServerDetail(publicId, now, true))?.players ?? empty(publicId, 'not_configured');
   if (env.SERVER_STATUS_SOURCE === 'synthetic-fixture') {
     const server = SYNTHETIC_SERVERS.hll?.find((row) => row.publicId === publicId);
     if (!server || env.SERVER_STATUS_FIXTURE_SCENARIO === 'empty') return empty(publicId, 'not_configured');
@@ -63,4 +66,16 @@ export async function getServerLivePlayers(game: GameRoute, publicId: string, no
   return observeLivePlayers(source, now);
 }
 
-export function resetLivePlayersForTests(): void { cache.clear(); }
+/** A selected published server only; the public player gate does not suppress safe status. */
+export async function getLogiHllServerDetail(publicId: string, now = new Date(), requirePlayers = false): Promise<HllLivePublic | null> {
+  const env = getServerEnv();
+  if (env.SERVER_STATUS_SOURCE !== 'logi') return null;
+  try {
+    const source = configuredLogiSources(env, 'data').find((row) => row.gameId === 'hell_let_loose');
+    const server = source?.publicServers.find((row) => row.publicId === publicId && row.published);
+    if (!source || !server || requirePlayers && server.publishLivePlayers !== true) return null;
+    return await readLogiHllLive(source, server, now);
+  } catch { return null; }
+}
+
+export function resetLivePlayersForTests(): void { cache.clear(); resetLogiHllLiveForTests(); }

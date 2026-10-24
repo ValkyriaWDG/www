@@ -16,8 +16,8 @@
       "results": "Results"
     },
     "viewTab": "{label} ({formatted})",
-    "searchLabel": "Search opponents and competitions",
-    "searchPlaceholder": "Opponent or competition",
+    "searchLabel": "Search matches, teams or competitions",
+    "searchPlaceholder": "Match, team or competition",
     "gameGroup": "Game",
     "all": "All",
     "resultCount": "{count, plural, one {# match} other {# matches}}",

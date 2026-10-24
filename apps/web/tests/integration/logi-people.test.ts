@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { testPrincipal } from '@/modules/access/testing';
 import { configuredLogiSources } from '@/modules/integrations/logi-config';
-import { readLogiMemberCandidates, readLogiTeam, readPublicLogiEventPeople, readPublicLogiMemberEnrichment } from '@/modules/integrations/logi-people';
+import { readLogiMemberCandidates, readLogiTeam, readPublicLogiEventPeople, readPublicLogiMemberEnrichment, readPublicLogiRosterDirectory } from '@/modules/integrations/logi-people';
 import { readActiveLogiProjections } from '@/modules/integrations/logi-store';
 import fixture from '@/modules/integrations/logi/fixtures/v0.14-people.json';
 import { createTestDatabase, type TestDatabase } from '../support/test-db';
@@ -20,6 +20,7 @@ const editor = testPrincipal(['editor'], { games: ['wardogs'], intent: 'read' })
 const options = { now: () => clock };
 const profile = () => readPublicLogiMemberEnrichment(database.db, env, 'approved-player', options);
 const event = () => readPublicLogiEventPeople(database.db, env, 'wardogs', 'event-example', options);
+const directory = () => readPublicLogiRosterDirectory(database.db, env, options);
 const checkpoint = () => ({ version: 1, generation: null, mode: 'live', resourceIndex: 3, listCursor: null, boundaryCursor: 'boundary', cursor: 'current', reconciledAt: clock.toISOString() });
 
 async function projection(scopeKey: string, resource: string, payload: Record<string, unknown>) {
@@ -48,6 +49,66 @@ beforeEach(async () => {
 });
 
 describe('real PostgreSQL people projection and publication boundary', () => {
+  it('adds approved match lineups to the ordinary public profile directory without private member fields', async () => {
+    const result = await directory();
+    expect(result).toEqual([{
+      profileSlug: 'approved-player', game: 'wardogs', observedAt: clock.toISOString(),
+      matches: [{ href: '/wardogs/matches/logi/event-example', title: 'Public synthetic match', startsAt: '2026-10-03T09:00:00Z', squad: 'Alpha', slot: 0, reserve: false }],
+    }]);
+    const serialized = JSON.stringify(result);
+    for (const privateValue of ['Synthetic member', fixture.member.identityId, fixture.member.id, fixture.member.discordSubject, 'attendance', 'completed', 'discordSubject', 'scopeKey', '"status"', '"type"', '"groups"']) expect(serialized).not.toContain(privateValue);
+    await database.db.insert(memberProfile).values({ slug: 'same-source-nickname', displayName: fixture.member.displayName!, games: ['wardogs'], state: 'published', consentConfirmedAt: clock, publishedAt: clock });
+    expect(await directory()).toEqual(result);
+    await projection(people.scopeKey, 'roster-summaries', { ...fixture.roster, id: 'duplicate-published-roster' });
+    expect(await directory()).toEqual(result);
+    expect(await profile()).toMatchObject([{ rosters: [{ matchTitle: 'Public synthetic match' }] }]);
+    expect((await event())!.roster).toHaveLength(1);
+  });
+  it('preserves different squad positions independently of repeated squad display names', async () => {
+    const squad = fixture.roster.squads[0]!;
+    await projection(people.scopeKey, 'roster-summaries', { ...fixture.roster, id: 'second-published-roster', squads: [{ ...squad, index: 1 }] });
+    expect((await profile())[0]!.rosters).toHaveLength(2);
+    expect((await event())!.roster).toHaveLength(2);
+    expect((await directory())[0]!.matches).toHaveLength(1);
+  });
+  it('composes both games by approved profile identity with an explicit game scope', async () => {
+    const hllConfig = { ...config, gameId: 'hell_let_loose' };
+    const bothEnv = { ...env, LOGI_SOURCES_JSON: JSON.stringify([config, hllConfig]), LOGI_PEOPLE_API_KEY_HLL: 'synthetic-hll-people-key-123456', LOGI_DATA_API_KEY_HLL: 'synthetic-hll-data-key-123456' };
+    const hllPeople = configuredLogiSources(bothEnv, 'people').find((source) => source.gameId === 'hell_let_loose')!;
+    const hllData = configuredLogiSources(bothEnv, 'data').find((source) => source.gameId === 'hell_let_loose')!;
+    for (const source of [hllPeople, hllData]) await database.db.insert(logiSyncScope).values({ scopeKey: source.scopeKey, sourceInstanceId: source.sourceInstanceId, guildId: source.guildId, gameId: source.gameId, activeGeneration: 'accepted', checkpoint: checkpoint(), version: 1, lastSuccessAt: clock });
+    await projection(hllPeople.scopeKey, 'member-summaries', { ...fixture.member, gameId: 'hell_let_loose' });
+    await projection(hllPeople.scopeKey, 'roster-summaries', { ...fixture.roster, gameId: 'hell_let_loose' });
+    await projection(hllData.scopeKey, 'event-summaries', { id: 'event-example', guildId: config.guildId, gameId: 'hell_let_loose', title: 'Public HLL match', updatedAt: clock.toISOString(), kind: 'match', status: 'registration', startsAt: '2026-10-03T09:00:00Z', endsAt: '2026-10-03T10:00:00Z' });
+    await database.db.update(memberProfile).set({ games: ['wardogs', 'hell-let-loose'] }).where(eq(memberProfile.id, profileId));
+    await database.db.insert(logiMemberLink).values({ profileId, scopeKey: hllPeople.scopeKey, sourceInstanceId: hllPeople.sourceInstanceId, guildId: hllPeople.guildId, gameId: hllPeople.gameId, memberId: fixture.member.id, identityId: fixture.member.identityId, allowStats: false, allowRoster: true });
+    const result = await readPublicLogiRosterDirectory(database.db, bothEnv, options);
+    expect(result).toHaveLength(2);
+    expect(result.map((row) => row.profileSlug)).toEqual(['approved-player', 'approved-player']);
+    expect(result.flatMap((row) => row.matches.map((match) => match.href))).toEqual(expect.arrayContaining(['/wardogs/matches/logi/event-example', '/hll/matches/logi/event-example']));
+    expect(await readPublicLogiRosterDirectory(database.db, bothEnv, { ...options, game: 'hell-let-loose' })).toMatchObject([{ game: 'hell-let-loose', matches: [{ title: 'Public HLL match' }] }]);
+  });
+  it('requires current consent, identity and roster grant for directory activity', async () => {
+    await database.db.update(logiMemberLink).set({ allowRoster: false }).where(eq(logiMemberLink.profileId, profileId));
+    expect(await directory()).toEqual([]);
+    await database.db.update(logiMemberLink).set({ allowRoster: true }).where(eq(logiMemberLink.profileId, profileId));
+    await database.db.update(memberProfile).set({ state: 'hidden', consentConfirmedAt: null }).where(eq(memberProfile.id, profileId));
+    expect(await directory()).toEqual([]);
+    await database.db.update(memberProfile).set({ state: 'published', consentConfirmedAt: clock }).where(eq(memberProfile.id, profileId));
+    await updateProjection('member-summaries', { ...fixture.member, identityId: 'replacement-person' });
+    expect(await directory()).toEqual([]);
+    await updateProjection('member-summaries', fixture.member);
+    expect(await directory()).toHaveLength(1);
+    clock = new Date('2026-10-03T10:07:00Z');
+    expect(await directory()).toEqual([]);
+  });
+  it('omits directory lineups when source permission is revoked, rebuilding or match publication is disabled', async () => {
+    expect(await readPublicLogiRosterDirectory(database.db, { ...env, LOGI_SOURCES_JSON: JSON.stringify([{ ...config, publishMatches: false }]) }, options)).toEqual([]);
+    await database.db.update(logiSyncScope).set({ errorCode: 'forbidden' }).where(eq(logiSyncScope.scopeKey, people.scopeKey));
+    expect(await directory()).toEqual([]);
+    await database.db.update(logiSyncScope).set({ errorCode: null, checkpoint: { ...checkpoint(), mode: 'bootstrap', generation: 'building' } }).where(eq(logiSyncScope.scopeKey, people.scopeKey));
+    expect(await directory()).toEqual([]);
+  });
   it('shows members published rosters and attendance only to current game-authorized readers', async () => {
     expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'fresh', members: [{ displayName: 'Synthetic member', statistics: { sessions: 1 } }], rosters: [{ squads: [{ slots: [{ displayName: 'Synthetic member', attendance: 'acknowledged' }, { displayName: null }] }] }], attendance: [{ status: 'attending', completed: null }] });
     for (const actor of [{ kind: 'anonymous' as const }, editor, testPrincipal(['member'], { games: ['hell-let-loose'] }), { ...member, status: 'stale' as const }]) {

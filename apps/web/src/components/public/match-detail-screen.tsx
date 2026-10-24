@@ -16,8 +16,6 @@ import { GAME_REGISTRY, type GameRoute } from '@/modules/games/registry';
 import { canonicalMatchPath, sectionBase } from '@/modules/games/routes';
 import { sharingMetadata } from '@/modules/social/metadata';
 import { getPublicMatch } from '@/modules/matches/queries';
-import { getPublicLogiEvents } from '@/modules/integrations/logi-public';
-import { LogiMatches } from './logi-matches';
 
 /** Published match only; unknown and draft matches are indistinguishable (null → 404). */
 export const loadPublicMatch = cache(async (slug: string, locale: AppLocale) => (isSlug(slug) ? getPublicMatch(getDb(), slug, locale) : null));
@@ -71,7 +69,6 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
   const filters = { ...parseMatchFilters(query, view), view, game: undefined };
   const base = sectionBase(game);
   const t = await getTranslations({ locale, namespace: 'matches' });
-  const linked = (await getPublicLogiEvents(game)).filter((event) => event.archive?.slug === match.slug);
   return (
     <PageMain width="full" labelledBy="match-title">
       <PageHeader
@@ -81,7 +78,6 @@ export async function MatchDetailScreen({ locale, slug, game, query }: { locale:
         titleId="match-title"
       />
       <GameSwitchNotice locale={locale} game={game} query={query} />
-      {linked.length > 0 ? <LogiMatches locale={locale} events={linked} selected={linked[0]!} /> : null}
       <MatchesScreen locale={locale} filters={filters} mode="detail" selected={match} game={game} />
     </PageMain>
   );

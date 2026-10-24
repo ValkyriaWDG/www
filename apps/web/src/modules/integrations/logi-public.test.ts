@@ -5,9 +5,16 @@ import type { Executor } from '@valkyria/db';
 import { readActiveLogiProjections } from './logi-store';
 import { logiServerSnapshotSchema } from './logi/contracts';
 import fixtures from './logi/fixtures/v0.5.json';
+import { readCurrentLogiServers } from './servers/logi';
+import { getWarconServersPublic } from './logi/readers/warcon';
+import type { WarconServerPublic } from './logi/readers/public';
+import { getServerPresentation } from './servers/presentation';
 
 vi.mock('@/lib/db', () => ({ getDb: () => ({}) }));
 vi.mock('./logi-store', () => ({ readActiveLogiProjections: vi.fn() }));
+vi.mock('./servers/logi', () => ({ readCurrentLogiServers: vi.fn() }));
+vi.mock('./logi/readers/warcon', () => ({ getWarconServersPublic: vi.fn() }));
+vi.mock('./servers/presentation', () => ({ getServerPresentation: vi.fn(), isServerPublished: (rows: { game: string; publicId: string; published: boolean }[], game: string, id: string) => rows.find((row) => row.game === game && row.publicId === id)?.published !== false }));
 
 const now = new Date('2026-10-03T12:00:00Z');
 const observedAt = new Date('2026-10-03T11:59:30Z');
@@ -52,7 +59,7 @@ describe('published Logi matches use every supplied result resource', () => {
 });
 
 describe.each(['hll', 'wardogs'] as const)('Logi %s public server source health', (game) => {
-  it.each(['network', 'unauthorized', 'forbidden'])('removes live scores after a persisted %s failure despite a recent successful snapshot', async (errorCode) => {
+  it('uses direct current state and removes live scores when its next read fails', async () => {
     const hll = game === 'hll';
     const scores = hll
       ? [{ id: 'allied', label: 'Allied', score: 3 }, { id: 'axis', label: 'Axis', score: 2 }]
@@ -64,19 +71,74 @@ describe.each(['hll', 'wardogs'] as const)('Logi %s public server source health'
     }]));
     vi.stubEnv(hll ? 'LOGI_DATA_API_KEY_HLL' : 'LOGI_DATA_API_KEY_WDG', 'synthetic-data-key-123456');
     resetServerEnvForTests();
-    const cached: Awaited<ReturnType<typeof readActiveLogiProjections>>[number] = {
-      resource: 'server-snapshots', externalId: server.id, revision: '1', operation: 'upsert', data: server, withinBudget: true,
-      observedAt, lastSuccessAt: observedAt, checkpoint: null, errorCode: null,
-    };
-    vi.mocked(readActiveLogiProjections).mockResolvedValue([cached]);
+    vi.mocked(readCurrentLogiServers).mockResolvedValue({ rows: [server, { ...server, id: 'unpublished-connection' }], available: true });
     const before = await getLogiServerOverview(game, now);
     expect(before).toMatchObject({ state: 'ok', servers: [{ freshness: 'fresh', reachability: 'online' }] });
     if (before.state !== 'ok') throw new Error('Expected the approved current server.');
     expect(hll ? before.servers[0]?.score : before.servers[0]?.teamScores).toEqual(hll ? { allied: 3, axis: 2 } : scores);
+    expect(before.servers).toHaveLength(1);
+    expect(readActiveLogiProjections).not.toHaveBeenCalled();
 
-    vi.mocked(readActiveLogiProjections).mockResolvedValue([{ ...cached, errorCode }]);
+    vi.mocked(readCurrentLogiServers).mockResolvedValue({ rows: [server], available: false });
     expect(await getLogiServerOverview(game, now)).toMatchObject({
-      state: 'ok', servers: [{ freshness: 'stale', reachability: 'unknown', map: server.map, players: server.players, score: null, teamScores: null, observedAt: observedAt.toISOString() }],
+      state: 'unavailable', servers: [{ freshness: 'stale', reachability: 'unknown', map: server.map, players: server.players, score: null, teamScores: null, observedAt: observedAt.toISOString() }],
     });
+  });
+});
+
+describe('authorized Wardogs Warcon live overview overlay', () => {
+  const generic = logiServerSnapshotSchema.parse({ ...fixtures.snapshots.data[1], guildId: '910000000000000001', observedAt: '2026-10-03T11:55:00.000Z', freshness: 'stale', state: 'unknown' });
+  const live = (change: Partial<WarconServerPublic['live']> = {}): WarconServerPublic => ({ publicId: 'community-one', synthetic: false, recentMatches: null,
+    live: { publicId: 'community-one', observedAt: now.toISOString(), freshness: 'fresh', serverName: 'Provider name', map: 'Current map', lighting: 'Day', playerCount: 0, maxPlayers: 100, matchSeconds: 1200,
+      scores: [{ name: 'Alpha', score: 0 }, { name: 'Bravo', score: 12 }, { name: 'Charlie', score: 4 }], rotationNow: 1, rotationNext: 2, ...change },
+  });
+  function configure(key = true) {
+    vi.stubEnv('LOGI_SOURCES_JSON', JSON.stringify([{
+      sourceInstanceId: 'synthetic-source', origin: 'https://logi.example.test', guildId: generic.guildId, gameId: 'wardogs',
+      publicServers: [{ connectionId: generic.id, publicId: 'community-one', name: 'Approved name', published: true, address: null, statsUrl: null }],
+      warconConnections: [{ connectionId: 'approved-warcon', publicId: 'community-one' }],
+    }]));
+    vi.stubEnv('LOGI_DATA_API_KEY_WDG', 'synthetic-data-key-123456');
+    vi.stubEnv('LOGI_WARCON_API_KEY_WDG', key ? 'synthetic-warcon-key-123456' : '');
+    resetServerEnvForTests();
+    vi.mocked(readCurrentLogiServers).mockResolvedValue({ rows: [generic], available: true });
+    vi.mocked(getServerPresentation).mockResolvedValue([]);
+    vi.mocked(getWarconServersPublic).mockResolvedValue([live()]);
+  }
+
+  it('supplies current map, zero population and named scores to the ordinary overview with no elapsed/remaining inference', async () => {
+    configure();
+    expect(await getLogiServerOverview('wardogs', now)).toMatchObject({ state: 'ok', partial: false, servers: [{
+      publicId: 'community-one', name: 'Approved name', map: 'Current map', players: 0, capacity: 100, freshness: 'fresh', reachability: 'online', observedAt: now.toISOString(),
+      score: null, timeRemainingSeconds: null, teamScores: [{ id: 'Alpha', label: 'Alpha', score: 0 }, { id: 'Bravo', label: 'Bravo', score: 12 }, { id: 'Charlie', label: 'Charlie', score: 4 }],
+    }] });
+    expect(getWarconServersPublic).toHaveBeenCalledExactlyOnceWith(['community-one'], null, now);
+  });
+
+  it('does not request a website-hidden server and does not require a Warcon key for the generic fallback', async () => {
+    configure();
+    vi.mocked(getServerPresentation).mockResolvedValue([{ game: 'wardogs', publicId: 'community-one', published: false }]);
+    await getLogiServerOverview('wardogs', now);
+    expect(getWarconServersPublic).not.toHaveBeenCalled();
+    vi.mocked(getWarconServersPublic).mockClear();
+    configure(false);
+    expect(await getLogiServerOverview('wardogs', now)).toMatchObject({ state: 'ok', servers: [{ freshness: 'stale', reachability: 'unknown' }] });
+    expect(getWarconServersPublic).not.toHaveBeenCalled();
+  });
+
+  it('keeps failed/unavailable Warcon honest and ages stale observations without live scores', async () => {
+    configure();
+    vi.mocked(getWarconServersPublic).mockResolvedValue([live({ freshness: 'unavailable', map: null, playerCount: null, maxPlayers: null, scores: [] })]);
+    expect(await getLogiServerOverview('wardogs', now)).toMatchObject({ servers: [{ freshness: 'stale', reachability: 'unknown', observedAt: generic.observedAt }] });
+    vi.mocked(getWarconServersPublic).mockResolvedValue([live({ observedAt: '2026-10-03T11:59:00.000Z' })]);
+    expect(await getLogiServerOverview('wardogs', now)).toMatchObject({ servers: [{ map: 'Current map', freshness: 'stale', reachability: 'unknown', teamScores: null, timeRemainingSeconds: null }] });
+  });
+
+  it('allows an independently authorized current live read to recover an unavailable generic collection', async () => {
+    configure();
+    vi.mocked(readCurrentLogiServers).mockResolvedValue({ rows: [], available: false });
+    expect(await getLogiServerOverview('wardogs', now)).toMatchObject({ state: 'ok', servers: [{ freshness: 'fresh', players: 0 }] });
+    vi.mocked(getWarconServersPublic).mockResolvedValue([live({ freshness: 'unavailable' })]);
+    expect(await getLogiServerOverview('wardogs', now)).toMatchObject({ state: 'unavailable', servers: [{ freshness: 'unavailable' }] });
   });
 });

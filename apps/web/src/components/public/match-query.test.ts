@@ -1,14 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { matchesListHref, parseMatchFilters } from './query';
+import { matchDetailHref, matchesListHref, parseMatchFilters } from './query';
 
-describe('independent connected and archive match pagination', () => {
-  it('parses and preserves both page positions in archive navigation', () => {
+describe('one public match page parameter', () => {
+  it('gives page precedence and removes obsolete provider state from generated URLs', () => {
     const parsed = parseMatchFilters({ view: 'results', page: '2', logiPage: '3' });
-    expect(parsed).toMatchObject({ page: 2, logiPage: 3 });
-    expect(matchesListHref({ ...parsed, page: 4 }, '/hll')).toBe('/hll/matches?view=results&page=4&logiPage=3');
+    expect(parsed).toMatchObject({ page: 2 });
+    expect(parsed).not.toHaveProperty('logiPage');
+    expect(matchesListHref({ ...parsed, page: 4 }, '/hll')).toBe('/hll/matches?view=results&page=4');
+    expect(matchDetailHref('sample', parsed, '/hll')).toBe('/hll/matches/sample?page=2');
   });
-  it('bounds the connected page and omits its default from links', () => {
-    expect(parseMatchFilters({ logiPage: '-4' })).toMatchObject({ logiPage: 1 });
+  it('accepts old provider-only links as a validated fallback', () => {
+    expect(parseMatchFilters({ logiPage: '3' }).page).toBe(3);
+    expect(parseMatchFilters({ logiPage: '-4' }).page).toBe(1);
+    expect(parseMatchFilters({ page: '-4', logiPage: '3' }).page).toBe(1);
     expect(matchesListHref(parseMatchFilters({}), '/wardogs')).toBe('/wardogs/matches');
   });
 });

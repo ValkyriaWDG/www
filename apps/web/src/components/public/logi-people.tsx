@@ -231,7 +231,7 @@ export async function PublicLogiMemberActivity({ locale, items }: { locale: AppL
                   {item.rosters.map((row, index) => (
                     <li key={`${row.eventId}:${index}`}>
                       <Link href={`/${gameRouteFromDb(item.game)}/matches/logi/${encodeURIComponent(row.eventId)}`}>
-                        {t('match')} {index + 1}
+                        {row.matchTitle ?? `${t('match')} ${index + 1}`}
                       </Link>{' '}
                       · {row.reserve ? t('reserves') : (row.squad ?? t('unknown'))}
                       {row.slot === null ? '' : ` · ${t('position')} ${row.slot + 1}`}

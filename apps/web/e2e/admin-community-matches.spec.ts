@@ -45,6 +45,9 @@ test('match manager creates, publishes, postpones, reschedules and records a ver
   // ---- Create a draft fixture with an explicit Europe/Prague start ----
   await page.goto('/cs/admin/matches');
   await expect(page.getByRole('heading', { level: 1, name: 'Zápasy' })).toBeVisible();
+  await expect(page.getByTestId('admin-logi-operations')).toBeVisible();
+  await expect(page.locator('[data-action="new-match"]')).toBeHidden();
+  await page.getByTestId('admin-match-archive').locator('summary').click();
   await page.getByRole('link', { name: 'Nový zápas' }).click();
   await expect(page).toHaveURL(/\/cs\/admin\/matches\/new$/);
   const startDate = pragueDate(40);

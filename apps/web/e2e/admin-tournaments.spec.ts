@@ -19,7 +19,10 @@ test('match manager creates, describes and publishes an HLL tournament with a li
 
   // The module is offered in the administration menu.
   await page.goto('/cs/admin');
-  await expect(page.getByTestId('admin-module-tournaments')).toContainText('Turnaje');
+  await expect(page.getByTestId('admin-module-tournaments')).toBeHidden();
+  await page.getByTestId('admin-archive-modules').locator('summary').click();
+  await expect(page.getByTestId('admin-module-tournaments')).toBeVisible();
+  await expect(page.getByTestId('admin-module-tournaments')).toContainText('Archiv turnajů');
 
   // ---- Create a draft ----
   await page.goto('/cs/admin/tournaments/new');

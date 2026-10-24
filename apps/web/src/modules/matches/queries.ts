@@ -127,8 +127,9 @@ async function toSummaries(db: Executor, rows: SummaryRow[]): Promise<PublicMatc
  * Results (completed/cancelled, newest first) view with optional filters and opponent
  * search (case/diacritic-insensitive). Invalid optional filters are ignored.
  */
-export async function listPublicMatches(db: Executor, input: PublicMatchListInput, linkedPublicSlugs: readonly string[] = []): Promise<PublicMatchPage> {
+export async function listPublicMatches(db: Executor, input: PublicMatchListInput, linkedPublicSlugs: readonly string[] = [], window?: { offset: number; limit: number }): Promise<PublicMatchPage> {
   const query = parseInput(publicMatchListSchema, input);
+  if (window && (!Number.isSafeInteger(window.offset) || window.offset < 0 || !Number.isSafeInteger(window.limit) || window.limit < 1 || window.limit > 10_010)) throw new Error('Invalid public match window.');
   const statuses = VIEW_STATUSES[query.view];
   if (query.status && !statuses.includes(query.status)) return { items: [], total: 0, page: query.page, pageCount: 1 };
   const where = and(
@@ -148,8 +149,8 @@ export async function listPublicMatches(db: Executor, input: PublicMatchListInpu
     .leftJoin(matchResult, eq(matchResult.matchId, match.id))
     .where(where)
     .orderBy(...order)
-    .limit(query.pageSize)
-    .offset((query.page - 1) * query.pageSize);
+    .limit(window?.limit ?? query.pageSize)
+    .offset(window?.offset ?? (query.page - 1) * query.pageSize);
   return { items: await toSummaries(db, rows), total, page: query.page, pageCount: pageCount(total, query.pageSize) };
 }
 

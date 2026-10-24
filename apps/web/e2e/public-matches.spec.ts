@@ -77,7 +77,7 @@ test.describe('public matches: lists', () => {
     await expect(page.locator('[data-match-table] tbody tr')).toHaveCount(hllCount);
     for (const slug of [M.completedVerified, M.completedUnknown, M.cancelled]) await expect(rowOf(page, slug)).toHaveCount(0);
 
-    await page.getByRole('searchbox', { name: 'Hledat soupeře a soutěže' }).fill('neexistujici souper');
+    await page.getByRole('searchbox', { name: 'Hledat zápas, tým nebo soutěž' }).fill('neexistujici souper');
     await page.getByRole('button', { name: 'Hledat' }).click();
     await expect(page).toHaveURL(/q=neexistujici\+souper/);
     await expect(page).toHaveURL(/game=hell-let-loose/);

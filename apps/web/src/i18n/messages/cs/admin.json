@@ -5,14 +5,17 @@
     "navLabel": "Části administrace",
     "overview": "Přehled",
     "account": "Můj účet",
-    "website": "Zpět na web"
+    "website": "Zpět na web",
+    "archive": "Archiv a zveřejnění profilů"
   },
   "overview": {
     "metaTitle": "Administrace",
     "eyebrow": "Správa webu",
     "title": "Administrace",
     "intro": "Přihlášen(a) jako {name}. Zobrazují se jen části, které smíte používat; každá z nich vaše oprávnění ověřuje znovu.",
-    "modulesTitle": "Vaše části administrace",
+    "modulesTitle": "Obsah a nastavení webu",
+    "archiveTitle": "Archiv a zveřejnění profilů",
+    "archiveDescription": "Opravy historických záznamů a správa souhlasů se zobrazením profilů na webu. Aktuální zápasy a soupisky spravujte v Logi.",
     "empty": "Pro vaše role nejsou dostupné žádné části administrace.",
     "modules": {
       "news": {
@@ -36,16 +39,16 @@
         "description": "Nahrávání a správa obrázků v rozsahu vašich oprávnění."
       },
       "matches": {
-        "title": "Zápasy",
-        "description": "Zakládání, plánování a zveřejňování zápasů a výsledků."
+        "title": "Archiv zápasů",
+        "description": "Opravy a zveřejňování historických zápasů, výsledků a reportů."
       },
       "tournaments": {
-        "title": "Turnaje",
-        "description": "Soutěže, jejich popis a pravidla, zveřejňování a zápasy v nich."
+        "title": "Archiv turnajů",
+        "description": "Historické soutěže, jejich pravidla a propojení s archivními zápasy."
       },
       "members": {
-        "title": "Členové",
-        "description": "Kontrola a zveřejňování profilů členů."
+        "title": "Zveřejnění profilů",
+        "description": "Souhlasy, medailonky a propojení veřejných profilů s Logi."
       },
       "settings": {
         "title": "Nastavení",
@@ -68,6 +71,21 @@
       "schedulesEmpty": "Nic není naplánováno.",
       "needsReapproval": "Vyžaduje nové schválení"
     }
+  },
+  "operations": {
+    "title": "Správa v Logi",
+    "description": "Servery, soupisky, zápasy a výsledky pro Hell Let Loose i Wardogs spravujte v Logi. Web zobrazuje jejich veřejná data. Zde upravíte novinky, příručku, média a nastavení webu.",
+    "open": "Otevřít Logi",
+    "external": "externí web",
+    "unavailable": "Pro váš rozsah oprávnění není nastavena platná adresa Logi. Ověřte konfiguraci napojení; archiv a redakce zůstávají dostupné.",
+    "games": { "hll": "Hell Let Loose", "wardogs": "Wardogs" }
+  },
+  "archive": {
+    "matches": "Otevřít archiv zápasů",
+    "tournaments": "Otevřít archiv turnajů",
+    "description": "Tato část slouží k opravám a doplnění historických záznamů. Nové zápasy, soutěže a výsledky zadávejte v Logi.",
+    "members": "Spravovat zveřejnění profilů",
+    "membersDescription": "Členství a soupisky spravujte v Logi. Zde potvrďte souhlas se zveřejněním, upravte medailonek a propojte profil s odpovídajícím členem v Logi."
   },
   "denied": {
     "metaTitle": "Přístup odepřen",

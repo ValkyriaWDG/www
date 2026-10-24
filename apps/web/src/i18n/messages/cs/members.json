@@ -7,7 +7,7 @@
   "list": {
     "eyebrow": "Valkyria // CZ & SK",
     "title": "Členové",
-    "intro": "Členové klanu Valkyria s veřejným profilem.",
+    "intro": "Členové klanu a jejich zveřejněné zápasové sestavy.",
     "breadcrumbHome": "Hlavní menu",
     "rosterTitle": "Soupiska",
     "rosterCount": "{count, plural, one {# profil} few {# profily} many {# profilu} other {# profilů}}",
@@ -22,7 +22,8 @@
     "columns": {
       "member": "Člen",
       "roles": "Role",
-      "games": "Hry"
+      "games": "Hry",
+      "matches": "Zápasové sestavy"
     },
     "noRoles": "Bez veřejné role",
     "noGames": "Bez uvedené hry",
@@ -34,7 +35,10 @@
     "firstPage": "Přejít na první stránku",
     "clearFilters": "Zrušit filtry",
     "loadError": "Profily členů se nepodařilo načíst.",
-    "retry": "Zkusit znovu"
+    "retry": "Zkusit znovu",
+    "matchCount": "{count, plural, one {# sestava} few {# sestavy} many {# sestavy} other {# sestav}}",
+    "moreMatches": "{count, plural, one {Další # sestava v profilu} few {Další # sestavy v profilu} many {Dalších # sestavy v profilu} other {Dalších # sestav v profilu}}",
+    "noPublicMatches": "Sestavy nejsou k dispozici"
   },
   "roles": {
     "leader": "Velitel",
