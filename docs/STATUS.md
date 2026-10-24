@@ -1,5 +1,63 @@
 # Current status
 
+## Independent current team synchronization — 2026-10-24
+
+Live HLL acceptance found that thousands of historical player-session records kept
+the complete people bootstrap from reaching current rosters. Current members and
+published rosters now reconcile atomically in their original people scope, preserving
+profile/consent bindings. Statistics have an independently key-bound checkpoint and
+run after every core/data scope with a bounded turn for each game. Legacy partial
+cursors reset under the existing lease/CAS; no checkpoint schema or SQL migration.
+Fresh complete statistics still require current core identity, result version,
+consent and an independently current statistics scope. Partial totals remain hidden.
+
+HLL's complete statistics export exceeds the existing 1,000-record limit; this
+change restores current team data without presenting incomplete history as a total.
+Full historical statistics need a separately scoped, coverage-aware provider contract.
+The record/byte/freshness bounds are unchanged. Before an old-image rollback, stop
+the sync writer and reset only the affected disposable people checkpoints/projections,
+preserving scope rows and profile links; follow the Logi operator runbook. Production
+acceptance and final image identity are still pending.
+
+Integrated local validation passed 1,298 unit tests, all 549 PostgreSQL integration
+tests, full lint/typecheck/build and 17 connected CS/EN desktop/mobile journeys.
+The focused server browser suites and independent source review cover the telemetry
+whitelist and core/statistics isolation; hosted exact-head release checks remain
+required. Existing checkpoint schema, source bounds and profile consent are retained.
+
+## Public telemetry production follow-up — 2026-10-24
+
+Actual production acceptance found the old server overview exposed its internal
+`ServerSnapshot.ref` in Wardogs home/server HTML and polling JSON. The new explicit
+public whitelist removes operational source/tenant/connection references and nested
+team identifiers after presentation and again after selected HLL composition.
+Internal caches/lookup identities remain intact. Public server IDs, approved links,
+metrics, zero/null and freshness semantics remain unchanged. No SQL migration.
+
+Local validation: all 1,297 unit tests, full lint/types/production build, 23 server
+browser journeys and 17 connected CS/EN desktop/mobile journeys passed.
+An independent review and 63 additional focused checks found no actionable issue.
+The first local browser attempts collided in their shared artifact parent; both
+suites then passed sequentially. An old browser assertion expecting the internal
+`ref.game` was replaced with stable public selection, explicit no-`ref` and complete
+label/zero-score checks. No product assertion or privacy requirement was removed.
+PR #113 merged as `dd09d5a43bc5a696f28cda329e505215bc0d423b`; its first publisher
+was cancelled during verification before registry publication when this runtime
+finding was identified. The final release must use this follow-up's accepted SHA,
+complete CI and actual public read-back; the leak is not yet claimed fixed in prod.
+
+Production preparation verified an actual restore of 37 database tables and 442
+media files, plus authenticated decryption/hash verification of the encrypted
+off-host recovery copy. HLL data/live grant replacement is prepared and tested.
+The owner confirmed only EVENT remains active: publish its existing public ID,
+not the obsolete #1 alias which currently returns the same provider server.
+League tracking for VLK is enabled with no intake channel or League Discord panel.
+Logi PR [#256](https://github.com/Ninjonik/logi/pull/256) passed hosted CI but its
+collector/parser activation requires Ninjonik's deployment. Warcon RCON health
+and capabilities still return `provider_timeout`/503 despite a passed key test.
+SSO plus current membership/admin access for both games were observed after an
+initial transient failed lookup; no role or freshness check was bypassed.
+
 ## Production acceptance follow-up — 2026-10-24
 
 PR [#112](https://github.com/ValkyriaWDG/www/pull/112) was squash-merged as

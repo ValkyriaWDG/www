@@ -13,7 +13,8 @@ import type { AppLocale } from '@/i18n/routing';
 import type { GameRoute } from '@/modules/games/registry';
 import { hllMapArtwork } from '@/modules/games/hll-maps';
 import { gamePath } from '@/modules/games/routes';
-import type { Freshness, ServerSnapshot } from '@/modules/integrations/contract';
+import type { Freshness } from '@/modules/integrations/contract';
+import type { PublicServerSnapshot } from '@/modules/integrations/servers/public';
 import type { ServerBrowserData } from '@/modules/integrations/servers/browser';
 import { parseServerParam, populationParts, resolveSelection, warconFor } from '@/modules/integrations/servers/view';
 import { CopyAddress } from './copy-address';
@@ -51,7 +52,7 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice, 
       <span className="visually-hidden">{t('notAvailable')}</span>
     </>
   );
-  const population = (server: ServerSnapshot): ReactNode => {
+  const population = (server: PublicServerSnapshot): ReactNode => {
     const parts = populationParts(server);
     if (!parts) return dash;
     return (
@@ -71,15 +72,15 @@ export function ServerBrowser({ locale, game, query, initialData, switchNotice, 
       ? t('detail.timeValueHours', { hours: Math.floor(minutes / 60), minutes: minutes % 60 })
       : t('detail.timeValueMinutes', { minutes });
   };
-  const observed = (server: ServerSnapshot) =>
+  const observed = (server: PublicServerSnapshot) =>
     server.observedAt ? t('observed', { time: formatDate(server.observedAt, locale, 'dateTimeZone') }) : t('neverObserved');
   // Map pack artwork is HLL-only; an unknown map keeps the neutral placeholder.
-  const artwork = (server: ServerSnapshot) => (game === 'hll' ? hllMapArtwork(server.map) : null);
-  const freshness = (server: ServerSnapshot) => (
+  const artwork = (server: PublicServerSnapshot) => (game === 'hll' ? hllMapArtwork(server.map) : null);
+  const freshness = (server: PublicServerSnapshot) => (
     <StatusBadge kind={FRESHNESS_KIND[server.freshness]}>{t(`freshness.${server.freshness}`)}</StatusBadge>
   );
 
-  const columns: SelectionColumn<ServerSnapshot>[] = [
+  const columns: SelectionColumn<PublicServerSnapshot>[] = [
     {
       key: 'server',
       header: t('columns.server'),

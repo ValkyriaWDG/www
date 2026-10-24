@@ -1,7 +1,7 @@
 import { logiProjection, logiSyncScope } from '@valkyria/db';
 import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { configuredLogiSources } from '@/modules/integrations/logi-config';
+import { configuredLogiSources, logiPeopleStatisticsSource, LOGI_PEOPLE_CORE_RESOURCES, LOGI_PEOPLE_STATS_RESOURCES } from '@/modules/integrations/logi-config';
 import { createPostgresLogiSyncStore, readActiveLogiProjections } from '@/modules/integrations/logi-store';
 import { LOGI_COLLECTION_RESOURCES, LOGI_PEOPLE_RESOURCES, type LogiSyncRecord } from '@/modules/integrations/logi/contracts';
 import peopleFixture from '@/modules/integrations/logi/fixtures/v0.14-people.json';
@@ -21,6 +21,26 @@ afterAll(async () => { await database.drop(); });
 beforeEach(async () => { clock = Date.parse('2026-10-02T12:00:00Z'); await database.db.delete(logiSyncScope); });
 
 describe('real PostgreSQL Logi projection store', () => {
+  it('isolates core/statistics resource sets and concurrent leases under the same credential', async () => {
+    const core = configuredLogiSources({ LOGI_SOURCES_JSON: JSON.stringify([{ sourceInstanceId: source.sourceInstanceId, origin: source.origin, guildId: source.guildId, gameId: source.gameId, syncPeople: true }]), LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-123456' }, 'people')[0]!;
+    const statistics = logiPeopleStatisticsSource(core);
+    const coreStore = createPostgresLogiSyncStore(database.db, core, () => clock, LOGI_PEOPLE_CORE_RESOURCES);
+    const statsStore = createPostgresLogiSyncStore(database.db, statistics, () => clock, LOGI_PEOPLE_STATS_RESOURCES);
+    await expect(coreStore.acquire({ ...core, resources: LOGI_PEOPLE_STATS_RESOURCES }, clock, 60_000)).rejects.toThrow('Invalid sync scope');
+    await expect(statsStore.acquire({ ...statistics, resources: LOGI_PEOPLE_CORE_RESOURCES }, clock, 60_000)).rejects.toThrow('Invalid sync scope');
+    const [coreLease, statsLease] = await Promise.all([
+      coreStore.acquire({ ...core, resources: LOGI_PEOPLE_CORE_RESOURCES }, clock, 60_000),
+      statsStore.acquire({ ...statistics, resources: LOGI_PEOPLE_STATS_RESOURCES }, clock, 60_000),
+    ]);
+    expect(coreLease).not.toBeNull();
+    expect(statsLease).not.toBeNull();
+    await coreStore.release(coreLease!);
+    await statsStore.recordFailure('timeout', 30_000);
+    const rows = await database.db.select().from(logiSyncScope);
+    expect(rows.find((row) => row.scopeKey === statistics.scopeKey)!.leaseExpiresAt).not.toBeNull();
+    expect(rows.find((row) => row.scopeKey === core.scopeKey)!.leaseExpiresAt).toBeNull();
+    expect(() => createPostgresLogiSyncStore(database.db, core, () => clock, LOGI_COLLECTION_RESOURCES)).toThrow('Invalid sync resources');
+  });
   it('fences people collections from the safe data purpose in both directions', async () => {
     const people = configuredLogiSources({ LOGI_SOURCES_JSON: JSON.stringify([{ sourceInstanceId: source.sourceInstanceId, origin: source.origin, guildId: source.guildId, gameId: source.gameId, syncPeople: true }]), LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-123456' }, 'people')[0]!;
     const peopleScope = { ...people, resources: LOGI_PEOPLE_RESOURCES };

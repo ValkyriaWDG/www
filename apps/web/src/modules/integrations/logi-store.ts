@@ -7,9 +7,11 @@ import { LOGI_COLLECTION_RESOURCES, LOGI_PEOPLE_RESOURCES, logiResourceSchemas, 
 import { logiSyncCheckpointSchema, type LogiSyncStore } from './logi/sync';
 
 /** Stores one configured scope; callers cannot repoint a lease to another source/key/game. */
-export function createPostgresLogiSyncStore(db: Executor, source: ConfiguredLogiSource, now: () => number = Date.now): LogiSyncStore & { recordFailure(code: string, retryAfterMs: number): Promise<void> } {
+export function createPostgresLogiSyncStore(db: Executor, source: ConfiguredLogiSource, now: () => number = Date.now, selectedResources?: readonly LogiCollectionResource[]): LogiSyncStore & { recordFailure(code: string, retryAfterMs: number): Promise<void> } {
   const key = source.scopeKey;
-  const resources: readonly LogiCollectionResource[] = source.purpose === 'people' ? LOGI_PEOPLE_RESOURCES : LOGI_COLLECTION_RESOURCES;
+  const permitted: readonly LogiCollectionResource[] = source.purpose === 'people' ? LOGI_PEOPLE_RESOURCES : LOGI_COLLECTION_RESOURCES;
+  const resources = selectedResources ?? permitted;
+  if (!resources.length || new Set(resources).size !== resources.length || resources.some((resource) => !permitted.includes(resource))) throw new Error('Invalid sync resources.');
   if (source.purpose !== 'people' && source.purpose !== 'data') throw new Error('Invalid sync source purpose.');
   let lastToken: string | null = null;
   return {

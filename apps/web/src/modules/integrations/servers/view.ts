@@ -1,4 +1,5 @@
-import { classifyFreshness, SERVER_FRESHNESS, type ServerSnapshot } from '../contract';
+import { classifyFreshness, SERVER_FRESHNESS } from '../contract';
+import type { PublicServerSnapshot } from './public';
 import { ageWarconServerPublic } from '../logi/readers/public';
 import type { ServerBrowserData } from './browser';
 
@@ -13,21 +14,21 @@ export function parseServerParam(value: string | undefined): string | null {
  * Selected server for `?server=`: `none` (nothing requested), `selected`, or `missing`
  * (a well-formed ID that is not in the configured set, e.g. a removed server).
  */
-export function resolveSelection(servers: readonly ServerSnapshot[], param: string | null): { kind: 'none' } | { kind: 'selected'; server: ServerSnapshot } | { kind: 'missing' } {
+export function resolveSelection(servers: readonly PublicServerSnapshot[], param: string | null): { kind: 'none' } | { kind: 'selected'; server: PublicServerSnapshot } | { kind: 'missing' } {
   if (!param) return { kind: 'none' };
   const server = servers.find((candidate) => candidate.publicId === param);
   return server ? { kind: 'selected', server } : { kind: 'missing' };
 }
 
 /** `64 / 100`, `— / 100` or `null` when neither value is known (never 0 for unknown). */
-export function populationParts(server: Pick<ServerSnapshot, 'players' | 'capacity'>): { players: number | null; capacity: number | null } | null {
+export function populationParts(server: Pick<PublicServerSnapshot, 'players' | 'capacity'>): { players: number | null; capacity: number | null } | null {
   if (server.players === null && server.capacity === null) return null;
   return { players: server.players, capacity: server.capacity };
 }
 
 /** Age the last response even when a browser is paused, disconnected or a poll fails. */
 export function ageServerBrowserData(data: ServerBrowserData, now: Date, failed = false): ServerBrowserData {
-  const freshness = (observedAt: string | null, previous: ServerSnapshot['freshness']) => {
+  const freshness = (observedAt: string | null, previous: PublicServerSnapshot['freshness']) => {
     const age = classifyFreshness(observedAt ? new Date(observedAt) : null, now, SERVER_FRESHNESS);
     if (age === 'unavailable' || previous === 'unavailable') return 'unavailable' as const;
     return failed || previous === 'stale' || age === 'stale' ? 'stale' as const : 'fresh' as const;

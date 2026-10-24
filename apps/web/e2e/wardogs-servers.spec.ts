@@ -75,7 +75,11 @@ test('Wardogs read API is scoped and rejects arbitrary source selectors', async 
   expect(response.headers()['cache-control']).toContain('no-store');
   const data = await response.json();
   expect(data.overview.servers).toHaveLength(1);
-  expect(data.overview.servers[0].ref.game).toBe('wardogs');
+  expect(data.overview.servers[0].publicId).toBe('synthetic-wardogs');
+  expect(data.overview.servers[0]).not.toHaveProperty('ref');
+  expect(data.overview.servers[0].teamScores).toEqual([
+    { label: 'Alpha', score: 0 }, { label: 'Bravo', score: 12 }, { label: 'Charlie', score: 7 },
+  ]);
   expect(data.overview.servers[0].teamScores).toHaveLength(3);
   expect(data.livePlayers).toBeNull();
   expect((await request.get('/api/servers/wardogs?source=https://private.example')).status()).toBe(400);

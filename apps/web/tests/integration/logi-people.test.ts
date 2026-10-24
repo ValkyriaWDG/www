@@ -2,7 +2,7 @@ import { logiMemberLink, logiProjection, logiSyncScope, memberProfile } from '@v
 import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { testPrincipal } from '@/modules/access/testing';
-import { configuredLogiSources } from '@/modules/integrations/logi-config';
+import { configuredLogiSources, logiPeopleStatisticsSource } from '@/modules/integrations/logi-config';
 import { readLogiMemberCandidates, readLogiTeam, readPublicLogiEventPeople, readPublicLogiMemberEnrichment, readPublicLogiRosterDirectory } from '@/modules/integrations/logi-people';
 import { readActiveLogiProjections } from '@/modules/integrations/logi-store';
 import fixture from '@/modules/integrations/logi/fixtures/v0.14-people.json';
@@ -15,19 +15,20 @@ const config = { sourceInstanceId: 'synthetic-people', origin: 'https://logi.exa
 const env = { LOGI_SOURCES_JSON: JSON.stringify([config]), LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-123456', LOGI_DATA_API_KEY_WDG: 'synthetic-data-key-123456' };
 const people = configuredLogiSources(env, 'people')[0]!;
 const data = configuredLogiSources(env, 'data')[0]!;
+const statistics = logiPeopleStatisticsSource(people);
 const member = testPrincipal(['member'], { games: ['wardogs'], intent: 'read' });
 const editor = testPrincipal(['editor'], { games: ['wardogs'], intent: 'read' });
 const options = { now: () => clock };
 const profile = () => readPublicLogiMemberEnrichment(database.db, env, 'approved-player', options);
 const event = () => readPublicLogiEventPeople(database.db, env, 'wardogs', 'event-example', options);
 const directory = () => readPublicLogiRosterDirectory(database.db, env, options);
-const checkpoint = () => ({ version: 1, generation: null, mode: 'live', resourceIndex: 3, listCursor: null, boundaryCursor: 'boundary', cursor: 'current', reconciledAt: clock.toISOString() });
+const checkpoint = (resourceIndex = 2) => ({ version: 1, generation: null, mode: 'live', resourceIndex, listCursor: null, boundaryCursor: 'boundary', cursor: 'current', reconciledAt: clock.toISOString() });
 
 async function projection(scopeKey: string, resource: string, payload: Record<string, unknown>) {
   await database.db.insert(logiProjection).values({ scopeKey, generation: 'accepted', resource, externalId: String(payload.id), revision: '1', operation: 'upsert', data: payload, observedAt: clock });
 }
 async function updateProjection(resource: string, payload: Record<string, unknown> | null) {
-  await database.db.update(logiProjection).set({ data: payload, operation: payload ? 'upsert' : 'remove', revision: '2' }).where(and(eq(logiProjection.scopeKey, people.scopeKey), eq(logiProjection.resource, resource)));
+  await database.db.update(logiProjection).set({ data: payload, operation: payload ? 'upsert' : 'remove', revision: '2' }).where(and(eq(logiProjection.scopeKey, resource === 'player-stat-summaries' ? statistics.scopeKey : people.scopeKey), eq(logiProjection.resource, resource)));
 }
 
 async function withPublicAlias(change: 'equal' | 'unreviewed' | 'conflicting' | 'unknown-canonical' | 'absent-canonical' = 'equal') {
@@ -49,10 +50,10 @@ beforeEach(async () => {
   clock = new Date('2026-10-03T10:01:00Z');
   await database.db.delete(memberProfile);
   await database.db.delete(logiSyncScope);
-  for (const source of [people, data]) await database.db.insert(logiSyncScope).values({ scopeKey: source.scopeKey, sourceInstanceId: source.sourceInstanceId, guildId: source.guildId, gameId: source.gameId, activeGeneration: 'accepted', checkpoint: checkpoint(), version: 1, lastSuccessAt: clock });
+  for (const source of [people, statistics, data]) await database.db.insert(logiSyncScope).values({ scopeKey: source.scopeKey, sourceInstanceId: source.sourceInstanceId, guildId: source.guildId, gameId: source.gameId, activeGeneration: 'accepted', checkpoint: checkpoint(source === statistics ? 1 : source === data ? 5 : 2), version: 1, lastSuccessAt: clock });
   await projection(people.scopeKey, 'member-summaries', fixture.member);
   await projection(people.scopeKey, 'roster-summaries', fixture.roster);
-  await projection(people.scopeKey, 'player-stat-summaries', fixture.statistics);
+  await projection(statistics.scopeKey, 'player-stat-summaries', fixture.statistics);
   const identity = { id: 'event-example', eventId: 'event-example', guildId: config.guildId, gameId: 'wardogs', title: 'Public synthetic match', updatedAt: clock.toISOString() };
   await projection(data.scopeKey, 'event-summaries', { ...identity, eventId: undefined, kind: 'match', status: 'concluded', startsAt: '2026-10-03T09:00:00Z', endsAt: '2026-10-03T10:00:00Z' });
   await projection(data.scopeKey, 'result-summaries', { ...identity, resultState: 'corrected', result: { status: 'corrected', version: 2, participants: [{ id: 'alpha', label: 'Alpha', score: 10 }, { id: 'bravo', label: 'Bravo', score: 20 }], provenance: { origin: 'collected', sources: [] }, reviewedAt: clock.toISOString(), supersedesVersion: 1, attribution: { verified: 1, unresolved: 2 } } });
@@ -62,6 +63,31 @@ beforeEach(async () => {
 });
 
 describe('real PostgreSQL people projection and publication boundary', () => {
+  it.each(['bootstrap', 'revoked', 'expired', 'foreign-identity'] as const)('keeps fresh core rosters when independent statistics are %s', async (reason) => {
+    if (reason === 'bootstrap') await database.db.update(logiSyncScope).set({ checkpoint: { ...checkpoint(1), mode: 'bootstrap', generation: 'people-stats-v1:partial' } }).where(eq(logiSyncScope.scopeKey, statistics.scopeKey));
+    if (reason === 'revoked') await database.db.update(logiSyncScope).set({ errorCode: 'forbidden' }).where(eq(logiSyncScope.scopeKey, statistics.scopeKey));
+    if (reason === 'expired') await database.db.update(logiSyncScope).set({ lastSuccessAt: new Date(clock.getTime() - 6 * 60_000) }).where(eq(logiSyncScope.scopeKey, statistics.scopeKey));
+    if (reason === 'foreign-identity') await updateProjection('player-stat-summaries', { ...fixture.statistics, players: fixture.statistics.players.map((player) => ({ ...player, identityId: 'different-person' })) });
+    expect(await directory()).toHaveLength(1);
+    expect(await profile()).toMatchObject([{ statistics: null, rosters: [{ profileSlug: 'approved-player' }] }]);
+    expect(await event()).toMatchObject({ roster: [{ profileSlug: 'approved-player' }], statistics: [] });
+    expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'fresh', members: [{ statistics: null }], rosters: [{ eventId: 'event-example' }] });
+    expect(await readLogiMemberCandidates(database.db, env, editor, 'wardogs', options)).toHaveLength(1);
+  });
+  it('rejects a complete statistics generation above its unchanged row capacity without hiding current members', async () => {
+    await database.db.insert(logiProjection).values(Array.from({ length: 1000 }, (_, index) => ({ scopeKey: statistics.scopeKey, generation: 'accepted', resource: 'player-stat-summaries', externalId: `extra-${index}`, revision: '1', operation: 'upsert', data: { ...fixture.statistics, id: `extra-${index}` }, observedAt: clock })));
+    await expect(readActiveLogiProjections(database.db, statistics)).rejects.toThrow('capacity exceeded');
+    expect(await directory()).toHaveLength(1);
+    expect(await profile()).toMatchObject([{ statistics: null, rosters: [{ profileSlug: 'approved-player' }] }]);
+  });
+  it('still rejects an oversized core generation before returning personal JSON', async () => {
+    await updateProjection('member-summaries', { ...fixture.member, oversized: 'x'.repeat(16 * 1024 * 1024) });
+    await expect(readActiveLogiProjections(database.db, people)).rejects.toThrow('capacity exceeded');
+    expect(await profile()).toEqual([]);
+    expect(await event()).toBeNull();
+    expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'unavailable', members: [] });
+    expect(await readLogiMemberCandidates(database.db, env, editor, 'wardogs', options)).toEqual([]);
+  });
   it('counts a reviewed equivalent alias once across directory, profile and match roster', async () => {
     const aliasedEnv = await withPublicAlias();
     const directoryRows = await readPublicLogiRosterDirectory(database.db, aliasedEnv, options);
@@ -219,8 +245,8 @@ describe('real PostgreSQL people projection and publication boundary', () => {
     expect((await readLogiTeam(database.db, env, member, 'wardogs', options)).state).toBe('stale');
     clock = new Date('2026-10-03T10:07:00Z');
     await database.db.update(logiSyncScope).set({ checkpoint: checkpoint(), lastSuccessAt: clock }).where(eq(logiSyncScope.scopeKey, people.scopeKey));
-    expect(await profile()).toEqual([]);
-    expect((await readLogiTeam(database.db, env, member, 'wardogs', options)).state).toBe('unavailable');
+    expect(await profile()).toMatchObject([{ statistics: null, rosters: [{ profileSlug: 'approved-player' }] }]);
+    expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'fresh', members: [{ statistics: null }] });
   });
   it('labels stale private rows but omits public data, then removes unavailable private rows', async () => {
     await updateProjection('player-stat-summaries', null);
@@ -231,9 +257,9 @@ describe('real PostgreSQL people projection and publication boundary', () => {
     expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'unavailable', members: [], attendance: [] });
   });
   it('does not disguise an expired session as complete statistics from a fresher subset', async () => {
-    await projection(people.scopeKey, 'player-stat-summaries', { ...fixture.statistics, id: 'expired-session', externalSessionId: 'expired-round', attributionCheckedAt: '2026-10-03T09:50:00.000Z' });
-    expect(await profile()).toEqual([]);
-    expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'unavailable', members: [] });
+    await projection(statistics.scopeKey, 'player-stat-summaries', { ...fixture.statistics, id: 'expired-session', externalSessionId: 'expired-round', attributionCheckedAt: '2026-10-03T09:50:00.000Z' });
+    expect(await profile()).toMatchObject([{ statistics: null, rosters: [{ profileSlug: 'approved-player' }] }]);
+    expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'fresh', members: [{ statistics: null }] });
   });
   it('does not attach sessions to unreviewed, corrected-away or unpublished events', async () => {
     await updateProjection('player-stat-summaries', { ...fixture.statistics, eventRefs: [{ eventId: 'event-example', resultVersion: 1, resultState: 'confirmed' }] });
@@ -253,7 +279,7 @@ describe('real PostgreSQL people projection and publication boundary', () => {
     await expect(readLogiMemberCandidates(database.db, env, editor, 'wardogs', options)).resolves.toEqual([]);
   });
   it('uses a single decision time instead of silently filtering one session at a TTL boundary', async () => {
-    await projection(people.scopeKey, 'player-stat-summaries', { ...fixture.statistics, id: 'newer-session', externalSessionId: 'newer-round', attributionCheckedAt: '2026-10-03T10:04:00.000Z' });
+    await projection(statistics.scopeKey, 'player-stat-summaries', { ...fixture.statistics, id: 'newer-session', externalSessionId: 'newer-round', attributionCheckedAt: '2026-10-03T10:04:00.000Z' });
     let reads = 0;
     const now = () => new Date(++reads <= 4 ? '2026-10-03T10:05:02.000Z' : '2026-10-03T10:05:02.001Z');
     const result = await readPublicLogiMemberEnrichment(database.db, env, 'approved-player', { now });
@@ -265,9 +291,9 @@ describe('real PostgreSQL people projection and publication boundary', () => {
   });
   it('rejects an oversized generation in PostgreSQL before returning personal JSON', async () => {
     await updateProjection('player-stat-summaries', { ...fixture.statistics, oversized: 'x'.repeat(16 * 1024 * 1024) });
-    await expect(readActiveLogiProjections(database.db, people)).rejects.toThrow('capacity exceeded');
-    expect(await profile()).toEqual([]);
-    expect((await readLogiTeam(database.db, env, member, 'wardogs', options)).state).toBe('unavailable');
-    await expect(readLogiMemberCandidates(database.db, env, editor, 'wardogs', options)).resolves.toEqual([]);
+    await expect(readActiveLogiProjections(database.db, statistics)).rejects.toThrow('capacity exceeded');
+    expect(await profile()).toMatchObject([{ statistics: null, rosters: [{ profileSlug: 'approved-player' }] }]);
+    expect(await readLogiTeam(database.db, env, member, 'wardogs', options)).toMatchObject({ state: 'fresh', members: [{ statistics: null }] });
+    expect(await readLogiMemberCandidates(database.db, env, editor, 'wardogs', options)).toHaveLength(1);
   });
 });

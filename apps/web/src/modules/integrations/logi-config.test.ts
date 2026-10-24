@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { configuredLogiSources } from './logi-config';
+import { createHash } from 'node:crypto';
+import { configuredLogiSources, logiPeopleStatisticsSource } from './logi-config';
 
 const source = { sourceInstanceId: 'local', origin: 'https://logi.example.test', guildId: '100000000000000001', gameId: 'wardogs' };
 const env = (overrides: Record<string, unknown> = {}) => ({
@@ -40,6 +41,17 @@ describe('Logi source scope', () => {
 const peopleEnv = { LOGI_SOURCES_JSON: JSON.stringify([source]), LOGI_DATA_API_KEY_WDG: 'synthetic-data-key-12345', LOGI_PEOPLE_API_KEY_WDG: 'synthetic-people-key-12345' };
 
 describe('separate people source authorization', () => {
+  it('preserves the exact original core authority key and isolates statistics under the same credential', () => {
+    const enabled = { ...peopleEnv, LOGI_SOURCES_JSON: JSON.stringify([{ ...source, syncPeople: true }]) };
+    const core = configuredLogiSources(enabled, 'people')[0]!;
+    expect(core.scopeKey).toBe(createHash('sha256').update(JSON.stringify([source.sourceInstanceId, source.origin, source.guildId, source.gameId, 'people', peopleEnv.LOGI_PEOPLE_API_KEY_WDG])).digest('hex'));
+    const statistics = logiPeopleStatisticsSource(core);
+    expect(statistics.scopeKey).not.toBe(core.scopeKey);
+    expect(statistics).toMatchObject({ apiKey: core.apiKey, origin: core.origin, guildId: core.guildId, gameId: core.gameId, sourceInstanceId: core.sourceInstanceId });
+    const rotated = configuredLogiSources({ ...enabled, LOGI_PEOPLE_API_KEY_WDG: 'rotated-people-key-12345' }, 'people')[0]!;
+    expect(logiPeopleStatisticsSource(rotated).scopeKey).not.toBe(statistics.scopeKey);
+    expect(() => logiPeopleStatisticsSource(configuredLogiSources(enabled, 'data')[0]!)).toThrow();
+  });
   it('defaults to disabled and never needs a people key for existing data', () => {
     expect(configuredLogiSources({ ...peopleEnv, LOGI_PEOPLE_API_KEY_WDG: undefined }, 'people')).toEqual([]);
     expect(configuredLogiSources(peopleEnv, 'data')).toHaveLength(1);

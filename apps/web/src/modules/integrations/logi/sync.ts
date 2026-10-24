@@ -93,6 +93,8 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
   newGeneration?: () => string;
   /** Revalidate identity joins even when no item-change hint was produced. */
   fullRefreshMs?: number;
+  /** Versioned resource policy without extending persisted strict checkpoint JSON. */
+  generationPrefix?: string;
 } = {}): Promise<LogiSyncOutcome> {
   const resources = [...(options.resources ?? reader.resources.filter((resource): resource is LogiCollectionResource => resource !== 'membership-summaries'))].sort();
   const scope: LogiSyncScope = { ...reader.scope, resources };
@@ -106,7 +108,8 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
   if (!Number.isInteger(maxSteps) || maxSteps < 1 || maxSteps > 100
     || !Number.isInteger(maxRunMs) || maxRunMs < 1 || maxRunMs > 50_000
     || !Number.isInteger(leaseMs) || leaseMs <= maxRunMs || leaseMs > 300_000
-    || options.fullRefreshMs !== undefined && (!Number.isInteger(options.fullRefreshMs) || options.fullRefreshMs < 1)) throw new LogiClientError('configuration');
+    || options.fullRefreshMs !== undefined && (!Number.isInteger(options.fullRefreshMs) || options.fullRefreshMs < 1)
+    || options.generationPrefix !== undefined && !/^[a-z0-9-]{1,48}:$/.test(options.generationPrefix)) throw new LogiClientError('configuration');
   const outcome: LogiSyncOutcome = { state: 'pending', committedPages: 0, records: 0, reset: false, error: null, retryAfterMs: null };
   const acquired = await store.acquire(scope, now(), leaseMs);
   if (!acquired) return { ...outcome, state: 'busy' };
@@ -147,7 +150,7 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
     const bootstrapStartedAt = new Date(now()).toISOString();
     const page = await reader.startChanges(resources, { signal });
     const next: LogiSyncCheckpoint = {
-      version: (checkpoint?.version ?? 0) + 1, mode: 'bootstrap', generation: newGeneration(),
+      version: (checkpoint?.version ?? 0) + 1, mode: 'bootstrap', generation: `${options.generationPrefix ?? ''}${newGeneration()}`,
       resourceIndex: 0, listCursor: null, boundaryCursor: page.page.nextCursor, cursor: page.page.nextCursor,
       bootstrapStartedAt,
     };
@@ -163,6 +166,15 @@ export async function synchronizeLogiScope(reader: LogiReader, store: LogiSyncSt
       }
       // Copy narrows the local value; commit advances the captured checkpoint.
       const current: LogiSyncCheckpoint = checkpoint;
+      // A legacy full-people cursor at index one belongs to statistics, not the
+      // new core's roster collection. Restart atomically instead of reusing it.
+      if (options.generationPrefix && (current.mode === 'live'
+        ? current.resourceIndex !== resources.length
+        : !current.generation?.startsWith(options.generationPrefix))) {
+        outcome.reset = true;
+        if (!await beginBootstrap()) return outcome;
+        continue;
+      }
       // A stalled initial sweep need not replay an unbounded old guild backlog.
       // Replace only the invisible generation and repeat every baseline read from
       // a fresh pre-list boundary. Legacy incomplete checkpoints renew once because

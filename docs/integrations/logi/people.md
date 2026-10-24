@@ -63,25 +63,61 @@ disabled source's association can still be removed.
 Native revisions/tombstones are monotonic decimal strings. Cross-row dependencies
 invalidate the producer cursor generation; a 410 during the lists starts a fresh
 snapshot, and a 410 on replay or while live waits for the next full reconciliation
-(Logi keeps no replay log since 7 October 2026). Full people reconciliation runs
-every five minutes to recheck proof/source ownership. Idle
-polling does not reset its age. Reset/bootstrap hides prior public people data.
+(Logi keeps no replay log since 7 October 2026). Members and rosters form one atomic
+core generation, reconciled every two minutes. Collected statistics form a separate
+atomic generation, reconciled every five minutes. Idle polling does not reset either
+age. Reset/bootstrap hides prior public output from the affected generation.
 
 Public output and association candidates require a complete live generation, no
 source error, successful synchronization and reconciliation within five minutes.
-Every statistics session must also have attribution checked within five minutes.
-Any expired attribution makes the whole scope unavailable, preventing silent partial
-totals. A private directory/roster snapshot without expired facts may be shown as
+Statistics additionally require a complete fresh statistics generation and a current
+core identity. Every statistics session must have attribution checked within five
+minutes. Any expired attribution makes all statistics from that scope unavailable,
+preventing silent partial totals; it does not hide healthy members or rosters. The
+final public consent query also checks both source versions and error state. A
+private directory/roster snapshot may be shown as
 explicitly stale for at most fifteen minutes. It never authorizes a request. A
 revoked/forbidden source immediately suppresses personal output.
 
-There is a limit of 1,000 active people projection rows and 16 MiB of JSON per source;
-exceeding it makes the whole scope unavailable. Producer roster/session pages scan
-one native item and may be empty with a continuation. A people sync pass allows
-100 steps / 50 seconds with a 60-second lease. Large histories or continuously
-changing sources may not finish within the freshness window and remain unavailable.
+There is a limit of 1,000 active projection rows and 16 MiB of JSON per scope,
+independently for core and statistics; exceeding it makes that scope unavailable.
+Producer roster/session pages scan one native item and may be empty with a
+continuation. All configured game cores run before statistics. Each core pass allows
+100 steps / 50 seconds; each statistics pass allows 30 steps / 10 seconds. Both use
+a 60-second lease and commit resumable pages under the existing version fence.
+An unbounded HLL statistics continuation cannot prevent the Wardogs core from being
+attempted first, or prevent the later Wardogs statistics pass indefinitely. Large
+histories or continuously changing sources may not finish within the freshness
+window and statistics remain unavailable.
 History is not silently truncated. Larger deployments need an explicit versioned
 history/window or throughput contract before activation; do not weaken freshness.
+
+## Upgrade and rollback
+
+This split requires no SQL migration or new checkpoint JSON field. The core retains
+the exact existing people scope key, preserving reviewed `logi_member_link` identity,
+consent and opt-in associations. Statistics use a separate key derived from that core
+key and `people-statistics-v1`, with the same restricted API key and source identity.
+Key rotation invalidates both caches and still requires explicit association review.
+
+On upgrade, a legacy three-resource live checkpoint starts a full core rebuild.
+Legacy in-progress checkpoints without the `people-core-v1:` generation prefix also
+restart: their resource index 1 meant statistics, whereas the new core index 1 means
+rosters. Old cursors are never reused for a different resource set. New statistics
+start from an empty independent scope; no legacy partial history is published.
+
+An older image still interprets people as three resources and must not resume these
+two-resource checkpoints. To roll back, pause the scheduler, stop all sync workers
+and wait for their leases to expire. Back up the affected core/statistics scope rows
+and projections. In one maintenance transaction, remove projections only for those
+exact configured scopes and reset their operational state: `checkpoint`,
+`active_generation`, lease fields, success/attempt/retry timestamps and `error_code`
+to null, and `version` to 0. Preserve the existing scope rows, source keys,
+`logi_member_link`, profile publication and consent records. Then start the older
+image and scheduler; it must cold-bootstrap all three resources before publication.
+Keep data/membership scopes untouched. This is an operator procedure, not automatic
+rollback behavior. A rollback can restore the original large-history availability
+limitation; it never authorizes partial statistics or relaxed freshness.
 
 ## Verification boundary
 
