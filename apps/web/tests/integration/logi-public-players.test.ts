@@ -165,6 +165,27 @@ describe('owner-authorized public gaming names over real PostgreSQL snapshots', 
     await recreateAssignment();
     expect(await read()).toMatchObject([{ key, href: `/players/${key}`, profileSlug: null, displayName: fixture.member.displayName, activity: [{ rosters: [{ title: 'Public synthetic match' }], statistics: { sessions: 1 } }] }]);
   });
+  it.each(['unresolved', 'conflict'] as const)('retains hidden exact-assignment withdrawal when the native identity becomes %s', async (identityState) => {
+    await editorial({ state: 'hidden', consentConfirmedAt: null });
+    await database.db.update(logiProjection).set({ data: { ...fixture.member, identityState, identityId: null, discordSubject: null, displayName: null } })
+      .where(and(eq(logiProjection.scopeKey, core.scopeKey), eq(logiProjection.resource, 'member-summaries')));
+    expect(await read()).toEqual([]);
+  });
+  it('never inherits a positive editorial name/profile or bound facts from an unresolved exact assignment with false grants', async () => {
+    await editorial({}, { allowRoster: false, allowStats: false });
+    const unresolved = logiMemberSummarySchema.parse({ ...fixture.member, identityState: 'unresolved', identityId: null, discordSubject: null, displayName: null });
+    await database.db.update(logiProjection).set({ data: unresolved }).where(and(eq(logiProjection.scopeKey, core.scopeKey), eq(logiProjection.resource, 'member-summaries')));
+    const unresolvedKey = publicLogiPlayerKey(core, unresolved);
+    expect(await read()).toMatchObject([{ key: unresolvedKey, href: `/players/${unresolvedKey}`, profileSlug: null, displayName: null, activity: [{ rosters: [], statistics: null }] }]);
+    expect(await readPublicLogiPlayerStatisticsTargets(database.db, env, unresolvedKey, options)).toEqual([]);
+  });
+  it('does not transfer a different resolved native person’s editorial identity or withdrawal by the reused assignment alone', async () => {
+    await editorial({ state: 'hidden', consentConfirmedAt: null });
+    const current = logiMemberSummarySchema.parse({ ...fixture.member, identityId: 'different-native-person', discordSubject: '910000000000000099' });
+    await database.db.update(logiProjection).set({ data: current }).where(and(eq(logiProjection.scopeKey, core.scopeKey), eq(logiProjection.resource, 'member-summaries')));
+    const currentKey = publicLogiPlayerKey(core, current);
+    expect(await read()).toMatchObject([{ key: currentKey, href: `/players/${currentKey}`, profileSlug: null, displayName: fixture.member.displayName, activity: [{ rosters: [], statistics: null }] }]);
+  });
   it('retains unresolved entries without claiming identity-bound roster or statistics facts', async () => {
     await database.db.update(logiProjection).set({ data: { ...fixture.member, identityState: 'unresolved', identityId: null, discordSubject: null, displayName: null } }).where(and(eq(logiProjection.scopeKey, core.scopeKey), eq(logiProjection.resource, 'member-summaries')));
     expect(await read()).toMatchObject([{ displayName: null, activity: [{ rosters: [], statistics: null }] }]);

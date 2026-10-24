@@ -128,13 +128,13 @@ async function readPlayerPublication(db: Executor, env: LogiIntegrationEnv, opti
       currentGames.add(game);
       for (const member of snapshot.members.values()) {
         const key = publicLogiPlayerKey(snapshot.source, member);
-        const associated = scoped.filter(({ link }) => link && member.identityState === 'resolved' && link.identityId === member.identityId
+        const associated = scoped.filter(({ link }) => link && (member.identityState === 'resolved' ? link.identityId === member.identityId : link.memberId === member.id)
           && link.sourceInstanceId === snapshot.source.sourceInstanceId && link.guildId === snapshot.source.guildId && link.gameId === snapshot.source.gameId);
         // Neither key rotation nor assignment recreation erases an exact native
-        // person's withdrawal/opt-outs. Positive editorial authority still requires
-        // the complete current assignment and service scope, with no nickname join.
+        // person's withdrawal/opt-outs. An unresolved/conflicting identity retains
+        // negative decisions for its exact assignment only, never positive authority.
         if (associated.some((row) => row.profileState !== 'published' || !row.consent || !row.profileGames?.includes(game))) { blocked.add(key); continue; }
-        const exact = associated.find((row) => row.link?.scopeKey === snapshot.source.scopeKey && row.link.memberId === member.id);
+        const exact = member.identityState === 'resolved' ? associated.find((row) => row.link?.scopeKey === snapshot.source.scopeKey && row.link.memberId === member.id) : undefined;
         const allowStats = associated.every((row) => row.link?.allowStats === true);
         const allowRoster = associated.every((row) => row.link?.allowRoster === true);
         const profileSlug = exact?.profileSlug ?? null;

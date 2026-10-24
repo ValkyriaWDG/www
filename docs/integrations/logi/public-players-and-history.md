@@ -22,6 +22,9 @@ Owner-authorized basic gaming publication does not create personal consent. Biog
 avatar and editorial roles keep their existing published/consented profile gate.
 Exact hidden/withdrawn associations and roster/statistics opt-outs still suppress the
 corresponding facts, including across service-key rotation.
+Negative decisions also survive assignment recreation for the same resolved native
+person, or an unresolved/conflicting identity on the exact same assignment. Positive
+personal-profile authority always requires the current complete resolved binding.
 
 ## Player statistics
 

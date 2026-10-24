@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-24",
+  "recordedAt": "2026-10-25",
   "assets": [
     {
       "id": "01-gold-exchange",
@@ -17848,6 +17848,182 @@
       "bytes": 72450,
       "width": 1265,
       "height": 712
+    },
+    {
+      "id": "public-players-history-2026-10-25-directory-cs-1280",
+      "path": "docs/evidence/public-players-history-2026-10-25/directory-cs-1280.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "8102ba9994004329471b0079b48744a5fe043b761eef046f2f0dd6464521ac16",
+      "bytes": 414738,
+      "width": 1280,
+      "height": 1468
+    },
+    {
+      "id": "public-players-history-2026-10-25-directory-cs-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/directory-cs-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "2ffcd98421e3c66675a4b1eb71c150710ee4434148120578941c440e6d2f8432",
+      "bytes": 246210,
+      "width": 390,
+      "height": 2430
+    },
+    {
+      "id": "public-players-history-2026-10-25-directory-en-1280",
+      "path": "docs/evidence/public-players-history-2026-10-25/directory-en-1280.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "3226c131e45f7a38fe09d442b5e19ac96338b852f2e43e71bb9857402a1f7af6",
+      "bytes": 405002,
+      "width": 1280,
+      "height": 1468
+    },
+    {
+      "id": "public-players-history-2026-10-25-directory-en-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/directory-en-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "d8eaa00dcb99f65a78555002064ceaedae75fcd9a024bee08a7ebe87f1510a7c",
+      "bytes": 238409,
+      "width": 390,
+      "height": 2320
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-cs-1280",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-cs-1280.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "f889d01c7f802e2062fb3ca9be7f71ecbcedc061eda9f99bb64f1d65c196c4fa",
+      "bytes": 460630,
+      "width": 1280,
+      "height": 3157
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-cs-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-cs-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "3764b6b3a5f2cda04690c1e07a5490a165af05c6c38a0b9ea7e4f6e1dfa34136",
+      "bytes": 297031,
+      "width": 390,
+      "height": 4171
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-en-1280",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-en-1280.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "4779caa4b084186b8df5f5560cebaafe40cad725df808eb2f10b03c904f71064",
+      "bytes": 463619,
+      "width": 1280,
+      "height": 3157
+    },
+    {
+      "id": "public-players-history-2026-10-25-player-en-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/player-en-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "b3954eacb66b8b03650befd0ba50e03694706f9f509ffca39b328e2410586508",
+      "bytes": 299236,
+      "width": 390,
+      "height": 4047
+    },
+    {
+      "id": "public-players-history-2026-10-25-hll-history-cs-1440",
+      "path": "docs/evidence/public-players-history-2026-10-25/hll-history-cs-1440.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "619dc1cf661f031be254a3ab9f266eb213a137a82ed897918ae903750c363aea",
+      "bytes": 198899,
+      "width": 1440,
+      "height": 1906
+    },
+    {
+      "id": "public-players-history-2026-10-25-hll-history-cs-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/hll-history-cs-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "7e636b125f9db3439d1eb71379e7d42397b55b6dfe9c940fbe696415937e1467",
+      "bytes": 167894,
+      "width": 390,
+      "height": 2762
+    },
+    {
+      "id": "public-players-history-2026-10-25-hll-history-en-1440",
+      "path": "docs/evidence/public-players-history-2026-10-25/hll-history-en-1440.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "35eb41037bb6df24d6d5366332562adf9c3f60e903debe9261177d6f8a761f42",
+      "bytes": 197054,
+      "width": 1440,
+      "height": 1906
+    },
+    {
+      "id": "public-players-history-2026-10-25-hll-history-en-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/hll-history-en-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "a9b859344fafdf88a338f045f80fef967fd52acc5e053a1fb501400ef8b6da97",
+      "bytes": 165141,
+      "width": 390,
+      "height": 2740
+    },
+    {
+      "id": "public-players-history-2026-10-25-wardogs-history-cs-1440",
+      "path": "docs/evidence/public-players-history-2026-10-25/wardogs-history-cs-1440.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "0cfeacbd624376aa0ff988738cd87b4c4fcb0db5aa773bfc6d63e6cf563c3a32",
+      "bytes": 896209,
+      "width": 1440,
+      "height": 4835
+    },
+    {
+      "id": "public-players-history-2026-10-25-wardogs-history-cs-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/wardogs-history-cs-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "0b5b04e3f691d8cf31bba27d1a96f92da36ce3e99652654e3da857e42ba8edb9",
+      "bytes": 589927,
+      "width": 390,
+      "height": 7475
+    },
+    {
+      "id": "public-players-history-2026-10-25-wardogs-history-en-1440",
+      "path": "docs/evidence/public-players-history-2026-10-25/wardogs-history-en-1440.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "f396d4a065689d6dd79aa3e036f5cff5a472f83360e2510c82167c376689679d",
+      "bytes": 919907,
+      "width": 1440,
+      "height": 4859
+    },
+    {
+      "id": "public-players-history-2026-10-25-wardogs-history-en-390",
+      "path": "docs/evidence/public-players-history-2026-10-25/wardogs-history-en-390.png",
+      "source": "Actual synthetic local Chromium application capture on 2026-10-25; source b954ef5ccb29caa0d4d23520ce9d7a4602fc9542; build zxxN5ApXMysIhFQwZCyw8; scenario, route, viewport and limits in README",
+      "usage": "verification-evidence-only",
+      "rights": "Valkyria application screenshot using synthetic identities and fixtures; no real private member data; verification only",
+      "sha256": "eeca690b8e773354a721d307ca73da4ea8a13febf3f78c3f827a21a8cfc93030",
+      "bytes": 599878,
+      "width": 390,
+      "height": 7440
     }
   ]
 }
