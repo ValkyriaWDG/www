@@ -71,6 +71,8 @@
 
 .gameItem {
   display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .gameCard {
@@ -79,6 +81,7 @@
   --card-wash: rgb(217 173 50 / 0.1);
 
   display: grid;
+  flex: 1;
   grid-template-rows: minmax(160px, 22vh) auto;
   width: 100%;
   border: var(--border-hairline) solid var(--color-border);
@@ -162,6 +165,22 @@
 }
 
 /* ---- Shared destinations and latest post ---- */
+.nextMatch {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-top: 0;
+  background: var(--color-panel);
+}
+
+.nextMatch .latestLink {
+  font-size: 1.125rem;
+  overflow-wrap: anywhere;
+}
+
 .lower {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);

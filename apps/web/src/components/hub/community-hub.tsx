@@ -83,7 +83,7 @@ export async function CommunityHub({ locale }: { locale: AppLocale }) {
                 </span>
               </Link>
               {upcoming.filter((row) => row.game === game && row.match).map(({ match }) => match ? (
-                <p key={match.href} className={styles.latestItem} data-hub-next-match={game}>
+                <p key={match.href} className={styles.nextMatch} data-hub-next-match={game}>
                   <span className={styles.latestMeta}>{games('hll.strip.nextMatch')}</span>
                   <Link href={match.href} className={styles.latestLink}>{match.title ?? games('hll.strip.versus', { opponent: match.opponent })}</Link>
                   <time className={styles.latestMeta} dateTime={match.startsAt}>{formatDate(match.startsAt, locale, 'dateTimeZone')}</time>

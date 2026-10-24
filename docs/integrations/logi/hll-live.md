@@ -47,6 +47,12 @@ used its Logi source. This implementation does not change those runtime settings
    configuration after deployment; source code and successful tests do not
    switch the hosted runtime.
 
+Keep the previous protected runtime configuration with the previous image. Older
+strict source parsers do not accept the new `publishLivePlayers` property: remove
+that property or restore the paired original configuration before an old-image
+rollback. Deploying this code with the existing configuration is compatible;
+activating a new mapping/grant is a separate reviewed configuration change.
+
 ## Read and publication behavior
 
 The HLL live route accepts **no query string**, unlike the other scoped Logi

@@ -139,9 +139,22 @@ test('an explicitly reviewed identical alias is hidden and its old detail redire
 
 test('both homes select the actual next published Logi match', async ({ page }) => {
   for (const locale of ['cs', 'en'] as const) {
-    await page.goto(`/${locale}`);
-    for (const game of ['hll', 'wardogs']) await expect(page.locator(`[data-hub-next-match="${game}"] a`)).toHaveAttribute('href', `/${locale}/${game}/matches/logi/synthetic-next-${game === 'hll' ? 'hell_let_loose' : 'wardogs'}`);
-    await capture(page, `hub-${locale}-1280`, 'The shared community hub advertises the actual next published match for each game using the same selection as the HLL/Wardogs homes.');
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+      await page.goto(`/${locale}`);
+      for (const game of ['hll', 'wardogs']) {
+        const next = page.locator(`[data-hub-next-match="${game}"]`);
+        const card = page.locator(`[data-hub-game="${game}"]`);
+        await expect(next.locator('a')).toHaveAttribute('href', `/${locale}/${game}/matches/logi/synthetic-next-${game === 'hll' ? 'hell_let_loose' : 'wardogs'}`);
+        const [a, b] = await Promise.all([card.boundingBox(), next.boundingBox()]);
+        expect(a).not.toBeNull(); expect(b).not.toBeNull();
+        expect(Math.abs(a!.x - b!.x)).toBeLessThan(1);
+        expect(Math.abs(a!.width - b!.width)).toBeLessThan(1);
+        expect(b!.y).toBeGreaterThanOrEqual(a!.y + a!.height - 1);
+      }
+      await expectNoHorizontalOverflow(page);
+      await capture(page, `hub-${locale}-${width}`, 'The shared community hub keeps full-width game entries with their actual next published match in a compact strip below each game.');
+    }
     await page.goto(`/${locale}/hll`);
     await expect(page.locator('[data-hll-strip-item="match"]')).toHaveAttribute('href', `/${locale}/hll/matches/logi/synthetic-next-hell_let_loose`);
     await page.goto(`/${locale}/wardogs`);

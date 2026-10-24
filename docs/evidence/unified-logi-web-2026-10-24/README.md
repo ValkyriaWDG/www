@@ -46,6 +46,7 @@ identities, source keys and observations are deliberately invented.
 | Full browser regression | `pnpm test:e2e` | 272 passed; 166 documented opt-in capture/media cases skipped |
 | Connected browser | `CAPTURE_EVIDENCE=1 pnpm --filter @valkyria/web exec playwright test -c playwright.logi.config.ts` | 17 passed; CS/EN at 1440/390, shared game filters, HLL/WDG homes and hub, current archive result, consented lineups, privacy and admin keyboard paths |
 | Final server browser follow-up | Wardogs server and Warcon specs, `--project chromium --workers 1` after final server composition | 19 passed; no assertion or application change needed after a resource-pressure rerun; HLL live-player journeys also passed in the full regression |
+| Hub geometry and navigation | Connected suite plus menu-shell and platform follow-ups after the final card-flow repair | 17 connected, 22 shell and 14 platform cases passed; next-match strips stay below full-width game entries at 1280px and 390px |
 | Independent source review | Match paging/counts, scoped cache, public/private boundaries and admin guards | No actionable findings in reviewed integrated source |
 
 The full browser run initially exposed two measurement assumptions in an existing
