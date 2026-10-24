@@ -6,7 +6,9 @@ import type { Actor } from '@/modules/access/types';
 import { gameRouteFromDb, GAME_REGISTRY } from '@/modules/games/registry';
 import { configuredLogiSources, type ConfiguredLogiSource, type LogiIntegrationEnv } from './logi-config';
 import type { LogiMemberCandidate, LogiPeopleState, LogiTeamAttendance, LogiTeamRoster, LogiTeamView, PublicLogiEventPeople, PublicLogiMemberEnrichment, PublicLogiRosterActivity, PublicRosterEntry } from './logi-people-types';
+import { attachPublicLogiArchiveLinks } from './logi-match-links';
 import { readPublicLogiEvents } from './logi-public';
+import type { PublicLogiEvent } from './logi/mapping';
 import { readActiveLogiProjections, readLogiProjectionState } from './logi-store';
 import { logiSyncCheckpointSchema } from './logi/sync';
 import { LOGI_PEOPLE_RESOURCES, logiMemberSummarySchema, logiPlayerStatSummarySchema, logiRosterSummarySchema, type LogiMemberSummary, type LogiPlayerStatSummary, type LogiRosterSummary } from './logi/people-contracts';
@@ -147,18 +149,31 @@ async function approvedLinks(db: Executor, snapshots: readonly PeopleSnapshot[],
   return links;
 }
 
-function publicRoster(snapshot: PeopleSnapshot, links: ReadonlyMap<string, ApprovedLink>, eventIds: ReadonlySet<string>, eventTitles: ReadonlyMap<string, string> = new Map()): PublicRosterEntry[] {
+/** Only the browser's reviewed, currently equivalent aliases enter this index. */
+function publicRosterEvents(events: readonly PublicLogiEvent[]): Map<string, PublicLogiEvent> {
+  return new Map(events.flatMap((event) => [event.ref.externalId, ...event.aliases ?? []].map((id) => [id, event] as const)));
+}
+
+async function readScopedPublicEvents(db: Executor, env: LogiIntegrationEnv, source: ConfiguredLogiSource, game: Game, now: Date): Promise<PublicLogiEvent[]> {
+  const events = (await readPublicLogiEvents(db, env, gameRouteFromDb(game), now))
+    .filter((event) => event.ref.sourceInstanceId === source.sourceInstanceId && event.ref.guildId === source.guildId);
+  return attachPublicLogiArchiveLinks(db, env, events);
+}
+
+function publicRoster(snapshot: PeopleSnapshot, links: ReadonlyMap<string, ApprovedLink>, events: ReadonlyMap<string, PublicLogiEvent>): PublicRosterEntry[] {
   const entries = new Map<string, PublicRosterEntry>();
   for (const roster of snapshot.rosters) {
-    if (!eventIds.has(roster.eventId)) continue;
+    const event = events.get(roster.eventId);
+    if (!event) continue;
+    const eventId = event.ref.externalId;
     const add = (reference: LogiRosterSummary['reserves'][number], squadIndex: number | null, squad: string | null, slot: number | null, reserve: boolean) => {
       const member = currentReferencedMember(snapshot.members, reference);
       const link = member ? links.get(member.id) : null;
       if (link?.allowRoster) {
         // Different imported roster IDs can repeat one assignment. Deduplicate the
         // resolved person and position, while retaining genuinely distinct slots.
-        const key = JSON.stringify([roster.eventId, member!.id, member!.identityId, squadIndex, slot, reserve]);
-        entries.set(key, { eventId: roster.eventId, ...(eventTitles.has(roster.eventId) ? { matchTitle: eventTitles.get(roster.eventId)! } : {}), profileSlug: link.slug, displayName: link.displayName, squad, slot, reserve });
+        const key = JSON.stringify([eventId, member!.id, member!.identityId, squadIndex, slot, reserve]);
+        entries.set(key, { eventId, matchTitle: event.title, profileSlug: link.slug, displayName: link.displayName, squad, slot, reserve });
       }
     };
     for (const squad of roster.squads) for (const reference of squad.slots) add(reference, squad.index, squad.name, reference.index, false);
@@ -180,8 +195,7 @@ export async function readPublicLogiRosterDirectory(db: Executor, env: LogiInteg
       if (options.game && options.game !== game) continue;
       const snapshot = await readSnapshot(db, source, options);
       if (!stillPublic(snapshot, options.now?.() ?? new Date())) continue;
-      const events = (await readPublicLogiEvents(db, env, gameRouteFromDb(game), options.now?.() ?? new Date()))
-        .filter((event) => event.ref.sourceInstanceId === source.sourceInstanceId && event.ref.guildId === source.guildId);
+      const events = await readScopedPublicEvents(db, env, source, game, options.now?.() ?? new Date());
       prepared.push({ snapshot, game, events });
     }
     const approved = await approvedLinks(db, prepared.map(({ snapshot }) => snapshot));
@@ -190,8 +204,8 @@ export async function readPublicLogiRosterDirectory(db: Executor, env: LogiInteg
     for (const { snapshot, game, events } of prepared) {
       if (!stillPublic(snapshot, decisionAt)) continue;
       const links = approved.get(snapshot.source.scopeKey) ?? new Map<string, ApprovedLink>();
-      const eventById = new Map(events.map((event) => [event.ref.externalId, event]));
-      const rosters = publicRoster(snapshot, links, new Set(eventById.keys()));
+      const eventById = publicRosterEvents(events);
+      const rosters = publicRoster(snapshot, links, eventById);
       for (const link of links.values()) {
         if (!link.allowRoster) continue;
         const matches = rosters.filter((row) => row.profileSlug === link.slug).map((row) => {
@@ -213,29 +227,27 @@ export async function readPublicLogiRosterDirectory(db: Executor, env: LogiInteg
 export async function readPublicLogiMemberEnrichment(db: Executor, env: LogiIntegrationEnv, profileSlug: string, options: Options & { game?: Game } = {}): Promise<PublicLogiMemberEnrichment[]> {
   try {
     const result: PublicLogiMemberEnrichment[] = [];
-    const prepared: { snapshot: PeopleSnapshot; game: Game; eventIds: Set<string>; eventTitles: Map<string, string> }[] = [];
+    const prepared: { snapshot: PeopleSnapshot; game: Game; events: Map<string, PublicLogiEvent> }[] = [];
     for (const source of configuredLogiSources(env, 'people')) {
       const game: Game = source.gameId === 'wardogs' ? 'wardogs' : 'hell-let-loose';
       if (options.game && options.game !== game) continue;
       const snapshot = await readSnapshot(db, source, options);
       if (!stillPublic(snapshot, options.now?.() ?? new Date())) continue;
       // A member's explicit statistics consent may apply without publishing any match.
-      const events = await readPublicLogiEvents(db, env, gameRouteFromDb(game), options.now?.() ?? new Date()).catch(() => []);
-      const eventIds = new Set(events.filter((event) => event.ref.sourceInstanceId === source.sourceInstanceId && event.ref.guildId === source.guildId).map((event) => event.ref.externalId));
-      const eventTitles = new Map(events.filter((event) => eventIds.has(event.ref.externalId)).map((event) => [event.ref.externalId, event.title]));
-      prepared.push({ snapshot, game, eventIds, eventTitles });
+      const events = await readScopedPublicEvents(db, env, source, game, options.now?.() ?? new Date()).catch(() => []);
+      prepared.push({ snapshot, game, events: publicRosterEvents(events) });
     }
     // One last joined read fences consent, binding and the source checkpoint for every game.
     const allLinks = await approvedLinks(db, prepared.map(({ snapshot }) => snapshot), profileSlug);
     const decisionAt = options.now?.() ?? new Date();
-    for (const { snapshot, game, eventIds, eventTitles } of prepared) {
+    for (const { snapshot, game, events } of prepared) {
       const links = allLinks.get(snapshot.source.scopeKey) ?? new Map<string, ApprovedLink>();
       if (!stillPublic(snapshot, decisionAt)) continue;
       for (const link of links.values()) {
         if (!link.allowStats && !link.allowRoster) continue;
         result.push({ game, observedAt: snapshot.observedAt!,
           statistics: link.allowStats ? summarizePlayerSessions(snapshot.sessions, link.member) : null,
-          rosters: link.allowRoster ? publicRoster(snapshot, links, eventIds, eventTitles) : [],
+          rosters: link.allowRoster ? publicRoster(snapshot, links, events) : [],
         });
       }
     }
@@ -247,8 +259,8 @@ export async function readPublicLogiEventPeople(db: Executor, env: LogiIntegrati
   try {
     const source = configuredLogiSources(env, 'people').find((row) => row.gameId === sourceGame(game));
     if (!source) return null;
-    const events = await readPublicLogiEvents(db, env, gameRouteFromDb(game), options.now?.() ?? new Date());
-    const event = events.find((row) => row.ref.externalId === eventId && row.ref.sourceInstanceId === source.sourceInstanceId && row.ref.guildId === source.guildId);
+    const events = await readScopedPublicEvents(db, env, source, game, options.now?.() ?? new Date());
+    const event = publicRosterEvents(events).get(eventId);
     if (!event) return null;
     const snapshot = await readSnapshot(db, source, options);
     if (!stillPublic(snapshot, options.now?.() ?? new Date())) return null;
@@ -256,8 +268,9 @@ export async function readPublicLogiEventPeople(db: Executor, env: LogiIntegrati
     const links = allLinks.get(snapshot.source.scopeKey) ?? new Map<string, ApprovedLink>();
     const decisionAt = options.now?.() ?? new Date();
     if (!stillPublic(snapshot, decisionAt)) return null;
-    const sessions = snapshot.sessions.filter((session) => session.eventRefs.some((ref) => ref.eventId === eventId && ref.resultVersion === event.result.version && ref.resultState === event.result.state));
-    return { observedAt: snapshot.observedAt!, roster: publicRoster(snapshot, links, new Set([eventId]), new Map([[eventId, event.title]])),
+    const selectedEvents = publicRosterEvents([event]);
+    const sessions = snapshot.sessions.filter((session) => session.eventRefs.some((ref) => selectedEvents.has(ref.eventId) && ref.resultVersion === event.result.version && ref.resultState === event.result.state));
+    return { observedAt: snapshot.observedAt!, roster: publicRoster(snapshot, links, selectedEvents),
       statistics: [...links.values()].flatMap((link) => {
         const statistics = link.allowStats ? summarizePlayerSessions(sessions, link.member) : null;
         return statistics ? [{ profileSlug: link.slug, displayName: link.displayName, statistics }] : [];

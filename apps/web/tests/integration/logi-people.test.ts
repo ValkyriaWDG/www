@@ -30,6 +30,19 @@ async function updateProjection(resource: string, payload: Record<string, unknow
   await database.db.update(logiProjection).set({ data: payload, operation: payload ? 'upsert' : 'remove', revision: '2' }).where(and(eq(logiProjection.scopeKey, people.scopeKey), eq(logiProjection.resource, resource)));
 }
 
+async function withPublicAlias(change: 'equal' | 'unreviewed' | 'conflicting' | 'unknown-canonical' | 'absent-canonical' = 'equal') {
+  const rows = await database.db.select().from(logiProjection).where(eq(logiProjection.scopeKey, data.scopeKey));
+  for (const row of rows) await projection(data.scopeKey, row.resource, {
+    ...(row.data as Record<string, unknown>), id: 'event-alias',
+    ...(row.resource === 'result-summaries' ? { eventId: 'event-alias' } : {}),
+    ...(change === 'conflicting' && row.resource === 'event-summaries' ? { title: 'Different current match facts' } : {}),
+  });
+  await projection(people.scopeKey, 'roster-summaries', { ...fixture.roster, id: 'alias-roster', eventId: 'event-alias' });
+  if (change === 'unknown-canonical' || change === 'absent-canonical') await database.db.update(logiProjection).set({ operation: 'remove', data: null })
+    .where(and(eq(logiProjection.scopeKey, data.scopeKey), eq(logiProjection.externalId, 'event-example'), eq(logiProjection.resource, change === 'unknown-canonical' ? 'result-summaries' : 'event-summaries')));
+  return { ...env, LOGI_SOURCES_JSON: JSON.stringify([{ ...config, matchAliases: change === 'unreviewed' ? [] : [{ canonicalEventId: 'event-example', aliasEventIds: ['event-alias'] }] }]) };
+}
+
 beforeAll(async () => { database = await createTestDatabase(); });
 afterAll(async () => { await database.drop(); });
 beforeEach(async () => {
@@ -49,6 +62,52 @@ beforeEach(async () => {
 });
 
 describe('real PostgreSQL people projection and publication boundary', () => {
+  it('counts a reviewed equivalent alias once across directory, profile and match roster', async () => {
+    const aliasedEnv = await withPublicAlias();
+    const directoryRows = await readPublicLogiRosterDirectory(database.db, aliasedEnv, options);
+    expect(directoryRows).toHaveLength(1);
+    expect(directoryRows[0]!.matches).toHaveLength(1);
+    expect(directoryRows[0]!.matches[0]!.href).toBe('/wardogs/matches/logi/event-example');
+    const profileRows = await readPublicLogiMemberEnrichment(database.db, aliasedEnv, 'approved-player', options);
+    expect(profileRows[0]!.rosters).toHaveLength(1);
+    expect(profileRows[0]!.rosters[0]!.eventId).toBe('event-example');
+    for (const id of ['event-example', 'event-alias']) {
+      const match = await readPublicLogiEventPeople(database.db, aliasedEnv, 'wardogs', id, options);
+      expect(match!.roster).toHaveLength(1);
+      expect(match!.roster[0]!.eventId).toBe('event-example');
+      expect(match!.statistics).toMatchObject([{ statistics: { sessions: 1 } }]);
+    }
+  });
+  it('links alias-only roster and result-attributed sessions to the equivalent canonical match', async () => {
+    const aliasedEnv = await withPublicAlias();
+    await database.db.delete(logiProjection).where(and(eq(logiProjection.scopeKey, people.scopeKey), eq(logiProjection.externalId, fixture.roster.id)));
+    await updateProjection('player-stat-summaries', { ...fixture.statistics, eventRefs: [{ eventId: 'event-alias', resultVersion: 2, resultState: 'corrected' }] });
+    expect(await readPublicLogiRosterDirectory(database.db, aliasedEnv, options)).toMatchObject([{ matches: [{ href: '/wardogs/matches/logi/event-example' }] }]);
+    expect(await readPublicLogiMemberEnrichment(database.db, aliasedEnv, 'approved-player', options)).toMatchObject([{ rosters: [{ eventId: 'event-example', matchTitle: 'Public synthetic match' }] }]);
+    expect(await readPublicLogiEventPeople(database.db, aliasedEnv, 'wardogs', 'event-example', options)).toMatchObject({ roster: [{ eventId: 'event-example' }], statistics: [{ statistics: { sessions: 1 } }] });
+  });
+  it.each(['unreviewed', 'conflicting', 'unknown-canonical', 'absent-canonical'] as const)('keeps %s alias participation independent', async (change) => {
+    const aliasedEnv = await withPublicAlias(change);
+    const expected = change === 'absent-canonical' ? ['event-alias'] : ['event-alias', 'event-example'];
+    const directoryRows = await readPublicLogiRosterDirectory(database.db, aliasedEnv, options);
+    expect(directoryRows.flatMap((row) => row.matches.map((match) => match.href.split('/').at(-1))).sort()).toEqual(expected);
+    const profileRows = await readPublicLogiMemberEnrichment(database.db, aliasedEnv, 'approved-player', options);
+    expect(profileRows.flatMap((row) => row.rosters.map((roster) => roster.eventId)).sort()).toEqual(expected);
+    const alias = await readPublicLogiEventPeople(database.db, aliasedEnv, 'wardogs', 'event-alias', options);
+    expect(alias!.roster.map((row) => row.eventId)).toEqual(['event-alias']);
+  });
+  it.each(['consent', 'scope', 'roster-grant', 'game'] as const)('does not let an approved alias bypass a revoked %s boundary', async (boundary) => {
+    const aliasedEnv = await withPublicAlias();
+    if (boundary === 'consent') await database.db.update(memberProfile).set({ state: 'hidden', consentConfirmedAt: null }).where(eq(memberProfile.id, profileId));
+    if (boundary === 'scope') await database.db.update(logiSyncScope).set({ errorCode: 'forbidden' }).where(eq(logiSyncScope.scopeKey, people.scopeKey));
+    if (boundary === 'roster-grant') await database.db.update(logiMemberLink).set({ allowRoster: false }).where(eq(logiMemberLink.profileId, profileId));
+    if (boundary === 'game') await database.db.update(memberProfile).set({ games: ['hell-let-loose'] }).where(eq(memberProfile.id, profileId));
+    expect(await readPublicLogiRosterDirectory(database.db, aliasedEnv, options)).toEqual([]);
+    const profiles = await readPublicLogiMemberEnrichment(database.db, aliasedEnv, 'approved-player', options);
+    expect(profiles.flatMap((row) => row.rosters)).toEqual([]);
+    const match = await readPublicLogiEventPeople(database.db, aliasedEnv, 'wardogs', 'event-example', options);
+    expect(match?.roster ?? []).toEqual([]);
+  });
   it('adds approved match lineups to the ordinary public profile directory without private member fields', async () => {
     const result = await directory();
     expect(result).toEqual([{

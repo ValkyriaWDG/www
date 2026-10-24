@@ -1,5 +1,22 @@
 # Current status
 
+## Production acceptance follow-up — 2026-10-24
+
+PR [#112](https://github.com/ValkyriaWDG/www/pull/112) was squash-merged as
+`b7bb391c18499eea7c02e3cdaa2316023e1253f6` after its complete PR-head CI passed.
+Production activation is now owner-authorized and in progress; the running image
+has not yet been replaced by this follow-up.
+
+The public directory, profile enrichment and match detail now resolve roster and
+statistics references through the same reviewed, fact-equivalent alias decisions
+as the unified match browser. Links/counts use the canonical event. Unreviewed or
+conflicting aliases remain separate; consent, exact source/identity bindings,
+freshness and result-version checks still apply. Ten new PostgreSQL regressions
+cover both games and the rejection boundaries. Local validation passed 1,292 unit
+tests, all 539 PostgreSQL integration tests, full type checking and production build.
+Hosted CI, Logi configuration and actual production observations remain separate
+acceptance steps; the final deployment record must identify the accepted SHA/digest.
+
 ## Unified Logi public website — 2026-10-24
 
 Branch `feat/unified-logi-web` extends main `9b6ffd78` with one public match
