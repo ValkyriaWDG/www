@@ -7,6 +7,7 @@ import type { WarconServerPublic } from '../logi/readers/public';
 import { getLogiHllServerDetail, getServerLivePlayers } from './live-players-provider';
 import { resetServerPresentationCache } from './presentation';
 import { getServerOverview, type ServerOverview } from './provider';
+import { GET } from '@/app/api/servers/[game]/route';
 
 const select = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/db', () => ({ getDb: () => ({ select: () => ({ from: () => ({ where: () => ({ limit: select }) }) }) }) }));
@@ -46,6 +47,24 @@ afterEach(() => {
 });
 
 describe('server browser data with the website presentation', () => {
+  it.each(['hll', 'wardogs'] as const)('publishes %s initial page and actual polling JSON without connection or tenant references', async (game) => {
+    const internal = {
+      ...snapshot('bravo'),
+      ref: { source: 'logi' as const, sourceInstanceId: 'PRIVATE_INSTANCE', guildId: 'PRIVATE_GUILD', game, kind: 'server' as const, externalId: 'PRIVATE_CONNECTION' },
+      teamScores: [{ id: 'PRIVATE_FACTION_ID', label: 'Faction A', score: 0 }],
+    };
+    vi.mocked(getServerOverview).mockResolvedValue({ state: 'ok', synthetic: false, partial: false, attemptedAt: now.toISOString(), servers: [internal] });
+    const initial = await getServerBrowserData(game, 'bravo');
+    const response = await GET(new Request(`https://valkyria.example/api/servers/${game}?server=bravo`), { params: Promise.resolve({ game }) });
+    const polling: unknown = await response.json();
+    for (const result of [initial, polling]) {
+      expect(JSON.stringify(result)).not.toContain('PRIVATE_');
+      expect(result).toMatchObject({ overview: { servers: [{ publicId: 'bravo', teamScores: [{ label: 'Faction A', score: 0 }] }] } });
+    }
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(getServerLivePlayers).toHaveBeenCalledWith(game, 'bravo', expect.any(Date));
+    expect(internal.ref.externalId).toBe('PRIVATE_CONNECTION');
+  });
   it('never asks the upstream for the live players of a hidden server', async () => {
     const data = await getServerBrowserData('hll', 'alpha');
     expect(data.overview).toMatchObject({ state: 'ok', servers: [{ publicId: 'bravo' }] });
@@ -74,11 +93,18 @@ describe('server browser data with the website presentation', () => {
   });
 
   it('adds safe selected-server HLL live facts without changing other configured servers', async () => {
+    const status = {
+      map: 'Current map', mode: 'warfare', players: 18, capacity: 100, nextMap: 'Next map', timeRemainingSeconds: 900,
+      score: { allied: 3, axis: 2 }, observedAt: now.toISOString(), freshness: 'fresh' as const,
+      // An adapter regression must not reintroduce identity after initial publication.
+      ref: { connectionId: 'PRIVATE_HLL_CONNECTION' },
+    };
     vi.mocked(getLogiHllServerDetail).mockResolvedValue({
-      status: { map: 'Current map', mode: 'warfare', players: 18, capacity: 100, nextMap: 'Next map', timeRemainingSeconds: 900, score: { allied: 3, axis: 2 }, observedAt: now.toISOString(), freshness: 'fresh' }, players,
+      status, players,
     });
     const data = await getServerBrowserData('hll', 'bravo');
     expect(data.overview).toMatchObject({ servers: [{ publicId: 'bravo', map: 'Current map', mode: 'warfare', nextMap: 'Next map', timeRemainingSeconds: 900, score: { allied: 3, axis: 2 } }] });
+    expect(JSON.stringify(data)).not.toContain('PRIVATE_HLL_CONNECTION');
     expect(getLogiHllServerDetail).toHaveBeenCalledExactlyOnceWith('bravo', expect.any(Date));
   });
 

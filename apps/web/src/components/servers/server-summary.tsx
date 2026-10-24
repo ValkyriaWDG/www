@@ -6,7 +6,7 @@ import { ServerIcon } from '@/components/ui/icons';
 import { formatDate, formatNumber } from '@/i18n/date-format';
 import { Link } from '@/i18n/navigation';
 import type { AppLocale } from '@/i18n/routing';
-import type { ServerOverview } from '@/modules/integrations/servers/provider';
+import type { PublicServerOverview } from '@/modules/integrations/servers/public';
 import { TeamScores } from './team-scores';
 import { useServerPolling } from './use-server-polling';
 import styles from './server-summary.module.css';
@@ -16,7 +16,7 @@ import styles from './server-summary.module.css';
  * Warcon facts carried by the polling route are not rendered here: the home keeps the
  * compact overview so the utility rail stays within short windows (shell layout spec).
  */
-export function ServerSummary({ initialOverview, locale }: { initialOverview: ServerOverview; locale: AppLocale }) {
+export function ServerSummary({ initialOverview, locale }: { initialOverview: PublicServerOverview; locale: AppLocale }) {
   const t = useTranslations('games.servers');
   const poll = useServerPolling('wardogs', null, { overview: initialOverview, livePlayers: null, warcon: null });
   const { overview } = poll.data;

@@ -4,6 +4,7 @@ import type { ServerPresentationRow } from '@/modules/settings/schemas';
 import type { ServerSnapshot } from '../contract';
 import { applyServerPresentation, getPublicServerOverview, getServerPresentation, isServerPublished, resetServerPresentationCache, SERVER_PRESENTATION_CACHE_MS } from './presentation';
 import { getServerOverview, type ServerOverview } from './provider';
+import { toPublicServerOverview } from './public';
 
 const { select, getDb } = vi.hoisted(() => ({ select: vi.fn(), getDb: vi.fn() }));
 vi.mock('@/lib/db', () => ({ getDb }));
@@ -79,10 +80,10 @@ describe('server presentation overrides', () => {
     expect(isServerPublished([{ game: 'wardogs', publicId: 'community-two', published: false }], 'wardogs', 'community-two')).toBe(false);
   });
 
-  it('returns the provider overview unchanged without a database', async () => {
+  it('publishes the provider telemetry without its source identity even without a database', async () => {
     withoutDatabase();
     vi.mocked(getServerOverview).mockResolvedValue(crcon);
-    expect(await getPublicServerOverview('hll', now)).toBe(crcon);
+    expect(await getPublicServerOverview('hll', now)).toEqual(toPublicServerOverview(crcon));
     expect(select).not.toHaveBeenCalled();
   });
 
@@ -124,7 +125,7 @@ describe('server presentation overrides', () => {
     });
     vi.mocked(getServerOverview).mockResolvedValue(crcon);
     expect(await getServerPresentation(now)).toEqual([]);
-    expect(await getPublicServerOverview('hll', now)).toBe(crcon);
+    expect(await getPublicServerOverview('hll', now)).toEqual(toPublicServerOverview(crcon));
   });
 
   it('does not let a read started before a save repopulate the cache after the reset', async () => {

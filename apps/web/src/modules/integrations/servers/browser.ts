@@ -5,10 +5,10 @@ import type { WarconServerPublic } from '../logi/readers/public';
 import type { LivePlayersSnapshot } from './live-players';
 import { getLogiHllServerDetail, getServerLivePlayers } from './live-players-provider';
 import { getPublicServerOverview, getServerPresentation, isServerPublished } from './presentation';
-import type { ServerOverview } from './provider';
+import { toPublicServerOverview, type PublicServerOverview } from './public';
 
 export type ServerBrowserData = {
-  overview: ServerOverview;
+  overview: PublicServerOverview;
   livePlayers: LivePlayersSnapshot | null;
   /** Wardogs only: approved Warcon projections for the listed servers (recent matches for the selected one); `null` when not configured. */
   warcon: WarconServerPublic[] | null;
@@ -36,5 +36,5 @@ export async function getServerBrowserData(game: GameRoute, selected: string | n
   // Warcon follows the presented overview: hidden servers are neither listed nor asked for recent matches.
   const publicIds = overview.state === 'not_configured' ? [] : overview.servers.map((server) => server.publicId);
   const warcon = game === 'wardogs' && publicIds.length > 0 ? await getWarconServersPublic(publicIds, listed ? selected : null, now) : null;
-  return { overview, livePlayers: listed ? livePlayers : null, warcon };
+  return { overview: toPublicServerOverview(overview), livePlayers: listed ? livePlayers : null, warcon };
 }

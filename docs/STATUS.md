@@ -1,5 +1,38 @@
 # Current status
 
+## Public telemetry production follow-up — 2026-10-24
+
+Actual production acceptance found the old server overview exposed its internal
+`ServerSnapshot.ref` in Wardogs home/server HTML and polling JSON. The new explicit
+public whitelist removes operational source/tenant/connection references and nested
+team identifiers after presentation and again after selected HLL composition.
+Internal caches/lookup identities remain intact. Public server IDs, approved links,
+metrics, zero/null and freshness semantics remain unchanged. No SQL migration.
+
+Local validation: all 1,297 unit tests, full lint/types/production build, 23 server
+browser journeys and 17 connected CS/EN desktop/mobile journeys passed.
+An independent review and 63 additional focused checks found no actionable issue.
+The first local browser attempts collided in their shared artifact parent; both
+suites then passed sequentially. An old browser assertion expecting the internal
+`ref.game` was replaced with stable public selection, explicit no-`ref` and complete
+label/zero-score checks. No product assertion or privacy requirement was removed.
+PR #113 merged as `dd09d5a43bc5a696f28cda329e505215bc0d423b`; its first publisher
+was cancelled during verification before registry publication when this runtime
+finding was identified. The final release must use this follow-up's accepted SHA,
+complete CI and actual public read-back; the leak is not yet claimed fixed in prod.
+
+Production preparation verified an actual restore of 37 database tables and 442
+media files, plus authenticated decryption/hash verification of the encrypted
+off-host recovery copy. HLL data/live grant replacement is prepared and tested.
+The owner confirmed only EVENT remains active: publish its existing public ID,
+not the obsolete #1 alias which currently returns the same provider server.
+League tracking for VLK is enabled with no intake channel or League Discord panel.
+Logi PR [#256](https://github.com/Ninjonik/logi/pull/256) passed hosted CI but its
+collector/parser activation requires Ninjonik's deployment. Warcon RCON health
+and capabilities still return `provider_timeout`/503 despite a passed key test.
+SSO plus current membership/admin access for both games were observed after an
+initial transient failed lookup; no role or freshness check was bypassed.
+
 ## Production acceptance follow-up — 2026-10-24
 
 PR [#112](https://github.com/ValkyriaWDG/www/pull/112) was squash-merged as

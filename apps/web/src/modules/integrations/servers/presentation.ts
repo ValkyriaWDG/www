@@ -7,6 +7,7 @@ import type { GameRoute } from '@/modules/games/registry';
 import { serverPresentationSchema, type ServerPresentation, type ServerPresentationRow } from '@/modules/settings/schemas';
 import type { ServerSnapshot } from '../contract';
 import { getServerOverview, type ServerOverview } from './provider';
+import { toPublicServerOverview, type PublicServerOverview } from './public';
 
 /*
  * Website-owned presentation of public game servers: the `servers.presentation` site
@@ -96,9 +97,9 @@ export async function getServerPresentation(now: Date = new Date()): Promise<Ser
 }
 
 /** Public server overview for a game with the website presentation applied (the only place it is applied). */
-export async function getPublicServerOverview(game: GameRoute, now: Date = new Date(), rows?: ServerPresentation): Promise<ServerOverview> {
+export async function getPublicServerOverview(game: GameRoute, now: Date = new Date(), rows?: ServerPresentation): Promise<PublicServerOverview> {
   const [overview, presentation] = await Promise.all([getServerOverview(game, now), rows ?? getServerPresentation(now)]);
-  return applyServerPresentation(game, overview, presentation);
+  return toPublicServerOverview(applyServerPresentation(game, overview, presentation));
 }
 
 /** Forget cached rows (after an administrator saved the setting, and in tests). */
